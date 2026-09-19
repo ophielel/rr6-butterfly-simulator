@@ -31,7 +31,15 @@ Sources used below:
 | 11 | Bleed: when tossing an attack coin, fixed damage by Potency, then Count −1 | `battle::tick_bleed` | wiki.gg `Status Effects`, in-game text | multi_source_verified |
 | 12 | Sinking: when hit, SP damage by Potency then Count −1; non-SP units take Gloom damage instead | `battle::apply_sinking` | wiki.gg `Status Effects`, in-game text | multi_source_verified |
 | 13 | Poise: on hit, Potency% chance of a crit (1.2x, static +0.2), Count −1 on success and at turn end | `battle::apply_hit`, `battle::end_turn` | wiki.gg `Status Effects`, `Damage` | multi_source_verified |
-| 14 | Fragile: +10% damage taken per Count (max 10) | `battle::fragile_bonus` | wiki.gg `Status Effects` | single_source_verified |
+| 12a | Rupture: when hit, fixed damage by Potency, then Count −1 | `battle::apply_hit` | wiki.gg `Status Effects` / Rupture | single_source_verified |
+| 14 | Fragile: +10% damage taken per Count (max 10) | `battle::incoming_damage_modifier` | wiki.gg `Status Effects` | single_source_verified |
+| 14a | Protection: −10% damage taken per Count (max 10); `<Sin> Fragility`: +10% damage taken from that affinity per Count (max 10); `<Sin>/<Type> Resist Down`: +0.1 resistance per Count | `battle::incoming_damage_modifier`, `state::Unit::resist*` | wiki.gg `Status Effects` | single_source_verified |
+| 14b | Damage Up / Damage Down: ±10% damage dealt per Count (max 10) | `state::Unit::outgoing_damage_modifier` | wiki.gg `Status Effects` | single_source_verified |
+| 14c | Power Up/Down (all skills) and Attack Power Up/Down (attacks only) change Final Power by the status value; Plus Coin Boost / Minus Coin Drop change Coin Power | `battle::final_power`, `battle::effective_coin_power` | wiki.gg `Status Effects`, `Damage` | single_source_verified |
+| 14d | Offense/Defense Level Up/Down change the unit's levels by their Potency | `state::Unit::offense_level`, `defense_level` | wiki.gg `Status Effects` | single_source_verified |
+| 14e | Bind: Speed −Potency for the turn; Haste: Speed +Count | `battle::begin_turn` | wiki.gg `Status Effects` | single_source_verified |
+| 15a | Tremor: when hit by a skill that bursts Tremor, raise the Stagger Threshold by Tremor Potency, then Count −1; at turn end Count −1 | `battle::apply_effects` (`tremor_burst`), `battle::end_turn` | wiki.gg `Status Effects` / Tremor, Tremor Burst | single_source_verified |
+| 16a | Charge: Count −1 at the end of each turn | `battle::end_turn` | wiki.gg `Status Effects` / Charge | single_source_verified |
 | 15 | Butterfly (unique Sinking): attacker heals `The Living / 4` SP on hit; turn end converts The Living into The Departed | `battle::apply_hit`, `battle::end_turn` | wiki.gg `Status Effects`, in-game `Bufs-walpu4` | multi_source_verified |
 | 16 | The Living & The Departed (unique Ammo): consumed by skills, Potency+Count capped at 20 | `battle::apply_effects` (`spend_ammo`) | in-game `BattleKeywords-walpu4` | official |
 | 17 | Shield is consumed before HP and expires at the start of the next turn | `state::Unit::take_damage`, `battle::begin_turn` | wiki.gg `Clash` / Shield | single_source_verified |

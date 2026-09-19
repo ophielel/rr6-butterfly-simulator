@@ -1290,6 +1290,12 @@
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Tremor]",
       "status": "Tremor"
+     },
+     {
+      "consume_count": 1,
+      "kind": "tremor_burst",
+      "raw": "[On Hit] Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1",
+      "status": "Tremor Burst"
      }
     ]
    },
@@ -1312,9 +1318,7 @@
     }
    ],
    "tags": [],
-   "unmodeled": [
-    "[On Hit] Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1"
-   ]
+   "unmodeled": []
   },
   "1041403@2": {
    "attack_end": [],
@@ -1361,6 +1365,12 @@
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Tremor]",
       "status": "Tremor"
+     },
+     {
+      "consume_count": 1,
+      "kind": "tremor_burst",
+      "raw": "[On Hit] Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1",
+      "status": "Tremor Burst"
      }
     ]
    },
@@ -1383,9 +1393,7 @@
     }
    ],
    "tags": [],
-   "unmodeled": [
-    "[On Hit] Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1"
-   ]
+   "unmodeled": []
   },
   "1041403@3": {
    "attack_end": [],
@@ -1432,6 +1440,12 @@
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Tremor]",
       "status": "Tremor"
+     },
+     {
+      "consume_count": 1,
+      "kind": "tremor_burst",
+      "raw": "[On Hit] Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1",
+      "status": "Tremor Burst"
      }
     ]
    },
@@ -1454,9 +1468,7 @@
     }
    ],
    "tags": [],
-   "unmodeled": [
-    "[On Hit] Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1"
-   ]
+   "unmodeled": []
   },
   "1041403@4": {
    "attack_end": [],
@@ -1503,6 +1515,12 @@
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Tremor]",
       "status": "Tremor"
+     },
+     {
+      "consume_count": 1,
+      "kind": "tremor_burst",
+      "raw": "[On Hit] Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1",
+      "status": "Tremor Burst"
      }
     ]
    },
@@ -1512,7 +1530,6 @@
    "tags": [],
    "unmodeled": [
     "[On Hit] Deal Gloom damage equal to [Sinking] on target",
-    "[On Hit] Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1",
     "[On Use] Coin Power +1 for every 6 ([Tremor] + [Sinking]) on target (max 2)",
     "[On Use] Deal +1% damage for every [Faint Aroma] on target"
    ]
@@ -3624,6 +3641,12 @@
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Sinking]",
       "status": "Sinking"
+     },
+     {
+      "consume_count": 1,
+      "kind": "tremor_burst",
+      "raw": "[On Hit] Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1",
+      "status": "Tremor Burst"
      }
     ]
    },
@@ -3636,7 +3659,6 @@
     "[Attack End] Gain 2 [Protection] next turn (once per turn)",
     "[On Hit] Inflict 1 [Gloom Resist Down] (once per turn)",
     "[On Hit] Inflict 3 [Blue Sand] next turn",
-    "[On Hit] Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1",
     "[On Use] Base Power +1 for every [LCA Fracture Round] about to be spent by this Skill",
     "[On Use] Gain +8 [Aggro] to this Skill Slot next turn"
    ]
@@ -3686,6 +3708,12 @@
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Sinking]",
       "status": "Sinking"
+     },
+     {
+      "consume_count": 1,
+      "kind": "tremor_burst",
+      "raw": "[On Hit] Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1",
+      "status": "Tremor Burst"
      }
     ]
    },
@@ -3698,7 +3726,6 @@
     "[Attack End] Gain 2 [Protection] next turn (once per turn)",
     "[On Hit] Inflict 1 [Gloom Resist Down] (once per turn)",
     "[On Hit] Inflict 3 [Blue Sand] next turn",
-    "[On Hit] Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1",
     "[On Use] Base Power +1 for every [LCA Fracture Round] about to be spent by this Skill",
     "[On Use] Gain +8 [Aggro] to this Skill Slot next turn"
    ]
@@ -3748,6 +3775,12 @@
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Sinking]",
       "status": "Sinking"
+     },
+     {
+      "consume_count": 1,
+      "kind": "tremor_burst",
+      "raw": "[On Hit] Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1",
+      "status": "Tremor Burst"
      }
     ]
    },
@@ -3760,7 +3793,6 @@
     "[Attack End] Gain 2 [Protection] next turn (once per turn)",
     "[On Hit] Inflict 1 [Gloom Resist Down] (once per turn)",
     "[On Hit] Inflict 3 [Blue Sand] next turn",
-    "[On Hit] Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1",
     "[On Use] Base Power +1 for every [LCA Fracture Round] about to be spent by this Skill",
     "[On Use] Gain +8 [Aggro] to this Skill Slot next turn"
    ]
@@ -3810,6 +3842,12 @@
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Sinking]",
       "status": "Sinking"
+     },
+     {
+      "consume_count": 1,
+      "kind": "tremor_burst",
+      "raw": "[On Hit] Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1",
+      "status": "Tremor Burst"
      }
     ]
    },
@@ -3826,7 +3864,6 @@
     "[On Hit] If target is a SP Unit, trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1",
     "[On Hit] Inflict 1 [Gloom Resist Down] (once per turn)",
     "[On Hit] Inflict 3 [Blue Sand] next turn",
-    "[On Hit] Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1",
     "[On Use] At 6+ ([Sinking] + [Tremor]) on target, Coin Power +1",
     "[On Use] Base Power +1 for every [LCA Fracture Round] about to be spent by this Skill",
     "[On Use] Gain +8 [Aggro] to this Skill Slot next turn"
@@ -4566,6 +4603,12 @@
       "potency": 3,
       "raw": "[On Hit] Inflict 3 [Tremor]",
       "status": "Tremor"
+     },
+     {
+      "consume_count": 1,
+      "kind": "tremor_burst",
+      "raw": "[On Hit] Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1",
+      "status": "Tremor Burst"
      }
     ]
    },
@@ -4581,8 +4624,7 @@
     "[On Hit] Deal Gloom damage equal to ([The Living & The Departed] spent by this Coin x 2)% of this Coin's final damage",
     "[On Hit] Deal Gloom damage equal to the sum of both [Butterfly] on target",
     "[On Hit] Inflict 2 [Butterfly](The Departed)",
-    "[On Hit] Inflict 2 [Butterfly](The Living)",
-    "[On Hit] Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1"
+    "[On Hit] Inflict 2 [Butterfly](The Living)"
    ]
   },
   "20109.corrosion@1": {
@@ -4602,6 +4644,12 @@
       "potency": 5,
       "raw": "[On Hit] Inflict 5 [Tremor]",
       "status": "Tremor"
+     },
+     {
+      "consume_count": 1,
+      "kind": "tremor_burst",
+      "raw": "[On Hit] Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1",
+      "status": "Tremor Burst"
      }
     ]
    },
@@ -4615,8 +4663,7 @@
     "[Before Attack] Gain +(highest Reson. / 2) Atk Weight (max 2, rounded down)",
     "[On Hit] Deal Gloom damage equal to the sum of both [Butterfly] on target",
     "[On Hit] Inflict 3 [Butterfly](The Departed)",
-    "[On Hit] Inflict 3 [Butterfly](The Living)",
-    "[On Hit] Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1"
+    "[On Hit] Inflict 3 [Butterfly](The Living)"
    ]
   },
   "20807.awakening@1": {
@@ -4713,6 +4760,14 @@
       "raw": "[On Hit] Inflict 2 [Tremor]",
       "status": "Tremor"
      }
+    ],
+    "3": [
+     {
+      "consume_count": 1,
+      "kind": "tremor_burst",
+      "raw": "[On Hit] Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1",
+      "status": "Tremor Burst"
+     }
     ]
    },
    "combat_start": [],
@@ -4727,7 +4782,6 @@
     "[Before Attack] If the main target has higher than 1 Gloom Resist., deal +3% damage for every 0.1 excess Resist. (max 15%)",
     "[On Hit without Cracking] Inflict 1 [Bind] next turn",
     "[On Hit] If there are Staggered, Part broken, or killed units among the targets, inflict 2 [Sinking] against a random non-targeted enemy (once per turn; in Focused Encounters, each Part count as 1 target)",
-    "[On Hit] Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1",
     "[On Use] If the main target has 4+ [Sinking], Clash Power +1"
    ]
   },
@@ -4766,6 +4820,12 @@
       "potency": 1,
       "raw": "[On Hit] Inflict 1 [Tremor]",
       "status": "Tremor"
+     },
+     {
+      "consume_count": 1,
+      "kind": "tremor_burst",
+      "raw": "[On Hit] Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1",
+      "status": "Tremor Burst"
      }
     ]
    },
@@ -4794,8 +4854,7 @@
     "Targets randomly",
     "[Attack End] Apply 1 [Blunt DMG Up] next turn to (highest Reson.) random allies (including this unit; max 4 allies; once per turn)",
     "[Before Attack] Gain the following effects for every 3 highest Reson.",
-    "[On Hit] If there are Staggered, Part broken, or killed units among the targets, inflict 1 [Gloom Fragility] next turn against a random non-targeted enemy (once per turn; for Focused Encounters, each Part counts as 1 target)",
-    "[On Hit] Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1"
+    "[On Hit] If there are Staggered, Part broken, or killed units among the targets, inflict 1 [Gloom Fragility] next turn against a random non-targeted enemy (once per turn; for Focused Encounters, each Part counts as 1 target)"
    ]
   },
   "20903.awakening@1": {

@@ -402,34 +402,55 @@ pub struct Unit {
 }
 
 impl Unit {
+    /// Offense Level including `Offense Level Up/Down`
+    /// (wiki.gg `Status Effects`: "increases based on the effect's Potency").
     pub fn offense_level(&self) -> i32 {
-        (self.level + self.offense_level_mod).max(1)
+        let up = self.statuses.potency("Offense Level Up");
+        let down = self.statuses.potency("Offense Level Down");
+        (self.level + self.offense_level_mod + up - down).max(1)
     }
 
     pub fn defense_level(&self) -> i32 {
-        (self.level + self.defense_level_mod).max(1)
+        let up = self.statuses.potency("Defense Level Up");
+        let down = self.statuses.potency("Defense Level Down");
+        (self.level + self.defense_level_mod + up - down).max(1)
     }
 
+    /// Physical resistance, including `<Type> Resist Down` (0.1 per Count).
     pub fn resist(&self, kind: crate::ids::DamageType) -> f64 {
-        let key = match kind {
-            crate::ids::DamageType::Slash => "slash",
-            crate::ids::DamageType::Pierce => "pierce",
-            crate::ids::DamageType::Blunt => "blunt",
+        let (key, name) = match kind {
+            crate::ids::DamageType::Slash => ("slash", "Slash"),
+            crate::ids::DamageType::Pierce => ("pierce", "Pierce"),
+            crate::ids::DamageType::Blunt => ("blunt", "Blunt"),
         };
-        self.resist_physical.get(key).copied().unwrap_or(1.0)
+        let base = self.resist_physical.get(key).copied().unwrap_or(1.0);
+        let down = self.statuses.count(&format!("{name} Resist Down"));
+        (base + 0.1 * down as f64).max(0.0)
     }
 
+    /// Sin resistance, including `<Sin> Resist Down` (0.1 per Count,
+    /// wiki.gg `Status Effects` / Gloom Resist Down).
     pub fn resist_sin(&self, sin: Sin) -> f64 {
-        let key = match sin {
-            Sin::Wrath => "wrath",
-            Sin::Lust => "lust",
-            Sin::Sloth => "sloth",
-            Sin::Gluttony => "gluttony",
-            Sin::Gloom => "gloom",
-            Sin::Pride => "pride",
-            Sin::Envy => "envy",
+        let (key, name) = match sin {
+            Sin::Wrath => ("wrath", "Wrath"),
+            Sin::Lust => ("lust", "Lust"),
+            Sin::Sloth => ("sloth", "Sloth"),
+            Sin::Gluttony => ("gluttony", "Gluttony"),
+            Sin::Gloom => ("gloom", "Gloom"),
+            Sin::Pride => ("pride", "Pride"),
+            Sin::Envy => ("envy", "Envy"),
         };
-        self.resist_sin.get(key).copied().unwrap_or(1.0)
+        let base = self.resist_sin.get(key).copied().unwrap_or(1.0);
+        let down = self.statuses.count(&format!("{name} Resist Down"));
+        (base + 0.1 * down as f64).max(0.0)
+    }
+
+    /// Damage the unit deals (dynamic modifier): `Damage Up` +10% per Count,
+    /// `Damage Down` -10% per Count (both capped at 10).
+    pub fn outgoing_damage_modifier(&self) -> f64 {
+        let up = self.statuses.count("Damage Up").min(10);
+        let down = self.statuses.count("Damage Down").min(10);
+        (up - down) as f64 * 0.10
     }
 
     pub fn hp_percent(&self) -> i32 {

@@ -113,6 +113,10 @@ PATTERNS = [
      lambda m: {"kind": "unbreakable_coin", "which": m.group(2), "hp_below_percent": int(m.group(1))}),
     (re.compile(r"^Reuse this Coin once for every (\d+)% missing HP \(max (\d+) times\)$"),
      lambda m: {"kind": "reuse_percent_missing_hp", "per": int(m.group(1)), "max": int(m.group(2))}),
+    # Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1
+    (re.compile(r"^Trigger \[([^\]]+)\]; then, reduce target's \[([^\]]+)\] Count by (\d+)$"),
+     lambda m: {"kind": "tremor_burst" if m.group(1) == "Tremor Burst" else "activate_status",
+                "status": m.group(1), "consume_count": int(m.group(3))}),
     (re.compile(r"^Activate \[([^\]]+)\] on target (once|twice|\d+ times?)\. Target loses (\d+) \[([^\]]+)\] Count$"),
      lambda m: {"kind": "activate_status", "status": m.group(1),
                 "times": {"once": 1, "twice": 2}.get(m.group(2), None) or int(re.sub(r"\D", "", m.group(2)) or 1),

@@ -490,6 +490,110 @@ fn time_state_stack_bonus_matches_game_text() {
     assert_eq!(TimeState::Future.boosted_status(), "Bleed");
 }
 
+/// Rupture deals fixed damage by Potency on hit and loses one Count.
+/// Source: wiki.gg `Status Effects` / Rupture.
+#[test]
+fn rupture_ticks_on_hit() {
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&["10110"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    state.units[1].statuses.add_potency("Rupture", 12);
+    state.units[1].statuses.add_count("Rupture", 3);
+    let before = state.units[1].hp;
+    let mut use_ = battle::build_use(&state, &sim.library, &sim.mechanics, 0, &SkillId::new("1011001"))
+        .unwrap();
+    use_.coins = vec![battle::CoinRuntime::fresh(false)];
+    state.preset_flips = vec![false; 16];
+    state.flip_cursor = 0;
+    battle::one_sided_attack(&mut state, 0, 1, &mut use_, 0);
+    assert_eq!(state.units[1].statuses.count("Rupture"), 2);
+    // damage = the attack's own damage + 12 Rupture
+    assert!(before - state.units[1].hp >= 12);
+}
+
+/// Protection reduces and Fragile increases incoming damage by 10% per Count.
+/// Source: wiki.gg `Status Effects` / Protection, Fragile.
+#[test]
+fn protection_and_fragile_modify_incoming_damage() {
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&["10110"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    state.units[1].statuses.add_count("Protection", 1); // -10%
+    state.units[1].statuses.add_count("Fragile", 2); // +20%
+    state.units[1].statuses.add_count("Wrath Fragility", 1); // +10% vs Wrath
+    let defense = state.units[1].clone();
+    let modifier = battle::incoming_damage_modifier_for_test(&defense, "Wrath");
+    assert!((modifier - 0.20).abs() < 1e-9, "got {modifier}");
+    let other = battle::incoming_damage_modifier_for_test(&defense, "Gloom");
+    assert!((other - 0.10).abs() < 1e-9, "fragility is affinity specific: {other}");
+    // Resist Down raises the resistance value by 0.1 per Count.
+    state.units[1].statuses.add_count("Gloom Resist Down", 3);
+    assert!((state.units[1].resist_sin(lcb_core::ids::Sin::Gloom) - 1.3).abs() < 1e-9);
+}
+
+/// Skill power statuses: Power Up/Down on every skill, Attack Power Up/Down on
+/// attacks only.  Source: wiki.gg `Status Effects`.
+#[test]
+fn power_statuses_change_final_power() {
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&["10110"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    let mut use_ = battle::build_use(&state, &sim.library, &sim.mechanics, 0, &SkillId::new("1011001"))
+        .unwrap();
+    use_.base_power = 4;
+    use_.coin_power = 0;
+    use_.coins = vec![battle::CoinRuntime::fresh(false)];
+    state.preset_flips = vec![false; 16];
+    state.flip_cursor = 0;
+    battle::toss_all_for_test(&mut state, 0, &mut use_);
+    assert_eq!(battle::final_power(&mut state, 0, &mut use_), 4);
+    state.units[0].statuses.add_count("Power Up", 3);
+    state.units[0].statuses.add_count("Attack Power Up", 2);
+    state.units[0].statuses.add_potency("Attack Power Down", 1);
+    assert_eq!(battle::final_power(&mut state, 0, &mut use_), 4 + 3 + 2 - 1);
+}
+
+/// Tremor Burst raises the Stagger Threshold by the target's Tremor Potency and
+/// consumes Tremor Count.  Sources: wiki.gg `Status Effects` / Tremor,
+/// Tremor Burst.
+#[test]
+fn tremor_burst_raises_stagger_threshold() {
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&["10110"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    state.units[1].statuses.add_potency("Tremor", 15);
+    state.units[1].statuses.add_count("Tremor", 2);
+    let before = state.units[1].stagger.thresholds_percent[0];
+    let effects = vec![lcb_core::effects::Effect {
+        kind: "tremor_burst".to_string(),
+        consume_count: Some(1),
+        ..Default::default()
+    }];
+    let mut notes = Vec::new();
+    let mut use_ctx = battle::UseContext::default();
+    battle::apply_effects_for_test(&mut state, &effects, 0, Some(1), &mut notes, &mut use_ctx);
+    assert_eq!(state.units[1].stagger.thresholds_percent[0], before + 15);
+    assert_eq!(state.units[1].statuses.count("Tremor"), 1);
+}
+
+/// Bind lowers Speed for the turn.  Source: wiki.gg `Status Effects` / Bind.
+#[test]
+fn bind_lowers_speed() {
+    let sim = sim();
+    let state = sim
+        .new_encounter(&["10110"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    let mut unit = state.units[0].clone();
+    unit.statuses.add_potency("Bind", 2);
+    let bind = unit.statuses.potency("Bind");
+    let haste = unit.statuses.count("Haste");
+    assert_eq!(bind - haste, 2);
+}
+
 /// A full turn keeps the battle in a consistent, serialisable state.
 #[test]
 fn turn_advances_phase_and_logs() {

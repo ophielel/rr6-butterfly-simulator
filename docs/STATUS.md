@@ -34,12 +34,22 @@ attack, guard replacing the Defense Level).  Tests:
 ## Phase 4 — statuses — partial
 
 Implemented: Burn, Bleed, Sinking, Butterfly (unique Sinking), The Living & The
-Departed (ammo), Poise, Fragile, Paralyze (power fix), Haste, Shield,
-Unbreakable Coin, Reload (Solemn Lament).
+Departed (ammo), Poise, Fragile, Rupture, Tremor + Tremor Burst, Protection,
+Damage Up/Down, Power Up/Down, Attack Power Up/Down, Plus Coin Boost / Minus
+Coin Drop, Offense/Defense Level Up/Down, `<Sin>`/`<Type>` Resist Down,
+`<Sin>` Fragility, Bind, Haste, Paralyze (per-coin power fix), Charge tick,
+Shield, Unbreakable Coin, Reload (Solemn Lament), Temporal Disjunction.
 
-Loaded but **not** simulated: the Imago's `In the Past / Present / Future`
-state machine, `Temporal Disjunction`, Scale Dust, and anything else listed per
-skill in `data/mechanics/effects.json` → `unmodeled`.
+Tests: `mechanics::rupture_ticks_on_hit`,
+`mechanics::protection_and_fragile_modify_incoming_damage`,
+`mechanics::power_statuses_change_final_power`,
+`mechanics::tremor_burst_raises_stagger_threshold`, `mechanics::bind_lowers_speed`.
+
+Loaded but **not** simulated: the identity-specific statuses the fixed content
+uses (Deep Tears, Faint Aroma, Dazzle, Tear-sharpened, Protecting Sword,
+Bullet - Solitude, Aggro, Discard, Amplitude Conversion, Scale Dust) and
+Sin Resonance.  Anything not modelled is listed per skill in
+`data/mechanics/effects.json` → `unmodeled` and reported by strict mode.
 
 ## Phase 5 — E.G.O — partial
 

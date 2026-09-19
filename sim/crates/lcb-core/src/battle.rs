@@ -57,6 +57,11 @@ pub struct UseContext {
     pub shield_gain: i32,
     pub ammo_spent: i32,
     pub unbreakable_coins: Vec<u32>,
+    /// `Plus Coin Boost` / `Minus Coin Drop` for this use.
+    #[serde(default)]
+    pub coin_power_boost: i32,
+    #[serde(default)]
+    pub coin_power_drop: i32,
     pub notes: Vec<String>,
     /// Running skill power during an attack (Base Power + Heads Coin Power).
     #[serde(default)]
@@ -658,6 +663,22 @@ pub fn apply_effects(
             "unbreakable_coin" => {
                 use_ctx.unbreakable_coins.extend(effect.coins.iter().copied());
             }
+            "tremor_burst" => {
+                // "Raise target's Stagger Threshold by [Tremor] Potency on target"
+                let Some(index) = ctx.target_index else { continue };
+                let potency = state.units[index].statuses.potency("Tremor");
+                if potency > 0 {
+                    if let Some(first) = state.units[index]
+                        .stagger
+                        .thresholds_percent
+                        .first_mut()
+                    {
+                        *first += potency;
+                    }
+                    let consume = effect.consume_count.unwrap_or(1);
+                    state.units[index].statuses.add_count("Tremor", -consume);
+                }
+            }
             "activate_status" => {
                 let Some(status) = effect.status.clone() else { continue };
                 let times = effect.times.unwrap_or(1);
@@ -932,7 +953,14 @@ fn effective_coin_power(
     if coin.paralyzed {
         return 0;
     }
-    use_.coin_power + use_.ctx.coin_power_bonus
+    let boost = use_.ctx.coin_power_bonus
+        + if use_.coin_power > 0 {
+            // Plus Coin Boost raises plus coins, Minus Coin Drop lowers minus coins.
+            use_.ctx.coin_power_boost
+        } else {
+            -use_.ctx.coin_power_drop
+        };
+    use_.coin_power + boost
 }
 
 /// **Final Power** of a skill: Base Power once, plus the Coin Power of every
@@ -950,6 +978,18 @@ pub fn final_power(
         total += bonus.final_power;
     }
     total += time_passives::signature_final_power(state, unit_index, &use_.skill);
+    // Generic skill-power statuses (wiki.gg `Status Effects`):
+    // `Power Up/Down` affect every skill, `Attack Power Up/Down` only attacks.
+    {
+        let statuses = &state.units[unit_index].statuses;
+        let all = statuses.count("Power Up") - statuses.potency("Power Down");
+        let attack = if use_.is_defense {
+            0
+        } else {
+            statuses.count("Attack Power Up") - statuses.potency("Attack Power Down")
+        };
+        total += all + attack;
+    }
     for index in 0..use_.coins.len() {
         if use_.coins[index].state != CoinState::Fresh {
             continue;
@@ -1130,6 +1170,7 @@ pub fn match_power(
         None => state.units[opponent_index].defense_level(),
     };
     let mut total = power + level_clash_bonus(my_level, their_level);
+    total += state.units[unit_index].statuses.count("Clash Power Up");
     if let Some((_, bonus)) = time_state_bonus(state, unit_index) {
         total += bonus.clash_power;
     }
@@ -1449,9 +1490,19 @@ fn apply_hit(
     } else {
         None
     };
+    let sin_resist = defender.resist_sin(use_.sin);
+    let sin_name = match use_.sin {
+        Sin::Wrath => "Wrath",
+        Sin::Lust => "Lust",
+        Sin::Sloth => "Sloth",
+        Sin::Gluttony => "Gluttony",
+        Sin::Gloom => "Gloom",
+        Sin::Pride => "Pride",
+        Sin::Envy => "Envy",
+    };
     let inputs = DamageInputs {
         coin_roll: power,
-        sin_resist: defender.resist_sin(use_.sin),
+        sin_resist,
         damage_type_resist: defender.resist(use_.damage_type),
         stagger_bonus,
         offense_level: state.units[attacker_index].offense_level() + use_.offense_level_mod,
@@ -1460,8 +1511,8 @@ fn apply_hit(
         critical: crit,
         clash_count,
         dynamic_modifier: use_.ctx.damage_bonus
-            + fragile_bonus(defender)
-            + temporal_disjunction_bonus(defender)
+            + state.units[attacker_index].outgoing_damage_modifier()
+            + incoming_damage_modifier(defender, sin_name)
             + if crit {
                 time_passives::crit_damage_bonus(state, attacker_index)
             } else {
@@ -1502,6 +1553,13 @@ fn apply_hit(
         use_.coins.len(),
         defender_index,
     );
+    // Rupture: "When hit by an attack, take fixed damage by the effect's
+    // Potency. Then, reduce its Count by 1." (wiki.gg `Status Effects`).
+    let rupture = state.units[defender_index].statuses.potency("Rupture");
+    if rupture > 0 {
+        state.units[defender_index].take_damage(rupture);
+        state.units[defender_index].statuses.add_count("Rupture", -1);
+    }
     // Sinking: when hit, SP damage by Potency then Count -1.
     apply_sinking(state, defender_index);
 
@@ -1593,16 +1651,24 @@ fn active_defense_level(state: &BattleState, unit_index: usize) -> Option<i32> {
     Some((state.units[unit_index].level + defense.defense_level_mod).max(1))
 }
 
+/// Incoming damage modifiers of the defender: `Fragile`, `Protection`,
+/// `<Sin> Fragility` (all 10% per Count, capped at 10) and Temporal Disjunction.
+fn incoming_damage_modifier(defender: &Unit, sin_name: &str) -> f64 {
+    let fragile = defender.statuses.count("Fragile").min(10) as f64 * 0.10;
+    let protection = defender.statuses.count("Protection").min(10) as f64 * 0.10;
+    let fragility = defender
+        .statuses
+        .count(&format!("{sin_name} Fragility"))
+        .min(10) as f64
+        * 0.10;
+    fragile + fragility - protection + temporal_disjunction_bonus(defender)
+}
+
 /// Temporal Disjunction: "Take +(Stack x 15)% damage (max 150%)"
 /// (in-game `Bufs_Refraction6` / `TimeGap`).
 fn temporal_disjunction_bonus(defender: &Unit) -> f64 {
     let stack = defender.statuses.stack("Temporal Disjunction").min(10);
     stack as f64 * 0.15
-}
-
-fn fragile_bonus(defender: &Unit) -> f64 {
-    let fragile = defender.statuses.count("Fragile").min(10);
-    fragile as f64 * 0.10
 }
 
 /// Stagger check after damage (wiki.gg `Clash` / Stagger).
@@ -1651,7 +1717,9 @@ pub fn begin_turn(
             lo
         };
         let haste = state.units[index].statuses.count("Haste");
-        state.units[index].speed = speed + haste;
+        // `Bind`: "Speed decreases by the effect's Potency for one turn."
+        let bind = state.units[index].statuses.potency("Bind");
+        state.units[index].speed = (speed + haste - bind).max(1);
         // Bleed/other turn-start ticks handled by mechanics entries below.
 
     }
@@ -1908,6 +1976,14 @@ pub fn end_turn(state: &mut BattleState) {
         // Poise: end of turn, Count -1.
         if state.units[index].statuses.count("Poise") > 0 {
             state.units[index].statuses.add_count("Poise", -1);
+        }
+        // Tremor: "At the end of the turn, reduce the Count by 1."
+        if state.units[index].statuses.count("Tremor") > 0 {
+            state.units[index].statuses.add_count("Tremor", -1);
+        }
+        // Charge: "Count lowers by 1 at the end of each turn."
+        if state.units[index].statuses.count("Charge") > 0 {
+            state.units[index].statuses.add_count("Charge", -1);
         }
         // Butterfly: reset The Departed to 0, then The Living becomes The Departed.
         let butterfly = state.units[index].statuses.potency("Butterfly");
@@ -2219,6 +2295,12 @@ fn prepare_use(
     if shield > 0 {
         state.units[unit_index].shield += shield;
     }
+    // `Plus Coin Boost` / `Minus Coin Drop` are read when the skill is used.
+    {
+        let statuses = &state.units[unit_index].statuses;
+        use_.ctx.coin_power_boost = statuses.count("Plus Coin Boost");
+        use_.ctx.coin_power_drop = statuses.count("Minus Coin Drop");
+    }
     // "On Use, an Attack Skill will generate 1 E.G.O Resource of a
     // corresponding Affinity" (wiki.gg `Clash` / Attack Skills).
     if !use_.is_defense && !use_.is_ego {
@@ -2384,6 +2466,29 @@ pub fn pay_ego_for_test(
 #[doc(hidden)]
 pub fn apply_sinking_for_test(state: &mut BattleState, unit_index: usize) {
     apply_sinking(state, unit_index)
+}
+
+#[doc(hidden)]
+pub fn incoming_damage_modifier_for_test(unit: &Unit, sin_name: &str) -> f64 {
+    incoming_damage_modifier(unit, sin_name)
+}
+
+#[doc(hidden)]
+pub fn apply_effects_for_test(
+    state: &mut BattleState,
+    effects: &[Effect],
+    actor_index: usize,
+    target_index: Option<usize>,
+    notes: &mut Vec<String>,
+    use_ctx: &mut UseContext,
+) {
+    let mut ctx = EffectContext {
+        actor_index,
+        target_index,
+        clash_count: 0,
+        mechanics_note: notes,
+    };
+    apply_effects(state, effects, &mut ctx, use_ctx);
 }
 
 #[doc(hidden)]
