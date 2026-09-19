@@ -124,6 +124,10 @@ pub struct Effect {
     /// Explicit sin affinity for damage-dealing effects.
     #[serde(default)]
     pub sin: Option<String>,
+    /// The clause only applies when the skill lost its Clash
+    /// ("[Hit after Clash Lose]").
+    #[serde(default)]
+    pub only_after_clash_lose: bool,
     /// `gain_from_resonance`: multiplier applied to the highest Resonance.
     #[serde(default)]
     pub multiplier: Option<i32>,

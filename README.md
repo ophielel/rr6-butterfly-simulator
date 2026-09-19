@@ -2,8 +2,14 @@
 
 A small, source-driven combat simulator for the fixed content in
 `rr6_butterfly_simulator_plan_v2.md`: seven identities, seven E.G.O, and the
-Refraction Railway Line 6 encounter *Butterfly of Entangled Lives [羅生蝶]*
-(`9563` Pupa, `9567` Imago, `9564/9565/9566` illusory butterflies).
+**Refraction Railway Line 6, Section 5 boss** *Butterfly of Entangled Lives
+[羅生蝶]* (`9567`, the Imago).
+
+Scope note: the deliverables are the seven identities, their E.G.O and the
+Section 5 Imago encounter.  The Pupa (`9563`) and the illusory butterflies
+(`9564`-`9566`) are loaded because their data documents the Imago's mechanics,
+and `Simulator::section5` can carry a campaign state between stations, but they
+are not part of the required deliverable.
 
 Two rules shape the whole project:
 
@@ -53,7 +59,7 @@ python python/tests/test_env.py
 from lcb import LimbusEnv, greedy_turn
 
 env = LimbusEnv()                 # data/ is found automatically
-env.reset(seed=1)                 # 7 fixed identities vs the Imago
+env.reset(seed=1)                 # 7 fixed identities vs the Section 5 Imago
 for action in greedy_turn(env):   # each candidate is scored by simulating it
     env.step(action)
 env.commit()                      # resolve the turn

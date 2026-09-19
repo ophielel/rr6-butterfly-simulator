@@ -85,6 +85,18 @@ pub struct UseContext {
     /// drop below 1" - statuses protected during this use.
     #[serde(default)]
     pub status_count_floor: Vec<String>,
+    /// The skill's owner lost its Clash (for "after Clash Lose" clauses).
+    #[serde(default)]
+    pub lost_clash: bool,
+    /// "Target cannot be Staggered until this Skill's Attack End".
+    #[serde(default)]
+    pub no_stagger_target: bool,
+    /// "Reuse this Skill on the target that has the highest HP" when it kills.
+    #[serde(default)]
+    pub reuse_on_kill: bool,
+    /// "treat the target's resistance as at least X" pairs (kind, value).
+    #[serde(default)]
+    pub resist_floor: Vec<(String, f64)>,
     /// `Plus Coin Boost` / `Minus Coin Drop` for this use.
     #[serde(default)]
     pub coin_power_boost: i32,
@@ -607,6 +619,8 @@ pub struct EffectContext<'a> {
     pub actor_index: usize,
     pub target_index: Option<usize>,
     pub clash_count: i32,
+    /// True when the acting skill lost its Clash ("after Clash Lose" clauses).
+    pub clash_lost: bool,
     /// Dashboard slot the skill was used from, when known.
     pub slot: u32,
     pub mechanics_note: &'a mut Vec<String>,
@@ -620,6 +634,9 @@ pub fn apply_effects(
     use_ctx: &mut UseContext,
 ) {
     for effect in effects {
+        if effect.only_after_clash_lose && !ctx.clash_lost {
+            continue;
+        }
         // "(N times per Encounter)" limits live in the unit's usage map too,
         // keyed with an `encounter:` prefix so Turn Start does not clear them.
         if let Some(limit) = effect.per_encounter {
@@ -911,6 +928,32 @@ pub fn apply_effects(
             "discard_lowest_rank" => {
                 let count = effect.value.unwrap_or(1);
                 discard_lowest_rank(state, ctx.actor_index, count);
+            }
+            "consume_surplus_status" => {
+                // "If this unit has 20+ [Poise] Potency, consume up to 20 surplus
+                // Potency past 20 to deal +(consumed x N)% damage".
+                let Some(status) = effect.status.clone() else { continue };
+                let threshold = effect.threshold.unwrap_or(0);
+                let limit = effect.value.unwrap_or(0);
+                let step = effect.step.unwrap_or(0);
+                let max = effect.max.unwrap_or(i32::MAX);
+                let unit = &state.units[ctx.actor_index];
+                let potency = unit.statuses.potency(&status);
+                if potency > threshold {
+                    let surplus = (potency - threshold).min(limit);
+                    let unit = &mut state.units[ctx.actor_index];
+                    unit.statuses.add_potency(&status, -surplus);
+                    use_ctx.damage_bonus += ((surplus * step).min(max)) as f64 / 100.0;
+                }
+            }
+            "reuse_on_kill" => {
+                use_ctx.reuse_on_kill = true;
+            }
+            "resist_floor" => {
+                if let Some(kind) = effect.status.clone() {
+                    let value = effect.value.unwrap_or(0) as f64 / 10.0;
+                    use_ctx.resist_floor.push((kind, value));
+                }
             }
             "halve_status" => {
                 let Some(status) = effect.status.clone() else { continue };
@@ -1720,6 +1763,42 @@ pub fn one_sided_attack(
             break;
         }
     }
+    // "[Attack End] If target is killed, Reuse this Skill on the target that has
+    // the highest HP (once per turn)" (Smite the Wicked).
+    if use_.ctx.reuse_on_kill
+        && !state.units[defender_index].alive
+        && state.units[attacker_index].alive
+        && state.units[attacker_index]
+            .turn_effect_usage
+            .get("reuse_on_kill")
+            .copied()
+            .unwrap_or(0)
+            < 1
+    {
+        state.units[attacker_index]
+            .turn_effect_usage
+            .insert("reuse_on_kill".to_string(), 1);
+        if let Some(next) = state
+            .units
+            .iter()
+            .enumerate()
+            .filter(|(index, unit)| {
+                unit.alive && !unit.kind.is_sinner() && *index != defender_index
+            })
+            .max_by_key(|(_, unit)| unit.hp)
+            .map(|(index, _)| index)
+        {
+            let mut repeat = use_.clone();
+            for coin in repeat.coins.iter_mut() {
+                coin.state = CoinState::Fresh;
+                coin.heads = None;
+            }
+            repeat.ctx.accumulated = 0;
+            repeat.ctx.reuse_on_kill = false;
+            state.push_log("reuse", format!("{} was reused", use_.name));
+            hits.extend(one_sided_attack(state, attacker_index, next, &mut repeat, clash_count));
+        }
+    }
     // Cracked Unbreakable Coins attack after getting hit (wiki.gg `Clash`).
     for coin_index in use_.cracked_coins() {
         tick_bleed(state, attacker_index);
@@ -1884,10 +1963,22 @@ fn apply_hit(
         Sin::Pride => "Pride",
         Sin::Envy => "Envy",
     };
+    let mut type_resist = defender.resist(use_.damage_type);
+    for (kind, floor) in use_.ctx.resist_floor.iter() {
+        let matches = match kind.as_str() {
+            "slash" => use_.damage_type == DamageType::Slash,
+            "pierce" => use_.damage_type == DamageType::Pierce,
+            "blunt" => use_.damage_type == DamageType::Blunt,
+            _ => false,
+        };
+        if matches && type_resist < *floor {
+            type_resist = *floor;
+        }
+    }
     let inputs = DamageInputs {
         coin_roll: power,
         sin_resist,
-        damage_type_resist: defender.resist(use_.damage_type),
+        damage_type_resist: type_resist,
         stagger_bonus,
         offense_level: state.units[attacker_index].offense_level() + use_.offense_level_mod,
         defense_level: active_defense_level(state, defender_index)
@@ -1916,6 +2007,7 @@ fn apply_hit(
             actor_index: attacker_index,
             target_index: Some(defender_index),
             clash_count,
+            clash_lost: use_.ctx.lost_clash,
             slot: use_.slot,
             mechanics_note: &mut notes,
         };
@@ -2046,7 +2138,11 @@ fn apply_hit(
             *first = (*first - reduction).max(0);
         }
     }
-    let staggered = check_stagger(state, defender_index);
+    let staggered = if use_.ctx.no_stagger_target {
+        false
+    } else {
+        check_stagger(state, defender_index)
+    };
     let killed = !state.units[defender_index].alive;
     if killed {
         state.units[attacker_index].statuses.add_potency("Poise", 0);
@@ -2998,6 +3094,7 @@ fn prepare_use(
         actor_index: unit_index,
         target_index,
         clash_count: 0,
+            clash_lost: false,
         slot,
         mechanics_note: &mut notes,
     };
@@ -3010,6 +3107,9 @@ fn prepare_use(
     for tag in use_.mechanics.tags.clone() {
         if let Some(status) = tag.strip_prefix("status_count_floor:") {
             use_.ctx.status_count_floor.push(status.to_string());
+        }
+        if tag == "no_stagger_target" {
+            use_.ctx.no_stagger_target = true;
         }
     }
     use_.ctx.sin = use_.sin;
@@ -3044,6 +3144,7 @@ fn apply_clash_result(
     won: bool,
 ) {
     let slot = use_.slot;
+    use_.ctx.lost_clash = !won;
     // SP: the current values are not documented - configurable, default 0.
     let delta = if won {
         state.config.sp_on_clash_win
@@ -3075,6 +3176,7 @@ fn apply_clash_result(
         actor_index: unit_index,
         target_index,
         clash_count: 0,
+            clash_lost: false,
         slot,
         mechanics_note: &mut notes,
     };
@@ -3100,6 +3202,7 @@ fn apply_attack_end(
         actor_index: unit_index,
         target_index,
         clash_count: 0,
+            clash_lost: false,
         slot,
         mechanics_note: &mut notes,
     };
@@ -3208,6 +3311,7 @@ pub fn apply_effects_for_test(
         actor_index,
         target_index,
         clash_count: 0,
+            clash_lost: false,
         slot: 0,
         mechanics_note: notes,
     };

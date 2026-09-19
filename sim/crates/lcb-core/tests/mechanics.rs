@@ -1159,6 +1159,64 @@ fn section5_carries_the_campaign() {
     assert_eq!(state.units[0].statuses.potency("Burn"), 1);
 }
 
+/// Section 5: the Imago's rotation across all three states of time and HP bands,
+/// straight from the script data (JA-wiki 行動パターン).
+#[test]
+fn section5_rotation_covers_states_and_hp_bands() {
+    let sim = sim();
+    let script = sim
+        .scripts
+        .for_enemy(fixed::BOSS_IMAGO)
+        .expect("Imago script");
+    assert_eq!(script.slots, 6);
+    assert_eq!(script.cycle_turns, 3);
+    // Above 66%: turn 1 = small x2 + Fluttering Havoc x4 for every state.
+    for state in lcb_core::scripts::TimeState::ALL {
+        let entry = script.states.get(state.as_str()).unwrap();
+        let turn1 = script.turn_skills(100, state, 0);
+        assert_eq!(turn1.len(), 6, "{state:?} turn 1 has six slots");
+        assert_eq!(turn1[0], entry.small);
+        assert_eq!(turn1[1], entry.small);
+        assert!(turn1[2..].iter().all(|id| *id == "956701"), "Fluttering Havoc x4");
+        // Turn 2 = mid x2 + Pulverization x4.
+        let turn2 = script.turn_skills(100, state, 1);
+        assert_eq!(turn2[0], entry.mid);
+        assert!(turn2[2..].iter().all(|id| *id == "956702"));
+        // Turn 3 = big + Chaotic Turmoil x3 (four actions).
+        let turn3 = script.turn_skills(100, state, 2);
+        assert_eq!(turn3.len(), 4);
+        assert_eq!(turn3[0], entry.big);
+        assert!(turn3[1..].iter().all(|id| *id == "956703"));
+        // Below 66%: one more small/mid skill, one fewer havoc/pulverization.
+        let low = script.turn_skills(50, state, 0);
+        assert_eq!(low.iter().filter(|id| *id == &entry.small).count(), 3);
+        // Below 33%: four small skills on turn 1.
+        let lowest = script.turn_skills(20, state, 0);
+        assert_eq!(lowest.iter().filter(|id| *id == &entry.small).count(), 4);
+    }
+}
+
+/// Section 5: "混乱で行動がスキップされない" - the Imago acts even while Staggered.
+#[test]
+fn section5_imago_acts_while_staggered() {
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&fixed::TEAM, &[fixed::BOSS_IMAGO], 1, BattleConfig::default())
+        .unwrap();
+    let imago = state.units.iter().position(|u| !u.kind.is_sinner()).unwrap();
+    assert!(state.units[imago].acts_while_staggered);
+    // Stagger it, then run the combat phase: it must still use its six slots.
+    state.units[imago].stagger.turns_remaining = 2;
+    state.units[imago].stagger.level = 1;
+    let slots: Vec<u32> = state
+        .actions
+        .iter()
+        .filter(|a| a.actor == state.units[imago].id)
+        .map(|a| a.slot)
+        .collect();
+    assert_eq!(slots.len(), 6, "the Imago keeps its Skill Slots while Staggered");
+}
+
 /// A full turn keeps the battle in a consistent, serialisable state.
 #[test]
 fn turn_advances_phase_and_logs() {

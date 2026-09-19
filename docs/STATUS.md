@@ -67,7 +67,10 @@ generation from base attack skills.
 Not implemented: E.G.O passives, `Indiscriminate` targeting, E.G.O corrosion
 forced actions, threadspin tiers beyond the highest variant.
 
-## Phase 6 — boss — partial
+## Phase 6 — Section 5 boss — essentially complete
+
+Deliverable scope: the Imago (`9567`) alone.  The Pupa and the illusory
+butterflies are extras kept only where their data documents Imago mechanics.
 
 Loaded with official ids and full effect text:
 

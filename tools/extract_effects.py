@@ -38,7 +38,7 @@ TRIGGERS = {
     "onhit": "coin",
     "on hit without cracking": "coin",
     "heads hit": "coin",
-    "hit after clash lose": "coin",
+    "hit after clash lose": "coin_clash_lose",
     "on kill": "on_kill",
     "turn end": "turn_end",
     "turn start": "turn_start",
@@ -256,7 +256,7 @@ PATTERNS = [
      lambda m: {"kind": "damage_percent", "value": 0, "step": 1, "per": 1,
                 "max": int(m.group(2)),
                 "condition": {"source": "self", "status": m.group(1), "component": "potency"}}),
-    (re.compile(rf"^Deal \+\({ST} Count on self\)% damage \(max {N}%\)$"),
+    (re.compile(rf"^[Dd]eal \+\({ST} Count on self\)% damage \(max {N}%\)$"),
      lambda m: {"kind": "damage_percent", "value": 0, "step": 1, "per": 1,
                 "max": int(m.group(2)),
                 "condition": {"source": "self", "status": m.group(1), "component": "count"}}),
@@ -268,9 +268,33 @@ PATTERNS = [
      lambda m: {"kind": "halve_status", "status": m.group(1)}),
     (re.compile(rf"^While Clashing with this Skill, the main target's {ST} Count does not drop below 1$"),
      lambda m: {"kind": "tag", "tag": format_status_count_floor(m.group(1))}),
-    (re.compile(rf"^Deal \({ST} on self / {N}\) (Wrath|Lust|Sloth|Gluttony|Gloom|Pride|Envy) damage on target and lose {N} {ST} Count$"),
+    (re.compile(rf"^Deal \({ST} on self / {N}\) (Wrath|Lust|Sloth|Gluttony|Gloom|Pride|Envy) damage on target and lose {N} {ST} Count(?: \(rounded down\))?$"),
      lambda m: {"kind": "damage_from_status_divisor", "status": m.group(1),
-                "value": int(m.group(2)), "sin": m.group(3).lower(), "count": int(m.group(3))}),
+                "value": int(m.group(2)), "sin": m.group(3).lower(), "count": int(m.group(4))}),
+    # "Target cannot be Staggered until this Skill's Attack End"
+    (re.compile(r"^Target cannot be Staggered until this Skill's Attack End$"),
+     lambda m: {"kind": "tag", "tag": "no_stagger_target"}),
+    # "If target's Pierce Resist. is below Weak (1.5), treat is as Weak (1.5)"
+    (re.compile(r"^If target's (Slash|Pierce|Blunt) Resist\. is below \"Weak\" \(1\.5\), treat is? as Weak \(1\.5\)(?: \(max \d+%\))?"),
+     lambda m: {"kind": "resist_floor", "status": m.group(1).lower(), "value": 15}),
+    # "[Attack End] If target is killed, Reuse this Skill on the target that has
+    # the highest HP (once per turn)"
+    (re.compile(r"^If target is killed, Reuse this Skill on the target that has the highest HP$"),
+     lambda m: {"kind": "reuse_on_kill"}),
+    # "[Before Attack] If this unit has 20+ [Poise] Potency, consume up to 20
+    # surplus [Poise] Potency past 20 to deal +([Poise] consumed x 5)% damage"
+    (re.compile(rf"^If this unit has {N}\+ {ST} Potency, consume up to {N} surplus {ST} Potency past {N} to deal \+\({ST} consumed x {N}\)% damage(?:\(max {N}%\)| \(max {N}%\))?$"),
+     lambda m: {"kind": "consume_surplus_status", "status": m.group(2),
+                "threshold": int(m.group(1)), "value": int(m.group(3)),
+                "step": int(m.group(7)), "max": 100}),
+    # Implicit gain from a bullet: "4 [Poise] and +4 [Poise] Count"
+    (re.compile(rf"^{N} {ST} and \+{N} {ST} Count$"),
+     lambda m: {"kind": "gain", "status": m.group(2), "potency": int(m.group(1)),
+                "count": int(m.group(3)), "status2": m.group(4)}),
+    (re.compile(r"^On Clash Lose, this effect does not activate$"),
+     lambda m: {"kind": "noop", "note": "clash-lose gate"}),
+    (re.compile(r"^deal \+\((\d+)% of this Coin's damage\)% bonus (?:Slash|Pierce|Blunt) damage$", re.I),
+     lambda m: {"kind": "bonus_damage_percent_of_coin", "percent": int(m.group(1))}),
     (re.compile(r"^This Attack Skill deals 0 damage$"),
      lambda m: {"kind": "zero_damage"}),
     (re.compile(r"^Does not take damage for this turn$"),
@@ -374,6 +398,9 @@ def parse_triggered(trigger: str, text: str, raw: str) -> Optional[dict]:
                 elif cond.get("status"):
                     cond["statuses"] = [cond["status"], name, name]
                     cond.pop("status")
+        if trigger == "coin_clash_lose":
+            effect["only_after_clash_lose"] = True
+            effect["trigger"] = "coin"
         if limits:
             effect.update(limits)
         if next_turn:
@@ -524,6 +551,27 @@ def parse_text_block(text: str, coin_count: int) -> Tuple[Dict[str, List[dict]],
             # A condition bullet that was not consumed by a parent line.
             unmodeled.append(line)
             continue
+        inline_hp = re.match(r"^At less than (\d+)% HP, (.+)$", rest)
+        if inline_hp:
+            condition = {"hp_below_percent": int(inline_hp.group(1))}
+            effect = None
+            for pattern, handler in PATTERNS:
+                match = pattern.match(inline_hp.group(2))
+                if not match:
+                    continue
+                effect = handler(match)
+                effect["raw"] = line
+                effect["trigger"] = trigger
+                effect["condition"] = condition
+                break
+            if effect is not None:
+                if trigger == "coin_clash_lose":
+                    effect["only_after_clash_lose"] = True
+                    effect["trigger"] = "coin"
+                buckets.setdefault(trigger if trigger != "coin_clash_lose" else "coin", []).append(effect)
+                continue
+            # Not an "At less than N% HP" clause after all (e.g. "convert all
+            # Coins into Unbreakable Coins"): fall through to the normal patterns.
         inline_if_sp = INLINE_IF_SP_RE.match(rest)
         if inline_if_sp:
             condition = {"target_sp_below": int(inline_if_sp.group(1))}

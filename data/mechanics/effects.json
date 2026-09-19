@@ -6994,7 +6994,13 @@
   },
   "956704@1": {
    "attack_end": [],
-   "clash_lose": [],
+   "clash_lose": [
+    {
+     "kind": "tag",
+     "raw": "[Clash Lose] Target cannot be Staggered until this Skill's Attack End",
+     "tag": "no_stagger_target"
+    }
+   ],
    "clash_win": [],
    "coins": {
     "1": [
@@ -7054,13 +7060,17 @@
    "tags": [
     "clash_any_speed"
    ],
-   "unmodeled": [
-    "[Clash Lose] Target cannot be Staggered until this Skill's Attack End"
-   ]
+   "unmodeled": []
   },
   "956705@1": {
    "attack_end": [],
-   "clash_lose": [],
+   "clash_lose": [
+    {
+     "kind": "tag",
+     "raw": "[Clash Lose] Target cannot be Staggered until this Skill's Attack End",
+     "tag": "no_stagger_target"
+    }
+   ],
    "clash_win": [],
    "coins": {
     "1": [
@@ -7141,7 +7151,6 @@
     "clash_any_speed"
    ],
    "unmodeled": [
-    "[Clash Lose] Target cannot be Staggered until this Skill's Attack End",
     "[Hit after Clash Lose] At less than 33% HP, activate [Burn] on the main target once. Target loses 1 [Burn] Count"
    ]
   },
@@ -7235,19 +7244,29 @@
      "potency": 2,
      "raw": "Gain 2 [Damage Down] and 4 [Paralyze]",
      "status": "Damage Down"
+    },
+    {
+     "kind": "tag",
+     "raw": "Target cannot be Staggered until this Skill's Attack End",
+     "tag": "no_stagger_target"
     }
    ],
    "tags": [
     "clash_any_speed"
    ],
    "unmodeled": [
-    "Target cannot be Staggered until this Skill's Attack End",
     "[Hit after Clash Lose] At less than 33% HP, activate [Burn] on the main target once. Target loses 1 [Burn] Count"
    ]
   },
   "956707@1": {
    "attack_end": [],
-   "clash_lose": [],
+   "clash_lose": [
+    {
+     "kind": "tag",
+     "raw": "[Clash Lose] Target cannot be Staggered until this Skill's Attack End",
+     "tag": "no_stagger_target"
+    }
+   ],
    "clash_win": [],
    "coins": {
     "1": [
@@ -7257,6 +7276,16 @@
       "potency": 1,
       "raw": "[On Hit] Gain 1 [Poise] and +1 [Poise] Count",
       "status": "Poise"
+     }
+    ],
+    "2": [
+     {
+      "count": 1,
+      "kind": "damage_from_status_divisor",
+      "raw": "[On Hit without Cracking] Deal ([Poise] on self / 2) Pride damage on target and lose 1 [Poise] Count (rounded down)",
+      "sin": "pride",
+      "status": "Poise",
+      "value": 2
      }
     ]
    },
@@ -7296,14 +7325,17 @@
    "tags": [
     "clash_any_speed"
    ],
-   "unmodeled": [
-    "[Clash Lose] Target cannot be Staggered until this Skill's Attack End",
-    "[On Hit without Cracking] Deal ([Poise] on self / 2) Pride damage on target and lose 1 [Poise] Count (rounded down)"
-   ]
+   "unmodeled": []
   },
   "956708@1": {
    "attack_end": [],
-   "clash_lose": [],
+   "clash_lose": [
+    {
+     "kind": "tag",
+     "raw": "[Clash Lose] Target cannot be Staggered until this Skill's Attack End",
+     "tag": "no_stagger_target"
+    }
+   ],
    "clash_win": [],
    "coins": {
     "1": [
@@ -7335,6 +7367,18 @@
       "raw": "[On Hit without Cracking] Deal +([Poise] on self)% damage (max 50%)",
       "step": 1,
       "value": 0
+     },
+     {
+      "condition": {
+       "hp_below_percent": 33
+      },
+      "kind": "damage_percent",
+      "max": 30,
+      "only_after_clash_lose": true,
+      "per": 1,
+      "raw": "[Hit after Clash Lose] At less than 33% HP, deal +([Poise] Count on self)% damage (max 30%)",
+      "step": 1,
+      "value": 0
      }
     ],
     "4": [
@@ -7349,6 +7393,18 @@
       "per": 1,
       "raw": "[On Hit without Cracking] Deal +([Poise] on self x 2)% damage (max 100%)",
       "step": 2,
+      "value": 0
+     },
+     {
+      "condition": {
+       "hp_below_percent": 33
+      },
+      "kind": "damage_percent",
+      "max": 50,
+      "only_after_clash_lose": true,
+      "per": 1,
+      "raw": "[Hit after Clash Lose] At less than 33% HP, deal +([Poise] Count on self)% damage (max 50%)",
+      "step": 1,
       "value": 0
      }
     ]
@@ -7404,14 +7460,16 @@
    "tags": [
     "clash_any_speed"
    ],
-   "unmodeled": [
-    "[Clash Lose] Target cannot be Staggered until this Skill's Attack End",
-    "[Hit after Clash Lose] At less than 33% HP, deal +([Poise] Count on self)% damage (max 30%)",
-    "[Hit after Clash Lose] At less than 33% HP, deal +([Poise] Count on self)% damage (max 50%)"
-   ]
+   "unmodeled": []
   },
   "956709@1": {
-   "attack_end": [],
+   "attack_end": [
+    {
+     "kind": "reuse_on_kill",
+     "per_turn": 1,
+     "raw": "[Attack End] If target is killed, Reuse this Skill on the target that has the highest HP (once per turn)"
+    }
+   ],
    "clash_lose": [],
    "clash_win": [
     {
@@ -7421,7 +7479,30 @@
      "status": "In the Present"
     }
    ],
-   "coins": {},
+   "coins": {
+    "1": [
+     {
+      "kind": "resist_floor",
+      "raw": "If target's Pierce Resist. is below \"Weak\" (1.5), treat is as Weak (1.5) (max 50%)",
+      "status": "pierce",
+      "value": 15
+     },
+     {
+      "kind": "noop",
+      "note": "clash-lose gate",
+      "raw": "On Clash Lose, this effect does not activate"
+     },
+     {
+      "condition": {
+       "hp_below_percent": 33
+      },
+      "kind": "bonus_damage_percent_of_coin",
+      "only_after_clash_lose": true,
+      "percent": 50,
+      "raw": "[Hit after Clash Lose] At less than 33% HP, deal +(50% of this Coin's damage)% bonus Pierce damage"
+     }
+    ]
+   },
    "combat_start": [],
    "note": "Smite the Wicked",
    "on_use": [
@@ -7429,6 +7510,14 @@
      "kind": "base_power",
      "raw": "Final Power +1 and deal +20% damage for every 6 [Poise] on self (max 6 and 120%, respectively)",
      "value": 1
+    },
+    {
+     "count": 4,
+     "kind": "gain",
+     "potency": 4,
+     "raw": "4 [Poise] and +4 [Poise] Count",
+     "status": "Poise",
+     "status2": "Poise"
     },
     {
      "condition": {
@@ -7444,6 +7533,20 @@
      "value": 0
     },
     {
+     "kind": "consume_surplus_status",
+     "max": 100,
+     "raw": "[Before Attack] If this unit has 20+ [Poise] Potency, consume up to 20 surplus [Poise] Potency past 20 to deal +([Poise] consumed x 5)% damage (max 100%)",
+     "status": "Poise",
+     "step": 5,
+     "threshold": 20,
+     "value": 20
+    },
+    {
+     "kind": "noop",
+     "note": "clash-lose gate",
+     "raw": "On Clash Lose, this effect does not activate"
+    },
+    {
      "kind": "halve_status",
      "raw": "Halve [In the Present] (rounded down)",
      "status": "In the Present"
@@ -7453,24 +7556,32 @@
      "potency": 2,
      "raw": "Gain 2 [Damage Down] and 1 [Paralyze]",
      "status": "Damage Down"
+    },
+    {
+     "kind": "tag",
+     "raw": "Target cannot be Staggered until this Skill's Attack End",
+     "tag": "no_stagger_target"
+    },
+    {
+     "kind": "noop",
+     "note": "clash-lose gate",
+     "raw": "On Clash Lose, this effect does not activate"
     }
    ],
    "tags": [
     "clash_any_speed"
    ],
-   "unmodeled": [
-    "4 [Poise] and +4 [Poise] Count",
-    "If target's Pierce Resist. is below \"Weak\" (1.5), treat is as Weak (1.5) (max 50%)",
-    "On Clash Lose, this effect does not activate",
-    "Target cannot be Staggered until this Skill's Attack End",
-    "[Attack End] If target is killed, Reuse this Skill on the target that has the highest HP (once per turn)",
-    "[Before Attack] If this unit has 20+ [Poise] Potency, consume up to 20 surplus [Poise] Potency past 20 to deal +([Poise] consumed x 5)% damage (max 100%)",
-    "[Hit after Clash Lose] At less than 33% HP, deal +(50% of this Coin's damage)% bonus Pierce damage"
-   ]
+   "unmodeled": []
   },
   "956710@1": {
    "attack_end": [],
-   "clash_lose": [],
+   "clash_lose": [
+    {
+     "kind": "tag",
+     "raw": "[Clash Lose] Target cannot be Staggered until this Skill's Attack End",
+     "tag": "no_stagger_target"
+    }
+   ],
    "clash_win": [],
    "coins": {
     "1": [
@@ -7530,13 +7641,17 @@
    "tags": [
     "clash_any_speed"
    ],
-   "unmodeled": [
-    "[Clash Lose] Target cannot be Staggered until this Skill's Attack End"
-   ]
+   "unmodeled": []
   },
   "956711@1": {
    "attack_end": [],
-   "clash_lose": [],
+   "clash_lose": [
+    {
+     "kind": "tag",
+     "raw": "[Clash Lose] Target cannot be Staggered until this Skill's Attack End",
+     "tag": "no_stagger_target"
+    }
+   ],
    "clash_win": [],
    "coins": {
     "1": [
@@ -7615,7 +7730,6 @@
     "clash_any_speed"
    ],
    "unmodeled": [
-    "[Clash Lose] Target cannot be Staggered until this Skill's Attack End",
     "[Hit after Clash Lose] At less than 33% HP, activate [Bleed] on the main target once. Target loses 1 [Bleed] Count"
    ]
   },
@@ -7703,13 +7817,17 @@
      "potency": 2,
      "raw": "Gain 2 [Damage Down] and 2 [Paralyze]",
      "status": "Damage Down"
+    },
+    {
+     "kind": "tag",
+     "raw": "Target cannot be Staggered until this Skill's Attack End",
+     "tag": "no_stagger_target"
     }
    ],
    "tags": [
     "clash_any_speed"
    ],
    "unmodeled": [
-    "Target cannot be Staggered until this Skill's Attack End",
     "[Hit after Clash Lose] At less than 33% HP, activate [Bleed] on target once. Target loses 1 [Bleed] Count"
    ]
   }
