@@ -23,7 +23,7 @@ pub mod state;
 pub mod testsupport;
 
 use battle::Action;
-use effects::MechanicsBook;
+use effects::{MechanicsBook, PassiveBook};
 use library::{Library, LibraryError};
 use setup::{EncounterBuilder, SetupError};
 use ids::UnitId;
@@ -35,6 +35,8 @@ use std::path::{Path, PathBuf};
 pub struct Simulator {
     pub library: Library,
     pub mechanics: MechanicsBook,
+    /// Identity / enemy passives (Combat and Support).
+    pub passives: PassiveBook,
     pub scripts: scripts::ScriptsBook,
     pub data_root: PathBuf,
 }
@@ -82,10 +84,15 @@ impl Simulator {
             .map_err(SimError::Mechanics)?;
         let scripts = scripts::ScriptsBook::load(&root.join("mechanics").join("enemy_scripts.json"))
             .map_err(SimError::Mechanics)?;
+        let passives = PassiveBook::load(
+            &root.join("passives").join("passives.json"),
+        )
+        .map_err(SimError::Mechanics)?;
         Ok(Self {
             library,
             mechanics,
             scripts,
+            passives,
             data_root: root,
         })
     }
@@ -97,12 +104,46 @@ impl Simulator {
         seed: u64,
         config: BattleConfig,
     ) -> Result<BattleState, SimError> {
-        let state = EncounterBuilder::new(&self.library, &self.mechanics)
+        let mut state = EncounterBuilder::new(&self.library, &self.mechanics)
             .scripts(&self.scripts)
             .seed(seed)
             .config(config)
             .build(team, enemies)?;
+        self.attach_passives(&mut state);
         Ok(state)
+    }
+
+    /// Give every unit the passives it fights with: its own Combat Passives and
+    /// the team's Support Passives (wiki.gg `Passives`).
+    fn attach_passives(&self, state: &mut state::BattleState) {
+        let supports: Vec<crate::effects::SkillMechanics> = self
+            .passives
+            .supports()
+            .into_iter()
+            .map(|p| p.effects.clone())
+            .collect();
+        let owner_ids: Vec<String> = state
+            .units
+            .iter()
+            .map(|unit| match &unit.kind {
+                crate::state::UnitKind::Sinner { identity } => identity.0.clone(),
+                crate::state::UnitKind::Abnormality { enemy, .. } => enemy.0.clone(),
+            })
+            .collect();
+        for (index, unit) in state.units.iter_mut().enumerate() {
+            let owner = String::new();
+            let _ = owner;
+            let mut effects: Vec<crate::effects::SkillMechanics> = self
+                .passives
+                .for_owner(&owner_ids[index])
+                .into_iter()
+                .map(|p| p.effects.clone())
+                .collect();
+            if unit.kind.is_sinner() {
+                effects.extend(supports.clone());
+            }
+            unit.passives = effects;
+        }
     }
 
     /// Section 5: the Imago, carrying what the earlier stations left behind.
@@ -202,6 +243,33 @@ impl Simulator {
             state::UnknownRule::SanityGainOnClash.text(),
             state::UnknownRule::CoinFlipRng.text(),
         ]
+    }
+
+    /// The same list as owned strings, including the Passive clauses that are
+    /// not modelled yet (the Python binding and the CLI use this form).
+    pub fn unknown_rules_owned(&self) -> Vec<String> {
+        let mut out: Vec<String> = self
+            .unknown_rules()
+            .iter()
+            .map(|s| s.to_string())
+            .collect();
+        out.extend(self.passive_gaps());
+        out.sort();
+        out.dedup();
+        out
+    }
+
+    /// Passive clauses this project has not modelled, per passive id.
+    pub fn passive_gaps(&self) -> Vec<String> {
+        let mut out = Vec::new();
+        for passive in self.passives.passives.values() {
+            for clause in &passive.effects.unmodeled {
+                out.push(format!("passive {}: {clause}", passive.id));
+            }
+        }
+        out.sort();
+        out.dedup();
+        out
     }
 
     pub fn strict_blockers(&self) -> Vec<String> {

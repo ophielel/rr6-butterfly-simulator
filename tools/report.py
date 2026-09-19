@@ -50,6 +50,56 @@ def count_effects(entry: Dict) -> int:
     return total
 
 
+def passive_section() -> list:
+    rows = passive_rows()
+    if not rows:
+        return []
+    lines = [
+        "",
+        "## Passives",
+        "",
+        "Identity / enemy Passives (`data/passives/passives.json`).  Modelled "
+        "clauses run at Combat Start / Turn Start / Turn End / Attack End and as "
+        "continuous modifiers; clauses still `unmodelled` are listed by "
+        "`Simulator::passive_gaps()`.",
+        "",
+        "| id | owner | kind | name | modelled | unmodelled | hand-modelled in |",
+        "|----|-------|------|------|----------|------------|------------------|",
+    ]
+    for pid, owner, kind, name, modelled, unmodelled, hand in rows:
+        lines.append(
+            f"| `{pid}` | `{owner}` | {kind} | {name} | {modelled} | {unmodelled} | {hand} |"
+        )
+    return lines
+
+
+def passive_rows() -> list:
+    path = os.path.join(DATA, "passives", "passives.json")
+    if not os.path.exists(path):
+        return []
+    book = load(path)["passives"]
+    rows = []
+    for pid in sorted(book):
+        entry = book[pid]
+        effects = entry.get("effects", {})
+        modelled = sum(
+            len(v) for k, v in effects.items() if isinstance(v, list) and k != "unmodeled"
+        )
+        unmodelled = len(effects.get("unmodeled", []))
+        rows.append(
+            (
+                pid,
+                entry.get("owner", ""),
+                entry.get("kind", ""),
+                entry.get("name") or "",
+                modelled,
+                unmodelled,
+                entry.get("hand_modelled") or "",
+            )
+        )
+    return rows
+
+
 def main() -> int:
     os.makedirs(DOCS, exist_ok=True)
     effects = load(os.path.join(DATA, "mechanics", "effects.json"))["skills"]
@@ -120,6 +170,7 @@ def main() -> int:
         )
         coverage[eid] = {"modelled": modelled, "unmodelled": unmodelled}
 
+    lines.extend(passive_section())
     with open(os.path.join(DOCS, "COVERAGE.md"), "w", encoding="utf-8") as fh:
         fh.write("\n".join(lines) + "\n")
     with open(os.path.join(DATA, "mechanics", "coverage.json"), "w", encoding="utf-8") as fh:

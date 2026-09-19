@@ -392,6 +392,10 @@ pub struct Unit {
     pub status_markers: Vec<String>,
     pub deck: SkillDeck,
     pub dashboard: Vec<DashboardSlot>,
+    /// Passives of this unit (its own combat passives plus the team's support
+    /// passives), evaluated for continuous modifiers and phase triggers.
+    #[serde(default)]
+    pub passives: Vec<crate::effects::SkillMechanics>,
     /// Every Skill of this unit's identity kit, including the defense Skill
     /// (their "[Turn Start] / [Turn End]" clauses resolve for the unit).
     #[serde(default)]

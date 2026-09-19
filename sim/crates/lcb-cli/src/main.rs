@@ -101,7 +101,7 @@ fn inspect(sim: &Simulator) {
     println!("statuses             : {}", sim.library.statuses.len());
     println!("mechanics entries    : {}", sim.mechanics.skills.len());
     println!("--- unknown rules (documented, not guessed) ---");
-    for rule in sim.unknown_rules() {
+    for rule in sim.unknown_rules_owned() {
         println!("  * {rule}");
     }
     let blockers = sim.strict_blockers();
@@ -341,7 +341,7 @@ fn serve(sim: &Simulator) {
                 }
                 None => serde_json::json!({"error": "not initialised"}),
             },
-            "unknown_rules" => serde_json::json!({"ok": true, "rules": sim.unknown_rules()}),
+            "unknown_rules" => serde_json::json!({"ok": true, "rules": sim.unknown_rules_owned()}),
             "strict_blockers" => serde_json::json!({"ok": true, "blockers": sim.strict_blockers()}),
             "skill_ids" => {
                 let ids: Vec<SkillId> = sim

@@ -134,6 +134,9 @@ pub struct UseContext {
     /// "(Chance to flip Heads)% chance to inflict The Departed".
     #[serde(default)]
     pub butterfly_split: bool,
+    /// "Take -N% HP damage from attacks" (incoming damage modifier).
+    #[serde(default)]
+    pub damage_taken_bonus: f64,
     /// "[On Target Kill] ... (once per Skill)" bookkeeping.
     #[serde(default)]
     pub on_kill_done: bool,
@@ -564,6 +567,11 @@ fn condition_holds(
     }
     if let Some(required) = condition.self_sp_at_least {
         if actor.sanity.sp() < required {
+            return false;
+        }
+    }
+    if let Some(limit) = condition.self_sp_below {
+        if actor.sanity.sp() >= limit {
             return false;
         }
     }
@@ -1240,6 +1248,22 @@ pub fn apply_effects(
             }
             "reuse_on_kill" => {
                 use_ctx.reuse_on_kill = true;
+            }
+            "damage_taken_percent" => {
+                // "Take -(SP / 2)% HP damage from attacks (max 20%)": the value
+                // is negative for a reduction and is capped by `max`.
+                let percent = effect.value.unwrap_or(0);
+                let max = effect.max.unwrap_or(i32::MAX);
+                use_ctx.damage_taken_bonus += (percent.clamp(-max, max)) as f64 / 100.0;
+            }
+            "damage_percent_from_negative_sp" => {
+                // "Deal +(-SP/2)% damage with Base Skills (max 20%)".
+                let per = effect.per.unwrap_or(1).max(1);
+                let step = effect.step.unwrap_or(1);
+                let max = effect.max.unwrap_or(i32::MAX);
+                let sp = state.units[ctx.actor_index].sanity.sp();
+                let deficit = (-sp).max(0);
+                use_ctx.damage_bonus += ((deficit / per) * step).min(max) as f64 / 100.0;
             }
             "damage_percent_missing_hp" => {
                 // "Deal more damage based on missing HP on self (max 15%)".
@@ -2518,6 +2542,7 @@ fn compute_hit_damage(
         dynamic_modifier: use_.ctx.damage_bonus
             + state.units[attacker_index].outgoing_damage_modifier()
             + incoming_damage_modifier(defender, sin_name)
+            + passive_modifiers(state, defender_index, Some(attacker_index)).1
             + if crit {
                 time_passives::crit_damage_bonus(state, attacker_index) + use_.ctx.crit_damage_bonus
             } else {
@@ -2733,6 +2758,8 @@ fn apply_hit(
         dynamic_modifier: use_.ctx.damage_bonus
             + state.units[attacker_index].outgoing_damage_modifier()
             + incoming_damage_modifier(defender, sin_name)
+            + passive_modifiers(state, defender_index, Some(attacker_index)).1
+            + use_.ctx.damage_taken_bonus
             + if crit {
                 time_passives::crit_damage_bonus(state, attacker_index) + use_.ctx.crit_damage_bonus
             } else {
@@ -2750,6 +2777,36 @@ fn apply_hit(
     if heads {
         // "[Heads Hit]" clauses resolve on top of the Coin's On Hit effects.
         effects.extend_from_slice(use_.mechanics.heads_hit(coin_index as u32 + 1));
+    }
+    // Passives that trigger on a Tails Hit ("On Tails Hit, heal 5 SP").
+    if !heads {
+        let tails: Vec<Vec<Effect>> = state.units[attacker_index]
+            .passives
+            .iter()
+            .map(|passive| passive.tails_hit.clone())
+            .collect();
+        for list in tails {
+            effects.extend(list);
+        }
+    }
+    // Passives that ride on a Base Attack hit ("inflict 1 [SheutFracture] On Hit
+    // with a Base Attack Skill").
+    if !use_.is_defense {
+        let riding: Vec<Vec<Effect>> = state.units[attacker_index]
+            .passives
+            .iter()
+            .map(|passive| {
+                passive
+                    .passive
+                    .iter()
+                    .filter(|effect| effect.on_base_attack_hit)
+                    .cloned()
+                    .collect::<Vec<Effect>>()
+            })
+            .collect();
+        for list in riding {
+            effects.extend(list);
+        }
     }
     let mut notes = Vec::new();
     {
@@ -3038,6 +3095,91 @@ pub fn check_stagger(state: &mut BattleState, unit_index: usize) -> bool {
 // turn loop
 // --------------------------------------------------------------------------- //
 
+/// Evaluate the passive clauses of one phase for one unit.
+fn apply_passive_phase(
+    state: &mut BattleState,
+    index: usize,
+    target: Option<usize>,
+    phase: fn(&SkillMechanics) -> &[Effect],
+) {
+    let lists: Vec<Vec<Effect>> = state.units[index]
+        .passives
+        .iter()
+        .map(|passive| phase(passive).to_vec())
+        .collect();
+    for list in lists {
+        if list.is_empty() {
+            continue;
+        }
+        let mut notes = Vec::new();
+        let mut ctx = EffectContext {
+            actor_index: index,
+            target_index: target,
+            clash_count: 0,
+            clash_lost: false,
+            slot: 0,
+            mechanics_note: &mut notes,
+        };
+        let mut use_ctx = UseContext::default();
+        apply_effects(state, &list, &mut ctx, &mut use_ctx);
+        let shield = use_ctx.shield_gain;
+        if shield > 0 {
+            state.units[index].shield += shield;
+        }
+        for note in notes {
+            state.warnings.push(note);
+        }
+    }
+}
+
+/// Continuous passive modifiers of a unit: damage it deals and damage it takes.
+/// Only the modifier kinds are read here (a passive's grants are applied by the
+/// phase triggers), so this stays a pure query.
+fn passive_modifiers(state: &BattleState, index: usize, target: Option<usize>) -> (f64, f64) {
+    let actor = &state.units[index];
+    let target_unit = target.map(|i| &state.units[i]);
+    let mut outgoing = 0.0;
+    let mut incoming = 0.0;
+    for passive in &actor.passives {
+        for effect in &passive.passive {
+            let holds = match &effect.condition {
+                Some(cond) => condition_holds(cond, actor, target_unit, 0, 0),
+                None => true,
+            };
+            if !holds {
+                continue;
+            }
+            match effect.kind.as_str() {
+                "damage_percent" => {
+                    let measured = measured_from_condition(effect, actor, target_unit);
+                    outgoing += scaled(effect, measured) as f64 / 100.0;
+                }
+                "damage_taken_percent" => {
+                    // Either a fixed percentage or one that scales with SP
+                    // ("Take -(SP / 2)% HP damage from attacks (max 20%)").
+                    let max = effect.max.unwrap_or(i32::MAX);
+                    let percent = match effect.per {
+                        Some(per) if per > 0 => {
+                            -(((actor.sanity.sp().max(0)) / per) * effect.step.unwrap_or(1))
+                        }
+                        _ => effect.value.unwrap_or(0),
+                    };
+                    incoming += percent.clamp(-max, max) as f64 / 100.0;
+                }
+                "damage_percent_from_negative_sp" => {
+                    let per = effect.per.unwrap_or(1).max(1);
+                    let step = effect.step.unwrap_or(1);
+                    let max = effect.max.unwrap_or(i32::MAX);
+                    let deficit = (-actor.sanity.sp()).max(0);
+                    outgoing += ((deficit / per) * step).min(max) as f64 / 100.0;
+                }
+                _ => {}
+            }
+        }
+    }
+    (outgoing, incoming)
+}
+
 /// "[Turn Start]" / "[Turn End]" clauses of the Skills equipped on a unit's
 /// Dashboard (`Skill Slot`), applied once per distinct Skill.
 fn apply_dashboard_phase(state: &mut BattleState, mechanics: &MechanicsBook, start: bool) {
@@ -3240,6 +3382,27 @@ pub fn begin_turn(
     // Equipped Skills carry their own "[Turn Start]" clauses; they resolve for
     // the Skill Slots the unit has on the Dashboard.
     apply_dashboard_phase(state, mechanics, true);
+    // Passives: "[Combat Start]" then "[Turn Start]" clauses, per unit.
+    for index in 0..state.units.len() {
+        if !state.units[index].alive {
+            continue;
+        }
+        let target = state
+            .units
+            .iter()
+            .position(|u| u.alive && u.kind.is_sinner() != state.units[index].kind.is_sinner());
+        apply_passive_phase(state, index, target, |m| &m.combat_start);
+    }
+    for index in 0..state.units.len() {
+        if !state.units[index].alive {
+            continue;
+        }
+        let target = state
+            .units
+            .iter()
+            .position(|u| u.alive && u.kind.is_sinner() != state.units[index].kind.is_sinner());
+        apply_passive_phase(state, index, target, |m| &m.turn_start);
+    }
     // Enemy Skill Slots.  A unit with a documented action pattern (the Imago)
     // uses one action per listed slot for the current turn of its cycle.
     for index in 0..state.units.len() {
@@ -3453,6 +3616,12 @@ pub fn end_turn(state: &mut BattleState, mechanics: &MechanicsBook) {
     state.phase = Phase::TurnEnd;
     // Equipped Skills' "[Turn End]" clauses (Rodion's Tear-sharpened upkeep).
     apply_dashboard_phase(state, mechanics, false);
+    for index in 0..state.units.len() {
+        if !state.units[index].alive {
+            continue;
+        }
+        apply_passive_phase(state, index, None, |m| &m.turn_end);
+    }
     // "[Attack End] For N turns, lose X SP at Combat End".
     for unit in state.units.iter_mut() {
         if unit.combat_end_sp_loss.is_empty() {
@@ -4093,6 +4262,12 @@ fn prepare_use(
         use_.ctx.base_power_bonus += bonus;
     }
     use_.attack_weight = (use_.attack_weight as i32 + use_.ctx.attack_weight_bonus).max(1) as u32;
+    // Continuous passive modifiers: "Deal +5% damage for every [Protection] on
+    // self (max 15%)", "Deal +(-SP/2)% damage with Base Skills (max 20%)".
+    {
+        let (outgoing, _) = passive_modifiers(state, unit_index, target_index);
+        use_.ctx.damage_bonus += outgoing;
+    }
     use_.ctx.sin = use_.sin;
     // `Plus Coin Boost` / `Minus Coin Drop` are read when the skill is used.
     {
@@ -4299,6 +4474,15 @@ pub fn apply_effects_for_test(
         mechanics_note: notes,
     };
     apply_effects(state, effects, &mut ctx, use_ctx);
+}
+
+#[doc(hidden)]
+pub fn passive_modifiers_for_test(
+    state: &BattleState,
+    index: usize,
+    target: Option<usize>,
+) -> (f64, f64) {
+    passive_modifiers(state, index, target)
 }
 
 #[doc(hidden)]

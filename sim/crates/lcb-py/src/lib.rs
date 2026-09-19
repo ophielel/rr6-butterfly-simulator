@@ -119,7 +119,12 @@ impl PySimulator {
 
     /// Rules known to be unimplemented / unsourced in this build.
     fn unknown_rules(&self) -> Vec<String> {
-        self.sim.unknown_rules().iter().map(|s| s.to_string()).collect()
+        self.sim.unknown_rules_owned()
+    }
+
+    /// Passive clauses this project has not modelled yet.
+    fn passive_gaps(&self) -> Vec<String> {
+        self.sim.passive_gaps().iter().map(|s| s.to_string()).collect()
     }
 
     fn strict_blockers(&self) -> Vec<String> {

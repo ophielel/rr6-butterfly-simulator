@@ -1554,6 +1554,107 @@ fn dashboard_skills_run_their_turn_end_clauses() {
     assert_eq!(state.units[0].sanity.sp(), -15, "15 SP paid for the Stack");
 }
 
+/// Golden replay of the Section 5 encounter: the whole team attacks the Imago
+/// for three turns with a fixed Coin sequence, so the outcome is a pure
+/// function of the rules.  Every draw (deck, Coin, ammo split, critical) comes
+/// from `BattleState::flip`/`rng`, which is what makes the replay stable.
+#[test]
+fn section5_golden_replay_is_deterministic() {
+    fn run() -> (Vec<i32>, u64) {
+        let sim = sim();
+        let mut state = sim
+            .new_encounter(&fixed::TEAM, &[fixed::BOSS_IMAGO], 17, BattleConfig::default())
+            .unwrap();
+        // A fixed Coin sequence: Heads, Tails, Heads, ... (no client RNG).
+        state.preset_flips = (0..8192).map(|i| i % 3 != 1).collect();
+        state.flip_cursor = 0;
+        let enemy = state
+            .units
+            .iter()
+            .position(|u| !u.kind.is_sinner())
+            .unwrap();
+        let mut enemy_hp = Vec::new();
+        for _ in 0..3 {
+            // Deterministic policy: every Sinner uses the first legal action of
+            // the first Slot that still needs one.
+            let mut used: Vec<(lcb_core::ids::UnitId, u32)> = Vec::new();
+            for action in sim.legal_actions(&state) {
+                if let Action::Assign { actor, slot, skill, target } = action {
+                    if used.contains(&(actor.clone(), slot)) {
+                        continue;
+                    }
+                    used.push((actor.clone(), slot));
+                    sim.submit(&mut state, Action::Assign { actor, slot, skill, target })
+                        .unwrap();
+                }
+            }
+            sim.step_turn(&mut state).unwrap();
+            enemy_hp.push(state.units[enemy].hp);
+        }
+        (enemy_hp, sim.state_hash(&state))
+    }
+    let (first_hp, first_hash) = run();
+    let (second_hp, second_hash) = run();
+    assert_eq!(first_hp, second_hp, "same inputs, same HP");
+    assert_eq!(first_hash, second_hash, "same inputs, same state hash");
+    assert!(
+        first_hp.windows(2).all(|w| w[1] < w[0]),
+        "the team deals damage every turn: {first_hp:?}"
+    );
+    // Recorded baseline (update only with a sourced rule change).
+    // Recorded baseline (Section 5, seed 17, preset Coin flips, "first legal
+    // action per Slot").  Update only together with a sourced rule change, and
+    // name the source in the commit message.  Last updated when the identities'
+    // passives started applying (in-game `Passives.json`).
+    assert_eq!(first_hp, vec![25483, 25248, 24682], "Imago HP after turns 1-3");
+    assert_eq!(
+        format!("{first_hash:016x}"),
+        "e795aa40a7c38df6",
+        "recorded state hash"
+    );
+}
+
+/// Passives: a Combat Start grant (Gregor's Lamp), a continuous damage
+/// modifier (Outis: +5% per [Protection] on self, max 15%) and a reduction
+/// (Rodion in [Blessing]: take -(SP/2)% HP damage, max 20%).
+/// Source: in-game `Passives.json` (1121402 Dazzling Lamp, 1111401 Vanguard
+/// Team, 1091311 Magical Girl of Justice / Knight of Despair).
+#[test]
+fn passives_grant_and_modify() {
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&["11214", "11114", "10913"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    // Every unit carries its own Combat Passives.
+    assert!(!state.units[0].passives.is_empty(), "Gregor has passives");
+    // Combat Start: "Gain 1 [LanternGregBigBird]".
+    lcb_core::battle::begin_turn(
+        &mut state,
+        &sim.library,
+        &sim.mechanics,
+        &sim.scripts,
+    );
+    assert_eq!(
+        state.units[0].statuses.stack("Lamp"),
+        1,
+        "Gregor gained 1 [Lamp] at Combat Start"
+    );
+    // Outis: +5% damage per [Protection] Count, capped at 15%.
+    state.units[1].statuses.remove("Protection");
+    state.units[1].statuses.add_count("Protection", 2);
+    let (outgoing, _) = lcb_core::battle::passive_modifiers_for_test(&state, 1, Some(3));
+    assert!((outgoing - 0.10).abs() < 1e-9, "2 Protection = +10% damage: {outgoing}");
+    state.units[1].statuses.add_count("Protection", 10);
+    let (capped, _) = lcb_core::battle::passive_modifiers_for_test(&state, 1, Some(3));
+    assert!((capped - 0.15).abs() < 1e-9, "the bonus caps at 15%");
+    // Rodion in [Blessing] (gained at 0+ SP) takes -(SP/2)% HP damage, so at
+    // +20 SP that is -10%.
+    state.units[2].statuses.add_stack("Blessing", 1);
+    state.units[2].sanity = Sanity::Sane { sp: 20 };
+    let (_, taken) = lcb_core::battle::passive_modifiers_for_test(&state, 2, Some(3));
+    assert!((taken + 0.10).abs() < 1e-9, "takes 10% less damage: {taken}");
+}
+
 /// A full turn keeps the battle in a consistent, serialisable state.
 #[test]
 fn turn_advances_phase_and_logs() {

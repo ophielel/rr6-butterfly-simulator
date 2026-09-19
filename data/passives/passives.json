@@ -1,0 +1,1445 @@
+{
+ "passives": {
+  "1011001": {
+   "desc": "When this unit gains [BulletLament], gain 2 [Agility] next turn (once per turn)",
+   "desc_zh": "When this unit gains [BulletLament], gain 2 [Agility] next turn (once per turn)",
+   "effects": {
+    "attack_end": [],
+    "combat_start": [],
+    "passive": [],
+    "turn_end": [],
+    "turn_start": [],
+    "unmodeled": [
+     "When this unit gains [BulletLament], gain 2 [Agility] next turn (once per turn)"
+    ]
+   },
+   "hand_modelled": null,
+   "id": "1011001",
+   "kind": "combat",
+   "name": "Fire.IShallFire.",
+   "name_zh": "Fire.IShallFire.",
+   "owner": "10110",
+   "sources": [
+    {
+     "id": "1011001",
+     "kind": "game_text",
+     "language": "en",
+     "verification": "official"
+    }
+   ]
+  },
+  "1011002": {
+   "desc": "Begin encounters with 10 of each of [BulletLament]\n\nWhen spending [BulletLament], select randomly between The Living(Potency) and The Departed(Count) for each [BulletLament] value\n\nWhen inflicting [SinkingWhite], inflict the same amount of The Living and The Departed as they were consumed. Example below:\n- If this unit spent X Living, inflict X Living\n- If this unit spent Y Departed, inflict Y Departed\n\nIf this unit runs out of [BulletLament] midway through Skill use, cancel all subsequent Coins and [ReloadLament]\n\nWhen [ReloadLament]ing, or when gaining [BulletLament], gain either The Living or The Departed based on this unit's current SP\n- At 0 or higher SP: 30% chance to gain The Living; 70% chance to gain The Departed\n- At less than 0 SP: 70% chance to gain The Living; 30% chance to gain The Departed\n- The probabilities are calculated separately for each ammo spent",
+   "desc_zh": "Begin encounters with 10 of each of [BulletLament]\n\nWhen spending [BulletLament], select randomly between The Living(Potency) and The Departed(Count) for each [BulletLament] value\n\nWhen inflicting [SinkingWhite], inflict the same amount of The Living and The Departed as they were consumed. Example below:\n- If this unit spent X Living, inflict X Living\n- If this unit spent Y Departed, inflict Y Departed\n\nIf this unit runs out of [BulletLament] midway through Skill use, cancel all subsequent Coins and [ReloadLament]\n\nWhen [ReloadLament]ing, or when gaining [BulletLament], gain either The Living or The Departed based on this unit's current SP\n- At 0 or higher SP: 30% chance to gain The Living; 70% chance to gain The Departed\n- At less than 0 SP: 70% chance to gain The Living; 30% chance to gain The Departed\n- The probabilities are calculated separately for each ammo spent",
+   "effects": {
+    "attack_end": [],
+    "combat_start": [],
+    "passive": [],
+    "turn_end": [],
+    "turn_start": [],
+    "unmodeled": [
+     "At 0 or higher SP: 30% chance to gain The Living; 70% chance to gain The Departed",
+     "At less than 0 SP: 70% chance to gain The Living; 30% chance to gain The Departed",
+     "If this unit runs out of [BulletLament] midway through Skill use, cancel all subsequent Coins and [ReloadLament]",
+     "If this unit spent X Living, inflict X Living",
+     "If this unit spent Y Departed, inflict Y Departed",
+     "The probabilities are calculated separately for each ammo spent",
+     "When [ReloadLament]ing, or when gaining [BulletLament], gain either The Living or The Departed based on this unit's current SP",
+     "When inflicting [SinkingWhite], inflict the same amount of The Living and The Departed as they were consumed. Example below:",
+     "When spending [BulletLament], select randomly between The Living(Potency) and The Departed(Count) for each [BulletLament] value"
+    ]
+   },
+   "hand_modelled": null,
+   "id": "1011002",
+   "kind": "combat",
+   "name": "ISeeTheDyingButterfly.",
+   "name_zh": "ISeeTheDyingButterfly.",
+   "owner": "10110",
+   "sources": [
+    {
+     "id": "1011002",
+     "kind": "game_text",
+     "language": "en",
+     "verification": "official"
+    }
+   ]
+  },
+  "1011011": {
+   "desc": "Attack End: If this unit killed the target with its Skill, [ReloadLament]\nWhen this unit gains [BulletLament], gain 2 [Agility] next turn (once per turn)",
+   "desc_zh": "Attack End: If this unit killed the target with its Skill, [ReloadLament]\nWhen this unit gains [BulletLament], gain 2 [Agility] next turn (once per turn)",
+   "effects": {
+    "attack_end": [],
+    "combat_start": [],
+    "passive": [],
+    "turn_end": [],
+    "turn_start": [],
+    "unmodeled": [
+     "When this unit gains [BulletLament], gain 2 [Agility] next turn (once per turn)",
+     "[Attack End] If this unit killed the target with its Skill, [ReloadLament]"
+    ]
+   },
+   "hand_modelled": null,
+   "id": "1011011",
+   "kind": "combat",
+   "name": "Fire.IShallFire.",
+   "name_zh": "Fire.IShallFire.",
+   "owner": "10110",
+   "sources": [
+    {
+     "id": "1011011",
+     "kind": "game_text",
+     "language": "en",
+     "verification": "official"
+    }
+   ]
+  },
+  "1011021": {
+   "desc": "When an ally hits with a Skill, consume 2 [Sinking] on the target to inflict them with 1 [SinkingWhite] (3 times per turn)",
+   "desc_zh": "When an ally hits with a Skill, consume 2 [Sinking] on the target to inflict them with 1 [SinkingWhite] (3 times per turn)",
+   "effects": {
+    "attack_end": [],
+    "combat_start": [],
+    "passive": [],
+    "turn_end": [],
+    "turn_start": [],
+    "unmodeled": [
+     "When an ally hits with a Skill, consume 2 [Sinking] on the target to inflict them with 1 [SinkingWhite] (3 times per turn)"
+    ]
+   },
+   "hand_modelled": null,
+   "id": "1011021",
+   "kind": "support",
+   "name": "Hand of Salvation",
+   "name_zh": "Hand of Salvation",
+   "owner": "10110",
+   "sources": [
+    {
+     "id": "1011021",
+     "kind": "game_text",
+     "language": "en",
+     "verification": "official"
+    }
+   ]
+  },
+  "1041401": {
+   "desc": "Gain 1 [AlriuneEGOWe] if the enemy takes [Sinking] damage\nGain [AlriuneEGOWe] equal to [AlriuneEGOThey] inflicted every time enemies gain [AlriuneEGOThey]\nGain 2 [AlriuneEGOWe] every time Tremor Burst is triggered regardless of the unit",
+   "desc_zh": "Gain 1 [AlriuneEGOWe] if the enemy takes [Sinking] damage\nGain [AlriuneEGOWe] equal to [AlriuneEGOThey] inflicted every time enemies gain [AlriuneEGOThey]\nGain 2 [AlriuneEGOWe] every time Tremor Burst is triggered regardless of the unit",
+   "effects": {
+    "attack_end": [],
+    "combat_start": [],
+    "passive": [],
+    "turn_end": [],
+    "turn_start": [],
+    "unmodeled": [
+     "Gain 1 [AlriuneEGOWe] if the enemy takes [Sinking] damage",
+     "Gain 2 [AlriuneEGOWe] every time Tremor Burst is triggered regardless of the unit",
+     "Gain [AlriuneEGOWe] equal to [AlriuneEGOThey] inflicted every time enemies gain [AlriuneEGOThey]"
+    ]
+   },
+   "hand_modelled": null,
+   "id": "1041401",
+   "kind": "combat",
+   "name": "Unwithering Flower",
+   "name_zh": "Unwithering Flower",
+   "owner": "10414",
+   "sources": [
+    {
+     "id": "1041401",
+     "kind": "game_text",
+     "language": "en",
+     "verification": "official"
+    }
+   ]
+  },
+  "1041402": {
+   "desc": "Always Active: Begin Encounters with 6 [BulletGodok]\n\nAt 1+ [BulletGodok], if the enemy has less than -40 SP or is Staggered at this unit or an ally's Attack End, use 'Bang. Bang.' as an Unopposed Attack (once per turn)\n\nAttack End: At 0 [BulletGodok], use 'Stories that Never Cease' as an Unopposed Attack against the target and consume 10 SP to [FullReload]",
+   "desc_zh": "Always Active: Begin Encounters with 6 [BulletGodok]\n\nAt 1+ [BulletGodok], if the enemy has less than -40 SP or is Staggered at this unit or an ally's Attack End, use 'Bang. Bang.' as an Unopposed Attack (once per turn)\n\nAttack End: At 0 [BulletGodok], use 'Stories that Never Cease' as an Unopposed Attack against the target and consume 10 SP to [FullReload]",
+   "effects": {
+    "attack_end": [],
+    "combat_start": [],
+    "passive": [],
+    "turn_end": [],
+    "turn_start": [],
+    "unmodeled": [
+     "At 1+ [BulletGodok], if the enemy has less than -40 SP or is Staggered at this unit or an ally's Attack End, use 'Bang. Bang.' as an Unopposed Attack (once per turn)",
+     "[Always Active] Begin Encounters with 6 [BulletGodok]",
+     "[Attack End] At 0 [BulletGodok], use 'Stories that Never Cease' as an Unopposed Attack against the target and consume 10 SP to [FullReload]"
+    ]
+   },
+   "hand_modelled": null,
+   "id": "1041402",
+   "kind": "combat",
+   "name": "A Void that Cannot be Filled",
+   "name_zh": "A Void that Cannot be Filled",
+   "owner": "10414",
+   "sources": [
+    {
+     "id": "1041402",
+     "kind": "game_text",
+     "language": "en",
+     "verification": "official"
+    }
+   ]
+  },
+  "1041411": {
+   "desc": "Gain 1 [AlriuneEGOWe] if the enemy takes [Sinking] damage\nGain [AlriuneEGOWe] equal to [AlriuneEGOThey] inflicted every time enemies gain [AlriuneEGOThey]\nGain 2 [AlriuneEGOWe] every time Tremor Burst is triggered regardless of the unit\n\nAttack Skill End: At 30+ [AlriuneEGOWe], use 'Magnificent End' against the target that has the highest [AlriuneEGOThey] Stack\n\nDeal +([AlriuneEGOThey] on the target)% damage against Staggered targets\n\nIf this unit lost 10%+ HP this turn, heal 3% HP and 10 SP (once per turn)",
+   "desc_zh": "Gain 1 [AlriuneEGOWe] if the enemy takes [Sinking] damage\nGain [AlriuneEGOWe] equal to [AlriuneEGOThey] inflicted every time enemies gain [AlriuneEGOThey]\nGain 2 [AlriuneEGOWe] every time Tremor Burst is triggered regardless of the unit\n\nAttack Skill End: At 30+ [AlriuneEGOWe], use 'Magnificent End' against the target that has the highest [AlriuneEGOThey] Stack\n\nDeal +([AlriuneEGOThey] on the target)% damage against Staggered targets\n\nIf this unit lost 10%+ HP this turn, heal 3% HP and 10 SP (once per turn)",
+   "effects": {
+    "attack_end": [],
+    "combat_start": [],
+    "passive": [],
+    "turn_end": [],
+    "turn_start": [],
+    "unmodeled": [
+     "Deal +([AlriuneEGOThey] on the target)% damage against Staggered targets",
+     "Gain 1 [AlriuneEGOWe] if the enemy takes [Sinking] damage",
+     "Gain 2 [AlriuneEGOWe] every time Tremor Burst is triggered regardless of the unit",
+     "Gain [AlriuneEGOWe] equal to [AlriuneEGOThey] inflicted every time enemies gain [AlriuneEGOThey]",
+     "If this unit lost 10%+ HP this turn, heal 3% HP and 10 SP (once per turn)",
+     "[Attack Skill End] At 30+ [AlriuneEGOWe], use 'Magnificent End' against the target that has the highest [AlriuneEGOThey] Stack"
+    ]
+   },
+   "hand_modelled": null,
+   "id": "1041411",
+   "kind": "combat",
+   "name": "Unwithering Flower",
+   "name_zh": "Unwithering Flower",
+   "owner": "10414",
+   "sources": [
+    {
+     "id": "1041411",
+     "kind": "game_text",
+     "language": "en",
+     "verification": "official"
+    }
+   ]
+  },
+  "1041421": {
+   "desc": "When the ally with the fastest Speed hits an enemy using a Skill that inflicts [Sinking] Potency, Count, or 'Unique Sinking', inflict 2 [Vibration] and trigger [VibrationExplosion]; then, reduce target's [Vibration] Count by 1 (once per turn)",
+   "desc_zh": "When the ally with the fastest Speed hits an enemy using a Skill that inflicts [Sinking] Potency, Count, or 'Unique Sinking', inflict 2 [Vibration] and trigger [VibrationExplosion]; then, reduce target's [Vibration] Count by 1 (once per turn)",
+   "effects": {
+    "attack_end": [],
+    "combat_start": [],
+    "passive": [],
+    "turn_end": [],
+    "turn_start": [],
+    "unmodeled": [
+     "When the ally with the fastest Speed hits an enemy using a Skill that inflicts [Sinking] Potency, Count, or 'Unique Sinking', inflict 2 [Vibration] and trigger [VibrationExplosion]; then, reduce target's [Vibration] Count by 1 (once per turn)"
+    ]
+   },
+   "hand_modelled": null,
+   "id": "1041421",
+   "kind": "support",
+   "name": "Spring's Genesis",
+   "name_zh": "Spring's Genesis",
+   "owner": "10414",
+   "sources": [
+    {
+     "id": "1041421",
+     "kind": "game_text",
+     "language": "en",
+     "verification": "official"
+    }
+   ]
+  },
+  "1081301": {
+   "desc": "On Tails Hit, heal 5 SP (once per turn)\nDeal +10% damage against targets in either Low Morale or Panic states",
+   "desc_zh": "On Tails Hit, heal 5 SP (once per turn)\nDeal +10% damage against targets in either Low Morale or Panic states",
+   "effects": {
+    "attack_end": [],
+    "combat_start": [],
+    "hand_modelled": "extract_passives.HAND_EFFECTS",
+    "passive": [],
+    "tails_hit": [
+     {
+      "kind": "sp_heal",
+      "per_turn": 1,
+      "value": 5
+     }
+    ],
+    "turn_end": [],
+    "turn_start": [],
+    "unmodeled": []
+   },
+   "hand_modelled": null,
+   "id": "1081301",
+   "kind": "combat",
+   "name": "Stacking the Deck",
+   "name_zh": "Stacking the Deck",
+   "owner": "10813",
+   "sources": [
+    {
+     "id": "1081301",
+     "kind": "game_text",
+     "language": "en",
+     "verification": "official"
+    }
+   ]
+  },
+  "1081302": {
+   "desc": "Turn Start: if this unit does not have [HanafudaCombo], gain 0 [HanafudaCombo] Potency and 3 [HanafudaCombo] Count\n\nTurn Start: if this unit does not have a Suit in Hand, gain a random Suit([HanafudaOne], [HanafudaTwo], or [HanafudaThree]) that corresponds to a Base Attack Skill on this unit's leftmost Skill Slot\n\nCombat Start: when this unit uses a Base Attack Skill or an E.G.O Skill equipped on its leftmost Skill Slot, activate the following (once per turn):\n- Next turn, convert the Hand on self to the one corresponding to the used Skill's Affinity\n- If the Skill was either \"Sakura-sen\" or an E.G.O Skill, gain 1 [HanafudaCombo] Potency\n- If the Skill's Affinity matches the Affinity on the current Hand's description(thus \"forming a Hand\"), activate the following:\n  · Gain 1 [HanafudaCombo] Potency\n  · If this unit formed a Hand last turn and this turn in succession, gain 1 [HanafudaCombo] Potency\n  · On Hit with the said Skill: trigger [VibrationExplosion]; then, reduce target's [Vibration] Count by 1\n  · 25% chance to gain 1 E.G.O Resource corresponding to the Skill's Affinity\n- At the Skill's Skill End: at 5 [HanafudaCombo] Potency, or at 0 [HanafudaCombo] Count, use \"Kōzan\"",
+   "desc_zh": "Turn Start: if this unit does not have [HanafudaCombo], gain 0 [HanafudaCombo] Potency and 3 [HanafudaCombo] Count\n\nTurn Start: if this unit does not have a Suit in Hand, gain a random Suit([HanafudaOne], [HanafudaTwo], or [HanafudaThree]) that corresponds to a Base Attack Skill on this unit's leftmost Skill Slot\n\nCombat Start: when this unit uses a Base Attack Skill or an E.G.O Skill equipped on its leftmost Skill Slot, activate the following (once per turn):\n- Next turn, convert the Hand on self to the one corresponding to the used Skill's Affinity\n- If the Skill was either \"Sakura-sen\" or an E.G.O Skill, gain 1 [HanafudaCombo] Potency\n- If the Skill's Affinity matches the Affinity on the current Hand's description(thus \"forming a Hand\"), activate the following:\n  · Gain 1 [HanafudaCombo] Potency\n  · If this unit formed a Hand last turn and this turn in succession, gain 1 [HanafudaCombo] Potency\n  · On Hit with the said Skill: trigger [VibrationExplosion]; then, reduce target's [Vibration] Count by 1\n  · 25% chance to gain 1 E.G.O Resource corresponding to the Skill's Affinity\n- At the Skill's Skill End: at 5 [HanafudaCombo] Potency, or at 0 [HanafudaCombo] Count, use \"Kōzan\"",
+   "effects": {
+    "attack_end": [],
+    "combat_start": [],
+    "hand_modelled": "extract_passives.HAND_EFFECTS",
+    "passive": [],
+    "turn_end": [],
+    "turn_start": [
+     {
+      "component": "stack",
+      "condition": {
+       "lacks_status": [
+        "Bright -光-"
+       ],
+       "source": "self"
+      },
+      "count": 3,
+      "kind": "gain",
+      "potency": 0,
+      "status": "Bright -光-"
+     },
+     {
+      "condition": {
+       "lacks_status": [
+        "HanafudaOne",
+        "HanafudaTwo",
+        "HanafudaThree"
+       ],
+       "source": "self"
+      },
+      "kind": "suit_convert"
+     }
+    ],
+    "unmodeled": [
+     "25% chance to gain 1 E.G.O Resource corresponding to the Skill's Affinity",
+     "At the Skill's Skill End: at 5 [HanafudaCombo] Potency, or at 0 [HanafudaCombo] Count, use \"Kōzan\"",
+     "Gain 1 [HanafudaCombo] Potency",
+     "If the Skill was either \"Sakura-sen\" or an E.G.O Skill, gain 1 [HanafudaCombo] Potency",
+     "If the Skill's Affinity matches the Affinity on the current Hand's description(thus \"forming a Hand\"), activate the following:",
+     "If this unit formed a Hand last turn and this turn in succession, gain 1 [HanafudaCombo] Potency",
+     "Next turn, convert the Hand on self to the one corresponding to the used Skill's Affinity",
+     "On Hit with the said Skill: trigger [VibrationExplosion]; then, reduce target's [Vibration] Count by 1",
+     "[Combat Start] when this unit uses a Base Attack Skill or an E.G.O Skill equipped on its leftmost Skill Slot, activate the following (once per turn):",
+     "[Turn Start] if this unit does not have [HanafudaCombo], gain 0 [HanafudaCombo] Potency and 3 [HanafudaCombo] Count",
+     "[Turn Start] if this unit does not have a Suit in Hand, gain a random Suit([HanafudaOne], [HanafudaTwo], or [HanafudaThree]) that corresponds to a Base Attack Skill on this unit's leftmost Skill Slot"
+    ]
+   },
+   "hand_modelled": null,
+   "id": "1081302",
+   "kind": "combat",
+   "name": "Koi-Koi [こいこい]",
+   "name_zh": "Koi-Koi [こいこい]",
+   "owner": "10813",
+   "sources": [
+    {
+     "id": "1081302",
+     "kind": "game_text",
+     "language": "en",
+     "verification": "official"
+    }
+   ]
+  },
+  "1081321": {
+   "desc": "Combat Start: when 1 ally that has the least SP uses a Base Attack Skill to Heads Hit, it heals 5 SP (2 times per turn; excluding allies at -40 or lower SP)",
+   "desc_zh": "Combat Start: when 1 ally that has the least SP uses a Base Attack Skill to Heads Hit, it heals 5 SP (2 times per turn; excluding allies at -40 or lower SP)",
+   "effects": {
+    "attack_end": [],
+    "combat_start": [],
+    "passive": [],
+    "turn_end": [],
+    "turn_start": [],
+    "unmodeled": [
+     "[Combat Start] when 1 ally that has the least SP uses a Base Attack Skill to Heads Hit, it heals 5 SP (2 times per turn; excluding allies at -40 or lower SP)"
+    ]
+   },
+   "hand_modelled": null,
+   "id": "1081321",
+   "kind": "support",
+   "name": "Relay",
+   "name_zh": "Relay",
+   "owner": "10813",
+   "sources": [
+    {
+     "id": "1081321",
+     "kind": "game_text",
+     "language": "en",
+     "verification": "official"
+    }
+   ]
+  },
+  "1091301": {
+   "desc": "When in [BlessingAlly] state...\n- Take -(SP / 2)% HP damage from attacks (max 20%)\n\nWhen in [DespairAlly] state...\n- Deal +(-SP/2)% damage with Base Skills (max 20%)",
+   "desc_zh": "When in [BlessingAlly] state...\n- Take -(SP / 2)% HP damage from attacks (max 20%)\n\nWhen in [DespairAlly] state...\n- Deal +(-SP/2)% damage with Base Skills (max 20%)",
+   "effects": {
+    "attack_end": [],
+    "combat_start": [],
+    "passive": [],
+    "turn_end": [],
+    "turn_start": [],
+    "unmodeled": [
+     "When in [BlessingAlly] state...",
+     "When in [DespairAlly] state..."
+    ]
+   },
+   "hand_modelled": null,
+   "id": "1091301",
+   "kind": "combat",
+   "name": "Magical Girl of Justice / Knight of Despair",
+   "name_zh": "Magical Girl of Justice / Knight of Despair",
+   "owner": "10913",
+   "sources": [
+    {
+     "id": "1091301",
+     "kind": "game_text",
+     "language": "en",
+     "verification": "official"
+    }
+   ]
+  },
+  "1091302": {
+   "desc": "Turn Start: at 0 or higher SP, gain [BlessingAlly]\n- Uses Plus Coin Skills as Base Skills\n\nTurn Start: at less than 0 SP, gain [DespairAlly]\n- Uses Minus Coin Skills as Base Skills\n\nWhen gaining [Charge] Count, gain [BlackTearsAlly] instead\n- [BlackTearsAlly] is unaffected by [Charge] Potency",
+   "desc_zh": "Turn Start: at 0 or higher SP, gain [BlessingAlly]\n- Uses Plus Coin Skills as Base Skills\n\nTurn Start: at less than 0 SP, gain [DespairAlly]\n- Uses Minus Coin Skills as Base Skills\n\nWhen gaining [Charge] Count, gain [BlackTearsAlly] instead\n- [BlackTearsAlly] is unaffected by [Charge] Potency",
+   "effects": {
+    "attack_end": [],
+    "combat_start": [],
+    "hand_modelled": "extract_passives.HAND_EFFECTS",
+    "passive": [],
+    "turn_end": [],
+    "turn_start": [
+     {
+      "component": "stack",
+      "condition": {
+       "self_sp_at_least": 0
+      },
+      "kind": "gain",
+      "potency": 1,
+      "status": "Blessing"
+     },
+     {
+      "component": "stack",
+      "condition": {
+       "self_sp_below": 0
+      },
+      "kind": "gain",
+      "potency": 1,
+      "status": "Despair"
+     }
+    ],
+    "unmodeled": [
+     "When gaining [Charge] Count, gain [BlackTearsAlly] instead",
+     "[BlackTearsAlly] is unaffected by [Charge] Potency",
+     "[Turn Start] at 0 or higher SP, gain [BlessingAlly]",
+     "[Turn Start] at less than 0 SP, gain [DespairAlly]"
+    ]
+   },
+   "hand_modelled": null,
+   "id": "1091302",
+   "kind": "combat",
+   "name": "The Sword Sharpened with Tears - !ALERT: E.G.O GEAR SYNC THRESHOLD EXCEEDED!",
+   "name_zh": "The Sword Sharpened with Tears - !ALERT: E.G.O GEAR SYNC THRESHOLD EXCEEDED!",
+   "owner": "10913",
+   "sources": [
+    {
+     "id": "1091302",
+     "kind": "game_text",
+     "language": "en",
+     "verification": "official"
+    }
+   ]
+  },
+  "1091303": {
+   "desc": "This unit's SP does not drop below -40 from the following effects:\n- SP loss effects on this unit's Base Skills\n- SP loss effects from allied units' Support Passives\n- SP loss effects from [SwordCutwithTear]\n- SP loss effects from ally death in this unit's 'Base factors decreasing Sanity'\n\nIn an Encounter, when this unit takes damage that brings its SP to -45, maintain this unit's SP at -44 for that turn (once per Encounter)\n(※ This applies only to SP damages; it does not apply to SP changes or SP consuming abilities like using E.G.O Skills)",
+   "desc_zh": "This unit's SP does not drop below -40 from the following effects:\n- SP loss effects on this unit's Base Skills\n- SP loss effects from allied units' Support Passives\n- SP loss effects from [SwordCutwithTear]\n- SP loss effects from ally death in this unit's 'Base factors decreasing Sanity'\n\nIn an Encounter, when this unit takes damage that brings its SP to -45, maintain this unit's SP at -44 for that turn (once per Encounter)\n(※ This applies only to SP damages; it does not apply to SP changes or SP consuming abilities like using E.G.O Skills)",
+   "effects": {
+    "attack_end": [],
+    "combat_start": [],
+    "passive": [],
+    "turn_end": [],
+    "turn_start": [],
+    "unmodeled": [
+     "(※ This applies only to SP damages; it does not apply to SP changes or SP consuming abilities like using E.G.O Skills)",
+     "In an Encounter, when this unit takes damage that brings its SP to -45, maintain this unit's SP at -44 for that turn (once per Encounter)",
+     "SP loss effects from [SwordCutwithTear]",
+     "SP loss effects from allied units' Support Passives",
+     "SP loss effects from ally death in this unit's 'Base factors decreasing Sanity'",
+     "SP loss effects on this unit's Base Skills",
+     "This unit's SP does not drop below -40 from the following effects:"
+    ]
+   },
+   "hand_modelled": null,
+   "id": "1091303",
+   "kind": "combat",
+   "name": "Whispers of the Betrayed Knight",
+   "name_zh": "Whispers of the Betrayed Knight",
+   "owner": "10913",
+   "sources": [
+    {
+     "id": "1091303",
+     "kind": "game_text",
+     "language": "en",
+     "verification": "official"
+    }
+   ]
+  },
+  "1091304": {
+   "desc": "If this unit has [PenetratingSword]: before hitting an enemy with a Base Attack Skill, consume 1 [PenetratingSword] to inflict 1 [Sinking]\n- If this unit has 2+ [PenetratingSword] before this turn's final Base Attack Skill's final Coin hits, consume all of it instead to inflict it as [Sinking]\n\nIf this unit has 3 [SwordCutwithTear]: before hitting an enemy with the final Coin of a Base Attack Skill, consume all [SwordCutwithTear] to inflict 3 [Sinking] and +3 [Sinking] Count, and deal +50% damage with that Coin\n- If this effect activated, reset to 0 SP if this unit has less than 0 SP at Turn End. (when in Panic or 'E.G.O Corrosion', recover) Then, heal 30 SP",
+   "desc_zh": "If this unit has [PenetratingSword]: before hitting an enemy with a Base Attack Skill, consume 1 [PenetratingSword] to inflict 1 [Sinking]\n- If this unit has 2+ [PenetratingSword] before this turn's final Base Attack Skill's final Coin hits, consume all of it instead to inflict it as [Sinking]\n\nIf this unit has 3 [SwordCutwithTear]: before hitting an enemy with the final Coin of a Base Attack Skill, consume all [SwordCutwithTear] to inflict 3 [Sinking] and +3 [Sinking] Count, and deal +50% damage with that Coin\n- If this effect activated, reset to 0 SP if this unit has less than 0 SP at Turn End. (when in Panic or 'E.G.O Corrosion', recover) Then, heal 30 SP",
+   "effects": {
+    "attack_end": [],
+    "combat_start": [],
+    "passive": [],
+    "turn_end": [],
+    "turn_start": [],
+    "unmodeled": [
+     "If this effect activated, reset to 0 SP if this unit has less than 0 SP at Turn End. (when in Panic or 'E.G.O Corrosion', recover) Then, heal 30 SP",
+     "If this unit has 2+ [PenetratingSword] before this turn's final Base Attack Skill's final Coin hits, consume all of it instead to inflict it as [Sinking]",
+     "If this unit has 3 [SwordCutwithTear]: before hitting an enemy with the final Coin of a Base Attack Skill, consume all [SwordCutwithTear] to inflict 3 [Sinking] and +3 [Sinking] Count, and deal +50% damage with that Coin",
+     "If this unit has [PenetratingSword]: before hitting an enemy with a Base Attack Skill, consume 1 [PenetratingSword] to inflict 1 [Sinking]"
+    ]
+   },
+   "hand_modelled": null,
+   "id": "1091304",
+   "kind": "combat",
+   "name": "Break, Tear, and Pierce",
+   "name_zh": "Break, Tear, and Pierce",
+   "owner": "10913",
+   "sources": [
+    {
+     "id": "1091304",
+     "kind": "game_text",
+     "language": "en",
+     "verification": "official"
+    }
+   ]
+  },
+  "1091311": {
+   "desc": "When in [BlessingAlly] state...\n- Take -(SP / 2)% HP damage from attacks (max 20%)\n<style=\"highlight\">- Combat Start: at 3+ [ProtectiveSword], gain 1 [Protection]\n- Combat Start: at 5 [ProtectiveSword], gain 2 [Protection] and 1 [ParryingResultUp] instead</style>\n\nWhen in [DespairAlly] state...\n- Deal +(-SP/2)% damage with Base Skills (max 20%)\n<style=\"highlight\">- Combat Start: at 3+ [PenetratingSword] gain 1 [AttackDmgUp]\n- Combat Start: at 5 [PenetratingSword], gain 2 [AttackDmgUp] and 1 [ResultEnhancement] instead</style>",
+   "desc_zh": "When in [BlessingAlly] state...\n- Take -(SP / 2)% HP damage from attacks (max 20%)\n<style=\"highlight\">- Combat Start: at 3+ [ProtectiveSword], gain 1 [Protection]\n- Combat Start: at 5 [ProtectiveSword], gain 2 [Protection] and 1 [ParryingResultUp] instead</style>\n\nWhen in [DespairAlly] state...\n- Deal +(-SP/2)% damage with Base Skills (max 20%)\n<style=\"highlight\">- Combat Start: at 3+ [PenetratingSword] gain 1 [AttackDmgUp]\n- Combat Start: at 5 [PenetratingSword], gain 2 [AttackDmgUp] and 1 [ResultEnhancement] instead</style>",
+   "effects": {
+    "attack_end": [],
+    "combat_start": [
+     {
+      "condition": {
+       "gte": 3,
+       "source": "self",
+       "status": "Protecting Sword"
+      },
+      "count": 1,
+      "kind": "gain",
+      "status": "Protection"
+     },
+     {
+      "condition": {
+       "gte": 3,
+       "source": "self",
+       "status": "Tear-sharpened"
+      },
+      "count": 1,
+      "kind": "gain",
+      "status": "Attack Power Up"
+     }
+    ],
+    "hand_modelled": "extract_passives.HAND_EFFECTS",
+    "passive": [
+     {
+      "condition": {
+       "gte": 1,
+       "source": "self",
+       "status": "Blessing"
+      },
+      "kind": "damage_taken_percent",
+      "max": 20,
+      "per": 2,
+      "step": 1
+     },
+     {
+      "condition": {
+       "gte": 1,
+       "source": "self",
+       "status": "Despair"
+      },
+      "kind": "damage_percent_from_negative_sp",
+      "max": 20,
+      "per": 2,
+      "step": 1
+     }
+    ],
+    "turn_end": [],
+    "turn_start": [],
+    "unmodeled": [
+     "Combat Start: at 5 [PenetratingSword], gain 2 [AttackDmgUp] and 1 [ResultEnhancement] instead",
+     "Combat Start: at 5 [ProtectiveSword], gain 2 [Protection] and 1 [ParryingResultUp] instead",
+     "When in [BlessingAlly] state...",
+     "When in [DespairAlly] state..."
+    ]
+   },
+   "hand_modelled": null,
+   "id": "1091311",
+   "kind": "combat",
+   "name": "Magical Girl of Justice / Knight of Despair",
+   "name_zh": "Magical Girl of Justice / Knight of Despair",
+   "owner": "10913",
+   "sources": [
+    {
+     "id": "1091311",
+     "kind": "game_text",
+     "language": "en",
+     "verification": "official"
+    }
+   ]
+  },
+  "1091321": {
+   "desc": "Combat Start: applies to the ally with the earliest Deployment order\n\nAt -15 or less SP, +1 Final Power to Minus Coin Skills",
+   "desc_zh": "Combat Start: applies to the ally with the earliest Deployment order\n\nAt -15 or less SP, +1 Final Power to Minus Coin Skills",
+   "effects": {
+    "attack_end": [],
+    "combat_start": [],
+    "passive": [],
+    "turn_end": [],
+    "turn_start": [],
+    "unmodeled": [
+     "At -15 or less SP, +1 Final Power to Minus Coin Skills",
+     "[Combat Start] applies to the ally with the earliest Deployment order"
+    ]
+   },
+   "hand_modelled": null,
+   "id": "1091321",
+   "kind": "support",
+   "name": "For All Those Who Despair...",
+   "name_zh": "For All Those Who Despair...",
+   "owner": "10913",
+   "sources": [
+    {
+     "id": "1091321",
+     "kind": "game_text",
+     "language": "en",
+     "verification": "official"
+    }
+   ]
+  },
+  "1091331": {
+   "desc": "Combat Start: applies to the ally with the earliest Deployment order\n\nAt -15 or less SP, +1 Final Power to Minus Coin Skills\n<style=\"highlight\">At -30 or less SP, +15% damage and +1 Final Power to Minus Coin Skills instead</style>",
+   "desc_zh": "Combat Start: applies to the ally with the earliest Deployment order\n\nAt -15 or less SP, +1 Final Power to Minus Coin Skills\n<style=\"highlight\">At -30 or less SP, +15% damage and +1 Final Power to Minus Coin Skills instead</style>",
+   "effects": {
+    "attack_end": [],
+    "combat_start": [],
+    "passive": [],
+    "turn_end": [],
+    "turn_start": [],
+    "unmodeled": [
+     "At -15 or less SP, +1 Final Power to Minus Coin Skills",
+     "[Combat Start] applies to the ally with the earliest Deployment order"
+    ]
+   },
+   "hand_modelled": null,
+   "id": "1091331",
+   "kind": "support",
+   "name": "For All Those Who Despair...",
+   "name_zh": "For All Those Who Despair...",
+   "owner": "10913",
+   "sources": [
+    {
+     "id": "1091331",
+     "kind": "game_text",
+     "language": "en",
+     "verification": "official"
+    }
+   ]
+  },
+  "1100401": {
+   "desc": "After a successful evade, lower Stagger Threshold by the evade skill’s Power at a (5x Gloom Reson.)% chance.",
+   "desc_zh": "After a successful evade, lower Stagger Threshold by the evade skill’s Power at a (5x Gloom Reson.)% chance.",
+   "effects": {
+    "attack_end": [],
+    "combat_start": [],
+    "passive": [],
+    "turn_end": [],
+    "turn_start": [],
+    "unmodeled": [
+     "After a successful evade, lower Stagger Threshold by the evade skill’s Power at a (5x Gloom Reson.)% chance."
+    ]
+   },
+   "hand_modelled": null,
+   "id": "1100401",
+   "kind": "combat",
+   "name": "Júbilo Hedonista",
+   "name_zh": "Júbilo Hedonista",
+   "owner": "11004",
+   "sources": [
+    {
+     "id": "1100401",
+     "kind": "game_text",
+     "language": "en",
+     "verification": "official"
+    }
+   ]
+  },
+  "1100421": {
+   "desc": "1 ally with the most SP deals +10% damage to enemies with lower SP.",
+   "desc_zh": "1 ally with the most SP deals +10% damage to enemies with lower SP.",
+   "effects": {
+    "attack_end": [],
+    "combat_start": [],
+    "passive": [],
+    "turn_end": [],
+    "turn_start": [],
+    "unmodeled": [
+     "1 ally with the most SP deals +10% damage to enemies with lower SP."
+    ]
+   },
+   "hand_modelled": null,
+   "id": "1100421",
+   "kind": "support",
+   "name": "Jugar con Enemigos",
+   "name_zh": "Jugar con Enemigos",
+   "owner": "11004",
+   "sources": [
+    {
+     "id": "1100421",
+     "kind": "game_text",
+     "language": "en",
+     "verification": "official"
+    }
+   ]
+  },
+  "1111401": {
+   "desc": "Deal +5% damage for every [Protection] on self (max 15%)\n\nCombat Start: gain 2 [TheUdjatOutis]",
+   "desc_zh": "Deal +5% damage for every [Protection] on self (max 15%)\n\nCombat Start: gain 2 [TheUdjatOutis]",
+   "effects": {
+    "attack_end": [],
+    "combat_start": [
+     {
+      "component": "stack",
+      "kind": "gain",
+      "potency": 2,
+      "status": "The Udjat -Vanguard-"
+     }
+    ],
+    "hand_modelled": "extract_passives.HAND_EFFECTS",
+    "passive": [
+     {
+      "condition": {
+       "component": "count",
+       "source": "self",
+       "status": "Protection"
+      },
+      "kind": "damage_percent",
+      "max": 15,
+      "per": 1,
+      "step": 5,
+      "value": 0
+     }
+    ],
+    "turn_end": [],
+    "turn_start": [],
+    "unmodeled": []
+   },
+   "hand_modelled": null,
+   "id": "1111401",
+   "kind": "combat",
+   "name": "Vanguard Team",
+   "name_zh": "Vanguard Team",
+   "owner": "11114",
+   "sources": [
+    {
+     "id": "1111401",
+     "kind": "game_text",
+     "language": "en",
+     "verification": "official"
+    }
+   ]
+  },
+  "1111402": {
+   "desc": "Turn Start: If an enemy has any of the Panic type changing effects, gain 1 [TheUdjatOutis]\n\nIf this unit has [TheUdjatOutis], inflict 1 [SheutFracture] On Hit with a Base Attack Skill (15 per turn)\n\n[Protection] Stack gained from this unit's Base Skills and [TheUdjatOutis] effect is capped at 5 per turn",
+   "desc_zh": "Turn Start: If an enemy has any of the Panic type changing effects, gain 1 [TheUdjatOutis]\n\nIf this unit has [TheUdjatOutis], inflict 1 [SheutFracture] On Hit with a Base Attack Skill (15 per turn)\n\n[Protection] Stack gained from this unit's Base Skills and [TheUdjatOutis] effect is capped at 5 per turn",
+   "effects": {
+    "attack_end": [],
+    "combat_start": [],
+    "passive": [],
+    "turn_end": [],
+    "turn_start": [],
+    "unmodeled": [
+     "If this unit has [TheUdjatOutis], inflict 1 [SheutFracture] On Hit with a Base Attack Skill (15 per turn)",
+     "[Turn Start] If an enemy has any of the Panic type changing effects, gain 1 [TheUdjatOutis]"
+    ]
+   },
+   "hand_modelled": null,
+   "id": "1111402",
+   "kind": "combat",
+   "name": "The Scepter of Horus - Replica",
+   "name_zh": "The Scepter of Horus - Replica",
+   "owner": "11114",
+   "sources": [
+    {
+     "id": "1111402",
+     "kind": "game_text",
+     "language": "en",
+     "verification": "official"
+    }
+   ]
+  },
+  "1111412": {
+   "desc": "Turn Start: If an enemy has any of the Panic type changing effects, gain 1 [TheUdjatOutis]\n\nIf this unit has [TheUdjatOutis], inflict 1 [SheutFracture] On Hit with a Base Attack Skill (15 per turn)\n<style=\"highlight\">- If [LCA_Bullet] was spent, inflict additional [SheutFracture] per [LCA_Bullet] spent</style>\n\n[Protection] Stack gained from this unit's Base Skills and [TheUdjatOutis] effect is capped at 5 per turn",
+   "desc_zh": "Turn Start: If an enemy has any of the Panic type changing effects, gain 1 [TheUdjatOutis]\n\nIf this unit has [TheUdjatOutis], inflict 1 [SheutFracture] On Hit with a Base Attack Skill (15 per turn)\n<style=\"highlight\">- If [LCA_Bullet] was spent, inflict additional [SheutFracture] per [LCA_Bullet] spent</style>\n\n[Protection] Stack gained from this unit's Base Skills and [TheUdjatOutis] effect is capped at 5 per turn",
+   "effects": {
+    "attack_end": [],
+    "combat_start": [],
+    "hand_modelled": "extract_passives.HAND_EFFECTS",
+    "passive": [
+     {
+      "condition": {
+       "gte": 1,
+       "source": "self",
+       "status": "The Udjat -Vanguard-"
+      },
+      "kind": "inflict",
+      "on_base_attack_hit": true,
+      "per_turn": 15,
+      "potency": 1,
+      "status": "Sheut Fracture"
+     }
+    ],
+    "turn_end": [],
+    "turn_start": [],
+    "unmodeled": [
+     "[Turn Start] If an enemy has any of the Panic type changing effects, gain 1 [TheUdjatOutis]"
+    ]
+   },
+   "hand_modelled": null,
+   "id": "1111412",
+   "kind": "combat",
+   "name": "The Scepter of Horus - Replica",
+   "name_zh": "The Scepter of Horus - Replica",
+   "owner": "11114",
+   "sources": [
+    {
+     "id": "1111412",
+     "kind": "game_text",
+     "language": "en",
+     "verification": "official"
+    }
+   ]
+  },
+  "1111421": {
+   "desc": "Combat Start: apply 1 [Protection] next turn to 1 ally with the lowest HP percentage",
+   "desc_zh": "Combat Start: apply 1 [Protection] next turn to 1 ally with the lowest HP percentage",
+   "effects": {
+    "attack_end": [],
+    "combat_start": [
+     {
+      "ally": "lowest_hp",
+      "ally_count": 1,
+      "count": 1,
+      "kind": "gain",
+      "next_turn": true,
+      "status": "Protection"
+     }
+    ],
+    "hand_modelled": "extract_passives.HAND_EFFECTS",
+    "passive": [],
+    "turn_end": [],
+    "turn_start": [],
+    "unmodeled": [
+     "[Combat Start] apply 1 [Protection] next turn to 1 ally with the lowest HP percentage"
+    ]
+   },
+   "hand_modelled": null,
+   "id": "1111421",
+   "kind": "support",
+   "name": "Eagle Eye",
+   "name_zh": "Eagle Eye",
+   "owner": "11114",
+   "sources": [
+    {
+     "id": "1111421",
+     "kind": "game_text",
+     "language": "en",
+     "verification": "official"
+    }
+   ]
+  },
+  "1121401": {
+   "desc": "Combat Start: Gain 1 [LanternGregBigBird]\n\nCombat Start: If an enemy has [DelusionGregBigBird], heal 3 SP\n\nTurn End: Apply [ObedienceGregBigBird] next turn to the ally with the earliest Deployment order among those that do not fit the following conditions:\n- Is this unit\n- Is an ally that has [ObedienceGregBigBird]\n- Is an ally that cannot heal SP due to conditions such as Panic or Corrosion",
+   "desc_zh": "Combat Start: Gain 1 [LanternGregBigBird]\n\nCombat Start: If an enemy has [DelusionGregBigBird], heal 3 SP\n\nTurn End: Apply [ObedienceGregBigBird] next turn to the ally with the earliest Deployment order among those that do not fit the following conditions:\n- Is this unit\n- Is an ally that has [ObedienceGregBigBird]\n- Is an ally that cannot heal SP due to conditions such as Panic or Corrosion",
+   "effects": {
+    "attack_end": [],
+    "combat_start": [
+     {
+      "component": "stack",
+      "kind": "gain",
+      "potency": 1,
+      "status": "Lamp"
+     },
+     {
+      "condition": {
+       "gte": 1,
+       "source": "target",
+       "status": "Dazzle"
+      },
+      "kind": "sp_heal",
+      "value": 3
+     }
+    ],
+    "hand_modelled": "extract_passives.HAND_EFFECTS",
+    "passive": [],
+    "turn_end": [],
+    "turn_start": [],
+    "unmodeled": [
+     "Is an ally that cannot heal SP due to conditions such as Panic or Corrosion",
+     "Is an ally that has [ObedienceGregBigBird]",
+     "Is this unit",
+     "[Turn End] Apply [ObedienceGregBigBird] next turn to the ally with the earliest Deployment order among those that do not fit the following conditions:"
+    ]
+   },
+   "hand_modelled": null,
+   "id": "1121401",
+   "kind": "combat",
+   "name": "Eyes Bright Like Lamps",
+   "name_zh": "Eyes Bright Like Lamps",
+   "owner": "11214",
+   "sources": [
+    {
+     "id": "1121401",
+     "kind": "game_text",
+     "language": "en",
+     "verification": "official"
+    }
+   ]
+  },
+  "1121402": {
+   "desc": "Turn Start: Gain 1 [LanternGregBigBird]\n\nExternal effects cannot change this unit's Min. and Max. Speeds\n\nWhen chaining Skills, this unit can redirect the Attack Skills' targeting to itself regardless of Speed (Focused Encounters only)\n\nWhen gaining [Agility], gain 1 [ParryingResultUp] instead (once per turn)\n- Once the above effect activates, cannot gain [Agility] for the rest of the turn",
+   "desc_zh": "Turn Start: Gain 1 [LanternGregBigBird]\n\nExternal effects cannot change this unit's Min. and Max. Speeds\n\nWhen chaining Skills, this unit can redirect the Attack Skills' targeting to itself regardless of Speed (Focused Encounters only)\n\nWhen gaining [Agility], gain 1 [ParryingResultUp] instead (once per turn)\n- Once the above effect activates, cannot gain [Agility] for the rest of the turn",
+   "effects": {
+    "attack_end": [],
+    "combat_start": [],
+    "hand_modelled": "extract_passives.HAND_EFFECTS",
+    "passive": [],
+    "turn_end": [],
+    "turn_start": [
+     {
+      "component": "stack",
+      "kind": "gain",
+      "potency": 1,
+      "status": "Lamp"
+     }
+    ],
+    "unmodeled": [
+     "Once the above effect activates, cannot gain [Agility] for the rest of the turn",
+     "When chaining Skills, this unit can redirect the Attack Skills' targeting to itself regardless of Speed (Focused Encounters only)",
+     "When gaining [Agility], gain 1 [ParryingResultUp] instead (once per turn)"
+    ]
+   },
+   "hand_modelled": null,
+   "id": "1121402",
+   "kind": "combat",
+   "name": "Dazzling Lamp",
+   "name_zh": "Dazzling Lamp",
+   "owner": "11214",
+   "sources": [
+    {
+     "id": "1121402",
+     "kind": "game_text",
+     "language": "en",
+     "verification": "official"
+    }
+   ]
+  },
+  "1121403": {
+   "desc": "Turn Start: Gain 1 [DefenseUp] for every ally wearing E.G.O Gears (max 3)\n\nWhen an ally dies, gain 2 [PenetrateDamageUp] next turn (once per turn)",
+   "desc_zh": "Turn Start: Gain 1 [DefenseUp] for every ally wearing E.G.O Gears (max 3)\n\nWhen an ally dies, gain 2 [PenetrateDamageUp] next turn (once per turn)",
+   "effects": {
+    "attack_end": [],
+    "combat_start": [],
+    "passive": [],
+    "turn_end": [],
+    "turn_start": [],
+    "unmodeled": [
+     "When an ally dies, gain 2 [PenetrateDamageUp] next turn (once per turn)",
+     "[Turn Start] Gain 1 [DefenseUp] for every ally wearing E.G.O Gears (max 3)"
+    ]
+   },
+   "hand_modelled": null,
+   "id": "1121403",
+   "kind": "combat",
+   "name": "E.G.O Gear Proficiency Manual",
+   "name_zh": "E.G.O Gear Proficiency Manual",
+   "owner": "11214",
+   "sources": [
+    {
+     "id": "1121403",
+     "kind": "game_text",
+     "language": "en",
+     "verification": "official"
+    }
+   ]
+  },
+  "1121411": {
+   "desc": "Combat Start: Gain 1 [LanternGregBigBird] <style=\"highlight\">for every 2 Gloom Reson. (max 3)</style>\n\nCombat Start: If an enemy has [DelusionGregBigBird], heal <style=\"highlight\">5</style> SP\n\nTurn End: Apply [ObedienceGregBigBird] next turn to the ally with the earliest Deployment order among those that do not fit the following conditions:\n- Is this unit\n- Is an ally that has [ObedienceGregBigBird]\n- Is an ally that cannot heal SP due to conditions such as Panic or Corrosion",
+   "desc_zh": "Combat Start: Gain 1 [LanternGregBigBird] <style=\"highlight\">for every 2 Gloom Reson. (max 3)</style>\n\nCombat Start: If an enemy has [DelusionGregBigBird], heal <style=\"highlight\">5</style> SP\n\nTurn End: Apply [ObedienceGregBigBird] next turn to the ally with the earliest Deployment order among those that do not fit the following conditions:\n- Is this unit\n- Is an ally that has [ObedienceGregBigBird]\n- Is an ally that cannot heal SP due to conditions such as Panic or Corrosion",
+   "effects": {
+    "attack_end": [],
+    "combat_start": [
+     {
+      "component": "stack",
+      "from_resonance": true,
+      "kind": "gain",
+      "max": 3,
+      "per": 2,
+      "potency": 1,
+      "resonance_of": "Gloom",
+      "status": "Lamp",
+      "step": 1
+     },
+     {
+      "condition": {
+       "gte": 1,
+       "source": "target",
+       "status": "Dazzle"
+      },
+      "kind": "sp_heal",
+      "value": 5
+     }
+    ],
+    "hand_modelled": "extract_passives.HAND_EFFECTS",
+    "passive": [],
+    "turn_end": [],
+    "turn_start": [],
+    "unmodeled": [
+     "Is an ally that cannot heal SP due to conditions such as Panic or Corrosion",
+     "Is an ally that has [ObedienceGregBigBird]",
+     "Is this unit",
+     "[Turn End] Apply [ObedienceGregBigBird] next turn to the ally with the earliest Deployment order among those that do not fit the following conditions:"
+    ]
+   },
+   "hand_modelled": null,
+   "id": "1121411",
+   "kind": "combat",
+   "name": "Eyes Bright Like Lamps",
+   "name_zh": "Eyes Bright Like Lamps",
+   "owner": "11214",
+   "sources": [
+    {
+     "id": "1121411",
+     "kind": "game_text",
+     "language": "en",
+     "verification": "official"
+    }
+   ]
+  },
+  "1121421": {
+   "desc": "Turn End: Apply the following to the ally with the earliest Deployment order among those that have negative effects\n- Gain +4 [Aggro] to the leftmost Slot next turn\n- Gain 1 [HitDamageUp] next turn",
+   "desc_zh": "Turn End: Apply the following to the ally with the earliest Deployment order among those that have negative effects\n- Gain +4 [Aggro] to the leftmost Slot next turn\n- Gain 1 [HitDamageUp] next turn",
+   "effects": {
+    "attack_end": [],
+    "combat_start": [],
+    "passive": [],
+    "turn_end": [],
+    "turn_start": [],
+    "unmodeled": [
+     "Gain +4 [Aggro] to the leftmost Slot next turn",
+     "[Turn End] Apply the following to the ally with the earliest Deployment order among those that have negative effects"
+    ]
+   },
+   "hand_modelled": null,
+   "id": "1121421",
+   "kind": "support",
+   "name": "Were There More Lives to be Saved?",
+   "name_zh": "Were There More Lives to be Saved?",
+   "owner": "11214",
+   "sources": [
+    {
+     "id": "1121421",
+     "kind": "game_text",
+     "language": "en",
+     "verification": "official"
+    }
+   ]
+  },
+  "9567010": {
+   "desc": "When [StackPastActivate], gain the following effects:\n- When hit by Sinners, inflict 1 [Combustion] and +1 [Combustion] Count on the\nattacking Sinner\n- Skill \"Kalpāgni\" gains Final Power +2 and its final Coin gains \"On Hit,\ninflict ([StackPastActivate] Stack / 2) SP damage (rounded down)\" effect\n- Turn Start: Inflict 5 [TakeHpHealReduce] and 3 [CrimsonTakeDamageUp] on all Sinners who have 10+ ([Combustion] Potency + [Combustion] Count)",
+   "desc_zh": "",
+   "effects": {
+    "attack_end": [],
+    "combat_start": [],
+    "passive": [],
+    "turn_end": [],
+    "turn_start": [],
+    "unmodeled": [
+     "Skill \"Kalpāgni\" gains Final Power +2 and its final Coin gains \"On Hit,",
+     "Turn Start: Inflict 5 [TakeHpHealReduce] and 3 [CrimsonTakeDamageUp] on all Sinners who have 10+ ([Combustion] Potency + [Combustion] Count)",
+     "When [StackPastActivate], gain the following effects:",
+     "When hit by Sinners, inflict 1 [Combustion] and +1 [Combustion] Count on the",
+     "attacking Sinner",
+     "inflict ([StackPastActivate] Stack / 2) SP damage (rounded down)\" effect"
+    ]
+   },
+   "hand_modelled": null,
+   "id": "9567010",
+   "kind": "combat",
+   "name": "Past [過去]",
+   "name_zh": null,
+   "owner": "9567",
+   "sources": [
+    {
+     "id": "9567010",
+     "kind": "game_text",
+     "language": "en",
+     "verification": "official"
+    }
+   ]
+  },
+  "9567011": {
+   "desc": "When [StackPastActivate], gain the following effects:\n<mark=#000000AA>- <color=#ff9000><s></color>When hit by Sinners, inflict 1 [Combustion] and +1 [Combustion] Count on the\nattacking Sinner<color=#ff0000></s></color></mark>\n- Skill \"Kalpāgni\" gains Final Power +2 and its final Coin gains \"On Hit,\ninflict ([StackPastActivate] Stack / 2) SP damage (rounded down)\" effect\n- Turn Start: Inflict 5 [TakeHpHealReduce] and 3 [CrimsonTakeDamageUp] on all Sinners who have 10+ ([Combustion] Potency + [Combustion] Count)",
+   "desc_zh": "",
+   "effects": {
+    "attack_end": [],
+    "combat_start": [],
+    "passive": [],
+    "turn_end": [],
+    "turn_start": [],
+    "unmodeled": [
+     "<mark=#000000AA>- <color=#ff9000><s></color>When hit by Sinners, inflict 1 [Combustion] and +1 [Combustion] Count on the",
+     "Skill \"Kalpāgni\" gains Final Power +2 and its final Coin gains \"On Hit,",
+     "Turn Start: Inflict 5 [TakeHpHealReduce] and 3 [CrimsonTakeDamageUp] on all Sinners who have 10+ ([Combustion] Potency + [Combustion] Count)",
+     "When [StackPastActivate], gain the following effects:",
+     "attacking Sinner<color=#ff0000></s></color></mark>",
+     "inflict ([StackPastActivate] Stack / 2) SP damage (rounded down)\" effect"
+    ]
+   },
+   "hand_modelled": null,
+   "id": "9567011",
+   "kind": "combat",
+   "name": "Past [過去]",
+   "name_zh": null,
+   "owner": "9567",
+   "sources": [
+    {
+     "id": "9567011",
+     "kind": "game_text",
+     "language": "en",
+     "verification": "official"
+    }
+   ]
+  },
+  "9567012": {
+   "desc": "When [StackPastActivate], gain the following effects:\n- When hit by Sinners, inflict 1 [Combustion] and +1 [Combustion] Count on the\nattacking Sinner\n<mark=#000000AA>- <color=#ff9000><s></color>Skill \"Kalpāgni\" gains Final Power +2 and its final Coin gains \"On Hit,\ninflict ([StackPastActivate] Stack / 2) SP damage (rounded down)\" effect<color=#ff0000></s></color></mark>\n- Turn Start: Inflict 5 [TakeHpHealReduce] and 3 [CrimsonTakeDamageUp] on all Sinners who have 10+ ([Combustion] Potency + [Combustion] Count)",
+   "desc_zh": "",
+   "effects": {
+    "attack_end": [],
+    "combat_start": [],
+    "passive": [],
+    "turn_end": [],
+    "turn_start": [],
+    "unmodeled": [
+     "<mark=#000000AA>- <color=#ff9000><s></color>Skill \"Kalpāgni\" gains Final Power +2 and its final Coin gains \"On Hit,",
+     "Turn Start: Inflict 5 [TakeHpHealReduce] and 3 [CrimsonTakeDamageUp] on all Sinners who have 10+ ([Combustion] Potency + [Combustion] Count)",
+     "When [StackPastActivate], gain the following effects:",
+     "When hit by Sinners, inflict 1 [Combustion] and +1 [Combustion] Count on the",
+     "attacking Sinner",
+     "inflict ([StackPastActivate] Stack / 2) SP damage (rounded down)\" effect<color=#ff0000></s></color></mark>"
+    ]
+   },
+   "hand_modelled": null,
+   "id": "9567012",
+   "kind": "combat",
+   "name": "Past [過去]",
+   "name_zh": null,
+   "owner": "9567",
+   "sources": [
+    {
+     "id": "9567012",
+     "kind": "game_text",
+     "language": "en",
+     "verification": "official"
+    }
+   ]
+  },
+  "9567013": {
+   "desc": "When [StackPastActivate], gain the following effects:\n- When hit by Sinners, inflict 1 [Combustion] and +1 [Combustion] Count on the\nattacking Sinner\n- Skill \"Kalpāgni\" gains Final Power +2 and its final Coin gains \"On Hit,\ninflict ([StackPastActivate] Stack / 2) SP damage (rounded down)\" effect\n<mark=#000000AA>- <color=#ff9000><s></color>Turn Start: Inflict 5 [TakeHpHealReduce] and 3 [CrimsonTakeDamageUp] on all Sinners who have 10+ ([Combustion] Potency + [Combustion] Count)<color=#ff0000></s></color></mark>",
+   "desc_zh": "",
+   "effects": {
+    "attack_end": [],
+    "combat_start": [],
+    "passive": [],
+    "turn_end": [],
+    "turn_start": [],
+    "unmodeled": [
+     "<mark=#000000AA>- <color=#ff9000><s></color>Turn Start: Inflict 5 [TakeHpHealReduce] and 3 [CrimsonTakeDamageUp] on all Sinners who have 10+ ([Combustion] Potency + [Combustion] Count)<color=#ff0000></s></color></mark>",
+     "Skill \"Kalpāgni\" gains Final Power +2 and its final Coin gains \"On Hit,",
+     "When [StackPastActivate], gain the following effects:",
+     "When hit by Sinners, inflict 1 [Combustion] and +1 [Combustion] Count on the",
+     "attacking Sinner",
+     "inflict ([StackPastActivate] Stack / 2) SP damage (rounded down)\" effect"
+    ]
+   },
+   "hand_modelled": null,
+   "id": "9567013",
+   "kind": "combat",
+   "name": "Past [過去]",
+   "name_zh": null,
+   "owner": "9567",
+   "sources": [
+    {
+     "id": "9567013",
+     "kind": "game_text",
+     "language": "en",
+     "verification": "official"
+    }
+   ]
+  },
+  "9567020": {
+   "desc": "When [StackPresentActivate], gain the following effects:\n- Does not lose [Breath] Count On Crit; Turn Start: gain (2 + # of Sinners) [Breath] and [Breath] Count\n- Skill \"Smite the Wicked\" gains Final Power +2 and its final Coin gains \"On Hit, raise Stagger Threshold by ([StackPresentActivate] Stack / 2) (rounded down)\" effect\n- On Hit, deal +(([Breath] Potency on self + [Breath] Count on self) x 2)% damage on Critical Hit (max 120%; on Clash Lose, apply only one-third of the effect's full value)",
+   "desc_zh": "",
+   "effects": {
+    "attack_end": [],
+    "combat_start": [],
+    "passive": [],
+    "turn_end": [],
+    "turn_start": [],
+    "unmodeled": [
+     "Does not lose [Breath] Count On Crit; Turn Start: gain (2 + # of Sinners) [Breath] and [Breath] Count",
+     "On Hit, deal +(([Breath] Potency on self + [Breath] Count on self) x 2)% damage on Critical Hit (max 120%; on Clash Lose, apply only one-third of the effect's full value)",
+     "Skill \"Smite the Wicked\" gains Final Power +2 and its final Coin gains \"On Hit, raise Stagger Threshold by ([StackPresentActivate] Stack / 2) (rounded down)\" effect",
+     "When [StackPresentActivate], gain the following effects:"
+    ]
+   },
+   "hand_modelled": null,
+   "id": "9567020",
+   "kind": "support",
+   "name": "Present [現在]",
+   "name_zh": null,
+   "owner": "9567",
+   "sources": [
+    {
+     "id": "9567020",
+     "kind": "game_text",
+     "language": "en",
+     "verification": "official"
+    }
+   ]
+  },
+  "9567021": {
+   "desc": "When [StackPresentActivate], gain the following effects:\n<mark=#000000AA>- <color=#e5e5e5><s></color>Does not lose [Breath] Count On Crit; Turn Start: gain (2 + # of Sinners) [Breath] and [Breath] Count<color=#ff0000></s></color></mark>\n- Skill \"Smite the Wicked\" gains Final Power +2 and its final Coin gains \"On Hit, raise Stagger Threshold by ([StackPresentActivate] Stack / 2) (rounded down)\" effect\n- On Hit, deal +(([Breath] Potency on self + [Breath] Count on self) x 2)% damage on Critical Hit (max 120%; on Clash Lose, apply only one-third of the effect's full value)",
+   "desc_zh": "",
+   "effects": {
+    "attack_end": [],
+    "combat_start": [],
+    "passive": [],
+    "turn_end": [],
+    "turn_start": [],
+    "unmodeled": [
+     "<mark=#000000AA>- <color=#e5e5e5><s></color>Does not lose [Breath] Count On Crit; Turn Start: gain (2 + # of Sinners) [Breath] and [Breath] Count<color=#ff0000></s></color></mark>",
+     "On Hit, deal +(([Breath] Potency on self + [Breath] Count on self) x 2)% damage on Critical Hit (max 120%; on Clash Lose, apply only one-third of the effect's full value)",
+     "Skill \"Smite the Wicked\" gains Final Power +2 and its final Coin gains \"On Hit, raise Stagger Threshold by ([StackPresentActivate] Stack / 2) (rounded down)\" effect",
+     "When [StackPresentActivate], gain the following effects:"
+    ]
+   },
+   "hand_modelled": null,
+   "id": "9567021",
+   "kind": "support",
+   "name": "Present [現在]",
+   "name_zh": null,
+   "owner": "9567",
+   "sources": [
+    {
+     "id": "9567021",
+     "kind": "game_text",
+     "language": "en",
+     "verification": "official"
+    }
+   ]
+  },
+  "9567022": {
+   "desc": "When [StackPresentActivate], gain the following effects:\n- Does not lose [Breath] Count On Crit; Turn Start: gain (2 + # of Sinners) [Breath] and [Breath] Count\n<mark=#000000AA>- <color=#e5e5e5><s></color>Skill \"Smite the Wicked\" gains Final Power +2 and its final Coin gains \"On Hit, raise Stagger Threshold by ([StackPresentActivate] Stack / 2) (rounded down)\" effect<color=#ff0000></s></color></mark>\n- On Hit, deal +(([Breath] Potency on self + [Breath] Count on self) x 2)% damage on Critical Hit (max 120%; on Clash Lose, apply only one-third of the effect's full value)",
+   "desc_zh": "",
+   "effects": {
+    "attack_end": [],
+    "combat_start": [],
+    "passive": [],
+    "turn_end": [],
+    "turn_start": [],
+    "unmodeled": [
+     "<mark=#000000AA>- <color=#e5e5e5><s></color>Skill \"Smite the Wicked\" gains Final Power +2 and its final Coin gains \"On Hit, raise Stagger Threshold by ([StackPresentActivate] Stack / 2) (rounded down)\" effect<color=#ff0000></s></color></mark>",
+     "Does not lose [Breath] Count On Crit; Turn Start: gain (2 + # of Sinners) [Breath] and [Breath] Count",
+     "On Hit, deal +(([Breath] Potency on self + [Breath] Count on self) x 2)% damage on Critical Hit (max 120%; on Clash Lose, apply only one-third of the effect's full value)",
+     "When [StackPresentActivate], gain the following effects:"
+    ]
+   },
+   "hand_modelled": null,
+   "id": "9567022",
+   "kind": "support",
+   "name": "Present [現在]",
+   "name_zh": null,
+   "owner": "9567",
+   "sources": [
+    {
+     "id": "9567022",
+     "kind": "game_text",
+     "language": "en",
+     "verification": "official"
+    }
+   ]
+  },
+  "9567023": {
+   "desc": "When [StackPresentActivate], gain the following effects:\n- Does not lose [Breath] Count On Crit; Turn Start: gain (2 + # of Sinners) [Breath] and [Breath] Count\n- Skill \"Smite the Wicked\" gains Final Power +2 and its final Coin gains \"On Hit, raise Stagger Threshold by ([StackPresentActivate] Stack / 2) (rounded down)\" effect\n<mark=#000000AA>- <color=#e5e5e5><s></color>On Hit, deal +(([Breath] Potency on self + [Breath] Count on self) x 2)% damage on Critical Hit (max 120%; on Clash Lose, apply only one-third of the effect's full value)<color=#ff0000></s></color></mark>",
+   "desc_zh": "",
+   "effects": {
+    "attack_end": [],
+    "combat_start": [],
+    "passive": [],
+    "turn_end": [],
+    "turn_start": [],
+    "unmodeled": [
+     "<mark=#000000AA>- <color=#e5e5e5><s></color>On Hit, deal +(([Breath] Potency on self + [Breath] Count on self) x 2)% damage on Critical Hit (max 120%; on Clash Lose, apply only one-third of the effect's full value)<color=#ff0000></s></color></mark>",
+     "Does not lose [Breath] Count On Crit; Turn Start: gain (2 + # of Sinners) [Breath] and [Breath] Count",
+     "Skill \"Smite the Wicked\" gains Final Power +2 and its final Coin gains \"On Hit, raise Stagger Threshold by ([StackPresentActivate] Stack / 2) (rounded down)\" effect",
+     "When [StackPresentActivate], gain the following effects:"
+    ]
+   },
+   "hand_modelled": null,
+   "id": "9567023",
+   "kind": "support",
+   "name": "Present [現在]",
+   "name_zh": null,
+   "owner": "9567",
+   "sources": [
+    {
+     "id": "9567023",
+     "kind": "game_text",
+     "language": "en",
+     "verification": "official"
+    }
+   ]
+  },
+  "9567030": {
+   "desc": "When [StackFutureActivate], gain the following effects:\n- Turn Start: All Sinners gain +(3 + # of current turn / 2) [Laceration] Count (rounded up)\n- Skill \"Bloodflower\" gains Final Power +2 and its final Coin gains \"On Hit,\nheal ([StackFutureActivate] Stack x 3) HP on self\" effect\n- Whenever [Laceration] activates on self or on Sinners, heal HP equal to the said [Laceration] damage (rounded down)",
+   "desc_zh": "",
+   "effects": {
+    "attack_end": [],
+    "combat_start": [],
+    "passive": [],
+    "turn_end": [],
+    "turn_start": [],
+    "unmodeled": [
+     "Skill \"Bloodflower\" gains Final Power +2 and its final Coin gains \"On Hit,",
+     "Turn Start: All Sinners gain +(3 + # of current turn / 2) [Laceration] Count (rounded up)",
+     "When [StackFutureActivate], gain the following effects:",
+     "Whenever [Laceration] activates on self or on Sinners, heal HP equal to the said [Laceration] damage (rounded down)",
+     "heal ([StackFutureActivate] Stack x 3) HP on self\" effect"
+    ]
+   },
+   "hand_modelled": null,
+   "id": "9567030",
+   "kind": "support",
+   "name": "Future [未來]",
+   "name_zh": null,
+   "owner": "9567",
+   "sources": [
+    {
+     "id": "9567030",
+     "kind": "game_text",
+     "language": "en",
+     "verification": "official"
+    }
+   ]
+  },
+  "9567031": {
+   "desc": "When [StackFutureActivate], gain the following effects:\n<mark=#000000AA>- <color=#d93737><s></color>Turn Start: All Sinners gain +(3 + # of current turn / 2) [Laceration] Count (rounded up)<color=#ff0000></s></color></mark>\n- Skill \"Bloodflower\" gains Final Power +2 and its final Coin gains \"On Hit,\nheal ([StackFutureActivate] Stack x 3) HP on self\" effect\n- Whenever [Laceration] activates on self or on Sinners, heal HP equal to the said [Laceration] damage (rounded down)",
+   "desc_zh": "",
+   "effects": {
+    "attack_end": [],
+    "combat_start": [],
+    "passive": [],
+    "turn_end": [],
+    "turn_start": [],
+    "unmodeled": [
+     "<mark=#000000AA>- <color=#d93737><s></color>Turn Start: All Sinners gain +(3 + # of current turn / 2) [Laceration] Count (rounded up)<color=#ff0000></s></color></mark>",
+     "Skill \"Bloodflower\" gains Final Power +2 and its final Coin gains \"On Hit,",
+     "When [StackFutureActivate], gain the following effects:",
+     "Whenever [Laceration] activates on self or on Sinners, heal HP equal to the said [Laceration] damage (rounded down)",
+     "heal ([StackFutureActivate] Stack x 3) HP on self\" effect"
+    ]
+   },
+   "hand_modelled": null,
+   "id": "9567031",
+   "kind": "support",
+   "name": "Future [未來]",
+   "name_zh": null,
+   "owner": "9567",
+   "sources": [
+    {
+     "id": "9567031",
+     "kind": "game_text",
+     "language": "en",
+     "verification": "official"
+    }
+   ]
+  },
+  "9567032": {
+   "desc": "When [StackFutureActivate], gain the following effects:\n- Turn Start: All Sinners gain +(3 + # of current turn / 2) [Laceration] Count (rounded up)\n<mark=#000000AA>- <color=#d93737><s></color>Skill \"Bloodflower\" gains Final Power +2 and its final Coin gains \"On Hit,\nheal ([StackFutureActivate] Stack x 3) HP on self\" effect<color=#ff0000></s></color></mark>\n- Whenever [Laceration] activates on self or on Sinners, heal HP equal to the said [Laceration] damage (rounded down)",
+   "desc_zh": "",
+   "effects": {
+    "attack_end": [],
+    "combat_start": [],
+    "passive": [],
+    "turn_end": [],
+    "turn_start": [],
+    "unmodeled": [
+     "<mark=#000000AA>- <color=#d93737><s></color>Skill \"Bloodflower\" gains Final Power +2 and its final Coin gains \"On Hit,",
+     "Turn Start: All Sinners gain +(3 + # of current turn / 2) [Laceration] Count (rounded up)",
+     "When [StackFutureActivate], gain the following effects:",
+     "Whenever [Laceration] activates on self or on Sinners, heal HP equal to the said [Laceration] damage (rounded down)",
+     "heal ([StackFutureActivate] Stack x 3) HP on self\" effect<color=#ff0000></s></color></mark>"
+    ]
+   },
+   "hand_modelled": null,
+   "id": "9567032",
+   "kind": "support",
+   "name": "Future [未來]",
+   "name_zh": null,
+   "owner": "9567",
+   "sources": [
+    {
+     "id": "9567032",
+     "kind": "game_text",
+     "language": "en",
+     "verification": "official"
+    }
+   ]
+  },
+  "9567033": {
+   "desc": "When [StackFutureActivate], gain the following effects:\n- Turn Start: All Sinners gain +(3 + # of current turn / 2) [Laceration] Count (rounded up)\n- Skill \"Bloodflower\" gains Final Power +2 and its final Coin gains \"On Hit,\nheal ([StackFutureActivate] Stack x 3) HP\" effect\n<mark=#000000AA>- <color=#d93737><s></color>Whenever [Laceration] activates on self or on Sinners, heal HP equal to the said [Laceration] damage (rounded down)<color=#ff0000></s></color></mark>",
+   "desc_zh": "",
+   "effects": {
+    "attack_end": [],
+    "combat_start": [],
+    "passive": [],
+    "turn_end": [],
+    "turn_start": [],
+    "unmodeled": [
+     "<mark=#000000AA>- <color=#d93737><s></color>Whenever [Laceration] activates on self or on Sinners, heal HP equal to the said [Laceration] damage (rounded down)<color=#ff0000></s></color></mark>",
+     "Skill \"Bloodflower\" gains Final Power +2 and its final Coin gains \"On Hit,",
+     "Turn Start: All Sinners gain +(3 + # of current turn / 2) [Laceration] Count (rounded up)",
+     "When [StackFutureActivate], gain the following effects:",
+     "heal ([StackFutureActivate] Stack x 3) HP\" effect"
+    ]
+   },
+   "hand_modelled": null,
+   "id": "9567033",
+   "kind": "support",
+   "name": "Future [未來]",
+   "name_zh": null,
+   "owner": "9567",
+   "sources": [
+    {
+     "id": "9567033",
+     "kind": "game_text",
+     "language": "en",
+     "verification": "official"
+    }
+   ]
+  }
+ },
+ "version": 1
+}

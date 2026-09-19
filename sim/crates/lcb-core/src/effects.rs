@@ -53,6 +53,9 @@ pub struct Condition {
     pub target_speed_advantage: Option<i32>,
     #[serde(default)]
     pub self_sp_at_least: Option<i32>,
+    /// The actor's own SP must be below this ("at less than 0 SP").
+    #[serde(default)]
+    pub self_sp_below: Option<i32>,
     /// Any sin's Absolute Resonance chain is at least this long.
     #[serde(default)]
     pub a_reson_gte: Option<i32>,
@@ -249,6 +252,9 @@ pub struct Effect {
     /// unique Sinking is inflicted.
     #[serde(default)]
     pub butterfly_part: Option<String>,
+    /// "On Hit with a Base Attack Skill" (a passive that rides on hits).
+    #[serde(default)]
+    pub on_base_attack_hit: bool,
     /// "Deal more damage based on missing HP on self (max 15%)": percent at
     /// 100% HP lost equals this value.
     #[serde(default)]
@@ -289,6 +295,12 @@ pub struct SkillMechanics {
     pub turn_start: Vec<Effect>,
     #[serde(default)]
     pub turn_end: Vec<Effect>,
+    /// Continuous clauses ("Deal +N% damage for every [X] on self").
+    #[serde(default)]
+    pub passive: Vec<Effect>,
+    /// "On Tails Hit" clauses.
+    #[serde(default)]
+    pub tails_hit: Vec<Effect>,
     /// "[Before Attack]" - resolved after On Use and before the first toss.
     #[serde(default)]
     pub before_attack: Vec<Effect>,
@@ -330,6 +342,83 @@ impl SkillMechanics {
 
     pub fn is_complete(&self) -> bool {
         self.unmodeled.is_empty()
+    }
+}
+
+/// A passive ("Combat Passive" / "Support Passive") of an identity or enemy.
+#[derive(Clone, Debug, Default, Serialize, Deserialize)]
+pub struct Passive {
+    #[serde(default)]
+    pub id: String,
+    #[serde(default)]
+    pub owner: String,
+    /// `combat` for the unit's own passive, `support` for the team passive.
+    #[serde(default)]
+    pub kind: String,
+    #[serde(default)]
+    pub name: Option<String>,
+    #[serde(default)]
+    pub desc: Option<String>,
+    /// Phrases that stay UNKNOWN for this project.
+    #[serde(default)]
+    pub unmodeled: Vec<String>,
+    #[serde(default)]
+    pub effects: SkillMechanics,
+}
+
+impl Passive {
+    pub fn is_complete(&self) -> bool {
+        self.effects.unmodeled.is_empty() && self.unmodeled.is_empty()
+    }
+}
+
+#[derive(Clone, Debug, Default, Serialize, Deserialize)]
+pub struct PassiveBook {
+    #[serde(default)]
+    pub version: u32,
+    #[serde(default)]
+    pub passives: BTreeMap<String, Passive>,
+}
+
+impl PassiveBook {
+    pub fn load(path: &Path) -> Result<PassiveBook, String> {
+        if !path.exists() {
+            return Ok(PassiveBook::default());
+        }
+        let text = std::fs::read_to_string(path).map_err(|e| e.to_string())?;
+        serde_json::from_str(&text).map_err(|e| format!("{}: {e}", path.display()))
+    }
+
+    /// Passives owned by a unit (its own combat passives).
+    pub fn for_owner(&self, owner: &str) -> Vec<&Passive> {
+        let mut found: Vec<&Passive> = self
+            .passives
+            .values()
+            .filter(|p| p.owner == owner && p.kind == "combat")
+            .collect();
+        found.sort_by(|a, b| a.id.cmp(&b.id));
+        // The higher id is the Uptie 4 version of the same passive; it replaces
+        // the lower one.
+        if let Some(last) = found.last() {
+            let name = last.name.clone();
+            let top = found
+                .iter()
+                .filter(|p| p.name == name)
+                .map(|p| p.id.clone())
+                .max();
+            if let Some(top) = top {
+                found.retain(|p| p.name != name || p.id == top);
+            }
+        }
+        found
+    }
+
+    /// Support passives of the whole team.
+    pub fn supports(&self) -> Vec<&Passive> {
+        self.passives
+            .values()
+            .filter(|p| p.kind == "support")
+            .collect()
     }
 }
 
