@@ -58,10 +58,20 @@ Loaded with official ids and full effect text:
 * `9567` Butterfly of Entangled Lives::Imago (12 skills, 5 passives)
 * `9564/9565/9566` Illusory Butterfly :: The Past / The Present / The Future
 
-Not implemented: the time-state machine and its rotations, illusory-butterfly
-stack removal and damage transfer, the Section 5 choice event.  The enemy takes
-one skill slot and walks its skill list in order (`EnemyPolicy::Cyclic`), which
-is a documented stand-in, not the real rotation.
+Implemented: the six-Skill-Slot action pattern (three-turn cycle, small/mid/big
+skill per state of time, separate patterns below 66% / 33% HP, idle slots on
+turn 3, acting while Staggered), the `In the Past / Present / Future` state
+machine with its Stacks and Temporal Disjunction, the three state passives
+(burn on hit, Kalpāgni SP damage, Poise gain, Stagger-Threshold raise, Bleed
+counts, Bloodflower heal, Bleed lifesteal) and the Stack-based bonuses.
+Tests: `mechanics::imago_plays_the_documented_rotation`,
+`mechanics::time_state_follows_the_highest_stack`,
+`mechanics::time_state_stack_bonus_matches_game_text`.
+
+Not implemented: the illusory butterflies (their stack removal and damage
+transfer), the choice events that decide the starting state and which passive
+components are disabled, the Pupa's shield-break branch, and the effects of the
+debuffs the boss applies (HP Healing Down, Wrath Fragility).
 
 ## Search ladder
 

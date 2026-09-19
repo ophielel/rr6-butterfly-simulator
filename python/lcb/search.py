@@ -33,8 +33,9 @@ def _default_action_for(env: LimbusEnv, actor: str, used: set) -> Optional[Any]:
     return min(candidates, key=lambda a: hp.get(a.target, 1 << 30))
 
 
-def _fill_and_commit(env: LimbusEnv, assigned: List[Any]) -> Dict[str, Any]:
+def _fill_and_commit(env: LimbusEnv, assigned: Optional[List[Any]] = None) -> Dict[str, Any]:
     """Submit what we have, top the rest up with the fallback, then commit."""
+    assigned = assigned or []
     used = set()
     for action in assigned:
         env.step(action)

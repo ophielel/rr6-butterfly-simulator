@@ -398,6 +398,98 @@ fn guard_gains_shield_when_attacked() {
     );
 }
 
+/// The Imago plays the documented station-5 rotation: six Skill Slots, a
+/// three-turn cycle, small/mid/big skills chosen by the active state of time.
+/// Sources: wiki.gg Imago `Behavior` and the JA-wiki 行動パターン table.
+#[test]
+fn imago_plays_the_documented_rotation() {
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&fixed::TEAM, &[fixed::BOSS_IMAGO], 1, BattleConfig::default())
+        .unwrap();
+    let enemy_id = state
+        .units
+        .iter()
+        .find(|u| !u.kind.is_sinner())
+        .unwrap()
+        .id
+        .clone();
+    let turn_skills = |state: &lcb_core::state::BattleState| -> Vec<String> {
+        let mut skills: Vec<(u32, String)> = state
+            .actions
+            .iter()
+            .filter(|a| a.actor == enemy_id)
+            .map(|a| (a.slot, a.skill.0.clone()))
+            .collect();
+        skills.sort();
+        skills.into_iter().map(|(_, s)| s).collect()
+    };
+    // Turn 1, above 66% HP, In the Past: Temper and Cast x2, Fluttering Havoc x4.
+    let first = turn_skills(&state);
+    assert_eq!(
+        first,
+        vec!["956704", "956704", "956701", "956701", "956701", "956701"],
+        "past / above_66 / turn 1"
+    );
+    // Turn 2: Immolation x2, Pulverization x4.
+    for action in sim.legal_actions(&state) {
+        if let Action::Assign { actor, slot, skill, target } = action {
+            if actor != enemy_id {
+                sim.submit(&mut state, Action::Assign { actor, slot, skill, target }).unwrap();
+                break;
+            }
+        }
+    }
+    sim.step_turn(&mut state).unwrap();
+    let second = turn_skills(&state);
+    assert_eq!(second, vec!["956705", "956705", "956702", "956702", "956702", "956702"]);
+}
+
+/// Turn start activates the highest-Stacked state of time; ties keep the state.
+/// Source: wiki.gg Imago passive `Moment of Entangled Lives`.
+#[test]
+fn time_state_follows_the_highest_stack() {
+    use lcb_core::scripts::TimeState;
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&fixed::TEAM, &[fixed::BOSS_IMAGO], 2, BattleConfig::default())
+        .unwrap();
+    let enemy = state
+        .units
+        .iter()
+        .position(|u| !u.kind.is_sinner())
+        .unwrap();
+    assert_eq!(state.units[enemy].time_state, Some(TimeState::Past));
+    assert_eq!(state.units[enemy].statuses.stack("In the Past"), 10);
+    // Push Future ahead of the others.
+    state.units[enemy].statuses.add_stack("In the Future", 15);
+    for action in sim.legal_actions(&state) {
+        if let Action::Assign { actor, slot, skill, target } = action {
+            sim.submit(&mut state, Action::Assign { actor, slot, skill, target }).unwrap();
+        }
+    }
+    sim.step_turn(&mut state).unwrap();
+    assert_eq!(state.units[enemy].time_state, Some(TimeState::Future));
+    // A switch adds Temporal Disjunction.
+    assert_eq!(state.units[enemy].statuses.stack("Temporal Disjunction"), 1);
+}
+
+/// Stack thresholds grant their documented bonuses.
+/// Source: in-game `Bufs_Refraction6` (StackPastActivate / Present / Future).
+#[test]
+fn time_state_stack_bonus_matches_game_text() {
+    use lcb_core::scripts::TimeState;
+    let low = TimeState::stack_bonus(5);
+    assert_eq!((low.clash_power, low.final_power, low.potency, low.count), (0, 0, 1, 1));
+    let mid = TimeState::stack_bonus(15);
+    assert_eq!((mid.clash_power, mid.final_power, mid.potency, mid.count), (1, 0, 2, 1));
+    let high = TimeState::stack_bonus(25);
+    assert_eq!((high.clash_power, high.final_power, high.potency, high.count), (0, 2, 3, 2));
+    assert_eq!(TimeState::Past.boosted_status(), "Burn");
+    assert_eq!(TimeState::Present.boosted_status(), "Poise");
+    assert_eq!(TimeState::Future.boosted_status(), "Bleed");
+}
+
 /// A full turn keeps the battle in a consistent, serialisable state.
 #[test]
 fn turn_advances_phase_and_logs() {

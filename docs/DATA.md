@@ -41,6 +41,7 @@ python3 tools/fetch_gamedata.py     # in-game text (pinned commits)
 python3 tools/fetch_pages.py        # wiki.gg pages used by the fixed content
 python3 tools/build_library.py      # -> data/identities, data/ego, data/enemies, data/statuses
 python3 tools/extract_effects.py    # -> data/mechanics/effects.json
+python3 tools/build_enemy_scripts.py # -> data/mechanics/enemy_scripts.json
 python3 tools/report.py             # -> docs/COVERAGE.md, docs/DATA_REPORT.md
 ```
 
@@ -77,11 +78,13 @@ an unimplemented effect can never silently change a result.
 3. Add a test in `sim/crates/lcb-core/tests/mechanics.rs` that names the source.
 4. Re-run the pipeline and `cargo test`.
 
-## Boss rotation
+## Boss action pattern
 
-The Imago's rotations are documented on the wiki in a notation that this project
-does not consider unambiguous, so the engine does not guess them.  The default
-policy is "first listed skill" (`battle::choose_enemy_skill`) and the encounter
-configuration is the place to plug in a real script once it is confirmed.  The
-raw rotation text is preserved verbatim in
-`data/_raw/pages/boss_imago.wikitext`.
+`tools/build_enemy_scripts.py` parses the wiki.gg rotation (three lines per state
+of time, one line per turn, with separate blocks for below 66% / below 33% HP)
+into `data/mechanics/enemy_scripts.json`, and cross-checks it against the
+Japanese wiki's action-pattern table (slot counts 6/6/4, small/mid/big skill per
+state), which is stored verbatim in the same file.  The check asserts that the
+turn-3 list ends with Chaotic Turmoil and that the small/mid/big names match, so
+a wiki edit that changes the pattern fails the build instead of silently
+changing the simulation.

@@ -110,6 +110,20 @@ impl StatusSet {
         }
     }
 
+    pub fn set_stack(&mut self, key: &str, value: i32) {
+        let entry = self.map.entry(key.to_string()).or_default();
+        entry.stack = value.max(0);
+        if entry.is_empty() {
+            self.map.remove(key);
+        }
+    }
+
+    /// Potency + Count, used by the Past passive's "10+ (Burn Potency + Count)".
+    pub fn total_of(&self, key: &str) -> i32 {
+        let s = self.get(key);
+        s.potency + s.count
+    }
+
     pub fn add_stack(&mut self, key: &str, delta: i32) {
         let entry = self.map.entry(key.to_string()).or_default();
         entry.stack = (entry.stack + delta).max(0);
@@ -366,6 +380,25 @@ pub struct Unit {
     /// Where an enemy is in its (stand-in) skill cycle.
     #[serde(default)]
     pub skill_cursor: u32,
+    /// Imago: which of In the Past / In the Present / In the Future is active.
+    #[serde(default)]
+    pub time_state: Option<crate::scripts::TimeState>,
+    /// Bit flags for the 66% / 33% Stack grants (they happen once each).
+    #[serde(default)]
+    pub time_threshold_flags: u8,
+    /// Number of Skill Slots this enemy has (script driven for the Imago).
+    #[serde(default)]
+    pub enemy_slots: u32,
+    /// Some enemies act even while Staggered (JA table, station 5).
+    #[serde(default)]
+    pub acts_while_staggered: bool,
+    /// Script knob: random Clash Power swing after N clashes with one target.
+    #[serde(default)]
+    pub clash_count_swing: Option<crate::scripts::ClashCountSwing>,
+    /// The state-exclusive "big" skill of each state of time; these carry the
+    /// Past/Present/Future passive bonuses.
+    #[serde(default)]
+    pub time_signature: Vec<(crate::scripts::TimeState, String)>,
 }
 
 impl Unit {
@@ -480,6 +513,15 @@ pub struct BattleConfig {
     /// Refuse to run skills whose effect text is not fully modelled.
     pub strict_mechanics: bool,
     pub max_turns: u32,
+    /// Imago: the state of time the encounter starts in.  The wiki ties it to
+    /// the choice events of the previous stations, so it is configurable; the
+    /// default is the first listed state.
+    #[serde(default = "default_initial_time_state")]
+    pub initial_time_state: crate::scripts::TimeState,
+}
+
+fn default_initial_time_state() -> crate::scripts::TimeState {
+    crate::scripts::TimeState::Past
 }
 
 impl Default for BattleConfig {
@@ -491,6 +533,7 @@ impl Default for BattleConfig {
             sp_on_clash_lose: None,
             strict_mechanics: true,
             max_turns: 30,
+            initial_time_state: crate::scripts::TimeState::Past,
         }
     }
 }
@@ -538,6 +581,10 @@ pub struct BattleState {
     #[serde(default)]
     pub defenses: Vec<crate::battle::ActiveDefense>,
     pub ego_resources: BTreeMap<String, i32>,
+    /// Clashes fought between two units, keyed `"actor|target"`; the Imago's
+    /// "Causality that Threads ..." passive reads it.
+    #[serde(default)]
+    pub clash_counts: BTreeMap<String, i32>,
     pub log: Vec<LogEntry>,
     pub warnings: Vec<String>,
     pub winner: Option<Winner>,

@@ -15,6 +15,7 @@ pub mod ids;
 pub mod library;
 pub mod replay;
 pub mod rng;
+pub mod scripts;
 pub mod setup;
 pub mod state;
 
@@ -34,6 +35,7 @@ use std::path::{Path, PathBuf};
 pub struct Simulator {
     pub library: Library,
     pub mechanics: MechanicsBook,
+    pub scripts: scripts::ScriptsBook,
     pub data_root: PathBuf,
 }
 
@@ -78,9 +80,12 @@ impl Simulator {
         let library = Library::load(&root)?;
         let mechanics = MechanicsBook::load(&root.join("mechanics").join("effects.json"))
             .map_err(SimError::Mechanics)?;
+        let scripts = scripts::ScriptsBook::load(&root.join("mechanics").join("enemy_scripts.json"))
+            .map_err(SimError::Mechanics)?;
         Ok(Self {
             library,
             mechanics,
+            scripts,
             data_root: root,
         })
     }
@@ -93,6 +98,7 @@ impl Simulator {
         config: BattleConfig,
     ) -> Result<BattleState, SimError> {
         let state = EncounterBuilder::new(&self.library, &self.mechanics)
+            .scripts(&self.scripts)
             .seed(seed)
             .config(config)
             .build(team, enemies)?;
@@ -125,7 +131,7 @@ impl Simulator {
             state.phase = state::Phase::Finished;
             return Ok(());
         }
-        battle::begin_turn(state, &self.library, &self.mechanics);
+        battle::begin_turn(state, &self.library, &self.mechanics, &self.scripts);
         Ok(())
     }
 

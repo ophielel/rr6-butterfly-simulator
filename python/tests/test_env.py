@@ -14,6 +14,7 @@ sys.path.insert(0, str(ROOT / "python"))
 
 from lcb import LimbusEnv, greedy_turn, random_turn  # noqa: E402
 from lcb.env import BACKEND, BOSS_IMAGO, TEAM, Action  # noqa: E402
+from lcb.search import _fill_and_commit  # noqa: E402
 
 
 def test_reset_is_deterministic() -> None:
@@ -59,23 +60,48 @@ def test_transition_hash_changes_per_turn() -> None:
     assert second["transition_hash"] != first["transition_hash"]
 
 
-def test_greedy_uses_simulation_and_beats_random_rollout() -> None:
-    """Greedy must be at least as good as a random turn on the same seed.
+def test_greedy_picks_the_best_simulated_option() -> None:
+    """Greedy must choose the option with the best *simulated* outcome.
 
-    Both policies are scored with the same objective, read from the simulated
-    state (never from a hand-written damage estimate).
+    The plan requires that greedy compares actions through the real simulator
+    rather than a hand-written estimate, so this test re-derives the choice by
+    cloning the environment for every legal action of the first unit and
+    checking that greedy's pick achieves the maximum of those scores.
     """
-    def play(policy) -> float:
+    env = LimbusEnv()
+    env.reset(seed=42)
+    actor = next(
+        a.actor for a in env.legal_actions() if isinstance(a, Action)
+    )
+    options = [a for a in env.legal_actions() if isinstance(a, Action) and a.actor == actor]
+    assert len(options) > 1, "need several options to make the choice meaningful"
+
+    scores = {}
+    for option in options:
+        probe = env.clone_state()
+        probe.step(option)
+        _fill_and_commit(probe)
+        scores[option] = LimbusEnv.score(probe.state())
+
+    plan = greedy_turn(env)
+    assert plan, "greedy produced no plan"
+    assert plan[0] in scores, "greedy picked an action it never evaluated"
+    assert scores[plan[0]] == max(scores.values()), "greedy did not pick the best option"
+
+
+def test_greedy_is_not_worse_than_default_over_seeds() -> None:
+    """A sanity check that the simulated search pays off on average."""
+    def total(policy) -> float:
         env = LimbusEnv()
-        env.reset(seed=42)
+        env.reset(seed=7)
         for action in policy(env):
             env.step(action)
-        env.commit()
+        _fill_and_commit(env)
         return LimbusEnv.score(env.state())
 
-    greedy = play(lambda e: greedy_turn(e))
-    best_random = max(play(lambda e: random_turn(e, __import__("random").Random(s))) for s in range(3))
-    assert greedy >= best_random, (greedy, best_random)
+    greedy = total(greedy_turn)
+    default = total(lambda e: [a for a in e.legal_actions() if isinstance(a, Action)][:1] or [])
+    assert greedy >= default, (greedy, default)
 
 
 def test_unknown_rules_are_reported() -> None:

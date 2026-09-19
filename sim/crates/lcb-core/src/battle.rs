@@ -546,6 +546,17 @@ pub fn apply_effects(
                     .unwrap_or(0);
                 let count = effect.count.map(|_| scaled(effect, measured)).unwrap_or(0);
                 let count_status = effect.status2.clone().unwrap_or_else(|| status.clone());
+                // A state of time makes the unit inflict or gain more of its
+                // status (Burn / Poise / Bleed).
+                let (mut potency, mut count) = (potency, count);
+                if let Some((boosted, bonus)) = time_state_bonus(state, ctx.actor_index) {
+                    if status == boosted {
+                        potency += bonus.potency;
+                    }
+                    if status == boosted || count_status == boosted {
+                        count += bonus.count;
+                    }
+                }
                 let unit = &mut state.units[index];
                 unit.statuses.add_potency(&status, potency);
                 unit.statuses.add_count(&count_status, count);
@@ -935,6 +946,10 @@ pub fn final_power(
     use_: &mut SkillUse,
 ) -> i32 {
     let mut total = use_.base_power + use_.ctx.base_power_bonus;
+    if let Some((_, bonus)) = time_state_bonus(state, unit_index) {
+        total += bonus.final_power;
+    }
+    total += time_passives::signature_final_power(state, unit_index, &use_.skill);
     for index in 0..use_.coins.len() {
         if use_.coins[index].state != CoinState::Fresh {
             continue;
@@ -944,6 +959,159 @@ pub fn final_power(
         }
     }
     total.max(0)
+}
+
+/// The Past / Present / Future passives of the Imago.
+///
+/// Source: wiki.gg `Butterfly of Entangled Lives::Imago` passives
+/// `Past [過去]`, `Present [現在]`, `Future [未來]`.
+pub mod time_passives {
+    use super::*;
+
+    /// Is `skill` the state-exclusive "big" skill of the unit's active state?
+    pub fn is_signature(state: &BattleState, unit_index: usize, skill: &SkillId) -> bool {
+        let unit = &state.units[unit_index];
+        let Some(active) = unit.time_state else { return false };
+        unit.time_signature
+            .iter()
+            .any(|(time_state, id)| *time_state == active && id == skill.as_str())
+    }
+
+    /// Signature skills gain Final Power +2 in their own state.
+    pub fn signature_final_power(state: &BattleState, unit_index: usize, skill: &SkillId) -> i32 {
+        if is_signature(state, unit_index, skill) {
+            2
+        } else {
+            0
+        }
+    }
+
+    /// Past: "When hit by Sinners, inflict 1 Burn and +1 Burn Count on the
+    /// attacking Sinner."
+    pub fn on_hit_by_sinner(state: &mut BattleState, enemy_index: usize, attacker_index: usize) {
+        if state.units[enemy_index].time_state != Some(crate::scripts::TimeState::Past) {
+            return;
+        }
+        if !state.units[attacker_index].kind.is_sinner() {
+            return;
+        }
+        let statuses = &mut state.units[attacker_index].statuses;
+        statuses.add_potency("Burn", 1);
+        statuses.add_count("Burn", 1);
+    }
+
+    /// Turn-start effects of the active state.
+    pub fn turn_start(state: &mut BattleState, unit_index: usize) {
+        let Some(active) = state.units[unit_index].time_state else { return };
+        let stack = state.units[unit_index].statuses.stack(active.stack_key());
+        let sinner_count = state
+            .units
+            .iter()
+            .filter(|u| u.alive && u.kind.is_sinner())
+            .count() as i32;
+        match active {
+            crate::scripts::TimeState::Past => {
+                // "Turn Start: Inflict 5 HP Healing Down and 3 Wrath Fragility
+                // on all Sinners who have 10+ (Burn Potency + Burn Count)."
+                for index in 0..state.units.len() {
+                    if !state.units[index].kind.is_sinner() || !state.units[index].alive {
+                        continue;
+                    }
+                    let burn = state.units[index].statuses.total_of("Burn");
+                    if burn >= 10 {
+                        state.units[index].statuses.add_potency("HP Healing Down", 5);
+                        state.units[index].statuses.add_potency("Wrath Fragility", 3);
+                    }
+                }
+                let _ = stack;
+            }
+            crate::scripts::TimeState::Present => {
+                // "Turn Start: gain (2 + # of Sinners) Poise Potency and Count."
+                let gain = 2 + sinner_count;
+                state.units[unit_index].statuses.add_potency("Poise", gain);
+                state.units[unit_index].statuses.add_count("Poise", gain);
+            }
+            crate::scripts::TimeState::Future => {
+                // "Turn Start: All Sinners gain +(3 + # of current turn / 2)
+                // Bleed Count (rounded up)."
+                let gain = 3 + (state.turn as i32 + 1) / 2;
+                for index in 0..state.units.len() {
+                    if state.units[index].kind.is_sinner() && state.units[index].alive {
+                        state.units[index].statuses.add_count("Bleed", gain);
+                    }
+                }
+            }
+        }
+    }
+
+    /// Last-coin effects of the signature skills.
+    pub fn signature_last_coin(
+        state: &mut BattleState,
+        enemy_index: usize,
+        skill: &SkillId,
+        coin_index: usize,
+        coin_count: usize,
+        target_index: usize,
+    ) {
+        if coin_index + 1 != coin_count || !is_signature(state, enemy_index, skill) {
+            return;
+        }
+        let Some(active) = state.units[enemy_index].time_state else { return };
+        let stack = state.units[enemy_index].statuses.stack(active.stack_key());
+        match active {
+            crate::scripts::TimeState::Past => {
+                // Kalpāgni's final Coin: SP damage equal to half the Stack.
+                let sanity = state.units[target_index].sanity;
+                state.units[target_index].sanity = sanity.add(-(stack / 2));
+            }
+            crate::scripts::TimeState::Present => {
+                // Smite the Wicked's final Coin: raise the Stagger Threshold.
+                let raise = stack / 2;
+                let thresholds = &mut state.units[target_index].stagger.thresholds_percent;
+                if let Some(first) = thresholds.first_mut() {
+                    *first += raise;
+                }
+            }
+            crate::scripts::TimeState::Future => {
+                // Bloodflower's final Coin: heal (Stack x 3) HP on self.
+                let heal = stack * 3;
+                state.units[enemy_index].heal(heal);
+            }
+        }
+    }
+
+    /// Present: critical hits deal extra damage based on the unit's Poise.
+    pub fn crit_damage_bonus(state: &BattleState, unit_index: usize) -> f64 {
+        if state.units[unit_index].time_state != Some(crate::scripts::TimeState::Present) {
+            return 0.0;
+        }
+        let poise = &state.units[unit_index].statuses;
+        let bonus = ((poise.potency("Poise") + poise.count("Poise")) * 2).min(120) as f64 / 100.0;
+        bonus
+    }
+
+    /// Present: "Does not lose Poise Count On Crit."
+    pub fn keeps_poise_on_crit(state: &BattleState, unit_index: usize) -> bool {
+        state.units[unit_index].time_state == Some(crate::scripts::TimeState::Present)
+    }
+
+    /// Future: Bleed damage heals the unit that has the state active.
+    pub fn bleed_lifesteal_target(state: &BattleState) -> Option<usize> {
+        state.units.iter().position(|u| {
+            u.alive && u.time_state == Some(crate::scripts::TimeState::Future)
+        })
+    }
+}
+
+/// Bonus the unit's active state of time grants (wiki.gg `Bufs_Refraction6`).
+pub fn time_state_bonus(
+    state: &BattleState,
+    unit_index: usize,
+) -> Option<(&'static str, crate::scripts::StackBonus)> {
+    let unit = &state.units[unit_index];
+    let time_state = unit.time_state?;
+    let stack = unit.statuses.stack(time_state.stack_key());
+    Some((time_state.boosted_status(), crate::scripts::TimeState::stack_bonus(stack)))
 }
 
 /// **Match Power** = Final Power + level bonus.  Only the side with the higher
@@ -961,7 +1129,34 @@ pub fn match_power(
         Some(modifier) => state.units[opponent_index].offense_level() + modifier,
         None => state.units[opponent_index].defense_level(),
     };
-    power + level_clash_bonus(my_level, their_level)
+    let mut total = power + level_clash_bonus(my_level, their_level);
+    if let Some((_, bonus)) = time_state_bonus(state, unit_index) {
+        total += bonus.clash_power;
+    }
+    // "Causality that Threads the Past, the Present, and the Future":
+    // from 10+ clashes against the same target, Clash Power swings randomly.
+    if let Some(swing) = clash_count_swing(state, unit_index, opponent_index) {
+        let key = clash_key(state, unit_index, opponent_index);
+        let count = state.clash_counts.get(&key).copied().unwrap_or(0);
+        if count >= swing.threshold {
+            let amount = count / swing.divisor.max(1);
+            let positive = state.flip(50);
+            total += if positive { amount } else { -amount };
+        }
+    }
+    total
+}
+
+fn clash_key(state: &BattleState, a: usize, b: usize) -> String {
+    format!("{}|{}", state.units[a].id, state.units[b].id)
+}
+
+fn clash_count_swing(
+    state: &BattleState,
+    unit_index: usize,
+    _opponent_index: usize,
+) -> Option<crate::scripts::ClashCountSwing> {
+    state.units[unit_index].clash_count_swing
 }
 
 /// Resolve a clash.
@@ -1029,9 +1224,17 @@ fn break_coin(coin: &mut CoinRuntime, _unit_index: usize) {
 /// Bleed ticks when a unit tosses an attack coin (wiki.gg `Status Effects`).
 fn tick_bleed(state: &mut BattleState, unit_index: usize) {
     let potency = state.units[unit_index].statuses.potency("Bleed");
-    if potency > 0 {
-        state.units[unit_index].take_damage(potency);
-        state.units[unit_index].statuses.add_count("Bleed", -1);
+    if potency <= 0 {
+        return;
+    }
+    let (_, hp_lost) = state.units[unit_index].take_damage(potency);
+    state.units[unit_index].statuses.add_count("Bleed", -1);
+    // Future passive: "Whenever Bleed activates on self or on Sinners, heal HP
+    // equal to the said Bleed damage."
+    if let Some(healer) = time_passives::bleed_lifesteal_target(state) {
+        if healer != unit_index {
+            state.units[healer].heal(hp_lost);
+        }
     }
 }
 
@@ -1234,7 +1437,10 @@ fn apply_hit(
         let crit = potency > 0 && state.flip(potency);
         (crit, potency)
     };
-    if crit && poise_potency > 0 {
+    if crit
+        && poise_potency > 0
+        && !time_passives::keeps_poise_on_crit(state, attacker_index)
+    {
         state.units[attacker_index].statuses.add_count("Poise", -1);
     }
     let defender = &state.units[defender_index];
@@ -1253,7 +1459,14 @@ fn apply_hit(
             .unwrap_or_else(|| state.units[defender_index].defense_level()),
         critical: crit,
         clash_count,
-        dynamic_modifier: use_.ctx.damage_bonus + fragile_bonus(defender),
+        dynamic_modifier: use_.ctx.damage_bonus
+            + fragile_bonus(defender)
+            + temporal_disjunction_bonus(defender)
+            + if crit {
+                time_passives::crit_damage_bonus(state, attacker_index)
+            } else {
+                0.0
+            },
         ..Default::default()
     };
     let breakdown = compute_damage(&inputs);
@@ -1278,6 +1491,17 @@ fn apply_hit(
         state.warnings.push(note);
     }
 
+    // Past passive: hitting the Imago burns the attacker.
+    time_passives::on_hit_by_sinner(state, defender_index, attacker_index);
+    // Signature last-Coin effects of the active state.
+    time_passives::signature_last_coin(
+        state,
+        attacker_index,
+        &use_.skill.clone(),
+        coin_index,
+        use_.coins.len(),
+        defender_index,
+    );
     // Sinking: when hit, SP damage by Potency then Count -1.
     apply_sinking(state, defender_index);
 
@@ -1369,6 +1593,13 @@ fn active_defense_level(state: &BattleState, unit_index: usize) -> Option<i32> {
     Some((state.units[unit_index].level + defense.defense_level_mod).max(1))
 }
 
+/// Temporal Disjunction: "Take +(Stack x 15)% damage (max 150%)"
+/// (in-game `Bufs_Refraction6` / `TimeGap`).
+fn temporal_disjunction_bonus(defender: &Unit) -> f64 {
+    let stack = defender.statuses.stack("Temporal Disjunction").min(10);
+    stack as f64 * 0.15
+}
+
 fn fragile_bonus(defender: &Unit) -> f64 {
     let fragile = defender.statuses.count("Fragile").min(10);
     fragile as f64 * 0.10
@@ -1396,7 +1627,12 @@ pub fn check_stagger(state: &mut BattleState, unit_index: usize) -> bool {
 // turn loop
 // --------------------------------------------------------------------------- //
 
-pub fn begin_turn(state: &mut BattleState, library: &Library, _mechanics: &MechanicsBook) {
+pub fn begin_turn(
+    state: &mut BattleState,
+    library: &Library,
+    _mechanics: &MechanicsBook,
+    scripts: &crate::scripts::ScriptsBook,
+) {
     state.turn += 1;
     state.phase = Phase::TurnStart;
     state.actions.clear();
@@ -1486,19 +1722,29 @@ pub fn begin_turn(state: &mut BattleState, library: &Library, _mechanics: &Mecha
             }
         }
     }
-    // Enemy slots: one skill per living enemy, chosen by the configured policy.
+    // Past / Present / Future turn-start effects.
+    for index in 0..state.units.len() {
+        if state.units[index].alive && !state.units[index].kind.is_sinner() {
+            time_passives::turn_start(state, index);
+        }
+        // Temporal Disjunction: at 10 Stack, gain 5 Fragile.
+        if state.units[index].statuses.stack("Temporal Disjunction") >= 10 {
+            state.units[index].statuses.add_count("Fragile", 5);
+        }
+    }
+    // Enemy Skill Slots.  A unit with a documented action pattern (the Imago)
+    // uses one action per listed slot for the current turn of its cycle.
     for index in 0..state.units.len() {
         if !state.units[index].alive || state.units[index].kind.is_sinner() {
             continue;
         }
-        if let Some(skill) = choose_enemy_skill(state, library, index) {
-            let target = state
-                .living_sinners()
-                .into_iter()
-                .next();
+        let skills = enemy_turn_skills(state, library, scripts, index);
+        let targets = enemy_targets(state, index, skills.len());
+        for (slot, skill) in skills.into_iter().enumerate() {
+            let target = targets.get(slot).cloned().flatten();
             state.actions.push(SubmittedAction {
                 actor: state.units[index].id.clone(),
-                slot: 0,
+                slot: slot as u32,
                 skill,
                 target,
                 is_ego: false,
@@ -1510,27 +1756,140 @@ pub fn begin_turn(state: &mut BattleState, library: &Library, _mechanics: &Mecha
     state.phase = Phase::AwaitingActions;
 }
 
-/// Enemy skill choice.  The wiki documents the boss rotations in a notation
-/// this project does not consider unambiguous, so the default policy is the
-/// first listed skill; see docs/MECHANICS.md (`UNKNOWN: boss rotation`).
-fn choose_enemy_skill(state: &mut BattleState, library: &Library, unit_index: usize) -> Option<SkillId> {
+/// Skills the enemy will use this turn.
+///
+/// With a script (`data/mechanics/enemy_scripts.json`) the turn comes straight
+/// from the wiki's action pattern: the band is chosen by HP, the state of time
+/// by the unit's Stack, and the cycle position advances every turn.  Without a
+/// script the configured fallback policy is used.
+fn enemy_turn_skills(
+    state: &mut BattleState,
+    library: &Library,
+    scripts: &crate::scripts::ScriptsBook,
+    unit_index: usize,
+) -> Vec<SkillId> {
     let UnitKind::Abnormality { enemy, .. } = state.units[unit_index].kind.clone() else {
-        return None;
+        return Vec::new();
     };
-    let record = library.enemy(&enemy)?;
+    update_time_state(state, scripts, unit_index);
+    if let Some(script) = scripts.for_enemy(enemy.as_str()) {
+        let hp_percent = state.units[unit_index].hp_percent();
+        let time_state = state.units[unit_index]
+            .time_state
+            .unwrap_or(state.config.initial_time_state);
+        let cycle = state.units[unit_index].skill_cursor;
+        let skills = script.turn_skills(hp_percent, time_state, cycle);
+        state.units[unit_index].skill_cursor = (cycle + 1) % script.cycle_turns.max(1);
+        if !skills.is_empty() {
+            return skills.into_iter().map(SkillId::new).collect();
+        }
+    }
+    // Fallback policy for enemies without a documented pattern.
+    let Some(record) = library.enemy(&enemy) else {
+        return Vec::new();
+    };
     if record.skills.is_empty() {
-        return None;
+        return Vec::new();
     }
     let index = match state.config.enemy_policy {
         crate::state::EnemyPolicy::FirstListed => 0,
         crate::state::EnemyPolicy::Cyclic => {
             let cursor = state.units[unit_index].skill_cursor as usize % record.skills.len();
-            state.units[unit_index].skill_cursor =
-                ((cursor + 1) % record.skills.len()) as u32;
+            state.units[unit_index].skill_cursor = ((cursor + 1) % record.skills.len()) as u32;
             cursor
         }
     };
-    record.skills.get(index).map(|s| SkillId::new(s.skill_id()))
+    record
+        .skills
+        .get(index)
+        .map(|s| vec![SkillId::new(s.skill_id())])
+        .unwrap_or_default()
+}
+
+/// Imago: keep the three states of time on the unit and pick the active one.
+///
+/// "Turn Start: Activate the highest-Stacked state of time between In the Past,
+/// In the Present, and In the Future ... If multiple states of time share the
+/// highest Stack, the currently active state of time does not change"
+/// (wiki.gg `Butterfly of Entangled Lives::Imago` / Moment of Entangled Lives).
+fn update_time_state(
+    state: &mut BattleState,
+    scripts: &crate::scripts::ScriptsBook,
+    unit_index: usize,
+) {
+    let UnitKind::Abnormality { enemy, .. } = state.units[unit_index].kind.clone() else {
+        return;
+    };
+    let Some(_script) = scripts.for_enemy(enemy.as_str()) else {
+        return;
+    };
+    // Encounter start: 10 Stacks of each state of time.
+    if state.turn <= 1 && crate::scripts::TimeState::ALL.iter().all(|s| {
+        state.units[unit_index].statuses.stack(s.stack_key()) == 0
+    }) {
+        for time_state in crate::scripts::TimeState::ALL {
+            state.units[unit_index]
+                .statuses
+                .set_stack(time_state.stack_key(), 10);
+        }
+        state.units[unit_index].time_state = Some(state.config.initial_time_state);
+    }
+    // Crossing 66% / 33% HP grants 10 more Stacks of each state, once each.
+    let hp_percent = state.units[unit_index].hp_percent();
+    let flags = state.units[unit_index].time_threshold_flags;
+    if hp_percent <= 66 && flags & 1 == 0 {
+        for time_state in crate::scripts::TimeState::ALL {
+            state.units[unit_index]
+                .statuses
+                .add_stack(time_state.stack_key(), 10);
+        }
+        state.units[unit_index].time_threshold_flags |= 1;
+    }
+    if hp_percent <= 33 && flags & 2 == 0 {
+        for time_state in crate::scripts::TimeState::ALL {
+            state.units[unit_index]
+                .statuses
+                .add_stack(time_state.stack_key(), 10);
+        }
+        state.units[unit_index].time_threshold_flags |= 2;
+    }
+    // Activate the highest Stack; ties keep the current state.
+    let current = state.units[unit_index].time_state;
+    let best = crate::scripts::TimeState::ALL
+        .iter()
+        .map(|s| (*s, state.units[unit_index].statuses.stack(s.stack_key())))
+        .max_by_key(|(_, stack)| *stack);
+    if let Some((candidate, stack)) = best {
+        let current_stack = current
+            .map(|s| state.units[unit_index].statuses.stack(s.stack_key()))
+            .unwrap_or(-1);
+        if stack > current_stack {
+            if current != Some(candidate) {
+                // Switching states adds Temporal Disjunction.
+                state.units[unit_index].statuses.add_stack("Temporal Disjunction", 1);
+            }
+            state.units[unit_index].time_state = Some(candidate);
+        }
+    }
+}
+
+/// Enemy targeting: slots are spread over the living Sinners in speed order
+/// (the real game picks by speed and threat; this is a documented stand-in).
+fn enemy_targets(state: &BattleState, unit_index: usize, slots: usize) -> Vec<Option<UnitId>> {
+    let mut sinners: Vec<(i32, UnitId)> = state
+        .units
+        .iter()
+        .filter(|u| u.alive && u.kind.is_sinner())
+        .map(|u| (u.speed, u.id.clone()))
+        .collect();
+    sinners.sort_by(|a, b| b.0.cmp(&a.0));
+    if sinners.is_empty() {
+        return vec![None; slots];
+    }
+    let _ = unit_index;
+    (0..slots)
+        .map(|slot| Some(sinners[slot % sinners.len()].1.clone()))
+        .collect()
 }
 
 pub fn end_turn(state: &mut BattleState) {
@@ -1594,7 +1953,10 @@ pub fn resolve_combat(state: &mut BattleState, library: &Library, mechanics: &Me
     let mut pending: Vec<(usize, SubmittedAction, Option<usize>)> = Vec::new();
     for action in state.actions.clone() {
         let Some(actor) = state.index_of(&action.actor) else { continue };
-        if !state.units[actor].alive || state.units[actor].is_staggered() {
+        if !state.units[actor].alive {
+            continue;
+        }
+        if state.units[actor].is_staggered() && !state.units[actor].acts_while_staggered {
             continue;
         }
         let target = action.target.as_ref().and_then(|t| state.index_of(t));
@@ -1680,6 +2042,10 @@ pub fn resolve_combat(state: &mut BattleState, library: &Library, mechanics: &Me
                     let pre_a = prepare_use(state, library, mechanics, actor_i, target_i, a);
                     let pre_b = prepare_use(state, library, mechanics, actor_j, Some(actor_i), b);
                     let _ = (pre_a, pre_b);
+                    {
+                        let key = clash_key(state, actor_i, actor_j);
+                        *state.clash_counts.entry(key).or_insert(0) += 1;
+                    }
                     let outcome = resolve_clash(state, actor_i, actor_j, a, b);
                     if outcome.winner.as_ref() == Some(&state.units[actor_i].id) {
                         apply_clash_result(state, actor_i, Some(actor_j), a, true);

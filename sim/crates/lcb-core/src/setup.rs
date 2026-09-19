@@ -110,18 +110,26 @@ pub fn build_deck(identity: &IdentityRecord, uptie: Uptie) -> SkillDeck {
 pub struct EncounterBuilder<'a> {
     pub library: &'a Library,
     pub mechanics: &'a MechanicsBook,
+    pub scripts: &'a crate::scripts::ScriptsBook,
     pub config: BattleConfig,
     pub seed: u64,
 }
 
 impl<'a> EncounterBuilder<'a> {
     pub fn new(library: &'a Library, mechanics: &'a MechanicsBook) -> Self {
+        static EMPTY: std::sync::OnceLock<crate::scripts::ScriptsBook> = std::sync::OnceLock::new();
         Self {
             library,
             mechanics,
+            scripts: EMPTY.get_or_init(crate::scripts::ScriptsBook::default),
             config: BattleConfig::default(),
             seed: 0,
         }
+    }
+
+    pub fn scripts(mut self, scripts: &'a crate::scripts::ScriptsBook) -> Self {
+        self.scripts = scripts;
+        self
     }
 
     pub fn seed(mut self, seed: u64) -> Self {
@@ -202,6 +210,7 @@ impl<'a> EncounterBuilder<'a> {
             deployment,
             actions: Vec::new(),
             defenses: Vec::new(),
+            clash_counts: BTreeMap::new(),
             ego_resources: Sin::ALL
                 .iter()
                 .map(|s| (sin_key(*s).to_string(), 0i32))
@@ -228,7 +237,7 @@ impl<'a> EncounterBuilder<'a> {
             state.units[index].dashboard = panel;
         }
         // Turn 1 starts immediately: the caller then assigns actions and commits.
-        crate::battle::begin_turn(&mut state, self.library, self.mechanics);
+        crate::battle::begin_turn(&mut state, self.library, self.mechanics, self.scripts);
         Ok(state)
     }
 
@@ -272,6 +281,12 @@ impl<'a> EncounterBuilder<'a> {
             ego_slots: ego_for_identity(&record.id),
             alive: true,
             skill_cursor: 0,
+            time_state: None,
+            time_threshold_flags: 0,
+            enemy_slots: 1,
+            acts_while_staggered: false,
+            clash_count_swing: None,
+            time_signature: Vec::new(),
         })
     }
 
@@ -331,6 +346,37 @@ impl<'a> EncounterBuilder<'a> {
             ego_slots: Vec::new(),
             alive: true,
             skill_cursor: 0,
+            time_state: None,
+            time_threshold_flags: 0,
+            enemy_slots: self
+                .scripts
+                .for_enemy(&record.id)
+                .map(|script| script.slots)
+                .unwrap_or(1),
+            acts_while_staggered: self
+                .scripts
+                .for_enemy(&record.id)
+                .map(|script| script.acts_while_staggered)
+                .unwrap_or(false),
+            clash_count_swing: self
+                .scripts
+                .for_enemy(&record.id)
+                .and_then(|script| script.clash_count_swing),
+            time_signature: self
+                .scripts
+                .for_enemy(&record.id)
+                .map(|script| {
+                    crate::scripts::TimeState::ALL
+                        .iter()
+                        .filter_map(|state| {
+                            script
+                                .states
+                                .get(state.as_str())
+                                .map(|entry| (*state, entry.big.clone()))
+                        })
+                        .collect()
+                })
+                .unwrap_or_default(),
         })
     }
 }

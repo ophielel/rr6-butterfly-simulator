@@ -44,6 +44,13 @@ Sources used below:
 | 19 | Attack skills generate 1 E.G.O resource of their affinity on use | `battle::prepare_use` | wiki.gg `Clash` / Attack Skills | single_source_verified |
 | 20 | E.G.O costs its listed resources and SP; Overclock uses the corrosion skill at 1.5x cost (rounded up) | `battle::pay_ego`, `battle::ego_affordable` | wiki.gg `Clash` / E.G.O Skills, Overclocking | single_source_verified |
 | 21 | Unit HP `= Base + Mult x Level`; speed is rolled from the unit's range each turn | `library::IdentityStats::hp_at_level`, `battle::begin_turn` | wiki.gg `Clash` / Health, Speed | single_source_verified |
+| 23 | **Imago action pattern**: six Skill Slots, a three-turn cycle, small/mid/big skill per state of time, different patterns below 66% and 33% HP, idle slots on turn 3, and the unit acts even while Staggered | `scripts::EnemyScript`, `battle::enemy_turn_skills` | wiki.gg Imago `Behavior` + JA-wiki 行動パターン | multi_source_verified |
+| 24 | **States of time**: encounter starts with 10 Stacks of each; Turn Start activates the highest Stack (ties keep the current state); crossing 66%/33% HP grants 10 more of each once; switching adds 1 Temporal Disjunction | `battle::update_time_state` | wiki.gg Imago passives, in-game `Bufs_Refraction6` | multi_source_verified |
+| 25 | **Stack bonus**: 0-10 → +1 Potency/Count; 11-20 → Clash Power +1, +2 Potency/+1 Count; 21-30 → Final Power +2, +3 Potency/+2 Count, applied to the state's status (Burn / Poise / Bleed) | `scripts::TimeState::stack_bonus`, `battle::time_state_bonus` | in-game `Bufs_Refraction6` (`StackPast/Present/FutureActivate`) | official |
+| 26 | **Past**: hitting the Imago burns the attacker (1 Burn, +1 Count); `Kalpāgni` +2 Final Power and its last Coin deals (Stack/2) SP damage; Turn Start inflicts 5 HP Healing Down + 3 Wrath Fragility on Sinners with 10+ (Burn Potency + Count) | `battle::time_passives` | wiki.gg Imago passive `Past [過去]` | single_source_verified |
+| 27 | **Present**: `Smite the Wicked` +2 Final Power and its last Coin raises the Stagger Threshold by (Stack/2); Turn Start gains (2 + #Sinners) Poise Potency and Count; no Poise Count loss on crit; critical hits deal +((Poise Potency + Count) x 2)% (max 120%) | `battle::time_passives` | wiki.gg Imago passive `Present [現在]` | single_source_verified |
+| 28 | **Future**: `Bloodflower` +2 Final Power and its last Coin heals (Stack x 3) HP; Turn Start gives all Sinners +(3 + turn/2) Bleed Count; Bleed damage heals the Imago | `battle::time_passives` | wiki.gg Imago passive `Future [未來]` | single_source_verified |
+| 29 | Temporal Disjunction: take +(Stack x 15)% damage (max 150%); Turn Start at 10 Stack grants 5 Fragile | `battle::temporal_disjunction_bonus`, `battle::begin_turn` | in-game `Bufs_Refraction6` (`TimeGap`) | official |
 | 22 | Boss numbers (HP, resistances, coin power, effect text) for the fixed content | `data/enemies/*.json`, `data/identities/*.json` | wiki.gg pages + in-game text keyed by official id | multi_source_verified |
 
 ## Unknown rules (explicitly *not* guessed)
@@ -60,9 +67,11 @@ Sources used below:
 
 | Feature | Status | Note |
 |---------|--------|------|
-| Imago three-state machine (`In the Past / Present / Future`) and its skill rotations | `NOT_IMPLEMENTED` | The wiki lists rotations in a notation this project could not disambiguate (lines of 4–6 skills under "three-turn cycle"). The rotation text is preserved in `data/_raw/pages/boss_imago.wikitext`. The enemy stands in with `BattleConfig::enemy_policy` (`Cyclic` by default: walks the unit's skill list in order). |
-| Illusory Butterfly damage transfer and stack removal | `NOT_IMPLEMENTED` | Data (`9564/9565/9566`) is loaded, the passive text is kept, but the interaction is not simulated. |
-| Section 5 choice event (Sunset Wayfarer) | `NOT_IMPLEMENTED` | Event data is not in the library yet. |
+| Illusory Butterfly damage transfer and stack removal | `NOT_IMPLEMENTED` | Data (`9564`–`9566`, and the Section-5 variants `9572`–`9574`) is loaded and the passive text is kept, but "The Past/… - Segmentation" (stack loss on hit, +5 at combat end) and "Origination" (halve damage and transfer it to the Imago) are not simulated. |
+| Section 5 choice event (Sunset Wayfarer) and the earlier stations' choices that disable Past/Present/Future components | `NOT_IMPLEMENTED` | The encounter starts in `BattleConfig::initial_time_state` instead (the wiki ties the real starting state to those choices). |
+| HP Healing Down / Wrath Fragility / Gloom Fragility etc. | `NOT_IMPLEMENTED` | The Past passive and several skills apply them and they show up in the state, but their own effects (healing reduction, damage amplification by affinity) are not yet part of the damage formula. |
+| Illusory Butterfly Eclosion / encounter-end skills | `NOT_IMPLEMENTED` | "End the Encounter" skills are extracted but not acted upon. |
+| The earlier stations (1-4): Pupa shield phase, Station-1 skill pattern | partially | The Pupa's data and its rotation exist in the library; the shield-break branch ("a" pattern) is not scripted. |
 | Sin Resonance / A-Reson | `NOT_IMPLEMENTED` | Several effects ("highest Reson.", "A-Reson.") are listed in the per-skill `unmodeled` arrays. |
 | Panic / Low Morale, E.G.O Corrosion forced actions | `NOT_IMPLEMENTED` | Sanity is modelled, the panic tables are not loaded. |
 | Focused-encounter Parts (Core/Part splitting, part destruction) | `NOT_IMPLEMENTED` | Only the core unit is instantiated. |
