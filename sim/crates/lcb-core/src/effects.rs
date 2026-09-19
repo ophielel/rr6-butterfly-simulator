@@ -62,6 +62,9 @@ pub struct Condition {
     /// Any sin's Resonance count is at least this value.
     #[serde(default)]
     pub resonance_gte: Option<i32>,
+    /// The target's SP is below this value.
+    #[serde(default)]
+    pub target_sp_below: Option<i32>,
     /// `hp_below_percent` includes equality (the wiki writes "N% or less").
     #[serde(default)]
     pub hp_or_equal: Option<bool>,

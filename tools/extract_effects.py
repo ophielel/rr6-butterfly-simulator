@@ -181,6 +181,72 @@ PATTERNS = [
      lambda m: {"kind": "discard_other_in_slot"}),
     (re.compile(rf"^\[Discard\] {N} Skills? of the lowest rank in all of this unit's Skill Slots$"),
      lambda m: {"kind": "discard_lowest_rank", "value": int(m.group(1))}),
+    # "Gain +3 [Aggro] to this Skill Slot next turn" (modelled unit-wide).
+    (re.compile(rf"^Gain \+{N} {ST} to this Skill Slot$"),
+     lambda m: {"kind": "gain", "status": m.group(2), "potency": int(m.group(1)),
+                "count": int(m.group(1)), "next_turn": True,
+                "assumption": "slot_scoped"}),
+    (re.compile(rf"^Gain \+{N} {ST} to this Skill Slot next turn$"),
+     lambda m: {"kind": "gain", "status": m.group(2), "potency": int(m.group(1)),
+                "count": int(m.group(1)), "next_turn": True,
+                "assumption": "slot_scoped"}),
+    # "At 2 or fewer [LCA Fracture Round], [Reload]"
+    (re.compile(rf"^At {N} or fewer {ST}, \[Reload\]$"),
+     lambda m: {"kind": "reload_ammo",
+                "condition": {"source": "self", "status": m.group(2), "lte": int(m.group(1))}}),
+    # "Base Power +1 for every [X] about to be spent by this Skill"
+    (re.compile(rf"^Base Power \+{N} for every {ST} about to be spent by this Skill$"),
+     lambda m: {"kind": "base_power_per_ammo_planned", "status": m.group(2),
+                "step": int(m.group(1))}),
+    # "Deal +([X] spent x 30)% damage"
+    (re.compile(rf"^Deal \+\({ST} spent x {N}\)% damage$"),
+     lambda m: {"kind": "damage_percent_per_ammo_spent", "status": m.group(1),
+                "step": int(m.group(2))}),
+    # "Coin Power +1 for every 2 [Protecting Sword] (max 2)"
+    (re.compile(rf"^Coin Power \+{N} for every {N} {ST} \(max {N}\)$"),
+     lambda m: {"kind": "coin_power", "value": 0, "step": int(m.group(1)), "per": int(m.group(2)),
+                "max": int(m.group(4)),
+                "condition": {"source": "self", "status": m.group(3), "component": "stack"}}),
+    # "Deal +1% damage for every [Faint Aroma] on target" (no max)
+    (re.compile(rf"^Deal \+{N}% damage for every {ST} on (self|target)$"),
+     lambda m: {"kind": "damage_percent", "value": 0, "step": int(m.group(1)), "per": 1,
+                "condition": {"source": m.group(3), "status": m.group(2), "component": "potency"}}),
+    # "Inflict Gloom damage equal to [Sinking] on target"
+    (re.compile(rf"^Inflict Gloom damage equal to {ST} on target$"),
+     lambda m: {"kind": "gloom_damage_equal_target_status", "status": m.group(1),
+                "component": "potency"}),
+    # "Deal (30% of this Coin's final damage) Blunt damage"
+    (re.compile(r"^Deal \((\d+)% of this Coin's final damage\) (?:Slash|Pierce|Blunt) damage$"),
+     lambda m: {"kind": "bonus_damage_percent_of_coin", "percent": int(m.group(1))}),
+    # "Lower user's Stagger Threshold by 50% of damage dealt"
+    (re.compile(r"^Lower user’s Stagger Threshold by (\d+)% of damage dealt$"),
+     lambda m: {"kind": "lower_own_stagger_threshold", "percent": int(m.group(1))}),
+    # "If user has 5+ [Poise] Count, +30% Critical Damage"
+    (re.compile(rf"^If user has {N}\+ {ST} Count, \+{N}% Critical Damage$"),
+     lambda m: {"kind": "crit_damage_bonus", "percent": int(m.group(3)),
+                "condition": {"source": "self", "status": m.group(2), "component": "count",
+                              "gte": int(m.group(1))}}),
+    # "If this unit has [Tear-sharpened], lose ([Tear-sharpened] Stack x 15) more SP"
+    (re.compile(rf"^If this unit has {ST}, lose \({ST} Stack x {N}\) more SP$"),
+     lambda m: {"kind": "sp_damage_self_per_stack", "status": m.group(2),
+                "step": int(m.group(3))}),
+    # "At less than 3 [Tear-sharpened], lose 15 SP and gain 1 [Tear-sharpened]"
+    (re.compile(rf"^At less than {N} {ST}, lose {N} SP and gain {N} {ST}$"),
+     lambda m: {"kind": "turn_end_sp_and_gain", "status": m.group(2),
+                "threshold": int(m.group(1)), "value": int(m.group(3)),
+                "count": int(m.group(4))}),
+    # "At 10+ [Deep Tears], consume up to 20 [Deep Tears]"
+    (re.compile(rf"^At {N}\+ {ST}, consume up to {N} {ST}$"),
+     lambda m: {"kind": "consume_status_up_to", "status": m.group(2),
+                "threshold": int(m.group(1)), "value": int(m.group(3))}),
+    # "At 15+ [X], consume 5 [X] to deal +15% damage" already handled
+    # "If target's SP is below 0, boost crit chance proportional to target's SP"
+    (re.compile(r"^boost crit chance proportional to target's SP$"),
+     lambda m: {"kind": "crit_chance_from_target_sp"}),
+    # "Deal +(Stack consumed x 1.5)% damage"
+    (re.compile(r"^Deal \+\(Stack consumed x ([\d.]+)\)% damage$"),
+     lambda m: {"kind": "damage_percent_per_consumed_status",
+                "step": int(float(m.group(1)) * 10)}),
     (re.compile(r"^This Attack Skill deals 0 damage$"),
      lambda m: {"kind": "zero_damage"}),
     (re.compile(r"^Does not take damage for this turn$"),
@@ -239,7 +305,7 @@ def parse_triggered(trigger: str, text: str, raw: str) -> Optional[dict]:
     text = text.strip()
     # Trailing per-turn / per-encounter limits: "(2 times per turn)".
     limits = None
-    limit_match = re.search(r"\s*\((once|twice|\d+ times?) per (turn|Encounter)\)$", text)
+    limit_match = re.search(r"\((once|twice|\d+ times?) per (turn|Encounter)\)", text)
     if limit_match:
         word = limit_match.group(1)
         count = {"once": 1, "twice": 2}.get(word, None)
@@ -248,7 +314,10 @@ def parse_triggered(trigger: str, text: str, raw: str) -> Optional[dict]:
         limits = {
             "per_turn" if limit_match.group(2) == "turn" else "per_encounter": count
         }
-        text = text[: limit_match.start()].strip()
+        text = (text[: limit_match.start()] + text[limit_match.end():]).strip()
+        # Tidy a dangling separator left inside a parenthetical.
+        text = re.sub(r"\(max (\d+)%;\s*\)", r"(max \1%)", text)
+        text = re.sub(r"\(max (\d+)%;?\)", r"(max \1%)", text)
     # "next turn" buffs are applied at the start of the following turn.
     next_turn = False
     if text.endswith(" next turn"):
@@ -310,6 +379,8 @@ CONDITION_PATTERNS = [
 
 ANY_OF_RE = re.compile(r"^If any of the following conditions are met, (.+)$")
 INLINE_IF_RE = re.compile(rf"^If (?:the target|target) has {ST}, (.+)$")
+INLINE_IF_SELF_RE = re.compile(rf"^If this unit has {ST}, (.+)$")
+INLINE_IF_SP_RE = re.compile(r"^If target's SP is below (\d+), (.+)$")
 
 
 def parse_condition_line(line: str):
@@ -423,6 +494,42 @@ def parse_text_block(text: str, coin_count: int) -> Tuple[Dict[str, List[dict]],
         condition_only = parse_condition_line(rest)
         if condition_only is not None and line.startswith("If "):
             # A condition bullet that was not consumed by a parent line.
+            unmodeled.append(line)
+            continue
+        inline_if_sp = INLINE_IF_SP_RE.match(rest)
+        if inline_if_sp:
+            condition = {"target_sp_below": int(inline_if_sp.group(1))}
+            effect = None
+            for pattern, handler in PATTERNS:
+                match = pattern.match(inline_if_sp.group(2))
+                if not match:
+                    continue
+                effect = handler(match)
+                effect["raw"] = line
+                effect["trigger"] = trigger
+                effect["condition"] = condition
+                break
+            if effect is not None:
+                buckets.setdefault(trigger if trigger != "coin" else "coin", []).append(effect)
+                continue
+            unmodeled.append(line)
+            continue
+        inline_if_self = INLINE_IF_SELF_RE.match(rest)
+        if inline_if_self:
+            condition = {"source": "self", "status": inline_if_self.group(1), "gte": 1}
+            effect = None
+            for pattern, handler in PATTERNS:
+                match = pattern.match(inline_if_self.group(2))
+                if not match:
+                    continue
+                effect = handler(match)
+                effect["raw"] = line
+                effect["trigger"] = trigger
+                effect["condition"] = condition
+                break
+            if effect is not None:
+                buckets.setdefault(trigger if trigger != "coin" else "coin", []).append(effect)
+                continue
             unmodeled.append(line)
             continue
         inline_if = INLINE_IF_RE.match(rest)

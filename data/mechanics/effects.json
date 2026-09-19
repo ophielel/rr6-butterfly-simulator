@@ -1488,12 +1488,22 @@
      "raw": "[On Use] Coin Power +1 for every 6 ([Tremor] + [Sinking]) on target (max 2)",
      "step": 1,
      "value": 0
+    },
+    {
+     "condition": {
+      "component": "potency",
+      "source": "target",
+      "status": "Faint Aroma"
+     },
+     "kind": "damage_percent",
+     "per": 1,
+     "raw": "[On Use] Deal +1% damage for every [Faint Aroma] on target",
+     "step": 1,
+     "value": 0
     }
    ],
    "tags": [],
-   "unmodeled": [
-    "[On Use] Deal +1% damage for every [Faint Aroma] on target"
-   ]
+   "unmodeled": []
   },
   "1041403@1": {
    "attack_end": [],
@@ -1792,12 +1802,23 @@
      "raw": "[On Use] Coin Power +1 for every 6 ([Tremor] + [Sinking]) on target (max 2)",
      "step": 1,
      "value": 0
+    },
+    {
+     "condition": {
+      "component": "potency",
+      "source": "target",
+      "status": "Faint Aroma"
+     },
+     "kind": "damage_percent",
+     "per": 1,
+     "raw": "[On Use] Deal +1% damage for every [Faint Aroma] on target",
+     "step": 1,
+     "value": 0
     }
    ],
    "tags": [],
    "unmodeled": [
-    "[On Hit] Deal Gloom damage equal to [Sinking] on target",
-    "[On Use] Deal +1% damage for every [Faint Aroma] on target"
+    "[On Hit] Deal Gloom damage equal to [Sinking] on target"
    ]
   },
   "1041404@1": {
@@ -3084,13 +3105,23 @@
      "raw": "Clash Power +1 for every 2 [Protecting Sword] (max 2)",
      "step": 1,
      "value": 0
+    },
+    {
+     "kind": "consume_status_up_to",
+     "raw": "[On Use] At 10+ [Deep Tears], consume up to 20 [Deep Tears]",
+     "status": "Deep Tears",
+     "threshold": 10,
+     "value": 20
+    },
+    {
+     "kind": "damage_percent_per_consumed_status",
+     "raw": "Deal +(Stack consumed x 1.5)% damage",
+     "step": 15
     }
    ],
    "tags": [],
    "unmodeled": [
-    "Deal +(Stack consumed x 1.5)% damage",
-    "[Attack End] If target is defeated, regain half of [Deep Tears] consumed by this Skill",
-    "[On Use] At 10+ [Deep Tears], consume up to 20 [Deep Tears]"
+    "[Attack End] If target is defeated, regain half of [Deep Tears] consumed by this Skill"
    ]
   },
   "1091303@2": {
@@ -3124,13 +3155,23 @@
      "raw": "Clash Power +1 for every 2 [Protecting Sword] (max 2)",
      "step": 1,
      "value": 0
+    },
+    {
+     "kind": "consume_status_up_to",
+     "raw": "[On Use] At 10+ [Deep Tears], consume up to 20 [Deep Tears]",
+     "status": "Deep Tears",
+     "threshold": 10,
+     "value": 20
+    },
+    {
+     "kind": "damage_percent_per_consumed_status",
+     "raw": "Deal +(Stack consumed x 1.5)% damage",
+     "step": 15
     }
    ],
    "tags": [],
    "unmodeled": [
-    "Deal +(Stack consumed x 1.5)% damage",
-    "[Attack End] If target is defeated, regain half of [Deep Tears] consumed by this Skill",
-    "[On Use] At 10+ [Deep Tears], consume up to 20 [Deep Tears]"
+    "[Attack End] If target is defeated, regain half of [Deep Tears] consumed by this Skill"
    ]
   },
   "1091303@3": {
@@ -3164,13 +3205,23 @@
      "raw": "Clash Power +1 for every 2 [Protecting Sword] (max 2)",
      "step": 1,
      "value": 0
+    },
+    {
+     "kind": "consume_status_up_to",
+     "raw": "[On Use] At 10+ [Deep Tears], consume up to 20 [Deep Tears]",
+     "status": "Deep Tears",
+     "threshold": 10,
+     "value": 20
+    },
+    {
+     "kind": "damage_percent_per_consumed_status",
+     "raw": "Deal +(Stack consumed x 1.5)% damage",
+     "step": 15
     }
    ],
    "tags": [],
    "unmodeled": [
-    "Deal +(Stack consumed x 1.5)% damage",
-    "[Attack End] If target is defeated, regain half of [Deep Tears] consumed by this Skill",
-    "[On Use] At 10+ [Deep Tears], consume up to 20 [Deep Tears]"
+    "[Attack End] If target is defeated, regain half of [Deep Tears] consumed by this Skill"
    ]
   },
   "1091303@4": {
@@ -3191,15 +3242,25 @@
      "kind": "coin_power",
      "raw": "If target has 6+ [Sinking], Coin Power +1",
      "value": 1
+    },
+    {
+     "kind": "consume_status_up_to",
+     "raw": "[On Use] At 10+ [Deep Tears], consume up to 20 [Deep Tears]",
+     "status": "Deep Tears",
+     "threshold": 10,
+     "value": 20
+    },
+    {
+     "kind": "damage_percent_per_consumed_status",
+     "raw": "Deal +(Stack consumed x 1.5)% damage",
+     "step": 15
     }
    ],
    "tags": [],
    "unmodeled": [
     "Base Power +1 for every 5 Stack consumed",
     "Clash Power +1 for every [Protecting Sword] (max 5)",
-    "Deal +(Stack consumed x 1.5)% damage",
-    "[Attack End] If target is defeated, regain half of [Deep Tears] consumed by this Skill",
-    "[On Use] At 10+ [Deep Tears], consume up to 20 [Deep Tears]"
+    "[Attack End] If target is defeated, regain half of [Deep Tears] consumed by this Skill"
    ]
   },
   "1091304@1": {
@@ -3227,8 +3288,7 @@
    ],
    "tags": [],
    "unmodeled": [
-    "If this unit has [Tear-sharpened], lose ([Tear-sharpened] Stack x 15) more SP",
-    "[Turn End] At less than 3 [Tear-sharpened], lose 15 SP and gain 1 [Tear-sharpened] (once per turn)"
+    "If this unit has [Tear-sharpened], lose ([Tear-sharpened] Stack x 15) more SP"
    ]
   },
   "1091304@2": {
@@ -3256,8 +3316,7 @@
    ],
    "tags": [],
    "unmodeled": [
-    "If this unit has [Tear-sharpened], lose ([Tear-sharpened] Stack x 15) more SP",
-    "[Turn End] At less than 3 [Tear-sharpened], lose 15 SP and gain 1 [Tear-sharpened] (once per turn)"
+    "If this unit has [Tear-sharpened], lose ([Tear-sharpened] Stack x 15) more SP"
    ]
   },
   "1091304@3": {
@@ -3285,8 +3344,7 @@
    ],
    "tags": [],
    "unmodeled": [
-    "If this unit has [Tear-sharpened], lose ([Tear-sharpened] Stack x 15) more SP",
-    "[Turn End] At less than 3 [Tear-sharpened], lose 15 SP and gain 1 [Tear-sharpened] (once per turn)"
+    "If this unit has [Tear-sharpened], lose ([Tear-sharpened] Stack x 15) more SP"
    ]
   },
   "1091304@4": {
@@ -3295,6 +3353,19 @@
    "clash_win": [],
    "coins": {},
    "combat_start": [
+    {
+     "condition": {
+      "component": "stack",
+      "source": "self",
+      "status": "Protecting Sword"
+     },
+     "kind": "coin_power",
+     "max": 2,
+     "per": 2,
+     "raw": "[Combat Start] Coin Power +1 for every 2 [Protecting Sword] (max 2)",
+     "step": 1,
+     "value": 0
+    },
     {
      "kind": "shield_percent_from_sp",
      "per_turn": 1,
@@ -3315,7 +3386,6 @@
    "tags": [],
    "unmodeled": [
     "If this unit has [Tear-sharpened], lose ([Tear-sharpened] Stack x 15) more SP",
-    "[Combat Start] Coin Power +1 for every 2 [Protecting Sword] (max 2)",
     "[Turn End] At less than 3 [Tear-sharpened], lose 15 SP to gain 1 [Tear-sharpened] (once per turn)"
    ]
   },
@@ -3607,58 +3677,120 @@
    "attack_end": [],
    "clash_lose": [],
    "clash_win": [],
-   "coins": {},
+   "coins": {
+    "1": [
+     {
+      "kind": "lower_own_stagger_threshold",
+      "percent": 50,
+      "raw": "[Heads Hit] Lower user’s Stagger Threshold by 50% of damage dealt"
+     }
+    ]
+   },
    "combat_start": [],
    "note": "Pañata Party",
-   "on_use": [],
+   "on_use": [
+    {
+     "condition": {
+      "target_sp_below": 0
+     },
+     "kind": "crit_chance_from_target_sp",
+     "raw": "If target's SP is below 0, boost crit chance proportional to target's SP"
+    }
+   ],
    "tags": [],
-   "unmodeled": [
-    "If target's SP is below 0, boost crit chance proportional to target's SP",
-    "[Heads Hit] Lower user’s Stagger Threshold by 50% of damage dealt"
-   ]
+   "unmodeled": []
   },
   "1100403@2": {
    "attack_end": [],
    "clash_lose": [],
    "clash_win": [],
-   "coins": {},
+   "coins": {
+    "1": [
+     {
+      "kind": "lower_own_stagger_threshold",
+      "percent": 50,
+      "raw": "[Heads Hit] Lower user’s Stagger Threshold by 50% of damage dealt"
+     }
+    ]
+   },
    "combat_start": [],
    "note": "Pañata Party",
-   "on_use": [],
+   "on_use": [
+    {
+     "condition": {
+      "target_sp_below": 0
+     },
+     "kind": "crit_chance_from_target_sp",
+     "raw": "If target's SP is below 0, boost crit chance proportional to target's SP"
+    }
+   ],
    "tags": [],
-   "unmodeled": [
-    "If target's SP is below 0, boost crit chance proportional to target's SP",
-    "[Heads Hit] Lower user’s Stagger Threshold by 50% of damage dealt"
-   ]
+   "unmodeled": []
   },
   "1100403@3": {
    "attack_end": [],
    "clash_lose": [],
    "clash_win": [],
-   "coins": {},
+   "coins": {
+    "1": [
+     {
+      "kind": "lower_own_stagger_threshold",
+      "percent": 50,
+      "raw": "[Heads Hit] Lower user’s Stagger Threshold by 50% of damage dealt"
+     }
+    ]
+   },
    "combat_start": [],
    "note": "Pañata Party",
-   "on_use": [],
+   "on_use": [
+    {
+     "condition": {
+      "target_sp_below": 0
+     },
+     "kind": "crit_chance_from_target_sp",
+     "raw": "If target's SP is below 0, boost crit chance proportional to target's SP"
+    }
+   ],
    "tags": [],
-   "unmodeled": [
-    "If target's SP is below 0, boost crit chance proportional to target's SP",
-    "[Heads Hit] Lower user’s Stagger Threshold by 50% of damage dealt"
-   ]
+   "unmodeled": []
   },
   "1100403@4": {
    "attack_end": [],
    "clash_lose": [],
    "clash_win": [],
-   "coins": {},
+   "coins": {
+    "1": [
+     {
+      "kind": "lower_own_stagger_threshold",
+      "percent": 50,
+      "raw": "[On Hit] Lower user’s Stagger Threshold by 50% of damage dealt"
+     }
+    ]
+   },
    "combat_start": [],
    "note": "Pañata Party",
-   "on_use": [],
+   "on_use": [
+    {
+     "condition": {
+      "target_sp_below": 0
+     },
+     "kind": "crit_chance_from_target_sp",
+     "raw": "If target's SP is below 0, boost crit chance proportional to target's SP"
+    },
+    {
+     "condition": {
+      "component": "count",
+      "gte": 5,
+      "source": "self",
+      "status": "Poise"
+     },
+     "kind": "crit_damage_bonus",
+     "percent": 30,
+     "raw": "If user has 5+ [Poise] Count, +30% Critical Damage"
+    }
+   ],
    "tags": [],
-   "unmodeled": [
-    "If target's SP is below 0, boost crit chance proportional to target's SP",
-    "If user has 5+ [Poise] Count, +30% Critical Damage",
-    "[On Hit] Lower user’s Stagger Threshold by 50% of damage dealt"
-   ]
+   "unmodeled": []
   },
   "1100404@1": {
    "attack_end": [],
@@ -3728,11 +3860,19 @@
    },
    "combat_start": [],
    "note": "Khopesh Swordplay",
-   "on_use": [],
+   "on_use": [
+    {
+     "assumption": "slot_scoped",
+     "count": 3,
+     "kind": "gain",
+     "next_turn": true,
+     "potency": 3,
+     "raw": "[On Use] Gain +3 [Aggro] to this Skill Slot next turn",
+     "status": "Aggro"
+    }
+   ],
    "tags": [],
-   "unmodeled": [
-    "[On Use] Gain +3 [Aggro] to this Skill Slot next turn"
-   ]
+   "unmodeled": []
   },
   "1111401@2": {
    "attack_end": [],
@@ -3758,6 +3898,15 @@
    "note": "Khopesh Swordplay",
    "on_use": [
     {
+     "assumption": "slot_scoped",
+     "count": 3,
+     "kind": "gain",
+     "next_turn": true,
+     "potency": 3,
+     "raw": "[On Use] Gain +3 [Aggro] to this Skill Slot next turn",
+     "status": "Aggro"
+    },
+    {
      "condition": {
       "component": "potency",
       "source": "target",
@@ -3775,9 +3924,7 @@
     }
    ],
    "tags": [],
-   "unmodeled": [
-    "[On Use] Gain +3 [Aggro] to this Skill Slot next turn"
-   ]
+   "unmodeled": []
   },
   "1111401@3": {
    "attack_end": [],
@@ -3803,6 +3950,15 @@
    "note": "Khopesh Swordplay",
    "on_use": [
     {
+     "assumption": "slot_scoped",
+     "count": 3,
+     "kind": "gain",
+     "next_turn": true,
+     "potency": 3,
+     "raw": "[On Use] Gain +3 [Aggro] to this Skill Slot next turn",
+     "status": "Aggro"
+    },
+    {
      "condition": {
       "component": "potency",
       "source": "target",
@@ -3820,9 +3976,7 @@
     }
    ],
    "tags": [],
-   "unmodeled": [
-    "[On Use] Gain +3 [Aggro] to this Skill Slot next turn"
-   ]
+   "unmodeled": []
   },
   "1111401@4": {
    "attack_end": [],
@@ -3865,6 +4019,15 @@
    "note": "Khopesh Swordplay",
    "on_use": [
     {
+     "assumption": "slot_scoped",
+     "count": 3,
+     "kind": "gain",
+     "next_turn": true,
+     "potency": 3,
+     "raw": "[On Use] Gain +3 [Aggro] to this Skill Slot next turn",
+     "status": "Aggro"
+    },
+    {
      "condition": {
       "component": "potency",
       "source": "target",
@@ -3879,13 +4042,20 @@
      "raw": "[On Use] Coin Power +1 for every 6 ([Sinking] + [Tremor]) on target (max 2)",
      "step": 1,
      "value": 0
+    },
+    {
+     "condition": {
+      "gte": 1,
+      "source": "self",
+      "status": "The Udjat -Vanguard-"
+     },
+     "kind": "clash_power",
+     "raw": "[On Use] If this unit has [The Udjat -Vanguard-], Clash Power +1",
+     "value": 1
     }
    ],
    "tags": [],
-   "unmodeled": [
-    "[On Use] Gain +3 [Aggro] to this Skill Slot next turn",
-    "[On Use] If this unit has [The Udjat -Vanguard-], Clash Power +1"
-   ]
+   "unmodeled": []
   },
   "1111402@1": {
    "attack_end": [],
@@ -3925,11 +4095,19 @@
    },
    "combat_start": [],
    "note": "Mirage Incision",
-   "on_use": [],
+   "on_use": [
+    {
+     "assumption": "slot_scoped",
+     "count": 5,
+     "kind": "gain",
+     "next_turn": true,
+     "potency": 5,
+     "raw": "[On Use] Gain +5 [Aggro] to this Skill Slot next turn",
+     "status": "Aggro"
+    }
+   ],
    "tags": [],
-   "unmodeled": [
-    "[On Use] Gain +5 [Aggro] to this Skill Slot next turn"
-   ]
+   "unmodeled": []
   },
   "1111402@2": {
    "attack_end": [],
@@ -3971,6 +4149,15 @@
    "note": "Mirage Incision",
    "on_use": [
     {
+     "assumption": "slot_scoped",
+     "count": 5,
+     "kind": "gain",
+     "next_turn": true,
+     "potency": 5,
+     "raw": "[On Use] Gain +5 [Aggro] to this Skill Slot next turn",
+     "status": "Aggro"
+    },
+    {
      "condition": {
       "component": "potency",
       "source": "target",
@@ -3988,9 +4175,7 @@
     }
    ],
    "tags": [],
-   "unmodeled": [
-    "[On Use] Gain +5 [Aggro] to this Skill Slot next turn"
-   ]
+   "unmodeled": []
   },
   "1111402@3": {
    "attack_end": [],
@@ -4032,6 +4217,15 @@
    "note": "Mirage Incision",
    "on_use": [
     {
+     "assumption": "slot_scoped",
+     "count": 5,
+     "kind": "gain",
+     "next_turn": true,
+     "potency": 5,
+     "raw": "[On Use] Gain +5 [Aggro] to this Skill Slot next turn",
+     "status": "Aggro"
+    },
+    {
      "condition": {
       "component": "potency",
       "source": "target",
@@ -4049,9 +4243,7 @@
     }
    ],
    "tags": [],
-   "unmodeled": [
-    "[On Use] Gain +5 [Aggro] to this Skill Slot next turn"
-   ]
+   "unmodeled": []
   },
   "1111402@4": {
    "attack_end": [],
@@ -4108,6 +4300,15 @@
    "note": "Mirage Incision",
    "on_use": [
     {
+     "assumption": "slot_scoped",
+     "count": 5,
+     "kind": "gain",
+     "next_turn": true,
+     "potency": 5,
+     "raw": "[On Use] Gain +5 [Aggro] to this Skill Slot next turn",
+     "status": "Aggro"
+    },
+    {
      "condition": {
       "component": "potency",
       "source": "target",
@@ -4122,16 +4323,11 @@
      "raw": "[On Use] Coin Power +1 for every 6 ([Sinking] + [Tremor]) on target (max 2)",
      "step": 1,
      "value": 0
-    },
-    {
-     "kind": "damage_percent",
-     "raw": "[On Use] If this unit has [The Udjat -Vanguard-], Clash Power +2 and deal +30% damage",
-     "value": 30
     }
    ],
    "tags": [],
    "unmodeled": [
-    "[On Use] Gain +5 [Aggro] to this Skill Slot next turn"
+    "[On Use] If this unit has [The Udjat -Vanguard-], Clash Power +2 and deal +30% damage"
    ]
   },
   "1111403@1": {
@@ -4143,6 +4339,16 @@
      "potency": 2,
      "raw": "[Attack End] Gain 2 [Protection] next turn (once per turn)",
      "status": "Protection"
+    },
+    {
+     "condition": {
+      "lte": 2,
+      "source": "self",
+      "status": "LCA Fracture Round"
+     },
+     "kind": "reload_ammo",
+     "per_encounter": 5,
+     "raw": "[Attack End] At 2 or fewer [LCA Fracture Round], [Reload] (5 times per Encounter)"
     }
    ],
    "clash_lose": [],
@@ -4213,13 +4419,25 @@
    },
    "combat_start": [],
    "note": "The Vanguard will See it Done",
-   "on_use": [],
+   "on_use": [
+    {
+     "assumption": "slot_scoped",
+     "count": 8,
+     "kind": "gain",
+     "next_turn": true,
+     "potency": 8,
+     "raw": "[On Use] Gain +8 [Aggro] to this Skill Slot next turn",
+     "status": "Aggro"
+    },
+    {
+     "kind": "base_power_per_ammo_planned",
+     "raw": "[On Use] Base Power +1 for every [LCA Fracture Round] about to be spent by this Skill",
+     "status": "LCA Fracture Round",
+     "step": 1
+    }
+   ],
    "tags": [],
-   "unmodeled": [
-    "[Attack End] At 2 or fewer [LCA Fracture Round], [Reload] (5 times per Encounter)",
-    "[On Use] Base Power +1 for every [LCA Fracture Round] about to be spent by this Skill",
-    "[On Use] Gain +8 [Aggro] to this Skill Slot next turn"
-   ]
+   "unmodeled": []
   },
   "1111403@2": {
    "attack_end": [
@@ -4230,6 +4448,16 @@
      "potency": 2,
      "raw": "[Attack End] Gain 2 [Protection] next turn (once per turn)",
      "status": "Protection"
+    },
+    {
+     "condition": {
+      "lte": 2,
+      "source": "self",
+      "status": "LCA Fracture Round"
+     },
+     "kind": "reload_ammo",
+     "per_encounter": 5,
+     "raw": "[Attack End] At 2 or fewer [LCA Fracture Round], [Reload] (5 times per Encounter)"
     }
    ],
    "clash_lose": [],
@@ -4300,13 +4528,25 @@
    },
    "combat_start": [],
    "note": "The Vanguard will See it Done",
-   "on_use": [],
+   "on_use": [
+    {
+     "assumption": "slot_scoped",
+     "count": 8,
+     "kind": "gain",
+     "next_turn": true,
+     "potency": 8,
+     "raw": "[On Use] Gain +8 [Aggro] to this Skill Slot next turn",
+     "status": "Aggro"
+    },
+    {
+     "kind": "base_power_per_ammo_planned",
+     "raw": "[On Use] Base Power +1 for every [LCA Fracture Round] about to be spent by this Skill",
+     "status": "LCA Fracture Round",
+     "step": 1
+    }
+   ],
    "tags": [],
-   "unmodeled": [
-    "[Attack End] At 2 or fewer [LCA Fracture Round], [Reload] (5 times per Encounter)",
-    "[On Use] Base Power +1 for every [LCA Fracture Round] about to be spent by this Skill",
-    "[On Use] Gain +8 [Aggro] to this Skill Slot next turn"
-   ]
+   "unmodeled": []
   },
   "1111403@3": {
    "attack_end": [
@@ -4317,6 +4557,16 @@
      "potency": 2,
      "raw": "[Attack End] Gain 2 [Protection] next turn (once per turn)",
      "status": "Protection"
+    },
+    {
+     "condition": {
+      "lte": 2,
+      "source": "self",
+      "status": "LCA Fracture Round"
+     },
+     "kind": "reload_ammo",
+     "per_encounter": 5,
+     "raw": "[Attack End] At 2 or fewer [LCA Fracture Round], [Reload] (5 times per Encounter)"
     }
    ],
    "clash_lose": [],
@@ -4387,13 +4637,25 @@
    },
    "combat_start": [],
    "note": "The Vanguard will See it Done",
-   "on_use": [],
+   "on_use": [
+    {
+     "assumption": "slot_scoped",
+     "count": 8,
+     "kind": "gain",
+     "next_turn": true,
+     "potency": 8,
+     "raw": "[On Use] Gain +8 [Aggro] to this Skill Slot next turn",
+     "status": "Aggro"
+    },
+    {
+     "kind": "base_power_per_ammo_planned",
+     "raw": "[On Use] Base Power +1 for every [LCA Fracture Round] about to be spent by this Skill",
+     "status": "LCA Fracture Round",
+     "step": 1
+    }
+   ],
    "tags": [],
-   "unmodeled": [
-    "[Attack End] At 2 or fewer [LCA Fracture Round], [Reload] (5 times per Encounter)",
-    "[On Use] Base Power +1 for every [LCA Fracture Round] about to be spent by this Skill",
-    "[On Use] Gain +8 [Aggro] to this Skill Slot next turn"
-   ]
+   "unmodeled": []
   },
   "1111403@4": {
    "attack_end": [
@@ -4404,6 +4666,16 @@
      "potency": 2,
      "raw": "[Attack End] Gain 2 [Protection] next turn (once per turn)",
      "status": "Protection"
+    },
+    {
+     "condition": {
+      "lte": 2,
+      "source": "self",
+      "status": "LCA Fracture Round"
+     },
+     "kind": "reload_ammo",
+     "per_encounter": 5,
+     "raw": "[Attack End] At 2 or fewer [LCA Fracture Round], [Reload] (5 times per Encounter)"
     }
    ],
    "clash_lose": [],
@@ -4415,6 +4687,12 @@
       "raw": "Spend 2 [LCA Fracture Round]",
       "status": "LCA Fracture Round",
       "value": 2
+     },
+     {
+      "kind": "damage_percent_per_ammo_spent",
+      "raw": "Deal +([LCA Fracture Round] spent x 30)% damage",
+      "status": "LCA Fracture Round",
+      "step": 30
      },
      {
       "count": 2,
@@ -4459,6 +4737,12 @@
       "value": 2
      },
      {
+      "kind": "damage_percent_per_ammo_spent",
+      "raw": "Deal +([LCA Fracture Round] spent x 30)% damage",
+      "status": "LCA Fracture Round",
+      "step": 30
+     },
+     {
       "kind": "inflict",
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Sinking]",
@@ -4474,17 +4758,38 @@
    },
    "combat_start": [],
    "note": "The Vanguard will See it Done",
-   "on_use": [],
+   "on_use": [
+    {
+     "condition": {
+      "gte": 1,
+      "source": "self",
+      "status": "The Udjat -Vanguard-"
+     },
+     "kind": "damage_percent",
+     "raw": "If this unit has [The Udjat -Vanguard-], deal +50% damage",
+     "value": 50
+    },
+    {
+     "assumption": "slot_scoped",
+     "count": 8,
+     "kind": "gain",
+     "next_turn": true,
+     "potency": 8,
+     "raw": "[On Use] Gain +8 [Aggro] to this Skill Slot next turn",
+     "status": "Aggro"
+    },
+    {
+     "kind": "base_power_per_ammo_planned",
+     "raw": "[On Use] Base Power +1 for every [LCA Fracture Round] about to be spent by this Skill",
+     "status": "LCA Fracture Round",
+     "step": 1
+    }
+   ],
    "tags": [],
    "unmodeled": [
-    "Deal +([LCA Fracture Round] spent x 30)% damage",
     "If target has less than 0 SP, inflict 1 [Gloom Fragility] (once per turn)",
-    "If this unit has [The Udjat -Vanguard-], deal +50% damage",
-    "[Attack End] At 2 or fewer [LCA Fracture Round], [Reload] (5 times per Encounter)",
     "[On Hit] If target is a SP Unit, trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1",
-    "[On Use] At 6+ ([Sinking] + [Tremor]) on target, Coin Power +1",
-    "[On Use] Base Power +1 for every [LCA Fracture Round] about to be spent by this Skill",
-    "[On Use] Gain +8 [Aggro] to this Skill Slot next turn"
+    "[On Use] At 6+ ([Sinking] + [Tremor]) on target, Coin Power +1"
    ]
   },
   "1111404@1": {
@@ -4799,6 +5104,11 @@
       "kind": "inflict",
       "raw": "[On Hit] Inflict +1 [Sinking] Count",
       "status": "Sinking"
+     },
+     {
+      "kind": "bonus_damage_percent_of_coin",
+      "percent": 30,
+      "raw": "[On Hit] Deal (30% of this Coin's final damage) Blunt damage"
      }
     ],
     "2": [
@@ -4807,6 +5117,11 @@
       "potency": 1,
       "raw": "[On Hit] Inflict 1 [Sinking]",
       "status": "Sinking"
+     },
+     {
+      "kind": "bonus_damage_percent_of_coin",
+      "percent": 30,
+      "raw": "[On Hit] Deal (30% of this Coin's final damage) Blunt damage"
      }
     ],
     "3": [
@@ -4822,9 +5137,7 @@
    "note": "Destroy the Visible with the Invisible",
    "on_use": [],
    "tags": [],
-   "unmodeled": [
-    "[On Hit] Deal (30% of this Coin's final damage) Blunt damage"
-   ]
+   "unmodeled": []
   },
   "1121402@2": {
    "attack_end": [],
@@ -4837,6 +5150,11 @@
       "kind": "inflict",
       "raw": "[On Hit] Inflict +2 [Sinking] Count",
       "status": "Sinking"
+     },
+     {
+      "kind": "bonus_damage_percent_of_coin",
+      "percent": 30,
+      "raw": "[On Hit] Deal (30% of this Coin's final damage) Blunt damage"
      }
     ],
     "2": [
@@ -4845,6 +5163,11 @@
       "potency": 1,
       "raw": "[On Hit] Inflict 1 [Sinking]",
       "status": "Sinking"
+     },
+     {
+      "kind": "bonus_damage_percent_of_coin",
+      "percent": 30,
+      "raw": "[On Hit] Deal (30% of this Coin's final damage) Blunt damage"
      }
     ],
     "3": [
@@ -4886,9 +5209,7 @@
     }
    ],
    "tags": [],
-   "unmodeled": [
-    "[On Hit] Deal (30% of this Coin's final damage) Blunt damage"
-   ]
+   "unmodeled": []
   },
   "1121402@3": {
    "attack_end": [],
@@ -4901,6 +5222,11 @@
       "kind": "inflict",
       "raw": "[On Hit] Inflict +2 [Sinking] Count",
       "status": "Sinking"
+     },
+     {
+      "kind": "bonus_damage_percent_of_coin",
+      "percent": 30,
+      "raw": "[On Hit] Deal (30% of this Coin's final damage) Blunt damage"
      }
     ],
     "2": [
@@ -4909,6 +5235,11 @@
       "potency": 1,
       "raw": "[On Hit] Inflict 1 [Sinking]",
       "status": "Sinking"
+     },
+     {
+      "kind": "bonus_damage_percent_of_coin",
+      "percent": 30,
+      "raw": "[On Hit] Deal (30% of this Coin's final damage) Blunt damage"
      }
     ],
     "3": [
@@ -4950,9 +5281,7 @@
     }
    ],
    "tags": [],
-   "unmodeled": [
-    "[On Hit] Deal (30% of this Coin's final damage) Blunt damage"
-   ]
+   "unmodeled": []
   },
   "1121402@4": {
    "attack_end": [],
@@ -4965,6 +5294,11 @@
       "kind": "inflict",
       "raw": "[On Hit] Inflict +3 [Sinking] Count",
       "status": "Sinking"
+     },
+     {
+      "kind": "bonus_damage_percent_of_coin",
+      "percent": 30,
+      "raw": "[On Hit] Deal (30% of this Coin's final damage) Blunt damage"
      }
     ],
     "2": [
@@ -4973,6 +5307,11 @@
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Sinking]",
       "status": "Sinking"
+     },
+     {
+      "kind": "bonus_damage_percent_of_coin",
+      "percent": 30,
+      "raw": "[On Hit] Deal (30% of this Coin's final damage) Blunt damage"
      }
     ],
     "3": [
@@ -5031,9 +5370,7 @@
     }
    ],
    "tags": [],
-   "unmodeled": [
-    "[On Hit] Deal (30% of this Coin's final damage) Blunt damage"
-   ]
+   "unmodeled": []
   },
   "1121403@1": {
    "attack_end": [],

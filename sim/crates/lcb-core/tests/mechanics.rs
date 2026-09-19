@@ -1005,6 +1005,95 @@ fn gain_from_resonance_uses_the_highest_value() {
     assert_eq!(gained, 6, "4 x 2 capped at 6");
 }
 
+/// Ammo-scaled effects: "Base Power +1 for every [X] about to be spent" and
+/// "Deal +([X] spent x N)% damage".
+#[test]
+fn ammo_planned_and_spent_scale_the_skill() {
+    use lcb_core::effects::Effect;
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&["10110"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    let mut use_ = battle::build_use(&state, &sim.library, &sim.mechanics, 0, &SkillId::new("1011003"))
+        .unwrap();
+    use_.mechanics.on_use.push(Effect {
+        kind: "base_power_per_ammo_planned".to_string(),
+        step: Some(1),
+        ..Default::default()
+    });
+    use_.coins.iter_mut().for_each(|c| c.state = battle::CoinState::Fresh);
+    use_.mechanics.coins.insert(
+        "1".to_string(),
+        vec![Effect {
+            kind: "spend_ammo".to_string(),
+            value: Some(2),
+            ..Default::default()
+        }],
+    );
+    use_.mechanics.coins.insert(
+        "2".to_string(),
+        vec![Effect {
+            kind: "spend_ammo".to_string(),
+            value: Some(1),
+            ..Default::default()
+        }],
+    );
+    state.units[0]
+        .statuses
+        .add_potency("The Living & The Departed", 10);
+    let mut notes = Vec::new();
+    let mut ctx = battle::UseContext::default();
+    battle::apply_effects_for_test(
+        &mut state,
+        &use_.mechanics.on_use.clone(),
+        0,
+        Some(1),
+        &mut notes,
+        &mut ctx,
+    );
+    assert_eq!(ctx.ammo_planned, 3, "three ammo are about to be spent");
+    assert_eq!(ctx.base_power_bonus, 3, "+1 per planned ammo");
+}
+
+/// Critical modifiers: target SP below zero raises the crit chance, and
+/// conditional crit damage adds to the multiplier.
+#[test]
+fn critical_modifiers_from_statuses() {
+    use lcb_core::effects::Effect;
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&["10110"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    state.units[1].sanity = Sanity::Sane { sp: -12 };
+    let mut ctx = battle::UseContext::default();
+    let mut notes = Vec::new();
+    battle::apply_effects_for_test(
+        &mut state,
+        &[Effect {
+            kind: "crit_chance_from_target_sp".to_string(),
+            ..Default::default()
+        }],
+        0,
+        Some(1),
+        &mut notes,
+        &mut ctx,
+    );
+    assert_eq!(ctx.crit_chance_bonus, 12);
+    battle::apply_effects_for_test(
+        &mut state,
+        &[Effect {
+            kind: "crit_damage_bonus".to_string(),
+            percent: Some(30),
+            ..Default::default()
+        }],
+        0,
+        Some(1),
+        &mut notes,
+        &mut ctx,
+    );
+    assert!((ctx.crit_damage_bonus - 0.30).abs() < 1e-9);
+}
+
 /// A full turn keeps the battle in a consistent, serialisable state.
 #[test]
 fn turn_advances_phase_and_logs() {

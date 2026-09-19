@@ -63,6 +63,21 @@ pub struct UseContext {
     /// "convert all Coins on this Skill to Unbreakable Coins".
     #[serde(default)]
     pub unbreakable_all: bool,
+    /// Ammo this skill use will spend ("about to be spent").
+    #[serde(default)]
+    pub ammo_planned: i32,
+    /// Status amount spent by this use ("Stack consumed").
+    #[serde(default)]
+    pub consumed_status: i32,
+    /// Extra critical chance (Poise potency + modifiers).
+    #[serde(default)]
+    pub crit_chance_bonus: i32,
+    /// Extra critical damage multiplier.
+    #[serde(default)]
+    pub crit_damage_bonus: f64,
+    /// "Lower user's Stagger Threshold by N% of damage dealt".
+    #[serde(default)]
+    pub lower_stagger_percent: i32,
     /// `Plus Coin Boost` / `Minus Coin Drop` for this use.
     #[serde(default)]
     pub coin_power_boost: i32,
@@ -484,6 +499,12 @@ fn condition_holds(
             _ => return false,
         }
     }
+    if let Some(limit) = condition.target_sp_below {
+        match target {
+            Some(target) if target.sanity.sp() < limit => {}
+            _ => return false,
+        }
+    }
     if let Some(required) = condition.self_sp_at_least {
         if actor.sanity.sp() < required {
             return false;
@@ -884,6 +905,63 @@ pub fn apply_effects(
                 let count = effect.value.unwrap_or(1);
                 discard_lowest_rank(state, ctx.actor_index, count);
             }
+            "base_power_per_ammo_planned" => {
+                let step = effect.step.unwrap_or(0);
+                use_ctx.base_power_bonus += step * use_ctx.ammo_planned;
+            }
+            "crit_chance_from_target_sp" => {
+                // "boost crit chance proportional to target's SP" (a negative SP
+                // target raises the crit chance).
+                if let Some(index) = ctx.target_index {
+                    let sp = state.units[index].sanity.sp();
+                    if sp < 0 {
+                        use_ctx.crit_chance_bonus += -sp;
+                    }
+                }
+            }
+            "crit_damage_bonus" => {
+                use_ctx.crit_damage_bonus += effect.percent.unwrap_or(0) as f64 / 100.0;
+            }
+            "sp_damage_self_per_stack" => {
+                let Some(status) = effect.status.clone() else { continue };
+                let step = effect.step.unwrap_or(0);
+                let stack = state.units[ctx.actor_index].statuses.stack(&status);
+                let sanity = state.units[ctx.actor_index].sanity;
+                state.units[ctx.actor_index].sanity = sanity.add(-(step * stack));
+            }
+            "turn_end_sp_and_gain" => {
+                let Some(status) = effect.status.clone() else { continue };
+                let threshold = effect.threshold.unwrap_or(0);
+                let unit = &state.units[ctx.actor_index];
+                let current = unit.statuses.stack(&status);
+                if current < threshold {
+                    let sanity = unit.sanity;
+                    state.units[ctx.actor_index].sanity =
+                        sanity.add(-effect.value.unwrap_or(0));
+                    let count = effect.count.unwrap_or(1);
+                    state.units[ctx.actor_index].statuses.add_stack(&status, count);
+                }
+            }
+            "consume_status_up_to" => {
+                let Some(status) = effect.status.clone() else { continue };
+                let threshold = effect.threshold.unwrap_or(0);
+                let limit = effect.value.unwrap_or(0);
+                let unit = &state.units[ctx.actor_index];
+                let have = unit.statuses.potency(&status) + unit.statuses.count(&status);
+                if have >= threshold {
+                    let consumed = have.min(limit);
+                    state.units[ctx.actor_index].statuses.remove(&status);
+                    use_ctx.consumed_status += consumed;
+                }
+            }
+            "damage_percent_per_consumed_status" => {
+                let step = effect.step.unwrap_or(0);
+                use_ctx.damage_bonus += (step * use_ctx.consumed_status) as f64 / 100.0;
+            }
+            "lower_own_stagger_threshold" => {
+                // Applied after the hit, using the damage dealt (see apply_hit).
+                use_ctx.lower_stagger_percent = effect.percent.unwrap_or(0);
+            }
             "damage_percent_per_ammo_spent" => {
                 // "Deal +2% damage for every value of [X] spent by this Skill"
                 let step = effect.step.unwrap_or(0);
@@ -895,8 +973,15 @@ pub fn apply_effects(
                 // target", where "All" is the sum of both values on the target.
                 let Some(status) = effect.status.clone() else { continue };
                 let Some(index) = ctx.target_index else { continue };
-                let amount = state.units[index].statuses.potency(&status)
-                    + state.units[index].statuses.count(&status);
+                let amount = match effect.component {
+                    Some(Component::Potency) => state.units[index].statuses.potency(&status),
+                    Some(Component::Count) => state.units[index].statuses.count(&status),
+                    Some(Component::Stack) => state.units[index].statuses.stack(&status),
+                    None => {
+                        state.units[index].statuses.potency(&status)
+                            + state.units[index].statuses.count(&status)
+                    }
+                };
                 if amount > 0 {
                     let resist = state.units[index].resist_sin(Sin::Gloom);
                     let damage = (amount as f64
@@ -1715,7 +1800,8 @@ fn apply_hit(
     let (crit, poise_potency) = {
         let attacker = &state.units[attacker_index];
         let potency = attacker.statuses.potency("Poise");
-        let crit = potency > 0 && state.flip(potency);
+        let chance = potency + use_.ctx.crit_chance_bonus;
+        let crit = chance > 0 && state.flip(chance);
         (crit, potency)
     };
     if crit
@@ -1754,7 +1840,7 @@ fn apply_hit(
             + state.units[attacker_index].outgoing_damage_modifier()
             + incoming_damage_modifier(defender, sin_name)
             + if crit {
-                time_passives::crit_damage_bonus(state, attacker_index)
+                time_passives::crit_damage_bonus(state, attacker_index) + use_.ctx.crit_damage_bonus
             } else {
                 0.0
             },
@@ -1863,6 +1949,18 @@ fn apply_hit(
             };
             state.push_log("counter", format!("{} counterattacked", counter.name));
             one_sided_attack(state, defender_index, attacker_index, &mut use_, 0);
+        }
+    }
+    // "Lower user's Stagger Threshold by N% of damage dealt" (a self-inflicted
+    // downside: the user becomes easier to Stagger).
+    if use_.ctx.lower_stagger_percent > 0 && hp_lost > 0 {
+        let reduction = (hp_lost * use_.ctx.lower_stagger_percent / 100).max(0);
+        if let Some(first) = state.units[attacker_index]
+            .stagger
+            .thresholds_percent
+            .first_mut()
+        {
+            *first = (*first - reduction).max(0);
         }
     }
     let staggered = check_stagger(state, defender_index);
@@ -2785,6 +2883,26 @@ fn prepare_use(
     let shield = use_.ctx.shield_gain;
     if shield > 0 {
         state.units[unit_index].shield += shield;
+    }
+    // "Base Power +1 for every [X] about to be spent by this Skill": the amount
+    // this use will spend is known from its own effects.
+    {
+        let planned: i32 = use_
+            .mechanics
+            .on_use
+            .iter()
+            .filter(|e| e.kind == "spend_ammo")
+            .map(|e| e.value.unwrap_or(1))
+            .sum::<i32>()
+            + use_
+                .mechanics
+                .coins
+                .values()
+                .flatten()
+                .filter(|e| e.kind == "spend_ammo")
+                .map(|e| e.value.unwrap_or(1))
+                .sum::<i32>();
+        use_.ctx.ammo_planned = planned;
     }
     // `Plus Coin Boost` / `Minus Coin Drop` are read when the skill is used.
     {
