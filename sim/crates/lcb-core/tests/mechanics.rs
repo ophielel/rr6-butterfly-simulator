@@ -1606,10 +1606,10 @@ fn section5_golden_replay_is_deterministic() {
     // action per Slot").  Update only together with a sourced rule change, and
     // name the source in the commit message.  Last updated when the identities'
     // passives started applying (in-game `Passives.json`).
-    assert_eq!(first_hp, vec![25483, 25245, 24783], "Imago HP after turns 1-3");
+    assert_eq!(first_hp, vec![25483, 25245, 24696], "Imago HP after turns 1-3");
     assert_eq!(
         format!("{first_hash:016x}"),
-        "18bfd36b30336cd4",
+        "297a0ff8e6359dd2",
         "recorded state hash"
     );
 }
@@ -1776,6 +1776,40 @@ fn status_clash_end_and_hit_riders_fire() {
     assert!(
         after >= before + 2,
         "Blessing inflicted [Sinking] when the Clash ended: {before} -> {after}"
+    );
+}
+
+/// A Sinner at -45 SP who owns a Corrosion Skill is forced into E.G.O Corrosion
+/// instead of Panicking, and their Skill is replaced by that Corrosion Skill.
+/// Source: wiki.gg `Sanity` ("they are forced into E.G.O Corrosion, during which
+/// they will go out of control and use E.G.O Corrosion Skills indiscriminately").
+#[test]
+fn corrosion_replaces_panic_at_minus_forty_five() {
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&[fixed::TEAM[3]], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    assert!(
+        !state.units[0].corrosion_egos.is_empty(),
+        "the E.G.O loadout has a Corrosion Skill"
+    );
+    state.units[0].sanity = Sanity::Sane { sp: -45 };
+    battle::begin_turn(&mut state, &sim.library, &sim.mechanics, &sim.scripts);
+    assert!(state.units[0].corroded, "Corrosion replaces Panic");
+    assert!(!state.units[0].panicked);
+    // Submitting anything for that unit is replaced by its Corrosion Skill.
+    for action in sim.legal_actions(&state) {
+        if let Action::Assign { actor, slot, skill, target } = action {
+            sim.submit(&mut state, Action::Assign { actor, slot, skill, target })
+                .unwrap();
+        }
+    }
+    battle::resolve_combat(&mut state, &sim.library, &sim.mechanics);
+    assert!(
+        state.log.iter().any(|entry| entry.kind == "ego"
+            && entry.detail.contains("corrosion")),
+        "a Corrosion E.G.O Skill was used: {:?}",
+        state.log.iter().map(|e| e.detail.clone()).collect::<Vec<_>>()
     );
 }
 

@@ -404,6 +404,10 @@ pub struct Unit {
     pub low_morale: bool,
     #[serde(default)]
     pub panicked: bool,
+    /// A Sinner at -45 SP who owns a Corrosion Skill is forced into E.G.O
+    /// Corrosion instead of Panicking (wiki.gg `Sanity`).
+    #[serde(default)]
+    pub corroded: bool,
     /// A Sinner at -45 SP was Panicked or Corroded last turn: SP resets to 0.
     #[serde(default)]
     pub panic_recovering: bool,
@@ -417,6 +421,10 @@ pub struct Unit {
     pub identity_skills: Vec<SkillId>,
     /// E.G.O resources per sin, shared by the team (stored on the team state).
     pub ego_slots: Vec<EgoId>,
+    /// The E.G.O of this unit that own a Corrosion Skill (for forced Corrosion
+    /// at -45 SP).
+    #[serde(default)]
+    pub corrosion_egos: Vec<EgoId>,
     pub alive: bool,
     /// Where an enemy is in its (stand-in) skill cycle.
     #[serde(default)]

@@ -158,6 +158,17 @@ impl Simulator {
                 effects.extend(supports.clone());
             }
             unit.passives = effects;
+            unit.corrosion_egos = unit
+                .ego_slots
+                .iter()
+                .filter(|ego| {
+                    self.library
+                        .ego(ego)
+                        .map(|record| record.corrosion.is_some())
+                        .unwrap_or(false)
+                })
+                .cloned()
+                .collect();
             if let crate::state::UnitKind::Sinner { identity } = &unit.kind {
                 let panic = self.panics.for_identity(&identity.0).cloned();
                 unit.panic_type = Some(

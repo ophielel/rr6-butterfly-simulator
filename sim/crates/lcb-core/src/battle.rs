@@ -3227,10 +3227,28 @@ fn apply_sanity_states(state: &mut BattleState) {
         }
         state.units[index].low_morale = false;
         state.units[index].panicked = false;
+        state.units[index].corroded = false;
         let sp = state.units[index].sanity.sp();
-        let panicked = sp <= -45;
-        let low_morale = !panicked && sp <= -30;
-        if !panicked && !low_morale {
+        let at_limit = sp <= -45;
+        // "At the next Turn Start, if a Sinner is at -45 SP and has an E.G.O with
+        // a Corrosion type Skill, they are forced into E.G.O Corrosion" - that
+        // replaces Panic (wiki.gg `Sanity`).
+        let corroded = at_limit && !state.units[index].corrosion_egos.is_empty();
+        state.units[index].corroded = corroded;
+        let panicked = at_limit && !corroded;
+        let low_morale = !at_limit && sp <= -30;
+        if !panicked && !low_morale && !corroded {
+            continue;
+        }
+        if corroded {
+            state.units[index].panic_recovering = true;
+            state.push_log(
+                "corrosion",
+                format!(
+                    "{} is at -45 SP and Corrodes instead of Panicking",
+                    state.units[index].name
+                ),
+            );
             continue;
         }
         state.units[index].low_morale = low_morale;
@@ -4153,7 +4171,36 @@ pub fn end_turn(state: &mut BattleState, mechanics: &MechanicsBook) {
 pub fn resolve_combat(state: &mut BattleState, library: &Library, mechanics: &MechanicsBook) -> Vec<ClashResult> {
     let mut results = Vec::new();
     let mut pending: Vec<(usize, SubmittedAction, Option<usize>)> = Vec::new();
-    for action in state.actions.clone() {
+    let mut actions = state.actions.clone();
+    // A Corroding Sinner "will go out of control and use E.G.O Corrosion Skills
+    // indiscriminately": their submitted action is replaced by the Corrosion
+    // Skill of one of their E.G.O, aimed at a random enemy (wiki.gg `Sanity`).
+    for action in actions.iter_mut() {
+        let Some(actor) = state.index_of(&action.actor) else { continue };
+        if !state.units[actor].corroded {
+            continue;
+        }
+        let Some(ego) = state.units[actor].corrosion_egos.first().cloned() else {
+            continue;
+        };
+        let Some(record) = library.ego(&ego) else { continue };
+        if record.corrosion.is_none() {
+            continue;
+        }
+        // E.G.O Skills are keyed `<ego id>.awakening` / `<ego id>.corrosion`.
+        let skill = SkillId::new(format!("{}.corrosion", ego.as_str()));
+        let enemies = state.living_enemies();
+        if enemies.is_empty() {
+            continue;
+        }
+        let pick = state.rng.below(enemies.len() as u32) as usize;
+        action.skill = skill;
+        action.target = Some(enemies[pick].clone());
+        action.is_ego = true;
+        action.ego = Some(ego);
+        action.ego_kind = Some(EgoSkillKind::Corrosion);
+    }
+    for action in actions {
         let Some(actor) = state.index_of(&action.actor) else { continue };
         if !state.units[actor].alive {
             continue;
