@@ -87,6 +87,11 @@ pub struct Condition {
     /// "If target is a SP Unit" / "For targets that are Non-SP Units".
     #[serde(default)]
     pub target_is_sp_unit: bool,
+    /// "against targets in either Low Morale or Panic states".
+    #[serde(default)]
+    pub target_is_low_morale: bool,
+    #[serde(default)]
+    pub target_is_panicked: bool,
     #[serde(default)]
     pub target_is_non_sp_unit: bool,
     /// "If this unit has [X]" - every listed status must be present.
@@ -255,6 +260,9 @@ pub struct Effect {
     /// "On Hit with a Base Attack Skill" (a passive that rides on hits).
     #[serde(default)]
     pub on_base_attack_hit: bool,
+    /// A Panic-Type clause that resolves at Turn End rather than Turn Start.
+    #[serde(default)]
+    pub trigger_turn_end: bool,
     /// "Deal more damage based on missing HP on self (max 15%)": percent at
     /// 100% HP lost equals this value.
     #[serde(default)]
@@ -369,6 +377,62 @@ pub struct Passive {
 impl Passive {
     pub fn is_complete(&self) -> bool {
         self.effects.unmodeled.is_empty() && self.unmodeled.is_empty()
+    }
+}
+
+/// One row of the wiki's `Sanity` panic table.
+#[derive(Clone, Debug, Default, Serialize, Deserialize)]
+pub struct PanicType {
+    #[serde(default)]
+    pub r#type: String,
+    #[serde(default)]
+    pub low_morale: Vec<Effect>,
+    #[serde(default)]
+    pub panic: Vec<Effect>,
+    #[serde(default)]
+    pub low_morale_text: String,
+    #[serde(default)]
+    pub panic_text: String,
+    #[serde(default)]
+    pub unmodeled: Vec<String>,
+}
+
+#[derive(Clone, Debug, Default, Serialize, Deserialize)]
+pub struct PanicBook {
+    #[serde(default)]
+    pub version: u32,
+    #[serde(default)]
+    pub types: BTreeMap<String, PanicType>,
+    /// identity id -> panic type name (defaults to `Panic`).
+    #[serde(default)]
+    pub identities: BTreeMap<String, String>,
+}
+
+impl PanicBook {
+    pub fn load(path: &Path) -> Result<PanicBook, String> {
+        if !path.exists() {
+            return Ok(PanicBook::default());
+        }
+        let text = std::fs::read_to_string(path).map_err(|e| e.to_string())?;
+        serde_json::from_str(&text).map_err(|e| format!("{}: {e}", path.display()))
+    }
+
+    pub fn for_identity(&self, identity: &str) -> Option<&PanicType> {
+        let name = self.identities.get(identity)?;
+        self.types.get(name)
+    }
+
+    /// Every Panic clause this project has not modelled.
+    pub fn gaps(&self) -> Vec<String> {
+        let mut out = Vec::new();
+        for (name, entry) in &self.types {
+            for clause in &entry.unmodeled {
+                out.push(format!("panic type {name}: {clause}"));
+            }
+        }
+        out.sort();
+        out.dedup();
+        out
     }
 }
 

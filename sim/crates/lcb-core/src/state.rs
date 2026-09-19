@@ -392,6 +392,21 @@ pub struct Unit {
     pub status_markers: Vec<String>,
     pub deck: SkillDeck,
     pub dashboard: Vec<DashboardSlot>,
+    /// Panic Type of this unit (wiki.gg `Sanity`) and its resolved clauses.
+    #[serde(default)]
+    pub panic_type: Option<String>,
+    #[serde(default)]
+    pub panic_low_morale: Vec<crate::effects::Effect>,
+    #[serde(default)]
+    pub panic_actions: Vec<crate::effects::Effect>,
+    /// Low Morale / Panic for the current turn (set at Turn Start).
+    #[serde(default)]
+    pub low_morale: bool,
+    #[serde(default)]
+    pub panicked: bool,
+    /// A Sinner at -45 SP was Panicked or Corroded last turn: SP resets to 0.
+    #[serde(default)]
+    pub panic_recovering: bool,
     /// Passives of this unit (its own combat passives plus the team's support
     /// passives), evaluated for continuous modifiers and phase triggers.
     #[serde(default)]

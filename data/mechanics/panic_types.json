@@ -1,0 +1,2468 @@
+{
+ "identities": {
+  "10110": "Panic",
+  "10414": "Solitude",
+  "10813": "Panic",
+  "10913": "Panic",
+  "11004": "Panic",
+  "11114": "Blue Sand",
+  "11214": "Dazzle"
+ },
+ "types": {
+  "\"K-kill... kill me...\"": {
+   "low_morale": [
+    {
+     "kind": "compound",
+     "raw": "Turn Start: Gain 8 Clash Power Down and 5 Power Down",
+     "sub_effects": [
+      {
+       "count": 8,
+       "kind": "gain",
+       "status": "Clash Power Down"
+      },
+      {
+       "count": 5,
+       "kind": "gain",
+       "status": "Power Down"
+      }
+     ]
+    }
+   ],
+   "low_morale_text": "Turn Start: Gain 8 Clash Power Down and 5 Power Down",
+   "panic": [
+    {
+     "kind": "compound",
+     "raw": "Turn Start: Gain 10 Clash Power Down and 5 Power Down",
+     "sub_effects": [
+      {
+       "count": 10,
+       "kind": "gain",
+       "status": "Clash Power Down"
+      },
+      {
+       "count": 5,
+       "kind": "gain",
+       "status": "Power Down"
+      }
+     ]
+    }
+   ],
+   "panic_text": "Turn Start: Gain 10 Clash Power Down and 5 Power Down",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "enemy 1339",
+   "type": "\"K-kill... kill me...\"",
+   "unmodeled": []
+  },
+  "Affection and Resentment": {
+   "low_morale": [],
+   "low_morale_text": "Deal +10% damage to and take +10% damage from Ryōshū",
+   "panic": [],
+   "panic_text": "Deal +20% damage to and take +10% damage from Ryōshū",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "enemy 1322 enemy 1324",
+   "type": "Affection and Resentment",
+   "unmodeled": [
+    "Deal +10% damage to and take +10% damage from Ryōshū",
+    "Deal +20% damage to and take +10% damage from Ryōshū"
+   ]
+  },
+  "Agitated": {
+   "low_morale": [
+    {
+     "kind": "compound",
+     "raw": "Turn Start: Gain 1 Damage Up and 2 Fragile.",
+     "sub_effects": [
+      {
+       "count": 1,
+       "kind": "gain",
+       "status": "Damage Up"
+      },
+      {
+       "count": 2,
+       "kind": "gain",
+       "status": "Fragile."
+      }
+     ]
+    }
+   ],
+   "low_morale_text": "Turn Start: Gain 1 Damage Up and 2 Fragile.",
+   "panic": [
+    {
+     "kind": "compound",
+     "raw": "Turn Start: Gain 2 Damage Up and 5 Fragile.",
+     "sub_effects": [
+      {
+       "count": 2,
+       "kind": "gain",
+       "status": "Damage Up"
+      },
+      {
+       "count": 5,
+       "kind": "gain",
+       "status": "Fragile."
+      }
+     ]
+    }
+   ],
+   "panic_text": "Turn Start: Gain 2 Damage Up and 5 Fragile.",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "enemy 8050 enemy 8113  enemy 90105 enemy 91005 enemy 91008 enemy 91009 enemy 91013 enemy 91015 enemy 91020[[:Category:Enemies with Agitated Panic|Agitated Enemies]]",
+   "type": "Agitated",
+   "unmodeled": []
+  },
+  "Alaya": {
+   "low_morale": [],
+   "low_morale_text": "-",
+   "panic": [],
+   "panic_text": "-",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "enemy 400015",
+   "type": "Alaya",
+   "unmodeled": []
+  },
+  "Angst": {
+   "low_morale": [],
+   "low_morale_text": "Clash Power +2 against targets with Omen TalismanTurn Start: gain 2 Damage Up and 1 Fragile",
+   "panic": [],
+   "panic_text": "Clash Power +3 against targets with Omen TalismanTurn Start: gain 3 Damage Up and 2 Fragile",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "enemy 1159",
+   "type": "Angst",
+   "unmodeled": [
+    "Clash Power +2 against targets with Omen TalismanTurn Start: gain 2 Damage Up and 1 Fragile",
+    "Clash Power +3 against targets with Omen TalismanTurn Start: gain 3 Damage Up and 2 Fragile"
+   ]
+  },
+  "Anguish": {
+   "low_morale": [
+    {
+     "kind": "compound",
+     "raw": "Turn Start: gain 1 Fragile and 2 SP Heal Efficiency Down",
+     "sub_effects": [
+      {
+       "count": 1,
+       "kind": "gain",
+       "status": "Fragile"
+      },
+      {
+       "count": 2,
+       "kind": "gain",
+       "status": "SP Heal Efficiency Down"
+      }
+     ]
+    }
+   ],
+   "low_morale_text": "Turn Start: gain 1 Fragile and 2 SP Heal Efficiency Down",
+   "panic": [
+    {
+     "kind": "compound",
+     "raw": "Turn Start: gain 2 Fragile and 3 SP Heal Efficiency Down",
+     "sub_effects": [
+      {
+       "count": 2,
+       "kind": "gain",
+       "status": "Fragile"
+      },
+      {
+       "count": 3,
+       "kind": "gain",
+       "status": "SP Heal Efficiency Down"
+      }
+     ]
+    }
+   ],
+   "panic_text": "Turn Start: gain 2 Fragile and 3 SP Heal Efficiency Down",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "enemy 1082",
+   "type": "Anguish",
+   "unmodeled": []
+  },
+  "Atrophied": {
+   "low_morale": [
+    {
+     "count": 2,
+     "kind": "gain",
+     "raw": "Turn Start: Gain 2 Attack Power Down.",
+     "status": "Attack Power Down."
+    }
+   ],
+   "low_morale_text": "Turn Start: Gain 2 Attack Power Down.",
+   "panic": [
+    {
+     "count": 4,
+     "kind": "gain",
+     "raw": "Turn Start: Gain 4 Attack Power Down.",
+     "status": "Attack Power Down."
+    }
+   ],
+   "panic_text": "Turn Start: Gain 4 Attack Power Down.",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "enemy 91004 enemy 91012[[:Category:Enemies with Atrophied Panic|Atrophied Enemies]]",
+   "type": "Atrophied",
+   "unmodeled": []
+  },
+  "Back into My Shell...": {
+   "low_morale": [],
+   "low_morale_text": "Max Speed -1, Defense Level +1",
+   "panic": [],
+   "panic_text": "Max Speed -5, Defense Level +3",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "enemy 1465 enemy 1482 enemy 1483[[:Category:Enemies with Back into My Shell... Panic|Le Noir Enemies]]",
+   "type": "Back into My Shell...",
+   "unmodeled": [
+    "Max Speed -1, Defense Level +1",
+    "Max Speed -5, Defense Level +3"
+   ]
+  },
+  "Beastly Instinct": {
+   "low_morale": [],
+   "low_morale_text": "Deals +(HP percentage difference/2)% damage to targets with higher HP percentages than this unit's (max 10%)Turn Start: gain 1 Attack Power Up, 1 Damage Up, and 1 Fragile",
+   "panic": [],
+   "panic_text": "Deals +(HP percentage difference)% damage to targets with higher HP percentages than this unit's (max 25%)Turn Start: gain 1 Plus Coin Boost, 2 Damage Up, and 2 Fragile",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "enemy 1145",
+   "type": "Beastly Instinct",
+   "unmodeled": [
+    "Deals +(HP percentage difference/2)% damage to targets with higher HP percentages than this unit's (max 10%)Turn Start: gain 1 Attack Power Up, 1 Damage Up, and 1 Fragile",
+    "Deals +(HP percentage difference)% damage to targets with higher HP percentages than this unit's (max 25%)Turn Start: gain 1 Plus Coin Boost, 2 Damage Up, and 2 Fragile"
+   ]
+  },
+  "Bloodthirst": {
+   "low_morale": [
+    {
+     "count": 1,
+     "kind": "gain",
+     "raw": "Turn Start: Gain 1 Fragile and Damage Up.",
+     "status": "Fragile and Damage Up."
+    }
+   ],
+   "low_morale_text": "Turn Start: Gain 1 Fragile and Damage Up.",
+   "panic": [
+    {
+     "count": 2,
+     "kind": "gain",
+     "raw": "Turn Start: Gain 2 Fragile and Damage Up.",
+     "status": "Fragile and Damage Up."
+    }
+   ],
+   "panic_text": "Turn Start: Gain 2 Fragile and Damage Up.",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "enemy 8350 enemy 91018[[:Category:Enemies with Bloodthirst Panic|Bloodfiend Enemies]]",
+   "type": "Bloodthirst",
+   "unmodeled": []
+  },
+  "Blue Sand": {
+   "low_morale": [
+    {
+     "kind": "compound",
+     "raw": "Clash Power -1, Min & Max Speed -1",
+     "sub_effects": [
+      {
+       "kind": "clash_power",
+       "value": -1
+      },
+      {
+       "component": "stack",
+       "count": 1,
+       "kind": "gain",
+       "status": "Bind"
+      }
+     ]
+    }
+   ],
+   "low_morale_text": "Clash Power -1, Min & Max Speed -1",
+   "panic": [
+    {
+     "kind": "compound",
+     "raw": "Clash Power -2, Min & Max Speed -1",
+     "sub_effects": [
+      {
+       "kind": "clash_power",
+       "value": -2
+      },
+      {
+       "component": "stack",
+       "count": 1,
+       "kind": "gain",
+       "status": "Bind"
+      }
+     ]
+    }
+   ],
+   "panic_text": "Clash Power -2, Min & Max Speed -1",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "LCA Udjat Vanguard Team 3 Leader Outis",
+   "type": "Blue Sand",
+   "unmodeled": []
+  },
+  "Body Broken Beyond Repair": {
+   "low_morale": [],
+   "low_morale_text": "Turn Start: Gain 1 Fragile and apply 2 Defense Power Up to Ezra and Vespa",
+   "panic": [
+    {
+     "count": 1,
+     "kind": "gain",
+     "raw": "Turn Start: Gain 1 Fragile and use 'Steady the Breath'",
+     "status": "Fragile and use 'Steady the Breath'"
+    }
+   ],
+   "panic_text": "Turn Start: Gain 1 Fragile and use 'Steady the Breath'",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "enemy 400010",
+   "type": "Body Broken Beyond Repair",
+   "unmodeled": [
+    "Turn Start: Gain 1 Fragile and apply 2 Defense Power Up to Ezra and Vespa"
+   ]
+  },
+  "Bridle of Nihility": {
+   "low_morale": [
+    {
+     "kind": "compound",
+     "raw": "Turn Start: gain 1 Attack Power Up and 3 Defense Level Down.",
+     "sub_effects": [
+      {
+       "count": 1,
+       "kind": "gain",
+       "status": "Attack Power Up"
+      },
+      {
+       "count": 3,
+       "kind": "gain",
+       "status": "Defense Level Down."
+      }
+     ]
+    }
+   ],
+   "low_morale_text": "Turn Start: gain 1 Attack Power Up and 3 Defense Level Down. Take 5 SP damage at Turn End.",
+   "panic": [
+    {
+     "kind": "compound",
+     "raw": "Turn Start: gain 2 Attack Power Up and 6 Defense Level Down.",
+     "sub_effects": [
+      {
+       "count": 2,
+       "kind": "gain",
+       "status": "Attack Power Up"
+      },
+      {
+       "count": 6,
+       "kind": "gain",
+       "status": "Defense Level Down."
+      }
+     ]
+    }
+   ],
+   "panic_text": "Turn Start: gain 2 Attack Power Up and 6 Defense Level Down. Heal 10 SP at Turn End.",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "enemy 8381",
+   "type": "Bridle of Nihility",
+   "unmodeled": [
+    "Take 5 SP damage at Turn End.",
+    "Heal 10 SP at Turn End."
+   ]
+  },
+  "Broken Unity": {
+   "low_morale": [],
+   "low_morale_text": "Gain 1 Fragile. Gain +1 Tremor Count when hit. (3 times max)",
+   "panic": [],
+   "panic_text": "Gain 2 Fragile. Gain +2 Tremor Count when hit. (3 times max)",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "[[:Category:Enemies with Broken Unity Panic|Yurodivy Enemies]]",
+   "type": "Broken Unity",
+   "unmodeled": [
+    "Gain 1 Fragile.",
+    "Gain +1 Tremor Count when hit.",
+    "(3 times max)",
+    "Gain 2 Fragile.",
+    "Gain +2 Tremor Count when hit.",
+    "(3 times max)"
+   ]
+  },
+  "Burden of Responsibility": {
+   "low_morale": [],
+   "low_morale_text": "- Gain 2 Attack Power Up and 1 Fragile; raise Max Speed value by 2- Heal +30% more HP when healing- Turn End: if the Returning Bloodlust is lower than its value at Turn Start, gain 2 Offense Level Up and Defense Level Down next turn",
+   "panic": [],
+   "panic_text": "- Gain 2 Attack Power Up and raise Max Speed value by 2- Heal +50% more HP when healing- Turn End: if the Returning Bloodlust is lower than its value at Turn Start, gain 3 Offense Level Up and 5 Defense Level Down next turn",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "enemy 8410",
+   "type": "Burden of Responsibility",
+   "unmodeled": [
+    "- Gain 2 Attack Power Up and 1 Fragile",
+    "raise Max Speed value by 2- Heal +30% more HP when healing- Turn End: if the Returning Bloodlust is lower than its value at Turn Start, gain 2 Offense Level Up and Defense Level Down next turn",
+    "- Gain 2 Attack Power Up and raise Max Speed value by 2- Heal +50% more HP when healing- Turn End: if the Returning Bloodlust is lower than its value at Turn Start, gain 3 Offense Level Up and 5 Defense Level Down next turn"
+   ]
+  },
+  "Call of the Bloodkin": {
+   "low_morale": [],
+   "low_morale_text": "Turn End: consume 3% HP to apply 1 Attack Power Up and 1 Fragile to all allies",
+   "panic": [],
+   "panic_text": "Turn End: consume 5% HP and gain 1 Fragile to apply 1 Attack Power Up and 1 Fragile to all allies",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "enemy 1300",
+   "type": "Call of the Bloodkin",
+   "unmodeled": [
+    "Turn End: consume 3% HP to apply 1 Attack Power Up and 1 Fragile to all allies",
+    "Turn End: consume 5% HP and gain 1 Fragile to apply 1 Attack Power Up and 1 Fragile to all allies"
+   ]
+  },
+  "Charge Circuitry Countercurrent": {
+   "low_morale": [],
+   "low_morale_text": "When Clashing against targets with Rupture, gain +3 Charge and 1 Fragile (2 times per turn)",
+   "panic": [],
+   "panic_text": "When Clashing against targets with Rupture, gain +5 Charge, 1 Damage Up, and 2 Fragile (2 times per turn)",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "enemy 1167 enemy 1160[[:Category:Enemies with Charge Circuitry Countercurrent Panic|Shi Family Mercenary Enemies]]",
+   "type": "Charge Circuitry Countercurrent",
+   "unmodeled": [
+    "When Clashing against targets with Rupture, gain +3 Charge and 1 Fragile (2 times per turn)",
+    "When Clashing against targets with Rupture, gain +5 Charge, 1 Damage Up, and 2 Fragile (2 times per turn)"
+   ]
+  },
+  "Charge Order": {
+   "low_morale": [],
+   "low_morale_text": "Turn Start: gain 1 Fragile and apply 1 Damage Up to all allies",
+   "panic": [],
+   "panic_text": "Turn Start: gain 2 Fragile and apply 2 Damage Up to all allies",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "enemy 1157",
+   "type": "Charge Order",
+   "unmodeled": [
+    "Turn Start: gain 1 Fragile and apply 1 Damage Up to all allies",
+    "Turn Start: gain 2 Fragile and apply 2 Damage Up to all allies"
+   ]
+  },
+  "Coloriage Impulsif": {
+   "low_morale": [],
+   "low_morale_text": "- Deal +2.5% damage for every type of negative effect on target this unit attacks (max 15%)- Gain 1 Fragile",
+   "panic": [],
+   "panic_text": "- Deal +5% damage for every type of negative effect on target this unit attacks (max 30%)- Gain 2 Fragile",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "enemy 1422",
+   "type": "Coloriage Impulsif",
+   "unmodeled": [
+    "- Deal +2.5% damage for every type of negative effect on target this unit attacks (max 15%)- Gain 1 Fragile",
+    "- Deal +5% damage for every type of negative effect on target this unit attacks (max 30%)- Gain 2 Fragile"
+   ]
+  },
+  "Culinary Yearning": {
+   "low_morale": [],
+   "low_morale_text": "Offense Level +1 and take +3% damage for every Got an appetite, you hear? Stack on self",
+   "panic": [],
+   "panic_text": "Offense Level +2 and take +5% damage for every Got an appetite, you hear? Stack on self",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "enemy 1474",
+   "type": "Culinary Yearning",
+   "unmodeled": [
+    "Offense Level +1 and take +3% damage for every Got an appetite, you hear? Stack on self",
+    "Offense Level +2 and take +5% damage for every Got an appetite, you hear? Stack on self"
+   ]
+  },
+  "Dazzle": {
+   "low_morale": [
+    {
+     "kind": "compound",
+     "raw": "Turn End: Gain 1 Bind and 2 Offense Level Down next turn",
+     "sub_effects": [
+      {
+       "count": 1,
+       "kind": "gain",
+       "next_turn": true,
+       "status": "Bind"
+      },
+      {
+       "count": 2,
+       "kind": "gain",
+       "next_turn": true,
+       "status": "Offense Level Down"
+      }
+     ]
+    }
+   ],
+   "low_morale_text": "Turn End: Gain 1 Bind and 2 Offense Level Down next turn",
+   "panic": [
+    {
+     "kind": "compound",
+     "raw": "Turn End: Gain 1 Bind and 4 Offense Level Down next turn",
+     "sub_effects": [
+      {
+       "count": 1,
+       "kind": "gain",
+       "next_turn": true,
+       "status": "Bind"
+      },
+      {
+       "count": 4,
+       "kind": "gain",
+       "next_turn": true,
+       "status": "Offense Level Down"
+      }
+     ]
+    }
+   ],
+   "panic_text": "Turn End: Gain 1 Bind and 4 Offense Level Down next turn",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "Lobotomy E.G.O::Lamp Gregor",
+   "type": "Dazzle",
+   "unmodeled": []
+  },
+  "Deception": {
+   "low_morale": [],
+   "low_morale_text": "If this unit's Speed is faster than the target or when using an Unopposed Attack, deal +10% more damage against the target",
+   "panic": [],
+   "panic_text": "If this unit's Speed is faster than the target or when using an Unopposed Attack, deal +20% more damage against the target; if this unit's Speed is faster than the target's, take -20% less damage",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "enemy 1126[[:Category:Enemies with Deception Panic|Heishou Pack - Mao Branch Enemies]]",
+   "type": "Deception",
+   "unmodeled": [
+    "If this unit's Speed is faster than the target or when using an Unopposed Attack, deal +10% more damage against the target",
+    "If this unit's Speed is faster than the target or when using an Unopposed Attack, deal +20% more damage against the target",
+    "if this unit's Speed is faster than the target's, take -20% less damage"
+   ]
+  },
+  "Deep-rooted Regret": {
+   "low_morale": [],
+   "low_morale_text": "Turn Start: Gain 2 Damage Down and heal 40 HP",
+   "panic": [],
+   "panic_text": "Turn Start: Gain 3 Damage Down and heal 60 HP",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "enemy 400040",
+   "type": "Deep-rooted Regret",
+   "unmodeled": [
+    "Turn Start: Gain 2 Damage Down and heal 40 HP",
+    "Turn Start: Gain 3 Damage Down and heal 60 HP"
+   ]
+  },
+  "Degraded Corrosion": {
+   "low_morale": [
+    {
+     "count": 1,
+     "kind": "gain",
+     "raw": "Turn Start: Gain 1 Fragile",
+     "status": "Fragile"
+    }
+   ],
+   "low_morale_text": "Turn Start: Gain 1 Fragile",
+   "panic": [
+    {
+     "kind": "compound",
+     "raw": "Turn Start: Gain 1 Fragile and 5 Burn",
+     "sub_effects": [
+      {
+       "count": 1,
+       "kind": "gain",
+       "status": "Fragile"
+      },
+      {
+       "count": 5,
+       "kind": "gain",
+       "status": "Burn"
+      }
+     ]
+    }
+   ],
+   "panic_text": "Turn Start: Gain 1 Fragile and 5 Burn",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "enemy 400007",
+   "type": "Degraded Corrosion",
+   "unmodeled": []
+  },
+  "Dejection": {
+   "low_morale": [],
+   "low_morale_text": "Gain 1 Fragile; In a clash, if any Coin lands tails, Clash Power -1 for the clash.",
+   "panic": [],
+   "panic_text": "Gain 3 Fragile; In a clash, if any Coin lands tails, Clash Power -3 for the clash.",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "[[:Category:Enemies with Dejection Panic|Revived, Reawakened, and Imagined Enemies]]",
+   "type": "Dejection",
+   "unmodeled": [
+    "Gain 1 Fragile",
+    "In a clash, if any Coin lands tails, Clash Power -1 for the clash.",
+    "Gain 3 Fragile",
+    "In a clash, if any Coin lands tails, Clash Power -3 for the clash."
+   ]
+  },
+  "Developed Memories": {
+   "low_morale": [],
+   "low_morale_text": "Gain 1 Fragile, deal +10% damage, and deal +15% damage on Critical Hit",
+   "panic": [],
+   "panic_text": "Gain 2 Fragile, deal +10% damage, and deal +30% damage on Critical Hit, and",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "enemy 1450 enemy 1451",
+   "type": "Developed Memories",
+   "unmodeled": [
+    "Gain 1 Fragile, deal +10% damage, and deal +15% damage on Critical Hit",
+    "Gain 2 Fragile, deal +10% damage, and deal +30% damage on Critical Hit, and"
+   ]
+  },
+  "Double-edged Feather": {
+   "low_morale": [
+    {
+     "kind": "compound",
+     "raw": "Turn Start: gain 1 Fragile and 1 HP Healing Boost.",
+     "sub_effects": [
+      {
+       "count": 1,
+       "kind": "gain",
+       "status": "Fragile"
+      },
+      {
+       "count": 1,
+       "kind": "gain",
+       "status": "HP Healing Boost."
+      }
+     ]
+    }
+   ],
+   "low_morale_text": "Turn Start: gain 1 Fragile and 1 HP Healing Boost. On Hit, inflict 1 Rupture and Bleed",
+   "panic": [
+    {
+     "kind": "compound",
+     "raw": "Turn Start: gain 2 Fragile and 2 HP Healing Boost.",
+     "sub_effects": [
+      {
+       "count": 2,
+       "kind": "gain",
+       "status": "Fragile"
+      },
+      {
+       "count": 2,
+       "kind": "gain",
+       "status": "HP Healing Boost."
+      }
+     ]
+    }
+   ],
+   "panic_text": "Turn Start: gain 2 Fragile and 2 HP Healing Boost. On Hit, inflict 1 Rupture and Bleed",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "enemy 1158",
+   "type": "Double-edged Feather",
+   "unmodeled": [
+    "On Hit, inflict 1 Rupture and Bleed",
+    "On Hit, inflict 1 Rupture and Bleed"
+   ]
+  },
+  "Duel Specialist": {
+   "low_morale": [],
+   "low_morale_text": "- Turn Start: Gain 2 Offense Level Up. On Clash Lose, gain 1 Defense Level Down (max 3 per turn). Min. Speed -1.",
+   "panic": [],
+   "panic_text": "- Turn Start: Gain 4 Offense Level Up. On Clash Lose, gain 2 Defense Level Down (max 6 per turn). Min. Speed -1.",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "enemy 8371",
+   "type": "Duel Specialist",
+   "unmodeled": [
+    "- Turn Start: Gain 2 Offense Level Up.",
+    "On Clash Lose, gain 1 Defense Level Down (max 3 per turn).",
+    "Min.",
+    "Speed -1.",
+    "- Turn Start: Gain 4 Offense Level Up.",
+    "On Clash Lose, gain 2 Defense Level Down (max 6 per turn).",
+    "Min.",
+    "Speed -1."
+   ]
+  },
+  "Echoes of the Manor": {
+   "low_morale": [],
+   "low_morale_text": "Clash Power -1 on self. Deal +10% more damage on Heads Hit.",
+   "panic": [],
+   "panic_text": "Clash Power -2 on self. Gain 1 Damage Up.",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "enemy 91014[[:Category:Enemies with Echoes of the Manor Panic|Wuthering Heights Butler Enemies]]\n[[:Category:Identities with Echoes of the Manor|Wuthering Heights Butler Identities]]\n[[Bygone Days Ishmael]]",
+   "type": "Echoes of the Manor",
+   "unmodeled": [
+    "Clash Power -1 on self.",
+    "Deal +10% more damage on Heads Hit.",
+    "Clash Power -2 on self.",
+    "Gain 1 Damage Up."
+   ]
+  },
+  "Eldtree Mutation": {
+   "low_morale": [],
+   "low_morale_text": "Gain 1 Damage Up, 1 Fragile, and 1 Rupture Fragility",
+   "panic": [],
+   "panic_text": "Gain 2 Damage Up, 2 Fragile, and 2 Rupture Fragility",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "[[:Category:Enemies with Eldtree Mutation Panic|Failure Enemies]]",
+   "type": "Eldtree Mutation",
+   "unmodeled": [
+    "Gain 1 Damage Up, 1 Fragile, and 1 Rupture Fragility",
+    "Gain 2 Damage Up, 2 Fragile, and 2 Rupture Fragility"
+   ]
+  },
+  "FOMO": {
+   "low_morale": [],
+   "low_morale_text": "Offense Level +1 for every 20% missing HP on self (max 2)Gain 1 Fragile",
+   "panic": [],
+   "panic_text": "Offense Level +1 for every 20% missing HP on self (max 2)Gain 1 Fragile",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "[[:Category:Enemies with FOMO Panic|Sunshone Le Kaki Enemies]]",
+   "type": "FOMO",
+   "unmodeled": [
+    "Offense Level +1 for every 20% missing HP on self (max 2)Gain 1 Fragile",
+    "Offense Level +1 for every 20% missing HP on self (max 2)Gain 1 Fragile"
+   ]
+  },
+  "Faltering Inspiration": {
+   "low_morale": [],
+   "low_morale_text": "- If the target this unit attacks has Mauled Color, deal +10% damage- Gain 1 Fragile",
+   "panic": [],
+   "panic_text": "- If the target this unit attacks has Mauled Color, deal +20% damage- Gain 2 Fragile",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "[[:Category:Enemies with Faltering Inspiration Panic|Fauvist Students of the Ring]]",
+   "type": "Faltering Inspiration",
+   "unmodeled": [
+    "- If the target this unit attacks has Mauled Color, deal +10% damage- Gain 1 Fragile",
+    "- If the target this unit attacks has Mauled Color, deal +20% damage- Gain 2 Fragile"
+   ]
+  },
+  "Fervor": {
+   "low_morale": [
+    {
+     "count": 2,
+     "kind": "gain",
+     "raw": "Turn Start: Gain 2 Defense Level Down",
+     "status": "Defense Level Down"
+    }
+   ],
+   "low_morale_text": "Turn Start: Gain 2 Defense Level Down; gain 1 Damage Up for every 30 HP damage taken last turn (max 5)",
+   "panic": [
+    {
+     "kind": "compound",
+     "raw": "Turn Start: Gain 1 Attack Power Up and 3 Defense Level Down",
+     "sub_effects": [
+      {
+       "count": 1,
+       "kind": "gain",
+       "status": "Attack Power Up"
+      },
+      {
+       "count": 3,
+       "kind": "gain",
+       "status": "Defense Level Down"
+      }
+     ]
+    }
+   ],
+   "panic_text": "Turn Start: Gain 1 Attack Power Up and 3 Defense Level Down; gain 1 Damage Up for every 25 HP damage taken last turn (max 5)",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "enemy 1328",
+   "type": "Fervor",
+   "unmodeled": [
+    "gain 1 Damage Up for every 30 HP damage taken last turn (max 5)",
+    "gain 1 Damage Up for every 25 HP damage taken last turn (max 5)"
+   ]
+  },
+  "Flesh Scoop": {
+   "low_morale": [
+    {
+     "kind": "compound",
+     "raw": "Turn Start: gain 5 Bleed and 1 Attack Power Up",
+     "sub_effects": [
+      {
+       "count": 5,
+       "kind": "gain",
+       "status": "Bleed"
+      },
+      {
+       "count": 1,
+       "kind": "gain",
+       "status": "Attack Power Up"
+      }
+     ]
+    }
+   ],
+   "low_morale_text": "Turn Start: gain 5 Bleed and 1 Attack Power Up",
+   "panic": [
+    {
+     "kind": "compound",
+     "raw": "Turn Start: gain 10 Bleed and 2 Attack Power Up",
+     "sub_effects": [
+      {
+       "count": 10,
+       "kind": "gain",
+       "status": "Bleed"
+      },
+      {
+       "count": 2,
+       "kind": "gain",
+       "status": "Attack Power Up"
+      }
+     ]
+    }
+   ],
+   "panic_text": "Turn Start: gain 10 Bleed and 2 Attack Power Up",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "[[:Category:Enemies with Flesh Scoop Panic|N Corp. E.G.O::Sticking Enemies]]",
+   "type": "Flesh Scoop",
+   "unmodeled": []
+  },
+  "Guilt": {
+   "low_morale": [],
+   "low_morale_text": "Turn End: gain 1 Fragile and SP Heal Efficiency Down next turn.",
+   "panic": [],
+   "panic_text": "Turn End: gain 2 Fragile and SP Heal Efficiency Down next turn.",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "enemy 8378",
+   "type": "Guilt",
+   "unmodeled": [
+    "Turn End: gain 1 Fragile and SP Heal Efficiency Down next turn.",
+    "Turn End: gain 2 Fragile and SP Heal Efficiency Down next turn."
+   ]
+  },
+  "Hatred": {
+   "low_morale": [],
+   "low_morale_text": "- Clash Win: Gain 1 Offense Level Up next turn. (max 3 per turn)Clash Lose: Gain 1 Defense Level Up. (max 3 per turn)",
+   "panic": [],
+   "panic_text": "- Clash Win: Gain 1 Offense Level Up this turn and next turn. (max 3 per turn)Clash Lose: Gain 1 Defense Level Up. (max 3 per turn)Turn End: Gain 2 Haste next turn.",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "enemy 8165 enemy 8171[[:Category:Enemies with Hatred Panic|Wild Hunt Enemies]]",
+   "type": "Hatred",
+   "unmodeled": [
+    "- Clash Win: Gain 1 Offense Level Up next turn.",
+    "(max 3 per turn)Clash Lose: Gain 1 Defense Level Up.",
+    "(max 3 per turn)",
+    "- Clash Win: Gain 1 Offense Level Up this turn and next turn.",
+    "(max 3 per turn)Clash Lose: Gain 1 Defense Level Up.",
+    "(max 3 per turn)Turn End: Gain 2 Haste next turn."
+   ]
+  },
+  "Heart Toward the New Era": {
+   "low_morale": [],
+   "low_morale_text": "On Hit, consume 3 SP on self to inflict 2 Sinking",
+   "panic": [],
+   "panic_text": "On Hit, inflict 3 Sinking and gain 1 Sinking",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "enemy 1136",
+   "type": "Heart Toward the New Era",
+   "unmodeled": [
+    "On Hit, consume 3 SP on self to inflict 2 Sinking",
+    "On Hit, inflict 3 Sinking and gain 1 Sinking"
+   ]
+  },
+  "Heart of Compassion": {
+   "low_morale": [],
+   "low_morale_text": "- Deal +(Nervous Impairment on target / 2)% damage (max 15%)- Turn Start: gain 1 Damage Up and 2 Fragile",
+   "panic": [],
+   "panic_text": "- Deal +(Nervous Impairment on target)% damage (max 30%)- Turn Start: gain 2 Damage Up and 3 Fragile",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "enemy 1303",
+   "type": "Heart of Compassion",
+   "unmodeled": [
+    "- Deal +(Nervous Impairment on target / 2)% damage (max 15%)- Turn Start: gain 1 Damage Up and 2 Fragile",
+    "- Deal +(Nervous Impairment on target)% damage (max 30%)- Turn Start: gain 2 Damage Up and 3 Fragile"
+   ]
+  },
+  "Heart of Evil": {
+   "low_morale": [],
+   "low_morale_text": "Clash Power +2 against targets with Omen TalismanTurn Start: gain 2 Damage Up and 1 Fragile",
+   "panic": [],
+   "panic_text": "Clash Power +3 against targets with Omen TalismanTurn Start: gain 3 Damage Up and 2 Fragile",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "[[:Category:Enemies with Heart of Evil Panic|Wicked Deathrite Monk Enemies]]",
+   "type": "Heart of Evil",
+   "unmodeled": [
+    "Clash Power +2 against targets with Omen TalismanTurn Start: gain 2 Damage Up and 1 Fragile",
+    "Clash Power +3 against targets with Omen TalismanTurn Start: gain 3 Damage Up and 2 Fragile"
+   ]
+  },
+  "Heart of Oppressive Evil": {
+   "low_morale": [],
+   "low_morale_text": "Clash Power +2 against targets with Omen TalismanTurn Start: gain 3 Damage Up and 1 Fragile",
+   "panic": [],
+   "panic_text": "Clash Power +3 against targets with Omen TalismanTurn Start: gain 4 Damage Up and 2 Fragile",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "[[:Category:Enemies with Heart of Oppressive Evil Panic|Evil-possessed Deathrite Monk Enemies]]",
+   "type": "Heart of Oppressive Evil",
+   "unmodeled": [
+    "Clash Power +2 against targets with Omen TalismanTurn Start: gain 3 Damage Up and 1 Fragile",
+    "Clash Power +3 against targets with Omen TalismanTurn Start: gain 4 Damage Up and 2 Fragile"
+   ]
+  },
+  "Hive Mind": {
+   "low_morale": [],
+   "low_morale_text": "All Resistances change to 'Normal'",
+   "panic": [],
+   "panic_text": "All Resistance change to 'Normal'Double the amount of Burn, Bleed, Tremor, and Rupture Potency gained due to Skill effects",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "enemy 1302",
+   "type": "Hive Mind",
+   "unmodeled": [
+    "All Resistances change to 'Normal'",
+    "All Resistance change to 'Normal'Double the amount of Burn, Bleed, Tremor, and Rupture Potency gained due to Skill effects"
+   ]
+  },
+  "Hunger": {
+   "low_morale": [],
+   "low_morale_text": "- Turn Start: gain 1 Bind and 3 Attack Power Up. Turn End: take 5 SP damage.",
+   "panic": [],
+   "panic_text": "- Turn Start: gain 2 Bind and 4 Attack Power Up.",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "enemy 8372",
+   "type": "Hunger",
+   "unmodeled": [
+    "- Turn Start: gain 1 Bind and 3 Attack Power Up.",
+    "Turn End: take 5 SP damage.",
+    "- Turn Start: gain 2 Bind and 4 Attack Power Up."
+   ]
+  },
+  "Imitation of a Father": {
+   "low_morale": [],
+   "low_morale_text": "- Turn Start: Gain 5 Burn and 5 Bleed- Take +10% damage from Sinner",
+   "panic": [],
+   "panic_text": "- Turn Start: Gain 5 Burn, +3 Burn Count, 5 Bleed, and +3 Bleed Count- Take +20% damage from Sinner",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "enemy 1347",
+   "type": "Imitation of a Father",
+   "unmodeled": [
+    "- Turn Start: Gain 5 Burn and 5 Bleed- Take +10% damage from Sinner",
+    "- Turn Start: Gain 5 Burn, +3 Burn Count, 5 Bleed, and +3 Bleed Count- Take +20% damage from Sinner"
+   ]
+  },
+  "Impurity": {
+   "low_morale": [],
+   "low_morale_text": "Gain 1 Fragile. Target loses 2 SP if this unit loses the clash.",
+   "panic": [],
+   "panic_text": "Gain 1 Fragile. Target loses 5 SP if this unit loses the clash.",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "enemy 8105 enemy 8106[[:Category:Enemies with Impurity Panic|Pallidified Thing Enemies]]",
+   "type": "Impurity",
+   "unmodeled": [
+    "Gain 1 Fragile.",
+    "Target loses 2 SP if this unit loses the clash.",
+    "Gain 1 Fragile.",
+    "Target loses 5 SP if this unit loses the clash."
+   ]
+  },
+  "Infinitely Bequeathing Will of Hongyuan": {
+   "low_morale": [],
+   "low_morale_text": "Gain 2 Attack Power Up and 1 BindUnits generated by this unit gain 3 Defense Level DownDeal +20% damage. If the Palanquin Part's HP drops to 0, deal -10% damage instead",
+   "panic": [],
+   "panic_text": "Gain 2 Attack Power Up and 2 BindUnits generated by this unit gain 6 Defense Level DownDeal +30% damage. If the Palanquin Part's HP drops to 0, deal -15% damage instead",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "enemy 1152",
+   "type": "Infinitely Bequeathing Will of Hongyuan",
+   "unmodeled": [
+    "Gain 2 Attack Power Up and 1 BindUnits generated by this unit gain 3 Defense Level DownDeal +20% damage.",
+    "If the Palanquin Part's HP drops to 0, deal -10% damage instead",
+    "Gain 2 Attack Power Up and 2 BindUnits generated by this unit gain 6 Defense Level DownDeal +30% damage.",
+    "If the Palanquin Part's HP drops to 0, deal -15% damage instead"
+   ]
+  },
+  "Inherited Will of Hongyuan": {
+   "low_morale": [],
+   "low_morale_text": "All parts gain 2 Attack Power Up and 1 Bind- When the Body Part loses a Clash against Hong Lu: the Body Part gains 1 Damage Upand 1 Fragile next turn (once per turn)",
+   "panic": [],
+   "panic_text": "All parts gain 2 Attack Power Up and 2 Bind- When the Body Part loses a Clash against Hong Lu: the Body Part gains 2 Damage Upand 2 Fragile next turn (once per turn)",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "enemy 1146",
+   "type": "Inherited Will of Hongyuan",
+   "unmodeled": [
+    "All parts gain 2 Attack Power Up and 1 Bind- When the Body Part loses a Clash against Hong Lu: the Body Part gains 1 Damage Upand 1 Fragile next turn (once per turn)",
+    "All parts gain 2 Attack Power Up and 2 Bind- When the Body Part loses a Clash against Hong Lu: the Body Part gains 2 Damage Upand 2 Fragile next turn (once per turn)"
+   ]
+  },
+  "Inner Schism": {
+   "low_morale": [],
+   "low_morale_text": "Defense Level -3, Offense Level +3In a Clash against targets that have 5 Baptism -Crimson-, Clash Power +2",
+   "panic": [],
+   "panic_text": "Defense Level -5, Offense Level +3Deal +10% damageIn a Clash against targets that have 3 Baptism -Crimson-, Clash Power +3",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "enemy 1484",
+   "type": "Inner Schism",
+   "unmodeled": [
+    "Defense Level -3, Offense Level +3In a Clash against targets that have 5 Baptism -Crimson-, Clash Power +2",
+    "Defense Level -5, Offense Level +3Deal +10% damageIn a Clash against targets that have 3 Baptism -Crimson-, Clash Power +3"
+   ]
+  },
+  "Insecurity: Mask": {
+   "low_morale": [],
+   "low_morale_text": "Base Attack Power -1, Defense Level +2",
+   "panic": [],
+   "panic_text": "Base Attack Power -1, Defense Level +3",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "enemy 400011",
+   "type": "Insecurity: Mask",
+   "unmodeled": [
+    "Base Attack Power -1, Defense Level +2",
+    "Base Attack Power -1, Defense Level +3"
+   ]
+  },
+  "Intelligence Obsession": {
+   "low_morale": [],
+   "low_morale_text": "- In a Clash against targets that have Intelligence Gathering, Base Power +1 and deal +10% damage- Turn Start: Gain 1 Fragile",
+   "panic": [],
+   "panic_text": "- In a Clash against targets that have Intelligence Gathering, Base Power +1 and deal +20% damage- Turn Start: Gain 2 Fragile",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "[[:Category:Enemies with Intelligence Obsession Panic|N Corp. Class 2 Staff Enemies]]",
+   "type": "Intelligence Obsession",
+   "unmodeled": [
+    "- In a Clash against targets that have Intelligence Gathering, Base Power +1 and deal +10% damage- Turn Start: Gain 1 Fragile",
+    "- In a Clash against targets that have Intelligence Gathering, Base Power +1 and deal +20% damage- Turn Start: Gain 2 Fragile"
+   ]
+  },
+  "Iron Maiden": {
+   "low_morale": [
+    {
+     "kind": "compound",
+     "raw": "Turn Start: gain 1 Offense Level Down and 1 Defense Level Up",
+     "sub_effects": [
+      {
+       "count": 1,
+       "kind": "gain",
+       "status": "Offense Level Down"
+      },
+      {
+       "count": 1,
+       "kind": "gain",
+       "status": "Defense Level Up"
+      }
+     ]
+    }
+   ],
+   "low_morale_text": "Turn Start: gain 1 Offense Level Down and 1 Defense Level Up",
+   "panic": [
+    {
+     "kind": "compound",
+     "raw": "Turn Start: gain 2 Offense Level Down and 2 Defense Level Up",
+     "sub_effects": [
+      {
+       "count": 2,
+       "kind": "gain",
+       "status": "Offense Level Down"
+      },
+      {
+       "count": 2,
+       "kind": "gain",
+       "status": "Defense Level Up"
+      }
+     ]
+    }
+   ],
+   "panic_text": "Turn Start: gain 2 Offense Level Down and 2 Defense Level Up",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "enemy 1319",
+   "type": "Iron Maiden",
+   "unmodeled": []
+  },
+  "Jia Qiu": {
+   "low_morale": [],
+   "low_morale_text": "Deal +10% damage against targets that aren't Hong Lu",
+   "panic": [],
+   "panic_text": "Deal +20% damage against targets that aren't Hong Lu",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "enemy 1137",
+   "type": "Jia Qiu",
+   "unmodeled": [
+    "Deal +10% damage against targets that aren't Hong Lu",
+    "Deal +20% damage against targets that aren't Hong Lu"
+   ]
+  },
+  "Jumbled Memories": {
+   "low_morale": [],
+   "low_morale_text": "Turn Start: Gain 1~3 Offense Level Up and 1~3 Defense Level Down",
+   "panic": [],
+   "panic_text": "Turn Start: Gain 1~5 Offense Level Up and 1~5 Defense Level Down",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "[[:Category:Enemies with Jumbled Memories Panic|Ch'unokkun Enemies]]",
+   "type": "Jumbled Memories",
+   "unmodeled": [
+    "Turn Start: Gain 1~3 Offense Level Up and 1~3 Defense Level Down",
+    "Turn Start: Gain 1~5 Offense Level Up and 1~5 Defense Level Down"
+   ]
+  },
+  "Le Regole": {
+   "low_morale": [],
+   "low_morale_text": "If this unit inflicted 2+ Tremor last turn, gain 1 Sloth DMG UpIf this unit inflicted 2+ Burn last turn, gain 1 Wrath DMG UpIf this unit failed to inflict anything, gain 2 Defense Level Down",
+   "panic": [],
+   "panic_text": "If this unit inflicted 2+ Tremor last turn, gain 2 Sloth DMG UpIf this unit inflicted 2+ Burn last turn, gain 2 Wrath DMG UpIf this unit failed to inflict anything, gain 3 Defense Level Down",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "[[:Category:Enemies with Le Regole Panic|The Thumb Enemies]]",
+   "type": "Le Regole",
+   "unmodeled": [
+    "If this unit inflicted 2+ Tremor last turn, gain 1 Sloth DMG UpIf this unit inflicted 2+ Burn last turn, gain 1 Wrath DMG UpIf this unit failed to inflict anything, gain 2 Defense Level Down",
+    "If this unit inflicted 2+ Tremor last turn, gain 2 Sloth DMG UpIf this unit inflicted 2+ Burn last turn, gain 2 Wrath DMG UpIf this unit failed to inflict anything, gain 3 Defense Level Down"
+   ]
+  },
+  "Leave the Leather Behind!": {
+   "low_morale": [],
+   "low_morale_text": "Defense Level -3, Offense Level +1",
+   "panic": [],
+   "panic_text": "Defense Level -5, Offense Level +2",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "enemy 1466[[:Category:Enemies with Leave the Leather Behind! Panic|Le Rouge Enemies]]",
+   "type": "Leave the Leather Behind!",
+   "unmodeled": [
+    "Defense Level -3, Offense Level +1",
+    "Defense Level -5, Offense Level +2"
+   ]
+  },
+  "Love & Hate": {
+   "low_morale": [],
+   "low_morale_text": "-",
+   "panic": [
+    {
+     "kind": "cannot_act",
+     "raw": "Does not act for this turn."
+    }
+   ],
+   "panic_text": "Does not act for this turn.",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "Lobotomy E.G.O::In the Name of Love and Hate Don Quixote",
+   "type": "Love & Hate",
+   "unmodeled": []
+  },
+  "Mad Rampage": {
+   "low_morale": [
+    {
+     "kind": "compound",
+     "raw": "Turn Start: Gain 2 Attack Power Up and 4 Defense Level Down",
+     "sub_effects": [
+      {
+       "count": 2,
+       "kind": "gain",
+       "status": "Attack Power Up"
+      },
+      {
+       "count": 4,
+       "kind": "gain",
+       "status": "Defense Level Down"
+      }
+     ]
+    }
+   ],
+   "low_morale_text": "Turn Start: Gain 2 Attack Power Up and 4 Defense Level Down; gain 1 Damage Up for every 30 HP damage taken last turn (max 5)",
+   "panic": [
+    {
+     "kind": "compound",
+     "raw": "Turn Start: Gain 3 Attack Power Up and 5 Defense Level Down",
+     "sub_effects": [
+      {
+       "count": 3,
+       "kind": "gain",
+       "status": "Attack Power Up"
+      },
+      {
+       "count": 5,
+       "kind": "gain",
+       "status": "Defense Level Down"
+      }
+     ]
+    }
+   ],
+   "panic_text": "Turn Start: Gain 3 Attack Power Up and 5 Defense Level Down; gain 1 Damage Up for every 25 HP damage taken last turn (max 5)",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "enemy 1327",
+   "type": "Mad Rampage",
+   "unmodeled": [
+    "gain 1 Damage Up for every 30 HP damage taken last turn (max 5)",
+    "gain 1 Damage Up for every 25 HP damage taken last turn (max 5)"
+   ]
+  },
+  "Maddened": {
+   "low_morale": [],
+   "low_morale_text": "When at low morale for the first time, targets units indiscriminately.",
+   "panic": [],
+   "panic_text": "Targets indiscriminatelyClash Power +1, and gain 2 Damage Up.",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "[[:Category:Enemies with Maddened Panic|Various Lobotomy E.G.O Enemies]]",
+   "type": "Maddened",
+   "unmodeled": [
+    "When at low morale for the first time, targets units indiscriminately.",
+    "Targets indiscriminatelyClash Power +1, and gain 2 Damage Up."
+   ]
+  },
+  "Messy Sewing": {
+   "low_morale": [
+    {
+     "count": 1,
+     "kind": "gain",
+     "raw": "Turn Start: Gain 1 Attack Power Down",
+     "status": "Attack Power Down"
+    }
+   ],
+   "low_morale_text": "Turn Start: Gain 1 Attack Power Down",
+   "panic": [
+    {
+     "kind": "compound",
+     "raw": "Turn Start: Gain 1 Attack Power Down and 1 Damage Down",
+     "sub_effects": [
+      {
+       "count": 1,
+       "kind": "gain",
+       "status": "Attack Power Down"
+      },
+      {
+       "count": 1,
+       "kind": "gain",
+       "status": "Damage Down"
+      }
+     ]
+    }
+   ],
+   "panic_text": "Turn Start: Gain 1 Attack Power Down and 1 Damage Down",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "enemy 1496[[:Category:Enemies with Messy Sewing Panic|Needlekin Enemies]]",
+   "type": "Messy Sewing",
+   "unmodeled": []
+  },
+  "Misshapen Painting": {
+   "low_morale": [],
+   "low_morale_text": "Gain 1 Attack Power Up and 1 Fragile.",
+   "panic": [],
+   "panic_text": "Gain 1 Plus Coin Boost and 3 Fragile.",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "[[:Category:Enemies with Misshapen Painting Panic|Researcher of the Ring Enemies]]",
+   "type": "Misshapen Painting",
+   "unmodeled": [
+    "Gain 1 Attack Power Up and 1 Fragile.",
+    "Gain 1 Plus Coin Boost and 3 Fragile."
+   ]
+  },
+  "Night Drifter of the Drunken Palm": {
+   "low_morale": [],
+   "low_morale_text": "Take +10% damage from Jia Xichun; deal +30% damage with Counterattacks",
+   "panic": [
+    {
+     "kind": "base_power",
+     "raw": "Final Power +1",
+     "value": 1
+    }
+   ],
+   "panic_text": "Final Power +1; take +20% damage from Jia Xichun; deal +50% damage with Counterattacks",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "enemy 1272",
+   "type": "Night Drifter of the Drunken Palm",
+   "unmodeled": [
+    "Take +10% damage from Jia Xichun",
+    "deal +30% damage with Counterattacks",
+    "take +20% damage from Jia Xichun",
+    "deal +50% damage with Counterattacks"
+   ]
+  },
+  "Night in the Backstreets": {
+   "low_morale": [],
+   "low_morale_text": "Turn Start: gain 1 Attack Power Up, 1 HP Healing Boost, and 1 Fragile",
+   "panic": [],
+   "panic_text": "Turn Start: gain 2 Attack Power Up, 2 HP Healing Boost, and 1 Fragile",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "[[:Category:Enemies with Night in the Backstreets Panic|Sweeper Enemies]]",
+   "type": "Night in the Backstreets",
+   "unmodeled": [
+    "Turn Start: gain 1 Attack Power Up, 1 HP Healing Boost, and 1 Fragile",
+    "Turn Start: gain 2 Attack Power Up, 2 HP Healing Boost, and 1 Fragile"
+   ]
+  },
+  "Of the Second Smoke War": {
+   "low_morale": [],
+   "low_morale_text": "Turn Start: Gain 1 FragileSP Heal Efficiency +2",
+   "panic": [
+    {
+     "kind": "compound",
+     "raw": "Turn Start: Gain 2 Fragile and 2 Clash Power Up",
+     "sub_effects": [
+      {
+       "count": 2,
+       "kind": "gain",
+       "status": "Fragile"
+      },
+      {
+       "count": 2,
+       "kind": "gain",
+       "status": "Clash Power Up"
+      }
+     ]
+    }
+   ],
+   "panic_text": "Turn Start: Gain 2 Fragile and 2 Clash Power Up",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "enemy 400013",
+   "type": "Of the Second Smoke War",
+   "unmodeled": [
+    "Turn Start: Gain 1 FragileSP Heal Efficiency +2"
+   ]
+  },
+  "Organization Compulsion": {
+   "low_morale": [],
+   "low_morale_text": "Lose 5 SP on Clash Lose. Gain 1 Haste next turn when hit. (max 2)",
+   "panic": [],
+   "panic_text": "Gain 2 Fragile. Gain 2 Haste next turn when hit. (max 3)",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "[[:Category:Enemies with Organization Compulsion Panic|Edgar Family Butler Enemies]]",
+   "type": "Organization Compulsion",
+   "unmodeled": [
+    "Lose 5 SP on Clash Lose.",
+    "Gain 1 Haste next turn when hit.",
+    "(max 2)",
+    "Gain 2 Fragile.",
+    "Gain 2 Haste next turn when hit.",
+    "(max 3)"
+   ]
+  },
+  "Outmoded Art": {
+   "low_morale": [
+    {
+     "count": 1,
+     "kind": "gain",
+     "raw": "Turn Start: Gain 1 Offense Level Up",
+     "status": "Offense Level Up"
+    }
+   ],
+   "low_morale_text": "Turn Start: Gain 1 Offense Level Up",
+   "panic": [
+    {
+     "count": 2,
+     "kind": "gain",
+     "raw": "Turn Start: Gain 2 Offense Level Up",
+     "status": "Offense Level Up"
+    }
+   ],
+   "panic_text": "Turn Start: Gain 2 Offense Level Up",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "enemy 1331 enemy 1336",
+   "type": "Outmoded Art",
+   "unmodeled": []
+  },
+  "Overwhelmed": {
+   "low_morale": [
+    {
+     "count": 2,
+     "kind": "gain",
+     "raw": "Turn Start: Gain 2 Attack Power Down.",
+     "status": "Attack Power Down."
+    }
+   ],
+   "low_morale_text": "Turn Start: Gain 2 Attack Power Down.",
+   "panic": [
+    {
+     "kind": "cannot_act",
+     "raw": "Does not act for this turn."
+    }
+   ],
+   "panic_text": "Does not act for this turn.",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "enemy 1287[[:Category:Enemies with Overwhelmed Panic|Overwhelmed Enemies]]",
+   "type": "Overwhelmed",
+   "unmodeled": []
+  },
+  "Pallid Panic": {
+   "low_morale": [],
+   "low_morale_text": "SP Loss Efficiency +2.",
+   "panic": [],
+   "panic_text": "Every Turn End: Gain 2 Bind.Every Coin this unit flips lands on tails.",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "enemy 8112 enemy 8104[[:Category:Enemies with Pallid Panic Panic|Pequod Town Enemies]]",
+   "type": "Pallid Panic",
+   "unmodeled": [
+    "SP Loss Efficiency +2.",
+    "Every Turn End: Gain 2 Bind.Every Coin this unit flips lands on tails."
+   ]
+  },
+  "Panic": {
+   "low_morale": [],
+   "low_morale_text": "-",
+   "panic": [
+    {
+     "kind": "cannot_act",
+     "raw": "Does not act for this turn."
+    }
+   ],
+   "panic_text": "Does not act for this turn.",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "[[List of Identities|Sinners]][[:Category:Enemies with Panic Panic|Peccatulum Invidiae Enemies]]",
+   "type": "Panic",
+   "unmodeled": []
+  },
+  "Podao": {
+   "low_morale": [],
+   "low_morale_text": "Take +10% damage from Unopposed Attacks; deal +30% damage with Counterattacks",
+   "panic": [],
+   "panic_text": "Take +20% damage from Unopposed Attacks; deal +50% damage with Counterattacks",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "enemy 1134[[:Category:Enemies with Podao Panic|Podao Assailant Enemies]]",
+   "type": "Podao",
+   "unmodeled": [
+    "Take +10% damage from Unopposed Attacks",
+    "deal +30% damage with Counterattacks",
+    "Take +20% damage from Unopposed Attacks",
+    "deal +50% damage with Counterattacks"
+   ]
+  },
+  "Prescript Incompliance Risk": {
+   "low_morale": [],
+   "low_morale_text": "Deal +20% damage to The Prescript's Target - The IndexTake +10% damage from those who are not The Prescript's Target - The Index",
+   "panic": [],
+   "panic_text": "Deal +30% damage to The Prescript's Target - The IndexTake +20% damage from those who are not The Prescript's Target - The Index",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "enemy 1325[[:Category:Enemies with Prescript Incompliance Risk Panic|The Index Proselytes]]",
+   "type": "Prescript Incompliance Risk",
+   "unmodeled": [
+    "Deal +20% damage to The Prescript's Target - The IndexTake +10% damage from those who are not The Prescript's Target - The Index",
+    "Deal +30% damage to The Prescript's Target - The IndexTake +20% damage from those who are not The Prescript's Target - The Index"
+   ]
+  },
+  "Ragged Breath": {
+   "low_morale": [
+    {
+     "kind": "gain",
+     "potency": -3,
+     "raw": "Turn Start: Lose 3 Poise Potency",
+     "status": "Poise"
+    }
+   ],
+   "low_morale_text": "Turn Start: Lose 3 Poise Potency",
+   "panic": [
+    {
+     "kind": "gain",
+     "potency": -5,
+     "raw": "Turn Start: Lose 5 Poise Potency",
+     "status": "Poise"
+    }
+   ],
+   "panic_text": "Turn Start: Lose 5 Poise Potency",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "enemy 1318",
+   "type": "Ragged Breath",
+   "unmodeled": []
+  },
+  "Reawakening Joy Of Carnage": {
+   "low_morale": [],
+   "low_morale_text": "Every Turn Start: gain 2 Offense Level Up; +2 SP Heal Efficiency.",
+   "panic": [],
+   "panic_text": "Turn Start: gain 6 Defense Level Up, and gain 3 Offense Level Up next turn.",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "enemy 8380",
+   "type": "Reawakening Joy Of Carnage",
+   "unmodeled": [
+    "Every Turn Start: gain 2 Offense Level Up",
+    "+2 SP Heal Efficiency.",
+    "Turn Start: gain 6 Defense Level Up, and gain 3 Offense Level Up next turn."
+   ]
+  },
+  "Resanguination": {
+   "low_morale": [],
+   "low_morale_text": "If the target does not have Bleed, Clash Power -1; On Hit, heal HP equal to Bleed Potency on the target.",
+   "panic": [],
+   "panic_text": "If the target has Bleed, Clash Power +2; if the target does not have Bleed, Clash Power -2; On Hit, heal HP equal to Bleed Potency on the target.",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "[[:Category:Enemies with Resanguination Panic|Four-hundred Roses Corrosion Enemies]]",
+   "type": "Resanguination",
+   "unmodeled": [
+    "If the target does not have Bleed, Clash Power -1",
+    "On Hit, heal HP equal to Bleed Potency on the target.",
+    "If the target has Bleed, Clash Power +2",
+    "if the target does not have Bleed, Clash Power -2",
+    "On Hit, heal HP equal to Bleed Potency on the target."
+   ]
+  },
+  "Resentment": {
+   "low_morale": [],
+   "low_morale_text": "- Turn Start: Gain 1 Attack Power Up and 1 Defense Power Down- Turn End: Gain 2 Haste next turn",
+   "panic": [],
+   "panic_text": "- Turn Start: Gain 2 Attack Power Up and 2 Defense Power Down- Turn End: Gain 2 Haste next turn",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "enemy 400038",
+   "type": "Resentment",
+   "unmodeled": [
+    "- Turn Start: Gain 1 Attack Power Up and 1 Defense Power Down- Turn End: Gain 2 Haste next turn",
+    "- Turn Start: Gain 2 Attack Power Up and 2 Defense Power Down- Turn End: Gain 2 Haste next turn"
+   ]
+  },
+  "Revenge": {
+   "low_morale": [],
+   "low_morale_text": "- Gain 3 Defense Level Down and 3 Damage Up.",
+   "panic": [],
+   "panic_text": "- Gain 6 Defense Level Down and 5 Damage Up.",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "enemy 8164 enemy 8172 enemy 8174 enemy 8204",
+   "type": "Revenge",
+   "unmodeled": [
+    "- Gain 3 Defense Level Down and 3 Damage Up.",
+    "- Gain 6 Defense Level Down and 5 Damage Up."
+   ]
+  },
+  "Ruin": {
+   "low_morale": [
+    {
+     "kind": "gain",
+     "potency": 3,
+     "raw": "Gain 3 Sinking at every Turn End",
+     "status": "Sinking",
+     "trigger_turn_end": true
+    }
+   ],
+   "low_morale_text": "Gain 3 Sinking at every Turn End; Clash Power -1.",
+   "panic": [],
+   "panic_text": "Gain 5 Sinking and +3 Sinking Count at every Turn End; Clash Power -2.",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "Wild Hunt Heathcliff",
+   "type": "Ruin",
+   "unmodeled": [
+    "Clash Power -1.",
+    "Gain 5 Sinking and +3 Sinking Count at every Turn End",
+    "Clash Power -2."
+   ]
+  },
+  "Shadow Arm": {
+   "low_morale": [],
+   "low_morale_text": "Clash Power -1; take -10% damage",
+   "panic": [],
+   "panic_text": "Clash Power -2; take -20% damage",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "[[:Category:Enemies with Shadow Arm Panic|Heishou Pack - Si Branch Enemies]]",
+   "type": "Shadow Arm",
+   "unmodeled": [
+    "Clash Power -1",
+    "take -10% damage",
+    "Clash Power -2",
+    "take -20% damage"
+   ]
+  },
+  "Shame of the Family": {
+   "low_morale": [],
+   "low_morale_text": "Turn Start: Gain 1 Slash DMG Up, 1 Clash Power Up, and 1 FragileCannot gain Mang when using Skills",
+   "panic": [],
+   "panic_text": "Turn Start: Gain 2 Slash DMG Up, 2 Clash Power Up, and 2 FragileCannot gain Mang when using Skills",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "enemy 1314",
+   "type": "Shame of the Family",
+   "unmodeled": [
+    "Turn Start: Gain 1 Slash DMG Up, 1 Clash Power Up, and 1 FragileCannot gain Mang when using Skills",
+    "Turn Start: Gain 2 Slash DMG Up, 2 Clash Power Up, and 2 FragileCannot gain Mang when using Skills"
+   ]
+  },
+  "Shattermark": {
+   "low_morale": [],
+   "low_morale_text": "Clash Power -1; Defense Level -2",
+   "panic": [],
+   "panic_text": "Clash Power -2; Defense Level -3",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "Heishou Pack - Wei Branch Don Quixote",
+   "type": "Shattermark",
+   "unmodeled": [
+    "Clash Power -1",
+    "Defense Level -2",
+    "Clash Power -2",
+    "Defense Level -3"
+   ]
+  },
+  "Soft Goldcasted Heart": {
+   "low_morale": [
+    {
+     "kind": "compound",
+     "raw": "Turn Start: gain 1 Attack Power Up and 1 Fragile",
+     "sub_effects": [
+      {
+       "count": 1,
+       "kind": "gain",
+       "status": "Attack Power Up"
+      },
+      {
+       "count": 1,
+       "kind": "gain",
+       "status": "Fragile"
+      }
+     ]
+    }
+   ],
+   "low_morale_text": "Turn Start: gain 1 Attack Power Up and 1 Fragile",
+   "panic": [
+    {
+     "kind": "compound",
+     "raw": "Turn Start: gain 2 Attack Power Up and 2 Fragile",
+     "sub_effects": [
+      {
+       "count": 2,
+       "kind": "gain",
+       "status": "Attack Power Up"
+      },
+      {
+       "count": 2,
+       "kind": "gain",
+       "status": "Fragile"
+      }
+     ]
+    }
+   ],
+   "panic_text": "Turn Start: gain 2 Attack Power Up and 2 Fragile",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "enemy 1135",
+   "type": "Soft Goldcasted Heart",
+   "unmodeled": []
+  },
+  "Solitude": {
+   "low_morale": [
+    {
+     "count": 2,
+     "kind": "gain",
+     "raw": "Turn End: Gain +2 Sinking Count",
+     "status": "Sinking",
+     "trigger_turn_end": true
+    }
+   ],
+   "low_morale_text": "Turn End: Gain +2 Sinking Count",
+   "panic": [
+    {
+     "count": 3,
+     "kind": "gain",
+     "raw": "Turn End: Gain +3 Sinking Count",
+     "status": "Sinking",
+     "trigger_turn_end": true
+    }
+   ],
+   "panic_text": "Turn End: Gain +3 Sinking Count",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "Lobotomy E.G.O::Faint Aroma & Solitude Ryōshū",
+   "type": "Solitude",
+   "unmodeled": []
+  },
+  "Splitting": {
+   "low_morale": [],
+   "low_morale_text": "Lose 2 HP on self with every Clash. Gain 1 Offense Level Up at Turn Start.",
+   "panic": [],
+   "panic_text": "Lose 3 HP on self with every Clash. Gain 2 Offense Level Up at Turn Start.",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "[[:Category:Enemies with Splitting Panic|Dead Rabbits Enemies]]",
+   "type": "Splitting",
+   "unmodeled": [
+    "Lose 2 HP on self with every Clash.",
+    "Gain 1 Offense Level Up at Turn Start.",
+    "Lose 3 HP on self with every Clash.",
+    "Gain 2 Offense Level Up at Turn Start."
+   ]
+  },
+  "Suicidal": {
+   "low_morale": [],
+   "low_morale_text": "When at low morale for the first time, become unable to act.",
+   "panic": [],
+   "panic_text": "Cannot act for 3 turns. Unit dies at turn start.All its allies lose 10 SP.",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "[[:Category:Enemies with Suicidal Panic|Lobotomy E.G.O::Red Sheet Enemies]]",
+   "type": "Suicidal",
+   "unmodeled": [
+    "When at low morale for the first time, become unable to act.",
+    "Cannot act for 3 turns.",
+    "Unit dies at turn start.All its allies lose 10 SP."
+   ]
+  },
+  "Textbook": {
+   "low_morale": [],
+   "low_morale_text": "Clash Power +1 when Clashing against targets with The Duel EscalatesClash Lose: Gain 1 Fragile next turn (once per turn)",
+   "panic": [],
+   "panic_text": "Clash Power +2 when Clashing against targets with The Duel EscalatesClash Lose: Gain 2 Fragile next turn (once per turn)",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "enemy 1306",
+   "type": "Textbook",
+   "unmodeled": [
+    "Clash Power +1 when Clashing against targets with The Duel EscalatesClash Lose: Gain 1 Fragile next turn (once per turn)",
+    "Clash Power +2 when Clashing against targets with The Duel EscalatesClash Lose: Gain 2 Fragile next turn (once per turn)"
+   ]
+  },
+  "The Church": {
+   "low_morale": [],
+   "low_morale_text": "Gain 1 additional Smoke or Smoke Count when gaining them.Turn Start: gain 3 Fragile, 2 Damage Up, and 1 Defense Power Up",
+   "panic": [],
+   "panic_text": "Gain 2 additional Smoke or Smoke Count when gaining them.Turn Start: gain 3 Fragile, 4 Damage Up, and 2 Defense Power Up",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "[[:Category:Enemies with The Church Panic|The Church of Gears Enemies]]",
+   "type": "The Church",
+   "unmodeled": [
+    "Gain 1 additional Smoke or Smoke Count when gaining them.Turn Start: gain 3 Fragile, 2 Damage Up, and 1 Defense Power Up",
+    "Gain 2 additional Smoke or Smoke Count when gaining them.Turn Start: gain 3 Fragile, 4 Damage Up, and 2 Defense Power Up"
+   ]
+  },
+  "Thorns": {
+   "low_morale": [],
+   "low_morale_text": "Clash Win: gain 1 Damage Up.",
+   "panic": [],
+   "panic_text": "Clash Win: gain 1 Damage Up.Turn End: gain 2 Clash Power Up next turn.",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "enemy 400001",
+   "type": "Thorns",
+   "unmodeled": [
+    "Clash Win: gain 1 Damage Up.",
+    "Clash Win: gain 1 Damage Up.Turn End: gain 2 Clash Power Up next turn."
+   ]
+  },
+  "Unbridled Steed": {
+   "low_morale": [
+    {
+     "kind": "compound",
+     "raw": "Turn Start: gain 2 Offense Level Up and 1 Fragile",
+     "sub_effects": [
+      {
+       "count": 2,
+       "kind": "gain",
+       "status": "Offense Level Up"
+      },
+      {
+       "count": 1,
+       "kind": "gain",
+       "status": "Fragile"
+      }
+     ]
+    }
+   ],
+   "low_morale_text": "Turn Start: gain 2 Offense Level Up and 1 Fragile",
+   "panic": [],
+   "panic_text": "Turn Start: gain 1 max Speed, gain 2 Offense Level Up and 2 Fragile",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "enemy 1247",
+   "type": "Unbridled Steed",
+   "unmodeled": [
+    "Turn Start: gain 1 max Speed, gain 2 Offense Level Up and 2 Fragile"
+   ]
+  },
+  "Unstable": {
+   "low_morale": [
+    {
+     "kind": "compound",
+     "raw": "Turn Start: Gain 2 Attack Power Up and 3 Bind.",
+     "sub_effects": [
+      {
+       "count": 2,
+       "kind": "gain",
+       "status": "Attack Power Up"
+      },
+      {
+       "count": 3,
+       "kind": "gain",
+       "status": "Bind."
+      }
+     ]
+    }
+   ],
+   "low_morale_text": "Turn Start: Gain 2 Attack Power Up and 3 Bind.",
+   "panic": [],
+   "panic_text": "Turn Start: Become staggered.",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "enemy 8043 enemy 8044[[:Category:Enemies with Unstable Panic|Refracted T Corp. Collector Enemies]]",
+   "type": "Unstable",
+   "unmodeled": [
+    "Turn Start: Become staggered."
+   ]
+  },
+  "Vengeance": {
+   "low_morale": [],
+   "low_morale_text": "Gain 1 Attack Power Up and 3 Defense Level Down. Gain Damage Up based on the amount of damage taken last turn (1 Damage Up for every 3% of Max HP lost).",
+   "panic": [],
+   "panic_text": "Gain 2 Attack Power Up and 6 Defense Level Down. Gain Damage Up based on the amount of damage taken last turn (1 Damage Up for every 3% of Max HP lost).",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "enemy 8099",
+   "type": "Vengeance",
+   "unmodeled": [
+    "Gain 1 Attack Power Up and 3 Defense Level Down.",
+    "Gain Damage Up based on the amount of damage taken last turn (1 Damage Up for every 3% of Max HP lost).",
+    "Gain 2 Attack Power Up and 6 Defense Level Down.",
+    "Gain Damage Up based on the amount of damage taken last turn (1 Damage Up for every 3% of Max HP lost)."
+   ]
+  },
+  "Vexation": {
+   "low_morale": [],
+   "low_morale_text": "Gain 1 Pierce Power Up and 1 SP Heal Efficiency Down",
+   "panic": [],
+   "panic_text": "Gain 2 Pierce Power Up, 1 Pierce DMG Up, and 2 SP Heal Efficiency Down",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "enemy 400006",
+   "type": "Vexation",
+   "unmodeled": [
+    "Gain 1 Pierce Power Up and 1 SP Heal Efficiency Down",
+    "Gain 2 Pierce Power Up, 1 Pierce DMG Up, and 2 SP Heal Efficiency Down"
+   ]
+  },
+  "Wandering": {
+   "low_morale": [],
+   "low_morale_text": "Turn Start: Deal 2 SP damage to allies.",
+   "panic": [],
+   "panic_text": "Turn End: Deal 5 SP damage to allies. Flees from battle after 3 turns have passed.",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "[[:Category:Enemies with Wandering Panic|Lobotomy E.G.O::Sloshing Enemies]]",
+   "type": "Wandering",
+   "unmodeled": [
+    "Turn Start: Deal 2 SP damage to allies.",
+    "Turn End: Deal 5 SP damage to allies.",
+    "Flees from battle after 3 turns have passed."
+   ]
+  },
+  "Wave of Somnolence": {
+   "low_morale": [],
+   "low_morale_text": "Gain 1 fewer Lamp from Skills",
+   "panic": [],
+   "panic_text": "Does not act for this turn",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "enemy 400008",
+   "type": "Wave of Somnolence",
+   "unmodeled": [
+    "Gain 1 fewer Lamp from Skills",
+    "Does not act for this turn"
+   ]
+  },
+  "Yummers": {
+   "low_morale": [
+    {
+     "count": 1,
+     "kind": "gain",
+     "raw": "Turn Start: Gain 1 Fragile",
+     "status": "Fragile"
+    }
+   ],
+   "low_morale_text": "Turn Start: Gain 1 Fragile",
+   "panic": [
+    {
+     "count": 2,
+     "kind": "gain",
+     "raw": "Turn Start: Gain 2 Fragile",
+     "status": "Fragile"
+    }
+   ],
+   "panic_text": "Turn Start: Gain 2 Fragile",
+   "sources": [
+    {
+     "kind": "wiki",
+     "language": "en",
+     "title": "Sanity",
+     "verification": "wiki_verified"
+    }
+   ],
+   "sources_text": "[[:Category:Enemies with Yummers Panic|A Midspring Night's Dream 3 Bongies]]",
+   "type": "Yummers",
+   "unmodeled": []
+  }
+ },
+ "version": 1
+}

@@ -23,7 +23,7 @@ pub mod state;
 pub mod testsupport;
 
 use battle::Action;
-use effects::{MechanicsBook, PassiveBook};
+use effects::{MechanicsBook, PanicBook, PassiveBook};
 use library::{Library, LibraryError};
 use setup::{EncounterBuilder, SetupError};
 use ids::UnitId;
@@ -37,6 +37,8 @@ pub struct Simulator {
     pub mechanics: MechanicsBook,
     /// Identity / enemy passives (Combat and Support).
     pub passives: PassiveBook,
+    /// Panic Types per identity (wiki.gg `Sanity`).
+    pub panics: PanicBook,
     pub scripts: scripts::ScriptsBook,
     pub data_root: PathBuf,
 }
@@ -88,11 +90,16 @@ impl Simulator {
             &root.join("passives").join("passives.json"),
         )
         .map_err(SimError::Mechanics)?;
+        let panics = PanicBook::load(
+            &root.join("mechanics").join("panic_types.json"),
+        )
+        .map_err(SimError::Mechanics)?;
         Ok(Self {
             library,
             mechanics,
             scripts,
             passives,
+            panics,
             data_root: root,
         })
     }
@@ -143,6 +150,19 @@ impl Simulator {
                 effects.extend(supports.clone());
             }
             unit.passives = effects;
+            if let crate::state::UnitKind::Sinner { identity } = &unit.kind {
+                let panic = self.panics.for_identity(&identity.0).cloned();
+                unit.panic_type = Some(
+                    panic
+                        .as_ref()
+                        .map(|p| p.r#type.clone())
+                        .unwrap_or_else(|| "Panic".to_string()),
+                );
+                if let Some(panic) = panic {
+                    unit.panic_low_morale = panic.low_morale.clone();
+                    unit.panic_actions = panic.panic.clone();
+                }
+            }
         }
     }
 
@@ -254,6 +274,7 @@ impl Simulator {
             .map(|s| s.to_string())
             .collect();
         out.extend(self.passive_gaps());
+        out.extend(self.panics.gaps());
         out.sort();
         out.dedup();
         out

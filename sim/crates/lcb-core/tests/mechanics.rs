@@ -1609,7 +1609,7 @@ fn section5_golden_replay_is_deterministic() {
     assert_eq!(first_hp, vec![25483, 25248, 24682], "Imago HP after turns 1-3");
     assert_eq!(
         format!("{first_hash:016x}"),
-        "e795aa40a7c38df6",
+        "f46c681c8d22e353",
         "recorded state hash"
     );
 }
@@ -1653,6 +1653,47 @@ fn passives_grant_and_modify() {
     state.units[2].sanity = Sanity::Sane { sp: 20 };
     let (_, taken) = lcb_core::battle::passive_modifiers_for_test(&state, 2, Some(3));
     assert!((taken + 0.10).abs() < 1e-9, "takes 10% less damage: {taken}");
+}
+
+/// Sanity, Low Morale and Panic: SP is clamped to [-45, 45], -45 causes Panic
+/// (the Sinner does not act and their Panic Type's clauses apply), -30..-45 is
+/// Low Morale, and after a Panic turn the SP resets to 0.
+/// Source: wiki.gg `Sanity` ("List of Panic Types") and `Clash`.
+#[test]
+fn low_morale_and_panic_follow_the_sanity_rules() {
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&["10414"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    // Ryōshū's Panic Type is "Solitude": Panic gains +3 [Sinking] Count at Turn End.
+    assert_eq!(state.units[0].panic_type.as_deref(), Some("Solitude"));
+    assert!(!state.units[0].panic_actions.is_empty());
+    // -45 SP: Panic.
+    state.units[0].sanity = Sanity::Sane { sp: -45 };
+    battle::begin_turn(&mut state, &sim.library, &sim.mechanics, &sim.scripts);
+    assert!(state.units[0].panicked, "SP -45 is Panic");
+    assert!(!state.units[0].low_morale);
+    // The Panic act does not happen, so no action is submitted for that unit.
+    assert!(
+        !state.actions.iter().any(|a| a.actor == state.units[0].id),
+        "a Panicking Sinner does not act"
+    );
+    // Its Panic clause applies at Turn End (+3 [Sinking] Count).
+    let before = state.units[0].statuses.count("Sinking");
+    battle::end_turn(&mut state, &sim.mechanics);
+    assert_eq!(state.units[0].statuses.count("Sinking"), before + 3);
+    // The following Turn Start resets the SP to 0 (Panic recovery).
+    battle::begin_turn(&mut state, &sim.library, &sim.mechanics, &sim.scripts);
+    assert_eq!(state.units[0].sanity.sp(), 0, "SP resets after a Panic turn");
+    assert!(!state.units[0].panicked);
+    // -35 SP is Low Morale, not Panic.
+    state.units[0].sanity = Sanity::Sane { sp: -35 };
+    battle::begin_turn(&mut state, &sim.library, &sim.mechanics, &sim.scripts);
+    assert!(state.units[0].low_morale && !state.units[0].panicked);
+    // SP never leaves [-45, 45].
+    state.units[0].sanity = Sanity::Sane { sp: -44 };
+    state.units[0].sanity = state.units[0].sanity.add(-99);
+    assert_eq!(state.units[0].sanity.sp(), -45);
 }
 
 /// A full turn keeps the battle in a consistent, serialisable state.

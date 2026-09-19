@@ -636,6 +636,18 @@ fn condition_holds(
             _ => return false,
         }
     }
+    if condition.target_is_low_morale || condition.target_is_panicked {
+        let in_state = match target {
+            Some(target) => {
+                (condition.target_is_panicked && target.panicked)
+                    || (condition.target_is_low_morale && (target.low_morale || target.panicked))
+            }
+            None => false,
+        };
+        if !in_state {
+            return false;
+        }
+    }
     if condition.target_is_sp_unit {
         match target {
             Some(target) if !matches!(target.sanity, Sanity::None) => {}
@@ -3095,6 +3107,130 @@ pub fn check_stagger(state: &mut BattleState, unit_index: usize) -> bool {
 // turn loop
 // --------------------------------------------------------------------------- //
 
+/// Sanity, Low Morale and Panic (wiki.gg `Sanity` / `Clash`):
+///   * SP lives in [-45, 45]; a Sinner that reaches -45 stays there until the
+///     next Turn Start;
+///   * at Turn Start, SP <= -45 is Panic (and E.G.O Corrosion when the Sinner
+///     owns a Corrosion Skill), SP <= -30 is Low Morale;
+///   * Low Morale / Panic effects apply once, on the earliest Turn Start;
+///   * after a Panic turn the Sinner's SP resets to 0.
+/// The wiki says Low Morale is chance-based but does not give the chance, so the
+/// simulator applies it deterministically and records that as an assumption.
+fn apply_sanity_states(state: &mut BattleState) {
+    for index in 0..state.units.len() {
+        if !state.units[index].alive {
+            continue;
+        }
+        // The SP ceiling/floor applies to every SP Unit.
+        if !matches!(state.units[index].sanity, Sanity::None) {
+            let sanity = state.units[index].sanity;
+            let sp = sanity.sp().clamp(-45, 45);
+            state.units[index].sanity = sanity.set(sp);
+        }
+        if !state.units[index].kind.is_sinner() {
+            continue;
+        }
+        // Recovery: a Sinner that spent a turn Panicked resets to 0 SP.
+        if state.units[index].panic_recovering {
+            state.units[index].panic_recovering = false;
+            let sanity = state.units[index].sanity;
+            state.units[index].sanity = sanity.set(0);
+        }
+        state.units[index].low_morale = false;
+        state.units[index].panicked = false;
+        let sp = state.units[index].sanity.sp();
+        let panicked = sp <= -45;
+        let low_morale = !panicked && sp <= -30;
+        if !panicked && !low_morale {
+            continue;
+        }
+        state.units[index].low_morale = low_morale;
+        state.units[index].panicked = panicked;
+        let list = if panicked {
+            state.units[index].panic_actions.clone()
+        } else {
+            state.units[index].panic_low_morale.clone()
+        };
+        if list.is_empty() && !panicked {
+            continue;
+        }
+        // Effects that are marked as applying at Turn End wait for `end_turn`.
+        let (now, later): (Vec<Effect>, Vec<Effect>) = list
+            .iter()
+            .cloned()
+            .partition(|effect| !effect.trigger_turn_end);
+        for batch in [now, later] {
+            if batch.is_empty() {
+                continue;
+            }
+            let mut notes = Vec::new();
+            let mut ctx = EffectContext {
+                actor_index: index,
+                target_index: None,
+                clash_count: 0,
+                clash_lost: false,
+                slot: 0,
+                mechanics_note: &mut notes,
+            };
+            let mut use_ctx = UseContext::default();
+            apply_effects(state, &batch, &mut ctx, &mut use_ctx);
+            for note in notes {
+                state.warnings.push(note);
+            }
+        }
+        if panicked {
+            state.units[index].panic_recovering = true;
+            state.units[index].turn_effect_usage.clear();
+        }
+        state.push_log(
+            "sanity",
+            format!(
+                "{} is in {} (SP {})",
+                state.units[index].name,
+                if panicked { "Panic" } else { "Low Morale" },
+                sp
+            ),
+        );
+    }
+}
+
+/// Turn End half of a Panic Type ("Turn End: Gain 1 [Bind] ...").
+fn apply_panic_turn_end(state: &mut BattleState) {
+    for index in 0..state.units.len() {
+        if !state.units[index].alive
+            || !(state.units[index].panicked || state.units[index].low_morale)
+        {
+            continue;
+        }
+        let list: Vec<Effect> = if state.units[index].panicked {
+            state.units[index].panic_actions.clone()
+        } else {
+            state.units[index].panic_low_morale.clone()
+        };
+        let later: Vec<Effect> = list
+            .into_iter()
+            .filter(|effect| effect.trigger_turn_end)
+            .collect();
+        if later.is_empty() {
+            continue;
+        }
+        let mut notes = Vec::new();
+        let mut ctx = EffectContext {
+            actor_index: index,
+            target_index: None,
+            clash_count: 0,
+            clash_lost: false,
+            slot: 0,
+            mechanics_note: &mut notes,
+        };
+        let mut use_ctx = UseContext::default();
+        apply_effects(state, &later, &mut ctx, &mut use_ctx);
+        for note in notes {
+            state.warnings.push(note);
+        }
+    }
+}
+
 /// Evaluate the passive clauses of one phase for one unit.
 fn apply_passive_phase(
     state: &mut BattleState,
@@ -3382,6 +3518,9 @@ pub fn begin_turn(
     // Equipped Skills carry their own "[Turn Start]" clauses; they resolve for
     // the Skill Slots the unit has on the Dashboard.
     apply_dashboard_phase(state, mechanics, true);
+    // Sanity: clamp SP, then Low Morale (-30) / Panic (-45) for Sinners.
+    // Source: wiki.gg `Sanity` + `Clash`.
+    apply_sanity_states(state);
     // Passives: "[Combat Start]" then "[Turn Start]" clauses, per unit.
     for index in 0..state.units.len() {
         if !state.units[index].alive {
@@ -3614,6 +3753,8 @@ fn enemy_targets(
 
 pub fn end_turn(state: &mut BattleState, mechanics: &MechanicsBook) {
     state.phase = Phase::TurnEnd;
+    // The Turn End half of a Panic Type ("Turn End: Gain 1 [Bind] ...").
+    apply_panic_turn_end(state);
     // Equipped Skills' "[Turn End]" clauses (Rodion's Tear-sharpened upkeep).
     apply_dashboard_phase(state, mechanics, false);
     for index in 0..state.units.len() {
@@ -3730,6 +3871,14 @@ pub fn resolve_combat(state: &mut BattleState, library: &Library, mechanics: &Me
             continue;
         }
         if state.units[actor].is_staggered() && !state.units[actor].acts_while_staggered {
+            continue;
+        }
+        // Panic: "Does not act for this turn" (wiki.gg `Sanity`).
+        if state.units[actor].panicked {
+            state.push_log(
+                "panic",
+                format!("{} is Panicking and does not act", state.units[actor].name),
+            );
             continue;
         }
         let target = action.target.as_ref().and_then(|t| state.index_of(t));
