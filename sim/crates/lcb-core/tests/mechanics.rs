@@ -189,7 +189,7 @@ fn burn_ticks_at_turn_end() {
     state.units[1].statuses.add_potency("Burn", 25);
     state.units[1].statuses.add_count("Burn", 3);
     let hp_before = state.units[1].hp;
-    battle::end_turn(&mut state);
+    battle::end_turn(&mut state, &sim.mechanics);
     assert_eq!(state.units[1].hp, hp_before - 25);
     assert_eq!(state.units[1].statuses.count("Burn"), 2);
 }
@@ -816,7 +816,7 @@ fn next_turn_buffs_apply_at_turn_start() {
     assert_eq!(state.units[0].statuses.count("Protection"), 0, "not yet");
     assert_eq!(state.units[0].pending_next_turn.len(), 1);
     // Resolve the turn; the buff lands at the next Turn Start.
-    battle::end_turn(&mut state);
+    battle::end_turn(&mut state, &sim.mechanics);
     battle::begin_turn(
         &mut state,
         &sim.library,
@@ -1126,10 +1126,10 @@ fn illusory_butterfly_shield_and_segmentation() {
     assert_eq!(state.units[0].sanity.sp(), 10, "the attacker healed 10 SP");
     assert_eq!(state.units[butterfly].hits_taken, 1);
     // A turn in which the butterfly is never hit gives the Imago +5 Stacks.
-    battle::end_turn(&mut state);
+    battle::end_turn(&mut state, &sim.mechanics);
     assert_eq!(state.campaign.time_stacks.get("In the Past"), Some(&3));
     state.units[butterfly].hits_taken = 0;
-    battle::end_turn(&mut state);
+    battle::end_turn(&mut state, &sim.mechanics);
     assert_eq!(state.campaign.time_stacks.get("In the Past"), Some(&8));
 }
 
@@ -1535,6 +1535,23 @@ fn suit_conversion_boosts_the_matching_skill() {
     battle::prepare_use_for_test(&mut state, &sim.library, &sim.mechanics, 0, None, &mut use_);
     let expected = if suit == "HanafudaOne" { 2 } else { 1 };
     assert_eq!(use_.ctx.base_power_bonus, expected, "Suit Base Power bonus");
+}
+
+/// "[Turn End]" clauses of the Skills equipped on the Dashboard resolve for
+/// their owner: at fewer than 3 [Tear-sharpened] Rodion loses 15 SP to gain 1.
+/// Source: wiki.gg Lobotomy E.G.O:: The Sword Sharpened with Tears Rodion
+/// (`The Knight's Faith`).
+#[test]
+fn dashboard_skills_run_their_turn_end_clauses() {
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&["10913"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    state.units[0].statuses.remove("Tear-sharpened");
+    state.units[0].sanity = Sanity::Sane { sp: 0 };
+    lcb_core::battle::end_turn(&mut state, &sim.mechanics);
+    assert_eq!(state.units[0].statuses.stack("Tear-sharpened"), 1);
+    assert_eq!(state.units[0].sanity.sp(), -15, "15 SP paid for the Stack");
 }
 
 /// A full turn keeps the battle in a consistent, serialisable state.

@@ -131,6 +131,9 @@ pub struct UseContext {
     /// "each Coin flips against a random enemy among its targets".
     #[serde(default)]
     pub random_coin_targets: bool,
+    /// "(Chance to flip Heads)% chance to inflict The Departed".
+    #[serde(default)]
+    pub butterfly_split: bool,
     /// "[On Target Kill] ... (once per Skill)" bookkeeping.
     #[serde(default)]
     pub on_kill_done: bool,
@@ -533,13 +536,14 @@ fn condition_holds(
     actor: &Unit,
     target: Option<&Unit>,
     clash_count: i32,
+    slot: u32,
 ) -> bool {
     // "If any of the following conditions are met, ..."
     if !condition.any_of.is_empty() {
         return condition
             .any_of
             .iter()
-            .any(|alternative| condition_holds(alternative, actor, target, clash_count));
+            .any(|alternative| condition_holds(alternative, actor, target, clash_count, slot));
     }
     if let Some(limit) = condition.self_speed_at_most {
         if actor.speed > limit {
@@ -634,6 +638,12 @@ fn condition_holds(
         match target {
             Some(target) if matches!(target.sanity, Sanity::None) => {}
             _ => return false,
+        }
+    }
+    if let Some(where_) = condition.slot.as_deref() {
+        // "If this Skill was equipped on this unit's leftmost Skill Slot".
+        if where_ == "leftmost" && slot != 0 {
+            return false;
         }
     }
     if condition.any_target_killed {
@@ -878,7 +888,7 @@ pub fn apply_effects(
             Some(cond) => {
                 let actor = &state.units[ctx.actor_index];
                 let target = ctx.target_index.map(|i| &state.units[i]);
-                condition_holds(cond, actor, target, ctx.clash_count)
+                condition_holds(cond, actor, target, ctx.clash_count, ctx.slot)
             }
             None => true,
         };
@@ -984,6 +994,22 @@ pub fn apply_effects(
                 // "[Butterfly](The Departed)" is the Count half of the unique
                 // Sinking, "[Butterfly](The Living)" its Potency (wiki.gg
                 // `Status Effects` / Butterfly).
+                // "(Chance to flip Heads)% chance to inflict The Departed ...
+                // (calculates every [Butterfly] Stack independently)".
+                if status == "Butterfly" && use_ctx.butterfly_split && effect.butterfly_part.is_none() {
+                    let heads_percent = heads_percent(state, &state.units[ctx.actor_index]);
+                    let stacks = potency.max(count);
+                    let mut departed = 0;
+                    for _ in 0..stacks {
+                        if state.flip(heads_percent) {
+                            departed += 1;
+                        }
+                    }
+                    let unit = &mut state.units[index];
+                    unit.statuses.add_potency(&status, stacks - departed);
+                    unit.statuses.add_count(&status, departed);
+                    continue;
+                }
                 if let Some(part) = effect.butterfly_part.as_deref() {
                     let unit = &mut state.units[index];
                     match part {
@@ -3012,10 +3038,72 @@ pub fn check_stagger(state: &mut BattleState, unit_index: usize) -> bool {
 // turn loop
 // --------------------------------------------------------------------------- //
 
+/// "[Turn Start]" / "[Turn End]" clauses of the Skills equipped on a unit's
+/// Dashboard (`Skill Slot`), applied once per distinct Skill.
+fn apply_dashboard_phase(state: &mut BattleState, mechanics: &MechanicsBook, start: bool) {
+    for index in 0..state.units.len() {
+        if !state.units[index].alive {
+            continue;
+        }
+        let mut seen: Vec<String> = Vec::new();
+        let mut slots: Vec<(u32, SkillId)> = state.units[index]
+            .dashboard
+            .iter()
+            .enumerate()
+            .flat_map(|(slot, entry)| {
+                // Both visible Skills of a Slot are equipped, as is the preview.
+                [&entry.current, &entry.next, &entry.preview]
+                    .into_iter()
+                    .map(move |skill| (slot as u32 + 1, skill.clone()))
+            })
+            .collect();
+        // The defense Skill is not drawn on the Dashboard but carries its own
+        // Turn Start / Turn End upkeep.
+        for skill in &state.units[index].identity_skills {
+            if !slots.iter().any(|(_, owned)| owned == skill) {
+                slots.push((4, skill.clone()));
+            }
+        }
+        for (slot, skill) in slots {
+            if seen.iter().any(|s| s == skill.as_str()) {
+                continue;
+            }
+            seen.push(skill.as_str().to_string());
+            let Some(record) = mechanics.get_for(&skill, Uptie(4)) else { continue };
+            let list = if start {
+                record.turn_start.clone()
+            } else {
+                record.turn_end.clone()
+            };
+            if list.is_empty() {
+                continue;
+            }
+            let mut notes = Vec::new();
+            let mut ctx = EffectContext {
+                actor_index: index,
+                target_index: None,
+                clash_count: 0,
+                clash_lost: false,
+                slot,
+                mechanics_note: &mut notes,
+            };
+            let mut use_ctx = UseContext::default();
+            apply_effects(state, &list, &mut ctx, &mut use_ctx);
+            let shield = use_ctx.shield_gain;
+            if shield > 0 {
+                state.units[index].shield += shield;
+            }
+            for note in notes {
+                state.warnings.push(note);
+            }
+        }
+    }
+}
+
 pub fn begin_turn(
     state: &mut BattleState,
     library: &Library,
-    _mechanics: &MechanicsBook,
+    mechanics: &MechanicsBook,
     scripts: &crate::scripts::ScriptsBook,
 ) {
     state.turn += 1;
@@ -3149,6 +3237,9 @@ pub fn begin_turn(
             state.units[index].statuses.add_count("Fragile", 5);
         }
     }
+    // Equipped Skills carry their own "[Turn Start]" clauses; they resolve for
+    // the Skill Slots the unit has on the Dashboard.
+    apply_dashboard_phase(state, mechanics, true);
     // Enemy Skill Slots.  A unit with a documented action pattern (the Imago)
     // uses one action per listed slot for the current turn of its cycle.
     for index in 0..state.units.len() {
@@ -3156,7 +3247,13 @@ pub fn begin_turn(
             continue;
         }
         let skills = enemy_turn_skills(state, library, scripts, index);
-        let targets = enemy_targets(state, index, skills.len());
+        // "Targets the unit with the most HP" / "Targets randomly" / "Prioritizes
+        // targets that have the most [X]" (skill tags from the effect text).
+        let selections: Vec<Option<Vec<String>>> = skills
+            .iter()
+            .map(|skill| mechanics.get_for(skill, Uptie(4)).map(|m| m.tags.clone()))
+            .collect();
+        let targets = enemy_targets(state, index, &selections);
         for (slot, skill) in skills.into_iter().enumerate() {
             let target = targets.get(slot).cloned().flatten();
             state.actions.push(SubmittedAction {
@@ -3293,16 +3390,22 @@ fn update_time_state(
 
 /// Enemy targeting: slots are spread over the living Sinners in speed order
 /// (the real game picks by speed and threat; this is a documented stand-in).
-fn enemy_targets(state: &BattleState, unit_index: usize, slots: usize) -> Vec<Option<UnitId>> {
+fn enemy_targets(
+    state: &BattleState,
+    unit_index: usize,
+    selections: &[Option<Vec<String>>],
+) -> Vec<Option<UnitId>> {
+    let slots = selections.len();
     // `Aggro`: "More likely to be targeted by enemies" - units with Aggro are
     // preferred, then the fastest (documented stand-in for the real targeting).
-    let mut sinners: Vec<(i32, i32, UnitId)> = state
+    let mut sinners: Vec<(i32, i32, usize, UnitId)> = state
         .units
         .iter()
-        .filter(|u| u.alive && u.kind.is_sinner())
-        .map(|u| {
+        .enumerate()
+        .filter(|(_, u)| u.alive && u.kind.is_sinner())
+        .map(|(index, u)| {
             let aggro: i32 = u.statuses.stack("Aggro") + u.statuses.count("Aggro");
-            (aggro, u.speed, u.id.clone())
+            (aggro, u.speed, index, u.id.clone())
         })
         .collect();
     sinners.sort_by(|a, b| b.0.cmp(&a.0).then(b.1.cmp(&a.1)));
@@ -3310,13 +3413,59 @@ fn enemy_targets(state: &BattleState, unit_index: usize, slots: usize) -> Vec<Op
         return vec![None; slots];
     }
     let _ = unit_index;
+    let mut rng = state.rng.clone();
     (0..slots)
-        .map(|slot| Some(sinners[slot % sinners.len()].2.clone()))
+        .map(|slot| {
+            let tags = selections.get(slot).and_then(|t| t.as_ref());
+            let pick = match tags {
+                Some(tags) if tags.iter().any(|t| t == "targets_random") => {
+                    let index = rng.below(sinners.len() as u32) as usize;
+                    &sinners[index]
+                }
+                Some(tags) if tags.iter().any(|t| t == "targets_most_hp") => sinners
+                    .iter()
+                    .max_by_key(|(_, _, index, _)| state.units[*index].hp)
+                    .unwrap(),
+                Some(tags) => {
+                    let status = tags
+                        .iter()
+                        .find_map(|t| t.strip_prefix("targets_most_status:"))
+                        .map(|s| s.to_string());
+                    match status {
+                        Some(status) => sinners
+                            .iter()
+                            .max_by_key(|(_, _, index, _)| {
+                                let unit = &state.units[*index];
+                                unit.statuses.potency(&status) + unit.statuses.count(&status)
+                            })
+                            .unwrap(),
+                        None => &sinners[slot % sinners.len()],
+                    }
+                }
+                None => &sinners[slot % sinners.len()],
+            };
+            Some(pick.3.clone())
+        })
         .collect()
 }
 
-pub fn end_turn(state: &mut BattleState) {
+pub fn end_turn(state: &mut BattleState, mechanics: &MechanicsBook) {
     state.phase = Phase::TurnEnd;
+    // Equipped Skills' "[Turn End]" clauses (Rodion's Tear-sharpened upkeep).
+    apply_dashboard_phase(state, mechanics, false);
+    // "[Attack End] For N turns, lose X SP at Combat End".
+    for unit in state.units.iter_mut() {
+        if unit.combat_end_sp_loss.is_empty() {
+            continue;
+        }
+        let total: i32 = unit.combat_end_sp_loss.iter().map(|(amount, _)| *amount).sum();
+        let sanity = unit.sanity;
+        unit.sanity = sanity.add(-total);
+        unit.combat_end_sp_loss.retain_mut(|(_, turns)| {
+            *turns -= 1;
+            *turns > 0
+        });
+    }
     // Segmentation: a butterfly that was never hit this turn gives the Imago
     // +N Stacks at Combat End.
     for index in 0..state.units.len() {
@@ -3880,6 +4029,12 @@ fn prepare_use(
         slot,
         mechanics_note: &mut notes,
     };
+    // Phase order per the wiki: [Combat Start] (the Skill chosen for this
+    // turn) -> [On Use] -> [Before Attack] -> Coin tosses.
+    let combat_start = use_.mechanics.combat_start.clone();
+    if !combat_start.is_empty() {
+        apply_effects(state, &combat_start, &mut ctx, &mut use_.ctx);
+    }
     let on_use = use_.mechanics.on_use.clone();
     apply_effects(state, &on_use, &mut ctx, &mut use_.ctx);
     let shield = use_.ctx.shield_gain;
@@ -3895,6 +4050,9 @@ fn prepare_use(
         }
         if tag == "random_coin_targets" {
             use_.ctx.random_coin_targets = true;
+        }
+        if tag == "butterfly_split" {
+            use_.ctx.butterfly_split = true;
         }
     }
     // "[Before Attack]" clauses resolve after On Use and before the first toss.

@@ -241,7 +241,7 @@ fn battle_ends_when_one_side_is_wiped() {
             unit.alive = false;
         }
     }
-    lcb_core::battle::end_turn(&mut state);
+    lcb_core::battle::end_turn(&mut state, &sim.mechanics);
     assert_eq!(state.winner, Some(Winner::Sinners));
     assert_eq!(state.phase, Phase::Finished);
 }

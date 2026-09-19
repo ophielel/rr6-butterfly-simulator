@@ -152,7 +152,7 @@ impl Simulator {
         }
         state.phase = state::Phase::Combat;
         battle::resolve_combat(state, &self.library, &self.mechanics);
-        battle::end_turn(state);
+        battle::end_turn(state, &self.mechanics);
         if state.winner.is_some() {
             return Ok(());
         }

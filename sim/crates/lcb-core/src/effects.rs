@@ -100,6 +100,9 @@ pub struct Condition {
     /// "If 1 or more targets are killed" (by this Skill's use).
     #[serde(default)]
     pub any_target_killed: bool,
+    /// "If this Skill was equipped on this unit's leftmost Skill Slot".
+    #[serde(default)]
+    pub slot: Option<String>,
 }
 
 /// A single mechanical effect.  The struct is deliberately loose: every kind
@@ -284,6 +287,8 @@ pub struct SkillMechanics {
     pub attack_end: Vec<Effect>,
     #[serde(default)]
     pub turn_start: Vec<Effect>,
+    #[serde(default)]
+    pub turn_end: Vec<Effect>,
     /// "[Before Attack]" - resolved after On Use and before the first toss.
     #[serde(default)]
     pub before_attack: Vec<Effect>,

@@ -392,6 +392,10 @@ pub struct Unit {
     pub status_markers: Vec<String>,
     pub deck: SkillDeck,
     pub dashboard: Vec<DashboardSlot>,
+    /// Every Skill of this unit's identity kit, including the defense Skill
+    /// (their "[Turn Start] / [Turn End]" clauses resolve for the unit).
+    #[serde(default)]
+    pub identity_skills: Vec<SkillId>,
     /// E.G.O resources per sin, shared by the team (stored on the team state).
     pub ego_slots: Vec<EgoId>,
     pub alive: bool,
