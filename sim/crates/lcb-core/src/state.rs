@@ -193,60 +193,136 @@ impl StaggerState {
     }
 }
 
-/// A skill typed into the dashboard.
+/// One dashboard slot.
+///
+/// The panel shows two skills per slot: the bottom one (`current`) is the skill
+/// that will be used, and the top one (`next`) is the already-drawn follow-up.
+/// Sources: wiki.gg `Battles` (Skill Dashboard) and the Japanese wiki
+/// `Wiki管理/戦闘指南/戦闘システム詳細` ("スキルを使用すると、そのスキルがパネルから
+/// 除外される。そして上に見えていたスキルが下へ送られ…また次のスキルが新しく薄らと
+/// 見えるようになる。").
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct DashboardSlot {
     pub slot: u32,
-    pub skill: SkillId,
-    pub from_deck: bool,
+    /// Bottom row: the skill used this turn.
+    pub current: SkillId,
+    /// Top row: the skill that rotates down after `current` is used.
+    pub next: SkillId,
     pub target: Option<UnitId>,
+    /// Set when the player swapped the bottom skill for a defense skill or an
+    /// E.G.O this turn (the original skill is consumed either way).
+    pub converted: bool,
 }
 
-/// The identity skill deck.  Skills are drawn from `draw`; the deck only
-/// refreshes once it is empty (wiki.gg `Clash`: "Sinners pull Skills out of a
-/// 'Skill Deck' ... and will only refresh after all Skills have been used").
+impl DashboardSlot {
+    pub fn new(slot: u32, current: SkillId, next: SkillId) -> Self {
+        Self {
+            slot,
+            current,
+            next,
+            target: None,
+            converted: false,
+        }
+    }
+}
+
+/// The identity skill composition ("Skill Amount" copies per skill).
+///
+/// The panel is filled from one shared composition per identity, regardless of
+/// how many slots the unit has.  Draws are random among the copies that have not
+/// been placed on the panel yet, and the counts reset once every copy has been
+/// placed.  Source: Japanese wiki `戦闘システム詳細` ("スキル構成",
+/// "継ぎ足しの優先度は下段→上段", "全てパネルに配置し終えると構成の残数がリセットされる").
 #[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
 pub struct SkillDeck {
-    pub draw: Vec<SkillId>,
-    pub discard: Vec<SkillId>,
+    /// Copies of each skill, from `Skill Amount` (typically 3 / 2 / 1).
+    pub composition: Vec<(SkillId, u32)>,
+    /// Copies not yet placed on the panel.
+    pub remaining: Vec<(SkillId, u32)>,
+    /// Copies currently displayed on the panel.
+    pub paneled: Vec<(SkillId, u32)>,
 }
 
 impl SkillDeck {
-    pub fn new(draw: Vec<SkillId>) -> Self {
-        Self { draw, discard: Vec::new() }
-    }
-
-    /// Draw the next skill.  A drawn skill counts as used, so the deck only
-    /// refreshes once every card has cycled through the discard pile.
-    pub fn draw_top(&mut self) -> Option<SkillId> {
-        if self.draw.is_empty() {
-            self.refresh();
+    pub fn new(composition: Vec<(SkillId, u32)>) -> Self {
+        let composition: Vec<(SkillId, u32)> =
+            composition.into_iter().filter(|(_, n)| *n > 0).collect();
+        Self {
+            remaining: composition.clone(),
+            composition,
+            paneled: Vec::new(),
         }
-        let card = self.draw.pop()?;
-        self.discard.push(card.clone());
-        Some(card)
     }
 
-    pub fn discard_skill(&mut self, skill: &SkillId) {
-        self.discard.push(skill.clone());
+    fn total(entries: &[(SkillId, u32)]) -> u32 {
+        entries.iter().map(|(_, n)| *n).sum()
     }
 
-    pub fn refresh(&mut self) {
-        let mut refreshed: Vec<SkillId> = self.discard.drain(..).collect();
-        refreshed.extend(self.draw.drain(..));
-        self.draw = refreshed;
+    /// Place every copy of the composition back into the draw pool.  Called when
+    /// the composition has been fully placed on the panel.
+    pub fn reset(&mut self) {
+        self.remaining = self.composition.clone();
+        self.paneled.clear();
+    }
+
+    /// Draw one skill for the panel, excluding nothing but the copies whose
+    /// count is already exhausted.  Uses the battle RNG, so the draw is part of
+    /// the recorded state.
+    pub fn draw(&mut self, rng: &mut Rng) -> Option<SkillId> {
+        if Self::total(&self.remaining) == 0 {
+            self.reset();
+        }
+        let total = Self::total(&self.remaining);
+        if total == 0 {
+            return None;
+        }
+        let mut pick = rng.below(total);
+        let mut chosen: Option<SkillId> = None;
+        for (skill, count) in self.remaining.iter_mut() {
+            if pick < *count {
+                *count -= 1;
+                chosen = Some(skill.clone());
+                break;
+            }
+            pick -= *count;
+        }
+        self.remaining.retain(|(_, n)| *n > 0);
+        let skill = chosen?;
+        for (entry, count) in self.paneled.iter_mut() {
+            if entry == &skill {
+                *count += 1;
+                return Some(skill);
+            }
+        }
+        self.paneled.push((skill.clone(), 1));
+        Some(skill)
+    }
+
+    /// Remove one copy of `skill` from the panel because it was used.
+    pub fn consume(&mut self, skill: &SkillId) {
+        for (entry, count) in self.paneled.iter_mut() {
+            if entry == skill && *count > 0 {
+                *count -= 1;
+                break;
+            }
+        }
+        self.paneled.retain(|(_, n)| *n > 0);
     }
 
     pub fn len(&self) -> usize {
-        self.draw.len() + self.discard.len()
+        Self::total(&self.remaining) as usize
     }
 
     pub fn is_empty(&self) -> bool {
-        self.len() == 0
+        Self::total(&self.remaining) == 0
     }
 
-    pub fn discard_pile(&self) -> Vec<SkillId> {
-        self.discard.clone()
+    pub fn paneled_count(&self, skill: &SkillId) -> u32 {
+        self.paneled
+            .iter()
+            .find(|(entry, _)| entry == skill)
+            .map(|(_, count)| *count)
+            .unwrap_or(0)
     }
 }
 
@@ -287,6 +363,9 @@ pub struct Unit {
     /// E.G.O resources per sin, shared by the team (stored on the team state).
     pub ego_slots: Vec<EgoId>,
     pub alive: bool,
+    /// Where an enemy is in its (stand-in) skill cycle.
+    #[serde(default)]
+    pub skill_cursor: u32,
 }
 
 impl Unit {
@@ -363,8 +442,6 @@ pub enum UnknownRule {
     SanityGainOnClash,
     /// Coin-flip RNG algorithm of the client is not observable.
     CoinFlipRng,
-    /// What happens when both skills show the same Clash Power.
-    ClashTie,
 }
 
 impl UnknownRule {
@@ -377,27 +454,26 @@ impl UnknownRule {
             UnknownRule::CoinFlipRng => {
                 "client RNG algorithm unknown; the simulator uses a documented substitute RNG"
             }
-            UnknownRule::ClashTie => {
-                "clash tie resolution is not documented; default is that both sides lose the coin"
-            }
         }
     }
 }
 
+/// How enemies choose their skill.  The real rotations are documented on the
+/// wiki in a notation this project does not treat as unambiguous, so the default
+/// is an explicit stand-in (see docs/MECHANICS.md).
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
-pub enum ClashTieRule {
-    /// Both sides destroy the coin they just compared.
-    BothLoseCoin,
-    /// The attacking side wins the tie.
-    AttackerWins,
-    /// The defender wins the tie.
-    DefenderWins,
+pub enum EnemyPolicy {
+    /// Always the first skill listed for the unit.
+    FirstListed,
+    /// Walk the unit's skill list in order, cycling.
+    Cyclic,
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct BattleConfig {
     pub uptie: Uptie,
-    pub tie_rule: ClashTieRule,
+    #[serde(default = "default_enemy_policy")]
+    pub enemy_policy: EnemyPolicy,
     /// `None` == UNKNOWN rule, treated as 0 with a warning entry in the log.
     pub sp_on_clash_win: Option<i32>,
     pub sp_on_clash_lose: Option<i32>,
@@ -410,13 +486,17 @@ impl Default for BattleConfig {
     fn default() -> Self {
         Self {
             uptie: Uptie::IV,
-            tie_rule: ClashTieRule::BothLoseCoin,
+            enemy_policy: EnemyPolicy::Cyclic,
             sp_on_clash_win: None,
             sp_on_clash_lose: None,
             strict_mechanics: true,
             max_turns: 30,
         }
     }
+}
+
+fn default_enemy_policy() -> EnemyPolicy {
+    EnemyPolicy::Cyclic
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -454,10 +534,37 @@ pub struct BattleState {
     /// Deployment order (Sinners are deployed first).
     pub deployment: Vec<UnitId>,
     pub actions: Vec<SubmittedAction>,
+    /// Defense skills active this turn (guards, evades, counters).
+    #[serde(default)]
+    pub defenses: Vec<crate::battle::ActiveDefense>,
     pub ego_resources: BTreeMap<String, i32>,
     pub log: Vec<LogEntry>,
     pub warnings: Vec<String>,
     pub winner: Option<Winner>,
+    /// Total Skill Slots the encounter grows towards (focused encounters use
+    /// the maximum number of deployable Sinners).
+    #[serde(default)]
+    pub slot_target: usize,
+    /// Scripted coin results, consumed before the RNG.  Used to reproduce a
+    /// recorded fight (golden tests) and to pin flips in mechanic tests.
+    #[serde(default)]
+    pub preset_flips: Vec<bool>,
+    #[serde(default)]
+    pub flip_cursor: usize,
+}
+
+impl BattleState {
+    /// Flip a coin: scripted results win, otherwise the RNG is used with the
+    /// unit's heads chance.  Every flip advances `flip_cursor`, so a replay is
+    /// exact regardless of the generator.
+    pub fn flip(&mut self, percent: i32) -> bool {
+        if self.flip_cursor < self.preset_flips.len() {
+            let value = self.preset_flips[self.flip_cursor];
+            self.flip_cursor += 1;
+            return value;
+        }
+        self.rng.flip_percent(percent)
+    }
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]

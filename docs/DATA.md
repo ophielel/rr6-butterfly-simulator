@@ -27,6 +27,7 @@ data/
 | `x1bViolet/Limbus-Localization-Files` | official in-game text keyed by internal id (identity/skill/ego/status names) | en | `official` |
 | `LocalizeLimbusCompany` (`LLC_zh-CN`) | Simplified-Chinese names for display only | zh-CN | `auxiliary_translation` |
 | Fandom `limbuscompany.fandom.com` | cross-check only (clash/sanity wording) | en | `auxiliary` |
+| `wikiwiki.jp/lcbwiki` (`戦闘システム詳細`) | clash resolution, dashboard/panel rules, attack accumulation | ja | `multi_source_verified` |
 
 Direct requests to wiki.gg are blocked by the host's WAF, so `tools/wikigg.py`
 routes the MediaWiki API through `r.jina.ai` and caches every response in

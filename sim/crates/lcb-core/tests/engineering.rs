@@ -74,8 +74,11 @@ fn clone_is_a_deep_copy() {
     clone.units[0].hp -= 7;
     clone.units[0].sanity = clone.units[0].sanity.add(-5);
     clone.units[0].statuses.add_potency("Burn", 3);
-    let deck_before = state.units[1].deck.draw.len();
-    clone.units[1].deck.draw.push(lcb_core::ids::SkillId::new("1011001"));
+    let deck_before = state.units[1].deck.len();
+    clone.units[1]
+        .deck
+        .remaining
+        .push((lcb_core::ids::SkillId::new("1011001"), 1));
     clone.units[2].dashboard[0].slot = 9;
     clone.rng.next_u64();
     clone.ego_resources.insert("pride".to_string(), 3);
@@ -83,7 +86,7 @@ fn clone_is_a_deep_copy() {
     assert_ne!(original_hash, sim.state_hash(&clone), "mutations must change the hash");
     assert_eq!(state.units[0].hp, state.units[0].max_hp, "original untouched");
     assert_eq!(state.units[0].statuses.potency("Burn"), 0);
-    assert_eq!(state.units[1].deck.draw.len(), deck_before);
+    assert_eq!(state.units[1].deck.len(), deck_before);
     assert_eq!(state.ego_resources.get("pride"), Some(&0));
 }
 
@@ -193,19 +196,22 @@ fn deck_draws_do_not_repeat_until_exhausted() {
         .unwrap();
     // Uptie IV amounts for this identity: 3 / 2 / 1 copies = 6 cards, one of
     // which is already on the dashboard.
-    // The card drawn onto the dashboard also sits in the discard pile, so the
-    // deck size is `draw + dashboard`.
-    let mut all: Vec<String> = state.units[0].deck.draw.iter().map(|s| s.0.clone()).collect();
-    all.extend(state.units[0].dashboard.iter().map(|s| s.skill.0.clone()));
+    // The composition is 3 / 2 / 1 and the panel is filled from it.
+    let deck = &state.units[0].deck;
     let mut counts = std::collections::BTreeMap::new();
-    for id in all {
-        *counts.entry(id).or_insert(0) += 1;
+    for (id, n) in deck.composition.iter() {
+        counts.insert(id.0.clone(), *n);
     }
-    assert_eq!(counts.len(), 3, "three base skills in the deck");
-    assert_eq!(counts.values().sum::<i32>(), 6);
     assert_eq!(counts.get("1011001"), Some(&3));
     assert_eq!(counts.get("1011002"), Some(&2));
     assert_eq!(counts.get("1011003"), Some(&1));
+    // The panel holds two skills per slot, both drawn from the composition.
+    let paneled: u32 = deck.paneled.iter().map(|(_, n)| *n).sum();
+    assert_eq!(paneled, 2, "two skills per slot are shown on the panel");
+    assert_eq!(
+        deck.len() as u32,
+        deck.composition.iter().map(|(_, n)| *n).sum::<u32>() - paneled
+    );
 }
 
 #[test]

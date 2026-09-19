@@ -91,20 +91,20 @@ fn speed_range(identity: &IdentityRecord, uptie: Uptie) -> (i32, i32) {
     identity.stats.speed_range(uptie).unwrap_or((1, 1))
 }
 
-/// Build the skill deck from the identity's `skill_amount` (copies per skill).
+/// Build the skill composition from the identity's `Skill Amount` (typically
+/// 3 copies of Skill 1, 2 of Skill 2 and 1 of Skill 3).  Source: wiki.gg
+/// `Battles` / Skills and the Japanese wiki `戦闘システム詳細` ("スキル構成").
 pub fn build_deck(identity: &IdentityRecord, uptie: Uptie) -> SkillDeck {
-    let mut draw = Vec::new();
+    let mut composition: Vec<(SkillId, u32)> = Vec::new();
     for skill in &identity.skills {
         let Some(slot) = skill.slot() else { continue };
         if slot == crate::ids::SkillSlot::Defense {
             continue;
         }
         let amount = skill.tier(uptie).and_then(|t| t.skill_amount).unwrap_or(1).max(1);
-        for _ in 0..amount {
-            draw.push(SkillId::new(skill.id.clone()));
-        }
+        composition.push((SkillId::new(skill.id.clone()), amount));
     }
-    SkillDeck::new(draw)
+    SkillDeck::new(composition)
 }
 
 pub struct EncounterBuilder<'a> {
@@ -201,6 +201,7 @@ impl<'a> EncounterBuilder<'a> {
             units,
             deployment,
             actions: Vec::new(),
+            defenses: Vec::new(),
             ego_resources: Sin::ALL
                 .iter()
                 .map(|s| (sin_key(*s).to_string(), 0i32))
@@ -208,20 +209,23 @@ impl<'a> EncounterBuilder<'a> {
             log: Vec::new(),
             warnings,
             winner: None,
+            preset_flips: Vec::new(),
+            flip_cursor: 0,
+            slot_target: if team.len() >= TEAM_SIZE_CAP { team.len() } else { TEAM_SIZE_CAP },
         };
 
-        // Draw the opening dashboard.
+        // Turn 1: one slot per Sinner, each showing the usable skill (bottom)
+        // plus the already drawn follow-up (top).  Extra slots are handed out
+        // from turn 2 on (wiki.gg `Battles` / Deployment Order).
         for index in 0..state.units.len() {
-            if state.units[index].kind.is_sinner() {
-                let slot = DashboardSlot {
-                    slot: 0,
-                    skill: SkillId::new(String::new()),
-                    from_deck: true,
-                    target: None,
-                };
-                state.units[index].dashboard = vec![slot];
-                draw_for_unit(&mut state, index, 0);
+            if !state.units[index].kind.is_sinner() {
+                continue;
             }
+            let mut panel = Vec::new();
+            let current = draw_for_unit(&mut state, index).unwrap_or_else(empty_skill);
+            let next = draw_for_unit(&mut state, index).unwrap_or_else(empty_skill);
+            panel.push(DashboardSlot::new(0, current, next));
+            state.units[index].dashboard = panel;
         }
         // Turn 1 starts immediately: the caller then assigns actions and commits.
         crate::battle::begin_turn(&mut state, self.library, self.mechanics);
@@ -233,7 +237,7 @@ impl<'a> EncounterBuilder<'a> {
         let level = 60;
         let max_hp = record.stats.hp_at_level(level);
         let deck = build_deck(record, uptie);
-        if deck.draw.is_empty() {
+        if deck.is_empty() {
             return Err(SetupError::MissingSkill(record.id.clone()));
         }
         let speed = speed_range(record, uptie);
@@ -267,6 +271,7 @@ impl<'a> EncounterBuilder<'a> {
             dashboard: Vec::new(),
             ego_slots: ego_for_identity(&record.id),
             alive: true,
+            skill_cursor: 0,
         })
     }
 
@@ -325,20 +330,22 @@ impl<'a> EncounterBuilder<'a> {
             dashboard: Vec::new(),
             ego_slots: Vec::new(),
             alive: true,
+            skill_cursor: 0,
         })
     }
 }
 
-/// Draw a skill from the unit's deck into the given dashboard slot.
-pub fn draw_for_unit(state: &mut BattleState, index: usize, slot: u32) {
-    let skill = state.units[index].deck.draw_top();
-    if let Some(skill) = skill {
-        if let Some(entry) = state.units[index].dashboard.iter_mut().find(|s| s.slot == slot) {
-            entry.skill = skill;
-            entry.from_deck = true;
-            entry.target = None;
-        }
-    }
+pub fn empty_skill() -> SkillId {
+    SkillId::new(String::new())
+}
+
+/// Draw one skill from the unit's composition (random among the copies not yet
+/// placed on the panel).  Returns `None` when the composition is empty.
+pub fn draw_for_unit(state: &mut BattleState, index: usize) -> Option<SkillId> {
+    let mut deck = std::mem::take(&mut state.units[index].deck);
+    let drawn = deck.draw(&mut state.rng);
+    state.units[index].deck = deck;
+    drawn
 }
 
 /// Default helpers for the fixed content of the plan.

@@ -16,15 +16,20 @@ by a test that cites a source in `docs/MECHANICS.md`.
 
 ## Phase 2 — skills — done
 
-Skill decks with `Skill Amount` copies, dashboard slots, uptie resolution
-(1..4), defense skills, action slots.  The deck only refreshes when empty —
-`engineering::deck_draws_do_not_repeat_until_exhausted`.
+Skill composition with `Skill Amount` copies, two-skill dashboard slots with
+rotation, extra Skill Slots from turn 2, uptie resolution (1..4), defense
+skills, action slots.  Tests: `mechanics::deck_draws_randomly_and_resets_after_full_placement`,
+`mechanics::panel_rotates_after_use`.
 
 ## Phase 3 — combat — done
 
-Coin rolls, skill power, clash (round-by-round coin destruction), one-sided
-attacks, damage, resistances, stagger.  Tests: `mechanics::clash_loser_loses_one_coin_per_round`,
-`mechanics::damage_formula_matches_source`, `mechanics::stagger_levels_match_source`.
+Coin rolls, **summed** clash power with skill-level bonus, ties that destroy
+nothing, "destroy the first remaining coin", accumulating attack damage,
+resistances, stagger, guard/evade/counter (guard shield on first incoming
+attack, guard replacing the Defense Level).  Tests:
+`mechanics::clash_power_sums_every_coin`, `mechanics::clash_tie_destroys_no_coin`,
+`mechanics::clash_loser_loses_one_coin_per_round`, `mechanics::damage_formula_matches_source`,
+`mechanics::stagger_levels_match_source`.
 
 ## Phase 4 — statuses — partial
 
@@ -55,7 +60,8 @@ Loaded with official ids and full effect text:
 
 Not implemented: the time-state machine and its rotations, illusory-butterfly
 stack removal and damage transfer, the Section 5 choice event.  The enemy takes
-one skill slot and uses the first listed skill (documented stand-in).
+one skill slot and walks its skill list in order (`EnemyPolicy::Cyclic`), which
+is a documented stand-in, not the real rotation.
 
 ## Search ladder
 
@@ -76,6 +82,10 @@ one skill slot and uses the first listed skill (documented stand-in).
 * Derived numbers that a player can read off the screen have not been compared
   against screenshots: Imago max HP (`9090 + 275.44 x 60 = 25616`), the Pupa's
   shield (1.3% of max HP), speed rolls.
-* Damage magnitudes therefore look low relative to a real fight; the formula is
-  implemented as documented, but the inputs (level, resistance, HP) have not been
-  checked against a recording.
+* Damage magnitudes have not been compared against a recording.  As a
+  consistency check, the simulated coin rolls reproduce the JA-wiki worked
+  examples exactly (4+4 x3 → 8/12/16, 1+6 x5 → 7/13/19/25/31), and the Pupa's
+  "1.3% HP as Shield" gives 333 on 25616 max HP, matching the illusory
+  butterfly's fixed 333 Shield in the same encounter.
+* `BattleState::preset_flips` exists to feed a recorded coin sequence into the
+  simulator (golden tests); no recording has been made yet.

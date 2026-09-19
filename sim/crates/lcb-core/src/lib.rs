@@ -165,7 +165,6 @@ impl Simulator {
         vec![
             state::UnknownRule::SanityGainOnClash.text(),
             state::UnknownRule::CoinFlipRng.text(),
-            state::UnknownRule::ClashTie.text(),
         ]
     }
 

@@ -5,7 +5,7 @@ use lcb_core::battle::{self, Action, CoinState, EgoSkillKind};
 use lcb_core::damage::{self, DamageInputs};
 use lcb_core::ids::{SkillId, Uptie};
 use lcb_core::setup::{fixed, EncounterBuilder};
-use lcb_core::state::{BattleConfig, ClashTieRule, Phase, Sanity, StaggerState};
+use lcb_core::state::{BattleConfig, Phase, Sanity, StaggerState};
 use lcb_core::Simulator;
 use std::path::PathBuf;
 
@@ -109,6 +109,10 @@ fn clash_loser_loses_one_coin_per_round() {
     )
     .unwrap();
     a.base_power = 99; // force wins so the coin accounting is deterministic
+    a.coin_power = 0;
+    b.coin_power = 0;
+    state.preset_flips = vec![false; 64];
+    state.flip_cursor = 0;
     let coins_before = b.remaining_coins();
     let result = battle::resolve_clash(&mut state, 0, 1, &mut a, &mut b);
     assert_eq!(result.winner, Some(state.units[0].id.clone()));
@@ -116,17 +120,44 @@ fn clash_loser_loses_one_coin_per_round() {
     assert_eq!(b.remaining_coins(), 0, "clash continues until one side is empty");
 }
 
-/// Clash ties are not documented; the default is configurable and recorded.
-/// Source: none -> `UnknownRule::ClashTie`.
+/// Clash power is the sum over **all** coins: Base Power once plus the Coin
+/// Power of every Heads coin.  Sources: wiki.gg `Battles` ("both units toss all
+/// of their Skill's Coins; this determines the Skill's power in a Clash") and
+/// the Japanese wiki `戦闘システム詳細` (a 4+4 three-coin skill is 4-16).
 #[test]
-fn clash_tie_is_configurable() {
+fn clash_power_sums_every_coin() {
     let sim = sim();
-    let config = BattleConfig {
-        tie_rule: ClashTieRule::AttackerWins,
-        ..Default::default()
-    };
     let mut state = sim
-        .new_encounter(&["10110"], &[fixed::BOSS_IMAGO], 3, config)
+        .new_encounter(&["10110"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    let mut use_ = battle::build_use(&state, &sim.library, &sim.mechanics, 0, &SkillId::new("1011003"))
+        .unwrap();
+    use_.base_power = 4;
+    use_.coin_power = 4;
+    use_.coins = vec![
+        battle::CoinRuntime::fresh(false),
+        battle::CoinRuntime::fresh(false),
+        battle::CoinRuntime::fresh(false),
+    ];
+    // All heads -> base + 3 * coin power = 16, all tails -> 4.
+    state.preset_flips = vec![true, true, true];
+    state.flip_cursor = 0;
+    battle::toss_all_for_test(&mut state, 0, &mut use_);
+    assert_eq!(battle::final_power(&mut state, 0, &mut use_), 16);
+    state.preset_flips = vec![false, false, false];
+    state.flip_cursor = 0;
+    battle::toss_all_for_test(&mut state, 0, &mut use_);
+    assert_eq!(battle::final_power(&mut state, 0, &mut use_), 4);
+}
+
+/// A clash tie destroys nothing and the clash continues.
+/// Source: Japanese wiki `戦闘システム詳細` ("マッチ威力が同じだった場合は引き分けとなり
+/// 破壊されない").
+#[test]
+fn clash_tie_destroys_no_coin() {
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&["10110"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
         .unwrap();
     let mut a = battle::build_use(&state, &sim.library, &sim.mechanics, 0, &SkillId::new("1011001"))
         .unwrap();
@@ -134,11 +165,17 @@ fn clash_tie_is_configurable() {
         .unwrap();
     a.base_power = 10;
     b.base_power = 10;
+    a.coin_power = 0;
+    b.coin_power = 0;
     a.coins = vec![battle::CoinRuntime::fresh(false)];
     b.coins = vec![battle::CoinRuntime::fresh(false)];
+    // Tails on both sides keeps the powers identical forever.
+    state.preset_flips = vec![false; 64];
+    state.flip_cursor = 0;
     let result = battle::resolve_clash(&mut state, 0, 1, &mut a, &mut b);
-    assert_eq!(result.winner, Some(state.units[0].id.clone()), "attacker wins ties");
-    let _ = ClashTieRule::AttackerWins;
+    assert_eq!(result.winner, None, "equal power is a draw");
+    assert_eq!(a.remaining_coins(), 1);
+    assert_eq!(b.remaining_coins(), 1);
 }
 
 /// Burn ticks at turn end using Potency, then Count -1.
@@ -218,22 +255,73 @@ fn ego_costs_and_overclock_round_up() {
     assert_eq!(state.ego_resources.get("Gloom"), Some(&4));
 }
 
-/// Skill decks refresh only after every card has been used.
-/// Source: wiki.gg `Clash` / Skills ("will only refresh after all Skills have
-/// been used").
+/// The panel draws randomly from the composition and resets the counts once
+/// every copy has been placed.  Source: Japanese wiki `戦闘システム詳細`
+/// ("スキル構成", "全てパネルに配置し終えると構成の残数がリセットされる").
 #[test]
-fn deck_refreshes_only_when_empty() {
-    let mut deck = lcb_core::state::SkillDeck::new(vec![
-        SkillId::new("a"),
-        SkillId::new("b"),
+fn deck_draws_randomly_and_resets_after_full_placement() {
+    use lcb_core::state::SkillDeck;
+    let mut rng = lcb_core::rng::Rng::from_seed(9);
+    let mut deck = SkillDeck::new(vec![
+        (SkillId::new("s1"), 3),
+        (SkillId::new("s2"), 2),
+        (SkillId::new("s3"), 1),
     ]);
-    assert_eq!(deck.draw_top().unwrap().0, "b");
-    assert_eq!(deck.draw_top().unwrap().0, "a");
-    assert!(deck.draw.is_empty());
-    assert_eq!(deck.discard.len(), 2, "used cards wait in the discard pile");
-    let next = deck.draw_top().unwrap();
-    assert!(next.0 == "a" || next.0 == "b", "deck refreshed after emptying");
-    assert_eq!(deck.len(), 2, "the refreshed deck holds both cards");
+    let mut drawn = Vec::new();
+    for _ in 0..6 {
+        drawn.push(deck.draw(&mut rng).unwrap().0);
+    }
+    assert!(deck.is_empty(), "all six copies have been placed");
+    let mut counts = std::collections::BTreeMap::new();
+    for id in &drawn {
+        *counts.entry(id.clone()).or_insert(0) += 1;
+    }
+    assert_eq!(counts.get("s1"), Some(&3));
+    assert_eq!(counts.get("s2"), Some(&2));
+    assert_eq!(counts.get("s3"), Some(&1));
+    // The composition resets and can be drawn again.
+    assert_eq!(deck.draw(&mut rng).unwrap().0.len(), 2);
+    assert_eq!(deck.len(), 5);
+}
+
+/// The panel keeps two skills per slot: using the bottom skill consumes it, the
+/// top one rotates down and a new skill is drawn.  Source: Japanese wiki
+/// `戦闘システム詳細` ("上に見えていたスキルが下へ送られ…また次のスキルが新しく薄らと
+/// 見えるようになる").
+#[test]
+fn panel_rotates_after_use() {
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&["10110"], &[fixed::BOSS_IMAGO], 5, BattleConfig::default())
+        .unwrap();
+    let before = state.units[0].dashboard[0].clone();
+    assert_ne!(before.current.0, "");
+    assert_ne!(before.next.0, "");
+    let paneled_before = state.units[0].deck.paneled_count(&before.current);
+    let target = state.living_enemies()[0].clone();
+    let actor = state.units[0].id.clone();
+    sim.submit(
+        &mut state,
+        Action::Assign {
+            actor,
+            slot: 0,
+            skill: before.current.clone(),
+            target,
+        },
+    )
+    .unwrap();
+    sim.step_turn(&mut state).unwrap();
+    let after = state.units[0].dashboard[0].clone();
+    assert_eq!(after.current, before.next, "the preview rotates down");
+    assert_ne!(after.next.0, "", "a new skill is drawn into the preview");
+    // Every slot keeps exactly two skills on the panel; the deck grew by the
+    // extra slot the Sinner received from turn 2 (one Sinner in a six-slot
+    // encounter, wiki.gg `Battles` / Deployment Order).
+    let paneled_after: u32 = state.units[0].deck.paneled.iter().map(|(_, n)| *n).sum();
+    let slots_after = state.units[0].dashboard.len() as u32;
+    assert_eq!(paneled_after, slots_after * 2);
+    assert_eq!(slots_after, 2, "one extra slot per turn until the cap");
+    assert!(paneled_before >= 1);
 }
 
 /// Uptie tiers resolve with the wiki convention: `Nkey` applies from uptie N
@@ -262,6 +350,51 @@ fn unimplemented_effects_are_reported_not_ignored() {
     assert!(
         blockers.iter().any(|b| b.contains("A-Reson")),
         "resonance effects are not modelled and must be listed"
+    );
+}
+
+/// Guard: the Shield is gained when the unit is first attacked, not at the
+/// start of the turn, and it equals the Guard skill's Final Power.
+/// Sources: wiki.gg `Battles` / Guard and JA-wiki 守備スキル / ガード.
+#[test]
+fn guard_gains_shield_when_attacked() {
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&["10110"], &[fixed::BOSS_IMAGO], 7, BattleConfig::default())
+        .unwrap();
+    // Yi Sang's Guard at Uptie IV: 10 +4, one coin.
+    let guard = SkillId::new("1011004");
+    let target = state.living_enemies()[0].clone();
+    let actor = state.units[0].id.clone();
+    let enemy = state.units[1].id.clone();
+    sim.submit(
+        &mut state,
+        Action::Assign {
+            actor,
+            slot: 0,
+            skill: guard,
+            target,
+        },
+    )
+    .unwrap();
+    // The enemy attacks back so the Guard resolves.
+    state.actions.push(lcb_core::state::SubmittedAction {
+        actor: enemy,
+        slot: 0,
+        skill: SkillId::new("956701"),
+        target: Some(state.units[0].id.clone()),
+        is_ego: false,
+        ego: None,
+        ego_kind: None,
+    });
+    state.preset_flips = vec![true; 32];
+    state.flip_cursor = 0;
+    sim.step_turn(&mut state).unwrap();
+    // 10 + 4 = 14 Shield, then the enemy's hit is absorbed by it.
+    assert!(
+        state.log.iter().any(|entry| entry.kind == "guard" && entry.detail.contains("14 Shield")),
+        "guard log: {:?}",
+        state.log.iter().map(|e| e.detail.clone()).collect::<Vec<_>>()
     );
 }
 
