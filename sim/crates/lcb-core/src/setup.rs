@@ -218,6 +218,7 @@ impl<'a> EncounterBuilder<'a> {
             log: Vec::new(),
             warnings,
             winner: None,
+            encounter_ended: false,
             preset_flips: Vec::new(),
             flip_cursor: 0,
             slot_target: if team.len() >= TEAM_SIZE_CAP { team.len() } else { TEAM_SIZE_CAP },
@@ -238,6 +239,13 @@ impl<'a> EncounterBuilder<'a> {
         }
         // Turn 1 starts immediately: the caller then assigns actions and commits.
         crate::battle::begin_turn(&mut state, self.library, self.mechanics, self.scripts);
+        // Encounter-start Shield (the Pupa: 1.3% of max HP -> 333 on 25616).
+        for index in 0..state.units.len() {
+            if let Some(percent) = state.units[index].shield_percent {
+                let shield = (state.units[index].max_hp as f64 * percent / 100.0).floor() as i32;
+                state.units[index].shield += shield.max(1);
+            }
+        }
         Ok(state)
     }
 
@@ -287,6 +295,10 @@ impl<'a> EncounterBuilder<'a> {
             acts_while_staggered: false,
             clash_count_swing: None,
             time_signature: Vec::new(),
+            shield_percent: None,
+            hp_floor_percent: None,
+            barrier_broken: false,
+            ends_encounter_on: Vec::new(),
         })
     }
 
@@ -362,6 +374,20 @@ impl<'a> EncounterBuilder<'a> {
                 .scripts
                 .for_enemy(&record.id)
                 .and_then(|script| script.clash_count_swing),
+            shield_percent: self
+                .scripts
+                .for_enemy(&record.id)
+                .and_then(|script| script.shield_percent),
+            hp_floor_percent: self
+                .scripts
+                .for_enemy(&record.id)
+                .and_then(|script| script.hp_floor_percent),
+            barrier_broken: false,
+            ends_encounter_on: self
+                .scripts
+                .for_enemy(&record.id)
+                .map(|script| script.ends_encounter_on.clone())
+                .unwrap_or_default(),
             time_signature: self
                 .scripts
                 .for_enemy(&record.id)

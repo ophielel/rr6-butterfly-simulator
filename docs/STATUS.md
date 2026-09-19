@@ -78,10 +78,17 @@ Tests: `mechanics::imago_plays_the_documented_rotation`,
 `mechanics::time_state_follows_the_highest_stack`,
 `mechanics::time_state_stack_bonus_matches_game_text`.
 
-Not implemented: the illusory butterflies (their stack removal and damage
-transfer), the choice events that decide the starting state and which passive
-components are disabled, the Pupa's shield-break branch, and the effects of the
-debuffs the boss applies (HP Healing Down, Wrath Fragility).
+Implemented as well: station 1 (the Pupa) with its 1.3% encounter-start Shield,
+the "HP does not fall below 90%" floor, the barrier-break branch and the
+"End the Encounter" resolution (`Winner::EncounterEnded`), plus "deals 0 damage"
+/ "does not take damage" skills.  Tests: `mechanics::pupa_shield_and_hp_floor`,
+`mechanics::pupa_barrier_break_switches_pattern_and_quickening_ends_the_encounter`,
+`mechanics::quickening_deals_and_takes_no_damage`.
+
+Not implemented: the illusory butterflies of stations 2-4 (their Stack removal,
+damage transfer and the choice events that decide Section 5's starting state and
+disable passive components), Sin Resonance, Panic/Low Morale, focused-encounter
+Parts, and the debuffs' own effects (HP Healing Down, Wrath Fragility).
 
 ## Search ladder
 

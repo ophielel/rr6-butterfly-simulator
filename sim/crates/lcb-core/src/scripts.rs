@@ -81,6 +81,13 @@ pub struct ClashCountSwing {
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct ScriptBranch {
+    /// Only `barrier_broken` is defined so far.
+    pub when: String,
+    pub turns: Vec<Vec<String>>,
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct ScriptBand {
     /// `above_66` / `below_66` / `below_33`
     pub band: String,
@@ -106,7 +113,23 @@ pub struct EnemyScript {
     pub station: i32,
     #[serde(default)]
     pub shared: BTreeMap<String, String>,
+    #[serde(default)]
     pub states: BTreeMap<String, StateScript>,
+    /// Stateless patterns (e.g. the Pupa): one entry per turn of the cycle.
+    #[serde(default)]
+    pub turns: Vec<Vec<String>>,
+    /// Optional branch played instead of `turns` once its condition holds.
+    #[serde(default)]
+    pub branch: Option<ScriptBranch>,
+    /// Encounter start: Shield as a percentage of max HP.
+    #[serde(default)]
+    pub shield_percent: Option<f64>,
+    /// HP cannot drop below this percentage of max HP.
+    #[serde(default)]
+    pub hp_floor_percent: Option<i32>,
+    /// Skills whose Attack End ends the encounter.
+    #[serde(default)]
+    pub ends_encounter_on: Vec<String>,
     /// Station 5: the unit is not skipped by Stagger.
     #[serde(default)]
     pub acts_while_staggered: bool,
@@ -136,6 +159,32 @@ impl EnemyScript {
     }
 
     /// Skills used by the unit's slots on `cycle_index` of the cycle.
+    /// `branch_active` selects the barrier-broken branch when the script has one.
+    pub fn turn_skills_with_branch(
+        &self,
+        hp_percent: i32,
+        state: TimeState,
+        cycle_index: u32,
+        branch_active: bool,
+    ) -> Vec<String> {
+        if branch_active {
+            if let Some(branch) = &self.branch {
+                if let Some(turn) = branch.turns.first() {
+                    return turn.clone();
+                }
+            }
+        }
+        if self.states.is_empty() {
+            if self.turns.is_empty() {
+                return Vec::new();
+            }
+            let index = (cycle_index as usize) % self.turns.len();
+            return self.turns[index].clone();
+        }
+        self.turn_skills(hp_percent, state, cycle_index)
+    }
+
+    /// State-based rotation lookup (the Imago).
     pub fn turn_skills(
         &self,
         hp_percent: i32,

@@ -49,6 +49,26 @@ HP33%以下
 未来：《腐蝕分解》《朽滅》《血花》
 """
 
+# Station 1 (the Pupa).  Verbatim Japanese action-pattern table; the wiki.gg
+# page lists the same six-slot lines with fewer slot details.
+JA_PUPA = """
+第1区間  羅生蝶::繭の行動  行動総数
+1 《乱撃》×3, 《粉砕》×3  6
+2 (1と同じ)  6
+3 《乱撃》×3, 《粉砕》×3, 《胎動開始》  7
+a 《羅生 - 回帰》, 《羅生 - 顕現》, 《羅生 - 到来》, 《胎動開始》  4
+※ 1~3を行う。バリアを全て消耗すると次のターン、aを行う。
+"""
+
+PUPA_NAMES = {
+    "乱撃": "Fluttering Havoc",
+    "粉砕": "Pulverization",
+    "胎動開始": "The Quickening",
+    "羅生 - 回帰": "Entangled Life - Regression",
+    "羅生 - 顕現": "Entangled Life - Manifestation",
+    "羅生 - 到来": "Entangled Life - Advent",
+}
+
 # Japanese names -> what the wiki.gg rotation calls them, per time state.
 JA_SHORT = {
     "past": {"small": "Temper and Cast", "mid": "Immolation", "big": "Kalpāgni"},
@@ -130,6 +150,46 @@ def cross_check(parsed: Dict[str, Dict[str, List[List[str]]]]) -> List[str]:
     return problems
 
 
+def build_pupa() -> dict:
+    record = json.load(open(os.path.join(DATA, "enemies", "9563.json"), encoding="utf-8"))
+    ids = {s["name"]: s["id"] for s in record["skills"]}
+    havoc = ids["Fluttering Havoc"]
+    pulv = ids["Pulverization"]
+    quick = ids["The Quickening"]
+    regression = ids["Entangled Life - Regression"]
+    manifestation = ids["Entangled Life - Manifestation"]
+    advent = ids["Entangled Life - Advent"]
+    return {
+        "enemy_id": "9563",
+        "slots": 6,
+        "cycle_turns": 3,
+        "station": 1,
+        "acts_while_staggered": False,
+        "turns": [
+            [havoc, havoc, havoc, pulv, pulv, pulv],
+            [havoc, havoc, havoc, pulv, pulv, pulv],
+            [havoc, havoc, havoc, pulv, pulv, pulv, quick],
+        ],
+        "branch": {
+            "when": "barrier_broken",
+            "turns": [[regression, manifestation, advent, quick]],
+        },
+        "shield_percent": 1.3,
+        "hp_floor_percent": 90,
+        "ends_encounter_on": [quick],
+        "notes": [
+            "Station 1: at encounter start the Pupa gains 1.3% of its max HP as Shield and its HP does not fall below 90%.",
+            "If the Shield is fully consumed before the end of turn 3, the next turn uses pattern a and the encounter ends after The Quickening.",
+            "The Quickening is Unclashable, Target Fixed and deals 0 damage; its Attack End ends the Encounter.",
+        ],
+        "source": [
+            "https://limbuscompany.wiki.gg/wiki/Butterfly_of_Entangled_Lives_%E7%BE%85%E7%94%9F%E8%9D%B6/Enemy/Butterfly_of_Entangled_Lives::The_Pupa",
+            "https://wikiwiki.jp/lcbwiki/幻想体/羅生蝶 (行動パターン)",
+        ],
+        "ja_table": JA_PUPA.strip(),
+    }
+
+
 def main() -> int:
     text = open(os.path.join(PAGES, "boss_imago.wikitext"), encoding="utf-8").read()
     parsed = parse_rotation(text)
@@ -188,7 +248,7 @@ def main() -> int:
 
     out = {
         "version": 1,
-        "skills": {"imago": script["imago"]},
+        "skills": {"imago": script["imago"], "pupa": build_pupa()},
     }
     path = os.path.join(DATA, "mechanics", "enemy_scripts.json")
     with open(path, "w", encoding="utf-8") as fh:

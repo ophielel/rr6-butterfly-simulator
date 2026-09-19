@@ -594,6 +594,96 @@ fn bind_lowers_speed() {
     assert_eq!(bind - haste, 2);
 }
 
+/// Station 1: the Pupa opens with 1.3% of its max HP as Shield and its HP never
+/// falls below 90%.  Source: wiki.gg Pupa passive `Quickening of the Unborn`.
+#[test]
+fn pupa_shield_and_hp_floor() {
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&fixed::TEAM, &[fixed::BOSS_PUPA], 4, BattleConfig::default())
+        .unwrap();
+    let pupa = state.units.iter().position(|u| !u.kind.is_sinner()).unwrap();
+    // floor(25616 * 1.3%) = 333
+    assert_eq!(state.units[pupa].shield, 333);
+    let floor = state.units[pupa].max_hp * 90 / 100;
+    state.units[pupa].shield = 0;
+    let max_hp = state.units[pupa].max_hp;
+    let (_, hp_lost) = state.units[pupa].take_damage(1000);
+    assert_eq!(state.units[pupa].hp, max_hp - 1000);
+    assert_eq!(hp_lost, 1000);
+    let (_, more) = state.units[pupa].take_damage(50_000);
+    assert_eq!(state.units[pupa].hp, floor, "damage stops at the 90% floor");
+    assert_eq!(more, max_hp - 1000 - floor);
+    let (_, none) = state.units[pupa].take_damage(50_000);
+    assert_eq!(none, 0, "the floor cannot be crossed");
+}
+
+/// The Pupa's barrier-break branch: once the Shield is fully consumed it plays
+/// pattern a next turn (Entangled Life x3 + The Quickening) and The Quickening
+/// ends the encounter.  Source: JA-wiki 行動パターン, wiki.gg Pupa page.
+#[test]
+fn pupa_barrier_break_switches_pattern_and_quickening_ends_the_encounter() {
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&fixed::TEAM, &[fixed::BOSS_PUPA], 6, BattleConfig::default())
+        .unwrap();
+    let pupa = state.units.iter().position(|u| !u.kind.is_sinner()).unwrap();
+    // Consume the barrier during turn 1.
+    state.units[pupa].take_damage(333);
+    assert!(state.units[pupa].barrier_broken);
+    // Play turn 1 out.
+    for action in sim.legal_actions(&state) {
+        if let Action::Assign { actor, slot, skill, target } = action {
+            sim.submit(&mut state, Action::Assign { actor, slot, skill, target }).unwrap();
+        }
+    }
+    sim.step_turn(&mut state).unwrap();
+    // Turn 2 must use the branch.
+    let mut skills: Vec<(u32, String)> = state
+        .actions
+        .iter()
+        .filter(|a| state.units[pupa].id == a.actor)
+        .map(|a| (a.slot, a.skill.0.clone()))
+        .collect();
+    skills.sort();
+    let ids: Vec<String> = skills.into_iter().map(|(_, s)| s).collect();
+    assert_eq!(ids, vec!["956304", "956305", "956306", "956303"]);
+    // Resolve turn 2: The Quickening ends the encounter.
+    for action in sim.legal_actions(&state) {
+        if let Action::Assign { actor, slot, skill, target } = action {
+            sim.submit(&mut state, Action::Assign { actor, slot, skill, target }).unwrap();
+        }
+    }
+    sim.step_turn(&mut state).unwrap();
+    assert_eq!(state.winner, Some(lcb_core::state::Winner::EncounterEnded));
+}
+
+/// The Quickening deals no damage and its user takes none that turn.
+/// Source: wiki.gg Pupa skill `The Quickening`.
+#[test]
+fn quickening_deals_and_takes_no_damage() {
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&fixed::TEAM, &[fixed::BOSS_PUPA], 8, BattleConfig::default())
+        .unwrap();
+    let pupa = state.units.iter().position(|u| !u.kind.is_sinner()).unwrap();
+    let mut use_ = battle::build_use(&state, &sim.library, &sim.mechanics, pupa, &SkillId::new("956303"))
+        .unwrap();
+    // [On Use] effects are applied by the engine when the skill resolves, so the
+    // test drives the same two effects through the public effect path.
+    let effects = use_.mechanics.on_use.clone();
+    let mut notes = Vec::new();
+    let mut ctx = battle::UseContext::default();
+    battle::apply_effects_for_test(&mut state, &effects, pupa, Some(0), &mut notes, &mut ctx);
+    use_.ctx.zero_damage = ctx.zero_damage;
+    assert!(use_.ctx.zero_damage, "the skill declares 0 damage");
+    assert_eq!(state.units[pupa].statuses.stack("No Damage Taken"), 1);
+    let before = state.units[pupa].hp;
+    let (_, lost) = state.units[pupa].take_damage(500);
+    assert_eq!(lost, 0);
+    assert_eq!(state.units[pupa].hp, before);
+}
+
 /// A full turn keeps the battle in a consistent, serialisable state.
 #[test]
 fn turn_advances_phase_and_logs() {

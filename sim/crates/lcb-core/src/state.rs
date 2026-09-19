@@ -399,6 +399,19 @@ pub struct Unit {
     /// Past/Present/Future passive bonuses.
     #[serde(default)]
     pub time_signature: Vec<(crate::scripts::TimeState, String)>,
+    /// Encounter start: Shield as a percentage of max HP (the Pupa's 1.3%).
+    #[serde(default)]
+    pub shield_percent: Option<f64>,
+    /// HP floor as a percentage of max HP (the Pupa's "HP does not fall below
+    /// 90%").
+    #[serde(default)]
+    pub hp_floor_percent: Option<i32>,
+    /// Set once the Shield was fully consumed while it had one.
+    #[serde(default)]
+    pub barrier_broken: bool,
+    /// Skills whose Attack End ends the encounter.
+    #[serde(default)]
+    pub ends_encounter_on: Vec<String>,
 }
 
 impl Unit {
@@ -470,13 +483,28 @@ impl Unit {
     }
 
     /// Apply damage to Shield first, then HP. Returns (shield lost, hp lost).
+    /// Units with an HP floor (the Pupa's "HP does not fall below 90%") cannot
+    /// be taken below it by damage.
     pub fn take_damage(&mut self, amount: i32) -> (i32, i32) {
+        // "Does not take damage for this turn" (The Quickening).
+        if self.statuses.stack("No Damage Taken") > 0 {
+            return (0, 0);
+        }
         let amount = amount.max(0);
         let absorbed = self.shield.min(amount);
         self.shield -= absorbed;
+        if absorbed > 0 && self.shield == 0 {
+            self.barrier_broken = true;
+        }
         let remainder = amount - absorbed;
+        let floor = match self.hp_floor_percent {
+            Some(percent) => (self.max_hp * percent / 100).max(1),
+            None => 0,
+        };
         let before = self.hp;
-        self.hp = (self.hp - remainder).max(0);
+        // The floor never heals a unit that is already below it.
+        let effective_floor = floor.min(before);
+        self.hp = (self.hp - remainder).max(effective_floor);
         if self.hp == 0 {
             self.alive = false;
         }
@@ -578,6 +606,9 @@ pub enum Winner {
     Sinners,
     Enemies,
     Draw,
+    /// The stage ended by a skill effect ("End the Encounter") rather than by a
+    /// wipe; Refraction Railway stations resolve this way.
+    EncounterEnded,
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
@@ -609,6 +640,10 @@ pub struct BattleState {
     pub log: Vec<LogEntry>,
     pub warnings: Vec<String>,
     pub winner: Option<Winner>,
+    /// Set when a skill with "End the Encounter" resolved (Refraction Railway
+    /// stations end this way rather than by a wipe).
+    #[serde(default)]
+    pub encounter_ended: bool,
     /// Total Skill Slots the encounter grows towards (focused encounters use
     /// the maximum number of deployable Sinners).
     #[serde(default)]

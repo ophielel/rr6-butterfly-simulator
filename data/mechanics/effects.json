@@ -5282,12 +5282,19 @@
    "coins": {},
    "combat_start": [],
    "note": "The Quickening",
-   "on_use": [],
+   "on_use": [
+    {
+     "kind": "zero_damage",
+     "raw": "This Attack Skill deals 0 damage"
+    },
+    {
+     "kind": "no_damage_taken",
+     "raw": "[On Use] Does not take damage for this turn"
+    }
+   ],
    "tags": [],
    "unmodeled": [
-    "This Attack Skill deals 0 damage",
     "[Attack End] End the Encounter",
-    "[On Use] Does not take damage for this turn",
     "[Unclashable], [Target Fixed]"
    ]
   },
@@ -5340,11 +5347,15 @@
    "coins": {},
    "combat_start": [],
    "note": "Eclosion",
-   "on_use": [],
+   "on_use": [
+    {
+     "kind": "zero_damage",
+     "raw": "This Attack Skill deals 0 damage"
+    }
+   ],
    "tags": [],
    "unmodeled": [
     "If the Shield is broken, proceed to the next turn instead and [face a unique Choice Event] before the Encounter ends",
-    "This Attack Skill deals 0 damage",
     "[Attack End] End the Encounter",
     "[Unclashable][Target Fixed]"
    ]
@@ -5356,11 +5367,15 @@
    "coins": {},
    "combat_start": [],
    "note": "Eclosion",
-   "on_use": [],
+   "on_use": [
+    {
+     "kind": "zero_damage",
+     "raw": "This Attack Skill deals 0 damage"
+    }
+   ],
    "tags": [],
    "unmodeled": [
     "If the Shield is broken, proceed to the next turn instead and [face a unique Choice Event] before the Encounter ends",
-    "This Attack Skill deals 0 damage",
     "[Attack End] End the Encounter",
     "[Unclashable][Target Fixed]"
    ]
@@ -5372,11 +5387,15 @@
    "coins": {},
    "combat_start": [],
    "note": "Eclosion",
-   "on_use": [],
+   "on_use": [
+    {
+     "kind": "zero_damage",
+     "raw": "This Attack Skill deals 0 damage"
+    }
+   ],
    "tags": [],
    "unmodeled": [
     "If the Shield is broken, proceed to the next turn instead and [face a unique Choice Event] before the Encounter ends",
-    "This Attack Skill deals 0 damage",
     "[Attack End] End the Encounter",
     "[Unclashable][Target Fixed]"
    ]

@@ -57,6 +57,9 @@ pub struct UseContext {
     pub shield_gain: i32,
     pub ammo_spent: i32,
     pub unbreakable_coins: Vec<u32>,
+    /// "This Attack Skill deals 0 damage" (The Quickening).
+    #[serde(default)]
+    pub zero_damage: bool,
     /// `Plus Coin Boost` / `Minus Coin Drop` for this use.
     #[serde(default)]
     pub coin_power_boost: i32,
@@ -716,6 +719,13 @@ pub fn apply_effects(
                     effect.max.unwrap_or(1)
                 ));
             }
+            "zero_damage" => {
+                use_ctx.zero_damage = true;
+            }
+            "no_damage_taken" => {
+                let unit = &mut state.units[ctx.actor_index];
+                unit.statuses.set_stack("No Damage Taken", 1);
+            }
             "noop" => {}
             other => {
                 ctx.mechanics_note
@@ -889,7 +899,11 @@ fn build_enemy_use(
         .skills
         .iter()
         .find(|s| s.skill_id() == skill.0 || s.display_name() == skill.0)?;
-    let mech = mechanics.get_or_default(skill);
+    let mech = mechanics
+        .get_for(skill, state.config.uptie)
+        .cloned()
+        .or_else(|| mechanics.get(skill).cloned())
+        .unwrap_or_default();
     let coins = (0..skill_record.coins.unwrap_or(1))
         .map(|index| CoinRuntime::fresh(mech.coin(index + 1).iter().any(|e| e.kind == "unbreakable_coin")))
         .collect();
@@ -1521,7 +1535,7 @@ fn apply_hit(
         ..Default::default()
     };
     let breakdown = compute_damage(&inputs);
-    let damage = breakdown.final_damage;
+    let damage = if use_.ctx.zero_damage { 0 } else { breakdown.final_damage };
     let (_, hp_lost) = state.units[defender_index].take_damage(damage);
 
     // [On Hit] coin effects.
@@ -1846,7 +1860,8 @@ fn enemy_turn_skills(
             .time_state
             .unwrap_or(state.config.initial_time_state);
         let cycle = state.units[unit_index].skill_cursor;
-        let skills = script.turn_skills(hp_percent, time_state, cycle);
+        let branch_active = state.units[unit_index].barrier_broken;
+        let skills = script.turn_skills_with_branch(hp_percent, time_state, cycle, branch_active);
         state.units[unit_index].skill_cursor = (cycle + 1) % script.cycle_turns.max(1);
         if !skills.is_empty() {
             return skills.into_iter().map(SkillId::new).collect();
@@ -1963,6 +1978,14 @@ fn enemy_targets(state: &BattleState, unit_index: usize, slots: usize) -> Vec<Op
 pub fn end_turn(state: &mut BattleState) {
     state.phase = Phase::TurnEnd;
     state.defenses.clear();
+    for unit in state.units.iter_mut() {
+        unit.statuses.remove("No Damage Taken");
+    }
+    if state.encounter_ended {
+        state.winner = Some(Winner::EncounterEnded);
+        state.phase = Phase::Finished;
+        return;
+    }
     for index in 0..state.units.len() {
         if !state.units[index].alive {
             continue;
@@ -2187,6 +2210,13 @@ pub fn resolve_combat(state: &mut BattleState, library: &Library, mechanics: &Me
                             ),
                         );
                         executed.push((actor_i, action_i.slot));
+                        if ends_encounter(state, actor_i, &use_.skill) {
+                            state.encounter_ended = true;
+                            state.push_log(
+                                "end",
+                                format!("{} ended the encounter", use_.name),
+                            );
+                        }
                     }
                 }
                 done[i] = true;
@@ -2228,6 +2258,15 @@ fn rotate_used_slots(state: &mut BattleState, executed: &[(usize, u32)]) {
             target.target = None;
         }
     }
+}
+
+/// Skills whose Attack End ends the encounter (the Pupa's "The Quickening",
+/// "Eclosion").  The stage is over, so the battle is marked as finished.
+fn ends_encounter(state: &BattleState, unit_index: usize, skill: &SkillId) -> bool {
+    state.units[unit_index]
+        .ends_encounter_on
+        .iter()
+        .any(|id| id == skill.as_str())
 }
 
 /// Classify a submitted action as a defense skill, if it is one.

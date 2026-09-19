@@ -113,6 +113,10 @@ PATTERNS = [
      lambda m: {"kind": "unbreakable_coin", "which": m.group(2), "hp_below_percent": int(m.group(1))}),
     (re.compile(r"^Reuse this Coin once for every (\d+)% missing HP \(max (\d+) times\)$"),
      lambda m: {"kind": "reuse_percent_missing_hp", "per": int(m.group(1)), "max": int(m.group(2))}),
+    (re.compile(r"^This Attack Skill deals 0 damage$"),
+     lambda m: {"kind": "zero_damage"}),
+    (re.compile(r"^Does not take damage for this turn$"),
+     lambda m: {"kind": "no_damage_taken"}),
     # Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1
     (re.compile(r"^Trigger \[([^\]]+)\]; then, reduce target's \[([^\]]+)\] Count by (\d+)$"),
      lambda m: {"kind": "tremor_burst" if m.group(1) == "Tremor Burst" else "activate_status",
@@ -191,6 +195,8 @@ def parse_triggered(trigger: str, text: str, raw: str) -> Optional[dict]:
 
 TAG_LINES = {
     "can clash with this skill regardless of speed": "clash_any_speed",
+    "[unclashable]": "unclashable",
+    "[target fixed]": "target_fixed",
 }
 
 
