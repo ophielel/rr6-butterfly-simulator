@@ -210,6 +210,8 @@ impl<'a> EncounterBuilder<'a> {
             deployment,
             actions: Vec::new(),
             defenses: Vec::new(),
+            resonance: BTreeMap::new(),
+            a_resonance: BTreeMap::new(),
             clash_counts: BTreeMap::new(),
             ego_resources: Sin::ALL
                 .iter()
@@ -302,6 +304,8 @@ impl<'a> EncounterBuilder<'a> {
             turn_effect_usage: BTreeMap::new(),
             pending_next_turn: Vec::new(),
             retaliate_on_hit: Vec::new(),
+            resonance_max: 0,
+            a_reson_max: 0,
         })
     }
 
@@ -389,6 +393,8 @@ impl<'a> EncounterBuilder<'a> {
             turn_effect_usage: BTreeMap::new(),
             pending_next_turn: Vec::new(),
             retaliate_on_hit: Vec::new(),
+            resonance_max: 0,
+            a_reson_max: 0,
             ends_encounter_on: self
                 .scripts
                 .for_enemy(&record.id)

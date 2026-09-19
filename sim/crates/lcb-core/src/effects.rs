@@ -53,6 +53,15 @@ pub struct Condition {
     pub target_speed_advantage: Option<i32>,
     #[serde(default)]
     pub self_sp_at_least: Option<i32>,
+    /// Any sin's Absolute Resonance chain is at least this long.
+    #[serde(default)]
+    pub a_reson_gte: Option<i32>,
+    /// The resonance that triggered this entry must be an Absolute Resonance.
+    #[serde(default)]
+    pub requires_a_reson: bool,
+    /// Any sin's Resonance count is at least this value.
+    #[serde(default)]
+    pub resonance_gte: Option<i32>,
     /// `hp_below_percent` includes equality (the wiki writes "N% or less").
     #[serde(default)]
     pub hp_or_equal: Option<bool>,
@@ -109,6 +118,14 @@ pub struct Effect {
     /// `consume_status_for_damage`: how much of the status must be present.
     #[serde(default)]
     pub threshold: Option<i32>,
+    /// `gain_from_resonance`: multiplier applied to the highest Resonance.
+    #[serde(default)]
+    pub multiplier: Option<i32>,
+    /// The resonance that produced this effect must be an Absolute Resonance.
+    #[serde(default)]
+    pub requires_a_reson: bool,
+    #[serde(default)]
+    pub a_reson_gte: Option<i32>,
 }
 
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]

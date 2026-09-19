@@ -911,6 +911,98 @@ fn inflicted_statuses_actually_land() {
     assert_eq!(state.units[0].statuses.count("Poise"), 1);
 }
 
+/// Sin Resonance: 2+ Skills of the same affinity on the Dashboard; Absolute
+/// Sin Resonance: 3+ of them consecutively.  Source: wiki.gg `Resonance`.
+#[test]
+fn sin_resonance_is_counted_from_the_dashboard() {
+    use lcb_core::ids::Sin;
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&fixed::TEAM, &[fixed::BOSS_IMAGO], 1, BattleConfig::default())
+        .unwrap();
+    // Pick, for each Sinner, the first skill of a chosen affinity (Pride).
+    let mut chosen = 0;
+    for unit in state.units.clone() {
+        if !unit.kind.is_sinner() {
+            continue;
+        }
+        let lcb_core::state::UnitKind::Sinner { identity } = &unit.kind else { continue };
+        let record = sim.library.identity(identity).unwrap();
+        let Some(skill) = record
+            .skills
+            .iter()
+            .find(|s| s.sin(Uptie::IV) == Some(Sin::Pride) && s.slot() != Some(lcb_core::ids::SkillSlot::Defense))
+        else {
+            continue;
+        };
+        state.actions.push(lcb_core::state::SubmittedAction {
+            actor: unit.id.clone(),
+            slot: 0,
+            skill: SkillId::new(skill.id.clone()),
+            target: Some(state.living_enemies()[0].clone()),
+            is_ego: false,
+            ego: None,
+            ego_kind: None,
+        });
+        chosen += 1;
+    }
+    assert!(chosen >= 3, "need at least three Pride skills to test resonance");
+    sim.step_turn(&mut state).unwrap();
+    // Every selected skill has slot 0, so the run length equals the count.
+    assert_eq!(state.resonance.get("pride"), Some(&chosen));
+    assert_eq!(state.a_resonance.get("pride"), Some(&chosen));
+    assert_eq!(
+        battle::highest_resonance(&state),
+        chosen,
+        "highest resonance is the largest count"
+    );
+}
+
+/// "Gain (highest Reson.) of [X] (max N)" scales with the highest resonance.
+#[test]
+fn gain_from_resonance_uses_the_highest_value() {
+    use lcb_core::effects::Effect;
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&["10110"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    state.resonance.insert("pride".to_string(), 4);
+    let effect = Effect {
+        kind: "gain_from_resonance".to_string(),
+        status: Some("The Living & The Departed".to_string()),
+        max: Some(6),
+        multiplier: Some(1),
+        ..Default::default()
+    };
+    let mut notes = Vec::new();
+    let mut ctx = battle::UseContext::default();
+    battle::apply_effects_for_test(&mut state, &[effect.clone()], 0, Some(1), &mut notes, &mut ctx);
+    assert_eq!(state.units[0].statuses.potency("The Living & The Departed"), 4);
+    // The x2 A-Reson variant doubles it and respects the cap.
+    let doubled = Effect {
+        multiplier: Some(2),
+        max: Some(6),
+        requires_a_reson: true,
+        ..effect
+    };
+    state.units[0].a_reson_max = 0;
+    let mut ctx = battle::UseContext::default();
+    battle::apply_effects_for_test(&mut state, &[doubled.clone()], 0, Some(1), &mut notes, &mut ctx);
+    assert_eq!(
+        state.units[0].statuses.potency("The Living & The Departed"),
+        4,
+        "no A-Reson, no extra gain"
+    );
+    state.units[0].a_reson_max = 4;
+    let mut ctx = battle::UseContext::default();
+    battle::apply_effects_for_test(&mut state, &[doubled], 0, Some(1), &mut notes, &mut ctx);
+    assert_eq!(
+        state.units[0].statuses.potency("The Living & The Departed"),
+        6,
+        "4 x 2 capped at 6"
+    );
+}
+
 /// A full turn keeps the battle in a consistent, serialisable state.
 #[test]
 fn turn_advances_phase_and_logs() {

@@ -96,13 +96,13 @@ PATTERNS = [
                 "max": int(m.group(5)),
                 "condition": {"source": "target" if m.group(3) in ("target", "the main target") else "self",
                               "status": m.group(4), "component": "potency"}}),
-    (re.compile(rf"^Coin Power \+{N} for every {N} value of the sum of the target's {ST} and both {ST} \(max {N}\)$"),
+    (re.compile(rf"^Coin Power \+{N} for every {N} value of the sum of the target's {ST} and (?:both )?{ST} \(max {N}\)$"),
      lambda m: {"kind": "coin_power", "value": int(m.group(1)), "per": int(m.group(2)),
                 "max": int(m.group(5)),
                 "condition": {"source": "target",
                               "statuses": [m.group(3), m.group(4), m.group(4)],
                               "component": "potency"}}),
-    (re.compile(rf"^If the sum of the target's {ST} and both {ST} is {N} or higher, Coin Power \+{N}$"),
+    (re.compile(rf"^If the sum of the target's {ST} and (?:both )?{ST} is {N} or higher, Coin Power \+{N}$"),
      lambda m: {"kind": "coin_power", "value": int(m.group(4)),
                 "condition": {"source": "target",
                               "statuses": [m.group(1), m.group(2), m.group(2)],
@@ -152,6 +152,30 @@ PATTERNS = [
     (re.compile(rf"^When hit while this unit has Shield, inflict {N} {ST} against the attacker$"),
      lambda m: {"kind": "inflict_on_attacker", "status": m.group(2), "potency": int(m.group(1)),
                 "requires_shield": True}),
+    # "[On Hit] Deal +2% damage for every value of [X] spent by this Skill"
+    (re.compile(rf"^Deal \+{N}% damage for every value of {ST} spent by this Skill$"),
+     lambda m: {"kind": "damage_percent_per_ammo_spent", "status": m.group(2),
+                "step": int(m.group(1))}),
+    # "[On Hit] Inflict Gloom Damage equal to "All" [Butterfly] on target"
+    (re.compile(rf'^Inflict Gloom Damage equal to "All" {ST} on target$'),
+     lambda m: {"kind": "gloom_damage_equal_target_status", "status": m.group(1)}),
+    # Explanatory footnote for the line above it.
+    (re.compile(r'^"All" = the sum of both The Living and The Departed on target$'),
+     lambda m: {"kind": "noop"}),
+    # Sin Resonance payoffs (Yi Sang's Solemn Lament).
+    (re.compile(rf"^Gain \(highest Reson\.\) of {ST} \(max {N}\)$"),
+     lambda m: {"kind": "gain_from_resonance", "status": m.group(1), "max": int(m.group(2)),
+                "multiplier": 1}),
+    (re.compile(rf"^Gain \(highest Reson\. x {N}\) of {ST} \(max {N}\)$"),
+     lambda m: {"kind": "gain_from_resonance", "status": m.group(2), "max": int(m.group(3)),
+                "multiplier": int(m.group(1))}),
+    (re.compile(rf"^If the said Reson\. was an A-Reson\., gain \(highest Reson\. x {N}\) of {ST} \(max {N}\)$"),
+     lambda m: {"kind": "gain_from_resonance", "status": m.group(2), "max": int(m.group(3)),
+                "multiplier": int(m.group(1)), "requires_a_reson": True}),
+    (re.compile(rf"^If the said Reson\. was at {N}\+ A-Reson\., \[Reload \(Solemn Lament\)\] instead$"),
+     lambda m: {"kind": "reload_ammo", "a_reson_gte": int(m.group(1))}),
+    (re.compile(rf"^If the said Reson\. was an A-Reson\., {ST} instead$"),
+     lambda m: {"kind": "reload_ammo", "requires_a_reson": True}),
     (re.compile(r"^This Attack Skill deals 0 damage$"),
      lambda m: {"kind": "zero_damage"}),
     (re.compile(r"^Does not take damage for this turn$"),
@@ -164,7 +188,7 @@ PATTERNS = [
      lambda m: {"kind": "activate_status", "status": m.group(1),
                 "times": {"once": 1, "twice": 2}.get(m.group(2), None) or int(re.sub(r"\D", "", m.group(2)) or 1),
                 "consume_count": int(m.group(3))}),
-    (re.compile(rf"^Gain Shield equal to \(the sum of both {ST} on the selected target\)% HP \(max {N}% per turn\)$"),
+    (re.compile(rf"^Gain Shield equal to \(the sum of (?:both )?{ST} on the selected target\)% HP \(max {N}% per turn\)$"),
      lambda m: {"kind": "shield_percent_hp", "percent": 1, "max": int(m.group(2)),
                 "condition": {"source": "target", "statuses": [m.group(1), m.group(1)]}}),
     (re.compile(r"^\[?Reload \(Solemn Lament\)\]?( \(once per turn\))?$"),
@@ -231,18 +255,27 @@ def parse_triggered(trigger: str, text: str, raw: str) -> Optional[dict]:
         if not match:
             continue
         effect = handler(match)
-        if "both [" in text:
+        # "both [X]" means X contributes Potency **and** Count, which the
+        # evaluator expresses by listing X twice.  Patterns that already emit the
+        # pair are left alone.
+        both = re.search(r"both \[([^\]]+)\]", text)
+        if both:
+            name = both.group(1)
             for key in ("condition",):
                 cond = effect.get(key)
                 if not isinstance(cond, dict):
                     continue
                 if cond.get("statuses"):
                     statuses = list(cond["statuses"])
-                    statuses = statuses[:-1] + [statuses[-1], statuses[-1]]
+                    if statuses.count(name) < 2:
+                        statuses.append(name)
                     cond["statuses"] = statuses
+                elif cond.get("status") == name:
+                    cond["statuses"] = [name, name]
+                    cond.pop("status")
                 elif cond.get("status"):
-                    status = cond.pop("status")
-                    cond["statuses"] = [status, status]
+                    cond["statuses"] = [cond["status"], name, name]
+                    cond.pop("status")
         if limits:
             effect.update(limits)
         if next_turn:

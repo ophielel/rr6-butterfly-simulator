@@ -92,6 +92,13 @@ the "HP does not fall below 90%" floor, the barrier-break branch and the
 `mechanics::pupa_barrier_break_switches_pattern_and_quickening_ends_the_encounter`,
 `mechanics::quickening_deals_and_takes_no_damage`.
 
+Implemented as well: Sin Resonance and Absolute Resonance counting (the level
+bonus table stays unimplemented, see MECHANICS.md), resonance payoffs such as
+"Gain (highest Reson.)", plus attack adders, unbreakable conversion, resource
+spending for damage and Shield formulas.  Tests:
+`mechanics::sin_resonance_is_counted_from_the_dashboard`,
+`mechanics::gain_from_resonance_uses_the_highest_value`.
+
 Not implemented: the illusory butterflies of stations 2-4 (their Stack removal,
 damage transfer and the choice events that decide Section 5's starting state and
 disable passive components), Sin Resonance, Panic/Low Morale, focused-encounter

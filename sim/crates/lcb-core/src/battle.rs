@@ -7,7 +7,7 @@
 
 use crate::damage::{compute_damage, level_clash_bonus, DamageInputs};
 use crate::effects::{Component, Condition, Effect, MechanicsBook, SkillMechanics};
-use crate::ids::{DamageType, EgoId, Sin, SkillId, UnitId};
+use crate::ids::{DamageType, EgoId, Sin, SkillId, UnitId, Uptie};
 use crate::library::Library;
 use crate::state::{
     BattleState, Phase, Sanity, SubmittedAction, Unit, UnitKind, Winner, SP_LIMIT,
@@ -436,15 +436,20 @@ fn unit_status_value(unit: &Unit, key: &str, component: Option<Component>) -> i3
 }
 
 fn sum_statuses(unit: &Unit, statuses: &[String], component: Option<Component>) -> i32 {
-    // A status listed twice means "both values" (the wiki's "both [Butterfly]").
-    let mut seen: Vec<&String> = Vec::new();
+    // A status listed twice means "both values" (the wiki's "both [Butterfly]":
+    // Potency **and** Count, counted once).
     let mut total = 0;
+    let mut done: Vec<&String> = Vec::new();
     for key in statuses {
-        if seen.contains(&key) {
+        if done.contains(&key) {
+            continue;
+        }
+        done.push(key);
+        let occurrences = statuses.iter().filter(|entry| *entry == key).count();
+        if occurrences >= 2 {
             total += unit.statuses.potency(key) + unit.statuses.count(key);
         } else {
             total += unit_status_value(unit, key, component);
-            seen.push(key);
         }
     }
     total
@@ -478,6 +483,21 @@ fn condition_holds(
         if actor.sanity.sp() < required {
             return false;
         }
+    }
+    // Sin Resonance conditions are read from the values the combat phase
+    // computed for this turn (see `compute_resonance`).
+    if let Some(required) = condition.a_reson_gte {
+        if actor.a_reson_max < required {
+            return false;
+        }
+    }
+    if let Some(required) = condition.resonance_gte {
+        if actor.resonance_max < required {
+            return false;
+        }
+    }
+    if condition.requires_a_reson && actor.a_reson_max < 3 {
+        return false;
     }
     let source_is_target = condition.source.as_deref() == Some("target");
     let unit = if source_is_target {
@@ -799,6 +819,15 @@ pub fn apply_effects(
                 state.units[index].statuses.add_count(&status, -amount);
             }
             "reload_ammo" => {
+                let unit = &state.units[ctx.actor_index];
+                if effect.requires_a_reson && unit.a_reson_max < 3 {
+                    continue;
+                }
+                if let Some(required) = effect.a_reson_gte {
+                    if unit.a_reson_max < required {
+                        continue;
+                    }
+                }
                 // Reload (Solemn Lament): spend SP, reset ammo, refill to the cap.
                 let unit = &mut state.units[ctx.actor_index];
                 let sum = unit.statuses.total("The Living & The Departed");
@@ -822,6 +851,44 @@ pub fn apply_effects(
                 state.units[ctx.actor_index]
                     .retaliate_on_hit
                     .push(crate::state::RetaliateOnHit { status, potency });
+            }
+            "gain_from_resonance" => {
+                // "Gain (highest Reson.) of [X] (max N)"
+                let unit = &state.units[ctx.actor_index];
+                if effect.requires_a_reson && unit.a_reson_max < 3 {
+                    continue;
+                }
+                let multiplier = effect.multiplier.unwrap_or(1);
+                let max = effect.max.unwrap_or(i32::MAX);
+                let amount = (unit.resonance_max * multiplier).min(max);
+                if amount > 0 {
+                    if let Some(status) = effect.status.clone() {
+                        let unit = &mut state.units[ctx.actor_index];
+                        unit.statuses.add_potency(&status, amount);
+                    }
+                }
+            }
+            "damage_percent_per_ammo_spent" => {
+                // "Deal +2% damage for every value of [X] spent by this Skill"
+                let step = effect.step.unwrap_or(0);
+                use_ctx.damage_bonus +=
+                    (step * use_ctx.ammo_spent) as f64 / 100.0;
+            }
+            "gloom_damage_equal_target_status" => {
+                // "[On Hit] Inflict Gloom Damage equal to "All" [Butterfly] on
+                // target", where "All" is the sum of both values on the target.
+                let Some(status) = effect.status.clone() else { continue };
+                let Some(index) = ctx.target_index else { continue };
+                let amount = state.units[index].statuses.potency(&status)
+                    + state.units[index].statuses.count(&status);
+                if amount > 0 {
+                    let resist = state.units[index].resist_sin(Sin::Gloom);
+                    let damage = (amount as f64
+                        * (1.0 + crate::damage::resistance_modifier(resist)))
+                    .floor()
+                    .max(1.0) as i32;
+                    state.units[index].take_damage(damage);
+                }
             }
             "consume_status_for_damage" => {
                 let Some(status) = effect.status.clone() else { continue };
@@ -2252,6 +2319,7 @@ pub fn resolve_combat(state: &mut BattleState, library: &Library, mechanics: &Me
         (std::cmp::Reverse(speed), order)
     });
 
+    compute_resonance(state, library);
     // Defense skills are not attacks: they arm the unit for the turn.
     let mut pending: Vec<(usize, SubmittedAction, Option<usize>)> = pending
         .into_iter()
@@ -2447,6 +2515,96 @@ fn ends_encounter(state: &BattleState, unit_index: usize, skill: &SkillId) -> bo
         .ends_encounter_on
         .iter()
         .any(|id| id == skill.as_str())
+}
+
+/// Sin Resonance over the Skills selected on the Dashboard.
+///
+/// "occurs when 2 or more Skills of the same Affinity are selected on the
+/// Dashboard"; Absolute Sin Resonance "occurs when 3 or more Skills of the same
+/// Affinity are selected consecutively"; "Separate chains ... are counted
+/// separately rather than in a sum" and "Absolute Sin Resonance also counts as
+/// regular Sin Resonance".  Source: wiki.gg `Resonance`.
+fn compute_resonance(state: &mut BattleState, library: &Library) {
+    state.resonance.clear();
+    state.a_resonance.clear();
+    let mut table: Vec<(u32, u32)> = Vec::new();
+    for unit in state.units.iter().filter(|u| u.kind.is_sinner()) {
+        for action in state.actions.iter().filter(|a| a.actor == unit.id) {
+            let Some(sin) = sin_of(library, &action.skill) else {
+                continue;
+            };
+            table.push((action.slot, sin.index() as u32));
+        }
+    }
+    // Sorted by slot index (the Dashboard reads left to right).
+    table.sort();
+    for (_, index) in table.iter() {
+        *state
+            .resonance
+            .entry(sin_key_by_index(*index).to_string())
+            .or_insert(0) += 1;
+    }
+    let highest = highest_resonance(state);
+    let longest = state.a_resonance.values().copied().max().unwrap_or(0);
+    for unit in state.units.iter_mut() {
+        unit.resonance_max = highest;
+        unit.a_reson_max = longest;
+    }
+    // Longest run of consecutive equal affinities.
+    let mut run_key: Option<u32> = None;
+    let mut run_len = 0;
+    for (_, index) in table.iter() {
+        if Some(*index) == run_key {
+            run_len += 1;
+        } else {
+            run_key = Some(*index);
+            run_len = 1;
+        }
+        if let Some(key) = run_key {
+            let entry = state
+                .a_resonance
+                .entry(sin_key_by_index(key).to_string())
+                .or_insert(0);
+            *entry = (*entry).max(run_len);
+        }
+    }
+}
+
+/// Affinity of a Skill, looked up in the library (identity skills first, then
+/// enemy skills).
+fn sin_of(library: &Library, skill: &SkillId) -> Option<Sin> {
+    for identity in library.identities.values() {
+        if let Some(record) = identity.skills.iter().find(|s| s.id == skill.0) {
+            return record.sin(Uptie(4));
+        }
+    }
+    for enemy in library.enemies.values() {
+        if let Some(record) = enemy
+            .skills
+            .iter()
+            .find(|s| s.skill_id() == skill.0 || s.display_name() == skill.0)
+        {
+            return record.sin();
+        }
+    }
+    None
+}
+
+fn sin_key_by_index(index: u32) -> &'static str {
+    match index {
+        0 => "wrath",
+        1 => "lust",
+        2 => "sloth",
+        3 => "gluttony",
+        4 => "gloom",
+        5 => "pride",
+        _ => "envy",
+    }
+}
+
+/// Highest Resonance among all affinities this turn.
+pub fn highest_resonance(state: &BattleState) -> i32 {
+    state.resonance.values().copied().max().unwrap_or(0)
 }
 
 /// Classify a submitted action as a defense skill, if it is one.

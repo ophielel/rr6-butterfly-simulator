@@ -83,11 +83,25 @@
    },
    "combat_start": [],
    "note": "Celebration for the Departed",
-   "on_use": [],
+   "on_use": [
+    {
+     "condition": {
+      "component": "potency",
+      "gte": 6,
+      "source": "target",
+      "statuses": [
+       "Sinking",
+       "Butterfly",
+       "Butterfly"
+      ]
+     },
+     "kind": "coin_power",
+     "raw": "If the sum of the target's [Sinking] and both [Butterfly] is 6 or higher, Coin Power +1",
+     "value": 1
+    }
+   ],
    "tags": [],
-   "unmodeled": [
-    "If the sum of the target's [Sinking] and both [Butterfly] is 6 or higher, Coin Power +1"
-   ]
+   "unmodeled": []
   },
   "1011001@3": {
    "attack_end": [],
@@ -132,11 +146,25 @@
    },
    "combat_start": [],
    "note": "Celebration for the Departed",
-   "on_use": [],
+   "on_use": [
+    {
+     "condition": {
+      "component": "potency",
+      "gte": 6,
+      "source": "target",
+      "statuses": [
+       "Sinking",
+       "Butterfly",
+       "Butterfly"
+      ]
+     },
+     "kind": "coin_power",
+     "raw": "If the sum of the target's [Sinking] and both [Butterfly] is 6 or higher, Coin Power +1",
+     "value": 1
+    }
+   ],
    "tags": [],
-   "unmodeled": [
-    "If the sum of the target's [Sinking] and both [Butterfly] is 6 or higher, Coin Power +1"
-   ]
+   "unmodeled": []
   },
   "1011001@4": {
    "attack_end": [],
@@ -191,12 +219,25 @@
      "kind": "clash_power",
      "raw": "At 10+ [The Living & The Departed], Clash Power +1",
      "value": 1
+    },
+    {
+     "condition": {
+      "component": "potency",
+      "gte": 6,
+      "source": "target",
+      "statuses": [
+       "Sinking",
+       "Butterfly",
+       "Butterfly"
+      ]
+     },
+     "kind": "coin_power",
+     "raw": "If the sum of the target's [Sinking] and both [Butterfly] is 6 or higher, Coin Power +1",
+     "value": 1
     }
    ],
    "tags": [],
-   "unmodeled": [
-    "If the sum of the target's [Sinking] and both [Butterfly] is 6 or higher, Coin Power +1"
-   ]
+   "unmodeled": []
   },
   "1011002@1": {
    "attack_end": [],
@@ -239,7 +280,15 @@
    "unmodeled": []
   },
   "1011002@2": {
-   "attack_end": [],
+   "attack_end": [
+    {
+     "kind": "gain_from_resonance",
+     "max": 6,
+     "multiplier": 1,
+     "raw": "[Attack End] Gain (highest Reson.) of [The Living & The Departed] (max 6)",
+     "status": "The Living & The Departed"
+    }
+   ],
    "clash_lose": [],
    "clash_win": [
     {
@@ -281,17 +330,49 @@
    },
    "combat_start": [],
    "note": "Solemn Lament for the Living",
-   "on_use": [],
+   "on_use": [
+    {
+     "condition": {
+      "component": "potency",
+      "gte": 6,
+      "source": "target",
+      "statuses": [
+       "Sinking",
+       "Butterfly",
+       "Butterfly"
+      ]
+     },
+     "kind": "coin_power",
+     "raw": "If the sum of the target's [Sinking] and both [Butterfly] is 6 or higher, Coin Power +1",
+     "value": 1
+    },
+    {
+     "kind": "gain_from_resonance",
+     "max": 12,
+     "multiplier": 2,
+     "raw": "If the said Reson. was an A-Reson., gain (highest Reson. x 2) of [The Living & The Departed] (max 12)",
+     "requires_a_reson": true,
+     "status": "The Living & The Departed"
+    },
+    {
+     "a_reson_gte": 4,
+     "kind": "reload_ammo",
+     "raw": "If the said Reson. was at 4+ A-Reson., [Reload (Solemn Lament)] instead"
+    }
+   ],
    "tags": [],
-   "unmodeled": [
-    "If the said Reson. was an A-Reson., gain (highest Reson. x 2) of [The Living & The Departed] (max 12)",
-    "If the said Reson. was at 4+ A-Reson., [Reload (Solemn Lament)] instead",
-    "If the sum of the target's [Sinking] and both [Butterfly] is 6 or higher, Coin Power +1",
-    "[Attack End] Gain (highest Reson.) of [The Living & The Departed] (max 6)"
-   ]
+   "unmodeled": []
   },
   "1011002@3": {
-   "attack_end": [],
+   "attack_end": [
+    {
+     "kind": "gain_from_resonance",
+     "max": 6,
+     "multiplier": 1,
+     "raw": "[Attack End] Gain (highest Reson.) of [The Living & The Departed] (max 6)",
+     "status": "The Living & The Departed"
+    }
+   ],
    "clash_lose": [],
    "clash_win": [
     {
@@ -333,17 +414,49 @@
    },
    "combat_start": [],
    "note": "Solemn Lament for the Living",
-   "on_use": [],
+   "on_use": [
+    {
+     "condition": {
+      "component": "potency",
+      "gte": 6,
+      "source": "target",
+      "statuses": [
+       "Sinking",
+       "Butterfly",
+       "Butterfly"
+      ]
+     },
+     "kind": "coin_power",
+     "raw": "If the sum of the target's [Sinking] and both [Butterfly] is 6 or higher, Coin Power +1",
+     "value": 1
+    },
+    {
+     "kind": "gain_from_resonance",
+     "max": 12,
+     "multiplier": 2,
+     "raw": "If the said Reson. was an A-Reson., gain (highest Reson. x 2) of [The Living & The Departed] (max 12)",
+     "requires_a_reson": true,
+     "status": "The Living & The Departed"
+    },
+    {
+     "a_reson_gte": 4,
+     "kind": "reload_ammo",
+     "raw": "If the said Reson. was at 4+ A-Reson., [Reload (Solemn Lament)] instead"
+    }
+   ],
    "tags": [],
-   "unmodeled": [
-    "If the said Reson. was an A-Reson., gain (highest Reson. x 2) of [The Living & The Departed] (max 12)",
-    "If the said Reson. was at 4+ A-Reson., [Reload (Solemn Lament)] instead",
-    "If the sum of the target's [Sinking] and both [Butterfly] is 6 or higher, Coin Power +1",
-    "[Attack End] Gain (highest Reson.) of [The Living & The Departed] (max 6)"
-   ]
+   "unmodeled": []
   },
   "1011002@4": {
-   "attack_end": [],
+   "attack_end": [
+    {
+     "kind": "gain_from_resonance",
+     "max": 6,
+     "multiplier": 1,
+     "raw": "[Attack End] Gain (highest Reson.) of [The Living & The Departed] (max 6)",
+     "status": "The Living & The Departed"
+    }
+   ],
    "clash_lose": [],
    "clash_win": [
     {
@@ -395,15 +508,39 @@
      "kind": "clash_power",
      "raw": "At 10+ [The Living & The Departed], Clash Power +1",
      "value": 1
+    },
+    {
+     "condition": {
+      "component": "potency",
+      "source": "target",
+      "statuses": [
+       "Sinking",
+       "Butterfly",
+       "Butterfly"
+      ]
+     },
+     "kind": "coin_power",
+     "max": 2,
+     "per": 6,
+     "raw": "Coin Power +1 for every 6 value of the sum of the target's [Sinking] and both [Butterfly] (max 2)",
+     "value": 1
+    },
+    {
+     "kind": "gain_from_resonance",
+     "max": 12,
+     "multiplier": 2,
+     "raw": "If the said Reson. was an A-Reson., gain (highest Reson. x 2) of [The Living & The Departed] (max 12)",
+     "requires_a_reson": true,
+     "status": "The Living & The Departed"
+    },
+    {
+     "a_reson_gte": 4,
+     "kind": "reload_ammo",
+     "raw": "If the said Reson. was at 4+ A-Reson., [Reload (Solemn Lament)] instead"
     }
    ],
    "tags": [],
-   "unmodeled": [
-    "Coin Power +1 for every 6 value of the sum of the target's [Sinking] and both [Butterfly] (max 2)",
-    "If the said Reson. was an A-Reson., gain (highest Reson. x 2) of [The Living & The Departed] (max 12)",
-    "If the said Reson. was at 4+ A-Reson., [Reload (Solemn Lament)] instead",
-    "[Attack End] Gain (highest Reson.) of [The Living & The Departed] (max 6)"
-   ]
+   "unmodeled": []
   },
   "1011003@1": {
    "attack_end": [
@@ -461,6 +598,23 @@
       "kind": "inflict_equal_ammo_spent",
       "raw": "[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
       "status": "Butterfly"
+     },
+     {
+      "kind": "damage_percent_per_ammo_spent",
+      "raw": "[On Hit] Deal +2% damage for every value of [The Living & The Departed] spent by this Skill",
+      "status": "The Living & The Departed",
+      "step": 2
+     }
+    ],
+    "4": [
+     {
+      "kind": "noop",
+      "raw": "\"All\" = the sum of both The Living and The Departed on target"
+     },
+     {
+      "kind": "gloom_damage_equal_target_status",
+      "raw": "[On Hit] Inflict Gloom Damage equal to \"All\" [Butterfly] on target",
+      "status": "Butterfly"
      }
     ]
    },
@@ -482,11 +636,7 @@
     }
    ],
    "tags": [],
-   "unmodeled": [
-    "\"All\" = the sum of both The Living and The Departed on target",
-    "[On Hit] Deal +2% damage for every value of [The Living & The Departed] spent by this Skill",
-    "[On Hit] Inflict Gloom Damage equal to \"All\" [Butterfly] on target"
-   ]
+   "unmodeled": []
   },
   "1011003@2": {
    "attack_end": [
@@ -544,6 +694,23 @@
       "kind": "inflict_equal_ammo_spent",
       "raw": "[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
       "status": "Butterfly"
+     },
+     {
+      "kind": "damage_percent_per_ammo_spent",
+      "raw": "[On Hit] Deal +2% damage for every value of [The Living & The Departed] spent by this Skill",
+      "status": "The Living & The Departed",
+      "step": 2
+     }
+    ],
+    "4": [
+     {
+      "kind": "noop",
+      "raw": "\"All\" = the sum of both The Living and The Departed on target"
+     },
+     {
+      "kind": "gloom_damage_equal_target_status",
+      "raw": "[On Hit] Inflict Gloom Damage equal to \"All\" [Butterfly] on target",
+      "status": "Butterfly"
      }
     ]
    },
@@ -565,11 +732,7 @@
     }
    ],
    "tags": [],
-   "unmodeled": [
-    "\"All\" = the sum of both The Living and The Departed on target",
-    "[On Hit] Deal +2% damage for every value of [The Living & The Departed] spent by this Skill",
-    "[On Hit] Inflict Gloom Damage equal to \"All\" [Butterfly] on target"
-   ]
+   "unmodeled": []
   },
   "1011003@3": {
    "attack_end": [
@@ -627,6 +790,23 @@
       "kind": "inflict_equal_ammo_spent",
       "raw": "[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
       "status": "Butterfly"
+     },
+     {
+      "kind": "damage_percent_per_ammo_spent",
+      "raw": "[On Hit] Deal +2% damage for every value of [The Living & The Departed] spent by this Skill",
+      "status": "The Living & The Departed",
+      "step": 2
+     }
+    ],
+    "4": [
+     {
+      "kind": "noop",
+      "raw": "\"All\" = the sum of both The Living and The Departed on target"
+     },
+     {
+      "kind": "gloom_damage_equal_target_status",
+      "raw": "[On Hit] Inflict Gloom Damage equal to \"All\" [Butterfly] on target",
+      "status": "Butterfly"
      }
     ]
    },
@@ -648,11 +828,7 @@
     }
    ],
    "tags": [],
-   "unmodeled": [
-    "\"All\" = the sum of both The Living and The Departed on target",
-    "[On Hit] Deal +2% damage for every value of [The Living & The Departed] spent by this Skill",
-    "[On Hit] Inflict Gloom Damage equal to \"All\" [Butterfly] on target"
-   ]
+   "unmodeled": []
   },
   "1011003@4": {
    "attack_end": [
@@ -710,6 +886,23 @@
       "kind": "inflict_equal_ammo_spent",
       "raw": "[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
       "status": "Butterfly"
+     },
+     {
+      "kind": "damage_percent_per_ammo_spent",
+      "raw": "[On Hit] Deal +4% damage for every value of [The Living & The Departed] spent by this Skill",
+      "status": "The Living & The Departed",
+      "step": 4
+     }
+    ],
+    "4": [
+     {
+      "kind": "noop",
+      "raw": "\"All\" = the sum of both The Living and The Departed on target"
+     },
+     {
+      "kind": "gloom_damage_equal_target_status",
+      "raw": "[On Hit] Inflict Gloom Damage equal to \"All\" [Butterfly] on target",
+      "status": "Butterfly"
      }
     ]
    },
@@ -728,15 +921,26 @@
      "raw": "Base Power +1 for every 5 value of [The Living & The Departed] (max 4)",
      "step": 1,
      "value": 0
+    },
+    {
+     "condition": {
+      "component": "potency",
+      "source": "target",
+      "statuses": [
+       "Sinking",
+       "Butterfly",
+       "Butterfly"
+      ]
+     },
+     "kind": "coin_power",
+     "max": 2,
+     "per": 6,
+     "raw": "Coin Power +1 for every 6 value of the sum of the target's [Sinking] and both [Butterfly] (max 2)",
+     "value": 1
     }
    ],
    "tags": [],
-   "unmodeled": [
-    "\"All\" = the sum of both The Living and The Departed on target",
-    "Coin Power +1 for every 6 value of the sum of the target's [Sinking] and both [Butterfly] (max 2)",
-    "[On Hit] Deal +4% damage for every value of [The Living & The Departed] spent by this Skill",
-    "[On Hit] Inflict Gloom Damage equal to \"All\" [Butterfly] on target"
-   ]
+   "unmodeled": []
   },
   "1011004@1": {
    "attack_end": [],
@@ -799,14 +1003,25 @@
      "kind": "reload_ammo",
      "per_turn": 1,
      "raw": "[Combat Start] [Reload (Solemn Lament)] (once per turn)"
+    },
+    {
+     "condition": {
+      "source": "target",
+      "statuses": [
+       "Butterfly",
+       "Butterfly"
+      ]
+     },
+     "kind": "shield_percent_hp",
+     "max": 20,
+     "percent": 1,
+     "raw": "[Combat Start] Gain Shield equal to (the sum of both [Butterfly] on the selected target)% HP (max 20% per turn)"
     }
    ],
    "note": "FromTheCoffinAButterflyTakesFlight",
    "on_use": [],
    "tags": [],
-   "unmodeled": [
-    "[Combat Start] Gain Shield equal to (the sum of both [Butterfly] on the selected target)% HP (max 20% per turn)"
-   ]
+   "unmodeled": []
   },
   "1041401@1": {
    "attack_end": [],

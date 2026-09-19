@@ -424,6 +424,12 @@ pub struct Unit {
     /// (defense-skill passive, active for the turn).
     #[serde(default)]
     pub retaliate_on_hit: Vec<RetaliateOnHit>,
+    /// Highest Sin Resonance / Absolute Sin Resonance for this turn (copied from
+    /// the battle state so conditions can read it).
+    #[serde(default)]
+    pub resonance_max: i32,
+    #[serde(default)]
+    pub a_reson_max: i32,
 }
 
 /// A retaliation registered by a defense skill for the current turn.
@@ -660,6 +666,14 @@ pub struct BattleState {
     #[serde(default)]
     pub defenses: Vec<crate::battle::ActiveDefense>,
     pub ego_resources: BTreeMap<String, i32>,
+    /// Sin Resonance for the current turn: sin key -> number of Skills of that
+    /// affinity selected on the Dashboard.  Source: wiki.gg `Resonance`.
+    #[serde(default)]
+    pub resonance: BTreeMap<String, i32>,
+    /// Absolute Sin Resonance: sin key -> longest run of consecutive Skills of
+    /// that affinity on the Dashboard (3+ is A-Reson).
+    #[serde(default)]
+    pub a_resonance: BTreeMap<String, i32>,
     /// Clashes fought between two units, keyed `"actor|target"`; the Imago's
     /// "Causality that Threads ..." passive reads it.
     #[serde(default)]
