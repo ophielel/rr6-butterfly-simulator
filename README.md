@@ -29,13 +29,36 @@ python/lcb/    environment wrapper + search (random, greedy, beam)
 docs/          MECHANICS.md (rule -> source), STATUS.md, DATA.md, COVERAGE.md
 ```
 
+The data pipeline is `tools/build_all.py`, which runs, in order:
+`build_library.py` (identities / E.G.O / enemies / statuses), `extract_effects.py`
+(skill clauses), `extract_passives.py` (identity and enemy Passives),
+`extract_panic.py` (the wiki's Panic Types) and `extract_status_effects.py`
+(the behaviour written in each status's own text), then `report.py`
+(`docs/COVERAGE.md`, `docs/DATA_REPORT.md`).
+
+## Rules layer
+
+Beyond the damage / clash / deck core, the engine runs, all sourced in
+`docs/MECHANICS.md`:
+
+| layer | data | what the engine does |
+|-------|------|----------------------|
+| Skills | `data/mechanics/effects.json` | per-phase clauses (Combat Start, On Use, Before Attack, On Hit, Heads Hit, On Kill, On Evade, Attack End, Turn Start/End), Coin reuse, Attack Weight |
+| Passives | `data/passives/passives.json` | Combat / Support Passives at their phases plus continuous damage modifiers |
+| Statuses | `data/mechanics/status_effects.json` | each status's Turn Start / Turn End upkeep, continuous modifiers, Clash-end and on-hit riders |
+| Sanity | `data/mechanics/panic_types.json` | SP in [-45, 45], Low Morale (-30), Panic / forced E.G.O Corrosion (-45) and each Panic Type's clauses |
+
+Clauses that are not modelled are never dropped: they are listed by
+`Simulator::strict_blockers()` (Skills) and `Simulator::unknown_rules_owned()`
+/ `passive_gaps()` / `status_gaps()` (everything else), and tabulated in
+`docs/COVERAGE.md`.  Skills are strict-gated; Passives and statuses are
+reported until their remaining clauses are modelled.
+
 ## Build and test
 
 ```bash
 # 1. data library (cached; only fetches what is missing)
-python3 tools/build_library.py
-python3 tools/extract_effects.py
-python3 tools/report.py
+python3 tools/build_all.py --skip-fetch   # or drop the flag to refresh caches
 
 # 2. Rust core + tests (Windows toolchain via WSL, or native cargo)
 cd sim && cargo test && cargo run -q -p lcb-cli -- inspect
