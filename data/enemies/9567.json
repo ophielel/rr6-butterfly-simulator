@@ -107,7 +107,7 @@
       "coins": 1,
       "attack_weight": 1,
       "offense_level_mod": 3,
-      "on_use_text": "[On Use]\n- Clash Power +1 for every 6 ([Burn] + [Bleed]) on target (max 6)\n- Clash Power +1 for every 6 [Poise] on self (max 3)\n[Clash Lose] Gain [2 [Power Down] and 2 [Damage Down]]",
+      "on_use_text": "[On Use]\n- Clash Power +1 for every 6 ([Burn] + [Bleed]) on target (max 6)\n- Clash Power +1 for every 6 [Poise] on self (max 3)\n[Clash Lose] Gain 2 [Power Down] and 2 [Damage Down]",
       "coin_texts": [
         "[Unbreakable Coin]\nReuse this Coin once for every 33% missing HP (max 2 times)\n[On Hit] Inflict 1 [Burn]\n[On Hit] Inflict 1 [Bleed]\n[On Hit] Gain 1 [Poise]",
         "",
@@ -136,7 +136,7 @@
       "on_use_text": "Can Clash with this Skill regardless of Speed\n[On Use]\n- Clash Power +1 for every 6 [Burn] on target (max 6)\n- At less than 66% HP, convert the second Coin into [Unbreakable Coin]\n- At less than 33% HP, convert all Coins into [Unbreakable Coin]s\n[Clash Lose] Target cannot be Staggered until this Skill's Attack End",
       "coin_texts": [
         "[On Hit] Inflict 1 [Burn] and +1 [Burn] Count",
-        "[On Hit without Cracking] [Activate [Burn] on target once]. Target loses 1 [Burn] Count",
+        "[On Hit without Cracking] Activate [Burn] on target once. Target loses 1 [Burn] Count",
         "",
         "",
         "",
@@ -159,11 +159,11 @@
       "coins": 3,
       "attack_weight": 3,
       "offense_level_mod": 4,
-      "on_use_text": "Can Clash with this Skill regardless of Speed\n[On Use]\n- Clash Power +1 for every 6 [Burn] on the main target (max 6)\n- [Deal +([In the Past] x 2)% damage] (max 60%)\n- At less than 66% HP, convert the second Coin into [Unbreakable Coin]\n- At less than 33% HP, convert all Coins into [Unbreakable Coin]s\n[Clash Lose] Target cannot be Staggered until this Skill's Attack End",
+      "on_use_text": "Can Clash with this Skill regardless of Speed\n[On Use]\n- Clash Power +1 for every 6 [Burn] on the main target (max 6)\n- Deal +([In the Past] x 2)% damage (max 60%)\n- At less than 66% HP, convert the second Coin into [Unbreakable Coin]\n- At less than 33% HP, convert all Coins into [Unbreakable Coin]s\n[Clash Lose] Target cannot be Staggered until this Skill's Attack End",
       "coin_texts": [
         "[On Hit] Inflict +2 [Burn] Count",
         "[On Hit] Inflict 3 [Burn]",
-        "[Unbreakable Coin]\n[On Hit without Cracking] [Activate [Burn] on target 2 times]. Target loses 2 [Burn] Count\n[Hit after Clash Lose] [At less than 33% HP, activate [Burn] on the main target once]. Target loses 1 [Burn] Count",
+        "[Unbreakable Coin]\n[On Hit without Cracking] Activate [Burn] on target 2 times. Target loses 2 [Burn] Count\n[Hit after Clash Lose] At less than 33% HP, activate [Burn] on the main target once. Target loses 1 [Burn] Count",
         "",
         "",
         "",
@@ -185,12 +185,12 @@
       "coins": 4,
       "attack_weight": 7,
       "offense_level_mod": 6,
-      "on_use_text": "Can Clash with this Skill regardless of Speed\n[On Use]\n- Final Power +1 for every 6 [Burn] on the main target (max 6)\n- [Deal +([In the Past] x 4)% damage] (max 120%)\n[Clash Win] Gain 5 [In the Past]\n[Clash Lose]\n- Halve [In the Past] (rounded down)\n- Gain 2 [Damage Down] and 4 [Paralyze]\n- Target cannot be Staggered until this Skill's Attack End",
+      "on_use_text": "Can Clash with this Skill regardless of Speed\n[On Use]\n- Final Power +1 for every 6 [Burn] on the main target (max 6)\n- Deal +([In the Past] x 4)% damage (max 120%)\n[Clash Win] Gain 5 [In the Past]\n[Clash Lose]\n- Halve [In the Past] (rounded down)\n- Gain 2 [Damage Down] and 4 [Paralyze]\n- Target cannot be Staggered until this Skill's Attack End",
       "coin_texts": [
         "[Unbreakable Coin]\n[On Hit] Inflict 1 [Burn] and +1 [Burn] Count",
         "[Unbreakable Coin]\n[On Hit] Inflict 1 [Burn] and +1 [Burn] Count",
-        "[Unbreakable Coin]\n[On Hit without Cracking] [Activate [Burn] on target once]. Target loses 1 [Burn] Count",
-        "[Unbreakable Coin]\n[On Hit without Cracking] [Activate [Burn] on target 2 times]. Target loses 2 [Burn] Count\n[Hit after Clash Lose] [At less than 33% HP, activate [Burn] on the main target once]. Target loses 1 [Burn] Count",
+        "[Unbreakable Coin]\n[On Hit without Cracking] Activate [Burn] on target once. Target loses 1 [Burn] Count",
+        "[Unbreakable Coin]\n[On Hit without Cracking] Activate [Burn] on target 2 times. Target loses 2 [Burn] Count\n[Hit after Clash Lose] At less than 33% HP, activate [Burn] on the main target once. Target loses 1 [Burn] Count",
         "",
         "",
         "",
@@ -214,7 +214,7 @@
       "on_use_text": "Can Clash with this Skill regardless of Speed\n[On Use]\n- Clash Power +1 and deal +10% damage for every 6 [Poise] on self (max 6 and 60%, respectively)\n- At less than 66% HP, convert the second Coin into [Unbreakable Coin]\n- At less than 33% HP, convert all Coins into [Unbreakable Coin]s\n[Before Attack] Gain 2 [Poise] and +2 [Poise] Count\n[Clash Lose] Target cannot be Staggered until this Skill's Attack End",
       "coin_texts": [
         "[On Hit] Gain 1 [Poise] and +1 [Poise] Count",
-        "[On Hit without Cracking] [Deal ([Poise] on self / 2) Pride damage on target] and lose 1 [Poise] Count (rounded down)",
+        "[On Hit without Cracking] Deal ([Poise] on self / 2) Pride damage on target and lose 1 [Poise] Count (rounded down)",
         "",
         "",
         "",
@@ -237,12 +237,12 @@
       "coins": 4,
       "attack_weight": 1,
       "offense_level_mod": 4,
-      "on_use_text": "Can Clash with this Skill regardless of Speed\n[On Use]\n- Clash Power +1 and deal +10% damage for every 6 [Poise] on self (max 6 and 60%, respectively)\n- [Deal +([In the Present] x 2)% damage] (max 60%)\n- At less than 66% HP, convert the second Coin into [Unbreakable Coin]\n- At less than 33% HP, convert all Coins into [Unbreakable Coin]s\n[Before Attack] Gain 3 [Poise] and +2 [Poise] Count\n[Clash Lose] Target cannot be Staggered until this Skill's Attack End",
+      "on_use_text": "Can Clash with this Skill regardless of Speed\n[On Use]\n- Clash Power +1 and deal +10% damage for every 6 [Poise] on self (max 6 and 60%, respectively)\n- Deal +([In the Present] x 2)% damage (max 60%)\n- At less than 66% HP, convert the second Coin into [Unbreakable Coin]\n- At less than 33% HP, convert all Coins into [Unbreakable Coin]s\n[Before Attack] Gain 3 [Poise] and +2 [Poise] Count\n[Clash Lose] Target cannot be Staggered until this Skill's Attack End",
       "coin_texts": [
         "[On Hit] Gain +1 [Poise] Count",
         "[On Hit] Gain 1 [Poise]",
-        "[Unbreakable Coin]\n[On Hit without Cracking] [Deal +([Poise] on self)% damage] (max 50%)\n[Hit after Clash Lose] [At less than 33% HP, deal +([Poise] Count on self)% damage] (max 30%)",
-        "[Unbreakable Coin]\n[On Hit without Cracking] [Deal +([Poise] on self x 2)% damage] (max 100%)\n[Hit after Clash Lose] [At less than 33% HP, deal +([Poise] Count on self)% damage] (max 50%)",
+        "[Unbreakable Coin]\n[On Hit without Cracking] Deal +([Poise] on self)% damage (max 50%)\n[Hit after Clash Lose] At less than 33% HP, deal +([Poise] Count on self)% damage (max 30%)",
+        "[Unbreakable Coin]\n[On Hit without Cracking] Deal +([Poise] on self x 2)% damage (max 100%)\n[Hit after Clash Lose] At less than 33% HP, deal +([Poise] Count on self)% damage (max 50%)",
         "",
         "",
         "",
@@ -263,9 +263,9 @@
       "coins": 1,
       "attack_weight": 1,
       "offense_level_mod": 6,
-      "on_use_text": "Can Clash with this Skill regardless of Speed\n[On Use]\n- Final Power +1 and deal +20% damage for every 6 [Poise] on self (max 6 and 120%, respectively)\n- 4 [Poise] and +4 [Poise] Count\n- [Deal +([In the Present] x 4)% damage (max 120%)]\n[Before Attack] If this unit has 20+ [Poise] Potency, consume up to 20 surplus [Poise] Potency past 20 to deal +([Poise] consumed x 5)% damage (max 100%)\n- On Clash Lose, this effect does not activate\n[Clash Win] Gain 5 [In the Present]\n[Clash Lose]\n- Halve [In the Present] (rounded down)\n- Gain 2 [Damage Down] and 1 [Paralyze]\n- Target cannot be Staggered until this Skill's Attack End\n[Attack End] If target is killed, Reuse this Skill on the target that has the highest HP (once per turn)\n- On Clash Lose, this effect does not activate",
+      "on_use_text": "Can Clash with this Skill regardless of Speed\n[On Use]\n- Final Power +1 and deal +20% damage for every 6 [Poise] on self (max 6 and 120%, respectively)\n- 4 [Poise] and +4 [Poise] Count\n- Deal +([In the Present] x 4)% damage (max 120%)\n[Before Attack] If this unit has 20+ [Poise] Potency, consume up to 20 surplus [Poise] Potency past 20 to deal +([Poise] consumed x 5)% damage (max 100%)\n- On Clash Lose, this effect does not activate\n[Clash Win] Gain 5 [In the Present]\n[Clash Lose]\n- Halve [In the Present] (rounded down)\n- Gain 2 [Damage Down] and 1 [Paralyze]\n- Target cannot be Staggered until this Skill's Attack End\n[Attack End] If target is killed, Reuse this Skill on the target that has the highest HP (once per turn)\n- On Clash Lose, this effect does not activate",
       "coin_texts": [
-        "[Unbreakable Coin]\n[If target's Pierce Resist. is below \"Weak\" (1.5), treat is as Weak (1.5)] (max 50%)\n- On Clash Lose, this effect does not activate\n[Hit after Clash Lose] [At less than 33% HP, deal +(50% of this Coin's damage)% bonus Pierce damage]",
+        "[Unbreakable Coin]\nIf target's Pierce Resist. is below \"Weak\" (1.5), treat is as Weak (1.5) (max 50%)\n- On Clash Lose, this effect does not activate\n[Hit after Clash Lose] At less than 33% HP, deal +(50% of this Coin's damage)% bonus Pierce damage",
         "",
         "",
         "",
@@ -292,7 +292,7 @@
       "on_use_text": "Can Clash with this Skill regardless of Speed\n[On Use]\n- Clash Power +1 for every 6 [Bleed] on target (max 6)\n- At less than 66% HP, convert the second Coin into [Unbreakable Coin]\n- At less than 33% HP, convert all Coins into [Unbreakable Coin]s\n[Clash Lose] Target cannot be Staggered until this Skill's Attack End",
       "coin_texts": [
         "[On Hit] Inflict 1 [Bleed] and +1 [Bleed] Count",
-        "[On Hit without Cracking] [Activate [Bleed] on target once]. Target loses 1 [Bleed] Count",
+        "[On Hit without Cracking] Activate [Bleed] on target once. Target loses 1 [Bleed] Count",
         "",
         "",
         "",
@@ -315,10 +315,10 @@
       "coins": 2,
       "attack_weight": 3,
       "offense_level_mod": 4,
-      "on_use_text": "Can Clash with this Skill regardless of Speed\nWhile Clashing with this Skill, [the main target's [Bleed] Count does not drop below 1]\n[On Use]\n- Clash Power +1 for every 6 [Bleed] on the main target (max 6)\n- [Deal +([In the Future] x 2)% damage] (max 60%)\n- At less than 66% HP, convert the second Coin into [Unbreakable Coin]\n- At less than 33% HP, convert all Coins into [Unbreakable Coin]s\n[Clash Lose] Target cannot be Staggered until this Skill's Attack End",
+      "on_use_text": "Can Clash with this Skill regardless of Speed\nWhile Clashing with this Skill, the main target's [Bleed] Count does not drop below 1\n[On Use]\n- Clash Power +1 for every 6 [Bleed] on the main target (max 6)\n- Deal +([In the Future] x 2)% damage (max 60%)\n- At less than 66% HP, convert the second Coin into [Unbreakable Coin]\n- At less than 33% HP, convert all Coins into [Unbreakable Coin]s\n[Clash Lose] Target cannot be Staggered until this Skill's Attack End",
       "coin_texts": [
         "[On Hit] Inflict 2 [Bleed] and +2 [Bleed] Count",
-        "[On Hit without Cracking] [Activate [Bleed] on target 2 times]. Target loses 2 [Bleed] Count\n[Hit after Clash Lose] [At less than 33% HP, activate [Bleed] on the main target once]. Target loses 1 [Bleed] Count",
+        "[On Hit without Cracking] Activate [Bleed] on target 2 times. Target loses 2 [Bleed] Count\n[Hit after Clash Lose] At less than 33% HP, activate [Bleed] on the main target once. Target loses 1 [Bleed] Count",
         "",
         "",
         "",
@@ -341,10 +341,10 @@
       "coins": 2,
       "attack_weight": 5,
       "offense_level_mod": 6,
-      "on_use_text": "Can Clash with this Skill regardless of Speed\nWhile Clashing with this Skill, [the main target's [Bleed] Count does not drop below 1]\n[On Use]\n- Final Power +1 for every 6 [Bleed] on the main target (max 6)\n- [Deal +([In the Future] x 4)% damage] (max 120%)\n[Clash Win] Gain 5 [In the Future]\n[Clash Lose]\n- Halve [In the Future] (rounded down)\n- Gain 2 [Damage Down] and 2 [Paralyze]\n- Target cannot be Staggered until this Skill's Attack End",
+      "on_use_text": "Can Clash with this Skill regardless of Speed\nWhile Clashing with this Skill, the main target's [Bleed] Count does not drop below 1\n[On Use]\n- Final Power +1 for every 6 [Bleed] on the main target (max 6)\n- Deal +([In the Future] x 4)% damage (max 120%)\n[Clash Win] Gain 5 [In the Future]\n[Clash Lose]\n- Halve [In the Future] (rounded down)\n- Gain 2 [Damage Down] and 2 [Paralyze]\n- Target cannot be Staggered until this Skill's Attack End",
       "coin_texts": [
         "[Unbreakable Coin]\n[On Hit] Inflict 1 [Bleed] and +1 [Bleed] Count",
-        "[Unbreakable Coin]\n[On Hit] Inflict 2 [Burn] and +3 [Burn] Count\n[On Hit without Cracking] [Activate [Bleed] on target 2 times]. Target loses 2 [Bleed] Count\n[Hit after Clash Lose] [At less than 33% HP, activate [Bleed] on target once]. Target loses 1 [Bleed] Count",
+        "[Unbreakable Coin]\n[On Hit] Inflict 2 [Burn] and +3 [Burn] Count\n[On Hit without Cracking] Activate [Bleed] on target 2 times. Target loses 2 [Bleed] Count\n[Hit after Clash Lose] At less than 33% HP, activate [Bleed] on target once. Target loses 1 [Bleed] Count",
         "",
         "",
         "",
@@ -359,12 +359,12 @@
     {
       "name": "Moment of Entangled Lives",
       "hint": 3,
-      "text": "Turn Start: [Activate the highest-Stacked state of time] between [In the Past], [In the Present], and [In the Future] and use a special Skill\n- If multiple states of time share the highest Stack, the currently active state of time does not change\n- Inactive states of time become [In the Past (Deactivated)], [In the Present (Deactivated)], or [In the Future (Deactivated)], respectively\n- When the [currently active state of time changes], gain 1 [Temporal Disjunction]\n[Every time Illusory Butterfly of Entangled Lives::The Past / The Present / The Future are hit as main targets], Butterfly of Entangled Lives::Imago loses [In the Past] / [In the Present] / [In the Future] Stack\n[Higher [In the Past] / [In the Present] / [In the Future] Stacks] lead to Butterfly of Entangled Lives::Imago's Skill Power and damage output becoming [greatly enhanced], and [greatly increase the amount of status effects it inflicts or gains]"
+      "text": "Turn Start: Activate the highest-Stacked state of time between [In the Past], [In the Present], and [In the Future] and use a special Skill\n- If multiple states of time share the highest Stack, the currently active state of time does not change\n- Inactive states of time become [In the Past (Deactivated)], [In the Present (Deactivated)], or [In the Future (Deactivated)], respectively\n- When the currently active state of time changes, gain 1 [Temporal Disjunction]\nEvery time Illusory Butterfly of Entangled Lives::The Past / The Present / The Future are hit as main targets, Butterfly of Entangled Lives::Imago loses [In the Past] / [In the Present] / [In the Future] Stack\nHigher [In the Past] / [In the Present] / [In the Future] Stacks lead to Butterfly of Entangled Lives::Imago's Skill Power and damage output becoming greatly enhanced, and greatly increase the amount of status effects it inflicts or gains"
     },
     {
       "name": "Causality that Threads the Past, the Present, and the Future [<b>三世因果</b>]",
       "hint": null,
-      "text": "At 10+ Clashes against the same target, randomly gain or lose Clash Power by (Clash Count / 10) in a Clash (rounded down)\nEncounter Start:\n- Begin Encounter with the same HP as Butterfly of Entangled Lives::The Pupa (excluding Shield)\n- Gain 10 Stacks each of [In the Past] / [In the Present] / [In the Future]\nAt less than 66%/33% HP, gain new Slot patterns\n- [When this unit's HP drops below 66%/33%] for the first time in this Encounter, [gain 10 Stacks each of [In the Past], [In the Present], and [In the Future]] next turn"
+      "text": "At 10+ Clashes against the same target, randomly gain or lose Clash Power by (Clash Count / 10) in a Clash (rounded down)\nEncounter Start:\n- Begin Encounter with the same HP as Butterfly of Entangled Lives::The Pupa (excluding Shield)\n- Gain 10 Stacks each of [In the Past] / [In the Present] / [In the Future]\nAt less than 66%/33% HP, gain new Slot patterns\n- When this unit's HP drops below 66%/33% for the first time in this Encounter, gain 10 Stacks each of [In the Past], [In the Present], and [In the Future] next turn"
     },
     {
       "name": "Past [<b>過去</b>]",

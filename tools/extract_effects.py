@@ -89,13 +89,13 @@ PATTERNS = [
     (re.compile(rf"^Clash Power \+{N} for every {N} {ST} on (self|target|the main target) \(max {N}[^)]*\)$"),
      lambda m: {"kind": "clash_power", "value": 0, "step": int(m.group(1)), "per": int(m.group(2)),
                 "max": int(m.group(5)),
-                "condition": {"source": "target" if m.group(3) in ("target", "the main target") else "self",
-                              "status": m.group(3 + 1), "component": "potency"}}),
+                "condition": {"source": "target" if m.group(4) in ("target", "the main target") else "self",
+                              "status": m.group(3), "component": "potency"}}),
     (re.compile(rf"^Final Power \+{N} for every {N} {ST} on (self|target|the main target) \(max {N}[^)]*\)$"),
      lambda m: {"kind": "base_power", "value": 0, "step": int(m.group(1)), "per": int(m.group(2)),
                 "max": int(m.group(5)),
-                "condition": {"source": "target" if m.group(3) in ("target", "the main target") else "self",
-                              "status": m.group(4), "component": "potency"}}),
+                "condition": {"source": "target" if m.group(4) in ("target", "the main target") else "self",
+                              "status": m.group(3), "component": "potency"}}),
     (re.compile(rf"^Coin Power \+{N} for every {N} value of the sum of the target's {ST} and (?:both )?{ST} \(max {N}\)$"),
      lambda m: {"kind": "coin_power", "value": int(m.group(1)), "per": int(m.group(2)),
                 "max": int(m.group(5)),
@@ -113,7 +113,7 @@ PATTERNS = [
     (re.compile(rf"^Deal \+{N}% damage for every {N} {ST} on (self|target) \(max {N}%\)$"),
      lambda m: {"kind": "damage_percent", "value": 0, "step": int(m.group(1)), "per": int(m.group(2)),
                 "max": int(m.group(5)),
-                "condition": {"source": m.group(3), "status": m.group(4), "component": "potency"}}),
+                "condition": {"source": m.group(4), "status": m.group(3), "component": "potency"}}),
     (re.compile(r"^At less than (\d+)% HP, convert (the final Coin|the second Coin|all Coins) into \[Unbreakable Coin\]s?$"),
      lambda m: {"kind": "unbreakable_coin", "which": m.group(2), "hp_below_percent": int(m.group(1))}),
     (re.compile(r"^Reuse this Coin once for every (\d+)% missing HP \(max (\d+) times\)$"),
@@ -247,6 +247,30 @@ PATTERNS = [
     (re.compile(r"^Deal \+\(Stack consumed x ([\d.]+)\)% damage$"),
      lambda m: {"kind": "damage_percent_per_consumed_status",
                 "step": int(float(m.group(1)) * 10)}),
+    # Damage scaling off the user's own Stacks / Potency / Count.
+    (re.compile(rf"^Deal \+\({ST} x {N}\)% damage \(max {N}%\)$"),
+     lambda m: {"kind": "damage_percent", "value": 0, "step": int(m.group(2)), "per": 1,
+                "max": int(m.group(3)),
+                "condition": {"source": "self", "status": m.group(1), "component": "stack"}}),
+    (re.compile(rf"^Deal \+\({ST} on self\)% damage \(max {N}%\)$"),
+     lambda m: {"kind": "damage_percent", "value": 0, "step": 1, "per": 1,
+                "max": int(m.group(2)),
+                "condition": {"source": "self", "status": m.group(1), "component": "potency"}}),
+    (re.compile(rf"^Deal \+\({ST} Count on self\)% damage \(max {N}%\)$"),
+     lambda m: {"kind": "damage_percent", "value": 0, "step": 1, "per": 1,
+                "max": int(m.group(2)),
+                "condition": {"source": "self", "status": m.group(1), "component": "count"}}),
+    (re.compile(rf"^Deal \+\({ST} on self x {N}\)% damage \(max {N}%\)$"),
+     lambda m: {"kind": "damage_percent", "value": 0, "step": int(m.group(2)), "per": 1,
+                "max": int(m.group(3)),
+                "condition": {"source": "self", "status": m.group(1), "component": "potency"}}),
+    (re.compile(rf"^Halve {ST} \(rounded down\)$"),
+     lambda m: {"kind": "halve_status", "status": m.group(1)}),
+    (re.compile(rf"^While Clashing with this Skill, the main target's {ST} Count does not drop below 1$"),
+     lambda m: {"kind": "tag", "tag": format_status_count_floor(m.group(1))}),
+    (re.compile(rf"^Deal \({ST} on self / {N}\) (Wrath|Lust|Sloth|Gluttony|Gloom|Pride|Envy) damage on target and lose {N} {ST} Count$"),
+     lambda m: {"kind": "damage_from_status_divisor", "status": m.group(1),
+                "value": int(m.group(2)), "sin": m.group(3).lower(), "count": int(m.group(3))}),
     (re.compile(r"^This Attack Skill deals 0 damage$"),
      lambda m: {"kind": "zero_damage"}),
     (re.compile(r"^Does not take damage for this turn$"),
@@ -412,6 +436,10 @@ TAG_LINES = {
     "[unclashable]": "unclashable",
     "[target fixed]": "target_fixed",
 }
+
+
+def format_status_count_floor(status: str) -> str:
+    return f"status_count_floor:{status}"
 
 
 def clean_line(line: str) -> str:

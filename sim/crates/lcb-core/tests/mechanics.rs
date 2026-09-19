@@ -1041,18 +1041,11 @@ fn ammo_planned_and_spent_scale_the_skill() {
     state.units[0]
         .statuses
         .add_potency("The Living & The Departed", 10);
-    let mut notes = Vec::new();
-    let mut ctx = battle::UseContext::default();
-    battle::apply_effects_for_test(
-        &mut state,
-        &use_.mechanics.on_use.clone(),
-        0,
-        Some(1),
-        &mut notes,
-        &mut ctx,
-    );
-    assert_eq!(ctx.ammo_planned, 3, "three ammo are about to be spent");
-    assert_eq!(ctx.base_power_bonus, 3, "+1 per planned ammo");
+    // [On Use] effects run through the engine's own preparation step so that
+    // "about to be spent" is computed from this use's coin effects.
+    battle::prepare_use_for_test(&mut state, &sim.library, &sim.mechanics, 0, Some(1), &mut use_);
+    assert_eq!(use_.ctx.ammo_planned, 3, "three ammo are about to be spent");
+    assert_eq!(use_.ctx.base_power_bonus, 3, "+1 per planned ammo");
 }
 
 /// Critical modifiers: target SP below zero raises the crit chance, and

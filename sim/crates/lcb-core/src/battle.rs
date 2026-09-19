@@ -49,6 +49,9 @@ impl CoinRuntime {
 /// Values computed once per skill use from the skill's `[On Use]` effects.
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
 pub struct UseContext {
+    /// Affinity of the skill that produced this context.
+    #[serde(default)]
+    pub sin: Sin,
     pub clash_power_bonus: i32,
     pub coin_power_bonus: i32,
     pub base_power_bonus: i32,
@@ -78,6 +81,10 @@ pub struct UseContext {
     /// "Lower user's Stagger Threshold by N% of damage dealt".
     #[serde(default)]
     pub lower_stagger_percent: i32,
+    /// "While Clashing with this Skill, the main target's [X] Count does not
+    /// drop below 1" - statuses protected during this use.
+    #[serde(default)]
+    pub status_count_floor: Vec<String>,
     /// `Plus Coin Boost` / `Minus Coin Drop` for this use.
     #[serde(default)]
     pub coin_power_boost: i32,
@@ -905,6 +912,37 @@ pub fn apply_effects(
                 let count = effect.value.unwrap_or(1);
                 discard_lowest_rank(state, ctx.actor_index, count);
             }
+            "halve_status" => {
+                let Some(status) = effect.status.clone() else { continue };
+                let unit = &mut state.units[ctx.actor_index];
+                let stack = unit.statuses.stack(&status);
+                unit.statuses.set_stack(&status, stack / 2);
+            }
+            "damage_from_status_divisor" => {
+                // "Deal ([Poise] on self / 2) Pride damage on target"
+                let Some(status) = effect.status.clone() else { continue };
+                let divisor = effect.value.unwrap_or(1).max(1);
+                let amount = state.units[ctx.actor_index].statuses.potency(&status) / divisor;
+                if amount > 0 {
+                    if let Some(index) = ctx.target_index {
+                        let sin = effect
+                            .sin
+                            .as_deref()
+                            .and_then(Sin::parse)
+                            .unwrap_or(use_ctx.sin);
+                        let resist = state.units[index].resist_sin(sin);
+                        let damage = (amount as f64
+                            * (1.0 + crate::damage::resistance_modifier(resist)))
+                        .floor()
+                        .max(1.0) as i32;
+                        state.units[index].take_damage(damage);
+                    }
+                }
+                if let Some(count) = effect.count {
+                    let unit = &mut state.units[ctx.actor_index];
+                    unit.statuses.add_count(&status, -count);
+                }
+            }
             "base_power_per_ammo_planned" => {
                 let step = effect.step.unwrap_or(0);
                 use_ctx.base_power_bonus += step * use_ctx.ammo_planned;
@@ -1588,12 +1626,21 @@ fn break_coin(coin: &mut CoinRuntime, _unit_index: usize) {
 
 /// Bleed ticks when a unit tosses an attack coin (wiki.gg `Status Effects`).
 fn tick_bleed(state: &mut BattleState, unit_index: usize) {
+    tick_bleed_with_floor(state, unit_index, false)
+}
+
+/// Bleed ticks when an attack coin is tossed.  `keep_count` honours a skill's
+/// "the main target's Bleed Count does not drop below 1" clause.
+fn tick_bleed_with_floor(state: &mut BattleState, unit_index: usize, keep_count: bool) {
     let potency = state.units[unit_index].statuses.potency("Bleed");
     if potency <= 0 {
         return;
     }
     let (_, hp_lost) = state.units[unit_index].take_damage(potency);
-    state.units[unit_index].statuses.add_count("Bleed", -1);
+    let count = state.units[unit_index].statuses.count("Bleed");
+    if !(keep_count && count <= 1) {
+        state.units[unit_index].statuses.add_count("Bleed", -1);
+    }
     // Future passive: "Whenever Bleed activates on self or on Sinners, heal HP
     // equal to the said Bleed damage."
     if let Some(healer) = time_passives::bleed_lifesteal_target(state) {
@@ -1625,7 +1672,8 @@ pub fn one_sided_attack(
     loop {
         let Some(coin_index) = order.first().copied() else { break };
         order.remove(0);
-        tick_bleed(state, attacker_index);
+        let keep_bleed = use_.ctx.status_count_floor.iter().any(|s| s == "Bleed");
+        tick_bleed_with_floor(state, attacker_index, keep_bleed);
         if use_.coins[coin_index].heads.is_none() {
             toss_single(state, attacker_index, use_, coin_index);
         }
@@ -2904,6 +2952,12 @@ fn prepare_use(
                 .sum::<i32>();
         use_.ctx.ammo_planned = planned;
     }
+    for tag in use_.mechanics.tags.clone() {
+        if let Some(status) = tag.strip_prefix("status_count_floor:") {
+            use_.ctx.status_count_floor.push(status.to_string());
+        }
+    }
+    use_.ctx.sin = use_.sin;
     // `Plus Coin Boost` / `Minus Coin Drop` are read when the skill is used.
     {
         let statuses = &state.units[unit_index].statuses;
@@ -3103,6 +3157,18 @@ pub fn apply_effects_for_test(
         mechanics_note: notes,
     };
     apply_effects(state, effects, &mut ctx, use_ctx);
+}
+
+#[doc(hidden)]
+pub fn prepare_use_for_test(
+    state: &mut BattleState,
+    library: &Library,
+    mechanics: &MechanicsBook,
+    unit_index: usize,
+    target_index: Option<usize>,
+    use_: &mut SkillUse,
+) {
+    prepare_use(state, library, mechanics, unit_index, target_index, use_.slot, use_);
 }
 
 #[doc(hidden)]

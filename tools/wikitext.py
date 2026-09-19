@@ -189,8 +189,12 @@ def strip_markup(text: str) -> str:
             tpl = parse_template(text[i:j])
             if tpl.name in ("StatusEffect", "StatusEffectIcon"):
                 out.append("[" + tpl.get("0") + "]")
-            elif tpl.name in ("SkillCon", "SkillHint", "Keyword"):
+            elif tpl.name in ("SkillCon", "Keyword"):
                 out.append("[" + strip_markup(tpl.get("0")) + "]")
+            elif tpl.name == "SkillHint":
+                # Keep the inner text (it already carries [Status] markers);
+                # wrapping it again would nest brackets and break parsing.
+                out.append(strip_markup(tpl.get("0")))
             elif tpl.name in ("Icons", "Icon"):
                 out.append(tpl.get("0"))
             elif tpl.name in ("GiftTT",):

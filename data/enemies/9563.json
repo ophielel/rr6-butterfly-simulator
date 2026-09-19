@@ -133,7 +133,7 @@
       "coins": 1,
       "attack_weight": 1,
       "offense_level_mod": 0,
-      "on_use_text": "[Attack Type and Affinity] of Skills that Clashed with this Skill affect the impending Past\n- Enemy units of Stage 2 gain [Incandescent Scale Dust]",
+      "on_use_text": "Attack Type and Affinity of Skills that Clashed with this Skill affect the impending Past\n- Enemy units of Stage 2 gain [Incandescent Scale Dust]",
       "coin_texts": [
         "[Unbreakable Coin]",
         "",
@@ -159,7 +159,7 @@
       "coins": 1,
       "attack_weight": 1,
       "offense_level_mod": 0,
-      "on_use_text": "[Attack Type and Affinity] of Skills that Clashed with this Skill affect the impending Present\n- Enemy units of Stage 3 gain [Acuate Scale Dust]",
+      "on_use_text": "Attack Type and Affinity of Skills that Clashed with this Skill affect the impending Present\n- Enemy units of Stage 3 gain [Acuate Scale Dust]",
       "coin_texts": [
         "[Unbreakable Coin]",
         "",
@@ -185,7 +185,7 @@
       "coins": 1,
       "attack_weight": 1,
       "offense_level_mod": 0,
-      "on_use_text": "[Attack Type and Affinity] of Skills that Clashed with this Skill affect the impending Future\n- Enemy units of Stage 4 gain [Rusted Scale Dust]",
+      "on_use_text": "Attack Type and Affinity of Skills that Clashed with this Skill affect the impending Future\n- Enemy units of Stage 4 gain [Rusted Scale Dust]",
       "coin_texts": [
         "[Unbreakable Coin]",
         "",
@@ -203,7 +203,7 @@
     {
       "name": "Quickening of the Unborn",
       "hint": null,
-      "text": "Encounter Start: Gain 1.3% HP as Shield\nHP does not fall below 90%\nIf this unit's Shield is broken before the end of Turn 3,\nEnd the turn immediately and activate [a unique pattern] next turn\nAt Attack End of \"The Quickening\" Skill: End the Encounter"
+      "text": "Encounter Start: Gain 1.3% HP as Shield\nHP does not fall below 90%\nIf this unit's Shield is broken before the end of Turn 3,\nEnd the turn immediately and activate a unique pattern next turn\nAt Attack End of \"The Quickening\" Skill: End the Encounter"
     }
   ],
   "unparsed": [],

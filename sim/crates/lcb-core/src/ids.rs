@@ -56,6 +56,12 @@ pub enum Sin {
     Envy,
 }
 
+impl Default for Sin {
+    fn default() -> Self {
+        Sin::Wrath
+    }
+}
+
 impl Sin {
     pub const ALL: [Sin; 7] = [
         Sin::Wrath,

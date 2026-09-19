@@ -121,6 +121,9 @@ pub struct Effect {
     /// `consume_status_for_damage`: how much of the status must be present.
     #[serde(default)]
     pub threshold: Option<i32>,
+    /// Explicit sin affinity for damage-dealing effects.
+    #[serde(default)]
+    pub sin: Option<String>,
     /// `gain_from_resonance`: multiplier applied to the highest Resonance.
     #[serde(default)]
     pub multiplier: Option<i32>,

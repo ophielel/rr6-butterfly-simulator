@@ -55,7 +55,7 @@
       "coins": 1,
       "attack_weight": 7,
       "offense_level_mod": 0,
-      "on_use_text": "[Unclashable][Target Fixed]\nThis Attack Skill deals 0 damage\n[Attack End] End the Encounter\n- If the Shield is broken, proceed to the next turn instead and [face a unique Choice Event] before the Encounter ends",
+      "on_use_text": "[Unclashable][Target Fixed]\nThis Attack Skill deals 0 damage\n[Attack End] End the Encounter\n- If the Shield is broken, proceed to the next turn instead and face a unique Choice Event before the Encounter ends",
       "coin_texts": [
         "[Unbreakable Coin]",
         "",
@@ -73,7 +73,7 @@
     {
       "name": "Eclosion - Life That Is",
       "hint": null,
-      "text": "Fix this unit's Speed to 1; this unit's HP does not drop below 1\nFirst Turn Start after entering the Encounter: Gain 333 Shield\nAt Attack End of the Skill \"Eclosion\", end Encounter\n- If the Shield is broken, proceed to the next turn instead and [face a unique Choice Event] before the Encounter ends"
+      "text": "Fix this unit's Speed to 1; this unit's HP does not drop below 1\nFirst Turn Start after entering the Encounter: Gain 333 Shield\nAt Attack End of the Skill \"Eclosion\", end Encounter\n- If the Shield is broken, proceed to the next turn instead and face a unique Choice Event before the Encounter ends"
     },
     {
       "name": "Kṣaṇa of Circumvolution",

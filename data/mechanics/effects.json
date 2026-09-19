@@ -6166,8 +6166,8 @@
     {
      "condition": {
       "component": "potency",
-      "source": "self",
-      "status": "the main target"
+      "source": "target",
+      "status": "Sinking"
      },
      "kind": "clash_power",
      "max": 2,
@@ -6510,8 +6510,8 @@
     {
      "condition": {
       "component": "potency",
-      "source": "Poise",
-      "status": "self"
+      "source": "self",
+      "status": "Poise"
      },
      "kind": "damage_percent",
      "max": 20,
@@ -6586,8 +6586,8 @@
     {
      "condition": {
       "component": "potency",
-      "source": "Poise",
-      "status": "self"
+      "source": "self",
+      "status": "Poise"
      },
      "kind": "damage_percent",
      "max": 20,
@@ -6639,8 +6639,8 @@
    "on_use": [],
    "tags": [],
    "unmodeled": [
-    "Enemy units of Stage 2 gain [Incandescent Scale Dust]",
-    "[Attack Type and Affinity] of Skills that Clashed with this Skill affect the impending Past"
+    "Attack Type and Affinity of Skills that Clashed with this Skill affect the impending Past",
+    "Enemy units of Stage 2 gain [Incandescent Scale Dust]"
    ]
   },
   "956305@1": {
@@ -6653,8 +6653,8 @@
    "on_use": [],
    "tags": [],
    "unmodeled": [
-    "Enemy units of Stage 3 gain [Acuate Scale Dust]",
-    "[Attack Type and Affinity] of Skills that Clashed with this Skill affect the impending Present"
+    "Attack Type and Affinity of Skills that Clashed with this Skill affect the impending Present",
+    "Enemy units of Stage 3 gain [Acuate Scale Dust]"
    ]
   },
   "956306@1": {
@@ -6667,8 +6667,8 @@
    "on_use": [],
    "tags": [],
    "unmodeled": [
-    "Enemy units of Stage 4 gain [Rusted Scale Dust]",
-    "[Attack Type and Affinity] of Skills that Clashed with this Skill affect the impending Future"
+    "Attack Type and Affinity of Skills that Clashed with this Skill affect the impending Future",
+    "Enemy units of Stage 4 gain [Rusted Scale Dust]"
    ]
   },
   "956401@1": {
@@ -6686,7 +6686,7 @@
    ],
    "tags": [],
    "unmodeled": [
-    "If the Shield is broken, proceed to the next turn instead and [face a unique Choice Event] before the Encounter ends",
+    "If the Shield is broken, proceed to the next turn instead and face a unique Choice Event before the Encounter ends",
     "[Attack End] End the Encounter",
     "[Unclashable][Target Fixed]"
    ]
@@ -6706,7 +6706,7 @@
    ],
    "tags": [],
    "unmodeled": [
-    "If the Shield is broken, proceed to the next turn instead and [face a unique Choice Event] before the Encounter ends",
+    "If the Shield is broken, proceed to the next turn instead and face a unique Choice Event before the Encounter ends",
     "[Attack End] End the Encounter",
     "[Unclashable][Target Fixed]"
    ]
@@ -6726,7 +6726,7 @@
    ],
    "tags": [],
    "unmodeled": [
-    "If the Shield is broken, proceed to the next turn instead and [face a unique Choice Event] before the Encounter ends",
+    "If the Shield is broken, proceed to the next turn instead and face a unique Choice Event before the Encounter ends",
     "[Attack End] End the Encounter",
     "[Unclashable][Target Fixed]"
    ]
@@ -6787,8 +6787,8 @@
     {
      "condition": {
       "component": "potency",
-      "source": "Poise",
-      "status": "self"
+      "source": "self",
+      "status": "Poise"
      },
      "kind": "damage_percent",
      "max": 30,
@@ -6880,8 +6880,8 @@
     {
      "condition": {
       "component": "potency",
-      "source": "Poise",
-      "status": "self"
+      "source": "self",
+      "status": "Poise"
      },
      "kind": "damage_percent",
      "max": 30,
@@ -6919,7 +6919,14 @@
   },
   "956703@1": {
    "attack_end": [],
-   "clash_lose": [],
+   "clash_lose": [
+    {
+     "kind": "gain",
+     "potency": 2,
+     "raw": "[Clash Lose] Gain 2 [Power Down] and 2 [Damage Down]",
+     "status": "Power Down"
+    }
+   ],
    "clash_win": [],
    "coins": {
     "1": [
@@ -6972,7 +6979,7 @@
      "condition": {
       "component": "potency",
       "source": "self",
-      "status": "self"
+      "status": "Poise"
      },
      "kind": "clash_power",
      "max": 3,
@@ -6983,9 +6990,7 @@
     }
    ],
    "tags": [],
-   "unmodeled": [
-    "[Clash Lose] Gain [2 [Power Down] and 2 [Damage Down]]"
-   ]
+   "unmodeled": []
   },
   "956704@1": {
    "attack_end": [],
@@ -7001,6 +7006,15 @@
       "status": "Burn",
       "status2": "Burn"
      }
+    ],
+    "2": [
+     {
+      "consume_count": 1,
+      "kind": "activate_status",
+      "raw": "[On Hit without Cracking] Activate [Burn] on target once. Target loses 1 [Burn] Count",
+      "status": "Burn",
+      "times": 1
+     }
     ]
    },
    "combat_start": [],
@@ -7009,8 +7023,8 @@
     {
      "condition": {
       "component": "potency",
-      "source": "self",
-      "status": "target"
+      "source": "target",
+      "status": "Burn"
      },
      "kind": "clash_power",
      "max": 6,
@@ -7041,8 +7055,7 @@
     "clash_any_speed"
    ],
    "unmodeled": [
-    "[Clash Lose] Target cannot be Staggered until this Skill's Attack End",
-    "[On Hit without Cracking] [Activate [Burn] on target once]. Target loses 1 [Burn] Count"
+    "[Clash Lose] Target cannot be Staggered until this Skill's Attack End"
    ]
   },
   "956705@1": {
@@ -7065,6 +7078,15 @@
       "raw": "[On Hit] Inflict 3 [Burn]",
       "status": "Burn"
      }
+    ],
+    "3": [
+     {
+      "consume_count": 2,
+      "kind": "activate_status",
+      "raw": "[On Hit without Cracking] Activate [Burn] on target 2 times. Target loses 2 [Burn] Count",
+      "status": "Burn",
+      "times": 2
+     }
     ]
    },
    "combat_start": [],
@@ -7073,14 +7095,27 @@
     {
      "condition": {
       "component": "potency",
-      "source": "self",
-      "status": "the main target"
+      "source": "target",
+      "status": "Burn"
      },
      "kind": "clash_power",
      "max": 6,
      "per": 6,
      "raw": "Clash Power +1 for every 6 [Burn] on the main target (max 6)",
      "step": 1,
+     "value": 0
+    },
+    {
+     "condition": {
+      "component": "stack",
+      "source": "self",
+      "status": "In the Past"
+     },
+     "kind": "damage_percent",
+     "max": 60,
+     "per": 1,
+     "raw": "Deal +([In the Past] x 2)% damage (max 60%)",
+     "step": 2,
      "value": 0
     },
     {
@@ -7107,9 +7142,7 @@
    ],
    "unmodeled": [
     "[Clash Lose] Target cannot be Staggered until this Skill's Attack End",
-    "[Deal +([In the Past] x 2)% damage] (max 60%)",
-    "[Hit after Clash Lose] [At less than 33% HP, activate [Burn] on the main target once]. Target loses 1 [Burn] Count",
-    "[On Hit without Cracking] [Activate [Burn] on target 2 times]. Target loses 2 [Burn] Count"
+    "[Hit after Clash Lose] At less than 33% HP, activate [Burn] on the main target once. Target loses 1 [Burn] Count"
    ]
   },
   "956706@1": {
@@ -7143,6 +7176,24 @@
       "status": "Burn",
       "status2": "Burn"
      }
+    ],
+    "3": [
+     {
+      "consume_count": 1,
+      "kind": "activate_status",
+      "raw": "[On Hit without Cracking] Activate [Burn] on target once. Target loses 1 [Burn] Count",
+      "status": "Burn",
+      "times": 1
+     }
+    ],
+    "4": [
+     {
+      "consume_count": 2,
+      "kind": "activate_status",
+      "raw": "[On Hit without Cracking] Activate [Burn] on target 2 times. Target loses 2 [Burn] Count",
+      "status": "Burn",
+      "times": 2
+     }
     ]
    },
    "combat_start": [],
@@ -7151,8 +7202,8 @@
     {
      "condition": {
       "component": "potency",
-      "source": "self",
-      "status": "the main target"
+      "source": "target",
+      "status": "Burn"
      },
      "kind": "base_power",
      "max": 6,
@@ -7160,6 +7211,24 @@
      "raw": "Final Power +1 for every 6 [Burn] on the main target (max 6)",
      "step": 1,
      "value": 0
+    },
+    {
+     "condition": {
+      "component": "stack",
+      "source": "self",
+      "status": "In the Past"
+     },
+     "kind": "damage_percent",
+     "max": 120,
+     "per": 1,
+     "raw": "Deal +([In the Past] x 4)% damage (max 120%)",
+     "step": 4,
+     "value": 0
+    },
+    {
+     "kind": "halve_status",
+     "raw": "Halve [In the Past] (rounded down)",
+     "status": "In the Past"
     },
     {
      "kind": "gain",
@@ -7172,12 +7241,8 @@
     "clash_any_speed"
    ],
    "unmodeled": [
-    "Halve [In the Past] (rounded down)",
     "Target cannot be Staggered until this Skill's Attack End",
-    "[Deal +([In the Past] x 4)% damage] (max 120%)",
-    "[Hit after Clash Lose] [At less than 33% HP, activate [Burn] on the main target once]. Target loses 1 [Burn] Count",
-    "[On Hit without Cracking] [Activate [Burn] on target 2 times]. Target loses 2 [Burn] Count",
-    "[On Hit without Cracking] [Activate [Burn] on target once]. Target loses 1 [Burn] Count"
+    "[Hit after Clash Lose] At less than 33% HP, activate [Burn] on the main target once. Target loses 1 [Burn] Count"
    ]
   },
   "956707@1": {
@@ -7233,7 +7298,7 @@
    ],
    "unmodeled": [
     "[Clash Lose] Target cannot be Staggered until this Skill's Attack End",
-    "[On Hit without Cracking] [Deal ([Poise] on self / 2) Pride damage on target] and lose 1 [Poise] Count (rounded down)"
+    "[On Hit without Cracking] Deal ([Poise] on self / 2) Pride damage on target and lose 1 [Poise] Count (rounded down)"
    ]
   },
   "956708@1": {
@@ -7256,6 +7321,36 @@
       "raw": "[On Hit] Gain 1 [Poise]",
       "status": "Poise"
      }
+    ],
+    "3": [
+     {
+      "condition": {
+       "component": "potency",
+       "source": "self",
+       "status": "Poise"
+      },
+      "kind": "damage_percent",
+      "max": 50,
+      "per": 1,
+      "raw": "[On Hit without Cracking] Deal +([Poise] on self)% damage (max 50%)",
+      "step": 1,
+      "value": 0
+     }
+    ],
+    "4": [
+     {
+      "condition": {
+       "component": "potency",
+       "source": "self",
+       "status": "Poise"
+      },
+      "kind": "damage_percent",
+      "max": 100,
+      "per": 1,
+      "raw": "[On Hit without Cracking] Deal +([Poise] on self x 2)% damage (max 100%)",
+      "step": 2,
+      "value": 0
+     }
     ]
    },
    "combat_start": [],
@@ -7265,6 +7360,19 @@
      "kind": "clash_power",
      "raw": "Clash Power +1 and deal +10% damage for every 6 [Poise] on self (max 6 and 60%, respectively)",
      "value": 1
+    },
+    {
+     "condition": {
+      "component": "stack",
+      "source": "self",
+      "status": "In the Present"
+     },
+     "kind": "damage_percent",
+     "max": 60,
+     "per": 1,
+     "raw": "Deal +([In the Present] x 2)% damage (max 60%)",
+     "step": 2,
+     "value": 0
     },
     {
      "coins": [
@@ -7298,11 +7406,8 @@
    ],
    "unmodeled": [
     "[Clash Lose] Target cannot be Staggered until this Skill's Attack End",
-    "[Deal +([In the Present] x 2)% damage] (max 60%)",
-    "[Hit after Clash Lose] [At less than 33% HP, deal +([Poise] Count on self)% damage] (max 30%)",
-    "[Hit after Clash Lose] [At less than 33% HP, deal +([Poise] Count on self)% damage] (max 50%)",
-    "[On Hit without Cracking] [Deal +([Poise] on self x 2)% damage] (max 100%)",
-    "[On Hit without Cracking] [Deal +([Poise] on self)% damage] (max 50%)"
+    "[Hit after Clash Lose] At less than 33% HP, deal +([Poise] Count on self)% damage (max 30%)",
+    "[Hit after Clash Lose] At less than 33% HP, deal +([Poise] Count on self)% damage (max 50%)"
    ]
   },
   "956709@1": {
@@ -7326,6 +7431,24 @@
      "value": 1
     },
     {
+     "condition": {
+      "component": "stack",
+      "source": "self",
+      "status": "In the Present"
+     },
+     "kind": "damage_percent",
+     "max": 120,
+     "per": 1,
+     "raw": "Deal +([In the Present] x 4)% damage (max 120%)",
+     "step": 4,
+     "value": 0
+    },
+    {
+     "kind": "halve_status",
+     "raw": "Halve [In the Present] (rounded down)",
+     "status": "In the Present"
+    },
+    {
      "kind": "gain",
      "potency": 2,
      "raw": "Gain 2 [Damage Down] and 1 [Paralyze]",
@@ -7337,14 +7460,12 @@
    ],
    "unmodeled": [
     "4 [Poise] and +4 [Poise] Count",
-    "Halve [In the Present] (rounded down)",
+    "If target's Pierce Resist. is below \"Weak\" (1.5), treat is as Weak (1.5) (max 50%)",
     "On Clash Lose, this effect does not activate",
     "Target cannot be Staggered until this Skill's Attack End",
     "[Attack End] If target is killed, Reuse this Skill on the target that has the highest HP (once per turn)",
     "[Before Attack] If this unit has 20+ [Poise] Potency, consume up to 20 surplus [Poise] Potency past 20 to deal +([Poise] consumed x 5)% damage (max 100%)",
-    "[Deal +([In the Present] x 4)% damage (max 120%)]",
-    "[Hit after Clash Lose] [At less than 33% HP, deal +(50% of this Coin's damage)% bonus Pierce damage]",
-    "[If target's Pierce Resist. is below \"Weak\" (1.5), treat is as Weak (1.5)] (max 50%)"
+    "[Hit after Clash Lose] At less than 33% HP, deal +(50% of this Coin's damage)% bonus Pierce damage"
    ]
   },
   "956710@1": {
@@ -7361,6 +7482,15 @@
       "status": "Bleed",
       "status2": "Bleed"
      }
+    ],
+    "2": [
+     {
+      "consume_count": 1,
+      "kind": "activate_status",
+      "raw": "[On Hit without Cracking] Activate [Bleed] on target once. Target loses 1 [Bleed] Count",
+      "status": "Bleed",
+      "times": 1
+     }
     ]
    },
    "combat_start": [],
@@ -7369,8 +7499,8 @@
     {
      "condition": {
       "component": "potency",
-      "source": "self",
-      "status": "target"
+      "source": "target",
+      "status": "Bleed"
      },
      "kind": "clash_power",
      "max": 6,
@@ -7401,8 +7531,7 @@
     "clash_any_speed"
    ],
    "unmodeled": [
-    "[Clash Lose] Target cannot be Staggered until this Skill's Attack End",
-    "[On Hit without Cracking] [Activate [Bleed] on target once]. Target loses 1 [Bleed] Count"
+    "[Clash Lose] Target cannot be Staggered until this Skill's Attack End"
    ]
   },
   "956711@1": {
@@ -7419,22 +7548,49 @@
       "status": "Bleed",
       "status2": "Bleed"
      }
+    ],
+    "2": [
+     {
+      "consume_count": 2,
+      "kind": "activate_status",
+      "raw": "[On Hit without Cracking] Activate [Bleed] on target 2 times. Target loses 2 [Bleed] Count",
+      "status": "Bleed",
+      "times": 2
+     }
     ]
    },
    "combat_start": [],
    "note": "Rotting Annihilation",
    "on_use": [
     {
+     "kind": "tag",
+     "raw": "While Clashing with this Skill, the main target's [Bleed] Count does not drop below 1",
+     "tag": "status_count_floor:Bleed"
+    },
+    {
      "condition": {
       "component": "potency",
-      "source": "self",
-      "status": "the main target"
+      "source": "target",
+      "status": "Bleed"
      },
      "kind": "clash_power",
      "max": 6,
      "per": 6,
      "raw": "Clash Power +1 for every 6 [Bleed] on the main target (max 6)",
      "step": 1,
+     "value": 0
+    },
+    {
+     "condition": {
+      "component": "stack",
+      "source": "self",
+      "status": "In the Future"
+     },
+     "kind": "damage_percent",
+     "max": 60,
+     "per": 1,
+     "raw": "Deal +([In the Future] x 2)% damage (max 60%)",
+     "step": 2,
      "value": 0
     },
     {
@@ -7459,11 +7615,8 @@
     "clash_any_speed"
    ],
    "unmodeled": [
-    "While Clashing with this Skill, [the main target's [Bleed] Count does not drop below 1]",
     "[Clash Lose] Target cannot be Staggered until this Skill's Attack End",
-    "[Deal +([In the Future] x 2)% damage] (max 60%)",
-    "[Hit after Clash Lose] [At less than 33% HP, activate [Bleed] on the main target once]. Target loses 1 [Bleed] Count",
-    "[On Hit without Cracking] [Activate [Bleed] on target 2 times]. Target loses 2 [Bleed] Count"
+    "[Hit after Clash Lose] At less than 33% HP, activate [Bleed] on the main target once. Target loses 1 [Bleed] Count"
    ]
   },
   "956712@1": {
@@ -7496,6 +7649,13 @@
       "raw": "[On Hit] Inflict 2 [Burn] and +3 [Burn] Count",
       "status": "Burn",
       "status2": "Burn"
+     },
+     {
+      "consume_count": 2,
+      "kind": "activate_status",
+      "raw": "[On Hit without Cracking] Activate [Bleed] on target 2 times. Target loses 2 [Bleed] Count",
+      "status": "Bleed",
+      "times": 2
      }
     ]
    },
@@ -7503,10 +7663,15 @@
    "note": "Bloodflower",
    "on_use": [
     {
+     "kind": "tag",
+     "raw": "While Clashing with this Skill, the main target's [Bleed] Count does not drop below 1",
+     "tag": "status_count_floor:Bleed"
+    },
+    {
      "condition": {
       "component": "potency",
-      "source": "self",
-      "status": "the main target"
+      "source": "target",
+      "status": "Bleed"
      },
      "kind": "base_power",
      "max": 6,
@@ -7514,6 +7679,24 @@
      "raw": "Final Power +1 for every 6 [Bleed] on the main target (max 6)",
      "step": 1,
      "value": 0
+    },
+    {
+     "condition": {
+      "component": "stack",
+      "source": "self",
+      "status": "In the Future"
+     },
+     "kind": "damage_percent",
+     "max": 120,
+     "per": 1,
+     "raw": "Deal +([In the Future] x 4)% damage (max 120%)",
+     "step": 4,
+     "value": 0
+    },
+    {
+     "kind": "halve_status",
+     "raw": "Halve [In the Future] (rounded down)",
+     "status": "In the Future"
     },
     {
      "kind": "gain",
@@ -7526,12 +7709,8 @@
     "clash_any_speed"
    ],
    "unmodeled": [
-    "Halve [In the Future] (rounded down)",
     "Target cannot be Staggered until this Skill's Attack End",
-    "While Clashing with this Skill, [the main target's [Bleed] Count does not drop below 1]",
-    "[Deal +([In the Future] x 4)% damage] (max 120%)",
-    "[Hit after Clash Lose] [At less than 33% HP, activate [Bleed] on target once]. Target loses 1 [Bleed] Count",
-    "[On Hit without Cracking] [Activate [Bleed] on target 2 times]. Target loses 2 [Bleed] Count"
+    "[Hit after Clash Lose] At less than 33% HP, activate [Bleed] on target once. Target loses 1 [Bleed] Count"
    ]
   }
  },
