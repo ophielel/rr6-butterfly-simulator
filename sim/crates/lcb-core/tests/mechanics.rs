@@ -684,6 +684,82 @@ fn quickening_deals_and_takes_no_damage() {
     assert_eq!(state.units[pupa].hp, before);
 }
 
+/// "If any of the following conditions are met" is an alternative list.
+/// Source: wiki.gg skill text (e.g. `Lobotomy E.G.O::Lamp` Gregor).
+#[test]
+fn any_of_conditions_are_alternatives() {
+    use lcb_core::effects::{Condition, Effect};
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&["10110"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    let effect = Effect {
+        kind: "coin_power".to_string(),
+        value: Some(1),
+        condition: Some(Condition {
+            any_of: vec![
+                Condition {
+                    self_speed_at_most: Some(1),
+                    ..Default::default()
+                },
+                Condition {
+                    source: Some("target".to_string()),
+                    status: Some("Dazzle".to_string()),
+                    gte: Some(1),
+                    ..Default::default()
+                },
+            ],
+            ..Default::default()
+        }),
+        ..Default::default()
+    };
+    // Nothing holds -> no bonus.
+    state.units[0].speed = 5;
+    let mut notes = Vec::new();
+    let mut ctx = battle::UseContext::default();
+    battle::apply_effects_for_test(&mut state, &[effect.clone()], 0, Some(1), &mut notes, &mut ctx);
+    assert_eq!(ctx.coin_power_bonus, 0);
+    // Dazzle on the target satisfies the second alternative.
+    state.units[1].statuses.add_stack("Dazzle", 1);
+    let mut ctx = battle::UseContext::default();
+    battle::apply_effects_for_test(&mut state, &[effect.clone()], 0, Some(1), &mut notes, &mut ctx);
+    assert_eq!(ctx.coin_power_bonus, 1);
+    // Speed 1 satisfies the first alternative.
+    state.units[1].statuses.remove("Dazzle");
+    state.units[0].speed = 1;
+    let mut ctx = battle::UseContext::default();
+    battle::apply_effects_for_test(&mut state, &[effect], 0, Some(1), &mut notes, &mut ctx);
+    assert_eq!(ctx.coin_power_bonus, 1);
+}
+
+/// Attack adder: "deal N% of this Coin's final damage" adds damage on top.
+/// Source: wiki.gg `Damage` / attack adders.
+#[test]
+fn bonus_damage_percent_of_coin_adds_damage() {
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&["10110"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    let mut use_ = battle::build_use(&state, &sim.library, &sim.mechanics, 0, &SkillId::new("1011001"))
+        .unwrap();
+    use_.coins = vec![battle::CoinRuntime::fresh(false)];
+    use_.mechanics.coins.insert(
+        "1".to_string(),
+        vec![lcb_core::effects::Effect {
+            kind: "bonus_damage_percent_of_coin".to_string(),
+            percent: Some(100),
+            ..Default::default()
+        }],
+    );
+    state.preset_flips = vec![false; 16];
+    state.flip_cursor = 0;
+    let before = state.units[1].hp;
+    let hits = battle::one_sided_attack(&mut state, 0, 1, &mut use_, 0);
+    let base: i32 = hits.iter().map(|h| h.damage).sum();
+    let dealt = before - state.units[1].hp;
+    assert!(dealt >= base * 2 - 1, "adder doubled the hit: {base} -> {dealt}");
+}
+
 /// A full turn keeps the battle in a consistent, serialisable state.
 #[test]
 fn turn_advances_phase_and_logs() {

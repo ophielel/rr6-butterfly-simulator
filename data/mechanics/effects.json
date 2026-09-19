@@ -990,11 +990,26 @@
    },
    "combat_start": [],
    "note": "Bang. Bang.",
-   "on_use": [],
+   "on_use": [
+    {
+     "condition": {
+      "component": "potency",
+      "source": "target",
+      "statuses": [
+       "Tremor",
+       "Sinking"
+      ]
+     },
+     "kind": "coin_power",
+     "max": 2,
+     "per": 6,
+     "raw": "[On Use] Coin Power +1 for every 6 ([Tremor] + [Sinking]) on target (max 2)",
+     "step": 1,
+     "value": 0
+    }
+   ],
    "tags": [],
-   "unmodeled": [
-    "[On Use] Coin Power +1 for every 6 ([Tremor] + [Sinking]) on target (max 2)"
-   ]
+   "unmodeled": []
   },
   "1041402@1": {
    "attack_end": [],
@@ -1238,10 +1253,26 @@
    },
    "combat_start": [],
    "note": "Blossoming Fragrance in the Void",
-   "on_use": [],
+   "on_use": [
+    {
+     "condition": {
+      "component": "potency",
+      "source": "target",
+      "statuses": [
+       "Tremor",
+       "Sinking"
+      ]
+     },
+     "kind": "coin_power",
+     "max": 2,
+     "per": 6,
+     "raw": "[On Use] Coin Power +1 for every 6 ([Tremor] + [Sinking]) on target (max 2)",
+     "step": 1,
+     "value": 0
+    }
+   ],
    "tags": [],
    "unmodeled": [
-    "[On Use] Coin Power +1 for every 6 ([Tremor] + [Sinking]) on target (max 2)",
     "[On Use] Deal +1% damage for every [Faint Aroma] on target"
    ]
   },
@@ -1526,11 +1557,27 @@
    },
    "combat_start": [],
    "note": "Full Bloom",
-   "on_use": [],
+   "on_use": [
+    {
+     "condition": {
+      "component": "potency",
+      "source": "target",
+      "statuses": [
+       "Tremor",
+       "Sinking"
+      ]
+     },
+     "kind": "coin_power",
+     "max": 2,
+     "per": 6,
+     "raw": "[On Use] Coin Power +1 for every 6 ([Tremor] + [Sinking]) on target (max 2)",
+     "step": 1,
+     "value": 0
+    }
+   ],
    "tags": [],
    "unmodeled": [
     "[On Hit] Deal Gloom damage equal to [Sinking] on target",
-    "[On Use] Coin Power +1 for every 6 ([Tremor] + [Sinking]) on target (max 2)",
     "[On Use] Deal +1% damage for every [Faint Aroma] on target"
    ]
   },
@@ -1766,10 +1813,26 @@
    },
    "combat_start": [],
    "note": "Tsuru-giri [鶴斬り]",
-   "on_use": [],
+   "on_use": [
+    {
+     "condition": {
+      "component": "potency",
+      "source": "target",
+      "statuses": [
+       "Tremor",
+       "Sinking"
+      ]
+     },
+     "kind": "coin_power",
+     "max": 2,
+     "per": 6,
+     "raw": "[On Use] Coin Power +1 for every 6 ([Tremor] + [Sinking]) on target (max 2)",
+     "step": 1,
+     "value": 0
+    }
+   ],
    "tags": [],
    "unmodeled": [
-    "[On Use] Coin Power +1 for every 6 ([Tremor] + [Sinking]) on target (max 2)",
     "[On Use] If the other Skill in the same Skill Slot is a different Skill, [Discard] that Skill"
    ]
   },
@@ -1953,11 +2016,27 @@
    },
    "combat_start": [],
    "note": "Susuki Misdirection",
-   "on_use": [],
+   "on_use": [
+    {
+     "condition": {
+      "component": "potency",
+      "source": "target",
+      "statuses": [
+       "Tremor",
+       "Sinking"
+      ]
+     },
+     "kind": "coin_power",
+     "max": 2,
+     "per": 6,
+     "raw": "[On Use] Coin Power +1 for every 6 ([Tremor] + [Sinking]) on target (max 2)",
+     "step": 1,
+     "value": 0
+    }
+   ],
    "tags": [],
    "unmodeled": [
     "[On Hit] Heal 5 SP",
-    "[On Use] Coin Power +1 for every 6 ([Tremor] + [Sinking]) on target (max 2)",
     "[On Use] If the other Skill in the same Skill Slot is a different Skill, [Discard] that Skill"
    ]
   },
@@ -3334,10 +3413,26 @@
    },
    "combat_start": [],
    "note": "Khopesh Swordplay",
-   "on_use": [],
+   "on_use": [
+    {
+     "condition": {
+      "component": "potency",
+      "source": "target",
+      "statuses": [
+       "Sinking",
+       "Tremor"
+      ]
+     },
+     "kind": "coin_power",
+     "max": 2,
+     "per": 6,
+     "raw": "[On Use] Coin Power +1 for every 6 ([Sinking] + [Tremor]) on target (max 2)",
+     "step": 1,
+     "value": 0
+    }
+   ],
    "tags": [],
    "unmodeled": [
-    "[On Use] Coin Power +1 for every 6 ([Sinking] + [Tremor]) on target (max 2)",
     "[On Use] Gain +3 [Aggro] to this Skill Slot next turn"
    ]
   },
@@ -3363,10 +3458,26 @@
    },
    "combat_start": [],
    "note": "Khopesh Swordplay",
-   "on_use": [],
+   "on_use": [
+    {
+     "condition": {
+      "component": "potency",
+      "source": "target",
+      "statuses": [
+       "Sinking",
+       "Tremor"
+      ]
+     },
+     "kind": "coin_power",
+     "max": 2,
+     "per": 6,
+     "raw": "[On Use] Coin Power +1 for every 6 ([Sinking] + [Tremor]) on target (max 2)",
+     "step": 1,
+     "value": 0
+    }
+   ],
    "tags": [],
    "unmodeled": [
-    "[On Use] Coin Power +1 for every 6 ([Sinking] + [Tremor]) on target (max 2)",
     "[On Use] Gain +3 [Aggro] to this Skill Slot next turn"
    ]
   },
@@ -3399,11 +3510,27 @@
    },
    "combat_start": [],
    "note": "Khopesh Swordplay",
-   "on_use": [],
+   "on_use": [
+    {
+     "condition": {
+      "component": "potency",
+      "source": "target",
+      "statuses": [
+       "Sinking",
+       "Tremor"
+      ]
+     },
+     "kind": "coin_power",
+     "max": 2,
+     "per": 6,
+     "raw": "[On Use] Coin Power +1 for every 6 ([Sinking] + [Tremor]) on target (max 2)",
+     "step": 1,
+     "value": 0
+    }
+   ],
    "tags": [],
    "unmodeled": [
     "[On Hit] Gain 1 [Protection] next turn (once per turn)",
-    "[On Use] Coin Power +1 for every 6 ([Sinking] + [Tremor]) on target (max 2)",
     "[On Use] Gain +3 [Aggro] to this Skill Slot next turn",
     "[On Use] If this unit has [The Udjat -Vanguard-], Clash Power +1"
    ]
@@ -3490,10 +3617,26 @@
    },
    "combat_start": [],
    "note": "Mirage Incision",
-   "on_use": [],
+   "on_use": [
+    {
+     "condition": {
+      "component": "potency",
+      "source": "target",
+      "statuses": [
+       "Sinking",
+       "Tremor"
+      ]
+     },
+     "kind": "coin_power",
+     "max": 2,
+     "per": 6,
+     "raw": "[On Use] Coin Power +1 for every 6 ([Sinking] + [Tremor]) on target (max 2)",
+     "step": 1,
+     "value": 0
+    }
+   ],
    "tags": [],
    "unmodeled": [
-    "[On Use] Coin Power +1 for every 6 ([Sinking] + [Tremor]) on target (max 2)",
     "[On Use] Gain +5 [Aggro] to this Skill Slot next turn"
    ]
   },
@@ -3535,10 +3678,26 @@
    },
    "combat_start": [],
    "note": "Mirage Incision",
-   "on_use": [],
+   "on_use": [
+    {
+     "condition": {
+      "component": "potency",
+      "source": "target",
+      "statuses": [
+       "Sinking",
+       "Tremor"
+      ]
+     },
+     "kind": "coin_power",
+     "max": 2,
+     "per": 6,
+     "raw": "[On Use] Coin Power +1 for every 6 ([Sinking] + [Tremor]) on target (max 2)",
+     "step": 1,
+     "value": 0
+    }
+   ],
    "tags": [],
    "unmodeled": [
-    "[On Use] Coin Power +1 for every 6 ([Sinking] + [Tremor]) on target (max 2)",
     "[On Use] Gain +5 [Aggro] to this Skill Slot next turn"
    ]
   },
@@ -3587,13 +3746,33 @@
    },
    "combat_start": [],
    "note": "Mirage Incision",
-   "on_use": [],
+   "on_use": [
+    {
+     "condition": {
+      "component": "potency",
+      "source": "target",
+      "statuses": [
+       "Sinking",
+       "Tremor"
+      ]
+     },
+     "kind": "coin_power",
+     "max": 2,
+     "per": 6,
+     "raw": "[On Use] Coin Power +1 for every 6 ([Sinking] + [Tremor]) on target (max 2)",
+     "step": 1,
+     "value": 0
+    },
+    {
+     "kind": "damage_percent",
+     "raw": "[On Use] If this unit has [The Udjat -Vanguard-], Clash Power +2 and deal +30% damage",
+     "value": 30
+    }
+   ],
    "tags": [],
    "unmodeled": [
     "[On Hit] Gain 1 [Protection] next turn (once per turn)",
-    "[On Use] Coin Power +1 for every 6 ([Sinking] + [Tremor]) on target (max 2)",
-    "[On Use] Gain +5 [Aggro] to this Skill Slot next turn",
-    "[On Use] If this unit has [The Udjat -Vanguard-], Clash Power +2 and deal +30% damage"
+    "[On Use] Gain +5 [Aggro] to this Skill Slot next turn"
    ]
   },
   "1111403@1": {
@@ -3980,12 +4159,27 @@
    },
    "combat_start": [],
    "note": "Intense Stare: Zero-Range",
-   "on_use": [],
+   "on_use": [
+    {
+     "condition": {
+      "any_of": [
+       {
+        "self_speed_at_most": 1
+       },
+       {
+        "gte": 1,
+        "source": "target",
+        "status": "Dazzle"
+       }
+      ]
+     },
+     "kind": "coin_power",
+     "raw": "If any of the following conditions are met, Coin Power +1",
+     "value": 1
+    }
+   ],
    "tags": [],
    "unmodeled": [
-    "If any of the following conditions are met, Coin Power +1",
-    "If target has [Dazzle]",
-    "If this unit's Speed is 1 or slower",
     "[On Use] Gain 1 [Bind] next turn"
    ]
   },
@@ -4013,12 +4207,27 @@
    },
    "combat_start": [],
    "note": "Intense Stare: Zero-Range",
-   "on_use": [],
+   "on_use": [
+    {
+     "condition": {
+      "any_of": [
+       {
+        "self_speed_at_most": 1
+       },
+       {
+        "gte": 1,
+        "source": "target",
+        "status": "Dazzle"
+       }
+      ]
+     },
+     "kind": "coin_power",
+     "raw": "If any of the following conditions are met, Coin Power +1",
+     "value": 1
+    }
+   ],
    "tags": [],
    "unmodeled": [
-    "If any of the following conditions are met, Coin Power +1",
-    "If target has [Dazzle]",
-    "If this unit's Speed is 1 or slower",
     "[On Use] Gain 1 [Bind] next turn"
    ]
   },
@@ -4049,6 +4258,26 @@
    "on_use": [
     {
      "condition": {
+      "any_of": [
+       {
+        "target_speed_advantage": 3
+       },
+       {
+        "self_speed_at_most": 1
+       },
+       {
+        "gte": 1,
+        "source": "target",
+        "status": "Dazzle"
+       }
+      ]
+     },
+     "kind": "coin_power",
+     "raw": "If any of the following conditions are met, Coin Power +1",
+     "value": 1
+    },
+    {
+     "condition": {
       "component": "potency",
       "gte": 6,
       "source": "target",
@@ -4064,10 +4293,6 @@
    ],
    "tags": [],
    "unmodeled": [
-    "If any of the following conditions are met, Coin Power +1",
-    "If target has [Dazzle]",
-    "If target's Speed is faster than this unit's by 3 or more",
-    "If this unit's Speed is 1 or slower",
     "[On Use] Gain 1 [Bind] next turn"
    ]
   },
@@ -4149,12 +4374,27 @@
    },
    "combat_start": [],
    "note": "Destroy the Visible with the Invisible",
-   "on_use": [],
+   "on_use": [
+    {
+     "condition": {
+      "any_of": [
+       {
+        "self_speed_at_most": 1
+       },
+       {
+        "gte": 1,
+        "source": "target",
+        "status": "Dazzle"
+       }
+      ]
+     },
+     "kind": "clash_power",
+     "raw": "If any of the following conditions are met, Clash Power +2",
+     "value": 2
+    }
+   ],
    "tags": [],
    "unmodeled": [
-    "If any of the following conditions are met, Clash Power +2",
-    "If target has [Dazzle]",
-    "If this unit's Speed is 1 or slower",
     "[On Hit] Deal (30% of this Coin's final damage) Blunt damage"
    ]
   },
@@ -4198,12 +4438,27 @@
    },
    "combat_start": [],
    "note": "Destroy the Visible with the Invisible",
-   "on_use": [],
+   "on_use": [
+    {
+     "condition": {
+      "any_of": [
+       {
+        "self_speed_at_most": 1
+       },
+       {
+        "gte": 1,
+        "source": "target",
+        "status": "Dazzle"
+       }
+      ]
+     },
+     "kind": "clash_power",
+     "raw": "If any of the following conditions are met, Clash Power +2",
+     "value": 2
+    }
+   ],
    "tags": [],
    "unmodeled": [
-    "If any of the following conditions are met, Clash Power +2",
-    "If target has [Dazzle]",
-    "If this unit's Speed is 1 or slower",
     "[On Hit] Deal (30% of this Coin's final damage) Blunt damage"
    ]
   },
@@ -4250,6 +4505,26 @@
    "on_use": [
     {
      "condition": {
+      "any_of": [
+       {
+        "target_speed_advantage": 3
+       },
+       {
+        "self_speed_at_most": 1
+       },
+       {
+        "gte": 1,
+        "source": "target",
+        "status": "Dazzle"
+       }
+      ]
+     },
+     "kind": "clash_power",
+     "raw": "If any of the following conditions are met, Clash Power +2",
+     "value": 2
+    },
+    {
+     "condition": {
       "component": "potency",
       "gte": 6,
       "source": "target",
@@ -4265,10 +4540,6 @@
    ],
    "tags": [],
    "unmodeled": [
-    "If any of the following conditions are met, Clash Power +2",
-    "If target has [Dazzle]",
-    "If target's Speed is faster than this unit's by 3 or more",
-    "If this unit's Speed is 1 or slower",
     "[On Hit] Deal (30% of this Coin's final damage) Blunt damage"
    ]
   },
@@ -4298,19 +4569,71 @@
       "raw": "[On Hit] Inflict 3 [Sinking]",
       "status": "Sinking"
      }
+    ],
+    "3": [
+     {
+      "condition": {
+       "gte": 1,
+       "source": "target",
+       "status": "Dazzle"
+      },
+      "kind": "bonus_damage_percent_of_coin",
+      "percent": 60,
+      "raw": "[On Hit] If target has [Dazzle], deal Gloom damage equal to 60% of this Coin's final damage"
+     }
     ]
    },
    "combat_start": [],
    "note": "Salvation for those Enchanted by the Lamp",
-   "on_use": [],
+   "on_use": [
+    {
+     "condition": {
+      "any_of": [
+       {
+        "self_speed_at_most": 1
+       },
+       {
+        "gte": 1,
+        "source": "target",
+        "status": "Dazzle"
+       }
+      ]
+     },
+     "kind": "coin_power",
+     "raw": "If any of the following conditions are met, Coin Power +1 and deal +20% damage",
+     "value": 1
+    },
+    {
+     "condition": {
+      "any_of": [
+       {
+        "self_speed_at_most": 1
+       },
+       {
+        "gte": 1,
+        "source": "target",
+        "status": "Dazzle"
+       }
+      ]
+     },
+     "kind": "damage_percent",
+     "raw": "If any of the following conditions are met, Coin Power +1 and deal +20% damage",
+     "value": 20
+    },
+    {
+     "condition": {
+      "gte": 1,
+      "source": "target",
+      "status": "Dazzle"
+     },
+     "kind": "convert_unbreakable_and_clash",
+     "raw": "[On Use] If target has [Dazzle], convert all Coins on this Skill to [Unbreakable Coin]s and gain Clash Power +3",
+     "value": 3
+    }
+   ],
    "tags": [],
    "unmodeled": [
-    "If any of the following conditions are met, Coin Power +1 and deal +20% damage",
-    "If target has [Dazzle]",
-    "If the target(Core) has 25% or less HP, or if target has [Dazzle], deal +60% damage",
-    "If this unit's Speed is 1 or slower",
-    "[On Hit] If target has [Dazzle], deal Gloom damage equal to 60% of this Coin's final damage",
-    "[On Use] If target has [Dazzle], convert all Coins on this Skill to [Unbreakable Coin]s and gain Clash Power +3"
+    "If the target(Core) has 25% or less HP, or if target has [Dazzle], deal +60% damage"
    ]
   },
   "1121403@2": {
@@ -4339,19 +4662,71 @@
       "raw": "[On Hit] Inflict 3 [Sinking]",
       "status": "Sinking"
      }
+    ],
+    "3": [
+     {
+      "condition": {
+       "gte": 1,
+       "source": "target",
+       "status": "Dazzle"
+      },
+      "kind": "bonus_damage_percent_of_coin",
+      "percent": 60,
+      "raw": "[On Hit] If target has [Dazzle], deal Gloom damage equal to 60% of this Coin's final damage"
+     }
     ]
    },
    "combat_start": [],
    "note": "Salvation for those Enchanted by the Lamp",
-   "on_use": [],
+   "on_use": [
+    {
+     "condition": {
+      "any_of": [
+       {
+        "self_speed_at_most": 1
+       },
+       {
+        "gte": 1,
+        "source": "target",
+        "status": "Dazzle"
+       }
+      ]
+     },
+     "kind": "coin_power",
+     "raw": "If any of the following conditions are met, Coin Power +1 and deal +20% damage",
+     "value": 1
+    },
+    {
+     "condition": {
+      "any_of": [
+       {
+        "self_speed_at_most": 1
+       },
+       {
+        "gte": 1,
+        "source": "target",
+        "status": "Dazzle"
+       }
+      ]
+     },
+     "kind": "damage_percent",
+     "raw": "If any of the following conditions are met, Coin Power +1 and deal +20% damage",
+     "value": 20
+    },
+    {
+     "condition": {
+      "gte": 1,
+      "source": "target",
+      "status": "Dazzle"
+     },
+     "kind": "convert_unbreakable_and_clash",
+     "raw": "[On Use] If target has [Dazzle], convert all Coins on this Skill to [Unbreakable Coin]s and gain Clash Power +3",
+     "value": 3
+    }
+   ],
    "tags": [],
    "unmodeled": [
-    "If any of the following conditions are met, Coin Power +1 and deal +20% damage",
-    "If target has [Dazzle]",
-    "If the target(Core) has 25% or less HP, or if target has [Dazzle], deal +60% damage",
-    "If this unit's Speed is 1 or slower",
-    "[On Hit] If target has [Dazzle], deal Gloom damage equal to 60% of this Coin's final damage",
-    "[On Use] If target has [Dazzle], convert all Coins on this Skill to [Unbreakable Coin]s and gain Clash Power +3"
+    "If the target(Core) has 25% or less HP, or if target has [Dazzle], deal +60% damage"
    ]
   },
   "1121403@3": {
@@ -4380,19 +4755,71 @@
       "raw": "[On Hit] Inflict 3 [Sinking]",
       "status": "Sinking"
      }
+    ],
+    "3": [
+     {
+      "condition": {
+       "gte": 1,
+       "source": "target",
+       "status": "Dazzle"
+      },
+      "kind": "bonus_damage_percent_of_coin",
+      "percent": 60,
+      "raw": "[On Hit] If target has [Dazzle], deal Gloom damage equal to 60% of this Coin's final damage"
+     }
     ]
    },
    "combat_start": [],
    "note": "Salvation for those Enchanted by the Lamp",
-   "on_use": [],
+   "on_use": [
+    {
+     "condition": {
+      "any_of": [
+       {
+        "self_speed_at_most": 1
+       },
+       {
+        "gte": 1,
+        "source": "target",
+        "status": "Dazzle"
+       }
+      ]
+     },
+     "kind": "coin_power",
+     "raw": "If any of the following conditions are met, Coin Power +1 and deal +20% damage",
+     "value": 1
+    },
+    {
+     "condition": {
+      "any_of": [
+       {
+        "self_speed_at_most": 1
+       },
+       {
+        "gte": 1,
+        "source": "target",
+        "status": "Dazzle"
+       }
+      ]
+     },
+     "kind": "damage_percent",
+     "raw": "If any of the following conditions are met, Coin Power +1 and deal +20% damage",
+     "value": 20
+    },
+    {
+     "condition": {
+      "gte": 1,
+      "source": "target",
+      "status": "Dazzle"
+     },
+     "kind": "convert_unbreakable_and_clash",
+     "raw": "[On Use] If target has [Dazzle], convert all Coins on this Skill to [Unbreakable Coin]s and gain Clash Power +3",
+     "value": 3
+    }
+   ],
    "tags": [],
    "unmodeled": [
-    "If any of the following conditions are met, Coin Power +1 and deal +20% damage",
-    "If target has [Dazzle]",
-    "If the target(Core) has 25% or less HP, or if target has [Dazzle], deal +60% damage",
-    "If this unit's Speed is 1 or slower",
-    "[On Hit] If target has [Dazzle], deal Gloom damage equal to 60% of this Coin's final damage",
-    "[On Use] If target has [Dazzle], convert all Coins on this Skill to [Unbreakable Coin]s and gain Clash Power +3"
+    "If the target(Core) has 25% or less HP, or if target has [Dazzle], deal +60% damage"
    ]
   },
   "1121403@4": {
@@ -4427,11 +4854,63 @@
       "raw": "[On Hit] Inflict 3 [Sinking]",
       "status": "Sinking"
      }
+    ],
+    "3": [
+     {
+      "condition": {
+       "gte": 1,
+       "source": "target",
+       "status": "Dazzle"
+      },
+      "kind": "bonus_damage_percent_of_coin",
+      "percent": 80,
+      "raw": "[On Hit] If target has [Dazzle], deal Gloom damage equal to 80% of this Coin's final damage"
+     }
     ]
    },
    "combat_start": [],
    "note": "Salvation for those Enchanted by the Lamp",
    "on_use": [
+    {
+     "condition": {
+      "any_of": [
+       {
+        "target_speed_advantage": 3
+       },
+       {
+        "self_speed_at_most": 1
+       },
+       {
+        "gte": 1,
+        "source": "target",
+        "status": "Dazzle"
+       }
+      ]
+     },
+     "kind": "coin_power",
+     "raw": "If any of the following conditions are met, Coin Power +1 and deal +40% damage",
+     "value": 1
+    },
+    {
+     "condition": {
+      "any_of": [
+       {
+        "target_speed_advantage": 3
+       },
+       {
+        "self_speed_at_most": 1
+       },
+       {
+        "gte": 1,
+        "source": "target",
+        "status": "Dazzle"
+       }
+      ]
+     },
+     "kind": "damage_percent",
+     "raw": "If any of the following conditions are met, Coin Power +1 and deal +40% damage",
+     "value": 40
+    },
     {
      "condition": {
       "component": "potency",
@@ -4445,18 +4924,22 @@
      "kind": "coin_power",
      "raw": "[On Use] If target has 6+ ([Sinking] + [Burn]), Coin Power +1",
      "value": 1
+    },
+    {
+     "condition": {
+      "gte": 1,
+      "source": "target",
+      "status": "Dazzle"
+     },
+     "kind": "convert_unbreakable_and_clash",
+     "raw": "[On Use] If target has [Dazzle], convert all Coins on this Skill to [Unbreakable Coin]s and gain Clash Power +3",
+     "value": 3
     }
    ],
    "tags": [],
    "unmodeled": [
-    "If any of the following conditions are met, Coin Power +1 and deal +40% damage",
-    "If target has [Dazzle]",
-    "If target's Speed is faster than this unit's by 3 or more",
     "If the target(Core) has 25% or less HP, or if target has [Dazzle], deal +60% damage",
-    "If this unit's Speed is 1 or slower",
-    "[Attack End] If target is defeated, or if it has 3 [Dazzle], gain 1 [Plus Coin Boost] next turn (once per turn)",
-    "[On Hit] If target has [Dazzle], deal Gloom damage equal to 80% of this Coin's final damage",
-    "[On Use] If target has [Dazzle], convert all Coins on this Skill to [Unbreakable Coin]s and gain Clash Power +3"
+    "[Attack End] If target is defeated, or if it has 3 [Dazzle], gain 1 [Plus Coin Boost] next turn (once per turn)"
    ]
   },
   "1121404@1": {
@@ -4772,10 +5255,15 @@
    },
    "combat_start": [],
    "note": "Tidal Elegy",
-   "on_use": [],
+   "on_use": [
+    {
+     "kind": "damage_percent",
+     "raw": "When attacking just a single target(in Focused Encounters, a Core and its connected Parts count as a single target), Coin Power +2 and deal +100% damage",
+     "value": 100
+    }
+   ],
    "tags": [],
    "unmodeled": [
-    "When attacking just a single target(in Focused Encounters, a Core and its connected Parts count as a single target), Coin Power +2 and deal +100% damage",
     "When attacking just a single target, apply it to 3 targets instead",
     "[Attack End] If 1 or more targets are killed, deal ([Sinking] Potency on each target / 2) Gloom damage against 2 random enemies (max 15; prioritizes targeted enemies with the most [Sinking] Potency)",
     "[Before Attack] At 2+ Gloom Reson., deal +8% damage for every Gloom Reson. (max 32%)",
@@ -5868,6 +6356,11 @@
    "note": "Anitya",
    "on_use": [
     {
+     "kind": "clash_power",
+     "raw": "Clash Power +1 and deal +10% damage for every 6 [Poise] on self (max 6 and 60%, respectively)",
+     "value": 1
+    },
+    {
      "coins": [
       2
      ],
@@ -5896,7 +6389,6 @@
     "clash_any_speed"
    ],
    "unmodeled": [
-    "Clash Power +1 and deal +10% damage for every 6 [Poise] on self (max 6 and 60%, respectively)",
     "[Clash Lose] Target cannot be Staggered until this Skill's Attack End",
     "[On Hit without Cracking] [Deal ([Poise] on self / 2) Pride damage on target] and lose 1 [Poise] Count (rounded down)"
    ]
@@ -5926,6 +6418,11 @@
    "combat_start": [],
    "note": "Skypiercer",
    "on_use": [
+    {
+     "kind": "clash_power",
+     "raw": "Clash Power +1 and deal +10% damage for every 6 [Poise] on self (max 6 and 60%, respectively)",
+     "value": 1
+    },
     {
      "coins": [
       2
@@ -5957,7 +6454,6 @@
     "clash_any_speed"
    ],
    "unmodeled": [
-    "Clash Power +1 and deal +10% damage for every 6 [Poise] on self (max 6 and 60%, respectively)",
     "[Clash Lose] Target cannot be Staggered until this Skill's Attack End",
     "[Deal +([In the Present] x 2)% damage] (max 60%)",
     "[Hit after Clash Lose] [At less than 33% HP, deal +([Poise] Count on self)% damage] (max 30%)",
@@ -5982,6 +6478,11 @@
    "note": "Smite the Wicked",
    "on_use": [
     {
+     "kind": "base_power",
+     "raw": "Final Power +1 and deal +20% damage for every 6 [Poise] on self (max 6 and 120%, respectively)",
+     "value": 1
+    },
+    {
      "kind": "gain",
      "potency": 2,
      "raw": "Gain 2 [Damage Down] and 1 [Paralyze]",
@@ -5993,7 +6494,6 @@
    ],
    "unmodeled": [
     "4 [Poise] and +4 [Poise] Count",
-    "Final Power +1 and deal +20% damage for every 6 [Poise] on self (max 6 and 120%, respectively)",
     "Halve [In the Present] (rounded down)",
     "On Clash Lose, this effect does not activate",
     "Target cannot be Staggered until this Skill's Attack End",

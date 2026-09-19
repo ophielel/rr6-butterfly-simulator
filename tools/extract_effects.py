@@ -76,6 +76,11 @@ PATTERNS = [
      lambda m: {"kind": "gain", "status": m.group(2), "potency": int(m.group(1))}),
     (re.compile(rf"^Spend {N} {ST}$"),
      lambda m: {"kind": "spend_ammo", "status": m.group(2), "value": int(m.group(1))}),
+    (re.compile(rf"^Coin Power \+{N} for every {N} \({ST} \+ {ST}\) on (?:the main )?target \(max {N}\)$"),
+     lambda m: {"kind": "coin_power", "value": 0, "step": int(m.group(1)), "per": int(m.group(2)),
+                "max": int(m.group(5)),
+                "condition": {"source": "target", "statuses": [m.group(3), m.group(4)],
+                              "component": "potency"}}),
     (re.compile(rf"^Clash Power \+{N} for every {N} \({ST} \+ {ST}\) on target \(max {N}\)$"),
      lambda m: {"kind": "clash_power", "value": 0, "step": int(m.group(1)), "per": int(m.group(2)),
                 "max": int(m.group(5)),
@@ -113,6 +118,22 @@ PATTERNS = [
      lambda m: {"kind": "unbreakable_coin", "which": m.group(2), "hp_below_percent": int(m.group(1))}),
     (re.compile(r"^Reuse this Coin once for every (\d+)% missing HP \(max (\d+) times\)$"),
      lambda m: {"kind": "reuse_percent_missing_hp", "per": int(m.group(1)), "max": int(m.group(2))}),
+    (re.compile(r"^convert all Coins on this Skill to \[Unbreakable Coin\]s and gain Clash Power \+(\d+)$"),
+     lambda m: {"kind": "convert_unbreakable_and_clash", "value": int(m.group(1))}),
+    (re.compile(r"^deal (?:Gloom|Wrath|Lust|Sloth|Gluttony|Pride|Envy|Slash|Pierce|Blunt) damage equal to (\d+)% of this Coin's final damage$"),
+     lambda m: {"kind": "bonus_damage_percent_of_coin", "percent": int(m.group(1))}),
+    # Plain, unconditional power / damage lines (also used inside condition
+    # blocks like "If any of the following conditions are met, Coin Power +1").
+    (re.compile(r"^Coin Power \+(\d+)$"),
+     lambda m: {"kind": "coin_power", "value": int(m.group(1))}),
+    (re.compile(r"^Base Power \+(\d+)$"),
+     lambda m: {"kind": "base_power", "value": int(m.group(1))}),
+    (re.compile(r"^Final Power \+(\d+)$"),
+     lambda m: {"kind": "base_power", "value": int(m.group(1))}),
+    (re.compile(r"^Clash Power \+(\d+)$"),
+     lambda m: {"kind": "clash_power", "value": int(m.group(1))}),
+    (re.compile(r"^deal \+(\d+)% damage$"),
+     lambda m: {"kind": "damage_percent", "value": int(m.group(1))}),
     (re.compile(r"^This Attack Skill deals 0 damage$"),
      lambda m: {"kind": "zero_damage"}),
     (re.compile(r"^Does not take damage for this turn$"),
@@ -193,6 +214,51 @@ def parse_triggered(trigger: str, text: str, raw: str) -> Optional[dict]:
     return None
 
 
+# Standalone condition bullets, used both on their own line and inside an
+# "If any of the following conditions are met" block.
+CONDITION_PATTERNS = [
+    (re.compile(rf"^If target has {ST}$"),
+     lambda m: {"source": "target", "status": m.group(1), "gte": 1}),
+    (re.compile(r"^If this unit's Speed is (\d+) or slower$"),
+     lambda m: {"self_speed_at_most": int(m.group(1))}),
+    (re.compile(r"^If target's Speed is faster than this unit's by (\d+) or more$"),
+     lambda m: {"target_speed_advantage": int(m.group(1))}),
+    (re.compile(r"^If this unit's SP is at (\d+) or higher$"),
+     lambda m: {"self_sp_at_least": int(m.group(1))}),
+    (re.compile(r"^If the target\(Core\) has (\d+)% or less HP$"),
+     lambda m: {"source": "target", "hp_below_percent": int(m.group(1)), "hp_or_equal": True}),
+    (re.compile(r"^If this unit has (\d+)% or less HP$"),
+     lambda m: {"hp_below_percent": int(m.group(1)), "hp_or_equal": True}),
+]
+
+ANY_OF_RE = re.compile(r"^If any of the following conditions are met, (.+)$")
+INLINE_IF_RE = re.compile(rf"^If (?:the target|target) has {ST}, (.+)$")
+
+
+def parse_condition_line(line: str):
+    for pattern, handler in CONDITION_PATTERNS:
+        match = pattern.match(line)
+        if match:
+            return handler(match)
+    return None
+
+
+def parse_any_of_conditions(lines, start: int):
+    """Collect the condition bullets that follow an "any of the following" line."""
+    conditions = []
+    index = start
+    while index < len(lines):
+        candidate = lines[index].lstrip("-\u2022\u00b7 ").strip()
+        if not candidate.startswith("If "):
+            break
+        condition = parse_condition_line(candidate)
+        if condition is None:
+            break
+        conditions.append(condition)
+        index += 1
+    return conditions, index
+
+
 TAG_LINES = {
     "can clash with this skill regardless of speed": "clash_any_speed",
     "[unclashable]": "unclashable",
@@ -235,7 +301,11 @@ def parse_text_block(text: str, coin_count: int) -> Tuple[Dict[str, List[dict]],
     buckets: Dict[str, List[dict]] = {"on_use": [], "clash_win": [], "clash_lose": [], "attack_end": [], "combat_start": [], "coin": []}
     unmodeled: List[str] = []
     pending_trigger = "on_use"
-    for raw_line in text.split("\n"):
+    all_lines = text.split("\n")
+    line_index = 0
+    while line_index < len(all_lines):
+        raw_line = all_lines[line_index]
+        line_index += 1
         line = clean_line(raw_line)
         if not line:
             continue
@@ -247,11 +317,60 @@ def parse_text_block(text: str, coin_count: int) -> Tuple[Dict[str, List[dict]],
         if re.fullmatch(r"\[[^\]]+\]", line):
             # a bare trigger token with no clause carries no effect of its own
             continue
-        lower = line.lower().rstrip(".")
+        trigger, rest = split_trigger(line)
+        # "If any of the following conditions are met, <effect>" followed by the
+        # condition bullets: attach the whole list as an any-of condition.
+        any_of = ANY_OF_RE.match(rest)
+        if any_of:
+            conditions, next_index = parse_any_of_conditions(all_lines, line_index)
+            line_index = next_index
+            consumed_all = True
+            for part in re.split(r"\s+and\s+", any_of.group(1)):
+                for pattern, handler in PATTERNS:
+                    match = pattern.match(part.strip())
+                    if not match:
+                        continue
+                    effect = handler(match)
+                    effect["raw"] = line
+                    effect["trigger"] = trigger
+                    condition = {"any_of": conditions} if conditions else None
+                    if condition:
+                        effect["condition"] = condition
+                    buckets.setdefault(trigger if trigger != "coin" else "coin", []).append(effect)
+                    break
+                else:
+                    consumed_all = False
+            if not consumed_all or not conditions:
+                unmodeled.append(line)
+            continue
+        condition_only = parse_condition_line(rest)
+        if condition_only is not None and line.startswith("If "):
+            # A condition bullet that was not consumed by a parent line.
+            unmodeled.append(line)
+            continue
+        inline_if = INLINE_IF_RE.match(rest)
+        if inline_if:
+            condition = {"source": "target", "status": inline_if.group(1), "gte": 1}
+            rest = inline_if.group(2)
+            effect = None
+            for pattern, handler in PATTERNS:
+                match = pattern.match(rest)
+                if not match:
+                    continue
+                effect = handler(match)
+                effect["raw"] = line
+                effect["trigger"] = trigger
+                effect["condition"] = condition
+                break
+            if effect is not None:
+                buckets.setdefault(trigger if trigger != "coin" else "coin", []).append(effect)
+                continue
+            unmodeled.append(line)
+            continue
+        lower = rest.lower().rstrip(".")
         if lower in TAG_LINES:
             buckets.setdefault("tags", []).append({"kind": "tag", "tag": TAG_LINES[lower], "raw": line})
             continue
-        trigger, rest = split_trigger(line)
         if trigger == "on_use" and not TRIGGER_RE.match(line):
             rest = line
         effect = parse_triggered(trigger, rest, line)

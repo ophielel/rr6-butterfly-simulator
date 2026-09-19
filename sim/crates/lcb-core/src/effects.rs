@@ -43,6 +43,19 @@ pub struct Condition {
     pub hp_below_percent: Option<i32>,
     #[serde(default)]
     pub clash_count_gte: Option<i32>,
+    /// True when several conditions are alternatives ("If any of the following
+    /// conditions are met").
+    #[serde(default)]
+    pub any_of: Vec<Condition>,
+    #[serde(default)]
+    pub self_speed_at_most: Option<i32>,
+    #[serde(default)]
+    pub target_speed_advantage: Option<i32>,
+    #[serde(default)]
+    pub self_sp_at_least: Option<i32>,
+    /// `hp_below_percent` includes equality (the wiki writes "N% or less").
+    #[serde(default)]
+    pub hp_or_equal: Option<bool>,
 }
 
 /// A single mechanical effect.  The struct is deliberately loose: every kind

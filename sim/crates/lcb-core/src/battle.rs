@@ -60,6 +60,9 @@ pub struct UseContext {
     /// "This Attack Skill deals 0 damage" (The Quickening).
     #[serde(default)]
     pub zero_damage: bool,
+    /// "convert all Coins on this Skill to Unbreakable Coins".
+    #[serde(default)]
+    pub unbreakable_all: bool,
     /// `Plus Coin Boost` / `Minus Coin Drop` for this use.
     #[serde(default)]
     pub coin_power_boost: i32,
@@ -423,7 +426,12 @@ fn unit_status_value(unit: &Unit, key: &str, component: Option<Component>) -> i3
         Some(Component::Potency) => unit.statuses.potency(key),
         Some(Component::Count) => unit.statuses.count(key),
         Some(Component::Stack) => unit.statuses.stack(key),
-        None => unit.statuses.total(key),
+        // No component: "has [X]" covers Potency + Count and Stack, so that
+        // stack-only statuses (Dazzle, Charge, ...) are detected too.
+        None => {
+            let status = unit.statuses.get(key);
+            status.potency + status.count + status.stack
+        }
     }
 }
 
@@ -448,6 +456,29 @@ fn condition_holds(
     target: Option<&Unit>,
     clash_count: i32,
 ) -> bool {
+    // "If any of the following conditions are met, ..."
+    if !condition.any_of.is_empty() {
+        return condition
+            .any_of
+            .iter()
+            .any(|alternative| condition_holds(alternative, actor, target, clash_count));
+    }
+    if let Some(limit) = condition.self_speed_at_most {
+        if actor.speed > limit {
+            return false;
+        }
+    }
+    if let Some(advantage) = condition.target_speed_advantage {
+        match target {
+            Some(target) if target.speed - actor.speed >= advantage => {}
+            _ => return false,
+        }
+    }
+    if let Some(required) = condition.self_sp_at_least {
+        if actor.sanity.sp() < required {
+            return false;
+        }
+    }
     let source_is_target = condition.source.as_deref() == Some("target");
     let unit = if source_is_target {
         match target {
@@ -458,7 +489,13 @@ fn condition_holds(
         actor
     };
     if let Some(hp) = condition.hp_below_percent {
-        if unit.hp_percent() >= hp {
+        let percent = unit.hp_percent();
+        let ok = if condition.hp_or_equal.unwrap_or(false) {
+            percent <= hp
+        } else {
+            percent < hp
+        };
+        if !ok {
             return false;
         }
     }
@@ -718,6 +755,11 @@ pub fn apply_effects(
                     effect.per.unwrap_or(33),
                     effect.max.unwrap_or(1)
                 ));
+            }
+            "convert_unbreakable_and_clash" => {
+                let value = effect.value.unwrap_or(0);
+                use_ctx.clash_power_bonus += value;
+                use_ctx.unbreakable_all = true;
             }
             "zero_damage" => {
                 use_ctx.zero_damage = true;
@@ -1556,6 +1598,19 @@ fn apply_hit(
         state.warnings.push(note);
     }
 
+    // Attack adders: "deal N% of this Coin's final damage as bonus damage".
+    for effect in use_.mechanics.coin(coin_index as u32 + 1).to_vec() {
+        if effect.kind != "bonus_damage_percent_of_coin" {
+            continue;
+        }
+        let percent = effect.percent.unwrap_or(0);
+        if percent > 0 && damage > 0 {
+            let extra = (damage as f64 * percent as f64 / 100.0).floor() as i32;
+            if extra > 0 {
+                state.units[defender_index].take_damage(extra);
+            }
+        }
+    }
     // Past passive: hitting the Imago burns the attacker.
     time_passives::on_hit_by_sinner(state, defender_index, attacker_index);
     // Signature last-Coin effects of the active state.
@@ -2350,7 +2405,7 @@ fn prepare_use(
         state.warnings.push(note);
     }
     for coin in use_.coins.iter_mut() {
-        if use_.ctx.unbreakable_coins.contains(&1) {
+        if use_.ctx.unbreakable_coins.contains(&1) || use_.ctx.unbreakable_all {
             coin.unbreakable = true;
         }
     }
