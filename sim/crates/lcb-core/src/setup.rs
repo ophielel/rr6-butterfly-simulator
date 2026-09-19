@@ -299,6 +299,9 @@ impl<'a> EncounterBuilder<'a> {
             hp_floor_percent: None,
             barrier_broken: false,
             ends_encounter_on: Vec::new(),
+            turn_effect_usage: BTreeMap::new(),
+            pending_next_turn: Vec::new(),
+            retaliate_on_hit: Vec::new(),
         })
     }
 
@@ -383,6 +386,9 @@ impl<'a> EncounterBuilder<'a> {
                 .for_enemy(&record.id)
                 .and_then(|script| script.hp_floor_percent),
             barrier_broken: false,
+            turn_effect_usage: BTreeMap::new(),
+            pending_next_turn: Vec::new(),
+            retaliate_on_hit: Vec::new(),
             ends_encounter_on: self
                 .scripts
                 .for_enemy(&record.id)

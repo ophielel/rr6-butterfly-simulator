@@ -40,7 +40,14 @@ Coin Drop, Offense/Defense Level Up/Down, `<Sin>`/`<Type>` Resist Down,
 `<Sin>` Fragility, Bind, Haste, Paralyze (per-coin power fix), Charge tick,
 Shield, Unbreakable Coin, Reload (Solemn Lament), Temporal Disjunction.
 
-Tests: `mechanics::rupture_ticks_on_hit`,
+Also: per-turn / per-encounter effect limits, next-turn grants, resource
+consumption for damage, Shield formulas, defense-skill retaliation and
+Aggro-aware targeting.
+
+Tests: `mechanics::per_turn_limits_are_enforced`,
+`mechanics::next_turn_buffs_apply_at_turn_start`,
+`mechanics::consume_status_for_damage`, `mechanics::shield_percent_from_sp`,
+`mechanics::inflicted_statuses_actually_land`, `mechanics::rupture_ticks_on_hit`,
 `mechanics::protection_and_fragile_modify_incoming_damage`,
 `mechanics::power_statuses_change_final_power`,
 `mechanics::tremor_burst_raises_stagger_threshold`, `mechanics::bind_lowers_speed`.

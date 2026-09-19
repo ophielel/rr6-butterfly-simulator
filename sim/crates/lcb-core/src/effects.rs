@@ -98,6 +98,17 @@ pub struct Effect {
     pub times: Option<i32>,
     #[serde(default)]
     pub consume_count: Option<i32>,
+    /// Usage limit per turn / per encounter.
+    #[serde(default)]
+    pub per_turn: Option<i32>,
+    #[serde(default)]
+    pub per_encounter: Option<i32>,
+    /// The effect is applied at the start of the next turn.
+    #[serde(default)]
+    pub next_turn: bool,
+    /// `consume_status_for_damage`: how much of the status must be present.
+    #[serde(default)]
+    pub threshold: Option<i32>,
 }
 
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]

@@ -760,6 +760,157 @@ fn bonus_damage_percent_of_coin_adds_damage() {
     assert!(dealt >= base * 2 - 1, "adder doubled the hit: {base} -> {dealt}");
 }
 
+/// Effects with a per-turn limit only fire that many times per turn, and the
+/// counter resets at Turn Start.  Source: skill text "(N times per turn)".
+#[test]
+fn per_turn_limits_are_enforced() {
+    use lcb_core::effects::Effect;
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&["10110"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    let effect = Effect {
+        kind: "gain".to_string(),
+        status: Some("Protection".to_string()),
+        count: Some(1),
+        per_turn: Some(2),
+        raw: Some("test line".to_string()),
+        ..Default::default()
+    };
+    let mut notes = Vec::new();
+    for _ in 0..3 {
+        let mut ctx = battle::UseContext::default();
+        battle::apply_effects_for_test(&mut state, &[effect.clone()], 0, Some(1), &mut notes, &mut ctx);
+    }
+    assert_eq!(state.units[0].statuses.count("Protection"), 2);
+    // A new turn clears the limit.
+    state.units[0].turn_effect_usage.clear();
+    let mut ctx = battle::UseContext::default();
+    battle::apply_effects_for_test(&mut state, &[effect], 0, Some(1), &mut notes, &mut ctx);
+    assert_eq!(state.units[0].statuses.count("Protection"), 3);
+}
+
+/// "Gain N [X] next turn" is queued and applied at the next Turn Start.
+#[test]
+fn next_turn_buffs_apply_at_turn_start() {
+    use lcb_core::effects::Effect;
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&["10110"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    let effect = Effect {
+        kind: "gain".to_string(),
+        status: Some("Protection".to_string()),
+        count: Some(2),
+        next_turn: true,
+        raw: Some("Gain 2 [Protection] next turn".to_string()),
+        ..Default::default()
+    };
+    let mut notes = Vec::new();
+    let mut ctx = battle::UseContext::default();
+    battle::apply_effects_for_test(&mut state, &[effect], 0, Some(1), &mut notes, &mut ctx);
+    assert_eq!(state.units[0].statuses.count("Protection"), 0, "not yet");
+    assert_eq!(state.units[0].pending_next_turn.len(), 1);
+    // Resolve the turn; the buff lands at the next Turn Start.
+    battle::end_turn(&mut state);
+    battle::begin_turn(
+        &mut state,
+        &sim.library,
+        &sim.mechanics,
+        &sim.scripts,
+    );
+    assert_eq!(state.units[0].statuses.count("Protection"), 2);
+}
+
+/// "At 15+ [Deep Tears], consume 5 [Deep Tears] to deal +15% damage".
+#[test]
+fn consume_status_for_damage() {
+    use lcb_core::effects::Effect;
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&["10110"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    state.units[0].statuses.add_potency("Deep Tears", 20);
+    let effect = Effect {
+        kind: "consume_status_for_damage".to_string(),
+        status: Some("Deep Tears".to_string()),
+        threshold: Some(15),
+        value: Some(5),
+        percent: Some(15),
+        ..Default::default()
+    };
+    let mut notes = Vec::new();
+    let mut ctx = battle::UseContext::default();
+    battle::apply_effects_for_test(&mut state, &[effect.clone()], 0, Some(1), &mut notes, &mut ctx);
+    assert!((ctx.damage_bonus - 0.15).abs() < 1e-9);
+    assert_eq!(state.units[0].statuses.potency("Deep Tears"), 0);
+    // Below the threshold nothing happens.
+    state.units[0].statuses.add_potency("Deep Tears", 5);
+    let mut ctx = battle::UseContext::default();
+    battle::apply_effects_for_test(&mut state, &[effect], 0, Some(1), &mut notes, &mut ctx);
+    assert_eq!(ctx.damage_bonus, 0.0);
+}
+
+/// "Gain Shield equal to (SP / 5)% of this unit's max HP".
+#[test]
+fn shield_percent_from_sp() {
+    use lcb_core::effects::Effect;
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&["10110"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    state.units[0].sanity = Sanity::Sane { sp: 20 };
+    let effect = Effect {
+        kind: "shield_percent_from_sp".to_string(),
+        value: Some(5),
+        ..Default::default()
+    };
+    let mut notes = Vec::new();
+    let mut ctx = battle::UseContext::default();
+    battle::apply_effects_for_test(&mut state, &[effect], 0, Some(1), &mut notes, &mut ctx);
+    let expected = state.units[0].max_hp * 4 / 100; // (20 / 5)% of max HP
+    assert_eq!(ctx.shield_gain, expected);
+}
+
+/// Regression: "Inflict N [X]" must actually land N Potency (an earlier
+/// version scaled from `value`, which is unset for inflictions, and applied 0).
+#[test]
+fn inflicted_statuses_actually_land() {
+    use lcb_core::effects::Effect;
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&["10110"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    let effects = vec![
+        Effect {
+            kind: "inflict".to_string(),
+            status: Some("Burn".to_string()),
+            potency: Some(3),
+            ..Default::default()
+        },
+        Effect {
+            kind: "inflict".to_string(),
+            status: Some("Sinking".to_string()),
+            count: Some(2),
+            ..Default::default()
+        },
+        Effect {
+            kind: "gain".to_string(),
+            status: Some("Poise".to_string()),
+            potency: Some(2),
+            count: Some(1),
+            ..Default::default()
+        },
+    ];
+    let mut notes = Vec::new();
+    let mut ctx = battle::UseContext::default();
+    battle::apply_effects_for_test(&mut state, &effects, 0, Some(1), &mut notes, &mut ctx);
+    assert_eq!(state.units[1].statuses.potency("Burn"), 3);
+    assert_eq!(state.units[1].statuses.count("Sinking"), 2);
+    assert_eq!(state.units[0].statuses.potency("Poise"), 2);
+    assert_eq!(state.units[0].statuses.count("Poise"), 1);
+}
+
 /// A full turn keeps the battle in a consistent, serialisable state.
 #[test]
 fn turn_advances_phase_and_logs() {

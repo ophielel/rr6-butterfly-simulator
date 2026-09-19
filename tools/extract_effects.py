@@ -134,6 +134,24 @@ PATTERNS = [
      lambda m: {"kind": "clash_power", "value": int(m.group(1))}),
     (re.compile(r"^deal \+(\d+)% damage$"),
      lambda m: {"kind": "damage_percent", "value": int(m.group(1))}),
+    # "At 15+ [Deep Tears], consume 5 [Deep Tears] to deal +15% damage"
+    (re.compile(rf"^At {N}\+ {ST}, consume {N} {ST} to deal \+{N}% damage$"),
+     lambda m: {"kind": "consume_status_for_damage", "status": m.group(2),
+                "threshold": int(m.group(1)), "value": int(m.group(3)),
+                "percent": int(m.group(5))}),
+    # "Gain Shield equal to (SP / 5)% of this unit's max HP"
+    (re.compile(r"^Gain Shield equal to \(SP / (\d+)\)% of this unit's max HP$"),
+     lambda m: {"kind": "shield_percent_from_sp", "value": int(m.group(1))}),
+    # "For every [Protection] on self, gain Shield equal to 5% of max HP (max 15%)"
+    (re.compile(rf"^For every {ST} on self, gain Shield equal to {N}% of this unit's max HP \(max {N}%\)$"),
+     lambda m: {"kind": "shield_percent_per_status", "status": m.group(1),
+                "percent": int(m.group(2)), "max": int(m.group(3)),
+                "condition": {"source": "self", "status": m.group(1), "component": "count"}}),
+    # "When hit while this unit has Shield, inflict 3 [Sinking] against the
+    # attacker (3 times per turn)"
+    (re.compile(rf"^When hit while this unit has Shield, inflict {N} {ST} against the attacker$"),
+     lambda m: {"kind": "inflict_on_attacker", "status": m.group(2), "potency": int(m.group(1)),
+                "requires_shield": True}),
     (re.compile(r"^This Attack Skill deals 0 damage$"),
      lambda m: {"kind": "zero_damage"}),
     (re.compile(r"^Does not take damage for this turn$"),
@@ -190,6 +208,23 @@ def parse_triggered(trigger: str, text: str, raw: str) -> Optional[dict]:
     the status appears twice (summing Potency + Count).
     """
     text = text.strip()
+    # Trailing per-turn / per-encounter limits: "(2 times per turn)".
+    limits = None
+    limit_match = re.search(r"\s*\((once|twice|\d+ times?) per (turn|Encounter)\)$", text)
+    if limit_match:
+        word = limit_match.group(1)
+        count = {"once": 1, "twice": 2}.get(word, None)
+        if count is None:
+            count = int(re.sub(r"\D", "", word) or 1)
+        limits = {
+            "per_turn" if limit_match.group(2) == "turn" else "per_encounter": count
+        }
+        text = text[: limit_match.start()].strip()
+    # "next turn" buffs are applied at the start of the following turn.
+    next_turn = False
+    if text.endswith(" next turn"):
+        next_turn = True
+        text = text[: -len(" next turn")].strip()
     normalized = text.replace("both [", "[")
     for pattern, handler in PATTERNS:
         match = pattern.match(normalized)
@@ -208,6 +243,10 @@ def parse_triggered(trigger: str, text: str, raw: str) -> Optional[dict]:
                 elif cond.get("status"):
                     status = cond.pop("status")
                     cond["statuses"] = [status, status]
+        if limits:
+            effect.update(limits)
+        if next_turn:
+            effect["next_turn"] = True
         effect["raw"] = raw
         effect["trigger"] = trigger
         return effect

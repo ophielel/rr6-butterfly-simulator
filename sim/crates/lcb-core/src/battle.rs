@@ -525,13 +525,25 @@ fn condition_holds(
     true
 }
 
-/// Scaled value helper: `value + (measured / per) * step`, capped by `max`.
+/// Scaled value helper for power kinds: `value + (measured / per) * step`,
+/// capped by `max`.  `value` is the base for `clash_power` / `coin_power` /
+/// `base_power` / `damage_percent`.
 fn scaled(effect: &Effect, measured: i32) -> i32 {
     let value = effect.value.unwrap_or(0);
     let per = effect.per.unwrap_or(0).max(1);
     let step = effect.step.unwrap_or(1);
     let max = effect.max.unwrap_or(i32::MAX);
     (value + (measured / per) * step).min(max)
+}
+
+/// Scaled amount for status applications: the effect's own `potency` / `count`
+/// is the base, and "for every N ..." forms add `(measured / per) * step`.
+fn amount(base: i32, effect: &Effect, measured: i32) -> i32 {
+    let per = effect.per.unwrap_or(0);
+    let step = effect.step.unwrap_or(1);
+    let max = effect.max.unwrap_or(i32::MAX);
+    let scaled_part = if per > 0 { (measured / per) * step } else { 0 };
+    (base + scaled_part).min(max)
 }
 
 // --------------------------------------------------------------------------- //
@@ -553,6 +565,40 @@ pub fn apply_effects(
     use_ctx: &mut UseContext,
 ) {
     for effect in effects {
+        // "(N times per Encounter)" limits live in the unit's usage map too,
+        // keyed with an `encounter:` prefix so Turn Start does not clear them.
+        if let Some(limit) = effect.per_encounter {
+            let key = format!(
+                "encounter:{}",
+                effect.raw.clone().unwrap_or_else(|| effect.kind.clone())
+            );
+            let used = state.units[ctx.actor_index]
+                .turn_effect_usage
+                .get(&key)
+                .copied()
+                .unwrap_or(0);
+            if used >= limit {
+                continue;
+            }
+            state.units[ctx.actor_index]
+                .turn_effect_usage
+                .insert(key, used + 1);
+        }
+        // "(N times per turn)" limits.
+        if let Some(limit) = effect.per_turn {
+            let key = effect.raw.clone().unwrap_or_else(|| effect.kind.clone());
+            let used = state.units[ctx.actor_index]
+                .turn_effect_usage
+                .get(&key)
+                .copied()
+                .unwrap_or(0);
+            if used >= limit {
+                continue;
+            }
+            state.units[ctx.actor_index]
+                .turn_effect_usage
+                .insert(key, used + 1);
+        }
         let holds = match &effect.condition {
             Some(cond) => {
                 let actor = &state.units[ctx.actor_index];
@@ -587,9 +633,22 @@ pub fn apply_effects(
                     .unwrap_or(0);
                 let potency = effect
                     .potency
-                    .map(|_| scaled(effect, measured))
+                    .map(|base| amount(base, effect, measured))
                     .unwrap_or(0);
-                let count = effect.count.map(|_| scaled(effect, measured)).unwrap_or(0);
+                let count = effect
+                    .count
+                    .map(|base| amount(base, effect, measured))
+                    .unwrap_or(0);
+                if effect.next_turn {
+                    // "Gain 2 Protection next turn" -> applied at the next
+                    // Turn Start.
+                    state.units[index].pending_next_turn.push(crate::state::PendingStatus {
+                        status: status.clone(),
+                        potency,
+                        count,
+                    });
+                    continue;
+                }
                 let count_status = effect.status2.clone().unwrap_or_else(|| status.clone());
                 // A state of time makes the unit inflict or gain more of its
                 // status (Burn / Poise / Bleed).
@@ -755,6 +814,44 @@ pub fn apply_effects(
                     effect.per.unwrap_or(33),
                     effect.max.unwrap_or(1)
                 ));
+            }
+            "inflict_on_attacker" => {
+                // Stored on the defender and applied when it is hit with Shield.
+                let Some(status) = effect.status.clone() else { continue };
+                let potency = effect.potency.unwrap_or(0);
+                state.units[ctx.actor_index]
+                    .retaliate_on_hit
+                    .push(crate::state::RetaliateOnHit { status, potency });
+            }
+            "consume_status_for_damage" => {
+                let Some(status) = effect.status.clone() else { continue };
+                let threshold = effect.threshold.unwrap_or(0);
+                let consume = effect.value.unwrap_or(0);
+                let unit = &state.units[ctx.actor_index];
+                let have = unit.statuses.potency(&status) + unit.statuses.count(&status);
+                if have >= threshold {
+                    let unit = &mut state.units[ctx.actor_index];
+                    unit.statuses.remove(&status);
+                    use_ctx.damage_bonus += effect.percent.unwrap_or(0) as f64 / 100.0;
+                    let _ = consume;
+                }
+            }
+            "shield_percent_from_sp" => {
+                let divisor = effect.value.unwrap_or(1).max(1);
+                let sp = state.units[ctx.actor_index].sanity.sp().max(0);
+                let percent = sp / divisor;
+                let shield = state.units[ctx.actor_index].max_hp * percent / 100;
+                use_ctx.shield_gain += shield;
+            }
+            "shield_percent_per_status" => {
+                let Some(status) = effect.status.clone() else { continue };
+                let percent = effect.percent.unwrap_or(0);
+                let max = effect.max.unwrap_or(percent);
+                let count = state.units[ctx.actor_index].statuses.count(&status)
+                    + state.units[ctx.actor_index].statuses.potency(&status);
+                let total = (percent * count.max(1)).min(max);
+                let shield = state.units[ctx.actor_index].max_hp * total / 100;
+                use_ctx.shield_gain += shield;
             }
             "convert_unbreakable_and_clash" => {
                 let value = effect.value.unwrap_or(0);
@@ -1611,6 +1708,16 @@ fn apply_hit(
             }
         }
     }
+    // "When hit while this unit has Shield, inflict N [X] against the attacker."
+    if state.units[defender_index].shield > 0 {
+        let retaliation: Vec<crate::state::RetaliateOnHit> =
+            state.units[defender_index].retaliate_on_hit.clone();
+        for entry in retaliation {
+            state.units[attacker_index]
+                .statuses
+                .add_potency(&entry.status, entry.potency);
+        }
+    }
     // Past passive: hitting the Imago burns the attacker.
     time_passives::on_hit_by_sinner(state, defender_index, attacker_index);
     // Signature last-Coin effects of the active state.
@@ -1859,6 +1966,18 @@ pub fn begin_turn(
             }
         }
     }
+    // Flush queued "next turn" buffs and reset per-turn effect limits.
+    for index in 0..state.units.len() {
+        let queued: Vec<crate::state::PendingStatus> =
+            std::mem::take(&mut state.units[index].pending_next_turn);
+        for entry in queued {
+            state.units[index].statuses.add_potency(&entry.status, entry.potency);
+            state.units[index].statuses.add_count(&entry.status, entry.count);
+        }
+        state.units[index]
+            .turn_effect_usage
+            .retain(|key, _| key.starts_with("encounter:"));
+    }
     // Past / Present / Future turn-start effects.
     for index in 0..state.units.len() {
         if state.units[index].alive && !state.units[index].kind.is_sinner() {
@@ -2014,19 +2133,24 @@ fn update_time_state(
 /// Enemy targeting: slots are spread over the living Sinners in speed order
 /// (the real game picks by speed and threat; this is a documented stand-in).
 fn enemy_targets(state: &BattleState, unit_index: usize, slots: usize) -> Vec<Option<UnitId>> {
-    let mut sinners: Vec<(i32, UnitId)> = state
+    // `Aggro`: "More likely to be targeted by enemies" - units with Aggro are
+    // preferred, then the fastest (documented stand-in for the real targeting).
+    let mut sinners: Vec<(i32, i32, UnitId)> = state
         .units
         .iter()
         .filter(|u| u.alive && u.kind.is_sinner())
-        .map(|u| (u.speed, u.id.clone()))
+        .map(|u| {
+            let aggro: i32 = u.statuses.stack("Aggro") + u.statuses.count("Aggro");
+            (aggro, u.speed, u.id.clone())
+        })
         .collect();
-    sinners.sort_by(|a, b| b.0.cmp(&a.0));
+    sinners.sort_by(|a, b| b.0.cmp(&a.0).then(b.1.cmp(&a.1)));
     if sinners.is_empty() {
         return vec![None; slots];
     }
     let _ = unit_index;
     (0..slots)
-        .map(|slot| Some(sinners[slot % sinners.len()].1.clone()))
+        .map(|slot| Some(sinners[slot % sinners.len()].2.clone()))
         .collect()
 }
 
@@ -2035,6 +2159,7 @@ pub fn end_turn(state: &mut BattleState) {
     state.defenses.clear();
     for unit in state.units.iter_mut() {
         unit.statuses.remove("No Damage Taken");
+        unit.retaliate_on_hit.clear();
     }
     if state.encounter_ended {
         state.winner = Some(Winner::EncounterEnded);

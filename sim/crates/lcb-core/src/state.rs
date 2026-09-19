@@ -412,6 +412,33 @@ pub struct Unit {
     /// Skills whose Attack End ends the encounter.
     #[serde(default)]
     pub ends_encounter_on: Vec<String>,
+    /// Per-turn usage counters for effects with a "(N times per turn)" limit,
+    /// keyed by the effect's source line.
+    #[serde(default)]
+    pub turn_effect_usage: BTreeMap<String, i32>,
+    /// Effects queued for the start of the next turn
+    /// ("Gain 2 Protection next turn").
+    #[serde(default)]
+    pub pending_next_turn: Vec<PendingStatus>,
+    /// "When hit while this unit has Shield, inflict N [X] against the attacker"
+    /// (defense-skill passive, active for the turn).
+    #[serde(default)]
+    pub retaliate_on_hit: Vec<RetaliateOnHit>,
+}
+
+/// A retaliation registered by a defense skill for the current turn.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct RetaliateOnHit {
+    pub status: String,
+    pub potency: i32,
+}
+
+/// A status application queued for the next Turn Start.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct PendingStatus {
+    pub status: String,
+    pub potency: i32,
+    pub count: i32,
 }
 
 impl Unit {

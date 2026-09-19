@@ -746,6 +746,7 @@
    "combat_start": [
     {
      "kind": "reload_ammo",
+     "per_turn": 1,
      "raw": "[Combat Start] [Reload (Solemn Lament)] (once per turn)"
     }
    ],
@@ -762,6 +763,7 @@
    "combat_start": [
     {
      "kind": "reload_ammo",
+     "per_turn": 1,
      "raw": "[Combat Start] [Reload (Solemn Lament)] (once per turn)"
     }
    ],
@@ -778,6 +780,7 @@
    "combat_start": [
     {
      "kind": "reload_ammo",
+     "per_turn": 1,
      "raw": "[Combat Start] [Reload (Solemn Lament)] (once per turn)"
     }
    ],
@@ -794,6 +797,7 @@
    "combat_start": [
     {
      "kind": "reload_ammo",
+     "per_turn": 1,
      "raw": "[Combat Start] [Reload (Solemn Lament)] (once per turn)"
     }
    ],
@@ -1590,9 +1594,7 @@
    "note": "A.A.T.",
    "on_use": [],
    "tags": [],
-   "unmodeled": [
-    "[Turn End] Gain 10 [Petals] (once per turn)"
-   ]
+   "unmodeled": []
   },
   "1041404@2": {
    "attack_end": [],
@@ -1603,9 +1605,7 @@
    "note": "A.A.T.",
    "on_use": [],
    "tags": [],
-   "unmodeled": [
-    "[Turn End] Gain 10 [Petals] (once per turn)"
-   ]
+   "unmodeled": []
   },
   "1041404@3": {
    "attack_end": [],
@@ -1616,9 +1616,7 @@
    "note": "A.A.T.",
    "on_use": [],
    "tags": [],
-   "unmodeled": [
-    "[Turn End] Gain 10 [Petals] (once per turn)"
-   ]
+   "unmodeled": []
   },
   "1041404@4": {
    "attack_end": [],
@@ -1629,9 +1627,7 @@
    "note": "A.A.T.",
    "on_use": [],
    "tags": [],
-   "unmodeled": [
-    "[Turn End] Gain 10 [Petals] (once per turn)"
-   ]
+   "unmodeled": []
   },
   "1081301@1": {
    "attack_end": [],
@@ -2668,11 +2664,18 @@
    "coins": {},
    "combat_start": [],
    "note": "With the Power of Justice",
-   "on_use": [],
+   "on_use": [
+    {
+     "kind": "consume_status_for_damage",
+     "percent": 15,
+     "raw": "[On Use] At 15+ [Deep Tears], consume 5 [Deep Tears] to deal +15% damage",
+     "status": "Deep Tears",
+     "threshold": 15,
+     "value": 5
+    }
+   ],
    "tags": [],
-   "unmodeled": [
-    "[On Use] At 15+ [Deep Tears], consume 5 [Deep Tears] to deal +15% damage"
-   ]
+   "unmodeled": []
   },
   "1091302@2": {
    "attack_end": [],
@@ -2692,12 +2695,18 @@
      "kind": "coin_power",
      "raw": "If target has 6+ [Sinking], Coin Power +1",
      "value": 1
+    },
+    {
+     "kind": "consume_status_for_damage",
+     "percent": 15,
+     "raw": "[On Use] At 15+ [Deep Tears], consume 5 [Deep Tears] to deal +15% damage",
+     "status": "Deep Tears",
+     "threshold": 15,
+     "value": 5
     }
    ],
    "tags": [],
-   "unmodeled": [
-    "[On Use] At 15+ [Deep Tears], consume 5 [Deep Tears] to deal +15% damage"
-   ]
+   "unmodeled": []
   },
   "1091302@3": {
    "attack_end": [],
@@ -2717,12 +2726,18 @@
      "kind": "coin_power",
      "raw": "If target has 6+ [Sinking], Coin Power +1",
      "value": 1
+    },
+    {
+     "kind": "consume_status_for_damage",
+     "percent": 15,
+     "raw": "[On Use] At 15+ [Deep Tears], consume 5 [Deep Tears] to deal +15% damage",
+     "status": "Deep Tears",
+     "threshold": 15,
+     "value": 5
     }
    ],
    "tags": [],
-   "unmodeled": [
-    "[On Use] At 15+ [Deep Tears], consume 5 [Deep Tears] to deal +15% damage"
-   ]
+   "unmodeled": []
   },
   "1091302@4": {
    "attack_end": [],
@@ -2755,12 +2770,18 @@
      "raw": "Clash Power +1 for every 2 [Protecting Sword] (max 2)",
      "step": 1,
      "value": 0
+    },
+    {
+     "kind": "consume_status_for_damage",
+     "percent": 15,
+     "raw": "[On Use] At 15+ [Deep Tears], consume 5 [Deep Tears] to deal +15% damage",
+     "status": "Deep Tears",
+     "threshold": 15,
+     "value": 5
     }
    ],
    "tags": [],
-   "unmodeled": [
-    "[On Use] At 15+ [Deep Tears], consume 5 [Deep Tears] to deal +15% damage"
-   ]
+   "unmodeled": []
   },
   "1091303@1": {
    "attack_end": [],
@@ -2916,14 +2937,27 @@
    "clash_lose": [],
    "clash_win": [],
    "coins": {},
-   "combat_start": [],
+   "combat_start": [
+    {
+     "kind": "shield_percent_from_sp",
+     "per_turn": 1,
+     "raw": "[Combat Start] Gain Shield equal to (SP / 5)% of this unit's max HP (once per turn)",
+     "value": 5
+    }
+   ],
    "note": "The Knight's Faith",
-   "on_use": [],
+   "on_use": [
+    {
+     "kind": "gain",
+     "per_turn": 2,
+     "potency": 3,
+     "raw": "[On Use] Gain 3 [Deep Tears] (2 times per turn)",
+     "status": "Deep Tears"
+    }
+   ],
    "tags": [],
    "unmodeled": [
     "If this unit has [Tear-sharpened], lose ([Tear-sharpened] Stack x 15) more SP",
-    "[Combat Start] Gain Shield equal to (SP / 5)% of this unit's max HP (once per turn)",
-    "[On Use] Gain 3 [Deep Tears] (2 times per turn)",
     "[Turn End] At less than 3 [Tear-sharpened], lose 15 SP and gain 1 [Tear-sharpened] (once per turn)"
    ]
   },
@@ -2932,14 +2966,27 @@
    "clash_lose": [],
    "clash_win": [],
    "coins": {},
-   "combat_start": [],
+   "combat_start": [
+    {
+     "kind": "shield_percent_from_sp",
+     "per_turn": 1,
+     "raw": "[Combat Start] Gain Shield equal to (SP / 5)% of this unit's max HP (once per turn)",
+     "value": 5
+    }
+   ],
    "note": "The Knight's Faith",
-   "on_use": [],
+   "on_use": [
+    {
+     "kind": "gain",
+     "per_turn": 2,
+     "potency": 3,
+     "raw": "[On Use] Gain 3 [Deep Tears] (2 times per turn)",
+     "status": "Deep Tears"
+    }
+   ],
    "tags": [],
    "unmodeled": [
     "If this unit has [Tear-sharpened], lose ([Tear-sharpened] Stack x 15) more SP",
-    "[Combat Start] Gain Shield equal to (SP / 5)% of this unit's max HP (once per turn)",
-    "[On Use] Gain 3 [Deep Tears] (2 times per turn)",
     "[Turn End] At less than 3 [Tear-sharpened], lose 15 SP and gain 1 [Tear-sharpened] (once per turn)"
    ]
   },
@@ -2948,14 +2995,27 @@
    "clash_lose": [],
    "clash_win": [],
    "coins": {},
-   "combat_start": [],
+   "combat_start": [
+    {
+     "kind": "shield_percent_from_sp",
+     "per_turn": 1,
+     "raw": "[Combat Start] Gain Shield equal to (SP / 5)% of this unit's max HP (once per turn)",
+     "value": 5
+    }
+   ],
    "note": "The Knight's Faith",
-   "on_use": [],
+   "on_use": [
+    {
+     "kind": "gain",
+     "per_turn": 2,
+     "potency": 3,
+     "raw": "[On Use] Gain 3 [Deep Tears] (2 times per turn)",
+     "status": "Deep Tears"
+    }
+   ],
    "tags": [],
    "unmodeled": [
     "If this unit has [Tear-sharpened], lose ([Tear-sharpened] Stack x 15) more SP",
-    "[Combat Start] Gain Shield equal to (SP / 5)% of this unit's max HP (once per turn)",
-    "[On Use] Gain 3 [Deep Tears] (2 times per turn)",
     "[Turn End] At less than 3 [Tear-sharpened], lose 15 SP and gain 1 [Tear-sharpened] (once per turn)"
    ]
   },
@@ -2964,15 +3024,28 @@
    "clash_lose": [],
    "clash_win": [],
    "coins": {},
-   "combat_start": [],
+   "combat_start": [
+    {
+     "kind": "shield_percent_from_sp",
+     "per_turn": 1,
+     "raw": "[Combat Start] Gain Shield equal to (SP / 3)% of this unit's max HP (once per turn)",
+     "value": 3
+    }
+   ],
    "note": "The Knight's Faith",
-   "on_use": [],
+   "on_use": [
+    {
+     "kind": "gain",
+     "per_turn": 2,
+     "potency": 5,
+     "raw": "[On Use] Gain 5 [Deep Tears] (2 times per turn)",
+     "status": "Deep Tears"
+    }
+   ],
    "tags": [],
    "unmodeled": [
     "If this unit has [Tear-sharpened], lose ([Tear-sharpened] Stack x 15) more SP",
     "[Combat Start] Coin Power +1 for every 2 [Protecting Sword] (max 2)",
-    "[Combat Start] Gain Shield equal to (SP / 3)% of this unit's max HP (once per turn)",
-    "[On Use] Gain 5 [Deep Tears] (2 times per turn)",
     "[Turn End] At less than 3 [Tear-sharpened], lose 15 SP to gain 1 [Tear-sharpened] (once per turn)"
    ]
   },
@@ -3506,6 +3579,16 @@
       "raw": "[On Hit] Inflict +1 [Tremor] Count",
       "status": "Tremor"
      }
+    ],
+    "2": [
+     {
+      "kind": "gain",
+      "next_turn": true,
+      "per_turn": 1,
+      "potency": 1,
+      "raw": "[On Hit] Gain 1 [Protection] next turn (once per turn)",
+      "status": "Protection"
+     }
     ]
    },
    "combat_start": [],
@@ -3530,7 +3613,6 @@
    ],
    "tags": [],
    "unmodeled": [
-    "[On Hit] Gain 1 [Protection] next turn (once per turn)",
     "[On Use] Gain +3 [Aggro] to this Skill Slot next turn",
     "[On Use] If this unit has [The Udjat -Vanguard-], Clash Power +1"
    ]
@@ -3741,6 +3823,14 @@
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Tremor]",
       "status": "Tremor"
+     },
+     {
+      "kind": "gain",
+      "next_turn": true,
+      "per_turn": 1,
+      "potency": 1,
+      "raw": "[On Hit] Gain 1 [Protection] next turn (once per turn)",
+      "status": "Protection"
      }
     ]
    },
@@ -3771,12 +3861,20 @@
    ],
    "tags": [],
    "unmodeled": [
-    "[On Hit] Gain 1 [Protection] next turn (once per turn)",
     "[On Use] Gain +5 [Aggro] to this Skill Slot next turn"
    ]
   },
   "1111403@1": {
-   "attack_end": [],
+   "attack_end": [
+    {
+     "kind": "gain",
+     "next_turn": true,
+     "per_turn": 1,
+     "potency": 2,
+     "raw": "[Attack End] Gain 2 [Protection] next turn (once per turn)",
+     "status": "Protection"
+    }
+   ],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -3806,6 +3904,20 @@
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Sinking]",
       "status": "Sinking"
+     },
+     {
+      "kind": "inflict",
+      "next_turn": true,
+      "potency": 3,
+      "raw": "[On Hit] Inflict 3 [Blue Sand] next turn",
+      "status": "Blue Sand"
+     },
+     {
+      "kind": "inflict",
+      "per_turn": 1,
+      "potency": 1,
+      "raw": "[On Hit] Inflict 1 [Gloom Resist Down] (once per turn)",
+      "status": "Gloom Resist Down"
      }
     ],
     "3": [
@@ -3835,15 +3947,21 @@
    "tags": [],
    "unmodeled": [
     "[Attack End] At 2 or fewer [LCA Fracture Round], [Reload] (5 times per Encounter)",
-    "[Attack End] Gain 2 [Protection] next turn (once per turn)",
-    "[On Hit] Inflict 1 [Gloom Resist Down] (once per turn)",
-    "[On Hit] Inflict 3 [Blue Sand] next turn",
     "[On Use] Base Power +1 for every [LCA Fracture Round] about to be spent by this Skill",
     "[On Use] Gain +8 [Aggro] to this Skill Slot next turn"
    ]
   },
   "1111403@2": {
-   "attack_end": [],
+   "attack_end": [
+    {
+     "kind": "gain",
+     "next_turn": true,
+     "per_turn": 1,
+     "potency": 2,
+     "raw": "[Attack End] Gain 2 [Protection] next turn (once per turn)",
+     "status": "Protection"
+    }
+   ],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -3873,6 +3991,20 @@
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Sinking]",
       "status": "Sinking"
+     },
+     {
+      "kind": "inflict",
+      "next_turn": true,
+      "potency": 3,
+      "raw": "[On Hit] Inflict 3 [Blue Sand] next turn",
+      "status": "Blue Sand"
+     },
+     {
+      "kind": "inflict",
+      "per_turn": 1,
+      "potency": 1,
+      "raw": "[On Hit] Inflict 1 [Gloom Resist Down] (once per turn)",
+      "status": "Gloom Resist Down"
      }
     ],
     "3": [
@@ -3902,15 +4034,21 @@
    "tags": [],
    "unmodeled": [
     "[Attack End] At 2 or fewer [LCA Fracture Round], [Reload] (5 times per Encounter)",
-    "[Attack End] Gain 2 [Protection] next turn (once per turn)",
-    "[On Hit] Inflict 1 [Gloom Resist Down] (once per turn)",
-    "[On Hit] Inflict 3 [Blue Sand] next turn",
     "[On Use] Base Power +1 for every [LCA Fracture Round] about to be spent by this Skill",
     "[On Use] Gain +8 [Aggro] to this Skill Slot next turn"
    ]
   },
   "1111403@3": {
-   "attack_end": [],
+   "attack_end": [
+    {
+     "kind": "gain",
+     "next_turn": true,
+     "per_turn": 1,
+     "potency": 2,
+     "raw": "[Attack End] Gain 2 [Protection] next turn (once per turn)",
+     "status": "Protection"
+    }
+   ],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -3940,6 +4078,20 @@
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Sinking]",
       "status": "Sinking"
+     },
+     {
+      "kind": "inflict",
+      "next_turn": true,
+      "potency": 3,
+      "raw": "[On Hit] Inflict 3 [Blue Sand] next turn",
+      "status": "Blue Sand"
+     },
+     {
+      "kind": "inflict",
+      "per_turn": 1,
+      "potency": 1,
+      "raw": "[On Hit] Inflict 1 [Gloom Resist Down] (once per turn)",
+      "status": "Gloom Resist Down"
      }
     ],
     "3": [
@@ -3969,15 +4121,21 @@
    "tags": [],
    "unmodeled": [
     "[Attack End] At 2 or fewer [LCA Fracture Round], [Reload] (5 times per Encounter)",
-    "[Attack End] Gain 2 [Protection] next turn (once per turn)",
-    "[On Hit] Inflict 1 [Gloom Resist Down] (once per turn)",
-    "[On Hit] Inflict 3 [Blue Sand] next turn",
     "[On Use] Base Power +1 for every [LCA Fracture Round] about to be spent by this Skill",
     "[On Use] Gain +8 [Aggro] to this Skill Slot next turn"
    ]
   },
   "1111403@4": {
-   "attack_end": [],
+   "attack_end": [
+    {
+     "kind": "gain",
+     "next_turn": true,
+     "per_turn": 1,
+     "potency": 2,
+     "raw": "[Attack End] Gain 2 [Protection] next turn (once per turn)",
+     "status": "Protection"
+    }
+   ],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -4007,6 +4165,20 @@
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Sinking]",
       "status": "Sinking"
+     },
+     {
+      "kind": "inflict",
+      "next_turn": true,
+      "potency": 3,
+      "raw": "[On Hit] Inflict 3 [Blue Sand] next turn",
+      "status": "Blue Sand"
+     },
+     {
+      "kind": "inflict",
+      "per_turn": 1,
+      "potency": 1,
+      "raw": "[On Hit] Inflict 1 [Gloom Resist Down] (once per turn)",
+      "status": "Gloom Resist Down"
      }
     ],
     "3": [
@@ -4039,10 +4211,7 @@
     "If target has less than 0 SP, inflict 1 [Gloom Fragility] (once per turn)",
     "If this unit has [The Udjat -Vanguard-], deal +50% damage",
     "[Attack End] At 2 or fewer [LCA Fracture Round], [Reload] (5 times per Encounter)",
-    "[Attack End] Gain 2 [Protection] next turn (once per turn)",
     "[On Hit] If target is a SP Unit, trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1",
-    "[On Hit] Inflict 1 [Gloom Resist Down] (once per turn)",
-    "[On Hit] Inflict 3 [Blue Sand] next turn",
     "[On Use] At 6+ ([Sinking] + [Tremor]) on target, Coin Power +1",
     "[On Use] Base Power +1 for every [LCA Fracture Round] about to be spent by this Skill",
     "[On Use] Gain +8 [Aggro] to this Skill Slot next turn"
@@ -4055,10 +4224,18 @@
    "coins": {},
    "combat_start": [],
    "note": "Composure",
-   "on_use": [],
+   "on_use": [
+    {
+     "kind": "inflict_on_attacker",
+     "per_turn": 3,
+     "potency": 3,
+     "raw": "When hit while this unit has Shield, inflict 3 [Sinking] against the attacker (3 times per turn)",
+     "requires_shield": true,
+     "status": "Sinking"
+    }
+   ],
    "tags": [],
    "unmodeled": [
-    "When hit while this unit has Shield, inflict 3 [Sinking] against the attacker (3 times per turn)",
     "[On Use] For every [Protection] on self, gain Shield equal to 5% of this unit's max HP (max 15%; once per turn)"
    ]
   },
@@ -4069,10 +4246,18 @@
    "coins": {},
    "combat_start": [],
    "note": "Composure",
-   "on_use": [],
+   "on_use": [
+    {
+     "kind": "inflict_on_attacker",
+     "per_turn": 3,
+     "potency": 3,
+     "raw": "When hit while this unit has Shield, inflict 3 [Sinking] against the attacker (3 times per turn)",
+     "requires_shield": true,
+     "status": "Sinking"
+    }
+   ],
    "tags": [],
    "unmodeled": [
-    "When hit while this unit has Shield, inflict 3 [Sinking] against the attacker (3 times per turn)",
     "[On Use] For every [Protection] on self, gain Shield equal to 5% of this unit's max HP (max 15%; once per turn)"
    ]
   },
@@ -4083,10 +4268,18 @@
    "coins": {},
    "combat_start": [],
    "note": "Composure",
-   "on_use": [],
+   "on_use": [
+    {
+     "kind": "inflict_on_attacker",
+     "per_turn": 3,
+     "potency": 3,
+     "raw": "When hit while this unit has Shield, inflict 3 [Sinking] against the attacker (3 times per turn)",
+     "requires_shield": true,
+     "status": "Sinking"
+    }
+   ],
    "tags": [],
    "unmodeled": [
-    "When hit while this unit has Shield, inflict 3 [Sinking] against the attacker (3 times per turn)",
     "[On Use] For every [Protection] on self, gain Shield equal to 5% of this unit's max HP (max 15%; once per turn)"
    ]
   },
@@ -4097,10 +4290,18 @@
    "coins": {},
    "combat_start": [],
    "note": "Composure",
-   "on_use": [],
+   "on_use": [
+    {
+     "kind": "inflict_on_attacker",
+     "per_turn": 3,
+     "potency": 3,
+     "raw": "When hit while this unit has Shield, inflict 3 [Sinking] against the attacker (3 times per turn)",
+     "requires_shield": true,
+     "status": "Sinking"
+    }
+   ],
    "tags": [],
    "unmodeled": [
-    "When hit while this unit has Shield, inflict 3 [Sinking] against the attacker (3 times per turn)",
     "[On Use] For every [Protection] on self, gain Shield equal to 5% of this unit's max HP (max 15%; once per turn)",
     "[On Use] If this unit has [The Udjat -Vanguard-], gain 1 [Protection] (once per turn)"
    ]
@@ -4129,11 +4330,17 @@
    },
    "combat_start": [],
    "note": "Intense Stare: Zero-Range",
-   "on_use": [],
+   "on_use": [
+    {
+     "kind": "gain",
+     "next_turn": true,
+     "potency": 1,
+     "raw": "[On Use] Gain 1 [Bind] next turn",
+     "status": "Bind"
+    }
+   ],
    "tags": [],
-   "unmodeled": [
-    "[On Use] Gain 1 [Bind] next turn"
-   ]
+   "unmodeled": []
   },
   "1121401@2": {
    "attack_end": [],
@@ -4176,12 +4383,17 @@
      "kind": "coin_power",
      "raw": "If any of the following conditions are met, Coin Power +1",
      "value": 1
+    },
+    {
+     "kind": "gain",
+     "next_turn": true,
+     "potency": 1,
+     "raw": "[On Use] Gain 1 [Bind] next turn",
+     "status": "Bind"
     }
    ],
    "tags": [],
-   "unmodeled": [
-    "[On Use] Gain 1 [Bind] next turn"
-   ]
+   "unmodeled": []
   },
   "1121401@3": {
    "attack_end": [],
@@ -4224,12 +4436,17 @@
      "kind": "coin_power",
      "raw": "If any of the following conditions are met, Coin Power +1",
      "value": 1
+    },
+    {
+     "kind": "gain",
+     "next_turn": true,
+     "potency": 1,
+     "raw": "[On Use] Gain 1 [Bind] next turn",
+     "status": "Bind"
     }
    ],
    "tags": [],
-   "unmodeled": [
-    "[On Use] Gain 1 [Bind] next turn"
-   ]
+   "unmodeled": []
   },
   "1121401@4": {
    "attack_end": [],
@@ -4289,12 +4506,17 @@
      "kind": "coin_power",
      "raw": "[On Use] If target has 6+ ([Sinking] + [Burn]), Coin Power +1",
      "value": 1
+    },
+    {
+     "kind": "gain",
+     "next_turn": true,
+     "potency": 1,
+     "raw": "[On Use] Gain 1 [Bind] next turn",
+     "status": "Bind"
     }
    ],
    "tags": [],
-   "unmodeled": [
-    "[On Use] Gain 1 [Bind] next turn"
-   ]
+   "unmodeled": []
   },
   "1121402@1": {
    "attack_end": [],
@@ -5209,6 +5431,13 @@
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [The Uninvited]",
       "status": "The Uninvited"
+     },
+     {
+      "kind": "inflict",
+      "next_turn": true,
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Echoes of the Manor] next turn",
+      "status": "Echoes of the Manor"
      }
     ]
    },
@@ -5221,8 +5450,7 @@
     "Prioritizes targets that have the most [Sinking]",
     "[Attack End] Heal 3 other allies with the lowest HP percentages by (10 + ([Sinking] on the main target + [Sinking] Count on the main target)/3)% HP (max 15%)",
     "[Before Attack] Lose HP by 10% of Max HP (does not get Staggered due to this effect)",
-    "[On Hit] At 3+ Gloom Reson., inflict 1 [Gloom Fragility]",
-    "[On Hit] Inflict 2 [Echoes of the Manor] next turn"
+    "[On Hit] At 3+ Gloom Reson., inflict 1 [Gloom Fragility]"
    ]
   },
   "20810.awakening@1": {
@@ -5242,6 +5470,15 @@
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Tremor]",
       "status": "Tremor"
+     }
+    ],
+    "2": [
+     {
+      "kind": "inflict",
+      "next_turn": true,
+      "potency": 1,
+      "raw": "[On Hit without Cracking] Inflict 1 [Bind] next turn",
+      "status": "Bind"
      }
     ],
     "3": [
@@ -5268,7 +5505,6 @@
     "[Attack End] If 1 or more targets are killed, deal ([Sinking] Potency on each target / 2) Gloom damage against 2 random enemies (max 15; prioritizes targeted enemies with the most [Sinking] Potency)",
     "[Before Attack] At 2+ Gloom Reson., deal +8% damage for every Gloom Reson. (max 32%)",
     "[Before Attack] If the main target has higher than 1 Gloom Resist., deal +3% damage for every 0.1 excess Resist. (max 15%)",
-    "[On Hit without Cracking] Inflict 1 [Bind] next turn",
     "[On Hit] If there are Staggered, Part broken, or killed units among the targets, inflict 2 [Sinking] against a random non-targeted enemy (once per turn; in Focused Encounters, each Part count as 1 target)",
     "[On Use] If the main target has 4+ [Sinking], Clash Power +1"
    ]
