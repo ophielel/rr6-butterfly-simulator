@@ -1264,6 +1264,42 @@ fn imago_stack_gains_halve_and_bonuses() {
     assert_eq!(state.units[imago].statuses.stack("In the Past"), 7);
 }
 
+/// Attack Weight: the Imago's AoE skills (Kalpāgni 7, Immolation 3,
+/// Bloodflower 5) hit that many Slots.  Source: wiki.gg `Clash` / Attack Weight.
+#[test]
+fn attack_weight_hits_multiple_slots() {
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&fixed::TEAM, &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    let imago = state.units.iter().position(|u| !u.kind.is_sinner()).unwrap();
+    let mut use_ = battle::build_use(
+        &state,
+        &sim.library,
+        &sim.mechanics,
+        imago,
+        &SkillId::new("956706"),
+    )
+    .unwrap();
+    assert_eq!(use_.attack_weight, 7, "Kalpāgni has 7 Attack Weight");
+    state.preset_flips = vec![true; 64];
+    state.flip_cursor = 0;
+    let hp_before: Vec<i32> = state.units.iter().map(|u| u.hp).collect();
+    let target = 0usize;
+    let hits = battle::one_sided_attack(&mut state, imago, target, &mut use_, 0);
+    battle::splash_attack_for_test(&mut state, imago, target, &use_, &hits, 0);
+    let damaged: Vec<usize> = state
+        .units
+        .iter()
+        .enumerate()
+        .filter(|(index, unit)| {
+            unit.kind.is_sinner() && unit.hp < hp_before[*index]
+        })
+        .map(|(index, _)| index)
+        .collect();
+    assert_eq!(damaged.len(), 7, "all seven Sinners were hit: {damaged:?}");
+}
+
 /// A full turn keeps the battle in a consistent, serialisable state.
 #[test]
 fn turn_advances_phase_and_logs() {

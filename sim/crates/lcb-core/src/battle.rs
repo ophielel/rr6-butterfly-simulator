@@ -1860,6 +1860,103 @@ fn reuse_budget(use_: &UseContext) -> i32 {
     0
 }
 
+/// Damage-only calculation shared by normal hits and Attack Weight splash hits.
+fn compute_hit_damage(
+    state: &BattleState,
+    attacker_index: usize,
+    defender_index: usize,
+    use_: &SkillUse,
+    power: i32,
+    crit: bool,
+    clash_count: i32,
+) -> i32 {
+    let defender = &state.units[defender_index];
+    let sin_resist = defender.resist_sin(use_.sin);
+    let sin_name = sin_name(use_.sin);
+    let stagger_bonus = if defender.is_staggered() {
+        Some(defender.stagger.damage_resistance_bonus())
+    } else {
+        None
+    };
+    let inputs = DamageInputs {
+        coin_roll: power,
+        sin_resist,
+        damage_type_resist: defender.resist(use_.damage_type),
+        stagger_bonus,
+        offense_level: state.units[attacker_index].offense_level() + use_.offense_level_mod,
+        defense_level: active_defense_level(state, defender_index)
+            .unwrap_or_else(|| defender.defense_level()),
+        critical: crit,
+        clash_count,
+        dynamic_modifier: use_.ctx.damage_bonus
+            + state.units[attacker_index].outgoing_damage_modifier()
+            + incoming_damage_modifier(defender, sin_name)
+            + if crit {
+                time_passives::crit_damage_bonus(state, attacker_index) + use_.ctx.crit_damage_bonus
+            } else {
+                0.0
+            },
+        ..Default::default()
+    };
+    let breakdown = compute_damage(&inputs);
+    if use_.ctx.zero_damage {
+        0
+    } else {
+        breakdown.final_damage
+    }
+}
+
+/// Attack Weight: a Skill with N Attack Weight hits N Slots.  The main target
+/// goes through the normal Clash/one-sided path; the remaining Slots take the
+/// same Coin Rolls without Clashing (wiki.gg `Clash` / Attack Weight).
+fn splash_attack(
+    state: &mut BattleState,
+    attacker_index: usize,
+    main_target: usize,
+    use_: &SkillUse,
+    hits: &[HitResult],
+    clash_count: i32,
+) {
+    let extra = use_.attack_weight.saturating_sub(1) as usize;
+    if extra == 0 || hits.is_empty() {
+        return;
+    }
+    let defenders: Vec<usize> = state
+        .units
+        .iter()
+        .enumerate()
+        .filter(|(index, unit)| {
+            unit.alive && unit.kind.is_sinner() && *index != main_target
+        })
+        .map(|(index, _)| index)
+        .collect();
+    for target in defenders.into_iter().take(extra) {
+        for hit in hits {
+            if !state.units[target].alive {
+                break;
+            }
+            let damage =
+                compute_hit_damage(state, attacker_index, target, use_, hit.power, false, clash_count);
+            if damage > 0 {
+                state.units[target].take_damage(damage);
+                check_stagger(state, target);
+            }
+        }
+    }
+}
+
+fn sin_name(sin: Sin) -> &'static str {
+    match sin {
+        Sin::Wrath => "Wrath",
+        Sin::Lust => "Lust",
+        Sin::Sloth => "Sloth",
+        Sin::Gluttony => "Gluttony",
+        Sin::Gloom => "Gloom",
+        Sin::Pride => "Pride",
+        Sin::Envy => "Envy",
+    }
+}
+
 #[allow(clippy::too_many_arguments)]
 fn apply_hit(
     state: &mut BattleState,
@@ -1962,15 +2059,7 @@ fn apply_hit(
         None
     };
     let sin_resist = defender.resist_sin(use_.sin);
-    let sin_name = match use_.sin {
-        Sin::Wrath => "Wrath",
-        Sin::Lust => "Lust",
-        Sin::Sloth => "Sloth",
-        Sin::Gluttony => "Gluttony",
-        Sin::Gloom => "Gloom",
-        Sin::Pride => "Pride",
-        Sin::Envy => "Envy",
-    };
+    let sin_name = sin_name(use_.sin);
     let mut type_resist = defender.resist(use_.damage_type);
     for (kind, floor) in use_.ctx.resist_floor.iter() {
         let matches = match kind.as_str() {
@@ -2739,13 +2828,15 @@ pub fn resolve_combat(state: &mut BattleState, library: &Library, mechanics: &Me
                         apply_clash_result(state, actor_j, Some(actor_i), b, false);
                         if let Some(target) = target_i {
                             let clash_count = outcome.rounds;
-                            one_sided_attack(state, actor_i, target, a, clash_count);
+                            let hits = one_sided_attack(state, actor_i, target, a, clash_count);
+                            splash_attack(state, actor_i, target, a, &hits, clash_count);
                         }
                     } else if outcome.winner.as_ref() == Some(&state.units[actor_j].id) {
                         apply_clash_result(state, actor_j, Some(actor_i), b, true);
                         apply_clash_result(state, actor_i, Some(actor_j), a, false);
                         let clash_count = outcome.rounds;
-                        one_sided_attack(state, actor_j, actor_i, b, clash_count);
+                        let hits = one_sided_attack(state, actor_j, actor_i, b, clash_count);
+                        splash_attack(state, actor_j, actor_i, b, &hits, clash_count);
                     } else {
                         apply_clash_result(state, actor_i, Some(actor_j), a, false);
                         apply_clash_result(state, actor_j, Some(actor_i), b, false);
@@ -2784,6 +2875,7 @@ pub fn resolve_combat(state: &mut BattleState, library: &Library, mechanics: &Me
                     {
                         prepare_use(state, library, mechanics, actor_i, Some(target), action_i.slot, &mut use_);
                         let hits = one_sided_attack(state, actor_i, target, &mut use_, 0);
+                        splash_attack(state, actor_i, target, &use_, &hits, 0);
                         apply_attack_end(state, actor_i, Some(target), action_i.slot, &mut use_);
                         let total: i32 = hits.iter().map(|h| h.damage).sum();
                         let rolls: Vec<i32> = hits.iter().map(|h| h.power).collect();
@@ -3324,6 +3416,18 @@ pub fn apply_effects_for_test(
         mechanics_note: notes,
     };
     apply_effects(state, effects, &mut ctx, use_ctx);
+}
+
+#[doc(hidden)]
+pub fn splash_attack_for_test(
+    state: &mut BattleState,
+    attacker_index: usize,
+    main_target: usize,
+    use_: &SkillUse,
+    hits: &[HitResult],
+    clash_count: i32,
+) {
+    splash_attack(state, attacker_index, main_target, use_, hits, clash_count);
 }
 
 #[doc(hidden)]
