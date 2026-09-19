@@ -1,5 +1,104 @@
 {
  "skills": {
+  "illusory_future": {
+   "acts_while_staggered": false,
+   "cycle_turns": 1,
+   "ends_encounter_on": [
+    "956601"
+   ],
+   "ends_encounter_unless_shield_broken": true,
+   "enemy_id": "9566",
+   "hp_floor_percent": 1,
+   "notes": [
+    "1 HP, 333 Shield on the first Turn Start; Eclosion is Unclashable, Target Fixed, deals 0 damage and ends the Encounter.",
+    "If the Shield is broken the encounter instead continues one turn (choice event) before ending.",
+    "Segmentation: each hit as the main target removes 1 Stack from the Imago's matching state of time and heals the attacker 10 SP (once per turn per Sinner); if the unit is never hit this turn the Imago gains 5 Stacks."
+   ],
+   "segmentation": {
+    "attacker_sp_heal": 10,
+    "gain_if_not_hit": 5,
+    "stack_loss_per_hit": 1,
+    "stack_status": "In the Future"
+   },
+   "shield_flat": 333,
+   "slots": 1,
+   "source": [
+    "https://limbuscompany.wiki.gg/wiki/Illusory_Butterfly_of_Entangled_Lives::Future",
+    "https://wikiwiki.jp/lcbwiki/幻想体/羅生蝶 (part info)"
+   ],
+   "station": 4,
+   "turns": [
+    [
+     "956601"
+    ]
+   ]
+  },
+  "illusory_past": {
+   "acts_while_staggered": false,
+   "cycle_turns": 1,
+   "ends_encounter_on": [
+    "956401"
+   ],
+   "ends_encounter_unless_shield_broken": true,
+   "enemy_id": "9564",
+   "hp_floor_percent": 1,
+   "notes": [
+    "1 HP, 333 Shield on the first Turn Start; Eclosion is Unclashable, Target Fixed, deals 0 damage and ends the Encounter.",
+    "If the Shield is broken the encounter instead continues one turn (choice event) before ending.",
+    "Segmentation: each hit as the main target removes 1 Stack from the Imago's matching state of time and heals the attacker 10 SP (once per turn per Sinner); if the unit is never hit this turn the Imago gains 5 Stacks."
+   ],
+   "segmentation": {
+    "attacker_sp_heal": 10,
+    "gain_if_not_hit": 5,
+    "stack_loss_per_hit": 1,
+    "stack_status": "In the Past"
+   },
+   "shield_flat": 333,
+   "slots": 1,
+   "source": [
+    "https://limbuscompany.wiki.gg/wiki/Illusory_Butterfly_of_Entangled_Lives::Past",
+    "https://wikiwiki.jp/lcbwiki/幻想体/羅生蝶 (part info)"
+   ],
+   "station": 2,
+   "turns": [
+    [
+     "956401"
+    ]
+   ]
+  },
+  "illusory_present": {
+   "acts_while_staggered": false,
+   "cycle_turns": 1,
+   "ends_encounter_on": [
+    "956501"
+   ],
+   "ends_encounter_unless_shield_broken": true,
+   "enemy_id": "9565",
+   "hp_floor_percent": 1,
+   "notes": [
+    "1 HP, 333 Shield on the first Turn Start; Eclosion is Unclashable, Target Fixed, deals 0 damage and ends the Encounter.",
+    "If the Shield is broken the encounter instead continues one turn (choice event) before ending.",
+    "Segmentation: each hit as the main target removes 1 Stack from the Imago's matching state of time and heals the attacker 10 SP (once per turn per Sinner); if the unit is never hit this turn the Imago gains 5 Stacks."
+   ],
+   "segmentation": {
+    "attacker_sp_heal": 10,
+    "gain_if_not_hit": 5,
+    "stack_loss_per_hit": 1,
+    "stack_status": "In the Present"
+   },
+   "shield_flat": 333,
+   "slots": 1,
+   "source": [
+    "https://limbuscompany.wiki.gg/wiki/Illusory_Butterfly_of_Entangled_Lives::Present",
+    "https://wikiwiki.jp/lcbwiki/幻想体/羅生蝶 (part info)"
+   ],
+   "station": 3,
+   "turns": [
+    [
+     "956501"
+    ]
+   ]
+  },
   "imago": {
    "acts_while_staggered": true,
    "clash_count_swing": {

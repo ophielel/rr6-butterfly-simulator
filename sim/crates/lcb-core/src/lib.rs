@@ -105,6 +105,36 @@ impl Simulator {
         Ok(state)
     }
 
+    /// Section 5: the Imago, carrying what the earlier stations left behind.
+    ///
+    /// The JA wiki's station-5 notes: the fight starts with the HP the Pupa had
+    /// in station 1 (excluding its Shield) and with 10 Stacks of each state of
+    /// time; the choice events of stations 2-4 disable components of the
+    /// Past/Present/Future passives.
+    pub fn section5(
+        &self,
+        campaign: &state::CampaignState,
+        seed: u64,
+        config: BattleConfig,
+    ) -> Result<BattleState, SimError> {
+        let mut built = self.new_encounter(
+            &setup::fixed::TEAM,
+            &[setup::fixed::BOSS_IMAGO],
+            seed,
+            config,
+        )?;
+        built.campaign = campaign.clone();
+        built.campaign.station = 5;
+        if let Some(hp) = campaign.pupa_hp {
+            for unit in built.units.iter_mut() {
+                if !unit.kind.is_sinner() {
+                    unit.hp = hp.clamp(1, unit.max_hp);
+                }
+            }
+        }
+        Ok(built)
+    }
+
     pub fn legal_actions(&self, state: &BattleState) -> Vec<Action> {
         battle::legal_actions(state, &self.library)
     }

@@ -1389,9 +1389,12 @@ pub mod time_passives {
     }
 
     /// Past: "When hit by Sinners, inflict 1 Burn and +1 Burn Count on the
-    /// attacking Sinner."
+    /// attacking Sinner."  Disabled when the earlier stations cut that component.
     pub fn on_hit_by_sinner(state: &mut BattleState, enemy_index: usize, attacker_index: usize) {
         if state.units[enemy_index].time_state != Some(crate::scripts::TimeState::Past) {
+            return;
+        }
+        if state.campaign.is_disabled("past:burn_on_hit") {
             return;
         }
         if !state.units[attacker_index].kind.is_sinner() {
@@ -1413,6 +1416,10 @@ pub mod time_passives {
             .count() as i32;
         match active {
             crate::scripts::TimeState::Past => {
+                if state.campaign.is_disabled("past:turn_start") {
+                    let _ = stack;
+                    return;
+                }
                 // "Turn Start: Inflict 5 HP Healing Down and 3 Wrath Fragility
                 // on all Sinners who have 10+ (Burn Potency + Burn Count)."
                 for index in 0..state.units.len() {
@@ -1462,6 +1469,9 @@ pub mod time_passives {
         let stack = state.units[enemy_index].statuses.stack(active.stack_key());
         match active {
             crate::scripts::TimeState::Past => {
+                if state.campaign.is_disabled("past:kalpagni") {
+                    return;
+                }
                 // Kalpāgni's final Coin: SP damage equal to half the Stack.
                 let sanity = state.units[target_index].sanity;
                 state.units[target_index].sanity = sanity.add(-(stack / 2));
@@ -1930,6 +1940,31 @@ fn apply_hit(
             }
         }
     }
+    // "The X - Segmentation": every hit as a main target knocks a Stack off the
+    // Imago in the campaign and heals the attacker's SP once per turn; if the
+    // unit is never hit this turn the Imago gains Stacks at Combat End.
+    if let Some(segmentation) = state.units[defender_index].segmentation.clone() {
+        state.units[defender_index].hits_taken += 1;
+        let loss = segmentation.stack_loss_per_hit;
+        let entry = state
+            .campaign
+            .time_stacks
+            .entry(segmentation.stack_status.clone())
+            .or_insert(0);
+        *entry = (*entry - loss).max(0);
+        let attacker_id = state.units[attacker_index].id.0.clone();
+        if !state.units[defender_index]
+            .segmentation_healed
+            .contains(&attacker_id)
+        {
+            state.units[defender_index]
+                .segmentation_healed
+                .push(attacker_id);
+            let sanity = state.units[attacker_index].sanity;
+            state.units[attacker_index].sanity =
+                sanity.add(segmentation.attacker_sp_heal);
+        }
+    }
     // "When hit while this unit has Shield, inflict N [X] against the attacker."
     if state.units[defender_index].shield > 0 {
         let retaliation: Vec<crate::state::RetaliateOnHit> =
@@ -2228,6 +2263,8 @@ pub fn begin_turn(
         state.units[index]
             .turn_effect_usage
             .retain(|key, _| key.starts_with("encounter:"));
+        state.units[index].hits_taken = 0;
+        state.units[index].segmentation_healed.clear();
     }
     // Past / Present / Future turn-start effects.
     for index in 0..state.units.len() {
@@ -2407,6 +2444,21 @@ fn enemy_targets(state: &BattleState, unit_index: usize, slots: usize) -> Vec<Op
 
 pub fn end_turn(state: &mut BattleState) {
     state.phase = Phase::TurnEnd;
+    // Segmentation: a butterfly that was never hit this turn gives the Imago
+    // +N Stacks at Combat End.
+    for index in 0..state.units.len() {
+        let Some(segmentation) = state.units[index].segmentation.clone() else {
+            continue;
+        };
+        if state.units[index].hits_taken == 0 {
+            let entry = state
+                .campaign
+                .time_stacks
+                .entry(segmentation.stack_status.clone())
+                .or_insert(0);
+            *entry += segmentation.gain_if_not_hit;
+        }
+    }
     state.defenses.clear();
     for unit in state.units.iter_mut() {
         unit.statuses.remove("No Damage Taken");
@@ -2642,7 +2694,10 @@ pub fn resolve_combat(state: &mut BattleState, library: &Library, mechanics: &Me
                             ),
                         );
                         executed.push((actor_i, action_i.slot));
-                        if ends_encounter(state, actor_i, &use_.skill) {
+                        if ends_encounter(state, actor_i, &use_.skill)
+                            && !(state.units[actor_i].ends_encounter_unless_shield_broken
+                                && state.units[actor_i].barrier_broken)
+                        {
                             state.encounter_ended = true;
                             state.push_log(
                                 "end",
@@ -2918,20 +2973,6 @@ fn prepare_use(
     use_: &mut SkillUse,
 ) -> UseContext {
     let _ = (library, mechanics);
-    let mut notes = Vec::new();
-    let mut ctx = EffectContext {
-        actor_index: unit_index,
-        target_index,
-        clash_count: 0,
-        slot,
-        mechanics_note: &mut notes,
-    };
-    let on_use = use_.mechanics.on_use.clone();
-    apply_effects(state, &on_use, &mut ctx, &mut use_.ctx);
-    let shield = use_.ctx.shield_gain;
-    if shield > 0 {
-        state.units[unit_index].shield += shield;
-    }
     // "Base Power +1 for every [X] about to be spent by this Skill": the amount
     // this use will spend is known from its own effects.
     {
@@ -2951,6 +2992,20 @@ fn prepare_use(
                 .map(|e| e.value.unwrap_or(1))
                 .sum::<i32>();
         use_.ctx.ammo_planned = planned;
+    }
+    let mut notes = Vec::new();
+    let mut ctx = EffectContext {
+        actor_index: unit_index,
+        target_index,
+        clash_count: 0,
+        slot,
+        mechanics_note: &mut notes,
+    };
+    let on_use = use_.mechanics.on_use.clone();
+    apply_effects(state, &on_use, &mut ctx, &mut use_.ctx);
+    let shield = use_.ctx.shield_gain;
+    if shield > 0 {
+        state.units[unit_index].shield += shield;
     }
     for tag in use_.mechanics.tags.clone() {
         if let Some(status) = tag.strip_prefix("status_count_floor:") {

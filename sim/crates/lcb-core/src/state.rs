@@ -405,6 +405,12 @@ pub struct Unit {
     /// Encounter start: Shield as a percentage of max HP (the Pupa's 1.3%).
     #[serde(default)]
     pub shield_percent: Option<f64>,
+    /// Encounter start: a flat Shield (the illusory butterflies' 333).
+    #[serde(default)]
+    pub shield_flat: Option<i32>,
+    /// "End the Encounter" only while the Shield held.
+    #[serde(default)]
+    pub ends_encounter_unless_shield_broken: bool,
     /// HP floor as a percentage of max HP (the Pupa's "HP does not fall below
     /// 90%").
     #[serde(default)]
@@ -427,12 +433,41 @@ pub struct Unit {
     /// (defense-skill passive, active for the turn).
     #[serde(default)]
     pub retaliate_on_hit: Vec<RetaliateOnHit>,
+    /// "The X - Segmentation" data when this unit is an illusory butterfly.
+    #[serde(default)]
+    pub segmentation: Option<crate::scripts::Segmentation>,
+    /// Hits taken as a main target this turn (Segmentation counts one per Coin).
+    #[serde(default)]
+    pub hits_taken: i32,
+    /// Sinners already healed by Segmentation this turn.
+    #[serde(default)]
+    pub segmentation_healed: Vec<String>,
     /// Highest Sin Resonance / Absolute Sin Resonance for this turn (copied from
     /// the battle state so conditions can read it).
     #[serde(default)]
     pub resonance_max: i32,
     #[serde(default)]
     pub a_reson_max: i32,
+}
+
+/// Cross-station state for the Refraction Railway encounter chain.
+#[derive(Clone, Debug, Default, Serialize, Deserialize)]
+pub struct CampaignState {
+    /// Stacks of `In the Past / In the Present / In the Future` on the Imago.
+    pub time_stacks: BTreeMap<String, i32>,
+    /// Passive components disabled by the earlier stations' choice events.
+    pub disabled_passives: Vec<String>,
+    /// Which station the campaign is at (1 = Pupa ... 5 = Imago).
+    pub station: i32,
+    /// The Pupa's remaining HP when station 1 ended (Section 5 starts from it).
+    #[serde(default)]
+    pub pupa_hp: Option<i32>,
+}
+
+impl CampaignState {
+    pub fn is_disabled(&self, key: &str) -> bool {
+        self.disabled_passives.iter().any(|entry| entry == key)
+    }
 }
 
 /// A retaliation registered by a defense skill for the current turn.
@@ -669,6 +704,10 @@ pub struct BattleState {
     #[serde(default)]
     pub defenses: Vec<crate::battle::ActiveDefense>,
     pub ego_resources: BTreeMap<String, i32>,
+    /// Campaign bookkeeping shared by the stations (the Imago's Stacks of time
+    /// are carried from stations 2-4 into Section 5).
+    #[serde(default)]
+    pub campaign: CampaignState,
     /// Sin Resonance for the current turn: sin key -> number of Skills of that
     /// affinity selected on the Dashboard.  Source: wiki.gg `Resonance`.
     #[serde(default)]

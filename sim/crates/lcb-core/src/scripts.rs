@@ -74,6 +74,17 @@ pub struct StackBonus {
     pub count: i32,
 }
 
+/// "The Past/Present/Future - Segmentation" (stations 2-4 and the Imago's
+/// stack bookkeeping).
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct Segmentation {
+    /// Which state of time this illusion's hits take Stacks from.
+    pub stack_status: String,
+    pub stack_loss_per_hit: i32,
+    pub gain_if_not_hit: i32,
+    pub attacker_sp_heal: i32,
+}
+
 #[derive(Clone, Copy, Debug, Serialize, Deserialize)]
 pub struct ClashCountSwing {
     pub threshold: i32,
@@ -121,9 +132,19 @@ pub struct EnemyScript {
     /// Optional branch played instead of `turns` once its condition holds.
     #[serde(default)]
     pub branch: Option<ScriptBranch>,
+    /// Encounter start: a flat Shield (the illusory butterflies' 333).
+    #[serde(default)]
+    pub shield_flat: Option<i32>,
     /// Encounter start: Shield as a percentage of max HP.
     #[serde(default)]
     pub shield_percent: Option<f64>,
+    /// "End the Encounter" only applies while the Shield still held; if it broke,
+    /// the encounter runs one more turn instead.
+    #[serde(default)]
+    pub ends_encounter_unless_shield_broken: bool,
+    /// "The Past - Segmentation": hits knock Stacks off the Imago.
+    #[serde(default)]
+    pub segmentation: Option<Segmentation>,
     /// HP cannot drop below this percentage of max HP.
     #[serde(default)]
     pub hp_floor_percent: Option<i32>,

@@ -190,6 +190,51 @@ def build_pupa() -> dict:
     }
 
 
+def build_illusory() -> dict:
+    """Stations 2-4: one illusory butterfly each.
+
+    The wiki page for `Illusory Butterfly of Entangled Lives` gives the passive
+    ("First Turn Start after entering the Encounter: Gain 333 Shield", "At Attack
+    End of the Skill 'Eclosion', end Encounter - If the Shield is broken, proceed
+    to the next turn instead and face a unique Choice Event before the Encounter
+    ends") and the Section-5 variants' "Segmentation" passive, which knocks a
+    Stack off the Imago for every hit taken.
+    """
+    illusions = {
+        "past": ("9564", "In the Past"),
+        "present": ("9565", "In the Present"),
+        "future": ("9566", "In the Future"),
+    }
+    out = {}
+    for state, (enemy_id, stack_status) in illusions.items():
+        record = json.load(open(os.path.join(DATA, "enemies", f"{enemy_id}.json"), encoding="utf-8"))
+        eclosion = record["skills"][0]["id"]
+        out[state] = {
+            "enemy_id": enemy_id,
+            "slots": 1,
+            "cycle_turns": 1,
+            "station": {"past": 2, "present": 3, "future": 4}[state],
+            "acts_while_staggered": False,
+            "turns": [[eclosion]],
+            "shield_flat": 333,
+            "hp_floor_percent": 1,
+            "ends_encounter_on": [eclosion],
+            "ends_encounter_unless_shield_broken": True,
+            "segmentation": {"stack_status": stack_status, "stack_loss_per_hit": 1,
+                             "gain_if_not_hit": 5, "attacker_sp_heal": 10},
+            "notes": [
+                "1 HP, 333 Shield on the first Turn Start; Eclosion is Unclashable, Target Fixed, deals 0 damage and ends the Encounter.",
+                "If the Shield is broken the encounter instead continues one turn (choice event) before ending.",
+                "Segmentation: each hit as the main target removes 1 Stack from the Imago's matching state of time and heals the attacker 10 SP (once per turn per Sinner); if the unit is never hit this turn the Imago gains 5 Stacks.",
+            ],
+            "source": [
+                f"https://limbuscompany.wiki.gg/wiki/Illusory_Butterfly_of_Entangled_Lives::{state.capitalize()}",
+                "https://wikiwiki.jp/lcbwiki/幻想体/羅生蝶 (part info)",
+            ],
+        }
+    return out
+
+
 def main() -> int:
     text = open(os.path.join(PAGES, "boss_imago.wikitext"), encoding="utf-8").read()
     parsed = parse_rotation(text)
@@ -248,7 +293,11 @@ def main() -> int:
 
     out = {
         "version": 1,
-        "skills": {"imago": script["imago"], "pupa": build_pupa()},
+        "skills": {
+            "imago": script["imago"],
+            "pupa": build_pupa(),
+            **{f"illusory_{k}": v for k, v in build_illusory().items()},
+        },
     }
     path = os.path.join(DATA, "mechanics", "enemy_scripts.json")
     with open(path, "w", encoding="utf-8") as fh:

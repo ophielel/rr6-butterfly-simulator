@@ -1016,6 +1016,8 @@ fn ammo_planned_and_spent_scale_the_skill() {
         .unwrap();
     let mut use_ = battle::build_use(&state, &sim.library, &sim.mechanics, 0, &SkillId::new("1011003"))
         .unwrap();
+    // Isolate the clause under test from the skill's own effects.
+    use_.mechanics.on_use.clear();
     use_.mechanics.on_use.push(Effect {
         kind: "base_power_per_ammo_planned".to_string(),
         step: Some(1),
@@ -1085,6 +1087,76 @@ fn critical_modifiers_from_statuses() {
         &mut ctx,
     );
     assert!((ctx.crit_damage_bonus - 0.30).abs() < 1e-9);
+}
+
+/// Stations 2-4: the illusory butterfly has 1 HP and 333 Shield, and its hits
+/// knock Stacks off the Imago in the campaign (Segmentation).
+/// Sources: wiki.gg Illusory Butterfly page, JA-wiki part info.
+#[test]
+fn illusory_butterfly_shield_and_segmentation() {
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&fixed::TEAM, &["9564"], 4, BattleConfig::default())
+        .unwrap();
+    let butterfly = state.units.iter().position(|u| !u.kind.is_sinner()).unwrap();
+    assert_eq!(state.units[butterfly].max_hp, 1);
+    assert_eq!(state.units[butterfly].shield, 333);
+    assert!(state.units[butterfly].segmentation.is_some());
+    // The campaign starts with no Stacks; a hit as the main target removes one
+    // (floored at zero) and heals the attacker 10 SP.
+    state.campaign.time_stacks.insert("In the Past".to_string(), 4);
+    state.units[butterfly].take_damage(400); // break the shield
+    assert!(state.units[butterfly].barrier_broken);
+    assert_eq!(state.units[butterfly].hp, 1, "HP floor keeps it at 1");
+    let mut use_ = battle::build_use(&state, &sim.library, &sim.mechanics, 0, &SkillId::new("1011001"))
+        .unwrap();
+    use_.coins = vec![battle::CoinRuntime::fresh(false)];
+    state.units[0].sanity = Sanity::Sane { sp: 0 };
+    state.preset_flips = vec![false; 16];
+    state.flip_cursor = 0;
+    battle::one_sided_attack(&mut state, 0, butterfly, &mut use_, 0);
+    assert_eq!(
+        state.campaign.time_stacks.get("In the Past"),
+        Some(&3),
+        "one Stack was knocked off the Imago"
+    );
+    assert_eq!(state.units[0].sanity.sp(), 10, "the attacker healed 10 SP");
+    assert_eq!(state.units[butterfly].hits_taken, 1);
+    // A turn in which the butterfly is never hit gives the Imago +5 Stacks.
+    battle::end_turn(&mut state);
+    assert_eq!(state.campaign.time_stacks.get("In the Past"), Some(&3));
+    state.units[butterfly].hits_taken = 0;
+    battle::end_turn(&mut state);
+    assert_eq!(state.campaign.time_stacks.get("In the Past"), Some(&8));
+}
+
+/// Section 5 starts from the campaign: the Pupa's remaining HP carries over and
+/// the choice events can disable components of the Past passive.
+/// Source: JA-wiki station 5 notes + wiki.gg choice events.
+#[test]
+fn section5_carries_the_campaign() {
+    use lcb_core::state::CampaignState;
+    let sim = sim();
+    let mut campaign = CampaignState::default();
+    campaign.pupa_hp = Some(12_000);
+    campaign.station = 4;
+    campaign.disabled_passives.push("past:burn_on_hit".to_string());
+    let mut state = sim
+        .section5(&campaign, 1, BattleConfig::default())
+        .unwrap();
+    let imago = state.units.iter().position(|u| !u.kind.is_sinner()).unwrap();
+    assert_eq!(state.units[imago].hp, 12_000, "starts from the Pupa's HP");
+    assert_eq!(state.campaign.station, 5);
+    // The disabled component no longer burns attackers.
+    state.units[imago].time_state = Some(lcb_core::scripts::TimeState::Past);
+    battle::time_passives::on_hit_by_sinner(&mut state, imago, 0);
+    assert_eq!(state.units[0].statuses.potency("Burn"), 0);
+    state
+        .campaign
+        .disabled_passives
+        .clear();
+    battle::time_passives::on_hit_by_sinner(&mut state, imago, 0);
+    assert_eq!(state.units[0].statuses.potency("Burn"), 1);
 }
 
 /// A full turn keeps the battle in a consistent, serialisable state.

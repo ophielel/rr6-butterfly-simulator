@@ -210,6 +210,15 @@ impl<'a> EncounterBuilder<'a> {
             deployment,
             actions: Vec::new(),
             defenses: Vec::new(),
+            campaign: crate::state::CampaignState {
+                time_stacks: crate::scripts::TimeState::ALL
+                    .iter()
+                    .map(|s| (s.stack_key().to_string(), 0))
+                    .collect(),
+                disabled_passives: Vec::new(),
+                station: 0,
+                pupa_hp: None,
+            },
             resonance: BTreeMap::new(),
             a_resonance: BTreeMap::new(),
             clash_counts: BTreeMap::new(),
@@ -242,11 +251,15 @@ impl<'a> EncounterBuilder<'a> {
         }
         // Turn 1 starts immediately: the caller then assigns actions and commits.
         crate::battle::begin_turn(&mut state, self.library, self.mechanics, self.scripts);
-        // Encounter-start Shield (the Pupa: 1.3% of max HP -> 333 on 25616).
+        // Encounter-start Shields: the Pupa gains 1.3% of max HP, the illusory
+        // butterflies a flat 333.
         for index in 0..state.units.len() {
             if let Some(percent) = state.units[index].shield_percent {
                 let shield = (state.units[index].max_hp as f64 * percent / 100.0).floor() as i32;
                 state.units[index].shield += shield.max(1);
+            }
+            if let Some(flat) = state.units[index].shield_flat {
+                state.units[index].shield += flat.max(0);
             }
         }
         Ok(state)
@@ -305,8 +318,13 @@ impl<'a> EncounterBuilder<'a> {
             turn_effect_usage: BTreeMap::new(),
             pending_next_turn: Vec::new(),
             retaliate_on_hit: Vec::new(),
+            segmentation: None,
+            hits_taken: 0,
+            segmentation_healed: Vec::new(),
             resonance_max: 0,
             a_reson_max: 0,
+            shield_flat: None,
+            ends_encounter_unless_shield_broken: false,
         })
     }
 
@@ -394,8 +412,23 @@ impl<'a> EncounterBuilder<'a> {
             turn_effect_usage: BTreeMap::new(),
             pending_next_turn: Vec::new(),
             retaliate_on_hit: Vec::new(),
+            segmentation: self
+                .scripts
+                .for_enemy(&record.id)
+                .and_then(|script| script.segmentation.clone()),
+            hits_taken: 0,
+            segmentation_healed: Vec::new(),
             resonance_max: 0,
             a_reson_max: 0,
+            shield_flat: self
+                .scripts
+                .for_enemy(&record.id)
+                .and_then(|script| script.shield_flat),
+            ends_encounter_unless_shield_broken: self
+                .scripts
+                .for_enemy(&record.id)
+                .map(|script| script.ends_encounter_unless_shield_broken)
+                .unwrap_or(false),
             ends_encounter_on: self
                 .scripts
                 .for_enemy(&record.id)
