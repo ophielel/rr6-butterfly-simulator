@@ -50,6 +50,35 @@ def count_effects(entry: Dict) -> int:
     return total
 
 
+def status_section() -> list:
+    path = os.path.join(DATA, "mechanics", "status_effects.json")
+    if not os.path.exists(path):
+        return []
+    book = load(path)["statuses"]
+    used = [entry for entry in book.values() if entry.get("used_by_fixed_content")]
+    used.sort(key=lambda e: e["name"])
+    lines = [
+        "",
+        "## Statuses used by the fixed content",
+        "",
+        "Behaviour parsed from each status's own text (`data/mechanics/status_effects.json`).  "
+        "`Turn Start` / `Turn End` clauses run while a unit holds the status; `continuous` "
+        "clauses feed the damage formula; `unmodelled` clauses are listed by "
+        "`Simulator::status_gaps()`.",
+        "",
+        "| status | Turn Start | Turn End | continuous | unmodelled |",
+        "|--------|-----------|----------|------------|------------|",
+    ]
+    for entry in used:
+        effects = entry["effects"]
+        lines.append(
+            f"| {entry['name']} | {len(effects.get('turn_start', []))} | "
+            f"{len(effects.get('turn_end', []))} | {len(effects.get('passive', []))} | "
+            f"{len(effects.get('unmodeled', []))} |"
+        )
+    return lines
+
+
 def passive_section() -> list:
     rows = passive_rows()
     if not rows:
@@ -170,6 +199,7 @@ def main() -> int:
         )
         coverage[eid] = {"modelled": modelled, "unmodelled": unmodelled}
 
+    lines.extend(status_section())
     lines.extend(passive_section())
     with open(os.path.join(DOCS, "COVERAGE.md"), "w", encoding="utf-8") as fh:
         fh.write("\n".join(lines) + "\n")

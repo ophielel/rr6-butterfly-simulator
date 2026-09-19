@@ -123,6 +123,35 @@ def parse_effects(text: str) -> Dict[str, list]:
     return {"effects": effects, "unmodeled": unmodeled}
 
 
+def panic_changing_statuses() -> List[str]:
+    """Statuses whose text changes an SP Unit's Panic Type.
+
+    Source: wiki.gg `Status Effects` / "Panic Type Changing Effects" table -
+    each row's SP Unit clause says "Change ... Panic Type to ...".
+    """
+    path = os.path.join(PAGES, "Status_Effects.wikitext")
+    if not os.path.exists(path):
+        return []
+    with open(path, encoding="utf-8") as fh:
+        text = fh.read()
+    start = text.find("Panic Type Changing Effects")
+    if start < 0:
+        return []
+    segment = text[start : start + 40000]
+    rows = re.split(r"\n\|-", segment)
+    names: List[str] = []
+    for row in rows:
+        if "Panic Type" not in row and "Panic type" not in row:
+            continue
+        match = re.search(r"\{\{StatusEffect\|([^|}]+)", row)
+        if not match:
+            continue
+        name = match.group(1).strip()
+        if name and name not in names:
+            names.append(name)
+    return names
+
+
 def parse_sanity_page() -> Dict[str, dict]:
     """Panic Type -> {low_morale, panic, sources} from the wiki table."""
     path = os.path.join(PAGES, "sanity.wikitext")
@@ -171,7 +200,12 @@ def identity_titles() -> Dict[str, str]:
 def main() -> int:
     table = parse_sanity_page()
     titles = identity_titles()
-    out: Dict[str, dict] = {"version": 1, "types": {}, "identities": {}}
+    out: Dict[str, dict] = {
+        "version": 1,
+        "types": {},
+        "identities": {},
+        "changing_statuses": panic_changing_statuses(),
+    }
     modelled = 0
     unmodelled = 0
     for name, entry in table.items():

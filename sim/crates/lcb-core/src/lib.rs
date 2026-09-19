@@ -23,7 +23,7 @@ pub mod state;
 pub mod testsupport;
 
 use battle::Action;
-use effects::{MechanicsBook, PanicBook, PassiveBook};
+use effects::{MechanicsBook, PanicBook, PassiveBook, StatusBook};
 use library::{Library, LibraryError};
 use setup::{EncounterBuilder, SetupError};
 use ids::UnitId;
@@ -39,6 +39,8 @@ pub struct Simulator {
     pub passives: PassiveBook,
     /// Panic Types per identity (wiki.gg `Sanity`).
     pub panics: PanicBook,
+    /// Behaviour of each status (parsed from its own text).
+    pub statuses: StatusBook,
     pub scripts: scripts::ScriptsBook,
     pub data_root: PathBuf,
 }
@@ -94,12 +96,17 @@ impl Simulator {
             &root.join("mechanics").join("panic_types.json"),
         )
         .map_err(SimError::Mechanics)?;
+        let statuses = StatusBook::load(
+            &root.join("mechanics").join("status_effects.json"),
+        )
+        .map_err(SimError::Mechanics)?;
         Ok(Self {
             library,
             mechanics,
             scripts,
             passives,
             panics,
+            statuses,
             data_root: root,
         })
     }
@@ -123,6 +130,7 @@ impl Simulator {
     /// Give every unit the passives it fights with: its own Combat Passives and
     /// the team's Support Passives (wiki.gg `Passives`).
     fn attach_passives(&self, state: &mut state::BattleState) {
+        state.status_book = Some(std::sync::Arc::new(self.statuses.clone()));
         let supports: Vec<crate::effects::SkillMechanics> = self
             .passives
             .supports()
@@ -275,6 +283,24 @@ impl Simulator {
             .collect();
         out.extend(self.passive_gaps());
         out.extend(self.panics.gaps());
+        out.extend(self.status_gaps());
+        out.sort();
+        out.dedup();
+        out
+    }
+
+    /// Status clauses this project has not modelled, limited to the statuses the
+    /// fixed content references.
+    pub fn status_gaps(&self) -> Vec<String> {
+        let mut out = Vec::new();
+        for (name, entry) in &self.statuses.statuses {
+            if !entry.used_by_fixed_content {
+                continue;
+            }
+            for clause in &entry.effects.unmodeled {
+                out.push(format!("status {name}: {clause}"));
+            }
+        }
         out.sort();
         out.dedup();
         out

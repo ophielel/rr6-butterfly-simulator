@@ -122,6 +122,11 @@ impl PySimulator {
         self.sim.unknown_rules_owned()
     }
 
+    /// Status clauses this project has not modelled yet (fixed content only).
+    fn status_gaps(&self) -> Vec<String> {
+        self.sim.status_gaps()
+    }
+
     /// Passive clauses this project has not modelled yet.
     fn passive_gaps(&self) -> Vec<String> {
         self.sim.passive_gaps().iter().map(|s| s.to_string()).collect()

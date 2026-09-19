@@ -87,6 +87,10 @@ pub struct Condition {
     /// "If target is a SP Unit" / "For targets that are Non-SP Units".
     #[serde(default)]
     pub target_is_sp_unit: bool,
+    /// "If an enemy has any of the Panic type changing effects": the unit must
+    /// carry at least one of the listed statuses.
+    #[serde(default)]
+    pub any_status: Vec<String>,
     /// "against targets in either Low Morale or Panic states".
     #[serde(default)]
     pub target_is_low_morale: bool,
@@ -174,6 +178,14 @@ pub struct Effect {
     /// `gain_from_resonance`: multiplier applied to the highest Resonance.
     #[serde(default)]
     pub multiplier: Option<i32>,
+    /// Percentages that the wiki writes with a decimal ("+0.5% damage").
+    #[serde(default)]
+    pub step_f: Option<f64>,
+    #[serde(default)]
+    pub value_f: Option<f64>,
+    /// A gain scaled by the actor's SP ("for every 8 SP (max 5)").
+    #[serde(default)]
+    pub per_sp: Option<i32>,
     /// A `[min ~ max]` random amount (HP damage taken, status gained).
     #[serde(default)]
     pub range_min: Option<i32>,
@@ -428,6 +440,63 @@ impl PanicBook {
         for (name, entry) in &self.types {
             for clause in &entry.unmodeled {
                 out.push(format!("panic type {name}: {clause}"));
+            }
+        }
+        out.sort();
+        out.dedup();
+        out
+    }
+}
+
+/// The behaviour of one status, parsed from its own text.
+#[derive(Clone, Debug, Default, Serialize, Deserialize)]
+pub struct StatusBehaviour {
+    #[serde(default)]
+    pub key: String,
+    #[serde(default)]
+    pub name: Option<String>,
+    #[serde(default)]
+    pub text: String,
+    #[serde(default)]
+    pub effects: SkillMechanics,
+    #[serde(default)]
+    pub max_stack: Option<i32>,
+    /// True when one of the fixed content's Skills references this status.
+    #[serde(default)]
+    pub used_by_fixed_content: bool,
+}
+
+#[derive(Clone, Debug, Default, Serialize, Deserialize)]
+pub struct StatusBook {
+    #[serde(default)]
+    pub version: u32,
+    /// Status display name -> behaviour.
+    #[serde(default)]
+    pub statuses: BTreeMap<String, StatusBehaviour>,
+}
+
+impl StatusBook {
+    pub fn load(path: &Path) -> Result<StatusBook, String> {
+        if !path.exists() {
+            return Ok(StatusBook::default());
+        }
+        let text = std::fs::read_to_string(path).map_err(|e| e.to_string())?;
+        serde_json::from_str(&text).map_err(|e| format!("{}: {e}", path.display()))
+    }
+
+    pub fn get(&self, name: &str) -> Option<&StatusBehaviour> {
+        self.statuses.get(name)
+    }
+
+    /// Status clauses this project does not model yet.
+    pub fn gaps(&self, only: &[&str]) -> Vec<String> {
+        let mut out = Vec::new();
+        for (name, entry) in &self.statuses {
+            if !only.is_empty() && !only.contains(&name.as_str()) {
+                continue;
+            }
+            for clause in &entry.effects.unmodeled {
+                out.push(format!("status {name}: {clause}"));
             }
         }
         out.sort();

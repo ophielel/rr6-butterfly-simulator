@@ -1606,10 +1606,10 @@ fn section5_golden_replay_is_deterministic() {
     // action per Slot").  Update only together with a sourced rule change, and
     // name the source in the commit message.  Last updated when the identities'
     // passives started applying (in-game `Passives.json`).
-    assert_eq!(first_hp, vec![25483, 25248, 24682], "Imago HP after turns 1-3");
+    assert_eq!(first_hp, vec![25483, 25245, 24783], "Imago HP after turns 1-3");
     assert_eq!(
         format!("{first_hash:016x}"),
-        "f46c681c8d22e353",
+        "90e7bd4714fa9426",
         "recorded state hash"
     );
 }
@@ -1694,6 +1694,49 @@ fn low_morale_and_panic_follow_the_sanity_rules() {
     state.units[0].sanity = Sanity::Sane { sp: -44 };
     state.units[0].sanity = state.units[0].sanity.add(-99);
     assert_eq!(state.units[0].sanity.sp(), -45);
+}
+
+/// Status text drives behaviour: "[Turn Start] gain 1 [Defense Level Up] for
+/// every Stack (max 5)" (Protecting Sword), "Base Attack Skills deal
+/// +(Stack x 10)% damage (max 30%)" (Tear-sharpened) and "For every 1
+/// ([Sinking] + [Burn]), take +0.5% damage from Base Attack Skills (max 10%)"
+/// (Dazzle).
+/// Source: wiki.gg `Status Effects` for the three statuses.
+#[test]
+fn status_text_runs_as_effects() {
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&["10913"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    // Tear-sharpened: +10% damage per Stack on Base Attack Skills.
+    state.units[0].statuses.remove("Tear-sharpened");
+    state.units[0].statuses.add_stack("Tear-sharpened", 2);
+    let (outgoing, _) = battle::passive_modifiers_for_test(&state, 0, Some(1));
+    assert!((outgoing - 0.20).abs() < 1e-9, "2 Stack = +20% damage: {outgoing}");
+    state.units[0].statuses.add_stack("Tear-sharpened", 10);
+    let (capped, _) = battle::passive_modifiers_for_test(&state, 0, Some(1));
+    assert!((capped - 0.30).abs() < 1e-9, "the bonus caps at 30%");
+    // Protecting Sword: "[Turn Start] gain 1 [Defense Level Up] for every Stack".
+    state.units[0].statuses.remove("Protecting Sword");
+    state.units[0].statuses.remove("Defense Level Up");
+    state.units[0].statuses.add_stack("Protecting Sword", 3);
+    lcb_core::battle::begin_turn(&mut state, &sim.library, &sim.mechanics, &sim.scripts);
+    assert!(
+        state.units[0].statuses.get("Defense Level Up").potency
+            + state.units[0].statuses.get("Defense Level Up").count
+            >= 3,
+        "3 Stack granted 3 [Defense Level Up]: {:?}",
+        state.units[0].statuses.get("Defense Level Up")
+    );
+    // Dazzle: +0.5% damage taken per ([Sinking] + [Burn]) Count/Potency, max 10%.
+    let mut state = sim
+        .new_encounter(&["11214"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    state.units[0].statuses.add_count("Dazzle", 1);
+    state.units[0].statuses.add_potency("Sinking", 4);
+    state.units[0].statuses.add_potency("Burn", 2);
+    let (_, taken) = battle::passive_modifiers_for_test(&state, 0, Some(1));
+    assert!((taken - 0.03).abs() < 1e-9, "6 combined = +3% taken: {taken}");
 }
 
 /// A full turn keeps the battle in a consistent, serialisable state.

@@ -201,6 +201,7 @@ impl<'a> EncounterBuilder<'a> {
         }
 
         let mut state = BattleState {
+            status_book: None,
             seed: self.seed,
             rng: Rng::from_seed(self.seed),
             turn: 0,

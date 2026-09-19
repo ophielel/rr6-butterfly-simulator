@@ -249,7 +249,16 @@
     "attack_end": [],
     "combat_start": [],
     "hand_modelled": "extract_passives.HAND_EFFECTS",
-    "passive": [],
+    "passive": [
+     {
+      "condition": {
+       "source": "target",
+       "target_is_low_morale": true
+      },
+      "kind": "damage_percent",
+      "value": 10
+     }
+    ],
     "tails_hit": [
      {
       "kind": "sp_heal",
@@ -756,9 +765,29 @@
    "effects": {
     "attack_end": [],
     "combat_start": [],
+    "hand_modelled": "extract_passives.HAND_EFFECTS",
     "passive": [],
     "turn_end": [],
-    "turn_start": [],
+    "turn_start": [
+     {
+      "component": "stack",
+      "condition": {
+       "any_status": [
+        "Echoes of the Manor",
+        "Impending Ruin",
+        "Shattermark",
+        "Blue Sand",
+        "Dazzle",
+        "Solitude",
+        "Fixed Panic"
+       ],
+       "source": "target"
+      },
+      "kind": "gain",
+      "potency": 1,
+      "status": "The Udjat -Vanguard-"
+     }
+    ],
     "unmodeled": [
      "If this unit has [TheUdjatOutis], inflict 1 [SheutFracture] On Hit with a Base Attack Skill (15 per turn)",
      "[Turn Start] If an enemy has any of the Panic type changing effects, gain 1 [TheUdjatOutis]"

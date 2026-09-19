@@ -777,7 +777,12 @@ pub struct BattleState {
     #[serde(default)]
     pub preset_flips: Vec<bool>,
     #[serde(default)]
-    pub flip_cursor: usize,
+    pub flip_cursor: usize,    /// Behaviour of every status (loaded from `status_effects.json`), so that
+    /// status text like "[Turn Start] gain 1 [X] for every Stack" can run.
+    #[serde(default)]
+    #[serde(skip)]
+    pub status_book: Option<std::sync::Arc<crate::effects::StatusBook>>,
+
 }
 
 impl BattleState {

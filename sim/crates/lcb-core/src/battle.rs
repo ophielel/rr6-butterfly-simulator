@@ -636,6 +636,19 @@ fn condition_holds(
             _ => return false,
         }
     }
+    if !condition.any_status.is_empty() {
+        let unit = match target {
+            Some(target) => target,
+            None => return false,
+        };
+        if !condition
+            .any_status
+            .iter()
+            .any(|status| has_named(unit, status))
+        {
+            return false;
+        }
+    }
     if condition.target_is_low_morale || condition.target_is_panicked {
         let in_state = match target {
             Some(target) => {
@@ -973,7 +986,12 @@ pub fn apply_effects(
                 } else {
                     (potency, count)
                 };
-                let potency = if effect.multiplier.is_some() || effect.from_resonance {
+                let potency = if let Some(per_sp) = effect.per_sp {
+                    // "Turn Start: gain 1 [Protecting Sword] for every 8 SP".
+                    let sp = state.units[ctx.actor_index].sanity.sp();
+                    let steps = (sp.abs() / per_sp).max(0);
+                    (steps * effect.potency.unwrap_or(1)).min(effect.max.unwrap_or(i32::MAX))
+                } else if effect.multiplier.is_some() || effect.from_resonance {
                     // "(6 + Gloom Reson.) [Sinking]", "(Gloom Reson. + 1) ..."
                     let base = effect.value.unwrap_or(0);
                     let multiplier = effect.multiplier.unwrap_or(1);
@@ -1358,6 +1376,36 @@ pub fn apply_effects(
                         sanity.add(-effect.value.unwrap_or(0));
                     let count = effect.count.unwrap_or(1);
                     state.units[ctx.actor_index].statuses.add_stack(&status, count);
+                }
+            }
+            "consume_status_to_inflict" => {
+                // "consume 1 [PenetratingSword] to inflict 1 [Sinking]",
+                // "consume all [SwordCutwithTear] to inflict 3 [Sinking] and
+                // +3 [Sinking] Count, and deal +50% damage with that Coin".
+                let Some(from) = effect.status.clone() else { continue };
+                let Some(to) = effect.status2.clone() else { continue };
+                let limit = effect.value.unwrap_or(1).max(1);
+                let unit = &state.units[ctx.actor_index];
+                let have = unit.statuses.stack(&from) + unit.statuses.potency(&from)
+                    + unit.statuses.count(&from);
+                if have <= 0 {
+                    continue;
+                }
+                let consume = have.min(limit);
+                let unit = &mut state.units[ctx.actor_index];
+                unit.statuses.add_stack(&from, -consume);
+                unit.statuses.remove(&from);
+                use_ctx.consumed_status += consume;
+                *use_ctx.consumed_by_status.entry(from).or_insert(0) += consume;
+                let Some(target) = ctx.target_index else { continue };
+                let potency = effect.potency.unwrap_or(consume).max(consume);
+                let count = effect.count.unwrap_or(0);
+                state.units[target].statuses.add_potency(&to, potency);
+                if count != 0 {
+                    state.units[target].statuses.add_count(&to, count);
+                }
+                if let Some(percent) = effect.percent {
+                    use_ctx.damage_bonus += percent as f64 / 100.0;
                 }
             }
             "consume_status_up_to" => {
@@ -2737,7 +2785,8 @@ fn apply_hit(
     {
         state.units[attacker_index].statuses.add_count("Poise", -1);
     }
-    let defender = &state.units[defender_index];
+    let defender_snapshot = state.units[defender_index].clone();
+    let defender = &defender_snapshot;
     let stagger_bonus = if defender.is_staggered() {
         Some(defender.stagger.damage_resistance_bonus())
     } else {
@@ -2757,6 +2806,46 @@ fn apply_hit(
             type_resist = *floor;
         }
     }
+    // Passives that ride on a Base Attack hit resolve **before** the hit, so a
+    // "+50% damage with that Coin" clause can affect it ("If this unit has 3
+    // [SwordCutwithTear]: ... deal +50% damage with that Coin").
+    let rider_bonus = {
+        let riding: Vec<Effect> = if use_.is_defense {
+            Vec::new()
+        } else {
+            state.units[attacker_index]
+                .passives
+                .iter()
+                .flat_map(|passive| {
+                    passive
+                        .passive
+                        .iter()
+                        .filter(|effect| effect.on_base_attack_hit)
+                        .cloned()
+                        .collect::<Vec<Effect>>()
+                })
+                .collect()
+        };
+        if riding.is_empty() {
+            0.0
+        } else {
+            let mut notes = Vec::new();
+            let mut ctx = EffectContext {
+                actor_index: attacker_index,
+                target_index: Some(defender_index),
+                clash_count,
+                clash_lost: use_.ctx.lost_clash,
+                slot: use_.slot,
+                mechanics_note: &mut notes,
+            };
+            let mut local = UseContext::default();
+            apply_effects(state, &riding, &mut ctx, &mut local);
+            for note in notes {
+                state.warnings.push(note);
+            }
+            local.damage_bonus
+        }
+    };
     let inputs = DamageInputs {
         coin_roll: power,
         sin_resist,
@@ -2767,7 +2856,7 @@ fn apply_hit(
             .unwrap_or_else(|| state.units[defender_index].defense_level()),
         critical: crit,
         clash_count,
-        dynamic_modifier: use_.ctx.damage_bonus
+        dynamic_modifier: use_.ctx.damage_bonus + rider_bonus
             + state.units[attacker_index].outgoing_damage_modifier()
             + incoming_damage_modifier(defender, sin_name)
             + passive_modifiers(state, defender_index, Some(attacker_index)).1
@@ -2801,25 +2890,7 @@ fn apply_hit(
             effects.extend(list);
         }
     }
-    // Passives that ride on a Base Attack hit ("inflict 1 [SheutFracture] On Hit
-    // with a Base Attack Skill").
-    if !use_.is_defense {
-        let riding: Vec<Vec<Effect>> = state.units[attacker_index]
-            .passives
-            .iter()
-            .map(|passive| {
-                passive
-                    .passive
-                    .iter()
-                    .filter(|effect| effect.on_base_attack_hit)
-                    .cloned()
-                    .collect::<Vec<Effect>>()
-            })
-            .collect();
-        for list in riding {
-            effects.extend(list);
-        }
-    }
+
     let mut notes = Vec::new();
     {
         let mut ctx = EffectContext {
@@ -3231,6 +3302,145 @@ fn apply_panic_turn_end(state: &mut BattleState) {
     }
 }
 
+/// A status's own clauses refer to themselves as "self" (the extractor cannot
+/// know the name while parsing one text): rewrite it to the status key.
+fn resolve_self(effect: &Effect, status: &str) -> Effect {
+    let mut effect = effect.clone();
+    if effect.status.as_deref() == Some("self") {
+        effect.status = Some(status.to_string());
+    }
+    if effect.status2.as_deref() == Some("self") {
+        effect.status2 = Some(status.to_string());
+    }
+    if let Some(cond) = effect.condition.as_mut() {
+        if cond.status.as_deref() == Some("self") {
+            cond.status = Some(status.to_string());
+        }
+        for entry in cond.statuses.iter_mut() {
+            if entry == "self" {
+                *entry = status.to_string();
+            }
+        }
+    }
+    effect
+}
+
+/// "[Turn Start]" / "[Turn End]" clauses of the statuses a unit holds, plus
+/// "Expires at Turn End" / "Turn End: Lose N Stack" upkeep.
+fn apply_status_phase(
+    state: &mut BattleState,
+    book: &crate::effects::StatusBook,
+    start: bool,
+) {
+    for index in 0..state.units.len() {
+        if !state.units[index].alive {
+            continue;
+        }
+        let held: Vec<(String, i32)> = state.units[index]
+            .statuses
+            .iter()
+            .map(|(key, instance)| {
+                (key.clone(), instance.potency + instance.count + instance.stack)
+            })
+            .collect();
+        for (status, total) in held {
+            if total <= 0 {
+                continue;
+            }
+            let Some(behaviour) = book.get(&status) else { continue };
+            let mut list: Vec<Effect> = if start {
+                behaviour.effects.turn_start.clone()
+            } else {
+                behaviour.effects.turn_end.clone()
+            };
+            if !start {
+                // "Expires at Turn End" / "Max Stack: N" upkeep.
+                if behaviour
+                    .effects
+                    .passive
+                    .iter()
+                    .any(|effect| effect.kind == "remove_at_turn_end")
+                {
+                    state.units[index].statuses.remove(&status);
+                    continue;
+                }
+            }
+            if list.is_empty() {
+                continue;
+            }
+            list = list.iter().map(|effect| resolve_self(effect, &status)).collect();
+            let mut notes = Vec::new();
+            let mut ctx = EffectContext {
+                actor_index: index,
+                target_index: None,
+                clash_count: 0,
+                clash_lost: false,
+                slot: 0,
+                mechanics_note: &mut notes,
+            };
+            let mut use_ctx = UseContext::default();
+            apply_effects(state, &list, &mut ctx, &mut use_ctx);
+            let shield = use_ctx.shield_gain;
+            if shield > 0 {
+                state.units[index].shield += shield;
+            }
+            for note in notes {
+                state.warnings.push(note);
+            }
+        }
+    }
+}
+
+/// Continuous modifiers contributed by the statuses a unit holds.
+fn status_modifiers(state: &BattleState, index: usize, target: Option<usize>) -> (f64, f64) {
+    let Some(book) = state.status_book.as_ref() else {
+        return (0.0, 0.0);
+    };
+    if std::env::var("LCB_DEBUG").is_ok() {
+        eprintln!("status_modifiers unit {index}: {} statuses", state.units[index].statuses.iter().count());
+        for (k, v) in state.units[index].statuses.iter() {
+            eprintln!("   {k} p={} c={} s={} in_book={}", v.potency, v.count, v.stack, book.get(k).is_some());
+        }
+    }
+    let actor = &state.units[index];
+    let target_unit = target.map(|i| &state.units[i]);
+    let mut outgoing = 0.0;
+    let mut incoming = 0.0;
+    for (status, instance) in actor.statuses.iter() {
+        if instance.potency + instance.count + instance.stack <= 0 {
+            continue;
+        }
+        let Some(behaviour) = book.get(status) else { continue };
+        for effect in &behaviour.effects.passive {
+            let effect = resolve_self(effect, status);
+            let holds = match &effect.condition {
+                Some(cond) => condition_holds(cond, actor, target_unit, 0, 0),
+                None => true,
+            };
+            if !holds {
+                continue;
+            }
+            match effect.kind.as_str() {
+                "damage_percent" => {
+                    let step = effect.step_f.unwrap_or(effect.step.unwrap_or(1) as f64);
+                    let measured = measured_from_condition(&effect, actor, target_unit);
+                    let max = effect.max.unwrap_or(i32::MAX) as f64;
+                    outgoing += (step * measured as f64).min(max) / 100.0;
+                }
+                "damage_taken_percent" => {
+                    let step = effect.step_f.unwrap_or(effect.step.unwrap_or(1) as f64);
+                    let measured = measured_from_condition(&effect, actor, target_unit);
+                    let max = effect.max.unwrap_or(i32::MAX) as f64;
+                    outgoing += 0.0;
+                    incoming += (step * measured as f64).min(max) / 100.0;
+                }
+                _ => {}
+            }
+        }
+    }
+    (outgoing, incoming)
+}
+
 /// Evaluate the passive clauses of one phase for one unit.
 fn apply_passive_phase(
     state: &mut BattleState,
@@ -3272,6 +3482,7 @@ fn apply_passive_phase(
 /// Only the modifier kinds are read here (a passive's grants are applied by the
 /// phase triggers), so this stays a pure query.
 fn passive_modifiers(state: &BattleState, index: usize, target: Option<usize>) -> (f64, f64) {
+    let (status_out, status_in) = status_modifiers(state, index, target);
     let actor = &state.units[index];
     let target_unit = target.map(|i| &state.units[i]);
     let mut outgoing = 0.0;
@@ -3313,7 +3524,7 @@ fn passive_modifiers(state: &BattleState, index: usize, target: Option<usize>) -
             }
         }
     }
-    (outgoing, incoming)
+    (outgoing + status_out, incoming + status_in)
 }
 
 /// "[Turn Start]" / "[Turn End]" clauses of the Skills equipped on a unit's
@@ -3518,6 +3729,10 @@ pub fn begin_turn(
     // Equipped Skills carry their own "[Turn Start]" clauses; they resolve for
     // the Skill Slots the unit has on the Dashboard.
     apply_dashboard_phase(state, mechanics, true);
+    // Status upkeep: "[Turn Start]" clauses of every status the unit holds.
+    if let Some(book) = state.status_book.clone() {
+        apply_status_phase(state, &book, true);
+    }
     // Sanity: clamp SP, then Low Morale (-30) / Panic (-45) for Sinners.
     // Source: wiki.gg `Sanity` + `Clash`.
     apply_sanity_states(state);
@@ -3753,6 +3968,10 @@ fn enemy_targets(
 
 pub fn end_turn(state: &mut BattleState, mechanics: &MechanicsBook) {
     state.phase = Phase::TurnEnd;
+    // Status upkeep: "[Turn End]" clauses of every status the unit holds.
+    if let Some(book) = state.status_book.clone() {
+        apply_status_phase(state, &book, false);
+    }
     // The Turn End half of a Panic Type ("Turn End: Gain 1 [Bind] ...").
     apply_panic_turn_end(state);
     // Equipped Skills' "[Turn End]" clauses (Rodion's Tear-sharpened upkeep).

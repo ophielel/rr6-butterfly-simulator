@@ -72,6 +72,7 @@ def main() -> int:
     run([py, os.path.join(HERE, "extract_effects.py")])
     run([py, os.path.join(HERE, "extract_passives.py")])
     run([py, os.path.join(HERE, "extract_panic.py")])
+    run([py, os.path.join(HERE, "extract_status_effects.py")])
     run([py, os.path.join(HERE, "report.py")])
 
     c = cargo()

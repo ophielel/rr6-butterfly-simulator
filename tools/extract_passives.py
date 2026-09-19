@@ -174,6 +174,21 @@ HAND_EFFECTS: Dict[str, dict] = {
             {"kind": "gain", "status": "The Udjat -Vanguard-", "potency": 2, "component": "stack"},
         ],
     },
+    # Outis - The Scepter of Horus - Replica: Turn Start against a target that
+    # carries a Panic-type-changing effect.
+    "1111402": {
+        "covered": [
+            "Turn Start: If an enemy has any of the Panic type changing effects, gain 1 [TheUdjatOutis]",
+        ],
+        "turn_start": [
+            {"kind": "gain", "status": "The Udjat -Vanguard-", "potency": 1,
+             "component": "stack",
+             "condition": {"source": "target",
+                           "any_status": ["Echoes of the Manor", "Impending Ruin",
+                                          "Shattermark", "Blue Sand", "Dazzle",
+                                          "Solitude", "Fixed Panic"]}},
+        ],
+    },
     # Outis - The Scepter of Horus - Replica (Uptie 4 variant)
     "1111412": {
         "covered": [
@@ -226,9 +241,16 @@ HAND_EFFECTS: Dict[str, dict] = {
     },
     # Jeong's Office Rep - Stacking the Deck
     "1081301": {
-        "covered": ["On Tails Hit, heal 5 SP (once per turn)"],
+        "covered": [
+            "On Tails Hit, heal 5 SP (once per turn)",
+            "Deal +10% damage against targets in either Low Morale or Panic states",
+        ],
         "tails_hit": [
             {"kind": "sp_heal", "value": 5, "per_turn": 1},
+        ],
+        "passive": [
+            {"kind": "damage_percent", "value": 10,
+             "condition": {"source": "target", "target_is_low_morale": True}},
         ],
     },
     # Jeong's Office Rep - Koi-Koi

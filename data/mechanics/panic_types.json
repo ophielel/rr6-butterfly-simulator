@@ -1,4 +1,13 @@
 {
+ "changing_statuses": [
+  "Echoes of the Manor",
+  "Impending Ruin",
+  "Shattermark",
+  "Blue Sand",
+  "Dazzle",
+  "Solitude",
+  "Fixed Panic"
+ ],
  "identities": {
   "10110": "Panic",
   "10414": "Solitude",
