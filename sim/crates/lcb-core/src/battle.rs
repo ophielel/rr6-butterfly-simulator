@@ -78,6 +78,9 @@ pub struct UseContext {
 pub struct SkillUse {
     pub actor: UnitId,
     pub target: Option<UnitId>,
+    /// Dashboard slot the skill was used from.
+    #[serde(default)]
+    pub slot: u32,
     pub skill: SkillId,
     pub name: String,
     pub sin: Sin,
@@ -221,10 +224,12 @@ pub fn legal_actions(state: &BattleState, library: &Library) -> Vec<Action> {
             _ => continue,
         };
         let Some(record) = library.identity(identity) else { continue };
+        // Both clearly visible skills of a slot are selectable ("2 clearly
+        // visible skills and 1 faint preview", JA-wiki チェーンパネル).
         let mut skills: Vec<SkillId> = unit
             .dashboard
             .iter()
-            .map(|s| s.current.clone())
+            .flat_map(|s| [s.current.clone(), s.next.clone()])
             .filter(|s| s.0 != EMPTY_SKILL)
             .collect();
         // Defense skills are always available from the portrait.
@@ -574,6 +579,8 @@ pub struct EffectContext<'a> {
     pub actor_index: usize,
     pub target_index: Option<usize>,
     pub clash_count: i32,
+    /// Dashboard slot the skill was used from, when known.
+    pub slot: u32,
     pub mechanics_note: &'a mut Vec<String>,
 }
 
@@ -868,6 +875,15 @@ pub fn apply_effects(
                     }
                 }
             }
+            "discard_other_in_slot" => {
+                // "If the other Skill in the same Skill Slot is a different
+                // Skill, [Discard] that Skill" (the second visible skill).
+                discard_from_slot(state, ctx.actor_index, ctx.slot, true);
+            }
+            "discard_lowest_rank" => {
+                let count = effect.value.unwrap_or(1);
+                discard_lowest_rank(state, ctx.actor_index, count);
+            }
             "damage_percent_per_ammo_spent" => {
                 // "Deal +2% damage for every value of [X] spent by this Skill"
                 let step = effect.step.unwrap_or(0);
@@ -1026,6 +1042,7 @@ pub fn build_ego_use(
     Some(SkillUse {
         actor: unit.id.clone(),
         target: None,
+        slot: 0,
         skill: SkillId::new(ego_id.as_str().to_string()),
         name: format!("{} [{}]", skill.name.clone().unwrap_or_else(|| ego_id.to_string()), key),
         sin: skill.sin.as_deref().and_then(Sin::parse).unwrap_or(Sin::Wrath),
@@ -1073,6 +1090,7 @@ pub fn build_use(
     Some(SkillUse {
         actor: unit.id.clone(),
         target: None,
+        slot: 0,
         skill: skill.clone(),
         name: skill_record.display_name(),
         sin: skill_record.sin(state.config.uptie).unwrap_or(Sin::Wrath),
@@ -1116,6 +1134,7 @@ fn build_enemy_use(
     Some(SkillUse {
         actor: unit.id.clone(),
         target: None,
+        slot: 0,
         skill: skill.clone(),
         name: skill_record.display_name(),
         sin: skill_record.sin().unwrap_or(Sin::Wrath),
@@ -1635,6 +1654,7 @@ fn apply_hit(
             SkillUse {
                 actor: defense.unit.clone(),
                 target: Some(state.units[attacker_index].id.clone()),
+                slot: 0,
                 skill: defense.skill.clone(),
                 name: defense.name.clone(),
                 sin: defense.sin,
@@ -1752,6 +1772,7 @@ fn apply_hit(
             actor_index: attacker_index,
             target_index: Some(defender_index),
             clash_count,
+            slot: use_.slot,
             mechanics_note: &mut notes,
         };
         let mut local = UseContext::default();
@@ -1823,6 +1844,7 @@ fn apply_hit(
             let mut use_ = SkillUse {
                 actor: counter.unit.clone(),
                 target: Some(state.units[attacker_index].id.clone()),
+                slot: 0,
                 skill: counter.skill.clone(),
                 name: counter.name.clone(),
                 sin: counter.sin,
@@ -1989,6 +2011,7 @@ pub fn begin_turn(
                         slot,
                         SkillId::new(EMPTY_SKILL),
                         SkillId::new(EMPTY_SKILL),
+                        SkillId::new(EMPTY_SKILL),
                     ));
                 }
             }
@@ -2000,13 +2023,17 @@ pub fn begin_turn(
             }
             let slots: Vec<u32> = state.units[index].dashboard.iter().map(|s| s.slot).collect();
             for slot in slots {
-                let (needs_current, needs_next) = {
+                let (needs_current, needs_next, needs_preview) = {
                     let entry = state.units[index]
                         .dashboard
                         .iter()
                         .find(|s| s.slot == slot)
                         .unwrap();
-                    (entry.current.0.is_empty(), entry.next.0.is_empty())
+                    (
+                        entry.current.0.is_empty(),
+                        entry.next.0.is_empty(),
+                        entry.preview.0.is_empty(),
+                    )
                 };
                 if needs_current {
                     let drawn = crate::setup::draw_for_unit(state, index)
@@ -2028,6 +2055,17 @@ pub fn begin_turn(
                         .find(|s| s.slot == slot)
                     {
                         entry.next = drawn;
+                    }
+                }
+                if needs_preview {
+                    let drawn = crate::setup::draw_for_unit(state, index)
+                        .unwrap_or_else(crate::setup::empty_skill);
+                    if let Some(entry) = state.units[index]
+                        .dashboard
+                        .iter_mut()
+                        .find(|s| s.slot == slot)
+                    {
+                        entry.preview = drawn;
                     }
                 }
             }
@@ -2327,7 +2365,7 @@ pub fn resolve_combat(state: &mut BattleState, library: &Library, mechanics: &Me
             if let Some(kind) = action_defense_kind(state, library, action) {
                 let mut use_ = build_action_use(state, library, mechanics, *index, action);
                 if let Some(use_) = use_.as_mut() {
-                    prepare_use(state, library, mechanics, *index, *target, use_);
+                    prepare_use(state, library, mechanics, *index, *target, action.slot, use_);
                     let defense = ActiveDefense {
                         unit: state.units[*index].id.clone(),
                         kind,
@@ -2386,8 +2424,8 @@ pub fn resolve_combat(state: &mut BattleState, library: &Library, mechanics: &Me
                 let mut use_a = build_action_use(state, library, mechanics, actor_i, &action_i);
                 let mut use_b = build_action_use(state, library, mechanics, actor_j, &action_j);
                 if let (Some(a), Some(b)) = (use_a.as_mut(), use_b.as_mut()) {
-                    let pre_a = prepare_use(state, library, mechanics, actor_i, target_i, a);
-                    let pre_b = prepare_use(state, library, mechanics, actor_j, Some(actor_i), b);
+                    let pre_a = prepare_use(state, library, mechanics, actor_i, target_i, action_i.slot, a);
+                    let pre_b = prepare_use(state, library, mechanics, actor_j, Some(actor_i), action_j.slot, b);
                     let _ = (pre_a, pre_b);
                     {
                         let key = clash_key(state, actor_i, actor_j);
@@ -2442,9 +2480,9 @@ pub fn resolve_combat(state: &mut BattleState, library: &Library, mechanics: &Me
                     if let Some(mut use_) =
                         build_action_use(state, library, mechanics, actor_i, &action_i)
                     {
-                        prepare_use(state, library, mechanics, actor_i, Some(target), &mut use_);
+                        prepare_use(state, library, mechanics, actor_i, Some(target), action_i.slot, &mut use_);
                         let hits = one_sided_attack(state, actor_i, target, &mut use_, 0);
-                        apply_attack_end(state, actor_i, Some(target), &mut use_);
+                        apply_attack_end(state, actor_i, Some(target), action_i.slot, &mut use_);
                         let total: i32 = hits.iter().map(|h| h.damage).sum();
                         let rolls: Vec<i32> = hits.iter().map(|h| h.power).collect();
                         state.push_log(
@@ -2501,7 +2539,8 @@ fn rotate_used_slots(state: &mut BattleState, executed: &[(usize, u32)]) {
             .find(|s| s.slot == *slot)
         {
             target.current = entry.next.clone();
-            target.next = drawn;
+            target.next = entry.preview.clone();
+            target.preview = drawn;
             target.converted = false;
             target.target = None;
         }
@@ -2607,6 +2646,77 @@ pub fn highest_resonance(state: &BattleState) -> i32 {
     state.resonance.values().copied().max().unwrap_or(0)
 }
 
+/// Discard the second visible Skill of a slot (the wiki's "the other Skill in
+/// the same Skill Slot"), refilling the panel from the composition.
+fn discard_from_slot(state: &mut BattleState, unit_index: usize, slot: u32, only_if_different: bool) {
+    let Some(entry) = state.units[unit_index]
+        .dashboard
+        .iter()
+        .find(|s| s.slot == slot)
+        .cloned()
+    else {
+        return;
+    };
+    if only_if_different && entry.next == entry.current {
+        return;
+    }
+    let discarded = entry.next.clone();
+    state.units[unit_index].deck.consume(&discarded);
+    let drawn = crate::setup::draw_for_unit(state, unit_index)
+        .unwrap_or_else(crate::setup::empty_skill);
+    if let Some(target) = state.units[unit_index]
+        .dashboard
+        .iter_mut()
+        .find(|s| s.slot == slot)
+    {
+        target.next = target.preview.clone();
+        target.preview = drawn;
+    }
+    state.push_log("discard", format!("Discarded {}", discarded));
+}
+
+/// "[Discard] N Skills of the lowest rank in all of this unit's Skill Slots".
+fn discard_lowest_rank(state: &mut BattleState, unit_index: usize, count: i32) {
+    let rank_of = |skill: &SkillId| -> u8 {
+        state.units[unit_index]
+            .dashboard
+            .iter()
+            .find(|s| &s.current == skill || &s.next == skill)
+            .map(|_| 0)
+            .unwrap_or(0)
+    };
+    let _ = rank_of;
+    let slots: Vec<u32> = state.units[unit_index]
+        .dashboard
+        .iter()
+        .map(|s| s.slot)
+        .collect();
+    // The rank comes from the library; without it, discard the current skills of
+    // the first slots (documented limitation).
+    for slot in slots.into_iter().take(count.max(0) as usize) {
+        let Some(entry) = state.units[unit_index]
+            .dashboard
+            .iter()
+            .find(|s| s.slot == slot)
+            .cloned()
+        else {
+            continue;
+        };
+        state.units[unit_index].deck.consume(&entry.current);
+        let drawn = crate::setup::draw_for_unit(state, unit_index)
+            .unwrap_or_else(crate::setup::empty_skill);
+        if let Some(target) = state.units[unit_index]
+            .dashboard
+            .iter_mut()
+            .find(|s| s.slot == slot)
+        {
+            target.current = target.next.clone();
+            target.next = target.preview.clone();
+            target.preview = drawn;
+        }
+    }
+}
+
 /// Classify a submitted action as a defense skill, if it is one.
 fn action_defense_kind(
     state: &BattleState,
@@ -2640,12 +2750,14 @@ fn build_action_use(
 ) -> Option<SkillUse> {
     if let (Some(ego_id), Some(kind)) = (action.ego.clone(), action.ego_kind) {
         let record = library.ego(&ego_id)?.clone();
-        let use_ = build_ego_use(state, library, mechanics, unit_index, &ego_id, kind)?;
+        let mut use_ = build_ego_use(state, library, mechanics, unit_index, &ego_id, kind)?;
+        use_.slot = action.slot;
         let detail = pay_ego(state, unit_index, &record, kind);
         state.push_log("ego", format!("{} -> {}", use_.name, detail));
         return Some(use_);
     }
-    let use_ = build_use(state, library, mechanics, unit_index, &action.skill)?;
+    let mut use_ = build_use(state, library, mechanics, unit_index, &action.skill)?;
+    use_.slot = action.slot;
     Some(use_)
 }
 
@@ -2656,6 +2768,7 @@ fn prepare_use(
     mechanics: &MechanicsBook,
     unit_index: usize,
     target_index: Option<usize>,
+    slot: u32,
     use_: &mut SkillUse,
 ) -> UseContext {
     let _ = (library, mechanics);
@@ -2664,6 +2777,7 @@ fn prepare_use(
         actor_index: unit_index,
         target_index,
         clash_count: 0,
+        slot,
         mechanics_note: &mut notes,
     };
     let on_use = use_.mechanics.on_use.clone();
@@ -2702,6 +2816,7 @@ fn apply_clash_result(
     use_: &mut SkillUse,
     won: bool,
 ) {
+    let slot = use_.slot;
     // SP: the current values are not documented - configurable, default 0.
     let delta = if won {
         state.config.sp_on_clash_win
@@ -2733,6 +2848,7 @@ fn apply_clash_result(
         actor_index: unit_index,
         target_index,
         clash_count: 0,
+        slot,
         mechanics_note: &mut notes,
     };
     apply_effects(state, &list, &mut ctx, &mut use_.ctx);
@@ -2745,6 +2861,7 @@ fn apply_attack_end(
     state: &mut BattleState,
     unit_index: usize,
     target_index: Option<usize>,
+    slot: u32,
     use_: &mut SkillUse,
 ) {
     let list = use_.mechanics.attack_end.clone();
@@ -2756,6 +2873,7 @@ fn apply_attack_end(
         actor_index: unit_index,
         target_index,
         clash_count: 0,
+        slot,
         mechanics_note: &mut notes,
     };
     apply_effects(state, &list, &mut ctx, &mut use_.ctx);
@@ -2863,6 +2981,7 @@ pub fn apply_effects_for_test(
         actor_index,
         target_index,
         clash_count: 0,
+        slot: 0,
         mechanics_note: notes,
     };
     apply_effects(state, effects, &mut ctx, use_ctx);

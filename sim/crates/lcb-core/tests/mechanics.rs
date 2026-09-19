@@ -312,14 +312,15 @@ fn panel_rotates_after_use() {
     .unwrap();
     sim.step_turn(&mut state).unwrap();
     let after = state.units[0].dashboard[0].clone();
-    assert_eq!(after.current, before.next, "the preview rotates down");
-    assert_ne!(after.next.0, "", "a new skill is drawn into the preview");
-    // Every slot keeps exactly two skills on the panel; the deck grew by the
-    // extra slot the Sinner received from turn 2 (one Sinner in a six-slot
-    // encounter, wiki.gg `Battles` / Deployment Order).
+    assert_eq!(after.current, before.next, "the second skill rotates down");
+    assert_eq!(after.next, before.preview, "the preview becomes selectable");
+    assert_ne!(after.preview.0, "", "a new preview is drawn");
+    // Every slot keeps three skills on the panel (2 selectable + 1 preview);
+    // the deck grew by the extra slot the Sinner received from turn 2 (one
+    // Sinner in a six-slot encounter, wiki.gg `Battles` / Deployment Order).
     let paneled_after: u32 = state.units[0].deck.paneled.iter().map(|(_, n)| *n).sum();
     let slots_after = state.units[0].dashboard.len() as u32;
-    assert_eq!(paneled_after, slots_after * 2);
+    assert_eq!(paneled_after, slots_after * 3);
     assert_eq!(slots_after, 2, "one extra slot per turn until the cap");
     assert!(paneled_before >= 1);
 }
@@ -966,7 +967,10 @@ fn gain_from_resonance_uses_the_highest_value() {
     let mut state = sim
         .new_encounter(&["10110"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
         .unwrap();
+    // The combat phase copies the turn's resonance onto the units; here the
+    // value is set directly.
     state.resonance.insert("pride".to_string(), 4);
+    state.units[0].resonance_max = 4;
     let effect = Effect {
         kind: "gain_from_resonance".to_string(),
         status: Some("The Living & The Departed".to_string()),
@@ -994,13 +998,11 @@ fn gain_from_resonance_uses_the_highest_value() {
         "no A-Reson, no extra gain"
     );
     state.units[0].a_reson_max = 4;
+    let before = state.units[0].statuses.potency("The Living & The Departed");
     let mut ctx = battle::UseContext::default();
     battle::apply_effects_for_test(&mut state, &[doubled], 0, Some(1), &mut notes, &mut ctx);
-    assert_eq!(
-        state.units[0].statuses.potency("The Living & The Departed"),
-        6,
-        "4 x 2 capped at 6"
-    );
+    let gained = state.units[0].statuses.potency("The Living & The Departed") - before;
+    assert_eq!(gained, 6, "4 x 2 capped at 6");
 }
 
 /// A full turn keeps the battle in a consistent, serialisable state.

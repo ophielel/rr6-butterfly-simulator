@@ -1868,11 +1868,14 @@
    },
    "combat_start": [],
    "note": "Tsuru-giri [鶴斬り]",
-   "on_use": [],
+   "on_use": [
+    {
+     "kind": "discard_other_in_slot",
+     "raw": "[On Use] If the other Skill in the same Skill Slot is a different Skill, [Discard] that Skill"
+    }
+   ],
    "tags": [],
-   "unmodeled": [
-    "[On Use] If the other Skill in the same Skill Slot is a different Skill, [Discard] that Skill"
-   ]
+   "unmodeled": []
   },
   "1081301@2": {
    "attack_end": [],
@@ -1912,6 +1915,10 @@
    "note": "Tsuru-giri [鶴斬り]",
    "on_use": [
     {
+     "kind": "discard_other_in_slot",
+     "raw": "[On Use] If the other Skill in the same Skill Slot is a different Skill, [Discard] that Skill"
+    },
+    {
      "condition": {
       "component": "potency",
       "gte": 6,
@@ -1927,9 +1934,7 @@
     }
    ],
    "tags": [],
-   "unmodeled": [
-    "[On Use] If the other Skill in the same Skill Slot is a different Skill, [Discard] that Skill"
-   ]
+   "unmodeled": []
   },
   "1081301@3": {
    "attack_end": [],
@@ -1969,6 +1974,10 @@
    "note": "Tsuru-giri [鶴斬り]",
    "on_use": [
     {
+     "kind": "discard_other_in_slot",
+     "raw": "[On Use] If the other Skill in the same Skill Slot is a different Skill, [Discard] that Skill"
+    },
+    {
      "condition": {
       "component": "potency",
       "gte": 6,
@@ -1984,9 +1993,7 @@
     }
    ],
    "tags": [],
-   "unmodeled": [
-    "[On Use] If the other Skill in the same Skill Slot is a different Skill, [Discard] that Skill"
-   ]
+   "unmodeled": []
   },
   "1081301@4": {
    "attack_end": [],
@@ -2026,6 +2033,10 @@
    "note": "Tsuru-giri [鶴斬り]",
    "on_use": [
     {
+     "kind": "discard_other_in_slot",
+     "raw": "[On Use] If the other Skill in the same Skill Slot is a different Skill, [Discard] that Skill"
+    },
+    {
      "condition": {
       "component": "potency",
       "source": "target",
@@ -2043,9 +2054,7 @@
     }
    ],
    "tags": [],
-   "unmodeled": [
-    "[On Use] If the other Skill in the same Skill Slot is a different Skill, [Discard] that Skill"
-   ]
+   "unmodeled": []
   },
   "1081302@1": {
    "attack_end": [],
@@ -2071,11 +2080,14 @@
    },
    "combat_start": [],
    "note": "Susuki Misdirection",
-   "on_use": [],
+   "on_use": [
+    {
+     "kind": "discard_other_in_slot",
+     "raw": "[On Use] If the other Skill in the same Skill Slot is a different Skill, [Discard] that Skill"
+    }
+   ],
    "tags": [],
-   "unmodeled": [
-    "[On Use] If the other Skill in the same Skill Slot is a different Skill, [Discard] that Skill"
-   ]
+   "unmodeled": []
   },
   "1081302@2": {
    "attack_end": [],
@@ -2115,6 +2127,10 @@
    "note": "Susuki Misdirection",
    "on_use": [
     {
+     "kind": "discard_other_in_slot",
+     "raw": "[On Use] If the other Skill in the same Skill Slot is a different Skill, [Discard] that Skill"
+    },
+    {
      "condition": {
       "component": "potency",
       "gte": 6,
@@ -2130,9 +2146,7 @@
     }
    ],
    "tags": [],
-   "unmodeled": [
-    "[On Use] If the other Skill in the same Skill Slot is a different Skill, [Discard] that Skill"
-   ]
+   "unmodeled": []
   },
   "1081302@3": {
    "attack_end": [],
@@ -2172,6 +2186,10 @@
    "note": "Susuki Misdirection",
    "on_use": [
     {
+     "kind": "discard_other_in_slot",
+     "raw": "[On Use] If the other Skill in the same Skill Slot is a different Skill, [Discard] that Skill"
+    },
+    {
      "condition": {
       "component": "potency",
       "gte": 6,
@@ -2187,9 +2205,7 @@
     }
    ],
    "tags": [],
-   "unmodeled": [
-    "[On Use] If the other Skill in the same Skill Slot is a different Skill, [Discard] that Skill"
-   ]
+   "unmodeled": []
   },
   "1081302@4": {
    "attack_end": [],
@@ -2229,6 +2245,10 @@
    "note": "Susuki Misdirection",
    "on_use": [
     {
+     "kind": "discard_other_in_slot",
+     "raw": "[On Use] If the other Skill in the same Skill Slot is a different Skill, [Discard] that Skill"
+    },
+    {
      "condition": {
       "component": "potency",
       "source": "target",
@@ -2247,8 +2267,7 @@
    ],
    "tags": [],
    "unmodeled": [
-    "[On Hit] Heal 5 SP",
-    "[On Use] If the other Skill in the same Skill Slot is a different Skill, [Discard] that Skill"
+    "[On Hit] Heal 5 SP"
    ]
   },
   "1081303@1": {
@@ -2313,6 +2332,10 @@
      "value": 0
     },
     {
+     "kind": "discard_other_in_slot",
+     "raw": "[On Use] If the other Skill in the same Skill Slot is a different Skill, [Discard] that Skill"
+    },
+    {
      "condition": {
       "component": "potency",
       "gte": 6,
@@ -2329,8 +2352,7 @@
    ],
    "tags": [],
    "unmodeled": [
-    "[On Hit] If target isn't in an [Amplitude Conversion] state, trigger [Amplitude Conversion] into [Tremor - Decay]",
-    "[On Use] If the other Skill in the same Skill Slot is a different Skill, [Discard] that Skill"
+    "[On Hit] If target isn't in an [Amplitude Conversion] state, trigger [Amplitude Conversion] into [Tremor - Decay]"
    ]
   },
   "1081303@2": {
@@ -2395,6 +2417,10 @@
      "value": 0
     },
     {
+     "kind": "discard_other_in_slot",
+     "raw": "[On Use] If the other Skill in the same Skill Slot is a different Skill, [Discard] that Skill"
+    },
+    {
      "condition": {
       "component": "potency",
       "gte": 6,
@@ -2411,8 +2437,7 @@
    ],
    "tags": [],
    "unmodeled": [
-    "[On Hit] If target isn't in an [Amplitude Conversion] state, trigger [Amplitude Conversion] into [Tremor - Decay]",
-    "[On Use] If the other Skill in the same Skill Slot is a different Skill, [Discard] that Skill"
+    "[On Hit] If target isn't in an [Amplitude Conversion] state, trigger [Amplitude Conversion] into [Tremor - Decay]"
    ]
   },
   "1081303@3": {
@@ -2477,6 +2502,10 @@
      "value": 0
     },
     {
+     "kind": "discard_other_in_slot",
+     "raw": "[On Use] If the other Skill in the same Skill Slot is a different Skill, [Discard] that Skill"
+    },
+    {
      "condition": {
       "component": "potency",
       "gte": 6,
@@ -2493,8 +2522,7 @@
    ],
    "tags": [],
    "unmodeled": [
-    "[On Hit] If target isn't in an [Amplitude Conversion] state, trigger [Amplitude Conversion] into [Tremor - Decay]",
-    "[On Use] If the other Skill in the same Skill Slot is a different Skill, [Discard] that Skill"
+    "[On Hit] If target isn't in an [Amplitude Conversion] state, trigger [Amplitude Conversion] into [Tremor - Decay]"
    ]
   },
   "1081303@4": {
@@ -2557,14 +2585,17 @@
      "raw": "Deal +10% damage for every [Bright -光-] Potency on self",
      "step": 10,
      "value": 0
+    },
+    {
+     "kind": "discard_other_in_slot",
+     "raw": "[On Use] If the other Skill in the same Skill Slot is a different Skill, [Discard] that Skill"
     }
    ],
    "tags": [],
    "unmodeled": [
     "If target is in either [Amplitude Conversion] or [Amplitude Entanglement] states, this Coin deals +48% damage",
     "[On Hit] If target isn't in an [Amplitude Conversion] state, trigger [Amplitude Conversion] into [Tremor - Decay]",
-    "[On Use] Coin Power +1 for every 6 ([Tremor] + [Sinking]), on target (max 3)",
-    "[On Use] If the other Skill in the same Skill Slot is a different Skill, [Discard] that Skill"
+    "[On Use] Coin Power +1 for every 6 ([Tremor] + [Sinking]), on target (max 3)"
    ]
   },
   "1081304@1": {
@@ -2589,13 +2620,19 @@
      }
     ]
    },
-   "combat_start": [],
+   "combat_start": [
+    {
+     "kind": "discard_lowest_rank",
+     "per_turn": 1,
+     "raw": "[Combat Start] [Discard] 2 Skills of the lowest rank in all of this unit's Skill Slots (once per turn)",
+     "value": 2
+    }
+   ],
    "note": "Shuffle Hands - Floral Deck",
    "on_use": [],
    "tags": [],
    "unmodeled": [
-    "[Combat Start] If this Skill was equipped on this unit's leftmost Skill Slot, convert the Suit in this unit's Hand to a random Suit that corresponds to one of this unit's Base Attack Skills next turn. (once per turn; excluding the Suit already in this unit's Hand)",
-    "[Combat Start] [Discard] 2 Skills of the lowest rank in all of this unit's Skill Slots (once per turn)"
+    "[Combat Start] If this Skill was equipped on this unit's leftmost Skill Slot, convert the Suit in this unit's Hand to a random Suit that corresponds to one of this unit's Base Attack Skills next turn. (once per turn; excluding the Suit already in this unit's Hand)"
    ]
   },
   "1081304@2": {
@@ -2620,13 +2657,19 @@
      }
     ]
    },
-   "combat_start": [],
+   "combat_start": [
+    {
+     "kind": "discard_lowest_rank",
+     "per_turn": 1,
+     "raw": "[Combat Start] [Discard] 2 Skills of the lowest rank in all of this unit's Skill Slots (once per turn)",
+     "value": 2
+    }
+   ],
    "note": "Shuffle Hands - Floral Deck",
    "on_use": [],
    "tags": [],
    "unmodeled": [
-    "[Combat Start] If this Skill was equipped on this unit's leftmost Skill Slot, convert the Suit in this unit's Hand to a random Suit that corresponds to one of this unit's Base Attack Skills next turn. (once per turn; excluding the Suit already in this unit's Hand)",
-    "[Combat Start] [Discard] 2 Skills of the lowest rank in all of this unit's Skill Slots (once per turn)"
+    "[Combat Start] If this Skill was equipped on this unit's leftmost Skill Slot, convert the Suit in this unit's Hand to a random Suit that corresponds to one of this unit's Base Attack Skills next turn. (once per turn; excluding the Suit already in this unit's Hand)"
    ]
   },
   "1081304@3": {
@@ -2651,13 +2694,19 @@
      }
     ]
    },
-   "combat_start": [],
+   "combat_start": [
+    {
+     "kind": "discard_lowest_rank",
+     "per_turn": 1,
+     "raw": "[Combat Start] [Discard] 2 Skills of the lowest rank in all of this unit's Skill Slots (once per turn)",
+     "value": 2
+    }
+   ],
    "note": "Shuffle Hands - Floral Deck",
    "on_use": [],
    "tags": [],
    "unmodeled": [
-    "[Combat Start] If this Skill was equipped on this unit's leftmost Skill Slot, convert the Suit in this unit's Hand to a random Suit that corresponds to one of this unit's Base Attack Skills next turn. (once per turn; excluding the Suit already in this unit's Hand)",
-    "[Combat Start] [Discard] 2 Skills of the lowest rank in all of this unit's Skill Slots (once per turn)"
+    "[Combat Start] If this Skill was equipped on this unit's leftmost Skill Slot, convert the Suit in this unit's Hand to a random Suit that corresponds to one of this unit's Base Attack Skills next turn. (once per turn; excluding the Suit already in this unit's Hand)"
    ]
   },
   "1081304@4": {
@@ -2682,14 +2731,20 @@
      }
     ]
    },
-   "combat_start": [],
+   "combat_start": [
+    {
+     "kind": "discard_lowest_rank",
+     "per_turn": 1,
+     "raw": "[Combat Start] [Discard] 2 Skills of the lowest rank in all of this unit's Skill Slots (once per turn)",
+     "value": 2
+    }
+   ],
    "note": "Shuffle Hands - Floral Deck",
    "on_use": [],
    "tags": [],
    "unmodeled": [
     "[Combat Start] 50% chance to gain 1 [Bright -光-] Potency (once per turn)",
     "[Combat Start] If this Skill was equipped on this unit's leftmost Skill Slot, convert the Suit in this unit's Hand to a random Suit that corresponds to one of this unit's Base Attack Skills next turn. (once per turn; excluding the Suit already in this unit's Hand)",
-    "[Combat Start] [Discard] 2 Skills of the lowest rank in all of this unit's Skill Slots (once per turn)",
     "[On Use] Coin Power +1 for every 2 [Bright -光-] Potency on self (max 2)"
    ]
   },

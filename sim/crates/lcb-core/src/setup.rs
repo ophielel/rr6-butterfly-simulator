@@ -236,7 +236,8 @@ impl<'a> EncounterBuilder<'a> {
             let mut panel = Vec::new();
             let current = draw_for_unit(&mut state, index).unwrap_or_else(empty_skill);
             let next = draw_for_unit(&mut state, index).unwrap_or_else(empty_skill);
-            panel.push(DashboardSlot::new(0, current, next));
+            let preview = draw_for_unit(&mut state, index).unwrap_or_else(empty_skill);
+            panel.push(DashboardSlot::new(0, current, next, preview));
             state.units[index].dashboard = panel;
         }
         // Turn 1 starts immediately: the caller then assigns actions and commits.

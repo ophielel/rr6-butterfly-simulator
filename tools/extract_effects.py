@@ -176,6 +176,11 @@ PATTERNS = [
      lambda m: {"kind": "reload_ammo", "a_reson_gte": int(m.group(1))}),
     (re.compile(rf"^If the said Reson\. was an A-Reson\., {ST} instead$"),
      lambda m: {"kind": "reload_ammo", "requires_a_reson": True}),
+    # Discard ("[Discard] that Skill" / "[Discard] 2 Skills of the lowest rank").
+    (re.compile(r"^If the other Skill in the same Skill Slot is a different Skill, \[Discard\] that Skill$"),
+     lambda m: {"kind": "discard_other_in_slot"}),
+    (re.compile(rf"^\[Discard\] {N} Skills? of the lowest rank in all of this unit's Skill Slots$"),
+     lambda m: {"kind": "discard_lowest_rank", "value": int(m.group(1))}),
     (re.compile(r"^This Attack Skill deals 0 damage$"),
      lambda m: {"kind": "zero_damage"}),
     (re.compile(r"^Does not take damage for this turn$"),

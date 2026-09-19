@@ -220,8 +220,10 @@ pub struct DashboardSlot {
     pub slot: u32,
     /// Bottom row: the skill used this turn.
     pub current: SkillId,
-    /// Top row: the skill that rotates down after `current` is used.
+    /// Second visible skill: also selectable this turn.
     pub next: SkillId,
+    /// The faint preview above them (drawn, not selectable yet).
+    pub preview: SkillId,
     pub target: Option<UnitId>,
     /// Set when the player swapped the bottom skill for a defense skill or an
     /// E.G.O this turn (the original skill is consumed either way).
@@ -229,11 +231,12 @@ pub struct DashboardSlot {
 }
 
 impl DashboardSlot {
-    pub fn new(slot: u32, current: SkillId, next: SkillId) -> Self {
+    pub fn new(slot: u32, current: SkillId, next: SkillId, preview: SkillId) -> Self {
         Self {
             slot,
             current,
             next,
+            preview,
             target: None,
             converted: false,
         }
@@ -272,11 +275,11 @@ impl SkillDeck {
         entries.iter().map(|(_, n)| *n).sum()
     }
 
-    /// Place every copy of the composition back into the draw pool.  Called when
-    /// the composition has been fully placed on the panel.
+    /// Refill the draw pool once every copy of the composition has been placed
+    /// on the panel.  The panel keeps what it is showing: with several slots the
+    /// same skill can legitimately appear more often than its composition count.
     pub fn reset(&mut self) {
         self.remaining = self.composition.clone();
-        self.paneled.clear();
     }
 
     /// Draw one skill for the panel, excluding nothing but the copies whose

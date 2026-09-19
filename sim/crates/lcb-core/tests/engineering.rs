@@ -205,9 +205,10 @@ fn deck_draws_do_not_repeat_until_exhausted() {
     assert_eq!(counts.get("1011001"), Some(&3));
     assert_eq!(counts.get("1011002"), Some(&2));
     assert_eq!(counts.get("1011003"), Some(&1));
-    // The panel holds two skills per slot, both drawn from the composition.
+    // The panel holds three skills per slot (2 selectable + 1 preview), all
+    // drawn from the composition.
     let paneled: u32 = deck.paneled.iter().map(|(_, n)| *n).sum();
-    assert_eq!(paneled, 2, "two skills per slot are shown on the panel");
+    assert_eq!(paneled, 3, "2 selectable skills plus the preview per slot");
     assert_eq!(
         deck.len() as u32,
         deck.composition.iter().map(|(_, n)| *n).sum::<u32>() - paneled
