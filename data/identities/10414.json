@@ -1,0 +1,390 @@
+{
+  "id": "10414",
+  "kind": "identity",
+  "sinner": "Ryōshū",
+  "sinner_zh": "良秀",
+  "title_en": "Lobotomy E.G.O:: Faint Aroma & Solitude",
+  "title_zh": "脑叶公司E.G.O:: 余香·孤独",
+  "wiki_title": "Lobotomy E.G.O::Faint Aroma & Solitude Ryōshū",
+  "rarity": 3,
+  "season": "Walpurgisnacht - VIII",
+  "release_date": "2026.03.05",
+  "world": "World of Lobotomy Corporation Headquarters - 1",
+  "keywords": [
+    "Lobotomy Corp. Headquarters",
+    "E.G.O Gear"
+  ],
+  "stats": {
+    "hp": 75,
+    "hp_growth": 2.17,
+    "defense_level_mod": 0,
+    "speed": {
+      "4": [
+        3,
+        7
+      ],
+      "3": [
+        3,
+        6
+      ],
+      "2": [
+        3,
+        5
+      ]
+    },
+    "resist": {
+      "slash": 1.0,
+      "pierce": 0.5,
+      "blunt": 2.0
+    },
+    "stagger_thresholds": [
+      65,
+      35
+    ]
+  },
+  "skills": [
+    {
+      "id": "1041401",
+      "slot": "skill1",
+      "name": "Bang. Bang.",
+      "type": "Pierce",
+      "rank": 1,
+      "upties": {
+        "1": {
+          "base_power": 3,
+          "coin_power": 3,
+          "coins": 2,
+          "offense_level_mod": 2,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Sloth",
+          "skill_amount": 3,
+          "on_use_text": "",
+          "coin_texts": [
+            "Spend 1 [Bullet - Solitude]\n[On Hit] Inflict +2 [Sinking] Count",
+            "Spend 1 [Bullet - Solitude]\n[On Hit] Inflict 2 [Tremor]"
+          ],
+          "tags": []
+        },
+        "2": {
+          "base_power": 3,
+          "coin_power": 3,
+          "coins": 2,
+          "offense_level_mod": 2,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Sloth",
+          "skill_amount": 3,
+          "on_use_text": "[On Use] If target has 6+ ([Tremor] + [Sinking]), Coin Power +1",
+          "coin_texts": [
+            "Spend 1 [Bullet - Solitude]\n[On Hit] Inflict +2 [Sinking] Count",
+            "Spend 1 [Bullet - Solitude]\n[On Hit] Inflict 2 [Tremor]"
+          ],
+          "tags": []
+        },
+        "3": {
+          "base_power": 3,
+          "coin_power": 4,
+          "coins": 2,
+          "offense_level_mod": 2,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Sloth",
+          "skill_amount": 3,
+          "on_use_text": "[On Use] If target has 6+ ([Tremor] + [Sinking]), Coin Power +1",
+          "coin_texts": [
+            "Spend 1 [Bullet - Solitude]\n[On Hit] Inflict +2 [Sinking] Count",
+            "Spend 1 [Bullet - Solitude]\n[On Hit] Inflict 2 [Tremor]"
+          ],
+          "tags": []
+        },
+        "4": {
+          "base_power": 4,
+          "coin_power": 4,
+          "coins": 2,
+          "offense_level_mod": 2,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Sloth",
+          "skill_amount": 3,
+          "on_use_text": "[On Use] Coin Power +1 for every 6 ([Tremor] + [Sinking]) on target (max 2)",
+          "coin_texts": [
+            "Spend 1 [Bullet - Solitude]\n[On Hit] Inflict +2 [Sinking] Count",
+            "Spend 1 [Bullet - Solitude]\n[On Hit] Inflict 3 [Tremor]"
+          ],
+          "tags": []
+        }
+      },
+      "name_en": "Bang. Bang.",
+      "name_zh": "砰。砰。"
+    },
+    {
+      "id": "1041402",
+      "slot": "skill2",
+      "name": "Blossoming Fragrance in the Void",
+      "type": "Pierce",
+      "rank": 2,
+      "upties": {
+        "1": {
+          "base_power": 3,
+          "coin_power": 4,
+          "coins": 3,
+          "offense_level_mod": 2,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Envy",
+          "skill_amount": 2,
+          "on_use_text": "",
+          "coin_texts": [
+            "Spend 1 [Bullet - Solitude]\n[On Hit] Inflict +2 [Sinking] Count",
+            "[On Hit] Inflict 2 [Faint Aroma]\n[On Hit] Inflict +1 [Tremor] Count",
+            "[On Hit] Inflict 2 [Faint Aroma]\n[On Hit] Inflict +1 [Tremor] Count"
+          ],
+          "tags": []
+        },
+        "2": {
+          "base_power": 3,
+          "coin_power": 4,
+          "coins": 3,
+          "offense_level_mod": 2,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Envy",
+          "skill_amount": 2,
+          "on_use_text": "[On Use] If target has 6+ ([Tremor] + [Sinking]), Coin Power +1",
+          "coin_texts": [
+            "Spend 1 [Bullet - Solitude]\n[On Hit] Inflict +2 [Sinking] Count",
+            "[On Hit] Inflict 3 [Faint Aroma]\n[On Hit] Inflict +2 [Tremor] Count",
+            "[On Hit] Inflict 3 [Faint Aroma]\n[On Hit] Inflict +2 [Tremor] Count"
+          ],
+          "tags": []
+        },
+        "3": {
+          "base_power": 4,
+          "coin_power": 4,
+          "coins": 3,
+          "offense_level_mod": 2,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Envy",
+          "skill_amount": 2,
+          "on_use_text": "[On Use] If target has 6+ ([Tremor] + [Sinking]), Coin Power +1",
+          "coin_texts": [
+            "Spend 1 [Bullet - Solitude]\n[On Hit] Inflict +2 [Sinking] Count",
+            "[On Hit] Inflict 3 [Faint Aroma]\n[On Hit] Inflict +2 [Tremor] Count",
+            "[On Hit] Inflict 3 [Faint Aroma]\n[On Hit] Inflict +2 [Tremor] Count"
+          ],
+          "tags": []
+        },
+        "4": {
+          "base_power": 4,
+          "coin_power": 4,
+          "coins": 3,
+          "offense_level_mod": 2,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Envy",
+          "skill_amount": 2,
+          "on_use_text": "[On Use] Coin Power +1 for every 6 ([Tremor] + [Sinking]) on target (max 2)\n[On Use] Deal +1% damage for every [Faint Aroma] on target",
+          "coin_texts": [
+            "Spend 1 [Bullet - Solitude]\n[On Hit] Inflict +3 [Sinking] Count",
+            "[On Hit] Inflict 3 [Faint Aroma]\n[On Hit] Inflict +2 [Tremor] Count",
+            "[On Hit] Inflict 3 [Faint Aroma]\n[On Hit] Inflict +2 [Tremor] Count"
+          ],
+          "tags": []
+        }
+      },
+      "name_en": "Blossoming Fragrance in the Void",
+      "name_zh": "自空虚中绽放的芬芳"
+    },
+    {
+      "id": "1041403",
+      "slot": "skill3",
+      "name": "Full Bloom",
+      "type": "Pierce",
+      "rank": 3,
+      "upties": {
+        "1": {
+          "base_power": 5,
+          "coin_power": 4,
+          "coins": 3,
+          "offense_level_mod": 3,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Gloom",
+          "skill_amount": 1,
+          "on_use_text": "[On Use] If target has 6+ ([Tremor] + [Sinking]), Coin Power +1",
+          "coin_texts": [
+            "[On Hit] Inflict 1 [Faint Aroma]\n[On Hit] Inflict +3 [Sinking] Count",
+            "[On Hit] Inflict 1 [Faint Aroma]\n[On Hit] Inflict 4 [Sinking]",
+            "[On Hit] Inflict 2 [Faint Aroma]\n[On Hit] Inflict 2 [Tremor]\n[On Hit] Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1"
+          ],
+          "tags": []
+        },
+        "2": {
+          "base_power": 5,
+          "coin_power": 4,
+          "coins": 3,
+          "offense_level_mod": 3,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Gloom",
+          "skill_amount": 1,
+          "on_use_text": "[On Use] If target has 6+ ([Tremor] + [Sinking]), Coin Power +1",
+          "coin_texts": [
+            "[On Hit] Inflict 1 [Faint Aroma]\n[On Hit] Inflict +3 [Sinking] Count",
+            "[On Hit] Inflict 1 [Faint Aroma]\n[On Hit] Inflict 4 [Sinking]",
+            "[On Hit] Inflict 2 [Faint Aroma]\n[On Hit] Inflict 2 [Tremor]\n[On Hit] Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1"
+          ],
+          "tags": []
+        },
+        "3": {
+          "base_power": 5,
+          "coin_power": 4,
+          "coins": 3,
+          "offense_level_mod": 3,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Gloom",
+          "skill_amount": 1,
+          "on_use_text": "[On Use] If target has 6+ ([Tremor] + [Sinking]), Coin Power +1",
+          "coin_texts": [
+            "[On Hit] Inflict 1 [Faint Aroma]\n[On Hit] Inflict +3 [Sinking] Count",
+            "[On Hit] Inflict 1 [Faint Aroma]\n[On Hit] Inflict 4 [Sinking]",
+            "[On Hit] Inflict 2 [Faint Aroma]\n[On Hit] Inflict 2 [Tremor]\n[On Hit] Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1"
+          ],
+          "tags": []
+        },
+        "4": {
+          "base_power": 5,
+          "coin_power": 4,
+          "coins": 3,
+          "offense_level_mod": 3,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Gloom",
+          "skill_amount": 1,
+          "on_use_text": "[On Use] Coin Power +1 for every 6 ([Tremor] + [Sinking]) on target (max 2)\n[On Use] Deal +1% damage for every [Faint Aroma] on target",
+          "coin_texts": [
+            "[On Hit] Inflict 1 [Faint Aroma]\n[On Hit] Inflict +3 [Sinking] Count",
+            "[On Hit] Inflict 1 [Faint Aroma]\n[On Hit] Inflict 4 [Sinking]",
+            "[On Hit] Inflict 2 [Faint Aroma]\n[On Hit] Inflict 2 [Tremor]\n[On Hit] Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1\n[On Hit] Deal Gloom damage equal to [Sinking] on target"
+          ],
+          "tags": []
+        }
+      },
+      "name_en": "Full Bloom",
+      "name_zh": "盛放"
+    },
+    {
+      "id": "1041404",
+      "slot": "defense",
+      "name": "A.A.T.",
+      "type": "Evade",
+      "rank": 1,
+      "upties": {
+        "1": {
+          "base_power": 4,
+          "coin_power": 10,
+          "coins": 1,
+          "offense_level_mod": null,
+          "attack_weight": 1,
+          "defense_level_mod": 3,
+          "sin_affinity": "def",
+          "skill_amount": null,
+          "on_use_text": "[Turn End] Gain 10 [Petals] (once per turn)\n[Turn End] Gain 2 [Fragile] and 2 [Attack Power Up] next turn (once per turn)",
+          "coin_texts": [],
+          "tags": []
+        },
+        "2": {
+          "base_power": 4,
+          "coin_power": 10,
+          "coins": 1,
+          "offense_level_mod": null,
+          "attack_weight": 1,
+          "defense_level_mod": 3,
+          "sin_affinity": "def",
+          "skill_amount": null,
+          "on_use_text": "[Turn End] Gain 10 [Petals] (once per turn)\n[Turn End] Gain 2 [Fragile] and 2 [Attack Power Up] next turn (once per turn)",
+          "coin_texts": [],
+          "tags": []
+        },
+        "3": {
+          "base_power": 4,
+          "coin_power": 10,
+          "coins": 1,
+          "offense_level_mod": null,
+          "attack_weight": 1,
+          "defense_level_mod": 3,
+          "sin_affinity": "def",
+          "skill_amount": null,
+          "on_use_text": "[Turn End] Gain 10 [Petals] (once per turn)\n[Turn End] Gain 2 [Fragile] and 2 [Attack Power Up] next turn (once per turn)",
+          "coin_texts": [],
+          "tags": []
+        },
+        "4": {
+          "base_power": 4,
+          "coin_power": 10,
+          "coins": 1,
+          "offense_level_mod": null,
+          "attack_weight": 1,
+          "defense_level_mod": 3,
+          "sin_affinity": "Gloom",
+          "skill_amount": null,
+          "on_use_text": "[Turn End] Gain 10 [Petals] (once per turn)\n[Turn End] Gain 2 [Fragile] and 2 [Attack Power Up] next turn (once per turn)",
+          "coin_texts": [],
+          "tags": []
+        }
+      },
+      "name_en": "A.A.T.",
+      "name_zh": "艺·观·时"
+    }
+  ],
+  "passives": [
+    {
+      "kind": "combat_passive",
+      "uptie_from": 1,
+      "text": "Always Active: Begin Encounters with 6 [Bullet - Solitude]\nAt 1+ [Bullet - Solitude], if the enemy has less than -40 SP or is Staggered at this unit or an ally's Attack End, use 'Bang. Bang.' as an Unopposed Attack (once per turn)\nAttack End: At 0 [Bullet - Solitude], use 'Stories that Never Cease' as an Unopposed Attack against the target and consume 10 SP to [Reload]",
+      "raw_key": "passive0"
+    },
+    {
+      "kind": "support_passive_1",
+      "uptie_from": 1,
+      "text": "Gain 1 [Petals] if the enemy takes [Sinking] damage\nGain [Petals] equal to [Faint Aroma] inflicted every time enemies gain [Faint Aroma]\nGain 2 [Petals] every time [Tremor Burst] is triggered regardless of the unit\nAttack Skill End: At 30+ [Petals], use 'Magnificent End' against the target that has the highest [Faint Aroma] Stack\nDeal +([Faint Aroma] on the target)% damage against Staggered targets\nIf this unit lost 10%+ HP this turn, heal 3% HP and 10 SP (once per turn)",
+      "raw_key": "passive1"
+    },
+    {
+      "kind": "support_passive_1",
+      "uptie_from": 2,
+      "text": "Gain 1 [Petals] if the enemy takes [Sinking] damage\nGain [Petals] equal to [Faint Aroma] inflicted every time enemies gain [Faint Aroma]\nGain 2 [Petals] every time [Tremor Burst] is triggered regardless of the unit",
+      "raw_key": "2passive1"
+    },
+    {
+      "kind": "support_passive_2",
+      "uptie_from": 1,
+      "text": "When the ally with the fastest Speed hits an enemy using a Skill that inflicts [Sinking] Potency, Count, or 'Unique Sinking', inflict 2 [Tremor] and trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1 (once per turn)",
+      "raw_key": "passive2"
+    }
+  ],
+  "unparsed": [],
+  "sources": [
+    {
+      "kind": "wiki",
+      "url": "https://limbuscompany.wiki.gg/wiki/Lobotomy_E.G.O::Faint_Aroma_&_Solitude_Ryōshū",
+      "language": "en",
+      "verification": "single_source_verified"
+    },
+    {
+      "kind": "game_text",
+      "language": "en",
+      "id": "10414",
+      "verification": "official"
+    },
+    {
+      "kind": "game_text_zh_cn",
+      "language": "zh-CN",
+      "id": "10414",
+      "verification": "synthetic_translation"
+    }
+  ]
+}

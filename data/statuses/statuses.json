@@ -1,0 +1,308 @@
+[
+  {
+    "key": "Burn",
+    "name_en": "Burn",
+    "name_zh": "烧伤",
+    "wiki_name": "Burn",
+    "text_en": "At the end of the turn, take fixed damage by the effect’s Count, then halve it.",
+    "text_zh": "回合结束时，受到等同于本效果层数的固定伤害，随后使本效果的层数减半。",
+    "source_kind": "keyword",
+    "sources": [
+      {
+        "kind": "game_text",
+        "language": "en",
+        "id": "Burn",
+        "verification": "official"
+      }
+    ]
+  },
+  {
+    "key": "Combustion",
+    "name_en": "Burn",
+    "name_zh": "烧伤",
+    "wiki_name": "Burn",
+    "text_en": "At the end of the turn, take fixed damage by the effect’s Potency.\nThen, reduce its Count by 1.",
+    "text_zh": "回合结束时，受到{0}点固定伤害。持续{1}回合。",
+    "source_kind": "keyword",
+    "sources": [
+      {
+        "kind": "game_text",
+        "language": "en",
+        "id": "Combustion",
+        "verification": "official"
+      }
+    ]
+  },
+  {
+    "key": "Laceration",
+    "name_en": "Bleed",
+    "name_zh": "流血",
+    "wiki_name": "Bleed",
+    "text_en": "When tossing an attack Coin, take fixed damage by the effect’s Potency.\nThen, reduce its Count by 1.",
+    "text_zh": "下{1}次掷出攻击技能硬币时受到{0}点固定伤害。",
+    "source_kind": "keyword",
+    "sources": [
+      {
+        "kind": "game_text",
+        "language": "en",
+        "id": "Laceration",
+        "verification": "official"
+      }
+    ]
+  },
+  {
+    "key": "Sinking",
+    "name_en": "Sinking",
+    "name_zh": "沉沦",
+    "wiki_name": "Sinking",
+    "text_en": "When hit by an attack, take fixed SP damage by the effect’s Potency.\n(Non-SP Units take Gloom damage instead.)\nThen, reduce its Count by 1.",
+    "text_zh": "下{1}次受到攻击时，额外受到{0}点固定理智伤害。(未带有理智值的目标则受到忧郁伤害)",
+    "source_kind": "keyword",
+    "sources": [
+      {
+        "kind": "game_text",
+        "language": "en",
+        "id": "Sinking",
+        "verification": "official"
+      }
+    ]
+  },
+  {
+    "key": "SinkingWhite",
+    "name_en": "Butterfly",
+    "name_zh": "蝶",
+    "wiki_name": "Butterfly",
+    "text_en": "- Unique Sinking\n- Base Value: 0, Max Value: 15\n- The Potency and the Count of this effect are called \"The Living\" and \"The Departed\", respectively.\n- When hit, the attacker heals (The Living/4) SP. (min 1; rounded down)\n- When hit, and if this unit's SP is at less than 0, take (Sinking Potency/5) Gloom damage for every value of The Departed. (max Gloom damage 30; rounded down; deals half damage to targets that are Non-SP Units.)\n- Turn End: Reset The Departed of this effect to 0; then, gain Sinking equal to The Living and convert The Living into The Departed.\n- No external effects can raise the amount of Butterfly inflicted. \"Inflict additional Sinking\" effects inflict additional Sinking instead of additional Butterfly.\n- This effect expires when both The Living and The Departed reach 0.",
+    "text_zh": "- 特殊沉沦\n- 基础值：0，最大值：15\n- 受到攻击时，使攻击者恢复{2}点理智值\n- 受到攻击时，若自身的理智值低于0点，则使自身受到{3}点忧郁伤害\n- 回合结束时，本效果的亡蝶变为0点，使自身增加相当于生蝶(强度)点数的沉沦 强度并将生蝶转换为亡蝶(层数)\n- 生蝶与亡蝶均为0点时解除本效果",
+    "source_kind": "keyword",
+    "sources": [
+      {
+        "kind": "game_text",
+        "language": "en",
+        "id": "SinkingWhite",
+        "verification": "official"
+      }
+    ]
+  },
+  {
+    "key": "BulletLament",
+    "name_en": "The Living & The Departed",
+    "name_zh": "生蝶·亡蝶",
+    "wiki_name": "The Living & The Departed",
+    "text_en": "- Unique Ammo\n- The sum of Potency and Count maxes out at 20.\n- Consumed for certain Skills.\n- Whether The Living(Potency) or The Departed(Count) will be consumed for each shot is randomly determined\n- Some attacks cancel if this unit runs out of ammo.",
+    "text_zh": "- 特殊弹药\n- 强度与层数之和最大值：20\n- 特定技能使用时消耗\n- 消耗时，随机选择本效果的生蝶(强度)或亡蝶(层数)进行消耗\n- 若消耗时本效果点数不足以消耗，则取消攻击",
+    "source_kind": "keyword",
+    "sources": [
+      {
+        "kind": "game_text",
+        "language": "en",
+        "id": "BulletLament",
+        "verification": "official"
+      }
+    ]
+  },
+  {
+    "key": "ReloadLament",
+    "name_en": "Reload",
+    "name_zh": "再次装填",
+    "wiki_name": "Reload (Solemn Lament)",
+    "text_en": "- Effect applied to The Living & The Departed(Unique Ammo)\n- Consume (30 - (The Living + The Departed))/2 SP. (rounded down)\n- Reset both The Living and The Departed values on self to 0, and gain the max value of their sum based on the probabilities listed in the Passive 'ISeeTheDyingButterfly.'\n- On Reload, gain at least 1 of The Living and The Departed.",
+    "text_zh": "- 消耗((30-自身带有的生蝶与亡蝶之和)/2)点理智值。(向下取整)\n- 使自身的生蝶与亡蝶点数变为0点，根据被动“注视垂死之蝶。”中的概率获得相当于两种蝶之和最大值的点数\n- 再次装填时，至少获得1点生蝶与亡蝶",
+    "source_kind": "keyword",
+    "sources": [
+      {
+        "kind": "game_text",
+        "language": "en",
+        "id": "ReloadLament",
+        "verification": "official"
+      }
+    ]
+  },
+  {
+    "key": "Vulnerable",
+    "name_en": "Fragile",
+    "name_zh": "易损",
+    "wiki_name": "Fragile",
+    "text_en": "Take more damage from skills based on the effect’s Count for one turn. (Max 10)",
+    "text_zh": "本回合内受到的伤害+{0}0%(最多+100%)",
+    "source_kind": "keyword",
+    "sources": [
+      {
+        "kind": "game_text",
+        "language": "en",
+        "id": "Vulnerable",
+        "verification": "official"
+      }
+    ]
+  },
+  {
+    "key": "StackPast",
+    "name_en": "In the Past (Deactivated)",
+    "name_zh": "过去状态（已禁用）",
+    "wiki_name": "In the Past (Deactivated)",
+    "text_en": "- Passive \"Past [過去]\" Deactivated\n- Max Stack: 30",
+    "text_zh": "- 禁用被动技能“过去”\n- 最大值：30",
+    "source_kind": "buff",
+    "sources": [
+      {
+        "kind": "game_text",
+        "language": "en",
+        "id": "StackPast",
+        "verification": "official"
+      }
+    ]
+  },
+  {
+    "key": "StackPresent",
+    "name_en": "In the Present (Deactivated)",
+    "name_zh": "现在状态（已禁用）",
+    "wiki_name": "In the Present (Deactivated)",
+    "text_en": "- Passive \"Present [現在]\" Deactivated\n- Max Stack: 30",
+    "text_zh": "- 禁用被动技能“现在”\n- 最大值：30",
+    "source_kind": "buff",
+    "sources": [
+      {
+        "kind": "game_text",
+        "language": "en",
+        "id": "StackPresent",
+        "verification": "official"
+      }
+    ]
+  },
+  {
+    "key": "StackFuture",
+    "name_en": "In the Future (Deactivated)",
+    "name_zh": "未来状态（已禁用）",
+    "wiki_name": "In the Future (Deactivated)",
+    "text_en": "- Passive \"Future [未來]\" Deactivated\n- Max Stack: 30",
+    "text_zh": "- 禁用被动技能“未来”\n- 最大值：30",
+    "source_kind": "buff",
+    "sources": [
+      {
+        "kind": "game_text",
+        "language": "en",
+        "id": "StackFuture",
+        "verification": "official"
+      }
+    ]
+  },
+  {
+    "key": "StackPastActivate",
+    "name_en": "In the Past",
+    "name_zh": "过去状态",
+    "wiki_name": "In the Past",
+    "text_en": "- Passive \"Past [過去]\" activated\n- Gain different effects based on Stack:\n· 0~10: Skills inflict +1 more Burn Potency and Count\n· 11~20: Clash Power +1; Skills inflict +2 more Burn Potency and +1 more Burn Count\n· 21~30: Final Power +2; Skills inflict +3 more Burn Potency and +2 more Burn Count\n- Max Stack: 30",
+    "text_zh": "- 激活被动技能“过去”\n- 根据本效果层数获得不同效果：\n· 0~10层：技能增加的烧伤 强度与施加的烧伤 层数额外+1\n· 11~20层：拼点威力+1；技能增加的烧伤 强度额外+2级，施加的烧伤 层数额外+1层\n· 21~30层：最终威力+2；技能增加的烧伤 强度额外+3级，施加的烧伤 层数额外+2层\n- 最大值：30",
+    "source_kind": "buff",
+    "sources": [
+      {
+        "kind": "game_text",
+        "language": "en",
+        "id": "StackPastActivate",
+        "verification": "official"
+      }
+    ]
+  },
+  {
+    "key": "StackPresentActivate",
+    "name_en": "In the Present",
+    "name_zh": "现在状态",
+    "wiki_name": "In the Present",
+    "text_en": "- Passive \"Present [現在]\" activated\n- Gain different effects based on Stack:\n· 0~10: Skills gain +1 more Poise Potency and Count\n· 11~20: Clash Power +1; Skills gain +2 more Poise Potency and +1 more Poise Count\n· 21~30: Final Power +2; Skills gain +3 more Poise Potency and +2 more Poise Count\n- Max Stack: 30",
+    "text_zh": "- 激活被动技能“现在”\n- 根据本效果层数获得不同效果：\n· 0~10层：技能增加的呼吸法 强度与获得的呼吸法 层数额外+1\n· 11~20层：拼点威力+1；技能增加的呼吸法 强度额外+2级，获得的呼吸法 层数额外+1层\n· 21~30层：最终威力+2；技能增加的呼吸法 强度额外+3级，获得的呼吸法 层数额外+2层\n- 最大值：30",
+    "source_kind": "buff",
+    "sources": [
+      {
+        "kind": "game_text",
+        "language": "en",
+        "id": "StackPresentActivate",
+        "verification": "official"
+      }
+    ]
+  },
+  {
+    "key": "StackFutureActivate",
+    "name_en": "In the Future",
+    "name_zh": "未来状态",
+    "wiki_name": "In the Future",
+    "text_en": "- Passive \"Future [未來]\" activated\n- Gain different effects based on Stack:\n· 0~10: Skills inflict +1 more Bleed Potency and Count\n· 11~20: Clash Power +1; Skills inflict +2 more Bleed Potency and +1 more Bleed Count\n· 21~30: Final Power +2; Skills inflict +3 more Bleed Potency and +2 more Bleed Count\n- Max Stack: 30",
+    "text_zh": "- 激活被动技能“未来”\n- 根据本效果层数获得不同效果：\n· 0~10层：技能增加的流血 强度与施加的流血 层数额外+1\n· 11~20层：拼点威力+1；技能增加的流血 强度额外+2级，施加的流血 层数额外+1层\n· 21~30层：最终威力+2；技能增加的流血 强度额外+3级，施加的流血 层数额外+2层\n- 最大值：30",
+    "source_kind": "buff",
+    "sources": [
+      {
+        "kind": "game_text",
+        "language": "en",
+        "id": "StackFutureActivate",
+        "verification": "official"
+      }
+    ]
+  },
+  {
+    "key": "TimeGap",
+    "name_en": "Temporal Disjunction",
+    "name_zh": "时间背离",
+    "wiki_name": "Temporal Disjunction",
+    "text_en": "- Gain 1 Stack every time this unit switches between In the Past / In the Present / In the Future\n- Take +(Stack x 15)% damage (max 150%)\n- Turn Start: At 10 Stack, gain 5 Fragile\n- Max Stack: 10",
+    "text_zh": "- 自身每次在过去形态/现在形态/未来形态间转换时，使本效果的层数增加1层\n- 受到的伤害+(本效果层数×15)%(最多+150%)\n- 回合开始时，若本效果层数为10层，则对自身施加5层易损 \n- 最大值：10",
+    "source_kind": "buff",
+    "sources": [
+      {
+        "kind": "game_text",
+        "language": "en",
+        "id": "TimeGap",
+        "verification": "official"
+      }
+    ]
+  },
+  {
+    "key": "HeatedWingScales",
+    "name_en": "Incandescent Scale Dust",
+    "name_zh": "灼热的鳞粉",
+    "wiki_name": "Incandescent Scale Dust",
+    "text_en": "- +0.25 to Resistances against Attack Types and Affinities of Skills that Clashed against \"Entangled Life - Regression\" Skill of \"Butterfly of Entangled Lives::The Pupa\"",
+    "text_zh": "- 与罗生蝶::蛹使用的“罗生-回归”拼点的技能对应的攻击类型与罪孽属性的抗性+0.25",
+    "source_kind": "buff",
+    "sources": [
+      {
+        "kind": "game_text",
+        "language": "en",
+        "id": "HeatedWingScales",
+        "verification": "official"
+      }
+    ]
+  },
+  {
+    "key": "TransparentWingScales",
+    "name_en": "Acuate Scale Dust",
+    "name_zh": "锐利的鳞粉",
+    "wiki_name": "Acuate Scale Dust",
+    "text_en": "- +0.25 to Resistances against Attack Types and Affinities of Skills that Clashed against \"Entangled Life - Manifestation\" Skill of \"Butterfly of Entangled Lives::The Pupa\"",
+    "text_zh": "- 与罗生蝶::蛹使用的“罗生-显现”拼点的技能对应的攻击类型与罪孽属性的抗性+0.25",
+    "source_kind": "buff",
+    "sources": [
+      {
+        "kind": "game_text",
+        "language": "en",
+        "id": "TransparentWingScales",
+        "verification": "official"
+      }
+    ]
+  },
+  {
+    "key": "RustedWingScales",
+    "name_en": "Rusted Scale Dust",
+    "name_zh": "锈蚀的鳞粉",
+    "wiki_name": "Rusted Scale Dust",
+    "text_en": "- +0.25 to Resistances against Attack Types and Affinities of Skills that Clashed against \"Entangled Life - Advent\" Skill of \"Butterfly of Entangled Lives::The Pupa\"",
+    "text_zh": "- 与罗生蝶::蛹使用的技能“罗生-到来”拼点的技能对应的攻击类型与罪孽属性的抗性+0.25",
+    "source_kind": "buff",
+    "sources": [
+      {
+        "kind": "game_text",
+        "language": "en",
+        "id": "RustedWingScales",
+        "verification": "official"
+      }
+    ]
+  }
+]

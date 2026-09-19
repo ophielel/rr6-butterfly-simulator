@@ -1,0 +1,402 @@
+{
+  "id": "11214",
+  "kind": "identity",
+  "sinner": "Gregor",
+  "sinner_zh": "格里高尔",
+  "title_en": "Lobotomy E.G.O::Lamp",
+  "title_zh": "脑叶公司E.G.O:: 目灯",
+  "wiki_title": "Lobotomy E.G.O::Lamp Gregor",
+  "rarity": 3,
+  "season": "7",
+  "release_date": "2026.02.05",
+  "world": "World of Raided Limbus Company",
+  "keywords": [
+    "E.G.O Gear",
+    "Limbus Company",
+    "LCE"
+  ],
+  "stats": {
+    "hp": 86,
+    "hp_growth": 3.14,
+    "defense_level_mod": 5,
+    "speed": {
+      "4": [
+        1,
+        4
+      ],
+      "3": [
+        1,
+        5
+      ],
+      "2": [
+        1,
+        6
+      ]
+    },
+    "resist": {
+      "slash": 1.0,
+      "pierce": 0.5,
+      "blunt": 2.0
+    },
+    "stagger_thresholds": [
+      40
+    ]
+  },
+  "skills": [
+    {
+      "id": "1121401",
+      "slot": "skill1",
+      "name": "Intense Stare: Zero Range",
+      "type": "Pierce",
+      "rank": 1,
+      "upties": {
+        "1": {
+          "base_power": 2,
+          "coin_power": 4,
+          "coins": 2,
+          "offense_level_mod": 1,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Wrath",
+          "skill_amount": 3,
+          "on_use_text": "[On Use] Gain 1 [Bind] next turn",
+          "coin_texts": [
+            "[On Hit] Inflict 1 [Burn]",
+            "[On Hit] Inflict 2 [Sinking]"
+          ],
+          "tags": []
+        },
+        "2": {
+          "base_power": 2,
+          "coin_power": 4,
+          "coins": 2,
+          "offense_level_mod": 1,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Wrath",
+          "skill_amount": 3,
+          "on_use_text": "If any of the following conditions are met, Coin Power +1\n- If this unit's Speed is 1 or slower\n- If target has [Dazzle]\n[On Use] Gain 1 [Bind] next turn",
+          "coin_texts": [
+            "[On Hit] Inflict 1 [Burn]",
+            "[On Hit] Inflict 2 [Sinking]"
+          ],
+          "tags": []
+        },
+        "3": {
+          "base_power": 3,
+          "coin_power": 4,
+          "coins": 2,
+          "offense_level_mod": 1,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Wrath",
+          "skill_amount": 3,
+          "on_use_text": "If any of the following conditions are met, Coin Power +1\n- If this unit's Speed is 1 or slower\n- If target has [Dazzle]\n[On Use] Gain 1 [Bind] next turn",
+          "coin_texts": [
+            "[On Hit] Inflict 1 [Burn]",
+            "[On Hit] Inflict 2 [Sinking]"
+          ],
+          "tags": []
+        },
+        "4": {
+          "base_power": 3,
+          "coin_power": 4,
+          "coins": 2,
+          "offense_level_mod": 1,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Wrath",
+          "skill_amount": 3,
+          "on_use_text": "If any of the following conditions are met, Coin Power +1\n- If target's Speed is faster than this unit's by 3 or more\n- If this unit's Speed is 1 or slower\n- If target has [Dazzle]\n[On Use] If target has 6+ ([Sinking] + [Burn]), Coin Power +1\n[On Use] Gain 1 [Bind] next turn",
+          "coin_texts": [
+            "[On Hit] Inflict 2 [Burn]",
+            "[On Hit] Inflict 3 [Sinking]"
+          ],
+          "tags": []
+        }
+      },
+      "name_en": "Intense Stare: Zero-Range",
+      "name_zh": "零距离注视"
+    },
+    {
+      "id": "1121402",
+      "slot": "skill2",
+      "name": "Destroy the Visible with the Invisible",
+      "type": "Pierce",
+      "rank": 2,
+      "upties": {
+        "1": {
+          "base_power": 2,
+          "coin_power": 3,
+          "coins": 4,
+          "offense_level_mod": 2,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Gloom",
+          "skill_amount": 2,
+          "on_use_text": "",
+          "coin_texts": [
+            "[On Hit] Inflict +1 [Sinking] Count\n[On Hit] Deal (30% of this Coin's final damage) Blunt damage",
+            "[On Hit] Inflict 1 [Sinking]\n[On Hit] Deal (30% of this Coin's final damage) Blunt damage",
+            "[On Hit] Inflict 2 [Burn]",
+            ""
+          ],
+          "tags": []
+        },
+        "2": {
+          "base_power": 2,
+          "coin_power": 3,
+          "coins": 4,
+          "offense_level_mod": 2,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Gloom",
+          "skill_amount": 2,
+          "on_use_text": "If any of the following conditions are met, Clash Power +2\n- If this unit's Speed is 1 or slower\n- If target has [Dazzle]",
+          "coin_texts": [
+            "[On Hit] Inflict +2 [Sinking] Count\n[On Hit] Deal (30% of this Coin's final damage) Blunt damage",
+            "[On Hit] Inflict 1 [Sinking]\n[On Hit] Deal (30% of this Coin's final damage) Blunt damage",
+            "[On Hit] Inflict 2 [Burn]",
+            "[On Hit] Inflict +1 [Burn] Count"
+          ],
+          "tags": []
+        },
+        "3": {
+          "base_power": 3,
+          "coin_power": 3,
+          "coins": 4,
+          "offense_level_mod": 2,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Gloom",
+          "skill_amount": 2,
+          "on_use_text": "If any of the following conditions are met, Clash Power +2\n- If this unit's Speed is 1 or slower\n- If target has [Dazzle]",
+          "coin_texts": [
+            "[On Hit] Inflict +2 [Sinking] Count\n[On Hit] Deal (30% of this Coin's final damage) Blunt damage",
+            "[On Hit] Inflict 1 [Sinking]\n[On Hit] Deal (30% of this Coin's final damage) Blunt damage",
+            "[On Hit] Inflict 2 [Burn]",
+            "[On Hit] Inflict +1 [Burn] Count"
+          ],
+          "tags": []
+        },
+        "4": {
+          "base_power": 3,
+          "coin_power": 3,
+          "coins": 4,
+          "offense_level_mod": 2,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Gloom",
+          "skill_amount": 2,
+          "on_use_text": "If any of the following conditions are met, Clash Power +2\n- If target's Speed is faster than this unit's by 3 or more\n- If this unit's Speed is 1 or slower\n- If target has [Dazzle]\n[On Use] If target has 6+ ([Sinking] + [Burn]), Coin Power +1",
+          "coin_texts": [
+            "[On Hit] Inflict +3 [Sinking] Count\n[On Hit] Deal (30% of this Coin's final damage) Blunt damage",
+            "[On Hit] Inflict 2 [Sinking]\n[On Hit] Deal (30% of this Coin's final damage) Blunt damage",
+            "[On Hit] Inflict 2 [Burn]",
+            "[On Hit] Inflict +2 [Burn] Count"
+          ],
+          "tags": []
+        }
+      },
+      "name_en": "Destroy the Visible with the Invisible",
+      "name_zh": "以不可见之物破坏可见之物"
+    },
+    {
+      "id": "1121403",
+      "slot": "skill3",
+      "name": "Salvation for those Enchanted by the Lamp",
+      "type": "Pierce",
+      "rank": 3,
+      "upties": {
+        "1": {
+          "base_power": 4,
+          "coin_power": 4,
+          "coins": 3,
+          "offense_level_mod": 5,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Pride",
+          "skill_amount": 1,
+          "on_use_text": "If any of the following conditions are met, Coin Power +1 and deal +20% damage\n- If this unit's Speed is 1 or slower\n- If target has [Dazzle]\n[On Use] If target has [Dazzle], convert all Coins on this Skill to [Unbreakable Coin]s and gain Clash Power +3",
+          "coin_texts": [
+            "[On Hit] Inflict +2 [Sinking] Count",
+            "[On Hit] Inflict 3 [Burn]\n[On Hit] Inflict 3 [Sinking]",
+            "If the target(Core) has 25% or less HP, or if target has [Dazzle], deal +60% damage\n[On Hit] If target has [Dazzle], deal Gloom damage equal to 60% of this Coin's final damage"
+          ],
+          "tags": []
+        },
+        "2": {
+          "base_power": 4,
+          "coin_power": 4,
+          "coins": 3,
+          "offense_level_mod": 5,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Pride",
+          "skill_amount": 1,
+          "on_use_text": "If any of the following conditions are met, Coin Power +1 and deal +20% damage\n- If this unit's Speed is 1 or slower\n- If target has [Dazzle]\n[On Use] If target has [Dazzle], convert all Coins on this Skill to [Unbreakable Coin]s and gain Clash Power +3",
+          "coin_texts": [
+            "[On Hit] Inflict +2 [Sinking] Count",
+            "[On Hit] Inflict 3 [Burn]\n[On Hit] Inflict 3 [Sinking]",
+            "If the target(Core) has 25% or less HP, or if target has [Dazzle], deal +60% damage\n[On Hit] If target has [Dazzle], deal Gloom damage equal to 60% of this Coin's final damage"
+          ],
+          "tags": []
+        },
+        "3": {
+          "base_power": 4,
+          "coin_power": 4,
+          "coins": 3,
+          "offense_level_mod": 5,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Pride",
+          "skill_amount": 1,
+          "on_use_text": "If any of the following conditions are met, Coin Power +1 and deal +20% damage\n- If this unit's Speed is 1 or slower\n- If target has [Dazzle]\n[On Use] If target has [Dazzle], convert all Coins on this Skill to [Unbreakable Coin]s and gain Clash Power +3",
+          "coin_texts": [
+            "[On Hit] Inflict +2 [Sinking] Count",
+            "[On Hit] Inflict 3 [Burn]\n[On Hit] Inflict 3 [Sinking]",
+            "If the target(Core) has 25% or less HP, or if target has [Dazzle], deal +60% damage\n[On Hit] If target has [Dazzle], deal Gloom damage equal to 60% of this Coin's final damage"
+          ],
+          "tags": []
+        },
+        "4": {
+          "base_power": 5,
+          "coin_power": 4,
+          "coins": 3,
+          "offense_level_mod": 5,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Pride",
+          "skill_amount": 1,
+          "on_use_text": "If any of the following conditions are met, Coin Power +1 and deal +40% damage\n- If target's Speed is faster than this unit's by 3 or more\n- If this unit's Speed is 1 or slower\n- If target has [Dazzle]\n[On Use] If target has 6+ ([Sinking] + [Burn]), Coin Power +1\n[On Use] If target has [Dazzle], convert all Coins on this Skill to [Unbreakable Coin]s and gain Clash Power +3\n[Attack End] If target is defeated, or if it has 3 [Dazzle], gain 1 [Plus Coin Boost] next turn (once per turn)",
+          "coin_texts": [
+            "[On Hit] Inflict +1 [Burn] Count\n[On Hit] Inflict +3 [Sinking] Count",
+            "[On Hit] Inflict 3 [Burn]\n[On Hit] Inflict 3 [Sinking]",
+            "If the target(Core) has 25% or less HP, or if target has [Dazzle], deal +60% damage\n[On Hit] If target has [Dazzle], deal Gloom damage equal to 80% of this Coin's final damage"
+          ],
+          "tags": []
+        }
+      },
+      "name_en": "Salvation for those Enchanted by the Lamp",
+      "name_zh": "给予被灯所眩惑之人以救赎"
+    },
+    {
+      "id": "1121404",
+      "slot": "defense",
+      "name": "The Wick of Burned Feathers",
+      "type": "Guard",
+      "rank": 1,
+      "upties": {
+        "1": {
+          "base_power": 3,
+          "coin_power": 9,
+          "coins": null,
+          "offense_level_mod": null,
+          "attack_weight": 1,
+          "defense_level_mod": 5,
+          "sin_affinity": "Def",
+          "skill_amount": null,
+          "on_use_text": "[Clashable Guard]\n[Combat Start] Gain [Lamp] up to 8 Stack; for every Stack gained, take HP damage equal to 1% of max HP (this effect does not reduce this unit's HP below 1)\n[Turn End] Apply 1 [Haste] next turn to ([Bind] on self / 3) other allies with the slowest Speed (once per turn; rounded down)",
+          "coin_texts": [
+            "[Unbreakable Coin]"
+          ],
+          "tags": []
+        },
+        "2": {
+          "base_power": 3,
+          "coin_power": 9,
+          "coins": null,
+          "offense_level_mod": null,
+          "attack_weight": 1,
+          "defense_level_mod": 5,
+          "sin_affinity": "Def",
+          "skill_amount": null,
+          "on_use_text": "[Clashable Guard]\n[Combat Start] Gain [Lamp] up to 8 Stack; for every Stack gained, take HP damage equal to 1% of max HP (this effect does not reduce this unit's HP below 1)\n[Turn End] Apply 1 [Haste] next turn to ([Bind] on self / 3) other allies with the slowest Speed (once per turn; rounded down)",
+          "coin_texts": [
+            "[Unbreakable Coin]"
+          ],
+          "tags": []
+        },
+        "3": {
+          "base_power": 3,
+          "coin_power": 9,
+          "coins": null,
+          "offense_level_mod": null,
+          "attack_weight": 1,
+          "defense_level_mod": 5,
+          "sin_affinity": "Def",
+          "skill_amount": null,
+          "on_use_text": "[Clashable Guard]\n[Combat Start] Gain [Lamp] up to 8 Stack; for every Stack gained, take HP damage equal to 1% of max HP (this effect does not reduce this unit's HP below 1)\n[Turn End] Apply 1 [Haste] next turn to ([Bind] on self / 3) other allies with the slowest Speed (once per turn; rounded down)",
+          "coin_texts": [
+            "[Unbreakable Coin]"
+          ],
+          "tags": []
+        },
+        "4": {
+          "base_power": 3,
+          "coin_power": 10,
+          "coins": null,
+          "offense_level_mod": null,
+          "attack_weight": 1,
+          "defense_level_mod": 5,
+          "sin_affinity": "Gloom",
+          "skill_amount": null,
+          "on_use_text": "[Clashable Guard]\n[Combat Start] Gain [Lamp] up to 8 Stack; for every Stack gained, take HP damage equal to 1% of max HP (this effect does not reduce this unit's HP below 1)\n[Turn End] Apply 1 [Haste] next turn to ([Bind] on self / 2) other allies with the slowest Speed (once per turn; rounded down)",
+          "coin_texts": [
+            "[Unbreakable Coin]"
+          ],
+          "tags": []
+        }
+      },
+      "name_en": "The Wick of Burned Feathers",
+      "name_zh": "焚烧羽毛所做的灯芯"
+    }
+  ],
+  "passives": [
+    {
+      "kind": "combat_passive",
+      "uptie_from": 1,
+      "text": "Turn Start: Gain 1 [Lamp]\nExternal effects cannot change this unit's Min. and Max. Speeds\nWhen chaining Skills, this unit can redirect the Attack Skill's targeting to itself regardless of Speed (Focused Encounters only)\nWhen gaining [Haste], gain 1 [Clash Power Up] instead (once per turn)\n- Once the above effect activates, cannot gain [Haste] for the rest of the turn\nTurn Start: Gain 1 [Defense Level Up] for every ally wearing E.G.O Gears (max 3)\nWhen an ally dies, gain 2 [Pierce DMG Up] next turn (once per turn)",
+      "raw_key": "passive0"
+    },
+    {
+      "kind": "support_passive_1",
+      "uptie_from": 1,
+      "text": "Combat Start: Gain 1 [Lamp] for every 2 Gloom Reson. (max 3)\nCombat Start: If an enemy has [Dazzle], heal 5 SP\nTurn End: Apply [Guardians of the Forest] next turn to the ally with the earliest Deployment order among those that do not fit the following conditions:\n- Is this unit\n- Is an ally that has [Guardians of the Forest]\n- Is an ally that cannot heal SP due to conditions such as Panic or Corrosion",
+      "raw_key": "passive1"
+    },
+    {
+      "kind": "support_passive_1",
+      "uptie_from": 3,
+      "text": "Combat Start: Gain 1 [Lamp]\nCombat Start: If an enemy has [Dazzle], heal 3 SP\nTurn End: Apply [Guardians of the Forest] next turn to the ally with the earliest Deployment order among those that do not fit the following conditions:\n- Is this unit\n- Is an ally that has [Guardians of the Forest]\n- Is an ally that cannot heal SP due to conditions such as Panic or Corrosion",
+      "raw_key": "3passive1"
+    },
+    {
+      "kind": "support_passive_2",
+      "uptie_from": 1,
+      "text": "Turn End: Apply the following to the ally with the earliest Deployment order among those that have negative effects:\n- Gain +4 [Aggro] to the leftmost Slot next turn\n- Gain 1 [Blunt DMG Up] next turn",
+      "raw_key": "passive2"
+    }
+  ],
+  "unparsed": [],
+  "sources": [
+    {
+      "kind": "wiki",
+      "url": "https://limbuscompany.wiki.gg/wiki/Lobotomy_E.G.O::Lamp_Gregor",
+      "language": "en",
+      "verification": "single_source_verified"
+    },
+    {
+      "kind": "game_text",
+      "language": "en",
+      "id": "11214",
+      "verification": "official"
+    },
+    {
+      "kind": "game_text_zh_cn",
+      "language": "zh-CN",
+      "id": "11214",
+      "verification": "synthetic_translation"
+    }
+  ]
+}

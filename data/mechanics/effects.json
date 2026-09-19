@@ -1,0 +1,6118 @@
+{
+ "skills": {
+  "1011001@1": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "kind": "spend_ammo",
+      "raw": "Spend 1 [The Living & The Departed]",
+      "status": "The Living & The Departed",
+      "value": 1
+     },
+     {
+      "ammo": "The Living & The Departed",
+      "kind": "inflict_equal_ammo_spent",
+      "raw": "[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
+      "status": "Butterfly"
+     }
+    ],
+    "2": [
+     {
+      "kind": "spend_ammo",
+      "raw": "Spend 1 [The Living & The Departed]",
+      "status": "The Living & The Departed",
+      "value": 1
+     },
+     {
+      "ammo": "The Living & The Departed",
+      "kind": "inflict_equal_ammo_spent",
+      "raw": "[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
+      "status": "Butterfly"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Celebration for the Departed",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": []
+  },
+  "1011001@2": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [
+    {
+     "count": 2,
+     "kind": "inflict",
+     "raw": "[Clash Win] Inflict +2 [Sinking] Count",
+     "status": "Sinking"
+    }
+   ],
+   "coins": {
+    "1": [
+     {
+      "kind": "spend_ammo",
+      "raw": "Spend 1 [The Living & The Departed]",
+      "status": "The Living & The Departed",
+      "value": 1
+     },
+     {
+      "ammo": "The Living & The Departed",
+      "kind": "inflict_equal_ammo_spent",
+      "raw": "[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
+      "status": "Butterfly"
+     }
+    ],
+    "2": [
+     {
+      "kind": "spend_ammo",
+      "raw": "Spend 1 [The Living & The Departed]",
+      "status": "The Living & The Departed",
+      "value": 1
+     },
+     {
+      "ammo": "The Living & The Departed",
+      "kind": "inflict_equal_ammo_spent",
+      "raw": "[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
+      "status": "Butterfly"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Celebration for the Departed",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "If the sum of the target's [Sinking] and both [Butterfly] is 6 or higher, Coin Power +1"
+   ]
+  },
+  "1011001@3": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [
+    {
+     "count": 2,
+     "kind": "inflict",
+     "raw": "[Clash Win] Inflict +2 [Sinking] Count",
+     "status": "Sinking"
+    }
+   ],
+   "coins": {
+    "1": [
+     {
+      "kind": "spend_ammo",
+      "raw": "Spend 1 [The Living & The Departed]",
+      "status": "The Living & The Departed",
+      "value": 1
+     },
+     {
+      "ammo": "The Living & The Departed",
+      "kind": "inflict_equal_ammo_spent",
+      "raw": "[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
+      "status": "Butterfly"
+     }
+    ],
+    "2": [
+     {
+      "kind": "spend_ammo",
+      "raw": "Spend 1 [The Living & The Departed]",
+      "status": "The Living & The Departed",
+      "value": 1
+     },
+     {
+      "ammo": "The Living & The Departed",
+      "kind": "inflict_equal_ammo_spent",
+      "raw": "[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
+      "status": "Butterfly"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Celebration for the Departed",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "If the sum of the target's [Sinking] and both [Butterfly] is 6 or higher, Coin Power +1"
+   ]
+  },
+  "1011001@4": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [
+    {
+     "count": 2,
+     "kind": "inflict",
+     "raw": "[Clash Win] Inflict +2 [Sinking] Count",
+     "status": "Sinking"
+    }
+   ],
+   "coins": {
+    "1": [
+     {
+      "kind": "spend_ammo",
+      "raw": "Spend 1 [The Living & The Departed]",
+      "status": "The Living & The Departed",
+      "value": 1
+     },
+     {
+      "ammo": "The Living & The Departed",
+      "kind": "inflict_equal_ammo_spent",
+      "raw": "[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
+      "status": "Butterfly"
+     }
+    ],
+    "2": [
+     {
+      "kind": "spend_ammo",
+      "raw": "Spend 1 [The Living & The Departed]",
+      "status": "The Living & The Departed",
+      "value": 1
+     },
+     {
+      "ammo": "The Living & The Departed",
+      "kind": "inflict_equal_ammo_spent",
+      "raw": "[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
+      "status": "Butterfly"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Celebration for the Departed",
+   "on_use": [
+    {
+     "condition": {
+      "gte": 10,
+      "source": "self",
+      "status": "The Living & The Departed"
+     },
+     "kind": "clash_power",
+     "raw": "At 10+ [The Living & The Departed], Clash Power +1",
+     "value": 1
+    }
+   ],
+   "tags": [],
+   "unmodeled": [
+    "If the sum of the target's [Sinking] and both [Butterfly] is 6 or higher, Coin Power +1"
+   ]
+  },
+  "1011002@1": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "kind": "spend_ammo",
+      "raw": "Spend 5 [The Living & The Departed]",
+      "status": "The Living & The Departed",
+      "value": 5
+     },
+     {
+      "ammo": "The Living & The Departed",
+      "kind": "inflict_equal_ammo_spent",
+      "raw": "[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
+      "status": "Butterfly"
+     }
+    ],
+    "2": [
+     {
+      "kind": "spend_ammo",
+      "raw": "Spend 1 [The Living & The Departed]",
+      "status": "The Living & The Departed",
+      "value": 1
+     },
+     {
+      "ammo": "The Living & The Departed",
+      "kind": "inflict_equal_ammo_spent",
+      "raw": "[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
+      "status": "Butterfly"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Solemn Lament for the Living",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": []
+  },
+  "1011002@2": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [
+    {
+     "count": 1,
+     "kind": "inflict",
+     "raw": "[Clash Win] Inflict +1 [Sinking] Count",
+     "status": "Sinking"
+    }
+   ],
+   "coins": {
+    "1": [
+     {
+      "kind": "spend_ammo",
+      "raw": "Spend 5 [The Living & The Departed]",
+      "status": "The Living & The Departed",
+      "value": 5
+     },
+     {
+      "ammo": "The Living & The Departed",
+      "kind": "inflict_equal_ammo_spent",
+      "raw": "[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
+      "status": "Butterfly"
+     }
+    ],
+    "2": [
+     {
+      "kind": "spend_ammo",
+      "raw": "Spend 1 [The Living & The Departed]",
+      "status": "The Living & The Departed",
+      "value": 1
+     },
+     {
+      "ammo": "The Living & The Departed",
+      "kind": "inflict_equal_ammo_spent",
+      "raw": "[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
+      "status": "Butterfly"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Solemn Lament for the Living",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "If the said Reson. was an A-Reson., gain (highest Reson. x 2) of [The Living & The Departed] (max 12)",
+    "If the said Reson. was at 4+ A-Reson., [Reload (Solemn Lament)] instead",
+    "If the sum of the target's [Sinking] and both [Butterfly] is 6 or higher, Coin Power +1",
+    "[Attack End] Gain (highest Reson.) of [The Living & The Departed] (max 6)"
+   ]
+  },
+  "1011002@3": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [
+    {
+     "count": 1,
+     "kind": "inflict",
+     "raw": "[Clash Win] Inflict +1 [Sinking] Count",
+     "status": "Sinking"
+    }
+   ],
+   "coins": {
+    "1": [
+     {
+      "kind": "spend_ammo",
+      "raw": "Spend 5 [The Living & The Departed]",
+      "status": "The Living & The Departed",
+      "value": 5
+     },
+     {
+      "ammo": "The Living & The Departed",
+      "kind": "inflict_equal_ammo_spent",
+      "raw": "[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
+      "status": "Butterfly"
+     }
+    ],
+    "2": [
+     {
+      "kind": "spend_ammo",
+      "raw": "Spend 1 [The Living & The Departed]",
+      "status": "The Living & The Departed",
+      "value": 1
+     },
+     {
+      "ammo": "The Living & The Departed",
+      "kind": "inflict_equal_ammo_spent",
+      "raw": "[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
+      "status": "Butterfly"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Solemn Lament for the Living",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "If the said Reson. was an A-Reson., gain (highest Reson. x 2) of [The Living & The Departed] (max 12)",
+    "If the said Reson. was at 4+ A-Reson., [Reload (Solemn Lament)] instead",
+    "If the sum of the target's [Sinking] and both [Butterfly] is 6 or higher, Coin Power +1",
+    "[Attack End] Gain (highest Reson.) of [The Living & The Departed] (max 6)"
+   ]
+  },
+  "1011002@4": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [
+    {
+     "count": 1,
+     "kind": "inflict",
+     "raw": "[Clash Win] Inflict +1 [Sinking] Count",
+     "status": "Sinking"
+    }
+   ],
+   "coins": {
+    "1": [
+     {
+      "kind": "spend_ammo",
+      "raw": "Spend 5 [The Living & The Departed]",
+      "status": "The Living & The Departed",
+      "value": 5
+     },
+     {
+      "ammo": "The Living & The Departed",
+      "kind": "inflict_equal_ammo_spent",
+      "raw": "[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
+      "status": "Butterfly"
+     }
+    ],
+    "2": [
+     {
+      "kind": "spend_ammo",
+      "raw": "Spend 1 [The Living & The Departed]",
+      "status": "The Living & The Departed",
+      "value": 1
+     },
+     {
+      "ammo": "The Living & The Departed",
+      "kind": "inflict_equal_ammo_spent",
+      "raw": "[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
+      "status": "Butterfly"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Solemn Lament for the Living",
+   "on_use": [
+    {
+     "condition": {
+      "gte": 10,
+      "source": "self",
+      "status": "The Living & The Departed"
+     },
+     "kind": "clash_power",
+     "raw": "At 10+ [The Living & The Departed], Clash Power +1",
+     "value": 1
+    }
+   ],
+   "tags": [],
+   "unmodeled": [
+    "Coin Power +1 for every 6 value of the sum of the target's [Sinking] and both [Butterfly] (max 2)",
+    "If the said Reson. was an A-Reson., gain (highest Reson. x 2) of [The Living & The Departed] (max 12)",
+    "If the said Reson. was at 4+ A-Reson., [Reload (Solemn Lament)] instead",
+    "[Attack End] Gain (highest Reson.) of [The Living & The Departed] (max 6)"
+   ]
+  },
+  "1011003@1": {
+   "attack_end": [
+    {
+     "kind": "reload_ammo",
+     "raw": "[Attack End] [Reload (Solemn Lament)]"
+    }
+   ],
+   "clash_lose": [],
+   "clash_win": [
+    {
+     "count": 3,
+     "kind": "inflict",
+     "raw": "[Clash Win] Inflict +3 [Sinking] Count",
+     "status": "Sinking"
+    }
+   ],
+   "coins": {
+    "1": [
+     {
+      "kind": "spend_ammo",
+      "raw": "Spend 1 [The Living & The Departed]",
+      "status": "The Living & The Departed",
+      "value": 1
+     },
+     {
+      "ammo": "The Living & The Departed",
+      "kind": "inflict_equal_ammo_spent",
+      "raw": "[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
+      "status": "Butterfly"
+     }
+    ],
+    "2": [
+     {
+      "kind": "spend_ammo",
+      "raw": "Spend 6 [The Living & The Departed]",
+      "status": "The Living & The Departed",
+      "value": 6
+     },
+     {
+      "ammo": "The Living & The Departed",
+      "kind": "inflict_equal_ammo_spent",
+      "raw": "[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
+      "status": "Butterfly"
+     }
+    ],
+    "3": [
+     {
+      "kind": "spend_ammo_all",
+      "raw": "Spend all of [The Living & The Departed] on self",
+      "status": "The Living & The Departed"
+     },
+     {
+      "ammo": "The Living & The Departed",
+      "kind": "inflict_equal_ammo_spent",
+      "raw": "[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
+      "status": "Butterfly"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Goodbye Now, a Sorrow in You",
+   "on_use": [
+    {
+     "condition": {
+      "component": "potency",
+      "source": "self",
+      "status": "The Living & The Departed"
+     },
+     "kind": "base_power",
+     "max": 2,
+     "per": 10,
+     "raw": "Base Power +1 for every 10 value of [The Living & The Departed] (max 2)",
+     "step": 1,
+     "value": 0
+    }
+   ],
+   "tags": [],
+   "unmodeled": [
+    "\"All\" = the sum of both The Living and The Departed on target",
+    "[On Hit] Deal +2% damage for every value of [The Living & The Departed] spent by this Skill",
+    "[On Hit] Inflict Gloom Damage equal to \"All\" [Butterfly] on target"
+   ]
+  },
+  "1011003@2": {
+   "attack_end": [
+    {
+     "kind": "reload_ammo",
+     "raw": "[Attack End] [Reload (Solemn Lament)]"
+    }
+   ],
+   "clash_lose": [],
+   "clash_win": [
+    {
+     "count": 3,
+     "kind": "inflict",
+     "raw": "[Clash Win] Inflict +3 [Sinking] Count",
+     "status": "Sinking"
+    }
+   ],
+   "coins": {
+    "1": [
+     {
+      "kind": "spend_ammo",
+      "raw": "Spend 1 [The Living & The Departed]",
+      "status": "The Living & The Departed",
+      "value": 1
+     },
+     {
+      "ammo": "The Living & The Departed",
+      "kind": "inflict_equal_ammo_spent",
+      "raw": "[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
+      "status": "Butterfly"
+     }
+    ],
+    "2": [
+     {
+      "kind": "spend_ammo",
+      "raw": "Spend 6 [The Living & The Departed]",
+      "status": "The Living & The Departed",
+      "value": 6
+     },
+     {
+      "ammo": "The Living & The Departed",
+      "kind": "inflict_equal_ammo_spent",
+      "raw": "[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
+      "status": "Butterfly"
+     }
+    ],
+    "3": [
+     {
+      "kind": "spend_ammo_all",
+      "raw": "Spend all of [The Living & The Departed] on self",
+      "status": "The Living & The Departed"
+     },
+     {
+      "ammo": "The Living & The Departed",
+      "kind": "inflict_equal_ammo_spent",
+      "raw": "[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
+      "status": "Butterfly"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Goodbye Now, a Sorrow in You",
+   "on_use": [
+    {
+     "condition": {
+      "component": "potency",
+      "source": "self",
+      "status": "The Living & The Departed"
+     },
+     "kind": "base_power",
+     "max": 2,
+     "per": 10,
+     "raw": "Base Power +1 for every 10 value of [The Living & The Departed] (max 2)",
+     "step": 1,
+     "value": 0
+    }
+   ],
+   "tags": [],
+   "unmodeled": [
+    "\"All\" = the sum of both The Living and The Departed on target",
+    "[On Hit] Deal +2% damage for every value of [The Living & The Departed] spent by this Skill",
+    "[On Hit] Inflict Gloom Damage equal to \"All\" [Butterfly] on target"
+   ]
+  },
+  "1011003@3": {
+   "attack_end": [
+    {
+     "kind": "reload_ammo",
+     "raw": "[Attack End] [Reload (Solemn Lament)]"
+    }
+   ],
+   "clash_lose": [],
+   "clash_win": [
+    {
+     "count": 3,
+     "kind": "inflict",
+     "raw": "[Clash Win] Inflict +3 [Sinking] Count",
+     "status": "Sinking"
+    }
+   ],
+   "coins": {
+    "1": [
+     {
+      "kind": "spend_ammo",
+      "raw": "Spend 1 [The Living & The Departed]",
+      "status": "The Living & The Departed",
+      "value": 1
+     },
+     {
+      "ammo": "The Living & The Departed",
+      "kind": "inflict_equal_ammo_spent",
+      "raw": "[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
+      "status": "Butterfly"
+     }
+    ],
+    "2": [
+     {
+      "kind": "spend_ammo",
+      "raw": "Spend 6 [The Living & The Departed]",
+      "status": "The Living & The Departed",
+      "value": 6
+     },
+     {
+      "ammo": "The Living & The Departed",
+      "kind": "inflict_equal_ammo_spent",
+      "raw": "[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
+      "status": "Butterfly"
+     }
+    ],
+    "3": [
+     {
+      "kind": "spend_ammo_all",
+      "raw": "Spend all of [The Living & The Departed] on self",
+      "status": "The Living & The Departed"
+     },
+     {
+      "ammo": "The Living & The Departed",
+      "kind": "inflict_equal_ammo_spent",
+      "raw": "[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
+      "status": "Butterfly"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Goodbye Now, a Sorrow in You",
+   "on_use": [
+    {
+     "condition": {
+      "component": "potency",
+      "source": "self",
+      "status": "The Living & The Departed"
+     },
+     "kind": "base_power",
+     "max": 2,
+     "per": 10,
+     "raw": "Base Power +1 for every 10 value of [The Living & The Departed] (max 2)",
+     "step": 1,
+     "value": 0
+    }
+   ],
+   "tags": [],
+   "unmodeled": [
+    "\"All\" = the sum of both The Living and The Departed on target",
+    "[On Hit] Deal +2% damage for every value of [The Living & The Departed] spent by this Skill",
+    "[On Hit] Inflict Gloom Damage equal to \"All\" [Butterfly] on target"
+   ]
+  },
+  "1011003@4": {
+   "attack_end": [
+    {
+     "kind": "reload_ammo",
+     "raw": "[Attack End] [Reload (Solemn Lament)]"
+    }
+   ],
+   "clash_lose": [],
+   "clash_win": [
+    {
+     "count": 3,
+     "kind": "inflict",
+     "raw": "[Clash Win] Inflict +3 [Sinking] Count",
+     "status": "Sinking"
+    }
+   ],
+   "coins": {
+    "1": [
+     {
+      "kind": "spend_ammo",
+      "raw": "Spend 1 [The Living & The Departed]",
+      "status": "The Living & The Departed",
+      "value": 1
+     },
+     {
+      "ammo": "The Living & The Departed",
+      "kind": "inflict_equal_ammo_spent",
+      "raw": "[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
+      "status": "Butterfly"
+     }
+    ],
+    "2": [
+     {
+      "kind": "spend_ammo",
+      "raw": "Spend 6 [The Living & The Departed]",
+      "status": "The Living & The Departed",
+      "value": 6
+     },
+     {
+      "ammo": "The Living & The Departed",
+      "kind": "inflict_equal_ammo_spent",
+      "raw": "[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
+      "status": "Butterfly"
+     }
+    ],
+    "3": [
+     {
+      "kind": "spend_ammo_all",
+      "raw": "Spend all of [The Living & The Departed] on self",
+      "status": "The Living & The Departed"
+     },
+     {
+      "ammo": "The Living & The Departed",
+      "kind": "inflict_equal_ammo_spent",
+      "raw": "[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
+      "status": "Butterfly"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Goodbye Now, a Sorrow in You",
+   "on_use": [
+    {
+     "condition": {
+      "component": "potency",
+      "source": "self",
+      "status": "The Living & The Departed"
+     },
+     "kind": "base_power",
+     "max": 4,
+     "per": 5,
+     "raw": "Base Power +1 for every 5 value of [The Living & The Departed] (max 4)",
+     "step": 1,
+     "value": 0
+    }
+   ],
+   "tags": [],
+   "unmodeled": [
+    "\"All\" = the sum of both The Living and The Departed on target",
+    "Coin Power +1 for every 6 value of the sum of the target's [Sinking] and both [Butterfly] (max 2)",
+    "[On Hit] Deal +4% damage for every value of [The Living & The Departed] spent by this Skill",
+    "[On Hit] Inflict Gloom Damage equal to \"All\" [Butterfly] on target"
+   ]
+  },
+  "1011004@1": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {},
+   "combat_start": [
+    {
+     "kind": "reload_ammo",
+     "raw": "[Combat Start] [Reload (Solemn Lament)] (once per turn)"
+    }
+   ],
+   "note": "FromTheCoffinAButterflyTakesFlight",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": []
+  },
+  "1011004@2": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {},
+   "combat_start": [
+    {
+     "kind": "reload_ammo",
+     "raw": "[Combat Start] [Reload (Solemn Lament)] (once per turn)"
+    }
+   ],
+   "note": "FromTheCoffinAButterflyTakesFlight",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": []
+  },
+  "1011004@3": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {},
+   "combat_start": [
+    {
+     "kind": "reload_ammo",
+     "raw": "[Combat Start] [Reload (Solemn Lament)] (once per turn)"
+    }
+   ],
+   "note": "FromTheCoffinAButterflyTakesFlight",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": []
+  },
+  "1011004@4": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {},
+   "combat_start": [
+    {
+     "kind": "reload_ammo",
+     "raw": "[Combat Start] [Reload (Solemn Lament)] (once per turn)"
+    }
+   ],
+   "note": "FromTheCoffinAButterflyTakesFlight",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "[Combat Start] Gain Shield equal to (the sum of both [Butterfly] on the selected target)% HP (max 20% per turn)"
+   ]
+  },
+  "1041401@1": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "kind": "spend_ammo",
+      "raw": "Spend 1 [Bullet - Solitude]",
+      "status": "Bullet - Solitude",
+      "value": 1
+     },
+     {
+      "count": 2,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +2 [Sinking] Count",
+      "status": "Sinking"
+     }
+    ],
+    "2": [
+     {
+      "kind": "spend_ammo",
+      "raw": "Spend 1 [Bullet - Solitude]",
+      "status": "Bullet - Solitude",
+      "value": 1
+     },
+     {
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Tremor]",
+      "status": "Tremor"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Bang. Bang.",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": []
+  },
+  "1041401@2": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "kind": "spend_ammo",
+      "raw": "Spend 1 [Bullet - Solitude]",
+      "status": "Bullet - Solitude",
+      "value": 1
+     },
+     {
+      "count": 2,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +2 [Sinking] Count",
+      "status": "Sinking"
+     }
+    ],
+    "2": [
+     {
+      "kind": "spend_ammo",
+      "raw": "Spend 1 [Bullet - Solitude]",
+      "status": "Bullet - Solitude",
+      "value": 1
+     },
+     {
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Tremor]",
+      "status": "Tremor"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Bang. Bang.",
+   "on_use": [
+    {
+     "condition": {
+      "component": "potency",
+      "gte": 6,
+      "source": "target",
+      "statuses": [
+       "Tremor",
+       "Sinking"
+      ]
+     },
+     "kind": "coin_power",
+     "raw": "[On Use] If target has 6+ ([Tremor] + [Sinking]), Coin Power +1",
+     "value": 1
+    }
+   ],
+   "tags": [],
+   "unmodeled": []
+  },
+  "1041401@3": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "kind": "spend_ammo",
+      "raw": "Spend 1 [Bullet - Solitude]",
+      "status": "Bullet - Solitude",
+      "value": 1
+     },
+     {
+      "count": 2,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +2 [Sinking] Count",
+      "status": "Sinking"
+     }
+    ],
+    "2": [
+     {
+      "kind": "spend_ammo",
+      "raw": "Spend 1 [Bullet - Solitude]",
+      "status": "Bullet - Solitude",
+      "value": 1
+     },
+     {
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Tremor]",
+      "status": "Tremor"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Bang. Bang.",
+   "on_use": [
+    {
+     "condition": {
+      "component": "potency",
+      "gte": 6,
+      "source": "target",
+      "statuses": [
+       "Tremor",
+       "Sinking"
+      ]
+     },
+     "kind": "coin_power",
+     "raw": "[On Use] If target has 6+ ([Tremor] + [Sinking]), Coin Power +1",
+     "value": 1
+    }
+   ],
+   "tags": [],
+   "unmodeled": []
+  },
+  "1041401@4": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "kind": "spend_ammo",
+      "raw": "Spend 1 [Bullet - Solitude]",
+      "status": "Bullet - Solitude",
+      "value": 1
+     },
+     {
+      "count": 2,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +2 [Sinking] Count",
+      "status": "Sinking"
+     }
+    ],
+    "2": [
+     {
+      "kind": "spend_ammo",
+      "raw": "Spend 1 [Bullet - Solitude]",
+      "status": "Bullet - Solitude",
+      "value": 1
+     },
+     {
+      "kind": "inflict",
+      "potency": 3,
+      "raw": "[On Hit] Inflict 3 [Tremor]",
+      "status": "Tremor"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Bang. Bang.",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "[On Use] Coin Power +1 for every 6 ([Tremor] + [Sinking]) on target (max 2)"
+   ]
+  },
+  "1041402@1": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "kind": "spend_ammo",
+      "raw": "Spend 1 [Bullet - Solitude]",
+      "status": "Bullet - Solitude",
+      "value": 1
+     },
+     {
+      "count": 2,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +2 [Sinking] Count",
+      "status": "Sinking"
+     }
+    ],
+    "2": [
+     {
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Faint Aroma]",
+      "status": "Faint Aroma"
+     },
+     {
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +1 [Tremor] Count",
+      "status": "Tremor"
+     }
+    ],
+    "3": [
+     {
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Faint Aroma]",
+      "status": "Faint Aroma"
+     },
+     {
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +1 [Tremor] Count",
+      "status": "Tremor"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Blossoming Fragrance in the Void",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": []
+  },
+  "1041402@2": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "kind": "spend_ammo",
+      "raw": "Spend 1 [Bullet - Solitude]",
+      "status": "Bullet - Solitude",
+      "value": 1
+     },
+     {
+      "count": 2,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +2 [Sinking] Count",
+      "status": "Sinking"
+     }
+    ],
+    "2": [
+     {
+      "kind": "inflict",
+      "potency": 3,
+      "raw": "[On Hit] Inflict 3 [Faint Aroma]",
+      "status": "Faint Aroma"
+     },
+     {
+      "count": 2,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +2 [Tremor] Count",
+      "status": "Tremor"
+     }
+    ],
+    "3": [
+     {
+      "kind": "inflict",
+      "potency": 3,
+      "raw": "[On Hit] Inflict 3 [Faint Aroma]",
+      "status": "Faint Aroma"
+     },
+     {
+      "count": 2,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +2 [Tremor] Count",
+      "status": "Tremor"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Blossoming Fragrance in the Void",
+   "on_use": [
+    {
+     "condition": {
+      "component": "potency",
+      "gte": 6,
+      "source": "target",
+      "statuses": [
+       "Tremor",
+       "Sinking"
+      ]
+     },
+     "kind": "coin_power",
+     "raw": "[On Use] If target has 6+ ([Tremor] + [Sinking]), Coin Power +1",
+     "value": 1
+    }
+   ],
+   "tags": [],
+   "unmodeled": []
+  },
+  "1041402@3": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "kind": "spend_ammo",
+      "raw": "Spend 1 [Bullet - Solitude]",
+      "status": "Bullet - Solitude",
+      "value": 1
+     },
+     {
+      "count": 2,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +2 [Sinking] Count",
+      "status": "Sinking"
+     }
+    ],
+    "2": [
+     {
+      "kind": "inflict",
+      "potency": 3,
+      "raw": "[On Hit] Inflict 3 [Faint Aroma]",
+      "status": "Faint Aroma"
+     },
+     {
+      "count": 2,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +2 [Tremor] Count",
+      "status": "Tremor"
+     }
+    ],
+    "3": [
+     {
+      "kind": "inflict",
+      "potency": 3,
+      "raw": "[On Hit] Inflict 3 [Faint Aroma]",
+      "status": "Faint Aroma"
+     },
+     {
+      "count": 2,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +2 [Tremor] Count",
+      "status": "Tremor"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Blossoming Fragrance in the Void",
+   "on_use": [
+    {
+     "condition": {
+      "component": "potency",
+      "gte": 6,
+      "source": "target",
+      "statuses": [
+       "Tremor",
+       "Sinking"
+      ]
+     },
+     "kind": "coin_power",
+     "raw": "[On Use] If target has 6+ ([Tremor] + [Sinking]), Coin Power +1",
+     "value": 1
+    }
+   ],
+   "tags": [],
+   "unmodeled": []
+  },
+  "1041402@4": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "kind": "spend_ammo",
+      "raw": "Spend 1 [Bullet - Solitude]",
+      "status": "Bullet - Solitude",
+      "value": 1
+     },
+     {
+      "count": 3,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +3 [Sinking] Count",
+      "status": "Sinking"
+     }
+    ],
+    "2": [
+     {
+      "kind": "inflict",
+      "potency": 3,
+      "raw": "[On Hit] Inflict 3 [Faint Aroma]",
+      "status": "Faint Aroma"
+     },
+     {
+      "count": 2,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +2 [Tremor] Count",
+      "status": "Tremor"
+     }
+    ],
+    "3": [
+     {
+      "kind": "inflict",
+      "potency": 3,
+      "raw": "[On Hit] Inflict 3 [Faint Aroma]",
+      "status": "Faint Aroma"
+     },
+     {
+      "count": 2,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +2 [Tremor] Count",
+      "status": "Tremor"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Blossoming Fragrance in the Void",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "[On Use] Coin Power +1 for every 6 ([Tremor] + [Sinking]) on target (max 2)",
+    "[On Use] Deal +1% damage for every [Faint Aroma] on target"
+   ]
+  },
+  "1041403@1": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "kind": "inflict",
+      "potency": 1,
+      "raw": "[On Hit] Inflict 1 [Faint Aroma]",
+      "status": "Faint Aroma"
+     },
+     {
+      "count": 3,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +3 [Sinking] Count",
+      "status": "Sinking"
+     }
+    ],
+    "2": [
+     {
+      "kind": "inflict",
+      "potency": 1,
+      "raw": "[On Hit] Inflict 1 [Faint Aroma]",
+      "status": "Faint Aroma"
+     },
+     {
+      "kind": "inflict",
+      "potency": 4,
+      "raw": "[On Hit] Inflict 4 [Sinking]",
+      "status": "Sinking"
+     }
+    ],
+    "3": [
+     {
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Faint Aroma]",
+      "status": "Faint Aroma"
+     },
+     {
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Tremor]",
+      "status": "Tremor"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Full Bloom",
+   "on_use": [
+    {
+     "condition": {
+      "component": "potency",
+      "gte": 6,
+      "source": "target",
+      "statuses": [
+       "Tremor",
+       "Sinking"
+      ]
+     },
+     "kind": "coin_power",
+     "raw": "[On Use] If target has 6+ ([Tremor] + [Sinking]), Coin Power +1",
+     "value": 1
+    }
+   ],
+   "tags": [],
+   "unmodeled": [
+    "[On Hit] Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1"
+   ]
+  },
+  "1041403@2": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "kind": "inflict",
+      "potency": 1,
+      "raw": "[On Hit] Inflict 1 [Faint Aroma]",
+      "status": "Faint Aroma"
+     },
+     {
+      "count": 3,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +3 [Sinking] Count",
+      "status": "Sinking"
+     }
+    ],
+    "2": [
+     {
+      "kind": "inflict",
+      "potency": 1,
+      "raw": "[On Hit] Inflict 1 [Faint Aroma]",
+      "status": "Faint Aroma"
+     },
+     {
+      "kind": "inflict",
+      "potency": 4,
+      "raw": "[On Hit] Inflict 4 [Sinking]",
+      "status": "Sinking"
+     }
+    ],
+    "3": [
+     {
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Faint Aroma]",
+      "status": "Faint Aroma"
+     },
+     {
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Tremor]",
+      "status": "Tremor"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Full Bloom",
+   "on_use": [
+    {
+     "condition": {
+      "component": "potency",
+      "gte": 6,
+      "source": "target",
+      "statuses": [
+       "Tremor",
+       "Sinking"
+      ]
+     },
+     "kind": "coin_power",
+     "raw": "[On Use] If target has 6+ ([Tremor] + [Sinking]), Coin Power +1",
+     "value": 1
+    }
+   ],
+   "tags": [],
+   "unmodeled": [
+    "[On Hit] Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1"
+   ]
+  },
+  "1041403@3": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "kind": "inflict",
+      "potency": 1,
+      "raw": "[On Hit] Inflict 1 [Faint Aroma]",
+      "status": "Faint Aroma"
+     },
+     {
+      "count": 3,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +3 [Sinking] Count",
+      "status": "Sinking"
+     }
+    ],
+    "2": [
+     {
+      "kind": "inflict",
+      "potency": 1,
+      "raw": "[On Hit] Inflict 1 [Faint Aroma]",
+      "status": "Faint Aroma"
+     },
+     {
+      "kind": "inflict",
+      "potency": 4,
+      "raw": "[On Hit] Inflict 4 [Sinking]",
+      "status": "Sinking"
+     }
+    ],
+    "3": [
+     {
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Faint Aroma]",
+      "status": "Faint Aroma"
+     },
+     {
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Tremor]",
+      "status": "Tremor"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Full Bloom",
+   "on_use": [
+    {
+     "condition": {
+      "component": "potency",
+      "gte": 6,
+      "source": "target",
+      "statuses": [
+       "Tremor",
+       "Sinking"
+      ]
+     },
+     "kind": "coin_power",
+     "raw": "[On Use] If target has 6+ ([Tremor] + [Sinking]), Coin Power +1",
+     "value": 1
+    }
+   ],
+   "tags": [],
+   "unmodeled": [
+    "[On Hit] Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1"
+   ]
+  },
+  "1041403@4": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "kind": "inflict",
+      "potency": 1,
+      "raw": "[On Hit] Inflict 1 [Faint Aroma]",
+      "status": "Faint Aroma"
+     },
+     {
+      "count": 3,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +3 [Sinking] Count",
+      "status": "Sinking"
+     }
+    ],
+    "2": [
+     {
+      "kind": "inflict",
+      "potency": 1,
+      "raw": "[On Hit] Inflict 1 [Faint Aroma]",
+      "status": "Faint Aroma"
+     },
+     {
+      "kind": "inflict",
+      "potency": 4,
+      "raw": "[On Hit] Inflict 4 [Sinking]",
+      "status": "Sinking"
+     }
+    ],
+    "3": [
+     {
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Faint Aroma]",
+      "status": "Faint Aroma"
+     },
+     {
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Tremor]",
+      "status": "Tremor"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Full Bloom",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "[On Hit] Deal Gloom damage equal to [Sinking] on target",
+    "[On Hit] Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1",
+    "[On Use] Coin Power +1 for every 6 ([Tremor] + [Sinking]) on target (max 2)",
+    "[On Use] Deal +1% damage for every [Faint Aroma] on target"
+   ]
+  },
+  "1041404@1": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {},
+   "combat_start": [],
+   "note": "A.A.T.",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "[Turn End] Gain 10 [Petals] (once per turn)"
+   ]
+  },
+  "1041404@2": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {},
+   "combat_start": [],
+   "note": "A.A.T.",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "[Turn End] Gain 10 [Petals] (once per turn)"
+   ]
+  },
+  "1041404@3": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {},
+   "combat_start": [],
+   "note": "A.A.T.",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "[Turn End] Gain 10 [Petals] (once per turn)"
+   ]
+  },
+  "1041404@4": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {},
+   "combat_start": [],
+   "note": "A.A.T.",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "[Turn End] Gain 10 [Petals] (once per turn)"
+   ]
+  },
+  "1081301@1": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +1 [Sinking] Count",
+      "status": "Sinking"
+     }
+    ],
+    "2": [
+     {
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +1 [Tremor] Count",
+      "status": "Tremor"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Tsuru-giri [鶴斬り]",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "[On Use] If the other Skill in the same Skill Slot is a different Skill, [Discard] that Skill"
+   ]
+  },
+  "1081301@2": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +1 [Sinking] Count",
+      "status": "Sinking"
+     },
+     {
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[Heads Hit] Inflict +1 [Sinking] Count",
+      "status": "Sinking"
+     }
+    ],
+    "2": [
+     {
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +1 [Tremor] Count",
+      "status": "Tremor"
+     },
+     {
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[Heads Hit] Inflict +1 [Tremor] Count",
+      "status": "Tremor"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Tsuru-giri [鶴斬り]",
+   "on_use": [
+    {
+     "condition": {
+      "component": "potency",
+      "gte": 6,
+      "source": "target",
+      "statuses": [
+       "Tremor",
+       "Sinking"
+      ]
+     },
+     "kind": "coin_power",
+     "raw": "[On Use] If target has 6+ ([Tremor] + [Sinking]), Coin Power +1",
+     "value": 1
+    }
+   ],
+   "tags": [],
+   "unmodeled": [
+    "[On Use] If the other Skill in the same Skill Slot is a different Skill, [Discard] that Skill"
+   ]
+  },
+  "1081301@3": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +1 [Sinking] Count",
+      "status": "Sinking"
+     },
+     {
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[Heads Hit] Inflict +1 [Sinking] Count",
+      "status": "Sinking"
+     }
+    ],
+    "2": [
+     {
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +1 [Tremor] Count",
+      "status": "Tremor"
+     },
+     {
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[Heads Hit] Inflict +1 [Tremor] Count",
+      "status": "Tremor"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Tsuru-giri [鶴斬り]",
+   "on_use": [
+    {
+     "condition": {
+      "component": "potency",
+      "gte": 6,
+      "source": "target",
+      "statuses": [
+       "Tremor",
+       "Sinking"
+      ]
+     },
+     "kind": "coin_power",
+     "raw": "[On Use] If target has 6+ ([Tremor] + [Sinking]), Coin Power +1",
+     "value": 1
+    }
+   ],
+   "tags": [],
+   "unmodeled": [
+    "[On Use] If the other Skill in the same Skill Slot is a different Skill, [Discard] that Skill"
+   ]
+  },
+  "1081301@4": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +1 [Sinking] Count",
+      "status": "Sinking"
+     },
+     {
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[Heads Hit] Inflict +1 [Sinking] Count",
+      "status": "Sinking"
+     }
+    ],
+    "2": [
+     {
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +1 [Tremor] Count",
+      "status": "Tremor"
+     },
+     {
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[Heads Hit] Inflict +1 [Tremor] Count",
+      "status": "Tremor"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Tsuru-giri [鶴斬り]",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "[On Use] Coin Power +1 for every 6 ([Tremor] + [Sinking]) on target (max 2)",
+    "[On Use] If the other Skill in the same Skill Slot is a different Skill, [Discard] that Skill"
+   ]
+  },
+  "1081302@1": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Sinking]",
+      "status": "Sinking"
+     }
+    ],
+    "2": [
+     {
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Tremor]",
+      "status": "Tremor"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Susuki Misdirection",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "[On Use] If the other Skill in the same Skill Slot is a different Skill, [Discard] that Skill"
+   ]
+  },
+  "1081302@2": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Sinking]",
+      "status": "Sinking"
+     },
+     {
+      "kind": "inflict",
+      "potency": 1,
+      "raw": "[Heads Hit] Inflict 1 [Sinking]",
+      "status": "Sinking"
+     }
+    ],
+    "2": [
+     {
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Tremor]",
+      "status": "Tremor"
+     },
+     {
+      "kind": "inflict",
+      "potency": 1,
+      "raw": "[Heads Hit] Inflict 1 [Tremor]",
+      "status": "Tremor"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Susuki Misdirection",
+   "on_use": [
+    {
+     "condition": {
+      "component": "potency",
+      "gte": 6,
+      "source": "target",
+      "statuses": [
+       "Tremor",
+       "Sinking"
+      ]
+     },
+     "kind": "coin_power",
+     "raw": "[On Use] If target has 6+ ([Tremor] + [Sinking]), Coin Power +1",
+     "value": 1
+    }
+   ],
+   "tags": [],
+   "unmodeled": [
+    "[On Use] If the other Skill in the same Skill Slot is a different Skill, [Discard] that Skill"
+   ]
+  },
+  "1081302@3": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Sinking]",
+      "status": "Sinking"
+     },
+     {
+      "kind": "inflict",
+      "potency": 1,
+      "raw": "[Heads Hit] Inflict 1 [Sinking]",
+      "status": "Sinking"
+     }
+    ],
+    "2": [
+     {
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Tremor]",
+      "status": "Tremor"
+     },
+     {
+      "kind": "inflict",
+      "potency": 1,
+      "raw": "[Heads Hit] Inflict 1 [Tremor]",
+      "status": "Tremor"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Susuki Misdirection",
+   "on_use": [
+    {
+     "condition": {
+      "component": "potency",
+      "gte": 6,
+      "source": "target",
+      "statuses": [
+       "Tremor",
+       "Sinking"
+      ]
+     },
+     "kind": "coin_power",
+     "raw": "[On Use] If target has 6+ ([Tremor] + [Sinking]), Coin Power +1",
+     "value": 1
+    }
+   ],
+   "tags": [],
+   "unmodeled": [
+    "[On Use] If the other Skill in the same Skill Slot is a different Skill, [Discard] that Skill"
+   ]
+  },
+  "1081302@4": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Sinking]",
+      "status": "Sinking"
+     },
+     {
+      "kind": "inflict",
+      "potency": 1,
+      "raw": "[Heads Hit] Inflict 1 [Sinking]",
+      "status": "Sinking"
+     }
+    ],
+    "2": [
+     {
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Tremor]",
+      "status": "Tremor"
+     },
+     {
+      "kind": "inflict",
+      "potency": 1,
+      "raw": "[Heads Hit] Inflict 1 [Tremor]",
+      "status": "Tremor"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Susuki Misdirection",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "[On Hit] Heal 5 SP",
+    "[On Use] Coin Power +1 for every 6 ([Tremor] + [Sinking]) on target (max 2)",
+    "[On Use] If the other Skill in the same Skill Slot is a different Skill, [Discard] that Skill"
+   ]
+  },
+  "1081303@1": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "count": 2,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +2 [Tremor] Count",
+      "status": "Tremor"
+     },
+     {
+      "count": 2,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +2 [Sinking] Count",
+      "status": "Sinking"
+     },
+     {
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[Heads Hit] Inflict +1 [Sinking] Count",
+      "status": "Sinking"
+     }
+    ],
+    "2": [
+     {
+      "kind": "inflict",
+      "potency": 3,
+      "raw": "[On Hit] Inflict 3 [Tremor]",
+      "status": "Tremor"
+     },
+     {
+      "kind": "inflict",
+      "potency": 3,
+      "raw": "[On Hit] Inflict 3 [Sinking]",
+      "status": "Sinking"
+     },
+     {
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[Heads Hit] Inflict +1 [Tremor] Count",
+      "status": "Tremor"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Sakura-sen [桜閃]",
+   "on_use": [
+    {
+     "condition": {
+      "component": "potency",
+      "source": "self",
+      "status": "Bright -光-"
+     },
+     "kind": "damage_percent",
+     "per": 1,
+     "raw": "Deal +5% damage for every [Bright -光-] Potency on self",
+     "step": 5,
+     "value": 0
+    },
+    {
+     "condition": {
+      "component": "potency",
+      "gte": 6,
+      "source": "target",
+      "statuses": [
+       "Tremor",
+       "Sinking"
+      ]
+     },
+     "kind": "coin_power",
+     "raw": "[On Use] If target has 6+ ([Tremor] + [Sinking]), Coin Power +1",
+     "value": 1
+    }
+   ],
+   "tags": [],
+   "unmodeled": [
+    "[On Hit] If target isn't in an [Amplitude Conversion] state, trigger [Amplitude Conversion] into [Tremor - Decay]",
+    "[On Use] If the other Skill in the same Skill Slot is a different Skill, [Discard] that Skill"
+   ]
+  },
+  "1081303@2": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "count": 2,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +2 [Tremor] Count",
+      "status": "Tremor"
+     },
+     {
+      "count": 2,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +2 [Sinking] Count",
+      "status": "Sinking"
+     },
+     {
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[Heads Hit] Inflict +1 [Sinking] Count",
+      "status": "Sinking"
+     }
+    ],
+    "2": [
+     {
+      "kind": "inflict",
+      "potency": 3,
+      "raw": "[On Hit] Inflict 3 [Tremor]",
+      "status": "Tremor"
+     },
+     {
+      "kind": "inflict",
+      "potency": 3,
+      "raw": "[On Hit] Inflict 3 [Sinking]",
+      "status": "Sinking"
+     },
+     {
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[Heads Hit] Inflict +1 [Tremor] Count",
+      "status": "Tremor"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Sakura-sen [桜閃]",
+   "on_use": [
+    {
+     "condition": {
+      "component": "potency",
+      "source": "self",
+      "status": "Bright -光-"
+     },
+     "kind": "damage_percent",
+     "per": 1,
+     "raw": "Deal +5% damage for every [Bright -光-] Potency on self",
+     "step": 5,
+     "value": 0
+    },
+    {
+     "condition": {
+      "component": "potency",
+      "gte": 6,
+      "source": "target",
+      "statuses": [
+       "Tremor",
+       "Sinking"
+      ]
+     },
+     "kind": "coin_power",
+     "raw": "[On Use] If target has 6+ ([Tremor] + [Sinking]), Coin Power +1",
+     "value": 1
+    }
+   ],
+   "tags": [],
+   "unmodeled": [
+    "[On Hit] If target isn't in an [Amplitude Conversion] state, trigger [Amplitude Conversion] into [Tremor - Decay]",
+    "[On Use] If the other Skill in the same Skill Slot is a different Skill, [Discard] that Skill"
+   ]
+  },
+  "1081303@3": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "count": 2,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +2 [Tremor] Count",
+      "status": "Tremor"
+     },
+     {
+      "count": 2,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +2 [Sinking] Count",
+      "status": "Sinking"
+     },
+     {
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[Heads Hit] Inflict +1 [Sinking] Count",
+      "status": "Sinking"
+     }
+    ],
+    "2": [
+     {
+      "kind": "inflict",
+      "potency": 3,
+      "raw": "[On Hit] Inflict 3 [Tremor]",
+      "status": "Tremor"
+     },
+     {
+      "kind": "inflict",
+      "potency": 3,
+      "raw": "[On Hit] Inflict 3 [Sinking]",
+      "status": "Sinking"
+     },
+     {
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[Heads Hit] Inflict +1 [Tremor] Count",
+      "status": "Tremor"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Sakura-sen [桜閃]",
+   "on_use": [
+    {
+     "condition": {
+      "component": "potency",
+      "source": "self",
+      "status": "Bright -光-"
+     },
+     "kind": "damage_percent",
+     "per": 1,
+     "raw": "Deal +5% damage for every [Bright -光-] Potency on self",
+     "step": 5,
+     "value": 0
+    },
+    {
+     "condition": {
+      "component": "potency",
+      "gte": 6,
+      "source": "target",
+      "statuses": [
+       "Tremor",
+       "Sinking"
+      ]
+     },
+     "kind": "coin_power",
+     "raw": "[On Use] If target has 6+ ([Tremor] + [Sinking]), Coin Power +1",
+     "value": 1
+    }
+   ],
+   "tags": [],
+   "unmodeled": [
+    "[On Hit] If target isn't in an [Amplitude Conversion] state, trigger [Amplitude Conversion] into [Tremor - Decay]",
+    "[On Use] If the other Skill in the same Skill Slot is a different Skill, [Discard] that Skill"
+   ]
+  },
+  "1081303@4": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "count": 2,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +2 [Tremor] Count",
+      "status": "Tremor"
+     },
+     {
+      "count": 2,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +2 [Sinking] Count",
+      "status": "Sinking"
+     },
+     {
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[Heads Hit] Inflict +1 [Sinking] Count",
+      "status": "Sinking"
+     }
+    ],
+    "2": [
+     {
+      "kind": "inflict",
+      "potency": 3,
+      "raw": "[On Hit] Inflict 3 [Tremor]",
+      "status": "Tremor"
+     },
+     {
+      "kind": "inflict",
+      "potency": 3,
+      "raw": "[On Hit] Inflict 3 [Sinking]",
+      "status": "Sinking"
+     },
+     {
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[Heads Hit] Inflict +1 [Tremor] Count",
+      "status": "Tremor"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Sakura-sen [桜閃]",
+   "on_use": [
+    {
+     "condition": {
+      "component": "potency",
+      "source": "self",
+      "status": "Bright -光-"
+     },
+     "kind": "damage_percent",
+     "per": 1,
+     "raw": "Deal +10% damage for every [Bright -光-] Potency on self",
+     "step": 10,
+     "value": 0
+    }
+   ],
+   "tags": [],
+   "unmodeled": [
+    "If target is in either [Amplitude Conversion] or [Amplitude Entanglement] states, this Coin deals +48% damage",
+    "[On Hit] If target isn't in an [Amplitude Conversion] state, trigger [Amplitude Conversion] into [Tremor - Decay]",
+    "[On Use] Coin Power +1 for every 6 ([Tremor] + [Sinking]), on target (max 3)",
+    "[On Use] If the other Skill in the same Skill Slot is a different Skill, [Discard] that Skill"
+   ]
+  },
+  "1081304@1": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +1 [Sinking] Count",
+      "status": "Sinking"
+     }
+    ],
+    "2": [
+     {
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Tremor]",
+      "status": "Tremor"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Shuffle Hands - Floral Deck",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "[Combat Start] If this Skill was equipped on this unit's leftmost Skill Slot, convert the Suit in this unit's Hand to a random Suit that corresponds to one of this unit's Base Attack Skills next turn. (once per turn; excluding the Suit already in this unit's Hand)",
+    "[Combat Start] [Discard] 2 Skills of the lowest rank in all of this unit's Skill Slots (once per turn)"
+   ]
+  },
+  "1081304@2": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +1 [Sinking] Count",
+      "status": "Sinking"
+     }
+    ],
+    "2": [
+     {
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Tremor]",
+      "status": "Tremor"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Shuffle Hands - Floral Deck",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "[Combat Start] If this Skill was equipped on this unit's leftmost Skill Slot, convert the Suit in this unit's Hand to a random Suit that corresponds to one of this unit's Base Attack Skills next turn. (once per turn; excluding the Suit already in this unit's Hand)",
+    "[Combat Start] [Discard] 2 Skills of the lowest rank in all of this unit's Skill Slots (once per turn)"
+   ]
+  },
+  "1081304@3": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +1 [Sinking] Count",
+      "status": "Sinking"
+     }
+    ],
+    "2": [
+     {
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Tremor]",
+      "status": "Tremor"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Shuffle Hands - Floral Deck",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "[Combat Start] If this Skill was equipped on this unit's leftmost Skill Slot, convert the Suit in this unit's Hand to a random Suit that corresponds to one of this unit's Base Attack Skills next turn. (once per turn; excluding the Suit already in this unit's Hand)",
+    "[Combat Start] [Discard] 2 Skills of the lowest rank in all of this unit's Skill Slots (once per turn)"
+   ]
+  },
+  "1081304@4": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +1 [Sinking] Count",
+      "status": "Sinking"
+     }
+    ],
+    "2": [
+     {
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Tremor]",
+      "status": "Tremor"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Shuffle Hands - Floral Deck",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "[Combat Start] 50% chance to gain 1 [Bright -光-] Potency (once per turn)",
+    "[Combat Start] If this Skill was equipped on this unit's leftmost Skill Slot, convert the Suit in this unit's Hand to a random Suit that corresponds to one of this unit's Base Attack Skills next turn. (once per turn; excluding the Suit already in this unit's Hand)",
+    "[Combat Start] [Discard] 2 Skills of the lowest rank in all of this unit's Skill Slots (once per turn)",
+    "[On Use] Coin Power +1 for every 2 [Bright -光-] Potency on self (max 2)"
+   ]
+  },
+  "1091301@1": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "kind": "inflict",
+      "potency": 1,
+      "raw": "[On Hit] Inflict 1 [Sinking]",
+      "status": "Sinking"
+     }
+    ],
+    "2": [
+     {
+      "kind": "gain",
+      "potency": 2,
+      "raw": "[On Hit] Gain 2 [Deep Tears]",
+      "status": "Deep Tears"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "The Knight's Sanctuary",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": []
+  },
+  "1091301@2": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "kind": "inflict",
+      "potency": 1,
+      "raw": "[On Hit] Inflict 1 [Sinking]",
+      "status": "Sinking"
+     }
+    ],
+    "2": [
+     {
+      "kind": "gain",
+      "potency": 2,
+      "raw": "[On Hit] Gain 2 [Deep Tears]",
+      "status": "Deep Tears"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "The Knight's Sanctuary",
+   "on_use": [
+    {
+     "condition": {
+      "component": "potency",
+      "gte": 6,
+      "source": "target",
+      "status": "Sinking"
+     },
+     "kind": "coin_power",
+     "raw": "If target has 6+ [Sinking], Coin Power +1",
+     "value": 1
+    }
+   ],
+   "tags": [],
+   "unmodeled": []
+  },
+  "1091301@3": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "kind": "inflict",
+      "potency": 1,
+      "raw": "[On Hit] Inflict 1 [Sinking]",
+      "status": "Sinking"
+     }
+    ],
+    "2": [
+     {
+      "kind": "gain",
+      "potency": 2,
+      "raw": "[On Hit] Gain 2 [Deep Tears]",
+      "status": "Deep Tears"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "The Knight's Sanctuary",
+   "on_use": [
+    {
+     "condition": {
+      "component": "potency",
+      "gte": 6,
+      "source": "target",
+      "status": "Sinking"
+     },
+     "kind": "coin_power",
+     "raw": "If target has 6+ [Sinking], Coin Power +1",
+     "value": 1
+    }
+   ],
+   "tags": [],
+   "unmodeled": []
+  },
+  "1091301@4": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "kind": "inflict",
+      "potency": 1,
+      "raw": "[On Hit] Inflict 1 [Sinking]",
+      "status": "Sinking"
+     }
+    ],
+    "2": [
+     {
+      "condition": {
+       "component": "stack",
+       "source": "self",
+       "status": "Protecting Sword"
+      },
+      "kind": "gain",
+      "max": 3,
+      "per": 2,
+      "potency": 1,
+      "raw": "Gain 1 additional [Deep Tears] for every 2 [Protecting Sword] (max 2)",
+      "status": "Deep Tears",
+      "step": 0,
+      "value": 1
+     },
+     {
+      "kind": "inflict",
+      "potency": 1,
+      "raw": "[On Hit] Inflict 1 [Sinking]",
+      "status": "Sinking"
+     },
+     {
+      "kind": "gain",
+      "potency": 2,
+      "raw": "[On Hit] Gain 2 [Deep Tears]",
+      "status": "Deep Tears"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "The Knight's Sanctuary",
+   "on_use": [
+    {
+     "condition": {
+      "component": "potency",
+      "gte": 6,
+      "source": "target",
+      "status": "Sinking"
+     },
+     "kind": "coin_power",
+     "raw": "If target has 6+ [Sinking], Coin Power +1",
+     "value": 1
+    },
+    {
+     "condition": {
+      "gte": 3,
+      "source": "self",
+      "status": "Protecting Sword"
+     },
+     "kind": "clash_power",
+     "raw": "At 3+ [Protecting Sword], Clash Power +1",
+     "value": 1
+    }
+   ],
+   "tags": [],
+   "unmodeled": []
+  },
+  "1091302@1": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {},
+   "combat_start": [],
+   "note": "With the Power of Justice",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "[On Use] At 15+ [Deep Tears], consume 5 [Deep Tears] to deal +15% damage"
+   ]
+  },
+  "1091302@2": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {},
+   "combat_start": [],
+   "note": "With the Power of Justice",
+   "on_use": [
+    {
+     "condition": {
+      "component": "potency",
+      "gte": 6,
+      "source": "target",
+      "status": "Sinking"
+     },
+     "kind": "coin_power",
+     "raw": "If target has 6+ [Sinking], Coin Power +1",
+     "value": 1
+    }
+   ],
+   "tags": [],
+   "unmodeled": [
+    "[On Use] At 15+ [Deep Tears], consume 5 [Deep Tears] to deal +15% damage"
+   ]
+  },
+  "1091302@3": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {},
+   "combat_start": [],
+   "note": "With the Power of Justice",
+   "on_use": [
+    {
+     "condition": {
+      "component": "potency",
+      "gte": 6,
+      "source": "target",
+      "status": "Sinking"
+     },
+     "kind": "coin_power",
+     "raw": "If target has 6+ [Sinking], Coin Power +1",
+     "value": 1
+    }
+   ],
+   "tags": [],
+   "unmodeled": [
+    "[On Use] At 15+ [Deep Tears], consume 5 [Deep Tears] to deal +15% damage"
+   ]
+  },
+  "1091302@4": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {},
+   "combat_start": [],
+   "note": "With the Power of Justice",
+   "on_use": [
+    {
+     "condition": {
+      "component": "potency",
+      "gte": 6,
+      "source": "target",
+      "status": "Sinking"
+     },
+     "kind": "coin_power",
+     "raw": "If target has 6+ [Sinking], Coin Power +1",
+     "value": 1
+    },
+    {
+     "condition": {
+      "component": "stack",
+      "source": "self",
+      "status": "Protecting Sword"
+     },
+     "kind": "clash_power",
+     "max": 2,
+     "per": 2,
+     "raw": "Clash Power +1 for every 2 [Protecting Sword] (max 2)",
+     "step": 1,
+     "value": 0
+    }
+   ],
+   "tags": [],
+   "unmodeled": [
+    "[On Use] At 15+ [Deep Tears], consume 5 [Deep Tears] to deal +15% damage"
+   ]
+  },
+  "1091303@1": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {},
+   "combat_start": [],
+   "note": "Arcana Pierce",
+   "on_use": [
+    {
+     "condition": {
+      "component": "potency",
+      "gte": 6,
+      "source": "target",
+      "status": "Sinking"
+     },
+     "kind": "coin_power",
+     "raw": "If target has 6+ [Sinking], Coin Power +1",
+     "value": 1
+    },
+    {
+     "condition": {
+      "component": "stack",
+      "source": "self",
+      "status": "Protecting Sword"
+     },
+     "kind": "clash_power",
+     "max": 2,
+     "per": 2,
+     "raw": "Clash Power +1 for every 2 [Protecting Sword] (max 2)",
+     "step": 1,
+     "value": 0
+    }
+   ],
+   "tags": [],
+   "unmodeled": [
+    "Deal +(Stack consumed x 1.5)% damage",
+    "[Attack End] If target is defeated, regain half of [Deep Tears] consumed by this Skill",
+    "[On Use] At 10+ [Deep Tears], consume up to 20 [Deep Tears]"
+   ]
+  },
+  "1091303@2": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {},
+   "combat_start": [],
+   "note": "Arcana Pierce",
+   "on_use": [
+    {
+     "condition": {
+      "component": "potency",
+      "gte": 6,
+      "source": "target",
+      "status": "Sinking"
+     },
+     "kind": "coin_power",
+     "raw": "If target has 6+ [Sinking], Coin Power +1",
+     "value": 1
+    },
+    {
+     "condition": {
+      "component": "stack",
+      "source": "self",
+      "status": "Protecting Sword"
+     },
+     "kind": "clash_power",
+     "max": 2,
+     "per": 2,
+     "raw": "Clash Power +1 for every 2 [Protecting Sword] (max 2)",
+     "step": 1,
+     "value": 0
+    }
+   ],
+   "tags": [],
+   "unmodeled": [
+    "Deal +(Stack consumed x 1.5)% damage",
+    "[Attack End] If target is defeated, regain half of [Deep Tears] consumed by this Skill",
+    "[On Use] At 10+ [Deep Tears], consume up to 20 [Deep Tears]"
+   ]
+  },
+  "1091303@3": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {},
+   "combat_start": [],
+   "note": "Arcana Pierce",
+   "on_use": [
+    {
+     "condition": {
+      "component": "potency",
+      "gte": 6,
+      "source": "target",
+      "status": "Sinking"
+     },
+     "kind": "coin_power",
+     "raw": "If target has 6+ [Sinking], Coin Power +1",
+     "value": 1
+    },
+    {
+     "condition": {
+      "component": "stack",
+      "source": "self",
+      "status": "Protecting Sword"
+     },
+     "kind": "clash_power",
+     "max": 2,
+     "per": 2,
+     "raw": "Clash Power +1 for every 2 [Protecting Sword] (max 2)",
+     "step": 1,
+     "value": 0
+    }
+   ],
+   "tags": [],
+   "unmodeled": [
+    "Deal +(Stack consumed x 1.5)% damage",
+    "[Attack End] If target is defeated, regain half of [Deep Tears] consumed by this Skill",
+    "[On Use] At 10+ [Deep Tears], consume up to 20 [Deep Tears]"
+   ]
+  },
+  "1091303@4": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {},
+   "combat_start": [],
+   "note": "Arcana Pierce",
+   "on_use": [
+    {
+     "condition": {
+      "component": "potency",
+      "gte": 6,
+      "source": "target",
+      "status": "Sinking"
+     },
+     "kind": "coin_power",
+     "raw": "If target has 6+ [Sinking], Coin Power +1",
+     "value": 1
+    }
+   ],
+   "tags": [],
+   "unmodeled": [
+    "Base Power +1 for every 5 Stack consumed",
+    "Clash Power +1 for every [Protecting Sword] (max 5)",
+    "Deal +(Stack consumed x 1.5)% damage",
+    "[Attack End] If target is defeated, regain half of [Deep Tears] consumed by this Skill",
+    "[On Use] At 10+ [Deep Tears], consume up to 20 [Deep Tears]"
+   ]
+  },
+  "1091304@1": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {},
+   "combat_start": [],
+   "note": "The Knight's Faith",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "If this unit has [Tear-sharpened], lose ([Tear-sharpened] Stack x 15) more SP",
+    "[Combat Start] Gain Shield equal to (SP / 5)% of this unit's max HP (once per turn)",
+    "[On Use] Gain 3 [Deep Tears] (2 times per turn)",
+    "[Turn End] At less than 3 [Tear-sharpened], lose 15 SP and gain 1 [Tear-sharpened] (once per turn)"
+   ]
+  },
+  "1091304@2": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {},
+   "combat_start": [],
+   "note": "The Knight's Faith",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "If this unit has [Tear-sharpened], lose ([Tear-sharpened] Stack x 15) more SP",
+    "[Combat Start] Gain Shield equal to (SP / 5)% of this unit's max HP (once per turn)",
+    "[On Use] Gain 3 [Deep Tears] (2 times per turn)",
+    "[Turn End] At less than 3 [Tear-sharpened], lose 15 SP and gain 1 [Tear-sharpened] (once per turn)"
+   ]
+  },
+  "1091304@3": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {},
+   "combat_start": [],
+   "note": "The Knight's Faith",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "If this unit has [Tear-sharpened], lose ([Tear-sharpened] Stack x 15) more SP",
+    "[Combat Start] Gain Shield equal to (SP / 5)% of this unit's max HP (once per turn)",
+    "[On Use] Gain 3 [Deep Tears] (2 times per turn)",
+    "[Turn End] At less than 3 [Tear-sharpened], lose 15 SP and gain 1 [Tear-sharpened] (once per turn)"
+   ]
+  },
+  "1091304@4": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {},
+   "combat_start": [],
+   "note": "The Knight's Faith",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "If this unit has [Tear-sharpened], lose ([Tear-sharpened] Stack x 15) more SP",
+    "[Combat Start] Coin Power +1 for every 2 [Protecting Sword] (max 2)",
+    "[Combat Start] Gain Shield equal to (SP / 3)% of this unit's max HP (once per turn)",
+    "[On Use] Gain 5 [Deep Tears] (2 times per turn)",
+    "[Turn End] At less than 3 [Tear-sharpened], lose 15 SP to gain 1 [Tear-sharpened] (once per turn)"
+   ]
+  },
+  "1100401@1": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[Heads Hit] Inflict 2 [Sinking]",
+      "status": "Sinking"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Baile y Rola",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": []
+  },
+  "1100401@2": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "kind": "inflict",
+      "potency": 4,
+      "raw": "[Heads Hit] Inflict 4 [Sinking]",
+      "status": "Sinking"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Baile y Rola",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": []
+  },
+  "1100401@3": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "kind": "inflict",
+      "potency": 4,
+      "raw": "[Heads Hit] Inflict 4 [Sinking]",
+      "status": "Sinking"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Baile y Rola",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": []
+  },
+  "1100401@4": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "kind": "inflict",
+      "potency": 4,
+      "raw": "[On Hit] Inflict 4 [Sinking]",
+      "status": "Sinking"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Baile y Rola",
+   "on_use": [
+    {
+     "condition": {
+      "component": "potency",
+      "gte": 4,
+      "source": "target",
+      "status": "Sinking"
+     },
+     "kind": "coin_power",
+     "raw": "If target has 4+ [Sinking], Coin Power +1",
+     "value": 1
+    }
+   ],
+   "tags": [],
+   "unmodeled": []
+  },
+  "1100402@1": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "kind": "gain",
+      "potency": 2,
+      "raw": "[On Hit] Gain 2 [Poise]",
+      "status": "Poise"
+     }
+    ],
+    "2": [
+     {
+      "kind": "inflict",
+      "potency": 1,
+      "raw": "[On Hit] Inflict 1 [Sinking]",
+      "status": "Sinking"
+     }
+    ],
+    "3": [
+     {
+      "kind": "inflict",
+      "potency": 1,
+      "raw": "[On Hit] Inflict 1 [Sinking]",
+      "status": "Sinking"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Danza de Pasión",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": []
+  },
+  "1100402@2": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "kind": "gain",
+      "potency": 2,
+      "raw": "[On Hit] Gain 2 [Poise]",
+      "status": "Poise"
+     },
+     {
+      "count": 1,
+      "kind": "gain",
+      "raw": "[Heads Hit] Gain +1 [Poise] Count",
+      "status": "Poise"
+     }
+    ],
+    "2": [
+     {
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Sinking]",
+      "status": "Sinking"
+     },
+     {
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[Heads Hit] Inflict +1 [Sinking] Count",
+      "status": "Sinking"
+     }
+    ],
+    "3": [
+     {
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Sinking]",
+      "status": "Sinking"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Danza de Pasión",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": []
+  },
+  "1100402@3": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "kind": "gain",
+      "potency": 2,
+      "raw": "[On Hit] Gain 2 [Poise]",
+      "status": "Poise"
+     },
+     {
+      "count": 1,
+      "kind": "gain",
+      "raw": "[Heads Hit] Gain +1 [Poise] Count",
+      "status": "Poise"
+     }
+    ],
+    "2": [
+     {
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Sinking]",
+      "status": "Sinking"
+     },
+     {
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[Heads Hit] Inflict +1 [Sinking] Count",
+      "status": "Sinking"
+     }
+    ],
+    "3": [
+     {
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Sinking]",
+      "status": "Sinking"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Danza de Pasión",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": []
+  },
+  "1100402@4": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "kind": "gain",
+      "potency": 2,
+      "raw": "[On Hit] Gain 2 [Poise]",
+      "status": "Poise"
+     },
+     {
+      "count": 1,
+      "kind": "gain",
+      "raw": "[On Hit] Gain +1 [Poise] Count",
+      "status": "Poise"
+     }
+    ],
+    "2": [
+     {
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Sinking]",
+      "status": "Sinking"
+     },
+     {
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +1 [Sinking] Count",
+      "status": "Sinking"
+     }
+    ],
+    "3": [
+     {
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Sinking]",
+      "status": "Sinking"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Danza de Pasión",
+   "on_use": [
+    {
+     "condition": {
+      "component": "potency",
+      "gte": 6,
+      "source": "target",
+      "status": "Sinking"
+     },
+     "kind": "coin_power",
+     "raw": "If target has 6+ [Sinking], Coin Power +2",
+     "value": 2
+    }
+   ],
+   "tags": [],
+   "unmodeled": []
+  },
+  "1100403@1": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {},
+   "combat_start": [],
+   "note": "Pañata Party",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "If target's SP is below 0, boost crit chance proportional to target's SP",
+    "[Heads Hit] Lower user’s Stagger Threshold by 50% of damage dealt"
+   ]
+  },
+  "1100403@2": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {},
+   "combat_start": [],
+   "note": "Pañata Party",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "If target's SP is below 0, boost crit chance proportional to target's SP",
+    "[Heads Hit] Lower user’s Stagger Threshold by 50% of damage dealt"
+   ]
+  },
+  "1100403@3": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {},
+   "combat_start": [],
+   "note": "Pañata Party",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "If target's SP is below 0, boost crit chance proportional to target's SP",
+    "[Heads Hit] Lower user’s Stagger Threshold by 50% of damage dealt"
+   ]
+  },
+  "1100403@4": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {},
+   "combat_start": [],
+   "note": "Pañata Party",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "If target's SP is below 0, boost crit chance proportional to target's SP",
+    "If user has 5+ [Poise] Count, +30% Critical Damage",
+    "[On Hit] Lower user’s Stagger Threshold by 50% of damage dealt"
+   ]
+  },
+  "1100404@1": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {},
+   "combat_start": [],
+   "note": "Evade",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": []
+  },
+  "1100404@2": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {},
+   "combat_start": [],
+   "note": "Evade",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": []
+  },
+  "1100404@3": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {},
+   "combat_start": [],
+   "note": "Evade",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": []
+  },
+  "1100404@4": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {},
+   "combat_start": [],
+   "note": "Evade",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "[On Evade] Gain +1 [Poise] Count"
+   ]
+  },
+  "1111401@1": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +1 [Sinking] Count",
+      "status": "Sinking"
+     },
+     {
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +1 [Tremor] Count",
+      "status": "Tremor"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Khopesh Swordplay",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "[On Use] Gain +3 [Aggro] to this Skill Slot next turn"
+   ]
+  },
+  "1111401@2": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +1 [Sinking] Count",
+      "status": "Sinking"
+     },
+     {
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +1 [Tremor] Count",
+      "status": "Tremor"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Khopesh Swordplay",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "[On Use] Coin Power +1 for every 6 ([Sinking] + [Tremor]) on target (max 2)",
+    "[On Use] Gain +3 [Aggro] to this Skill Slot next turn"
+   ]
+  },
+  "1111401@3": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +1 [Sinking] Count",
+      "status": "Sinking"
+     },
+     {
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +1 [Tremor] Count",
+      "status": "Tremor"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Khopesh Swordplay",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "[On Use] Coin Power +1 for every 6 ([Sinking] + [Tremor]) on target (max 2)",
+    "[On Use] Gain +3 [Aggro] to this Skill Slot next turn"
+   ]
+  },
+  "1111401@4": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [
+    {
+     "kind": "inflict",
+     "potency": 2,
+     "raw": "[Clash Win] Inflict 2 [Sheut Fracture]",
+     "status": "Sheut Fracture"
+    }
+   ],
+   "coins": {
+    "1": [
+     {
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +1 [Sinking] Count",
+      "status": "Sinking"
+     },
+     {
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +1 [Tremor] Count",
+      "status": "Tremor"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Khopesh Swordplay",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "[On Hit] Gain 1 [Protection] next turn (once per turn)",
+    "[On Use] Coin Power +1 for every 6 ([Sinking] + [Tremor]) on target (max 2)",
+    "[On Use] Gain +3 [Aggro] to this Skill Slot next turn",
+    "[On Use] If this unit has [The Udjat -Vanguard-], Clash Power +1"
+   ]
+  },
+  "1111402@1": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "count": 2,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +2 [Sinking] Count",
+      "status": "Sinking"
+     }
+    ],
+    "2": [
+     {
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +1 [Tremor] Count",
+      "status": "Tremor"
+     }
+    ],
+    "3": [
+     {
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Sinking]",
+      "status": "Sinking"
+     },
+     {
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Tremor]",
+      "status": "Tremor"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Mirage Incision",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "[On Use] Gain +5 [Aggro] to this Skill Slot next turn"
+   ]
+  },
+  "1111402@2": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "count": 2,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +2 [Sinking] Count",
+      "status": "Sinking"
+     }
+    ],
+    "2": [
+     {
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +1 [Tremor] Count",
+      "status": "Tremor"
+     }
+    ],
+    "3": [
+     {
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Sinking]",
+      "status": "Sinking"
+     },
+     {
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Tremor]",
+      "status": "Tremor"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Mirage Incision",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "[On Use] Coin Power +1 for every 6 ([Sinking] + [Tremor]) on target (max 2)",
+    "[On Use] Gain +5 [Aggro] to this Skill Slot next turn"
+   ]
+  },
+  "1111402@3": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "count": 2,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +2 [Sinking] Count",
+      "status": "Sinking"
+     }
+    ],
+    "2": [
+     {
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +1 [Tremor] Count",
+      "status": "Tremor"
+     }
+    ],
+    "3": [
+     {
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Sinking]",
+      "status": "Sinking"
+     },
+     {
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Tremor]",
+      "status": "Tremor"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Mirage Incision",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "[On Use] Coin Power +1 for every 6 ([Sinking] + [Tremor]) on target (max 2)",
+    "[On Use] Gain +5 [Aggro] to this Skill Slot next turn"
+   ]
+  },
+  "1111402@4": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [
+    {
+     "kind": "inflict",
+     "potency": 2,
+     "raw": "[Clash Win] Inflict 2 [Sheut Fracture]",
+     "status": "Sheut Fracture"
+    }
+   ],
+   "coins": {
+    "1": [
+     {
+      "count": 2,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +2 [Sinking] Count",
+      "status": "Sinking"
+     }
+    ],
+    "2": [
+     {
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +1 [Tremor] Count",
+      "status": "Tremor"
+     }
+    ],
+    "3": [
+     {
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Sinking]",
+      "status": "Sinking"
+     },
+     {
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Tremor]",
+      "status": "Tremor"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Mirage Incision",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "[On Hit] Gain 1 [Protection] next turn (once per turn)",
+    "[On Use] Coin Power +1 for every 6 ([Sinking] + [Tremor]) on target (max 2)",
+    "[On Use] Gain +5 [Aggro] to this Skill Slot next turn",
+    "[On Use] If this unit has [The Udjat -Vanguard-], Clash Power +2 and deal +30% damage"
+   ]
+  },
+  "1111403@1": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "kind": "spend_ammo",
+      "raw": "Spend 2 [LCA Fracture Round]",
+      "status": "LCA Fracture Round",
+      "value": 2
+     },
+     {
+      "count": 2,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +2 [Sinking] Count",
+      "status": "Sinking"
+     },
+     {
+      "count": 2,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +2 [Tremor] Count",
+      "status": "Tremor"
+     }
+    ],
+    "2": [
+     {
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Sinking]",
+      "status": "Sinking"
+     }
+    ],
+    "3": [
+     {
+      "kind": "spend_ammo",
+      "raw": "Spend 2 [LCA Fracture Round]",
+      "status": "LCA Fracture Round",
+      "value": 2
+     },
+     {
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Sinking]",
+      "status": "Sinking"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "The Vanguard will See it Done",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "[Attack End] At 2 or fewer [LCA Fracture Round], [Reload] (5 times per Encounter)",
+    "[Attack End] Gain 2 [Protection] next turn (once per turn)",
+    "[On Hit] Inflict 1 [Gloom Resist Down] (once per turn)",
+    "[On Hit] Inflict 3 [Blue Sand] next turn",
+    "[On Hit] Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1",
+    "[On Use] Base Power +1 for every [LCA Fracture Round] about to be spent by this Skill",
+    "[On Use] Gain +8 [Aggro] to this Skill Slot next turn"
+   ]
+  },
+  "1111403@2": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "kind": "spend_ammo",
+      "raw": "Spend 2 [LCA Fracture Round]",
+      "status": "LCA Fracture Round",
+      "value": 2
+     },
+     {
+      "count": 2,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +2 [Sinking] Count",
+      "status": "Sinking"
+     },
+     {
+      "count": 2,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +2 [Tremor] Count",
+      "status": "Tremor"
+     }
+    ],
+    "2": [
+     {
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Sinking]",
+      "status": "Sinking"
+     }
+    ],
+    "3": [
+     {
+      "kind": "spend_ammo",
+      "raw": "Spend 2 [LCA Fracture Round]",
+      "status": "LCA Fracture Round",
+      "value": 2
+     },
+     {
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Sinking]",
+      "status": "Sinking"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "The Vanguard will See it Done",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "[Attack End] At 2 or fewer [LCA Fracture Round], [Reload] (5 times per Encounter)",
+    "[Attack End] Gain 2 [Protection] next turn (once per turn)",
+    "[On Hit] Inflict 1 [Gloom Resist Down] (once per turn)",
+    "[On Hit] Inflict 3 [Blue Sand] next turn",
+    "[On Hit] Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1",
+    "[On Use] Base Power +1 for every [LCA Fracture Round] about to be spent by this Skill",
+    "[On Use] Gain +8 [Aggro] to this Skill Slot next turn"
+   ]
+  },
+  "1111403@3": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "kind": "spend_ammo",
+      "raw": "Spend 2 [LCA Fracture Round]",
+      "status": "LCA Fracture Round",
+      "value": 2
+     },
+     {
+      "count": 2,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +2 [Sinking] Count",
+      "status": "Sinking"
+     },
+     {
+      "count": 2,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +2 [Tremor] Count",
+      "status": "Tremor"
+     }
+    ],
+    "2": [
+     {
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Sinking]",
+      "status": "Sinking"
+     }
+    ],
+    "3": [
+     {
+      "kind": "spend_ammo",
+      "raw": "Spend 2 [LCA Fracture Round]",
+      "status": "LCA Fracture Round",
+      "value": 2
+     },
+     {
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Sinking]",
+      "status": "Sinking"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "The Vanguard will See it Done",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "[Attack End] At 2 or fewer [LCA Fracture Round], [Reload] (5 times per Encounter)",
+    "[Attack End] Gain 2 [Protection] next turn (once per turn)",
+    "[On Hit] Inflict 1 [Gloom Resist Down] (once per turn)",
+    "[On Hit] Inflict 3 [Blue Sand] next turn",
+    "[On Hit] Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1",
+    "[On Use] Base Power +1 for every [LCA Fracture Round] about to be spent by this Skill",
+    "[On Use] Gain +8 [Aggro] to this Skill Slot next turn"
+   ]
+  },
+  "1111403@4": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "kind": "spend_ammo",
+      "raw": "Spend 2 [LCA Fracture Round]",
+      "status": "LCA Fracture Round",
+      "value": 2
+     },
+     {
+      "count": 2,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +2 [Sinking] Count",
+      "status": "Sinking"
+     },
+     {
+      "count": 2,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +2 [Tremor] Count",
+      "status": "Tremor"
+     }
+    ],
+    "2": [
+     {
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Sinking]",
+      "status": "Sinking"
+     }
+    ],
+    "3": [
+     {
+      "kind": "spend_ammo",
+      "raw": "Spend 2 [LCA Fracture Round]",
+      "status": "LCA Fracture Round",
+      "value": 2
+     },
+     {
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Sinking]",
+      "status": "Sinking"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "The Vanguard will See it Done",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "Deal +([LCA Fracture Round] spent x 30)% damage",
+    "If target has less than 0 SP, inflict 1 [Gloom Fragility] (once per turn)",
+    "If this unit has [The Udjat -Vanguard-], deal +50% damage",
+    "[Attack End] At 2 or fewer [LCA Fracture Round], [Reload] (5 times per Encounter)",
+    "[Attack End] Gain 2 [Protection] next turn (once per turn)",
+    "[On Hit] If target is a SP Unit, trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1",
+    "[On Hit] Inflict 1 [Gloom Resist Down] (once per turn)",
+    "[On Hit] Inflict 3 [Blue Sand] next turn",
+    "[On Hit] Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1",
+    "[On Use] At 6+ ([Sinking] + [Tremor]) on target, Coin Power +1",
+    "[On Use] Base Power +1 for every [LCA Fracture Round] about to be spent by this Skill",
+    "[On Use] Gain +8 [Aggro] to this Skill Slot next turn"
+   ]
+  },
+  "1111404@1": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {},
+   "combat_start": [],
+   "note": "Composure",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "When hit while this unit has Shield, inflict 3 [Sinking] against the attacker (3 times per turn)",
+    "[On Use] For every [Protection] on self, gain Shield equal to 5% of this unit's max HP (max 15%; once per turn)"
+   ]
+  },
+  "1111404@2": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {},
+   "combat_start": [],
+   "note": "Composure",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "When hit while this unit has Shield, inflict 3 [Sinking] against the attacker (3 times per turn)",
+    "[On Use] For every [Protection] on self, gain Shield equal to 5% of this unit's max HP (max 15%; once per turn)"
+   ]
+  },
+  "1111404@3": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {},
+   "combat_start": [],
+   "note": "Composure",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "When hit while this unit has Shield, inflict 3 [Sinking] against the attacker (3 times per turn)",
+    "[On Use] For every [Protection] on self, gain Shield equal to 5% of this unit's max HP (max 15%; once per turn)"
+   ]
+  },
+  "1111404@4": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {},
+   "combat_start": [],
+   "note": "Composure",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "When hit while this unit has Shield, inflict 3 [Sinking] against the attacker (3 times per turn)",
+    "[On Use] For every [Protection] on self, gain Shield equal to 5% of this unit's max HP (max 15%; once per turn)",
+    "[On Use] If this unit has [The Udjat -Vanguard-], gain 1 [Protection] (once per turn)"
+   ]
+  },
+  "1121401@1": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "kind": "inflict",
+      "potency": 1,
+      "raw": "[On Hit] Inflict 1 [Burn]",
+      "status": "Burn"
+     }
+    ],
+    "2": [
+     {
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Sinking]",
+      "status": "Sinking"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Intense Stare: Zero-Range",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "[On Use] Gain 1 [Bind] next turn"
+   ]
+  },
+  "1121401@2": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "kind": "inflict",
+      "potency": 1,
+      "raw": "[On Hit] Inflict 1 [Burn]",
+      "status": "Burn"
+     }
+    ],
+    "2": [
+     {
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Sinking]",
+      "status": "Sinking"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Intense Stare: Zero-Range",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "If any of the following conditions are met, Coin Power +1",
+    "If target has [Dazzle]",
+    "If this unit's Speed is 1 or slower",
+    "[On Use] Gain 1 [Bind] next turn"
+   ]
+  },
+  "1121401@3": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "kind": "inflict",
+      "potency": 1,
+      "raw": "[On Hit] Inflict 1 [Burn]",
+      "status": "Burn"
+     }
+    ],
+    "2": [
+     {
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Sinking]",
+      "status": "Sinking"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Intense Stare: Zero-Range",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "If any of the following conditions are met, Coin Power +1",
+    "If target has [Dazzle]",
+    "If this unit's Speed is 1 or slower",
+    "[On Use] Gain 1 [Bind] next turn"
+   ]
+  },
+  "1121401@4": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Burn]",
+      "status": "Burn"
+     }
+    ],
+    "2": [
+     {
+      "kind": "inflict",
+      "potency": 3,
+      "raw": "[On Hit] Inflict 3 [Sinking]",
+      "status": "Sinking"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Intense Stare: Zero-Range",
+   "on_use": [
+    {
+     "condition": {
+      "component": "potency",
+      "gte": 6,
+      "source": "target",
+      "statuses": [
+       "Sinking",
+       "Burn"
+      ]
+     },
+     "kind": "coin_power",
+     "raw": "[On Use] If target has 6+ ([Sinking] + [Burn]), Coin Power +1",
+     "value": 1
+    }
+   ],
+   "tags": [],
+   "unmodeled": [
+    "If any of the following conditions are met, Coin Power +1",
+    "If target has [Dazzle]",
+    "If target's Speed is faster than this unit's by 3 or more",
+    "If this unit's Speed is 1 or slower",
+    "[On Use] Gain 1 [Bind] next turn"
+   ]
+  },
+  "1121402@1": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +1 [Sinking] Count",
+      "status": "Sinking"
+     }
+    ],
+    "2": [
+     {
+      "kind": "inflict",
+      "potency": 1,
+      "raw": "[On Hit] Inflict 1 [Sinking]",
+      "status": "Sinking"
+     }
+    ],
+    "3": [
+     {
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Burn]",
+      "status": "Burn"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Destroy the Visible with the Invisible",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "[On Hit] Deal (30% of this Coin's final damage) Blunt damage"
+   ]
+  },
+  "1121402@2": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "count": 2,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +2 [Sinking] Count",
+      "status": "Sinking"
+     }
+    ],
+    "2": [
+     {
+      "kind": "inflict",
+      "potency": 1,
+      "raw": "[On Hit] Inflict 1 [Sinking]",
+      "status": "Sinking"
+     }
+    ],
+    "3": [
+     {
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Burn]",
+      "status": "Burn"
+     }
+    ],
+    "4": [
+     {
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +1 [Burn] Count",
+      "status": "Burn"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Destroy the Visible with the Invisible",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "If any of the following conditions are met, Clash Power +2",
+    "If target has [Dazzle]",
+    "If this unit's Speed is 1 or slower",
+    "[On Hit] Deal (30% of this Coin's final damage) Blunt damage"
+   ]
+  },
+  "1121402@3": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "count": 2,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +2 [Sinking] Count",
+      "status": "Sinking"
+     }
+    ],
+    "2": [
+     {
+      "kind": "inflict",
+      "potency": 1,
+      "raw": "[On Hit] Inflict 1 [Sinking]",
+      "status": "Sinking"
+     }
+    ],
+    "3": [
+     {
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Burn]",
+      "status": "Burn"
+     }
+    ],
+    "4": [
+     {
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +1 [Burn] Count",
+      "status": "Burn"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Destroy the Visible with the Invisible",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "If any of the following conditions are met, Clash Power +2",
+    "If target has [Dazzle]",
+    "If this unit's Speed is 1 or slower",
+    "[On Hit] Deal (30% of this Coin's final damage) Blunt damage"
+   ]
+  },
+  "1121402@4": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "count": 3,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +3 [Sinking] Count",
+      "status": "Sinking"
+     }
+    ],
+    "2": [
+     {
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Sinking]",
+      "status": "Sinking"
+     }
+    ],
+    "3": [
+     {
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Burn]",
+      "status": "Burn"
+     }
+    ],
+    "4": [
+     {
+      "count": 2,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +2 [Burn] Count",
+      "status": "Burn"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Destroy the Visible with the Invisible",
+   "on_use": [
+    {
+     "condition": {
+      "component": "potency",
+      "gte": 6,
+      "source": "target",
+      "statuses": [
+       "Sinking",
+       "Burn"
+      ]
+     },
+     "kind": "coin_power",
+     "raw": "[On Use] If target has 6+ ([Sinking] + [Burn]), Coin Power +1",
+     "value": 1
+    }
+   ],
+   "tags": [],
+   "unmodeled": [
+    "If any of the following conditions are met, Clash Power +2",
+    "If target has [Dazzle]",
+    "If target's Speed is faster than this unit's by 3 or more",
+    "If this unit's Speed is 1 or slower",
+    "[On Hit] Deal (30% of this Coin's final damage) Blunt damage"
+   ]
+  },
+  "1121403@1": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "count": 2,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +2 [Sinking] Count",
+      "status": "Sinking"
+     }
+    ],
+    "2": [
+     {
+      "kind": "inflict",
+      "potency": 3,
+      "raw": "[On Hit] Inflict 3 [Burn]",
+      "status": "Burn"
+     },
+     {
+      "kind": "inflict",
+      "potency": 3,
+      "raw": "[On Hit] Inflict 3 [Sinking]",
+      "status": "Sinking"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Salvation for those Enchanted by the Lamp",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "If any of the following conditions are met, Coin Power +1 and deal +20% damage",
+    "If target has [Dazzle]",
+    "If the target(Core) has 25% or less HP, or if target has [Dazzle], deal +60% damage",
+    "If this unit's Speed is 1 or slower",
+    "[On Hit] If target has [Dazzle], deal Gloom damage equal to 60% of this Coin's final damage",
+    "[On Use] If target has [Dazzle], convert all Coins on this Skill to [Unbreakable Coin]s and gain Clash Power +3"
+   ]
+  },
+  "1121403@2": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "count": 2,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +2 [Sinking] Count",
+      "status": "Sinking"
+     }
+    ],
+    "2": [
+     {
+      "kind": "inflict",
+      "potency": 3,
+      "raw": "[On Hit] Inflict 3 [Burn]",
+      "status": "Burn"
+     },
+     {
+      "kind": "inflict",
+      "potency": 3,
+      "raw": "[On Hit] Inflict 3 [Sinking]",
+      "status": "Sinking"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Salvation for those Enchanted by the Lamp",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "If any of the following conditions are met, Coin Power +1 and deal +20% damage",
+    "If target has [Dazzle]",
+    "If the target(Core) has 25% or less HP, or if target has [Dazzle], deal +60% damage",
+    "If this unit's Speed is 1 or slower",
+    "[On Hit] If target has [Dazzle], deal Gloom damage equal to 60% of this Coin's final damage",
+    "[On Use] If target has [Dazzle], convert all Coins on this Skill to [Unbreakable Coin]s and gain Clash Power +3"
+   ]
+  },
+  "1121403@3": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "count": 2,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +2 [Sinking] Count",
+      "status": "Sinking"
+     }
+    ],
+    "2": [
+     {
+      "kind": "inflict",
+      "potency": 3,
+      "raw": "[On Hit] Inflict 3 [Burn]",
+      "status": "Burn"
+     },
+     {
+      "kind": "inflict",
+      "potency": 3,
+      "raw": "[On Hit] Inflict 3 [Sinking]",
+      "status": "Sinking"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Salvation for those Enchanted by the Lamp",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "If any of the following conditions are met, Coin Power +1 and deal +20% damage",
+    "If target has [Dazzle]",
+    "If the target(Core) has 25% or less HP, or if target has [Dazzle], deal +60% damage",
+    "If this unit's Speed is 1 or slower",
+    "[On Hit] If target has [Dazzle], deal Gloom damage equal to 60% of this Coin's final damage",
+    "[On Use] If target has [Dazzle], convert all Coins on this Skill to [Unbreakable Coin]s and gain Clash Power +3"
+   ]
+  },
+  "1121403@4": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +1 [Burn] Count",
+      "status": "Burn"
+     },
+     {
+      "count": 3,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +3 [Sinking] Count",
+      "status": "Sinking"
+     }
+    ],
+    "2": [
+     {
+      "kind": "inflict",
+      "potency": 3,
+      "raw": "[On Hit] Inflict 3 [Burn]",
+      "status": "Burn"
+     },
+     {
+      "kind": "inflict",
+      "potency": 3,
+      "raw": "[On Hit] Inflict 3 [Sinking]",
+      "status": "Sinking"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Salvation for those Enchanted by the Lamp",
+   "on_use": [
+    {
+     "condition": {
+      "component": "potency",
+      "gte": 6,
+      "source": "target",
+      "statuses": [
+       "Sinking",
+       "Burn"
+      ]
+     },
+     "kind": "coin_power",
+     "raw": "[On Use] If target has 6+ ([Sinking] + [Burn]), Coin Power +1",
+     "value": 1
+    }
+   ],
+   "tags": [],
+   "unmodeled": [
+    "If any of the following conditions are met, Coin Power +1 and deal +40% damage",
+    "If target has [Dazzle]",
+    "If target's Speed is faster than this unit's by 3 or more",
+    "If the target(Core) has 25% or less HP, or if target has [Dazzle], deal +60% damage",
+    "If this unit's Speed is 1 or slower",
+    "[Attack End] If target is defeated, or if it has 3 [Dazzle], gain 1 [Plus Coin Boost] next turn (once per turn)",
+    "[On Hit] If target has [Dazzle], deal Gloom damage equal to 80% of this Coin's final damage",
+    "[On Use] If target has [Dazzle], convert all Coins on this Skill to [Unbreakable Coin]s and gain Clash Power +3"
+   ]
+  },
+  "1121404@1": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {},
+   "combat_start": [],
+   "note": "The Wick of Burned Feathers",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "[Combat Start] Gain [Lamp] up to 8 Stack; for every Stack gained, take HP damage equal to 1% of max HP (this effect does not reduce this unit's HP below 1)",
+    "[Turn End] Apply 1 [Haste] next turn to ([Bind] on self / 3) other allies with the slowest Speed (once per turn; rounded down)"
+   ]
+  },
+  "1121404@2": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {},
+   "combat_start": [],
+   "note": "The Wick of Burned Feathers",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "[Combat Start] Gain [Lamp] up to 8 Stack; for every Stack gained, take HP damage equal to 1% of max HP (this effect does not reduce this unit's HP below 1)",
+    "[Turn End] Apply 1 [Haste] next turn to ([Bind] on self / 3) other allies with the slowest Speed (once per turn; rounded down)"
+   ]
+  },
+  "1121404@3": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {},
+   "combat_start": [],
+   "note": "The Wick of Burned Feathers",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "[Combat Start] Gain [Lamp] up to 8 Stack; for every Stack gained, take HP damage equal to 1% of max HP (this effect does not reduce this unit's HP below 1)",
+    "[Turn End] Apply 1 [Haste] next turn to ([Bind] on self / 3) other allies with the slowest Speed (once per turn; rounded down)"
+   ]
+  },
+  "1121404@4": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {},
+   "combat_start": [],
+   "note": "The Wick of Burned Feathers",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "[Combat Start] Gain [Lamp] up to 8 Stack; for every Stack gained, take HP damage equal to 1% of max HP (this effect does not reduce this unit's HP below 1)",
+    "[Turn End] Apply 1 [Haste] next turn to ([Bind] on self / 2) other allies with the slowest Speed (once per turn; rounded down)"
+   ]
+  },
+  "20106.awakening@1": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {},
+   "combat_start": [],
+   "note": "Bygone Days",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "[Attack End] Randomly inflict (6 + Gloom Reson.) [Sinking] between targets",
+    "[On Hit] If target has 6+ [Sinking], inflict 2 [Bind] next turn"
+   ]
+  },
+  "20106.corrosion@1": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {},
+   "combat_start": [],
+   "note": "Bygone Days",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "Targets Randomly",
+    "[Before Attack] At 3+ (Gloom Reson.), Atk Weight +1",
+    "[On Hit] If target has 6+ [Sinking], inflict 1 [Bind] next turn",
+    "[On Hit] Inflict 2 [Sinking]. Inflict 2 [Bind] next turn"
+   ]
+  },
+  "20109.awakening@1": {
+   "attack_end": [
+    {
+     "kind": "reload_ammo",
+     "raw": "[Attack End] [Reload (Solemn Lament)]"
+    }
+   ],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "assumption": "random",
+      "kind": "inflict",
+      "potency": 1,
+      "raw": "[On Hit] Inflict 1 random [Butterfly]",
+      "status": "Butterfly"
+     }
+    ],
+    "2": [
+     {
+      "assumption": "random",
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 random [Butterfly]",
+      "status": "Butterfly"
+     }
+    ],
+    "3": [
+     {
+      "assumption": "random",
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 random [Butterfly]",
+      "status": "Butterfly"
+     }
+    ],
+    "4": [
+     {
+      "assumption": "random",
+      "kind": "inflict",
+      "potency": 3,
+      "raw": "[On Hit] Inflict 3 random [Butterfly]",
+      "status": "Butterfly"
+     }
+    ],
+    "5": [
+     {
+      "kind": "inflict",
+      "potency": 3,
+      "raw": "[On Hit] Inflict 3 [Sinking]",
+      "status": "Sinking"
+     },
+     {
+      "kind": "inflict",
+      "potency": 3,
+      "raw": "[On Hit] Inflict 3 [Tremor]",
+      "status": "Tremor"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Solemn Lament",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "If Lobotomy E.G.O::Solemn Lament Yi Sang used this Skill:",
+    "Spend all [The Living & The Departed] on self",
+    "When inflicting [Butterfly] using this Skill's effects: (Chance to flip Heads)% chance to inflict The Departed. If this unit did not inflict The Departed, inflict The Living instead. (calculates every [Butterfly] Stack independently)",
+    "[Before Attack] Gain a random assortment of (Gloom Reson. + 1) [The Living & The Departed] (max 7)",
+    "[On Hit] Deal Gloom damage equal to ([The Living & The Departed] spent by this Coin x 2)% of this Coin's final damage",
+    "[On Hit] Deal Gloom damage equal to the sum of both [Butterfly] on target",
+    "[On Hit] Inflict 2 [Butterfly](The Departed)",
+    "[On Hit] Inflict 2 [Butterfly](The Living)",
+    "[On Hit] Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1"
+   ]
+  },
+  "20109.corrosion@1": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "3": [
+     {
+      "kind": "inflict",
+      "potency": 5,
+      "raw": "[On Hit] Inflict 5 [Sinking]",
+      "status": "Sinking"
+     },
+     {
+      "kind": "inflict",
+      "potency": 5,
+      "raw": "[On Hit] Inflict 5 [Tremor]",
+      "status": "Tremor"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Solemn Lament",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "Targets randomly",
+    "[Before Attack] Base Power -2 for every Cracked Coin (max -6)",
+    "[Before Attack] Gain +(highest Reson. / 2) Atk Weight (max 2, rounded down)",
+    "[On Hit] Deal Gloom damage equal to the sum of both [Butterfly] on target",
+    "[On Hit] Inflict 3 [Butterfly](The Departed)",
+    "[On Hit] Inflict 3 [Butterfly](The Living)",
+    "[On Hit] Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1"
+   ]
+  },
+  "20807.awakening@1": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "count": 2,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +2 [Sinking] Count",
+      "status": "Sinking"
+     },
+     {
+      "kind": "inflict",
+      "potency": 1,
+      "raw": "[On Hit] Inflict 1 [Curse]",
+      "status": "Curse"
+     },
+     {
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [The Uninvited]",
+      "status": "The Uninvited"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Bygone Days",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "If the said Reson. was a Gloom Reson., gain +1 Atk Weight",
+    "[Attack End] Heal 2 allies with the lowest HP percentages by (10 + ([Sinking] on the main target + [Sinking] Count on the main target)/3)% HP (max 15%)",
+    "[Before Attack] At 4+ highest Reson., gain +1 Atk Weight",
+    "[On Hit] At 4+ Gloom Reson., inflict 1 [Gloom Fragility]"
+   ]
+  },
+  "20807.corrosion@1": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "count": 2,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +2 [Sinking] Count",
+      "status": "Sinking"
+     },
+     {
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Curse]",
+      "status": "Curse"
+     },
+     {
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [The Uninvited]",
+      "status": "The Uninvited"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Bygone Days",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "At 4+ highest Reson., heal 1 additional ally",
+    "Prioritizes targets that have the most [Sinking]",
+    "[Attack End] Heal 3 other allies with the lowest HP percentages by (10 + ([Sinking] on the main target + [Sinking] Count on the main target)/3)% HP (max 15%)",
+    "[Before Attack] Lose HP by 10% of Max HP (does not get Staggered due to this effect)",
+    "[On Hit] At 3+ Gloom Reson., inflict 1 [Gloom Fragility]",
+    "[On Hit] Inflict 2 [Echoes of the Manor] next turn"
+   ]
+  },
+  "20810.awakening@1": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Sinking]",
+      "status": "Sinking"
+     },
+     {
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Tremor]",
+      "status": "Tremor"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Tidal Elegy",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "When attacking just a single target(in Focused Encounters, a Core and its connected Parts count as a single target), Coin Power +2 and deal +100% damage",
+    "When attacking just a single target, apply it to 3 targets instead",
+    "[Attack End] If 1 or more targets are killed, deal ([Sinking] Potency on each target / 2) Gloom damage against 2 random enemies (max 15; prioritizes targeted enemies with the most [Sinking] Potency)",
+    "[Before Attack] At 2+ Gloom Reson., deal +8% damage for every Gloom Reson. (max 32%)",
+    "[Before Attack] If the main target has higher than 1 Gloom Resist., deal +3% damage for every 0.1 excess Resist. (max 15%)",
+    "[On Hit without Cracking] Inflict 1 [Bind] next turn",
+    "[On Hit] If there are Staggered, Part broken, or killed units among the targets, inflict 2 [Sinking] against a random non-targeted enemy (once per turn; in Focused Encounters, each Part count as 1 target)",
+    "[On Hit] Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1",
+    "[On Use] If the main target has 4+ [Sinking], Clash Power +1"
+   ]
+  },
+  "20810.corrosion@1": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "kind": "inflict",
+      "potency": 1,
+      "raw": "[On Hit] Inflict 1 [Sinking]",
+      "status": "Sinking"
+     }
+    ],
+    "2": [
+     {
+      "kind": "inflict",
+      "potency": 1,
+      "raw": "[On Hit] Inflict 1 [Sinking]",
+      "status": "Sinking"
+     }
+    ],
+    "3": [
+     {
+      "kind": "inflict",
+      "potency": 1,
+      "raw": "[On Hit] Inflict 1 [Tremor]",
+      "status": "Tremor"
+     }
+    ],
+    "4": [
+     {
+      "kind": "inflict",
+      "potency": 1,
+      "raw": "[On Hit] Inflict 1 [Tremor]",
+      "status": "Tremor"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Tidal Elegy",
+   "on_use": [
+    {
+     "condition": {
+      "component": "potency",
+      "source": "self",
+      "status": "the main target"
+     },
+     "kind": "clash_power",
+     "max": 2,
+     "per": 5,
+     "raw": "[On Use] Clash Power +1 for every 5 [Sinking] on the main target (max 2)",
+     "step": 1,
+     "value": 0
+    }
+   ],
+   "tags": [],
+   "unmodeled": [
+    "Deal +15% damage (max 30%)",
+    "Gain +1 Atk Weight (max 2)",
+    "If the said Reson. was a Gloom Reson. or an A-Reson., apply 1 [Gloom DMG Up] as well",
+    "Targets randomly",
+    "[Attack End] Apply 1 [Blunt DMG Up] next turn to (highest Reson.) random allies (including this unit; max 4 allies; once per turn)",
+    "[Before Attack] Gain the following effects for every 3 highest Reson.",
+    "[On Hit] If there are Staggered, Part broken, or killed units among the targets, inflict 1 [Gloom Fragility] next turn against a random non-targeted enemy (once per turn; for Focused Encounters, each Part counts as 1 target)",
+    "[On Hit] Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1"
+   ]
+  },
+  "20903.awakening@1": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "count": 3,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +3 [Sinking] Count",
+      "status": "Sinking"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Rime Shank",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "If target’s HP is above 50%, deal +30% damage",
+    "[On Hit] Trigger [Tremor Burst]"
+   ]
+  },
+  "20903.corrosion@1": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "count": 6,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +6 [Sinking] Count",
+      "status": "Sinking"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Rime Shank",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "If target’s HP is above 50%, +30% Damage",
+    "Targets the unit with the most HP",
+    "[On Hit] Trigger [Tremor Burst]"
+   ]
+  },
+  "21009.awakening@1": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Bleed]",
+      "status": "Bleed"
+     }
+    ],
+    "2": [
+     {
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Burn]",
+      "status": "Burn"
+     }
+    ],
+    "3": [
+     {
+      "kind": "inflict",
+      "potency": 1,
+      "raw": "[On Hit] Inflict 1 [Burn]",
+      "status": "Burn"
+     },
+     {
+      "kind": "inflict",
+      "potency": 1,
+      "raw": "[On Hit] Inflict 1 [Bleed]",
+      "status": "Bleed"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Harmony",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "Clash Power +1 for every 2 ([Bleed] + [Burn]) on the main target (max 8)",
+    "Deal -50% damage against sub-targets",
+    "Deal more damage based on missing HP on self (max 15%)",
+    "Then, Reuse this Coin (4 times per Skill)",
+    "This damage does not Stagger or reduce this unit's HP below 1",
+    "[Attack End] For 2 turns, lose 8 SP at Combat End",
+    "[Attack End] Heal 10 SP for (1 + highest Reson.) other allies with the least SP (max 4 units)",
+    "[Heads Hit] At 10%+ HP, take 4 ~ 8 HP damage (once per Coin)",
+    "[On Hit] A random ally gains 1 ~ 2 [Rhythm] next turn (once per Coin)",
+    "[On Target Kill] All allies gain 2 [Rhythm] next turn (once per Skill)"
+   ]
+  },
+  "21009.corrosion@1": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Bleed]",
+      "status": "Bleed"
+     }
+    ],
+    "2": [
+     {
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Burn]",
+      "status": "Burn"
+     }
+    ],
+    "3": [
+     {
+      "kind": "inflict",
+      "potency": 1,
+      "raw": "[On Hit] Inflict 1 [Burn]",
+      "status": "Burn"
+     },
+     {
+      "kind": "inflict",
+      "potency": 1,
+      "raw": "[On Hit] Inflict 1 [Bleed]",
+      "status": "Bleed"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Harmony",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "Clash Power +1 for every 2 ([Bleed] + [Burn]) on the main target (max 8)",
+    "Deal -50% damage against sub-targets",
+    "Deal more damage based on missing HP on self (max 15%)",
+    "If target was killed, activate the effect above once more",
+    "Targets randomly",
+    "Then, Reuse this Coin if the sum of HP lost due to this effect is less than 50 (4 times per Skill)",
+    "This damage does not Stagger or reduce this unit's HP below 1",
+    "[Attack End] All allies gain 2 [Rhythm], 1 [Wrath DMG Up], 1 [Lust DMG Up], 1 [Envy DMG Up], 1 [Fragile] next turn",
+    "[Attack End] Heal 12 SP for 4 other allies with the least SP",
+    "[Before Attack] Base Power -2 for every Cracked Coin (max -6)",
+    "[Before Attack] Gain Atk Weight equal to (highest Reson. / 2) (max 2; rounded down)",
+    "[On Hit] A random ally gains 1 ~ 2 [Rhythm] next turn (once per Coin)",
+    "[On Hit] At 10%+ HP, take 10 ~ 20 HP damage (once per Coin)"
+   ]
+  },
+  "21206.awakening@1": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {},
+   "combat_start": [],
+   "note": "Bygone Days",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "If target is defeated, inflict 3 [Sinking] and 1 [Curse] on 2 random enemies (For Focused Encounters, random Parts)",
+    "If target survives this attack, consume 5 [Sinking] Count on target, then heal additional SP(to self & affected allies) equal to [Sinking] Potency on target (Max SP heal: 20)",
+    "[Attack End] Heal 12 SP to self and 2 other allies with the least SP"
+   ]
+  },
+  "21206.corrosion@1": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "count": 3,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +3 [Sinking] Count",
+      "status": "Sinking"
+     },
+     {
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Curse]",
+      "status": "Curse"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Bygone Days",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "Targets randomly",
+    "[On Hit] Inflict 2 [Gloom Fragility]. Inflict 1 additional [Gloom Fragility] for every 3 Gloom Reson. (max 2)"
+   ]
+  },
+  "21207.awakening@1": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "assumption": "random",
+      "kind": "inflict",
+      "potency": 1,
+      "raw": "[On Hit] Inflict 1 random [Butterfly]",
+      "status": "Butterfly"
+     }
+    ],
+    "2": [
+     {
+      "assumption": "random",
+      "kind": "inflict",
+      "potency": 1,
+      "raw": "[On Hit] Inflict 1 random [Butterfly]",
+      "status": "Butterfly"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Solemn Lament",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "All 'On Hit' effects and all damage dealt by each Coin are inflicted only against the random target the Coin selected",
+    "The first Coin always targets the main target",
+    "When inflicting [Butterfly] using this Skill's effects: (Chance to flip Heads)% chance to inflict The Departed. If this unit did not inflict The Departed, inflict The Living instead. (calculates every [Butterfly] Stack independently)",
+    "When this Skill flips Coins, each Coin flips against a random enemy among its targets.",
+    "[Attack End] Heal (# of Coin 3 hits x 2) SP",
+    "[On Hit] At 0+ SP, Reuse this Coin (5 times max per Skill)",
+    "[On Hit] Inflict 1~2 random [Butterfly]",
+    "[On Hit] Lose 2~6 SP"
+   ]
+  },
+  "21207.corrosion@1": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "count": 3,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +3 [Sinking] Count",
+      "status": "Sinking"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Solemn Lament",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "For targets that are Non-SP Units, deal +1% damage for every 2 [Sinking] on target (max 45%)",
+    "If target has less than 0 SP, deal more damage the further their SP value is from 0 (+1% damage for every missing SP, max 45%)",
+    "Targets randomly",
+    "[On Hit] Inflict 4 [Butterfly](The Departed)",
+    "[On Hit] Inflict 4 [Butterfly](The Living)",
+    "[On Kill] Heal 5 SP"
+   ]
+  },
+  "956301@1": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "kind": "inflict",
+      "potency": 1,
+      "raw": "[On Hit] Inflict 1 [Burn]",
+      "status": "Burn"
+     },
+     {
+      "kind": "inflict",
+      "potency": 1,
+      "raw": "[On Hit] Inflict 1 [Bleed]",
+      "status": "Bleed"
+     }
+    ],
+    "2": [
+     {
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +1 [Burn] Count",
+      "status": "Burn"
+     },
+     {
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +1 [Bleed] Count",
+      "status": "Bleed"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Fluttering Havoc",
+   "on_use": [
+    {
+     "condition": {
+      "component": "potency",
+      "source": "target",
+      "statuses": [
+       "Burn",
+       "Bleed"
+      ]
+     },
+     "kind": "clash_power",
+     "max": 3,
+     "per": 8,
+     "raw": "Clash Power +1 for every 8 ([Burn] + [Bleed]) on target (max 3)",
+     "step": 1,
+     "value": 0
+    },
+    {
+     "condition": {
+      "component": "potency",
+      "source": "Poise",
+      "status": "self"
+     },
+     "kind": "damage_percent",
+     "max": 20,
+     "per": 6,
+     "raw": "Deal +5% damage for every 6 [Poise] on self (max 20%)",
+     "step": 5,
+     "value": 0
+    },
+    {
+     "kind": "gain",
+     "potency": 2,
+     "raw": "Gain 2 [Poise]",
+     "status": "Poise"
+    }
+   ],
+   "tags": [],
+   "unmodeled": []
+  },
+  "956302@1": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +1 [Burn] Count",
+      "status": "Burn"
+     },
+     {
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +1 [Bleed] Count",
+      "status": "Bleed"
+     }
+    ],
+    "2": [
+     {
+      "kind": "inflict",
+      "potency": 1,
+      "raw": "[On Hit] Inflict 1 [Burn]",
+      "status": "Burn"
+     },
+     {
+      "kind": "inflict",
+      "potency": 1,
+      "raw": "[On Hit] Inflict 1 [Bleed]",
+      "status": "Bleed"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Pulverization",
+   "on_use": [
+    {
+     "condition": {
+      "component": "potency",
+      "source": "target",
+      "statuses": [
+       "Burn",
+       "Bleed"
+      ]
+     },
+     "kind": "clash_power",
+     "max": 3,
+     "per": 8,
+     "raw": "Clash Power +1 for every 8 ([Burn] + [Bleed]) on target (max 3)",
+     "step": 1,
+     "value": 0
+    },
+    {
+     "condition": {
+      "component": "potency",
+      "source": "Poise",
+      "status": "self"
+     },
+     "kind": "damage_percent",
+     "max": 20,
+     "per": 6,
+     "raw": "Deal +5% damage for every 6 [Poise] on self (max 20%)",
+     "step": 5,
+     "value": 0
+    },
+    {
+     "count": 2,
+     "kind": "gain",
+     "raw": "Gain +2 [Poise] Count",
+     "status": "Poise"
+    }
+   ],
+   "tags": [],
+   "unmodeled": []
+  },
+  "956303@1": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {},
+   "combat_start": [],
+   "note": "The Quickening",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "This Attack Skill deals 0 damage",
+    "[Attack End] End the Encounter",
+    "[On Use] Does not take damage for this turn",
+    "[Unclashable], [Target Fixed]"
+   ]
+  },
+  "956304@1": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {},
+   "combat_start": [],
+   "note": "Entangled Life - Regression",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "Enemy units of Stage 2 gain [Incandescent Scale Dust]",
+    "[Attack Type and Affinity] of Skills that Clashed with this Skill affect the impending Past"
+   ]
+  },
+  "956305@1": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {},
+   "combat_start": [],
+   "note": "Entangled Life - Manifestation",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "Enemy units of Stage 3 gain [Acuate Scale Dust]",
+    "[Attack Type and Affinity] of Skills that Clashed with this Skill affect the impending Present"
+   ]
+  },
+  "956306@1": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {},
+   "combat_start": [],
+   "note": "Entangled Life - Advent",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "Enemy units of Stage 4 gain [Rusted Scale Dust]",
+    "[Attack Type and Affinity] of Skills that Clashed with this Skill affect the impending Future"
+   ]
+  },
+  "956401@1": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {},
+   "combat_start": [],
+   "note": "Eclosion",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "If the Shield is broken, proceed to the next turn instead and [face a unique Choice Event] before the Encounter ends",
+    "This Attack Skill deals 0 damage",
+    "[Attack End] End the Encounter",
+    "[Unclashable][Target Fixed]"
+   ]
+  },
+  "956501@1": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {},
+   "combat_start": [],
+   "note": "Eclosion",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "If the Shield is broken, proceed to the next turn instead and [face a unique Choice Event] before the Encounter ends",
+    "This Attack Skill deals 0 damage",
+    "[Attack End] End the Encounter",
+    "[Unclashable][Target Fixed]"
+   ]
+  },
+  "956601@1": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {},
+   "combat_start": [],
+   "note": "Eclosion",
+   "on_use": [],
+   "tags": [],
+   "unmodeled": [
+    "If the Shield is broken, proceed to the next turn instead and [face a unique Choice Event] before the Encounter ends",
+    "This Attack Skill deals 0 damage",
+    "[Attack End] End the Encounter",
+    "[Unclashable][Target Fixed]"
+   ]
+  },
+  "956701@1": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "kind": "inflict",
+      "potency": 1,
+      "raw": "[On Hit] Inflict 1 [Burn]",
+      "status": "Burn"
+     },
+     {
+      "kind": "inflict",
+      "potency": 1,
+      "raw": "[On Hit] Inflict 1 [Bleed]",
+      "status": "Bleed"
+     }
+    ],
+    "2": [
+     {
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +1 [Burn] Count",
+      "status": "Burn"
+     },
+     {
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +1 [Bleed] Count",
+      "status": "Bleed"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Fluttering Havoc",
+   "on_use": [
+    {
+     "condition": {
+      "component": "potency",
+      "source": "target",
+      "statuses": [
+       "Burn",
+       "Bleed"
+      ]
+     },
+     "kind": "clash_power",
+     "max": 3,
+     "per": 8,
+     "raw": "Clash Power +1 for every 8 ([Burn] + [Bleed]) on target (max 3)",
+     "step": 1,
+     "value": 0
+    },
+    {
+     "condition": {
+      "component": "potency",
+      "source": "Poise",
+      "status": "self"
+     },
+     "kind": "damage_percent",
+     "max": 30,
+     "per": 6,
+     "raw": "Deal +10% damage for every 6 [Poise] on self (max 30%)",
+     "step": 10,
+     "value": 0
+    },
+    {
+     "kind": "gain",
+     "potency": 2,
+     "raw": "Gain 2 [Poise]",
+     "status": "Poise"
+    },
+    {
+     "coins": [
+      2
+     ],
+     "hp_below_percent": 66,
+     "kind": "unbreakable_coin",
+     "raw": "At less than 66% HP, convert the final Coin into [Unbreakable Coin]"
+    },
+    {
+     "coins": [
+      1,
+      2
+     ],
+     "hp_below_percent": 33,
+     "kind": "unbreakable_coin",
+     "raw": "At less than 33% HP, convert all Coins into [Unbreakable Coin]s"
+    }
+   ],
+   "tags": [],
+   "unmodeled": []
+  },
+  "956702@1": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +1 [Burn] Count",
+      "status": "Burn"
+     },
+     {
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +1 [Bleed] Count",
+      "status": "Bleed"
+     }
+    ],
+    "2": [
+     {
+      "kind": "inflict",
+      "potency": 1,
+      "raw": "[On Hit] Inflict 1 [Burn]",
+      "status": "Burn"
+     },
+     {
+      "kind": "inflict",
+      "potency": 1,
+      "raw": "[On Hit] Inflict 1 [Bleed]",
+      "status": "Bleed"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Pulverization",
+   "on_use": [
+    {
+     "condition": {
+      "component": "potency",
+      "source": "target",
+      "statuses": [
+       "Burn",
+       "Bleed"
+      ]
+     },
+     "kind": "clash_power",
+     "max": 3,
+     "per": 8,
+     "raw": "Clash Power +1 for every 8 ([Burn] + [Bleed]) on target (max 3)",
+     "step": 1,
+     "value": 0
+    },
+    {
+     "condition": {
+      "component": "potency",
+      "source": "Poise",
+      "status": "self"
+     },
+     "kind": "damage_percent",
+     "max": 30,
+     "per": 6,
+     "raw": "Deal +10% damage for every 6 [Poise] on self (max 30%)",
+     "step": 10,
+     "value": 0
+    },
+    {
+     "count": 2,
+     "kind": "gain",
+     "raw": "Gain +2 [Poise] Count",
+     "status": "Poise"
+    },
+    {
+     "coins": [
+      2
+     ],
+     "hp_below_percent": 66,
+     "kind": "unbreakable_coin",
+     "raw": "At less than 66% HP, convert the final Coin into [Unbreakable Coin]"
+    },
+    {
+     "coins": [
+      1,
+      2
+     ],
+     "hp_below_percent": 33,
+     "kind": "unbreakable_coin",
+     "raw": "At less than 33% HP, convert all Coins into [Unbreakable Coin]s"
+    }
+   ],
+   "tags": [],
+   "unmodeled": []
+  },
+  "956703@1": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "kind": "reuse_percent_missing_hp",
+      "max": 2,
+      "per": 33,
+      "raw": "Reuse this Coin once for every 33% missing HP (max 2 times)"
+     },
+     {
+      "kind": "inflict",
+      "potency": 1,
+      "raw": "[On Hit] Inflict 1 [Burn]",
+      "status": "Burn"
+     },
+     {
+      "kind": "inflict",
+      "potency": 1,
+      "raw": "[On Hit] Inflict 1 [Bleed]",
+      "status": "Bleed"
+     },
+     {
+      "kind": "gain",
+      "potency": 1,
+      "raw": "[On Hit] Gain 1 [Poise]",
+      "status": "Poise"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Chaotic Turmoil",
+   "on_use": [
+    {
+     "condition": {
+      "component": "potency",
+      "source": "target",
+      "statuses": [
+       "Burn",
+       "Bleed"
+      ]
+     },
+     "kind": "clash_power",
+     "max": 6,
+     "per": 6,
+     "raw": "Clash Power +1 for every 6 ([Burn] + [Bleed]) on target (max 6)",
+     "step": 1,
+     "value": 0
+    },
+    {
+     "condition": {
+      "component": "potency",
+      "source": "self",
+      "status": "self"
+     },
+     "kind": "clash_power",
+     "max": 3,
+     "per": 6,
+     "raw": "Clash Power +1 for every 6 [Poise] on self (max 3)",
+     "step": 1,
+     "value": 0
+    }
+   ],
+   "tags": [],
+   "unmodeled": [
+    "[Clash Lose] Gain [2 [Power Down] and 2 [Damage Down]]"
+   ]
+  },
+  "956704@1": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "count": 1,
+      "kind": "inflict",
+      "potency": 1,
+      "raw": "[On Hit] Inflict 1 [Burn] and +1 [Burn] Count",
+      "status": "Burn",
+      "status2": "Burn"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Temper and Cast",
+   "on_use": [
+    {
+     "condition": {
+      "component": "potency",
+      "source": "self",
+      "status": "target"
+     },
+     "kind": "clash_power",
+     "max": 6,
+     "per": 6,
+     "raw": "Clash Power +1 for every 6 [Burn] on target (max 6)",
+     "step": 1,
+     "value": 0
+    },
+    {
+     "coins": [
+      2
+     ],
+     "hp_below_percent": 66,
+     "kind": "unbreakable_coin",
+     "raw": "At less than 66% HP, convert the second Coin into [Unbreakable Coin]"
+    },
+    {
+     "coins": [
+      1,
+      2
+     ],
+     "hp_below_percent": 33,
+     "kind": "unbreakable_coin",
+     "raw": "At less than 33% HP, convert all Coins into [Unbreakable Coin]s"
+    }
+   ],
+   "tags": [
+    "clash_any_speed"
+   ],
+   "unmodeled": [
+    "[Clash Lose] Target cannot be Staggered until this Skill's Attack End",
+    "[On Hit without Cracking] [Activate [Burn] on target once]. Target loses 1 [Burn] Count"
+   ]
+  },
+  "956705@1": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "count": 2,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +2 [Burn] Count",
+      "status": "Burn"
+     }
+    ],
+    "2": [
+     {
+      "kind": "inflict",
+      "potency": 3,
+      "raw": "[On Hit] Inflict 3 [Burn]",
+      "status": "Burn"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Immolation",
+   "on_use": [
+    {
+     "condition": {
+      "component": "potency",
+      "source": "self",
+      "status": "the main target"
+     },
+     "kind": "clash_power",
+     "max": 6,
+     "per": 6,
+     "raw": "Clash Power +1 for every 6 [Burn] on the main target (max 6)",
+     "step": 1,
+     "value": 0
+    },
+    {
+     "coins": [
+      2
+     ],
+     "hp_below_percent": 66,
+     "kind": "unbreakable_coin",
+     "raw": "At less than 66% HP, convert the second Coin into [Unbreakable Coin]"
+    },
+    {
+     "coins": [
+      1,
+      2,
+      3
+     ],
+     "hp_below_percent": 33,
+     "kind": "unbreakable_coin",
+     "raw": "At less than 33% HP, convert all Coins into [Unbreakable Coin]s"
+    }
+   ],
+   "tags": [
+    "clash_any_speed"
+   ],
+   "unmodeled": [
+    "[Clash Lose] Target cannot be Staggered until this Skill's Attack End",
+    "[Deal +([In the Past] x 2)% damage] (max 60%)",
+    "[Hit after Clash Lose] [At less than 33% HP, activate [Burn] on the main target once]. Target loses 1 [Burn] Count",
+    "[On Hit without Cracking] [Activate [Burn] on target 2 times]. Target loses 2 [Burn] Count"
+   ]
+  },
+  "956706@1": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [
+    {
+     "kind": "gain",
+     "potency": 5,
+     "raw": "[Clash Win] Gain 5 [In the Past]",
+     "status": "In the Past"
+    }
+   ],
+   "coins": {
+    "1": [
+     {
+      "count": 1,
+      "kind": "inflict",
+      "potency": 1,
+      "raw": "[On Hit] Inflict 1 [Burn] and +1 [Burn] Count",
+      "status": "Burn",
+      "status2": "Burn"
+     }
+    ],
+    "2": [
+     {
+      "count": 1,
+      "kind": "inflict",
+      "potency": 1,
+      "raw": "[On Hit] Inflict 1 [Burn] and +1 [Burn] Count",
+      "status": "Burn",
+      "status2": "Burn"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Kalpāgni",
+   "on_use": [
+    {
+     "condition": {
+      "component": "potency",
+      "source": "self",
+      "status": "the main target"
+     },
+     "kind": "base_power",
+     "max": 6,
+     "per": 6,
+     "raw": "Final Power +1 for every 6 [Burn] on the main target (max 6)",
+     "step": 1,
+     "value": 0
+    },
+    {
+     "kind": "gain",
+     "potency": 2,
+     "raw": "Gain 2 [Damage Down] and 4 [Paralyze]",
+     "status": "Damage Down"
+    }
+   ],
+   "tags": [
+    "clash_any_speed"
+   ],
+   "unmodeled": [
+    "Halve [In the Past] (rounded down)",
+    "Target cannot be Staggered until this Skill's Attack End",
+    "[Deal +([In the Past] x 4)% damage] (max 120%)",
+    "[Hit after Clash Lose] [At less than 33% HP, activate [Burn] on the main target once]. Target loses 1 [Burn] Count",
+    "[On Hit without Cracking] [Activate [Burn] on target 2 times]. Target loses 2 [Burn] Count",
+    "[On Hit without Cracking] [Activate [Burn] on target once]. Target loses 1 [Burn] Count"
+   ]
+  },
+  "956707@1": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "count": 1,
+      "kind": "gain",
+      "potency": 1,
+      "raw": "[On Hit] Gain 1 [Poise] and +1 [Poise] Count",
+      "status": "Poise"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Anitya",
+   "on_use": [
+    {
+     "coins": [
+      2
+     ],
+     "hp_below_percent": 66,
+     "kind": "unbreakable_coin",
+     "raw": "At less than 66% HP, convert the second Coin into [Unbreakable Coin]"
+    },
+    {
+     "coins": [
+      1,
+      2
+     ],
+     "hp_below_percent": 33,
+     "kind": "unbreakable_coin",
+     "raw": "At less than 33% HP, convert all Coins into [Unbreakable Coin]s"
+    },
+    {
+     "count": 2,
+     "kind": "gain",
+     "potency": 2,
+     "raw": "[Before Attack] Gain 2 [Poise] and +2 [Poise] Count",
+     "status": "Poise"
+    }
+   ],
+   "tags": [
+    "clash_any_speed"
+   ],
+   "unmodeled": [
+    "Clash Power +1 and deal +10% damage for every 6 [Poise] on self (max 6 and 60%, respectively)",
+    "[Clash Lose] Target cannot be Staggered until this Skill's Attack End",
+    "[On Hit without Cracking] [Deal ([Poise] on self / 2) Pride damage on target] and lose 1 [Poise] Count (rounded down)"
+   ]
+  },
+  "956708@1": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "count": 1,
+      "kind": "gain",
+      "raw": "[On Hit] Gain +1 [Poise] Count",
+      "status": "Poise"
+     }
+    ],
+    "2": [
+     {
+      "kind": "gain",
+      "potency": 1,
+      "raw": "[On Hit] Gain 1 [Poise]",
+      "status": "Poise"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Skypiercer",
+   "on_use": [
+    {
+     "coins": [
+      2
+     ],
+     "hp_below_percent": 66,
+     "kind": "unbreakable_coin",
+     "raw": "At less than 66% HP, convert the second Coin into [Unbreakable Coin]"
+    },
+    {
+     "coins": [
+      1,
+      2,
+      3,
+      4
+     ],
+     "hp_below_percent": 33,
+     "kind": "unbreakable_coin",
+     "raw": "At less than 33% HP, convert all Coins into [Unbreakable Coin]s"
+    },
+    {
+     "count": 2,
+     "kind": "gain",
+     "potency": 3,
+     "raw": "[Before Attack] Gain 3 [Poise] and +2 [Poise] Count",
+     "status": "Poise"
+    }
+   ],
+   "tags": [
+    "clash_any_speed"
+   ],
+   "unmodeled": [
+    "Clash Power +1 and deal +10% damage for every 6 [Poise] on self (max 6 and 60%, respectively)",
+    "[Clash Lose] Target cannot be Staggered until this Skill's Attack End",
+    "[Deal +([In the Present] x 2)% damage] (max 60%)",
+    "[Hit after Clash Lose] [At less than 33% HP, deal +([Poise] Count on self)% damage] (max 30%)",
+    "[Hit after Clash Lose] [At less than 33% HP, deal +([Poise] Count on self)% damage] (max 50%)",
+    "[On Hit without Cracking] [Deal +([Poise] on self x 2)% damage] (max 100%)",
+    "[On Hit without Cracking] [Deal +([Poise] on self)% damage] (max 50%)"
+   ]
+  },
+  "956709@1": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [
+    {
+     "kind": "gain",
+     "potency": 5,
+     "raw": "[Clash Win] Gain 5 [In the Present]",
+     "status": "In the Present"
+    }
+   ],
+   "coins": {},
+   "combat_start": [],
+   "note": "Smite the Wicked",
+   "on_use": [
+    {
+     "kind": "gain",
+     "potency": 2,
+     "raw": "Gain 2 [Damage Down] and 1 [Paralyze]",
+     "status": "Damage Down"
+    }
+   ],
+   "tags": [
+    "clash_any_speed"
+   ],
+   "unmodeled": [
+    "4 [Poise] and +4 [Poise] Count",
+    "Final Power +1 and deal +20% damage for every 6 [Poise] on self (max 6 and 120%, respectively)",
+    "Halve [In the Present] (rounded down)",
+    "On Clash Lose, this effect does not activate",
+    "Target cannot be Staggered until this Skill's Attack End",
+    "[Attack End] If target is killed, Reuse this Skill on the target that has the highest HP (once per turn)",
+    "[Before Attack] If this unit has 20+ [Poise] Potency, consume up to 20 surplus [Poise] Potency past 20 to deal +([Poise] consumed x 5)% damage (max 100%)",
+    "[Deal +([In the Present] x 4)% damage (max 120%)]",
+    "[Hit after Clash Lose] [At less than 33% HP, deal +(50% of this Coin's damage)% bonus Pierce damage]",
+    "[If target's Pierce Resist. is below \"Weak\" (1.5), treat is as Weak (1.5)] (max 50%)"
+   ]
+  },
+  "956710@1": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "count": 1,
+      "kind": "inflict",
+      "potency": 1,
+      "raw": "[On Hit] Inflict 1 [Bleed] and +1 [Bleed] Count",
+      "status": "Bleed",
+      "status2": "Bleed"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Corrosive Disintegration",
+   "on_use": [
+    {
+     "condition": {
+      "component": "potency",
+      "source": "self",
+      "status": "target"
+     },
+     "kind": "clash_power",
+     "max": 6,
+     "per": 6,
+     "raw": "Clash Power +1 for every 6 [Bleed] on target (max 6)",
+     "step": 1,
+     "value": 0
+    },
+    {
+     "coins": [
+      2
+     ],
+     "hp_below_percent": 66,
+     "kind": "unbreakable_coin",
+     "raw": "At less than 66% HP, convert the second Coin into [Unbreakable Coin]"
+    },
+    {
+     "coins": [
+      1,
+      2
+     ],
+     "hp_below_percent": 33,
+     "kind": "unbreakable_coin",
+     "raw": "At less than 33% HP, convert all Coins into [Unbreakable Coin]s"
+    }
+   ],
+   "tags": [
+    "clash_any_speed"
+   ],
+   "unmodeled": [
+    "[Clash Lose] Target cannot be Staggered until this Skill's Attack End",
+    "[On Hit without Cracking] [Activate [Bleed] on target once]. Target loses 1 [Bleed] Count"
+   ]
+  },
+  "956711@1": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "count": 2,
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Bleed] and +2 [Bleed] Count",
+      "status": "Bleed",
+      "status2": "Bleed"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Rotting Annihilation",
+   "on_use": [
+    {
+     "condition": {
+      "component": "potency",
+      "source": "self",
+      "status": "the main target"
+     },
+     "kind": "clash_power",
+     "max": 6,
+     "per": 6,
+     "raw": "Clash Power +1 for every 6 [Bleed] on the main target (max 6)",
+     "step": 1,
+     "value": 0
+    },
+    {
+     "coins": [
+      2
+     ],
+     "hp_below_percent": 66,
+     "kind": "unbreakable_coin",
+     "raw": "At less than 66% HP, convert the second Coin into [Unbreakable Coin]"
+    },
+    {
+     "coins": [
+      1,
+      2
+     ],
+     "hp_below_percent": 33,
+     "kind": "unbreakable_coin",
+     "raw": "At less than 33% HP, convert all Coins into [Unbreakable Coin]s"
+    }
+   ],
+   "tags": [
+    "clash_any_speed"
+   ],
+   "unmodeled": [
+    "While Clashing with this Skill, [the main target's [Bleed] Count does not drop below 1]",
+    "[Clash Lose] Target cannot be Staggered until this Skill's Attack End",
+    "[Deal +([In the Future] x 2)% damage] (max 60%)",
+    "[Hit after Clash Lose] [At less than 33% HP, activate [Bleed] on the main target once]. Target loses 1 [Bleed] Count",
+    "[On Hit without Cracking] [Activate [Bleed] on target 2 times]. Target loses 2 [Bleed] Count"
+   ]
+  },
+  "956712@1": {
+   "attack_end": [],
+   "clash_lose": [],
+   "clash_win": [
+    {
+     "kind": "gain",
+     "potency": 5,
+     "raw": "[Clash Win] Gain 5 [In the Future]",
+     "status": "In the Future"
+    }
+   ],
+   "coins": {
+    "1": [
+     {
+      "count": 1,
+      "kind": "inflict",
+      "potency": 1,
+      "raw": "[On Hit] Inflict 1 [Bleed] and +1 [Bleed] Count",
+      "status": "Bleed",
+      "status2": "Bleed"
+     }
+    ],
+    "2": [
+     {
+      "count": 3,
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Burn] and +3 [Burn] Count",
+      "status": "Burn",
+      "status2": "Burn"
+     }
+    ]
+   },
+   "combat_start": [],
+   "note": "Bloodflower",
+   "on_use": [
+    {
+     "condition": {
+      "component": "potency",
+      "source": "self",
+      "status": "the main target"
+     },
+     "kind": "base_power",
+     "max": 6,
+     "per": 6,
+     "raw": "Final Power +1 for every 6 [Bleed] on the main target (max 6)",
+     "step": 1,
+     "value": 0
+    },
+    {
+     "kind": "gain",
+     "potency": 2,
+     "raw": "Gain 2 [Damage Down] and 2 [Paralyze]",
+     "status": "Damage Down"
+    }
+   ],
+   "tags": [
+    "clash_any_speed"
+   ],
+   "unmodeled": [
+    "Halve [In the Future] (rounded down)",
+    "Target cannot be Staggered until this Skill's Attack End",
+    "While Clashing with this Skill, [the main target's [Bleed] Count does not drop below 1]",
+    "[Deal +([In the Future] x 4)% damage] (max 120%)",
+    "[Hit after Clash Lose] [At less than 33% HP, activate [Bleed] on target once]. Target loses 1 [Bleed] Count",
+    "[On Hit without Cracking] [Activate [Bleed] on target 2 times]. Target loses 2 [Bleed] Count"
+   ]
+  }
+ },
+ "version": 1
+}

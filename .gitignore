@@ -1,0 +1,13 @@
+# Rust build output
+sim/target/
+
+# Python
+__pycache__/
+*.pyc
+python/lcb/lcb_sim.pyd
+python/lcb/lcb_sim.so
+python/lcb/lcb_sim.dylib
+
+# Raw upstream cache: mirrored game localisation files and cached wiki pages.
+# Re-fetch with `python3 tools/fetch_gamedata.py && python3 tools/fetch_pages.py`.
+data/_raw/

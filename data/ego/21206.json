@@ -1,0 +1,75 @@
+{
+  "id": "21206",
+  "kind": "ego",
+  "name_en": "Bygone Days",
+  "name_zh": "往昔",
+  "wiki_title": "Bygone Days Gregor",
+  "risk": "TETH",
+  "sin_affinity": "Gloom",
+  "awakening_sp": 20,
+  "corrosion_sp": 20,
+  "resource_cost": {
+    "Lust": 2,
+    "Gloom": 4
+  },
+  "awakening": {
+    "name": "Bygone Days",
+    "sin": "Gloom",
+    "type": "Pierce",
+    "base_power": 20,
+    "coin_power": 4,
+    "coins": 1,
+    "attack_weight": 1,
+    "offense_level_mod": -3,
+    "on_use_text": "[Attack End] Heal 12 SP to self and 2 other allies with the least SP\n- If target survives this attack, consume 5 [Sinking] Count on target, then heal additional SP(to self & affected allies) equal to [Sinking] Potency on target (Max SP heal: 20)\n- If target is defeated, inflict 3 [Sinking] and 1 [Curse] on 2 random enemies (For Focused Encounters, random Parts)",
+    "coin_texts": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "reuse": false
+  },
+  "corrosion": {
+    "name": "Bygone Days",
+    "sin": "Gloom",
+    "type": "Blunt",
+    "base_power": 27,
+    "coin_power": -8,
+    "coins": 1,
+    "attack_weight": 1,
+    "offense_level_mod": 3,
+    "on_use_text": "[Indiscriminate]\nTargets randomly",
+    "coin_texts": [
+      "[On Hit] Inflict 2 [Gloom Fragility]. Inflict 1 additional [Gloom Fragility] for every 3 Gloom Reson. (max 2)\n[On Hit] Inflict +3 [Sinking] Count\n[On Hit] Inflict 2 [Curse]",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "reuse": false
+  },
+  "passives": [],
+  "unparsed": [],
+  "sources": [
+    {
+      "kind": "wiki",
+      "url": "https://limbuscompany.wiki.gg/wiki/Bygone_Days_Gregor",
+      "language": "en",
+      "verification": "single_source_verified"
+    },
+    {
+      "kind": "game_text",
+      "language": "en",
+      "id": "21206",
+      "verification": "official"
+    }
+  ]
+}

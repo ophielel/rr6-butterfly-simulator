@@ -1,0 +1,76 @@
+{
+  "id": "20807",
+  "kind": "ego",
+  "name_en": "Bygone Days",
+  "name_zh": "往昔",
+  "wiki_title": "Bygone Days Ishmael",
+  "risk": "TETH",
+  "sin_affinity": "Gloom",
+  "awakening_sp": 20,
+  "corrosion_sp": 30,
+  "resource_cost": {
+    "Lust": 2,
+    "Sloth": 1,
+    "Gloom": 3
+  },
+  "awakening": {
+    "name": "Bygone Days",
+    "sin": "Gloom",
+    "type": "Slash",
+    "base_power": 17,
+    "coin_power": 9,
+    "coins": 1,
+    "attack_weight": 1,
+    "offense_level_mod": 2,
+    "on_use_text": "[Before Attack] At 4+ highest Reson., gain +1 Atk Weight\n- If the said Reson. was a Gloom Reson., gain +1 Atk Weight\n[Attack End] Heal 2 allies with the lowest HP percentages by (10 + ([Sinking] on the main target + [Sinking] Count on the main target)/3)% HP (max 15%)",
+    "coin_texts": [
+      "[On Hit] Inflict +2 [Sinking] Count\n[On Hit] Inflict 1 [Curse]\n[On Hit] At 4+ Gloom Reson., inflict 1 [Gloom Fragility]\n[On Hit] Inflict 2 [The Uninvited]",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "reuse": false
+  },
+  "corrosion": {
+    "name": "Bygone Days",
+    "sin": "Gloom",
+    "type": "Slash",
+    "base_power": 28,
+    "coin_power": -10,
+    "coins": 1,
+    "attack_weight": 3,
+    "offense_level_mod": -3,
+    "on_use_text": "[Indiscriminate]\nPrioritizes targets that have the most [Sinking]\n[Before Attack] Lose HP by 10% of Max HP (does not get Staggered due to this effect)\n[Attack End] Heal 3 other allies with the lowest HP percentages by (10 + ([Sinking] on the main target + [Sinking] Count on the main target)/3)% HP (max 15%)\n- At 4+ highest Reson., heal 1 additional ally",
+    "coin_texts": [
+      "[On Hit] Inflict +2 [Sinking] Count\n[On Hit] Inflict 2 [Curse]\n[On Hit] At 3+ Gloom Reson., inflict 1 [Gloom Fragility]\n[On Hit] Inflict 2 [The Uninvited]\n[On Hit] Inflict 2 [Echoes of the Manor] next turn",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "reuse": false
+  },
+  "passives": [],
+  "unparsed": [],
+  "sources": [
+    {
+      "kind": "wiki",
+      "url": "https://limbuscompany.wiki.gg/wiki/Bygone_Days_Ishmael",
+      "language": "en",
+      "verification": "single_source_verified"
+    },
+    {
+      "kind": "game_text",
+      "language": "en",
+      "id": "20807",
+      "verification": "official"
+    }
+  ]
+}

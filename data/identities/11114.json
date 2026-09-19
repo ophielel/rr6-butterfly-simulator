@@ -1,0 +1,389 @@
+{
+  "id": "11114",
+  "kind": "identity",
+  "sinner": "Outis",
+  "sinner_zh": "奥提斯",
+  "title_en": "LCA Udjat Vanguard Team 3 Leader",
+  "title_zh": "LCA 瓦吉特 先锋三队 队长",
+  "wiki_title": "LCA Udjat Vanguard Team 3 Leader Outis",
+  "rarity": 3,
+  "season": "7",
+  "release_date": "2025.12.31",
+  "world": "World of Raided Limbus Company",
+  "keywords": [
+    "Limbus Company",
+    "LCA"
+  ],
+  "stats": {
+    "hp": 73,
+    "hp_growth": 2.85,
+    "defense_level_mod": 3,
+    "speed": {
+      "4": [
+        4,
+        7
+      ],
+      "3": [
+        3,
+        6
+      ],
+      "2": [
+        2,
+        5
+      ]
+    },
+    "resist": {
+      "slash": 0.5,
+      "pierce": 1.0,
+      "blunt": 2.0
+    },
+    "stagger_thresholds": [
+      50
+    ]
+  },
+  "skills": [
+    {
+      "id": "1111401",
+      "slot": "skill1",
+      "name": "Khopesh Swordplay",
+      "type": "Slash",
+      "rank": 1,
+      "upties": {
+        "1": {
+          "base_power": 3,
+          "coin_power": 3,
+          "coins": 2,
+          "offense_level_mod": 1,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Pride",
+          "skill_amount": 3,
+          "on_use_text": "[On Use] Gain +3 [Aggro] to this Skill Slot next turn",
+          "coin_texts": [
+            "[On Hit] Inflict +1 [Sinking] Count\n[On Hit] Inflict +1 [Tremor] Count",
+            ""
+          ],
+          "tags": []
+        },
+        "2": {
+          "base_power": 3,
+          "coin_power": 3,
+          "coins": 2,
+          "offense_level_mod": 1,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Pride",
+          "skill_amount": 3,
+          "on_use_text": "[On Use] Gain +3 [Aggro] to this Skill Slot next turn\n[On Use] Coin Power +1 for every 6 ([Sinking] + [Tremor]) on target (max 2)",
+          "coin_texts": [
+            "[On Hit] Inflict +1 [Sinking] Count\n[On Hit] Inflict +1 [Tremor] Count",
+            ""
+          ],
+          "tags": []
+        },
+        "3": {
+          "base_power": 3,
+          "coin_power": 4,
+          "coins": 2,
+          "offense_level_mod": 1,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Pride",
+          "skill_amount": 3,
+          "on_use_text": "[On Use] Gain +3 [Aggro] to this Skill Slot next turn\n[On Use] Coin Power +1 for every 6 ([Sinking] + [Tremor]) on target (max 2)",
+          "coin_texts": [
+            "[On Hit] Inflict +1 [Sinking] Count\n[On Hit] Inflict +1 [Tremor] Count",
+            ""
+          ],
+          "tags": []
+        },
+        "4": {
+          "base_power": 3,
+          "coin_power": 4,
+          "coins": 2,
+          "offense_level_mod": 1,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Pride",
+          "skill_amount": 3,
+          "on_use_text": "[On Use] Gain +3 [Aggro] to this Skill Slot next turn\n[On Use] Coin Power +1 for every 6 ([Sinking] + [Tremor]) on target (max 2)\n[On Use] If this unit has [The Udjat -Vanguard-], Clash Power +1\n[Clash Win] Inflict 2 [Sheut Fracture]",
+          "coin_texts": [
+            "[On Hit] Inflict +1 [Sinking] Count\n[On Hit] Inflict +1 [Tremor] Count",
+            "[On Hit] Gain 1 [Protection] next turn (once per turn)"
+          ],
+          "tags": []
+        }
+      },
+      "name_en": "Khopesh Swordplay",
+      "name_zh": "克赫帕什剑术"
+    },
+    {
+      "id": "1111402",
+      "slot": "skill2",
+      "name": "Mirage Incision",
+      "type": "Slash",
+      "rank": 2,
+      "upties": {
+        "1": {
+          "base_power": 4,
+          "coin_power": 3,
+          "coins": 3,
+          "offense_level_mod": 2,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Sloth",
+          "skill_amount": 2,
+          "on_use_text": "[On Use] Gain +5 [Aggro] to this Skill Slot next turn",
+          "coin_texts": [
+            "[On Hit] Inflict +2 [Sinking] Count",
+            "[On Hit] Inflict +1 [Tremor] Count",
+            "[On Hit] Inflict 2 [Sinking]\n[On Hit] Inflict 2 [Tremor]"
+          ],
+          "tags": []
+        },
+        "2": {
+          "base_power": 4,
+          "coin_power": 3,
+          "coins": 3,
+          "offense_level_mod": 2,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Sloth",
+          "skill_amount": 2,
+          "on_use_text": "[On Use] Gain +5 [Aggro] to this Skill Slot next turn\n[On Use] Coin Power +1 for every 6 ([Sinking] + [Tremor]) on target (max 2)",
+          "coin_texts": [
+            "[On Hit] Inflict +2 [Sinking] Count",
+            "[On Hit] Inflict +1 [Tremor] Count",
+            "[On Hit] Inflict 2 [Sinking]\n[On Hit] Inflict 2 [Tremor]"
+          ],
+          "tags": []
+        },
+        "3": {
+          "base_power": 4,
+          "coin_power": 4,
+          "coins": 3,
+          "offense_level_mod": 2,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Sloth",
+          "skill_amount": 2,
+          "on_use_text": "[On Use] Gain +5 [Aggro] to this Skill Slot next turn\n[On Use] Coin Power +1 for every 6 ([Sinking] + [Tremor]) on target (max 2)",
+          "coin_texts": [
+            "[On Hit] Inflict +2 [Sinking] Count",
+            "[On Hit] Inflict +1 [Tremor] Count",
+            "[On Hit] Inflict 2 [Sinking]\n[On Hit] Inflict 2 [Tremor]"
+          ],
+          "tags": []
+        },
+        "4": {
+          "base_power": 4,
+          "coin_power": 4,
+          "coins": 3,
+          "offense_level_mod": 2,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Sloth",
+          "skill_amount": 2,
+          "on_use_text": "[On Use] Gain +5 [Aggro] to this Skill Slot next turn\n[On Use] Coin Power +1 for every 6 ([Sinking] + [Tremor]) on target (max 2)\n[On Use] If this unit has [The Udjat -Vanguard-], Clash Power +2 and deal +30% damage\n[Clash Win] Inflict 2 [Sheut Fracture]",
+          "coin_texts": [
+            "[On Hit] Inflict +2 [Sinking] Count",
+            "[On Hit] Inflict +1 [Tremor] Count",
+            "[On Hit] Inflict 2 [Sinking]\n[On Hit] Inflict 2 [Tremor]\n[On Hit] Gain 1 [Protection] next turn (once per turn)"
+          ],
+          "tags": []
+        }
+      },
+      "name_en": "Mirage Incision",
+      "name_zh": "蜃景切割"
+    },
+    {
+      "id": "1111403",
+      "slot": "skill3",
+      "name": "The Vanguard will See it Done",
+      "type": "Pierce",
+      "rank": 3,
+      "upties": {
+        "1": {
+          "base_power": 6,
+          "coin_power": 4,
+          "coins": 3,
+          "offense_level_mod": 3,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Gloom",
+          "skill_amount": 1,
+          "on_use_text": "[On Use] Gain +8 [Aggro] to this Skill Slot next turn\n[On Use] Base Power +1 for every [LCA Fracture Round] about to be spent by this Skill\n[Attack End] Gain 2 [Protection] next turn (once per turn)\n[Attack End] At 2 or fewer [LCA Fracture Round], [Reload] (5 times per Encounter)",
+          "coin_texts": [
+            "Spend 2 [LCA Fracture Round]\n[On Hit] Inflict +2 [Sinking] Count\n[On Hit] Inflict +2 [Tremor] Count",
+            "[On Hit] Inflict 2 [Sinking]\n[On Hit] Inflict 3 [Blue Sand] next turn\n[On Hit] Inflict 1 [Gloom Resist Down] (once per turn)",
+            "Spend 2 [LCA Fracture Round]\n[On Hit] Inflict 2 [Sinking]\n[On Hit] Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1"
+          ],
+          "tags": []
+        },
+        "2": {
+          "base_power": 6,
+          "coin_power": 4,
+          "coins": 3,
+          "offense_level_mod": 3,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Gloom",
+          "skill_amount": 1,
+          "on_use_text": "[On Use] Gain +8 [Aggro] to this Skill Slot next turn\n[On Use] Base Power +1 for every [LCA Fracture Round] about to be spent by this Skill\n[Attack End] Gain 2 [Protection] next turn (once per turn)\n[Attack End] At 2 or fewer [LCA Fracture Round], [Reload] (5 times per Encounter)",
+          "coin_texts": [
+            "Spend 2 [LCA Fracture Round]\n[On Hit] Inflict +2 [Sinking] Count\n[On Hit] Inflict +2 [Tremor] Count",
+            "[On Hit] Inflict 2 [Sinking]\n[On Hit] Inflict 3 [Blue Sand] next turn\n[On Hit] Inflict 1 [Gloom Resist Down] (once per turn)",
+            "Spend 2 [LCA Fracture Round]\n[On Hit] Inflict 2 [Sinking]\n[On Hit] Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1"
+          ],
+          "tags": []
+        },
+        "3": {
+          "base_power": 6,
+          "coin_power": 4,
+          "coins": 3,
+          "offense_level_mod": 3,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Gloom",
+          "skill_amount": 1,
+          "on_use_text": "[On Use] Gain +8 [Aggro] to this Skill Slot next turn\n[On Use] Base Power +1 for every [LCA Fracture Round] about to be spent by this Skill\n[Attack End] Gain 2 [Protection] next turn (once per turn)\n[Attack End] At 2 or fewer [LCA Fracture Round], [Reload] (5 times per Encounter)",
+          "coin_texts": [
+            "Spend 2 [LCA Fracture Round]\n[On Hit] Inflict +2 [Sinking] Count\n[On Hit] Inflict +2 [Tremor] Count",
+            "[On Hit] Inflict 2 [Sinking]\n[On Hit] Inflict 3 [Blue Sand] next turn\n[On Hit] Inflict 1 [Gloom Resist Down] (once per turn)",
+            "Spend 2 [LCA Fracture Round]\n[On Hit] Inflict 2 [Sinking]\n[On Hit] Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1"
+          ],
+          "tags": []
+        },
+        "4": {
+          "base_power": 6,
+          "coin_power": 4,
+          "coins": 3,
+          "offense_level_mod": 3,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Gloom",
+          "skill_amount": 1,
+          "on_use_text": "If this unit has [The Udjat -Vanguard-], deal +50% damage\n[On Use] Gain +8 [Aggro] to this Skill Slot next turn\n[On Use] At 6+ ([Sinking] + [Tremor]) on target, Coin Power +1\n[On Use] Base Power +1 for every [LCA Fracture Round] about to be spent by this Skill\n[Attack End] Gain 2 [Protection] next turn (once per turn)\n[Attack End] At 2 or fewer [LCA Fracture Round], [Reload] (5 times per Encounter)",
+          "coin_texts": [
+            "Spend 2 [LCA Fracture Round]\nDeal +([LCA Fracture Round] spent x 30)% damage\n[On Hit] Inflict +2 [Sinking] Count\n[On Hit] Inflict +2 [Tremor] Count",
+            "[On Hit] Inflict 2 [Sinking]\n[On Hit] Inflict 3 [Blue Sand] next turn\n[On Hit] Inflict 1 [Gloom Resist Down] (once per turn)",
+            "Spend 2 [LCA Fracture Round]\nDeal +([LCA Fracture Round] spent x 30)% damage\n[On Hit] Inflict 2 [Sinking]\n[On Hit] Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1\n[On Hit] If target is a SP Unit, trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1\nIf target has less than 0 SP, inflict 1 [Gloom Fragility] (once per turn)"
+          ],
+          "tags": []
+        }
+      },
+      "name_en": "The Vanguard will See it Done",
+      "name_zh": "先锋了结"
+    },
+    {
+      "id": "1111404",
+      "slot": "defense",
+      "name": "Composure",
+      "type": "Guard",
+      "rank": 1,
+      "upties": {
+        "1": {
+          "base_power": 12,
+          "coin_power": 5,
+          "coins": 1,
+          "offense_level_mod": null,
+          "attack_weight": 1,
+          "defense_level_mod": 5,
+          "sin_affinity": "def",
+          "skill_amount": null,
+          "on_use_text": "When hit while this unit has Shield, inflict 3 [Sinking] against the attacker (3 times per turn)\n[On Use] For every [Protection] on self, gain Shield equal to 5% of this unit's max HP (max 15%; once per turn)",
+          "coin_texts": [],
+          "tags": []
+        },
+        "2": {
+          "base_power": 12,
+          "coin_power": 5,
+          "coins": 1,
+          "offense_level_mod": null,
+          "attack_weight": 1,
+          "defense_level_mod": 5,
+          "sin_affinity": "def",
+          "skill_amount": null,
+          "on_use_text": "When hit while this unit has Shield, inflict 3 [Sinking] against the attacker (3 times per turn)\n[On Use] For every [Protection] on self, gain Shield equal to 5% of this unit's max HP (max 15%; once per turn)",
+          "coin_texts": [],
+          "tags": []
+        },
+        "3": {
+          "base_power": 12,
+          "coin_power": 5,
+          "coins": 1,
+          "offense_level_mod": null,
+          "attack_weight": 1,
+          "defense_level_mod": 5,
+          "sin_affinity": "def",
+          "skill_amount": null,
+          "on_use_text": "When hit while this unit has Shield, inflict 3 [Sinking] against the attacker (3 times per turn)\n[On Use] For every [Protection] on self, gain Shield equal to 5% of this unit's max HP (max 15%; once per turn)",
+          "coin_texts": [],
+          "tags": []
+        },
+        "4": {
+          "base_power": 15,
+          "coin_power": 5,
+          "coins": 1,
+          "offense_level_mod": null,
+          "attack_weight": 1,
+          "defense_level_mod": 5,
+          "sin_affinity": "Gloom",
+          "skill_amount": null,
+          "on_use_text": "When hit while this unit has Shield, inflict 3 [Sinking] against the attacker (3 times per turn)\n[On Use] If this unit has [The Udjat -Vanguard-], gain 1 [Protection] (once per turn)\n[On Use] For every [Protection] on self, gain Shield equal to 5% of this unit's max HP (max 15%; once per turn)",
+          "coin_texts": [],
+          "tags": []
+        }
+      },
+      "name_en": "Composure",
+      "name_zh": "整备"
+    }
+  ],
+  "passives": [
+    {
+      "kind": "combat_passive",
+      "uptie_from": 1,
+      "text": "Turn Start: If an enemy has any of the Panic type changing effects, gain 1 [The Udjat -Vanguard-]\nIf this unit has [The Udjat -Vanguard-], inflict 1 [Sheut Fracture] On Hit with a Base Attack Skill (15 per turn)\n- If [LCA Fracture Round] was spent, inflict additional [Sheut Fracture] per [LCA Fracture Round] spent\n[Protection] Stack gained from this unit's Base Skills and [The Udjat -Vanguard-] effect is capped at 5 per turn",
+      "raw_key": "passive0"
+    },
+    {
+      "kind": "combat_passive",
+      "uptie_from": 2,
+      "text": "Turn Start: If an enemy has any of the Panic type changing effects, gain 1 [The Udjat -Vanguard-]\nIf this unit has [The Udjat -Vanguard-], inflict 1 [Sheut Fracture] On Hit with a Base Attack Skill (15 per turn)\n[Protection] Stack gained from this unit's Base Skills and [The Udjat -Vanguard-] effect is capped at 5 per turn",
+      "raw_key": "2passive0"
+    },
+    {
+      "kind": "support_passive_1",
+      "uptie_from": 1,
+      "text": "Deal +5% damage for every [Protection] on self (max 15%)\nCombat Start: gain 2 [The Udjat -Vanguard-]",
+      "raw_key": "passive1"
+    },
+    {
+      "kind": "support_passive_2",
+      "uptie_from": 1,
+      "text": "Combat Start: apply 1 [Protection] next turn to 1 ally with the lowest HP percentage",
+      "raw_key": "passive2"
+    }
+  ],
+  "unparsed": [],
+  "sources": [
+    {
+      "kind": "wiki",
+      "url": "https://limbuscompany.wiki.gg/wiki/LCA_Udjat_Vanguard_Team_3_Leader_Outis",
+      "language": "en",
+      "verification": "single_source_verified"
+    },
+    {
+      "kind": "game_text",
+      "language": "en",
+      "id": "11114",
+      "verification": "official"
+    },
+    {
+      "kind": "game_text_zh_cn",
+      "language": "zh-CN",
+      "id": "11114",
+      "verification": "synthetic_translation"
+    }
+  ]
+}

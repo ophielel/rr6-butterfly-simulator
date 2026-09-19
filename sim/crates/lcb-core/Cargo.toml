@@ -1,0 +1,10 @@
+[package]
+name = "lcb-core"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Deterministic Limbus Company combat simulator core (RR6 Butterfly of Entangled Lives)"
+
+[dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"

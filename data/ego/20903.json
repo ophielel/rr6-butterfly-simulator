@@ -1,0 +1,75 @@
+{
+  "id": "20903",
+  "kind": "ego",
+  "name_en": "Rime Shank",
+  "name_zh": "冰结之爪",
+  "wiki_title": "Rime Shank Rodion",
+  "risk": "TETH",
+  "sin_affinity": "Gloom",
+  "awakening_sp": 20,
+  "corrosion_sp": 20,
+  "resource_cost": {
+    "Gloom": 5,
+    "Envy": 3
+  },
+  "awakening": {
+    "name": "Rime Shank",
+    "sin": "Gloom",
+    "type": "Blunt",
+    "base_power": 15,
+    "coin_power": 15,
+    "coins": 1,
+    "attack_weight": 3,
+    "offense_level_mod": 1,
+    "on_use_text": "If target’s HP is above 50%, deal +30% damage",
+    "coin_texts": [
+      "[On Hit] Trigger [Tremor Burst]\n[On Hit] Inflict +3 [Sinking] Count",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "reuse": false
+  },
+  "corrosion": {
+    "name": "Rime Shank",
+    "sin": "Gloom",
+    "type": "Blunt",
+    "base_power": 21,
+    "coin_power": 6,
+    "coins": 1,
+    "attack_weight": 1,
+    "offense_level_mod": 1,
+    "on_use_text": "[Indiscriminate]\nTargets the unit with the most HP\nIf target’s HP is above 50%, +30% Damage",
+    "coin_texts": [
+      "[On Hit] Trigger [Tremor Burst]\n[On Hit] Inflict +6 [Sinking] Count",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "reuse": false
+  },
+  "passives": [],
+  "unparsed": [],
+  "sources": [
+    {
+      "kind": "wiki",
+      "url": "https://limbuscompany.wiki.gg/wiki/Rime_Shank_Rodion",
+      "language": "en",
+      "verification": "single_source_verified"
+    },
+    {
+      "kind": "game_text",
+      "language": "en",
+      "id": "20903",
+      "verification": "official"
+    }
+  ]
+}

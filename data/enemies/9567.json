@@ -1,0 +1,400 @@
+{
+  "id": "9567",
+  "kind": "enemy",
+  "name_en": "Refracted Butterfly of Entangled Lives::Imago",
+  "wiki_title": "Butterfly of Entangled Lives::Imago",
+  "abno_code": "O-03-14-03",
+  "risk": "WAW-06",
+  "sin_affinity": "Lust",
+  "faction": "Butterfly of Entangled Lives",
+  "location": "Line 6: Maru no Uchi no Sanzu no Kawa",
+  "hp": 9090,
+  "hp_growth": 275.44,
+  "level": 60,
+  "parts": [
+    {
+      "name": "Body",
+      "hp": 9090,
+      "hp_growth": 275.44,
+      "level": 60,
+      "speed": "1~3",
+      "defense_level_mod": 0,
+      "stagger_thresholds": [
+        85,
+        65,
+        40,
+        10
+      ],
+      "resist_physical": {
+        "slash": 1.0,
+        "pierce": 1.0,
+        "blunt": 1.0
+      },
+      "resist_sin": {
+        "wrath": 1.25,
+        "lust": 1.25,
+        "sloth": 0.75,
+        "gluttony": 0.75,
+        "gloom": 1.0,
+        "pride": 1.25,
+        "envy": 1.0
+      }
+    }
+  ],
+  "skills": [
+    {
+      "key": "skill1",
+      "name": "Fluttering Havoc",
+      "hint": null,
+      "level": 60,
+      "sin": "Gloom",
+      "rank": 1,
+      "type": "Pierce",
+      "base_power": 4,
+      "coin_power": 3,
+      "coins": 2,
+      "attack_weight": 1,
+      "offense_level_mod": 2,
+      "on_use_text": "[On Use]\n- Clash Power +1 for every 8 ([Burn] + [Bleed]) on target (max 3)\n- Deal +10% damage for every 6 [Poise] on self (max 30%)\n- Gain 2 [Poise]\n- At less than 66% HP, convert the final Coin into [Unbreakable Coin]\n- At less than 33% HP, convert all Coins into [Unbreakable Coin]s",
+      "coin_texts": [
+        "[On Hit] Inflict 1 [Burn]\n[On Hit] Inflict 1 [Bleed]",
+        "[On Hit] Inflict +1 [Burn] Count\n[On Hit] Inflict +1 [Bleed] Count",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "id": "956701"
+    },
+    {
+      "key": "skill2",
+      "name": "Pulverization",
+      "hint": null,
+      "level": 60,
+      "sin": "Sloth",
+      "rank": 1,
+      "type": "Pierce",
+      "base_power": 4,
+      "coin_power": 3,
+      "coins": 2,
+      "attack_weight": 1,
+      "offense_level_mod": 2,
+      "on_use_text": "[On Use]\n- Clash Power +1 for every 8 ([Burn] + [Bleed]) on target (max 3)\n- Deal +10% damage for every 6 [Poise] on self (max 30%)\n- Gain +2 [Poise] Count\n- At less than 66% HP, convert the final Coin into [Unbreakable Coin]\n- At less than 33% HP, convert all Coins into [Unbreakable Coin]s",
+      "coin_texts": [
+        "[On Hit] Inflict +1 [Burn] Count\n[On Hit] Inflict +1 [Bleed] Count",
+        "[On Hit] Inflict 1 [Burn]\n[On Hit] Inflict 1 [Bleed]",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "id": "956702"
+    },
+    {
+      "key": "skill3",
+      "name": "Chaotic Turmoil",
+      "hint": null,
+      "level": 60,
+      "sin": "Gluttony",
+      "rank": 2,
+      "type": "Blunt",
+      "base_power": 3,
+      "coin_power": 3,
+      "coins": 1,
+      "attack_weight": 1,
+      "offense_level_mod": 3,
+      "on_use_text": "[On Use]\n- Clash Power +1 for every 6 ([Burn] + [Bleed]) on target (max 6)\n- Clash Power +1 for every 6 [Poise] on self (max 3)\n[Clash Lose] Gain [2 [Power Down] and 2 [Damage Down]]",
+      "coin_texts": [
+        "[Unbreakable Coin]\nReuse this Coin once for every 33% missing HP (max 2 times)\n[On Hit] Inflict 1 [Burn]\n[On Hit] Inflict 1 [Bleed]\n[On Hit] Gain 1 [Poise]",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "id": "956703"
+    },
+    {
+      "key": "skill4",
+      "name": "Temper and Cast",
+      "hint": 1,
+      "level": 60,
+      "sin": "Wrath",
+      "rank": 2,
+      "type": "Pierce",
+      "base_power": 5,
+      "coin_power": 3,
+      "coins": 2,
+      "attack_weight": 1,
+      "offense_level_mod": 3,
+      "on_use_text": "Can Clash with this Skill regardless of Speed\n[On Use]\n- Clash Power +1 for every 6 [Burn] on target (max 6)\n- At less than 66% HP, convert the second Coin into [Unbreakable Coin]\n- At less than 33% HP, convert all Coins into [Unbreakable Coin]s\n[Clash Lose] Target cannot be Staggered until this Skill's Attack End",
+      "coin_texts": [
+        "[On Hit] Inflict 1 [Burn] and +1 [Burn] Count",
+        "[On Hit without Cracking] [Activate [Burn] on target once]. Target loses 1 [Burn] Count",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "id": "956704"
+    },
+    {
+      "key": "skill5",
+      "name": "Immolation",
+      "hint": 2,
+      "level": 60,
+      "sin": "Wrath",
+      "rank": 3,
+      "type": "Pierce",
+      "base_power": 6,
+      "coin_power": 4,
+      "coins": 3,
+      "attack_weight": 3,
+      "offense_level_mod": 4,
+      "on_use_text": "Can Clash with this Skill regardless of Speed\n[On Use]\n- Clash Power +1 for every 6 [Burn] on the main target (max 6)\n- [Deal +([In the Past] x 2)% damage] (max 60%)\n- At less than 66% HP, convert the second Coin into [Unbreakable Coin]\n- At less than 33% HP, convert all Coins into [Unbreakable Coin]s\n[Clash Lose] Target cannot be Staggered until this Skill's Attack End",
+      "coin_texts": [
+        "[On Hit] Inflict +2 [Burn] Count",
+        "[On Hit] Inflict 3 [Burn]",
+        "[Unbreakable Coin]\n[On Hit without Cracking] [Activate [Burn] on target 2 times]. Target loses 2 [Burn] Count\n[Hit after Clash Lose] [At less than 33% HP, activate [Burn] on the main target once]. Target loses 1 [Burn] Count",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "id": "956705"
+    },
+    {
+      "key": "skill6",
+      "name": "Kalpāgni",
+      "hint": 3,
+      "level": 60,
+      "sin": "Wrath",
+      "rank": 3,
+      "type": "Pierce",
+      "base_power": 10,
+      "coin_power": 4,
+      "coins": 4,
+      "attack_weight": 7,
+      "offense_level_mod": 6,
+      "on_use_text": "Can Clash with this Skill regardless of Speed\n[On Use]\n- Final Power +1 for every 6 [Burn] on the main target (max 6)\n- [Deal +([In the Past] x 4)% damage] (max 120%)\n[Clash Win] Gain 5 [In the Past]\n[Clash Lose]\n- Halve [In the Past] (rounded down)\n- Gain 2 [Damage Down] and 4 [Paralyze]\n- Target cannot be Staggered until this Skill's Attack End",
+      "coin_texts": [
+        "[Unbreakable Coin]\n[On Hit] Inflict 1 [Burn] and +1 [Burn] Count",
+        "[Unbreakable Coin]\n[On Hit] Inflict 1 [Burn] and +1 [Burn] Count",
+        "[Unbreakable Coin]\n[On Hit without Cracking] [Activate [Burn] on target once]. Target loses 1 [Burn] Count",
+        "[Unbreakable Coin]\n[On Hit without Cracking] [Activate [Burn] on target 2 times]. Target loses 2 [Burn] Count\n[Hit after Clash Lose] [At less than 33% HP, activate [Burn] on the main target once]. Target loses 1 [Burn] Count",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "id": "956706"
+    },
+    {
+      "key": "skill7",
+      "name": "Anitya",
+      "hint": 1,
+      "level": 60,
+      "sin": "Pride",
+      "rank": 2,
+      "type": "Pierce",
+      "base_power": 5,
+      "coin_power": 3,
+      "coins": 2,
+      "attack_weight": 1,
+      "offense_level_mod": 3,
+      "on_use_text": "Can Clash with this Skill regardless of Speed\n[On Use]\n- Clash Power +1 and deal +10% damage for every 6 [Poise] on self (max 6 and 60%, respectively)\n- At less than 66% HP, convert the second Coin into [Unbreakable Coin]\n- At less than 33% HP, convert all Coins into [Unbreakable Coin]s\n[Before Attack] Gain 2 [Poise] and +2 [Poise] Count\n[Clash Lose] Target cannot be Staggered until this Skill's Attack End",
+      "coin_texts": [
+        "[On Hit] Gain 1 [Poise] and +1 [Poise] Count",
+        "[On Hit without Cracking] [Deal ([Poise] on self / 2) Pride damage on target] and lose 1 [Poise] Count (rounded down)",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "id": "956707"
+    },
+    {
+      "key": "skill8",
+      "name": "Skypiercer",
+      "hint": 2,
+      "level": 60,
+      "sin": "Pride",
+      "rank": 3,
+      "type": "Pierce",
+      "base_power": 6,
+      "coin_power": 4,
+      "coins": 4,
+      "attack_weight": 1,
+      "offense_level_mod": 4,
+      "on_use_text": "Can Clash with this Skill regardless of Speed\n[On Use]\n- Clash Power +1 and deal +10% damage for every 6 [Poise] on self (max 6 and 60%, respectively)\n- [Deal +([In the Present] x 2)% damage] (max 60%)\n- At less than 66% HP, convert the second Coin into [Unbreakable Coin]\n- At less than 33% HP, convert all Coins into [Unbreakable Coin]s\n[Before Attack] Gain 3 [Poise] and +2 [Poise] Count\n[Clash Lose] Target cannot be Staggered until this Skill's Attack End",
+      "coin_texts": [
+        "[On Hit] Gain +1 [Poise] Count",
+        "[On Hit] Gain 1 [Poise]",
+        "[Unbreakable Coin]\n[On Hit without Cracking] [Deal +([Poise] on self)% damage] (max 50%)\n[Hit after Clash Lose] [At less than 33% HP, deal +([Poise] Count on self)% damage] (max 30%)",
+        "[Unbreakable Coin]\n[On Hit without Cracking] [Deal +([Poise] on self x 2)% damage] (max 100%)\n[Hit after Clash Lose] [At less than 33% HP, deal +([Poise] Count on self)% damage] (max 50%)",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "id": "956708"
+    },
+    {
+      "key": "skill9",
+      "name": "Smite the Wicked",
+      "hint": 3,
+      "level": 60,
+      "sin": "Pride",
+      "rank": 3,
+      "type": "Pierce",
+      "base_power": 14,
+      "coin_power": 12,
+      "coins": 1,
+      "attack_weight": 1,
+      "offense_level_mod": 6,
+      "on_use_text": "Can Clash with this Skill regardless of Speed\n[On Use]\n- Final Power +1 and deal +20% damage for every 6 [Poise] on self (max 6 and 120%, respectively)\n- 4 [Poise] and +4 [Poise] Count\n- [Deal +([In the Present] x 4)% damage (max 120%)]\n[Before Attack] If this unit has 20+ [Poise] Potency, consume up to 20 surplus [Poise] Potency past 20 to deal +([Poise] consumed x 5)% damage (max 100%)\n- On Clash Lose, this effect does not activate\n[Clash Win] Gain 5 [In the Present]\n[Clash Lose]\n- Halve [In the Present] (rounded down)\n- Gain 2 [Damage Down] and 1 [Paralyze]\n- Target cannot be Staggered until this Skill's Attack End\n[Attack End] If target is killed, Reuse this Skill on the target that has the highest HP (once per turn)\n- On Clash Lose, this effect does not activate",
+      "coin_texts": [
+        "[Unbreakable Coin]\n[If target's Pierce Resist. is below \"Weak\" (1.5), treat is as Weak (1.5)] (max 50%)\n- On Clash Lose, this effect does not activate\n[Hit after Clash Lose] [At less than 33% HP, deal +(50% of this Coin's damage)% bonus Pierce damage]",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "id": "956709"
+    },
+    {
+      "key": "skill10",
+      "name": "Corrosive Disintegration",
+      "hint": 1,
+      "level": 60,
+      "sin": "Lust",
+      "rank": 2,
+      "type": "Pierce",
+      "base_power": 5,
+      "coin_power": 3,
+      "coins": 2,
+      "attack_weight": 1,
+      "offense_level_mod": 3,
+      "on_use_text": "Can Clash with this Skill regardless of Speed\n[On Use]\n- Clash Power +1 for every 6 [Bleed] on target (max 6)\n- At less than 66% HP, convert the second Coin into [Unbreakable Coin]\n- At less than 33% HP, convert all Coins into [Unbreakable Coin]s\n[Clash Lose] Target cannot be Staggered until this Skill's Attack End",
+      "coin_texts": [
+        "[On Hit] Inflict 1 [Bleed] and +1 [Bleed] Count",
+        "[On Hit without Cracking] [Activate [Bleed] on target once]. Target loses 1 [Bleed] Count",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "id": "956710"
+    },
+    {
+      "key": "skill11",
+      "name": "Rotting Annihilation",
+      "hint": 2,
+      "level": 60,
+      "sin": "Lust",
+      "rank": 3,
+      "type": "Pierce",
+      "base_power": 8,
+      "coin_power": 5,
+      "coins": 2,
+      "attack_weight": 3,
+      "offense_level_mod": 4,
+      "on_use_text": "Can Clash with this Skill regardless of Speed\nWhile Clashing with this Skill, [the main target's [Bleed] Count does not drop below 1]\n[On Use]\n- Clash Power +1 for every 6 [Bleed] on the main target (max 6)\n- [Deal +([In the Future] x 2)% damage] (max 60%)\n- At less than 66% HP, convert the second Coin into [Unbreakable Coin]\n- At less than 33% HP, convert all Coins into [Unbreakable Coin]s\n[Clash Lose] Target cannot be Staggered until this Skill's Attack End",
+      "coin_texts": [
+        "[On Hit] Inflict 2 [Bleed] and +2 [Bleed] Count",
+        "[On Hit without Cracking] [Activate [Bleed] on target 2 times]. Target loses 2 [Bleed] Count\n[Hit after Clash Lose] [At less than 33% HP, activate [Bleed] on the main target once]. Target loses 1 [Bleed] Count",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "id": "956711"
+    },
+    {
+      "key": "skill12",
+      "name": "Bloodflower",
+      "hint": 3,
+      "level": 60,
+      "sin": "Lust",
+      "rank": 3,
+      "type": "Pierce",
+      "base_power": 10,
+      "coin_power": 8,
+      "coins": 2,
+      "attack_weight": 5,
+      "offense_level_mod": 6,
+      "on_use_text": "Can Clash with this Skill regardless of Speed\nWhile Clashing with this Skill, [the main target's [Bleed] Count does not drop below 1]\n[On Use]\n- Final Power +1 for every 6 [Bleed] on the main target (max 6)\n- [Deal +([In the Future] x 4)% damage] (max 120%)\n[Clash Win] Gain 5 [In the Future]\n[Clash Lose]\n- Halve [In the Future] (rounded down)\n- Gain 2 [Damage Down] and 2 [Paralyze]\n- Target cannot be Staggered until this Skill's Attack End",
+      "coin_texts": [
+        "[Unbreakable Coin]\n[On Hit] Inflict 1 [Bleed] and +1 [Bleed] Count",
+        "[Unbreakable Coin]\n[On Hit] Inflict 2 [Burn] and +3 [Burn] Count\n[On Hit without Cracking] [Activate [Bleed] on target 2 times]. Target loses 2 [Bleed] Count\n[Hit after Clash Lose] [At less than 33% HP, activate [Bleed] on target once]. Target loses 1 [Bleed] Count",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "id": "956712"
+    }
+  ],
+  "passives": [
+    {
+      "name": "Moment of Entangled Lives",
+      "hint": 3,
+      "text": "Turn Start: [Activate the highest-Stacked state of time] between [In the Past], [In the Present], and [In the Future] and use a special Skill\n- If multiple states of time share the highest Stack, the currently active state of time does not change\n- Inactive states of time become [In the Past (Deactivated)], [In the Present (Deactivated)], or [In the Future (Deactivated)], respectively\n- When the [currently active state of time changes], gain 1 [Temporal Disjunction]\n[Every time Illusory Butterfly of Entangled Lives::The Past / The Present / The Future are hit as main targets], Butterfly of Entangled Lives::Imago loses [In the Past] / [In the Present] / [In the Future] Stack\n[Higher [In the Past] / [In the Present] / [In the Future] Stacks] lead to Butterfly of Entangled Lives::Imago's Skill Power and damage output becoming [greatly enhanced], and [greatly increase the amount of status effects it inflicts or gains]"
+    },
+    {
+      "name": "Causality that Threads the Past, the Present, and the Future [<b>三世因果</b>]",
+      "hint": null,
+      "text": "At 10+ Clashes against the same target, randomly gain or lose Clash Power by (Clash Count / 10) in a Clash (rounded down)\nEncounter Start:\n- Begin Encounter with the same HP as Butterfly of Entangled Lives::The Pupa (excluding Shield)\n- Gain 10 Stacks each of [In the Past] / [In the Present] / [In the Future]\nAt less than 66%/33% HP, gain new Slot patterns\n- [When this unit's HP drops below 66%/33%] for the first time in this Encounter, [gain 10 Stacks each of [In the Past], [In the Present], and [In the Future]] next turn"
+    },
+    {
+      "name": "Past [<b>過去</b>]",
+      "hint": 3,
+      "text": "When [In the Past], gain the following effects:\n- When hit by Sinners, inflict 1 [Burn] and +1 [Burn] Count on the\nattacking Sinner\n- Skill \"Kalpāgni\" gains Final Power +2 and its final Coin gains \"On Hit,\ninflict ([In the Past] Stack / 2) SP damage (rounded down)\" effect\nTurn Start: Inflict 5 [HP Healing Down] and 3 [Wrath Fragility] on all Sinners who have 10+ ([Burn] Potency + [Burn] Count)"
+    },
+    {
+      "name": "Present [<b>現在</b>]",
+      "hint": 3,
+      "text": "When [In the Present], gain the following effects:\n- Does not lose [Poise] Count On Crit; Turn Start: gain (2 + # of Sinners) [Poise] and [Poise] Count\n- Skill \"Smite the Wicked\" gains Final Power +2 and its final Coin gains \"On Hit, raise Stagger Threshold by ([In the Present] Stack / 2) (rounded down)\" effect\n- On Hit, deal +(([Poise] Potency on self + [Poise] Count on self) x 2)% damage on Critical Hit (max 120%; on Clash Lose, apply only one-third of the effect's full value)"
+    },
+    {
+      "name": "Future [<b>未來</b>]",
+      "hint": 3,
+      "text": "When [In the Future], gain the following effects:\n- Turn Start: All Sinners gain +(3 + # of current turn / 2) [Bleed] Count (rounded up)\n- Skill \"Bloodflower\" gains Final Power +2 and its final Coin gains \"On Hit,\nheal ([In the Future] Stack x 3) HP on self\" effect\n- Whenever [Bleed] activates on self or on Sinners, heal HP equal to the said [Bleed] damage (rounded down)"
+    }
+  ],
+  "unparsed": [],
+  "sources": [
+    {
+      "kind": "wiki",
+      "url": "https://limbuscompany.wiki.gg/wiki/Butterfly_of_Entangled_Lives::Imago",
+      "language": "en",
+      "verification": "single_source_verified"
+    },
+    {
+      "kind": "game_text",
+      "language": "en",
+      "id": "9567",
+      "verification": "official"
+    }
+  ]
+}

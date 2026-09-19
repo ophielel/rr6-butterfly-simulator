@@ -1,0 +1,362 @@
+{
+  "id": "11004",
+  "kind": "identity",
+  "sinner": "Sinclair",
+  "sinner_zh": "辛克莱",
+  "title_en": "Los Mariachis Jefe",
+  "title_zh": "流浪乐队 老大",
+  "wiki_title": "Los Mariachis Jefe Sinclair",
+  "rarity": 2,
+  "season": "1",
+  "release_date": "2023.02.27",
+  "world": "World of the J Corp. Backstreets",
+  "keywords": [
+    "The Backstreets",
+    "Syndicate",
+    "Los Mariachis"
+  ],
+  "stats": {
+    "hp": 95,
+    "hp_growth": 3.26,
+    "defense_level_mod": 3,
+    "speed": {
+      "4": [
+        2,
+        3
+      ],
+      "3": [
+        1,
+        2
+      ]
+    },
+    "resist": {
+      "slash": 2.0,
+      "pierce": 1.0,
+      "blunt": 0.5
+    },
+    "stagger_thresholds": [
+      50
+    ]
+  },
+  "skills": [
+    {
+      "id": "1100401",
+      "slot": "skill1",
+      "name": "Baile y Rola",
+      "type": "Blunt",
+      "rank": 1,
+      "upties": {
+        "1": {
+          "base_power": 3,
+          "coin_power": 2,
+          "coins": 2,
+          "offense_level_mod": -3,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Sloth",
+          "skill_amount": 3,
+          "on_use_text": "",
+          "coin_texts": [
+            "[Heads Hit] Inflict 2 [Sinking]"
+          ],
+          "tags": []
+        },
+        "2": {
+          "base_power": 3,
+          "coin_power": 2,
+          "coins": 2,
+          "offense_level_mod": -3,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Sloth",
+          "skill_amount": 3,
+          "on_use_text": "",
+          "coin_texts": [
+            "[Heads Hit] Inflict 4 [Sinking]"
+          ],
+          "tags": []
+        },
+        "3": {
+          "base_power": 4,
+          "coin_power": 2,
+          "coins": 2,
+          "offense_level_mod": -3,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Sloth",
+          "skill_amount": 3,
+          "on_use_text": "",
+          "coin_texts": [
+            "[Heads Hit] Inflict 4 [Sinking]"
+          ],
+          "tags": []
+        },
+        "4": {
+          "base_power": 4,
+          "coin_power": 2,
+          "coins": 2,
+          "offense_level_mod": -3,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Sloth",
+          "skill_amount": 3,
+          "on_use_text": "If target has 4+ [Sinking], Coin Power +1",
+          "coin_texts": [
+            "[On Hit] Inflict 4 [Sinking]"
+          ],
+          "tags": []
+        }
+      },
+      "name_en": "Baile y Rola",
+      "name_zh": "舞动"
+    },
+    {
+      "id": "1100402",
+      "slot": "skill2",
+      "name": "Danza de Pasión",
+      "type": "Blunt",
+      "rank": 2,
+      "upties": {
+        "1": {
+          "base_power": 4,
+          "coin_power": 1,
+          "coins": 3,
+          "offense_level_mod": -3,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Envy",
+          "skill_amount": 2,
+          "on_use_text": "",
+          "coin_texts": [
+            "[On Hit] Gain 2 [Poise]",
+            "[On Hit] Inflict 1 [Sinking]",
+            "[On Hit] Inflict 1 [Sinking]"
+          ],
+          "tags": []
+        },
+        "2": {
+          "base_power": 4,
+          "coin_power": 1,
+          "coins": 3,
+          "offense_level_mod": -3,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Envy",
+          "skill_amount": 2,
+          "on_use_text": "",
+          "coin_texts": [
+            "[On Hit] Gain 2 [Poise]\n[Heads Hit] Gain +1 [Poise] Count",
+            "[On Hit] Inflict 2 [Sinking]\n[Heads Hit] Inflict +1 [Sinking] Count",
+            "[On Hit] Inflict 2 [Sinking]"
+          ],
+          "tags": []
+        },
+        "3": {
+          "base_power": 5,
+          "coin_power": 1,
+          "coins": 3,
+          "offense_level_mod": -3,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Envy",
+          "skill_amount": 2,
+          "on_use_text": "",
+          "coin_texts": [
+            "[On Hit] Gain 2 [Poise]\n[Heads Hit] Gain +1 [Poise] Count",
+            "[On Hit] Inflict 2 [Sinking]\n[Heads Hit] Inflict +1 [Sinking] Count",
+            "[On Hit] Inflict 2 [Sinking]"
+          ],
+          "tags": []
+        },
+        "4": {
+          "base_power": 5,
+          "coin_power": 1,
+          "coins": 3,
+          "offense_level_mod": -3,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Envy",
+          "skill_amount": 2,
+          "on_use_text": "If target has 6+ [Sinking], Coin Power +2",
+          "coin_texts": [
+            "[On Hit] Gain 2 [Poise]\n[On Hit] Gain +1 [Poise] Count",
+            "[On Hit] Inflict 2 [Sinking]\n[On Hit] Inflict +1 [Sinking] Count",
+            "[On Hit] Inflict 2 [Sinking]"
+          ],
+          "tags": []
+        }
+      },
+      "name_en": "Danza de Pasión",
+      "name_zh": "激情之舞"
+    },
+    {
+      "id": "1100403",
+      "slot": "skill3",
+      "name": "Pañata Party",
+      "type": "Blunt",
+      "rank": 3,
+      "upties": {
+        "1": {
+          "base_power": 8,
+          "coin_power": 11,
+          "coins": 1,
+          "offense_level_mod": -3,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Gloom",
+          "skill_amount": 1,
+          "on_use_text": "If target's SP is below 0, boost crit chance proportional to target's SP",
+          "coin_texts": [
+            "[Heads Hit] Lower user’s Stagger Threshold by 50% of damage dealt"
+          ],
+          "tags": []
+        },
+        "2": {
+          "base_power": 8,
+          "coin_power": 11,
+          "coins": 1,
+          "offense_level_mod": -3,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Gloom",
+          "skill_amount": 1,
+          "on_use_text": "If target's SP is below 0, boost crit chance proportional to target's SP",
+          "coin_texts": [
+            "[Heads Hit] Lower user’s Stagger Threshold by 50% of damage dealt"
+          ],
+          "tags": []
+        },
+        "3": {
+          "base_power": 8,
+          "coin_power": 11,
+          "coins": 1,
+          "offense_level_mod": -3,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Gloom",
+          "skill_amount": 1,
+          "on_use_text": "If target's SP is below 0, boost crit chance proportional to target's SP",
+          "coin_texts": [
+            "[Heads Hit] Lower user’s Stagger Threshold by 50% of damage dealt"
+          ],
+          "tags": []
+        },
+        "4": {
+          "base_power": 8,
+          "coin_power": 11,
+          "coins": 1,
+          "offense_level_mod": -3,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Gloom",
+          "skill_amount": 1,
+          "on_use_text": "If target's SP is below 0, boost crit chance proportional to target's SP\nIf user has 5+ [Poise] Count, +30% Critical Damage",
+          "coin_texts": [
+            "[On Hit] Lower user’s Stagger Threshold by 50% of damage dealt"
+          ],
+          "tags": []
+        }
+      },
+      "name_en": "Pañata Party",
+      "name_zh": "皮纳塔派对"
+    },
+    {
+      "id": "1100404",
+      "slot": "defense",
+      "name": "Evade",
+      "type": "Evade",
+      "rank": 1,
+      "upties": {
+        "1": {
+          "base_power": 5,
+          "coin_power": 10,
+          "coins": 1,
+          "offense_level_mod": null,
+          "attack_weight": null,
+          "defense_level_mod": 5,
+          "sin_affinity": "Def",
+          "skill_amount": null,
+          "on_use_text": "",
+          "coin_texts": [],
+          "tags": []
+        },
+        "2": {
+          "base_power": 5,
+          "coin_power": 10,
+          "coins": 1,
+          "offense_level_mod": null,
+          "attack_weight": null,
+          "defense_level_mod": 5,
+          "sin_affinity": "Def",
+          "skill_amount": null,
+          "on_use_text": "",
+          "coin_texts": [],
+          "tags": []
+        },
+        "3": {
+          "base_power": 5,
+          "coin_power": 10,
+          "coins": 1,
+          "offense_level_mod": null,
+          "attack_weight": null,
+          "defense_level_mod": 5,
+          "sin_affinity": "Def",
+          "skill_amount": null,
+          "on_use_text": "",
+          "coin_texts": [],
+          "tags": []
+        },
+        "4": {
+          "base_power": 5,
+          "coin_power": 10,
+          "coins": 1,
+          "offense_level_mod": null,
+          "attack_weight": null,
+          "defense_level_mod": 5,
+          "sin_affinity": "Gloom",
+          "skill_amount": null,
+          "on_use_text": "[On Evade] Gain +1 [Poise] Count",
+          "coin_texts": [],
+          "tags": []
+        }
+      },
+      "name_en": "Evade",
+      "name_zh": "闪避"
+    }
+  ],
+  "passives": [
+    {
+      "kind": "support_passive_1",
+      "uptie_from": 1,
+      "text": "After a successful evade, lower Stagger Threshold by the evade skill’s Power at a (5x Gloom Reson.)% chance.",
+      "raw_key": "passive1"
+    },
+    {
+      "kind": "support_passive_2",
+      "uptie_from": 1,
+      "text": "1 ally with the most SP deals +10% damage to enemies with lower SP.",
+      "raw_key": "passive2"
+    }
+  ],
+  "unparsed": [],
+  "sources": [
+    {
+      "kind": "wiki",
+      "url": "https://limbuscompany.wiki.gg/wiki/Los_Mariachis_Jefe_Sinclair",
+      "language": "en",
+      "verification": "single_source_verified"
+    },
+    {
+      "kind": "game_text",
+      "language": "en",
+      "id": "11004",
+      "verification": "official"
+    },
+    {
+      "kind": "game_text_zh_cn",
+      "language": "zh-CN",
+      "id": "11004",
+      "verification": "synthetic_translation"
+    }
+  ]
+}

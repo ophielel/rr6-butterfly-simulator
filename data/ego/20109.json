@@ -1,0 +1,76 @@
+{
+  "id": "20109",
+  "kind": "ego",
+  "name_en": "Solemn Lament",
+  "name_zh": "庄严哀悼",
+  "wiki_title": "Solemn Lament Yi Sang",
+  "risk": "HE",
+  "sin_affinity": "Gloom",
+  "awakening_sp": 20,
+  "corrosion_sp": 25,
+  "resource_cost": {
+    "Sloth": 1,
+    "Gloom": 4,
+    "Pride": 2
+  },
+  "awakening": {
+    "name": "Solemn Lament",
+    "sin": "Gloom",
+    "type": "Pierce",
+    "base_power": 6,
+    "coin_power": 2,
+    "coins": 5,
+    "attack_weight": 3,
+    "offense_level_mod": 4,
+    "on_use_text": "[Unfocused Volley]\nWhen inflicting [Butterfly] using this Skill's effects: (Chance to flip Heads)% chance to inflict The Departed. If this unit did not inflict The Departed, inflict The Living instead. (calculates every [Butterfly] Stack independently)\nIf Lobotomy E.G.O::Solemn Lament Yi Sang used this Skill:\n- [Before Attack] Gain a random assortment of (Gloom Reson. + 1) [The Living & The Departed] (max 7)\n- [Attack End] [Reload (Solemn Lament)]",
+    "coin_texts": [
+      "[Unbreakable Coin]\n[On Hit] Inflict 1 random [Butterfly]",
+      "[Unbreakable Coin]\n[On Hit] Inflict 2 random [Butterfly]",
+      "[Unbreakable Coin]\n[On Hit] Inflict 2 random [Butterfly]",
+      "[Unbreakable Coin]\n[On Hit] Inflict 3 random [Butterfly]",
+      "[Unbreakable Coin]\nSpend all [The Living & The Departed] on self\n[On Hit] Inflict 3 [Sinking]\n[On Hit] Inflict 3 [Tremor]\n[On Hit] Inflict 2 [Butterfly](The Living)\n[On Hit] Inflict 2 [Butterfly](The Departed)\n[On Hit] Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1\n[On Hit] Deal Gloom damage equal to the sum of both [Butterfly] on target\n[On Hit] Deal Gloom damage equal to ([The Living & The Departed] spent by this Coin x 2)% of this Coin's final damage",
+      "",
+      "",
+      ""
+    ],
+    "reuse": false
+  },
+  "corrosion": {
+    "name": "Solemn Lament",
+    "sin": "Gloom",
+    "type": "Pierce",
+    "base_power": 16,
+    "coin_power": -3,
+    "coins": 3,
+    "attack_weight": 3,
+    "offense_level_mod": 4,
+    "on_use_text": "[Indiscriminate]\nTargets randomly\n[Before Attack] Gain +(highest Reson. / 2) Atk Weight (max 2, rounded down)\n[Before Attack] Base Power -2 for every Cracked Coin (max -6)",
+    "coin_texts": [
+      "[Unbreakable Coin]\n[On Hit] Inflict 3 [Butterfly](The Living)",
+      "[Unbreakable Coin]\n[On Hit] Inflict 3 [Butterfly](The Departed)",
+      "[Unbreakable Coin]\n[On Hit] Inflict 5 [Sinking]\n[On Hit] Inflict 5 [Tremor]\n[On Hit] Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1\n[On Hit] Deal Gloom damage equal to the sum of both [Butterfly] on target",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "reuse": false
+  },
+  "passives": [],
+  "unparsed": [],
+  "sources": [
+    {
+      "kind": "wiki",
+      "url": "https://limbuscompany.wiki.gg/wiki/Solemn_Lament_Yi_Sang",
+      "language": "en",
+      "verification": "single_source_verified"
+    },
+    {
+      "kind": "game_text",
+      "language": "en",
+      "id": "20109",
+      "verification": "official"
+    }
+  ]
+}

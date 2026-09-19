@@ -1,0 +1,393 @@
+{
+  "id": "10813",
+  "kind": "identity",
+  "sinner": "Ishmael",
+  "sinner_zh": "以实玛利",
+  "title_en": "Jeong's Office Rep",
+  "title_zh": "定事务所 代表",
+  "wiki_title": "Jeong's Office Rep Ishmael",
+  "rarity": 3,
+  "season": "Walpurgisnacht - VII",
+  "release_date": "2025.11.06",
+  "world": "World of the Former Library Guests - General Reception I",
+  "keywords": [
+    "Fixer",
+    "Associate Office - Öufi",
+    "Jeong's Office"
+  ],
+  "stats": {
+    "hp": 88,
+    "hp_growth": 2.28,
+    "defense_level_mod": 0,
+    "speed": {
+      "4": [
+        3,
+        8
+      ],
+      "3": [
+        2,
+        6
+      ]
+    },
+    "resist": {
+      "slash": 0.5,
+      "pierce": 1.0,
+      "blunt": 2.0
+    },
+    "stagger_thresholds": [
+      65,
+      35
+    ]
+  },
+  "skills": [
+    {
+      "id": "1081301",
+      "slot": "skill1",
+      "name": "Tsuru-giri ['''鶴斬り''']",
+      "type": "Slash",
+      "rank": 1,
+      "upties": {
+        "1": {
+          "base_power": 3,
+          "coin_power": 3,
+          "coins": 2,
+          "offense_level_mod": 2,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Wrath",
+          "skill_amount": 3,
+          "on_use_text": "[On Use] If the other Skill in the same Skill Slot is a different Skill, [Discard] that Skill",
+          "coin_texts": [
+            "[On Hit] Inflict +1 [Sinking] Count",
+            "[On Hit] Inflict +1 [Tremor] Count"
+          ],
+          "tags": []
+        },
+        "2": {
+          "base_power": 3,
+          "coin_power": 3,
+          "coins": 2,
+          "offense_level_mod": 2,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Wrath",
+          "skill_amount": 3,
+          "on_use_text": "[On Use] If the other Skill in the same Skill Slot is a different Skill, [Discard] that Skill\n[On Use] If target has 6+ ([Tremor] + [Sinking]), Coin Power +1",
+          "coin_texts": [
+            "[On Hit] Inflict +1 [Sinking] Count\n[Heads Hit] Inflict +1 [Sinking] Count",
+            "[On Hit] Inflict +1 [Tremor] Count\n[Heads Hit] Inflict +1 [Tremor] Count"
+          ],
+          "tags": []
+        },
+        "3": {
+          "base_power": 3,
+          "coin_power": 4,
+          "coins": 2,
+          "offense_level_mod": 2,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Wrath",
+          "skill_amount": 3,
+          "on_use_text": "[On Use] If the other Skill in the same Skill Slot is a different Skill, [Discard] that Skill\n[On Use] If target has 6+ ([Tremor] + [Sinking]), Coin Power +1",
+          "coin_texts": [
+            "[On Hit] Inflict +1 [Sinking] Count\n[Heads Hit] Inflict +1 [Sinking] Count",
+            "[On Hit] Inflict +1 [Tremor] Count\n[Heads Hit] Inflict +1 [Tremor] Count"
+          ],
+          "tags": []
+        },
+        "4": {
+          "base_power": 4,
+          "coin_power": 4,
+          "coins": 2,
+          "offense_level_mod": 2,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Wrath",
+          "skill_amount": 3,
+          "on_use_text": "[On Use] If the other Skill in the same Skill Slot is a different Skill, [Discard] that Skill\n[On Use] Coin Power +1 for every 6 ([Tremor] + [Sinking]) on target (max 2)",
+          "coin_texts": [
+            "[On Hit] Inflict +1 [Sinking] Count\n[Heads Hit] Inflict +1 [Sinking] Count",
+            "[On Hit] Inflict +1 [Tremor] Count\n[Heads Hit] Inflict +1 [Tremor] Count"
+          ],
+          "tags": []
+        }
+      },
+      "name_en": "Tsuru-giri [鶴斬り]",
+      "name_zh": "鹤斩"
+    },
+    {
+      "id": "1081302",
+      "slot": "skill2",
+      "name": "Susuki Misdirection",
+      "type": "Slash",
+      "rank": 2,
+      "upties": {
+        "1": {
+          "base_power": 4,
+          "coin_power": 3,
+          "coins": 3,
+          "offense_level_mod": 3,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Sloth",
+          "skill_amount": 2,
+          "on_use_text": "[On Use] If the other Skill in the same Skill Slot is a different Skill, [Discard] that Skill",
+          "coin_texts": [
+            "[On Hit] Inflict 2 [Sinking]",
+            "[On Hit] Inflict 2 [Tremor]",
+            ""
+          ],
+          "tags": []
+        },
+        "2": {
+          "base_power": 4,
+          "coin_power": 3,
+          "coins": 3,
+          "offense_level_mod": 3,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Sloth",
+          "skill_amount": 2,
+          "on_use_text": "[On Use] If the other Skill in the same Skill Slot is a different Skill, [Discard] that Skill\n[On Use] If target has 6+ ([Tremor] + [Sinking]), Coin Power +1",
+          "coin_texts": [
+            "[On Hit] Inflict 2 [Sinking]\n[Heads Hit] Inflict 1 [Sinking]",
+            "[On Hit] Inflict 2 [Tremor]\n[Heads Hit] Inflict 1 [Tremor]",
+            ""
+          ],
+          "tags": []
+        },
+        "3": {
+          "base_power": 4,
+          "coin_power": 4,
+          "coins": 3,
+          "offense_level_mod": 3,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Sloth",
+          "skill_amount": 2,
+          "on_use_text": "[On Use] If the other Skill in the same Skill Slot is a different Skill, [Discard] that Skill\n[On Use] If target has 6+ ([Tremor] + [Sinking]), Coin Power +1",
+          "coin_texts": [
+            "[On Hit] Inflict 2 [Sinking]\n[Heads Hit] Inflict 1 [Sinking]",
+            "[On Hit] Inflict 2 [Tremor]\n[Heads Hit] Inflict 1 [Tremor]",
+            ""
+          ],
+          "tags": []
+        },
+        "4": {
+          "base_power": 4,
+          "coin_power": 4,
+          "coins": 3,
+          "offense_level_mod": 3,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Sloth",
+          "skill_amount": 2,
+          "on_use_text": "[On Use] If the other Skill in the same Skill Slot is a different Skill, [Discard] that Skill\n[On Use] Coin Power +1 for every 6 ([Tremor] + [Sinking]) on target (max 2)",
+          "coin_texts": [
+            "[On Hit] Inflict 2 [Sinking]\n[Heads Hit] Inflict 1 [Sinking]",
+            "[On Hit] Inflict 2 [Tremor]\n[Heads Hit] Inflict 1 [Tremor]",
+            "[On Hit] Heal 5 SP"
+          ],
+          "tags": []
+        }
+      },
+      "name_en": "Susuki Misdirection",
+      "name_zh": "芒流"
+    },
+    {
+      "id": "1081303",
+      "slot": "skill3",
+      "name": "Sakura-sen ['''桜閃''']",
+      "type": "Slash",
+      "rank": 3,
+      "upties": {
+        "1": {
+          "base_power": 4,
+          "coin_power": 4,
+          "coins": 3,
+          "offense_level_mod": 4,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Gloom",
+          "skill_amount": 1,
+          "on_use_text": "Deal +5% damage for every [Bright -光-] Potency on self\n[On Use] If the other Skill in the same Skill Slot is a different Skill, [Discard] that Skill\n[On Use] If target has 6+ ([Tremor] + [Sinking]), Coin Power +1",
+          "coin_texts": [
+            "[On Hit] Inflict +2 [Tremor] Count\n[On Hit] Inflict +2 [Sinking] Count\n[Heads Hit] Inflict +1 [Sinking] Count",
+            "[On Hit] Inflict 3 [Tremor]\n[On Hit] Inflict 3 [Sinking]\n[Heads Hit] Inflict +1 [Tremor] Count",
+            "[On Hit] If target isn't in an [Amplitude Conversion] state, trigger [Amplitude Conversion] into [Tremor - Decay]"
+          ],
+          "tags": []
+        },
+        "2": {
+          "base_power": 4,
+          "coin_power": 4,
+          "coins": 3,
+          "offense_level_mod": 4,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Gloom",
+          "skill_amount": 1,
+          "on_use_text": "Deal +5% damage for every [Bright -光-] Potency on self\n[On Use] If the other Skill in the same Skill Slot is a different Skill, [Discard] that Skill\n[On Use] If target has 6+ ([Tremor] + [Sinking]), Coin Power +1",
+          "coin_texts": [
+            "[On Hit] Inflict +2 [Tremor] Count\n[On Hit] Inflict +2 [Sinking] Count\n[Heads Hit] Inflict +1 [Sinking] Count",
+            "[On Hit] Inflict 3 [Tremor]\n[On Hit] Inflict 3 [Sinking]\n[Heads Hit] Inflict +1 [Tremor] Count",
+            "[On Hit] If target isn't in an [Amplitude Conversion] state, trigger [Amplitude Conversion] into [Tremor - Decay]"
+          ],
+          "tags": []
+        },
+        "3": {
+          "base_power": 4,
+          "coin_power": 4,
+          "coins": 3,
+          "offense_level_mod": 4,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Gloom",
+          "skill_amount": 1,
+          "on_use_text": "Deal +5% damage for every [Bright -光-] Potency on self\n[On Use] If the other Skill in the same Skill Slot is a different Skill, [Discard] that Skill\n[On Use] If target has 6+ ([Tremor] + [Sinking]), Coin Power +1",
+          "coin_texts": [
+            "[On Hit] Inflict +2 [Tremor] Count\n[On Hit] Inflict +2 [Sinking] Count\n[Heads Hit] Inflict +1 [Sinking] Count",
+            "[On Hit] Inflict 3 [Tremor]\n[On Hit] Inflict 3 [Sinking]\n[Heads Hit] Inflict +1 [Tremor] Count",
+            "[On Hit] If target isn't in an [Amplitude Conversion] state, trigger [Amplitude Conversion] into [Tremor - Decay]"
+          ],
+          "tags": []
+        },
+        "4": {
+          "base_power": 5,
+          "coin_power": 4,
+          "coins": 3,
+          "offense_level_mod": 4,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Gloom",
+          "skill_amount": 1,
+          "on_use_text": "Deal +10% damage for every [Bright -光-] Potency on self\n[On Use] If the other Skill in the same Skill Slot is a different Skill, [Discard] that Skill\n[On Use] Coin Power +1 for every 6 ([Tremor] + [Sinking]), on target (max 3)",
+          "coin_texts": [
+            "[On Hit] Inflict +2 [Tremor] Count\n[On Hit] Inflict +2 [Sinking] Count\n[Heads Hit] Inflict +1 [Sinking] Count",
+            "[On Hit] Inflict 3 [Tremor]\n[On Hit] Inflict 3 [Sinking]\n[Heads Hit] Inflict +1 [Tremor] Count",
+            "If target is in either [Amplitude Conversion] or [Amplitude Entanglement] states, this Coin deals +48% damage\n[On Hit] If target isn't in an [Amplitude Conversion] state, trigger [Amplitude Conversion] into [Tremor - Decay]"
+          ],
+          "tags": []
+        }
+      },
+      "name_en": "Sakura-sen [桜閃]",
+      "name_zh": "樱闪"
+    },
+    {
+      "id": "1081304",
+      "slot": "defense",
+      "name": "Shuffle Hands - Floral Deck",
+      "type": "Slash",
+      "rank": 1,
+      "upties": {
+        "1": {
+          "base_power": 4,
+          "coin_power": 4,
+          "coins": 2,
+          "offense_level_mod": 3,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Pride",
+          "skill_amount": null,
+          "on_use_text": "[Clashable Counter]\n[Combat Start] [Discard] 2 Skills of the lowest rank in all of this unit's Skill Slots (once per turn)\n[Combat Start] If this Skill was equipped on this unit's leftmost Skill Slot, convert the Suit in this unit's Hand to a random Suit that corresponds to one of this unit's Base Attack Skills next turn. (once per turn; excluding the Suit already in this unit's Hand)",
+          "coin_texts": [
+            "[On Hit] Inflict +1 [Sinking] Count",
+            "[On Hit] Inflict 2 [Tremor]"
+          ],
+          "tags": []
+        },
+        "2": {
+          "base_power": 4,
+          "coin_power": 4,
+          "coins": 2,
+          "offense_level_mod": 3,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Pride",
+          "skill_amount": null,
+          "on_use_text": "[Clashable Counter]\n[Combat Start] [Discard] 2 Skills of the lowest rank in all of this unit's Skill Slots (once per turn)\n[Combat Start] If this Skill was equipped on this unit's leftmost Skill Slot, convert the Suit in this unit's Hand to a random Suit that corresponds to one of this unit's Base Attack Skills next turn. (once per turn; excluding the Suit already in this unit's Hand)",
+          "coin_texts": [
+            "[On Hit] Inflict +1 [Sinking] Count",
+            "[On Hit] Inflict 2 [Tremor]"
+          ],
+          "tags": []
+        },
+        "3": {
+          "base_power": 4,
+          "coin_power": 4,
+          "coins": 2,
+          "offense_level_mod": 3,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Pride",
+          "skill_amount": null,
+          "on_use_text": "[Clashable Counter]\n[Combat Start] [Discard] 2 Skills of the lowest rank in all of this unit's Skill Slots (once per turn)\n[Combat Start] If this Skill was equipped on this unit's leftmost Skill Slot, convert the Suit in this unit's Hand to a random Suit that corresponds to one of this unit's Base Attack Skills next turn. (once per turn; excluding the Suit already in this unit's Hand)",
+          "coin_texts": [
+            "[On Hit] Inflict +1 [Sinking] Count",
+            "[On Hit] Inflict 2 [Tremor]"
+          ],
+          "tags": []
+        },
+        "4": {
+          "base_power": 5,
+          "coin_power": 4,
+          "coins": 2,
+          "offense_level_mod": 3,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Pride",
+          "skill_amount": null,
+          "on_use_text": "[Clashable Counter]\n[Combat Start] [Discard] 2 Skills of the lowest rank in all of this unit's Skill Slots (once per turn)\n[Combat Start] If this Skill was equipped on this unit's leftmost Skill Slot, convert the Suit in this unit's Hand to a random Suit that corresponds to one of this unit's Base Attack Skills next turn. (once per turn; excluding the Suit already in this unit's Hand)\n[Combat Start] 50% chance to gain 1 [Bright -光-] Potency (once per turn)\n[On Use] Coin Power +1 for every 2 [Bright -光-] Potency on self (max 2)",
+          "coin_texts": [
+            "[On Hit] Inflict +1 [Sinking] Count",
+            "[On Hit] Inflict 2 [Tremor]"
+          ],
+          "tags": []
+        }
+      },
+      "name_en": "Shuffle Hands - Floral Deck",
+      "name_zh": "花札洗切"
+    }
+  ],
+  "passives": [
+    {
+      "kind": "combat_passive",
+      "uptie_from": 1,
+      "text": "Turn Start: if this unit does not have [Bright -光-], gain 0 [Bright -光-] Potency and +3 [Bright -光-] Count\nTurn Start: if this unit does not have a Suit in Hand, gain a random Suit([Hand - Pine Crane Suit], [Hand - Susuki Grass Suit], or [Hand - Blue Sakura Suit]) that corresponds to a Base Attack Skill on this unit's leftmost Skill Slot\nCombat Start: when this unit uses a Base Attack Skill or an E.G.O Skill equipped on its leftmost Skill Slot, activate the following (once per turn):\n- Next turn, convert the Hand on self to the one corresponding to the used Skill's Affinity\n- If the Skill was either \"Sakura-sen\" or an E.G.O Skill, gain 1 [Bright -光-] Potency\n- If the Skill's Affinity matches the Affinity on the current Hand's description(thus \"forming a Hand\"), activate the following:\n&nbsp;· Gain 1 [Bright -光-] Potency\n&nbsp;· If this unit formed a Hand last turn and this turn in succession, gain 1 [Bright -光-] Potency\n&nbsp;· On Hit with the said Skill: trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1\n&nbsp;· 25% chance to gain 1 E.G.O Resource corresponding to the Skill's Affinity\n- At the Skill's Skill End: at 5 [Bright -光-] Potency, or at 0 [Bright -光-] Count, use \"Kōzan\"",
+      "raw_key": "passive0"
+    },
+    {
+      "kind": "support_passive_1",
+      "uptie_from": 1,
+      "text": "On Tails Hit, heal 5 SP (once per turn)\nDeal +10% damage against targets in either Low Morale or Panic states",
+      "raw_key": "passive1"
+    },
+    {
+      "kind": "support_passive_2",
+      "uptie_from": 1,
+      "text": "Combat Start: when 1 ally that has the least SP uses a Base Attack Skill to Heads Hit, it heals 5 SP (2 times per turn; excluding allies at -40 or lower SP)",
+      "raw_key": "passive2"
+    }
+  ],
+  "unparsed": [],
+  "sources": [
+    {
+      "kind": "wiki",
+      "url": "https://limbuscompany.wiki.gg/wiki/Jeong's_Office_Rep_Ishmael",
+      "language": "en",
+      "verification": "single_source_verified"
+    },
+    {
+      "kind": "game_text",
+      "language": "en",
+      "id": "10813",
+      "verification": "official"
+    },
+    {
+      "kind": "game_text_zh_cn",
+      "language": "zh-CN",
+      "id": "10813",
+      "verification": "synthetic_translation"
+    }
+  ]
+}

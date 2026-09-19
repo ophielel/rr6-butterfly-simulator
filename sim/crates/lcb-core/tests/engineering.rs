@@ -1,0 +1,246 @@
+//! Engineering tests required by the plan: clone isolation, hashing,
+//! serialisation, RNG determinism and full replay reproduction.
+
+use lcb_core::battle::Action;
+use lcb_core::effects::MechanicsBook;
+use lcb_core::hash;
+use lcb_core::library::Library;
+use lcb_core::replay::{self, Replay};
+use lcb_core::setup::{fixed, EncounterBuilder};
+use lcb_core::state::{BattleConfig, Phase, Winner};
+use lcb_core::Simulator;
+use std::path::PathBuf;
+
+fn data_root() -> PathBuf {
+    PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+        .join("..")
+        .join("..")
+        .join("..")
+        .join("data")
+}
+
+fn simulator() -> Simulator {
+    Simulator::from_data_dir(data_root()).expect("data library loads")
+}
+
+fn team() -> Vec<&'static str> {
+    fixed::TEAM.to_vec()
+}
+
+/// Deterministic stand-in policy used by several tests.
+fn assign_all(state: &lcb_core::state::BattleState, sim: &Simulator) -> Vec<Action> {
+    let mut out = Vec::new();
+    let target = state.living_enemies().into_iter().next();
+    let Some(target) = target else { return out };
+    for action in sim.legal_actions(state) {
+        if let Action::Assign {
+            actor,
+            slot,
+            skill,
+            target: _,
+        } = &action
+        {
+            if out
+                .iter()
+                .any(|a| matches!(a, Action::Assign { actor: a2, .. } if a2 == actor))
+            {
+                continue;
+            }
+            out.push(Action::Assign {
+                actor: actor.clone(),
+                slot: *slot,
+                skill: skill.clone(),
+                target: target.clone(),
+            });
+        }
+    }
+    out
+}
+
+#[test]
+fn clone_is_a_deep_copy() {
+    let sim = simulator();
+    let mut state = sim
+        .new_encounter(&team(), &[fixed::BOSS_IMAGO], 11, BattleConfig::default())
+        .expect("encounter");
+    for action in assign_all(&state, &sim) {
+        sim.submit(&mut state, action).unwrap();
+    }
+    let mut clone = replay::clone_state(&state);
+    let original_hash = sim.state_hash(&state);
+    assert_eq!(original_hash, sim.state_hash(&clone), "clone must start identical");
+
+    // Mutate the clone in every dimension the plan cares about.
+    clone.units[0].hp -= 7;
+    clone.units[0].sanity = clone.units[0].sanity.add(-5);
+    clone.units[0].statuses.add_potency("Burn", 3);
+    let deck_before = state.units[1].deck.draw.len();
+    clone.units[1].deck.draw.push(lcb_core::ids::SkillId::new("1011001"));
+    clone.units[2].dashboard[0].slot = 9;
+    clone.rng.next_u64();
+    clone.ego_resources.insert("pride".to_string(), 3);
+
+    assert_ne!(original_hash, sim.state_hash(&clone), "mutations must change the hash");
+    assert_eq!(state.units[0].hp, state.units[0].max_hp, "original untouched");
+    assert_eq!(state.units[0].statuses.potency("Burn"), 0);
+    assert_eq!(state.units[1].deck.draw.len(), deck_before);
+    assert_eq!(state.ego_resources.get("pride"), Some(&0));
+}
+
+#[test]
+fn state_round_trips_through_json() {
+    let sim = simulator();
+    let mut state = sim
+        .new_encounter(&team(), &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    for action in assign_all(&state, &sim) {
+        sim.submit(&mut state, action).unwrap();
+    }
+    sim.step_turn(&mut state).unwrap();
+    let json = serde_json::to_string(&state).unwrap();
+    let restored: lcb_core::state::BattleState = serde_json::from_str(&json).unwrap();
+    assert_eq!(sim.state_hash(&state), sim.state_hash(&restored));
+}
+
+#[test]
+fn same_seed_same_trajectory_and_hashes() {
+    let sim = simulator();
+    let play = |seed: u64| {
+        let mut state = sim
+            .new_encounter(&team(), &[fixed::BOSS_IMAGO], seed, BattleConfig::default())
+            .unwrap();
+        let mut hashes = Vec::new();
+        for _ in 0..3 {
+            for action in assign_all(&state, &sim) {
+                sim.submit(&mut state, action).unwrap();
+            }
+            sim.step_turn(&mut state).unwrap();
+            hashes.push(sim.state_hash(&state));
+        }
+        hashes
+    };
+    assert_eq!(play(5), play(5), "the simulator must be deterministic");
+    assert_ne!(play(5), play(6), "different seeds diverge");
+}
+
+#[test]
+fn rng_draw_count_is_part_of_the_state() {
+    let sim = simulator();
+    let mut a = sim
+        .new_encounter(&team(), &[fixed::BOSS_IMAGO], 9, BattleConfig::default())
+        .unwrap();
+    let b = a.clone();
+    a.rng.next_u64();
+    assert_ne!(sim.state_hash(&a), sim.state_hash(&b));
+}
+
+#[test]
+fn replay_reproduces_every_transition() {
+    let sim = simulator();
+    let mut replay = Replay::new(
+        21,
+        BattleConfig::default(),
+        &team(),
+        &[fixed::BOSS_IMAGO],
+    );
+    let mut state = sim
+        .new_encounter(
+            &replay.team.iter().map(|s| s.as_str()).collect::<Vec<_>>(),
+            &replay.enemies.iter().map(|s| s.as_str()).collect::<Vec<_>>(),
+            replay.seed,
+            replay.config.clone(),
+        )
+        .unwrap();
+    for _ in 0..4 {
+        let before = state.clone();
+        let actions = assign_all(&state, &sim);
+        for action in &actions {
+            sim.submit(&mut state, action.clone()).unwrap();
+        }
+        sim.step_turn(&mut state).unwrap();
+        replay::record(&sim, &mut replay, &before, &actions, &state);
+    }
+    assert_eq!(replay.steps.len(), 4);
+    replay.verify(&sim).expect("replay verifies");
+
+    // A tampered replay must be rejected.
+    let mut broken = replay.clone();
+    broken.steps[2].state_hash ^= 0xdead_beef;
+    assert!(broken.verify(&sim).is_err());
+}
+
+#[test]
+fn transition_hash_covers_action_and_state() {
+    let sim = simulator();
+    let state = sim
+        .new_encounter(&team(), &[fixed::BOSS_IMAGO], 4, BattleConfig::default())
+        .unwrap();
+    let mut next = state.clone();
+    next.turn = 2;
+    let actions = vec![Action::Commit];
+    let with = sim.transition_hash(&state, &actions, &next);
+    let without = sim.transition_hash(&state, &[], &next);
+    assert_ne!(with, without);
+}
+
+#[test]
+fn deck_draws_do_not_repeat_until_exhausted() {
+    let library = Library::load(&data_root()).unwrap();
+    let mechanics = MechanicsBook::load(&data_root().join("mechanics").join("effects.json")).unwrap();
+    let state = EncounterBuilder::new(&library, &mechanics)
+        .seed(1)
+        .build(&["10110"], &[fixed::BOSS_IMAGO])
+        .unwrap();
+    // Uptie IV amounts for this identity: 3 / 2 / 1 copies = 6 cards, one of
+    // which is already on the dashboard.
+    // The card drawn onto the dashboard also sits in the discard pile, so the
+    // deck size is `draw + dashboard`.
+    let mut all: Vec<String> = state.units[0].deck.draw.iter().map(|s| s.0.clone()).collect();
+    all.extend(state.units[0].dashboard.iter().map(|s| s.skill.0.clone()));
+    let mut counts = std::collections::BTreeMap::new();
+    for id in all {
+        *counts.entry(id).or_insert(0) += 1;
+    }
+    assert_eq!(counts.len(), 3, "three base skills in the deck");
+    assert_eq!(counts.values().sum::<i32>(), 6);
+    assert_eq!(counts.get("1011001"), Some(&3));
+    assert_eq!(counts.get("1011002"), Some(&2));
+    assert_eq!(counts.get("1011003"), Some(&1));
+}
+
+#[test]
+fn strict_mode_lists_everything_unmodeled() {
+    let sim = simulator();
+    let blockers = sim.strict_blockers();
+    assert!(
+        blockers.iter().any(|b| b.contains("unmodeled") || b.contains("mechanics")),
+        "strict mode must surface unmodeled effect text"
+    );
+    for rule in sim.unknown_rules() {
+        assert!(!rule.is_empty());
+    }
+}
+
+#[test]
+fn battle_ends_when_one_side_is_wiped() {
+    let sim = simulator();
+    let mut state = sim
+        .new_encounter(&team(), &[fixed::BOSS_IMAGO], 13, BattleConfig::default())
+        .unwrap();
+    // Kill the boss by hand and run the turn end.
+    for unit in state.units.iter_mut() {
+        if !unit.kind.is_sinner() {
+            unit.hp = 0;
+            unit.alive = false;
+        }
+    }
+    lcb_core::battle::end_turn(&mut state);
+    assert_eq!(state.winner, Some(Winner::Sinners));
+    assert_eq!(state.phase, Phase::Finished);
+}
+
+#[test]
+fn hash_chain_is_hex_encoded() {
+    let value = hash::fnv1a64(b"abc");
+    assert_eq!(hash::hex(value).len(), 16);
+}

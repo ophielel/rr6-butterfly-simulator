@@ -1,0 +1,181 @@
+//! Deterministic simulator for the fixed content of the RR6 "Butterfly of
+//! Entangled Lives [羅生蝶]" problem set.
+//!
+//! Design rules taken from the project plan:
+//! * mechanics first, and only mechanics that a source supports;
+//! * anything unconfirmed is `UNKNOWN`/`NOT_IMPLEMENTED`, never guessed;
+//! * simulation rules and experimental logic are separate (search lives in
+//!   Python, this crate only simulates).
+
+pub mod battle;
+pub mod damage;
+pub mod effects;
+pub mod hash;
+pub mod ids;
+pub mod library;
+pub mod replay;
+pub mod rng;
+pub mod setup;
+pub mod state;
+
+#[cfg(test)]
+pub mod testsupport;
+
+use battle::Action;
+use effects::MechanicsBook;
+use library::{Library, LibraryError};
+use setup::{EncounterBuilder, SetupError};
+use ids::UnitId;
+use state::{BattleConfig, BattleState};
+use std::path::{Path, PathBuf};
+
+/// Owns the data library and the mechanics book; the natural entry point for
+/// embedders (including the PyO3 layer).
+pub struct Simulator {
+    pub library: Library,
+    pub mechanics: MechanicsBook,
+    pub data_root: PathBuf,
+}
+
+#[derive(Debug)]
+pub enum SimError {
+    Library(LibraryError),
+    Setup(SetupError),
+    Mechanics(String),
+    Rule(String),
+}
+
+impl std::fmt::Display for SimError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            SimError::Library(e) => write!(f, "{e}"),
+            SimError::Setup(e) => write!(f, "{e}"),
+            SimError::Mechanics(m) => write!(f, "mechanics: {m}"),
+            SimError::Rule(m) => write!(f, "rule: {m}"),
+        }
+    }
+}
+
+impl std::error::Error for SimError {}
+
+impl From<LibraryError> for SimError {
+    fn from(value: LibraryError) -> Self {
+        SimError::Library(value)
+    }
+}
+
+impl From<SetupError> for SimError {
+    fn from(value: SetupError) -> Self {
+        SimError::Setup(value)
+    }
+}
+
+impl Simulator {
+    /// Load `data/` (identities, ego, enemies, statuses) and
+    /// `data/mechanics/effects.json`.
+    pub fn from_data_dir(root: impl AsRef<Path>) -> Result<Self, SimError> {
+        let root = root.as_ref().to_path_buf();
+        let library = Library::load(&root)?;
+        let mechanics = MechanicsBook::load(&root.join("mechanics").join("effects.json"))
+            .map_err(SimError::Mechanics)?;
+        Ok(Self {
+            library,
+            mechanics,
+            data_root: root,
+        })
+    }
+
+    pub fn new_encounter(
+        &self,
+        team: &[&str],
+        enemies: &[&str],
+        seed: u64,
+        config: BattleConfig,
+    ) -> Result<BattleState, SimError> {
+        let state = EncounterBuilder::new(&self.library, &self.mechanics)
+            .seed(seed)
+            .config(config)
+            .build(team, enemies)?;
+        Ok(state)
+    }
+
+    pub fn legal_actions(&self, state: &BattleState) -> Vec<Action> {
+        battle::legal_actions(state, &self.library)
+    }
+
+    pub fn submit(&self, state: &mut BattleState, action: Action) -> Result<(), SimError> {
+        battle::submit(state, action).map_err(SimError::Rule)
+    }
+
+    /// Commit the actions assigned for this turn: resolves clashes and attacks,
+    /// runs turn end, then starts the next turn (so the state is again in
+    /// `AwaitingActions`, which is what the Python `step()` API expects).
+    pub fn step_turn(&self, state: &mut BattleState) -> Result<(), SimError> {
+        if state.winner.is_some() || state.phase == state::Phase::Finished {
+            return Ok(());
+        }
+        state.phase = state::Phase::Combat;
+        battle::resolve_combat(state, &self.library, &self.mechanics);
+        battle::end_turn(state);
+        if state.winner.is_some() {
+            return Ok(());
+        }
+        if state.turn >= state.config.max_turns {
+            state.winner = Some(state::Winner::Draw);
+            state.phase = state::Phase::Finished;
+            return Ok(());
+        }
+        battle::begin_turn(state, &self.library, &self.mechanics);
+        Ok(())
+    }
+
+    pub fn state_hash(&self, state: &BattleState) -> u64 {
+        hash::state_hash(state)
+    }
+
+    /// Hash covering the previous state, every action submitted this turn and
+    /// the resulting state.
+    pub fn transition_hash(
+        &self,
+        previous: &BattleState,
+        actions: &[Action],
+        next: &BattleState,
+    ) -> u64 {
+        #[derive(serde::Serialize)]
+        struct Transition<'a> {
+            previous: u64,
+            actions: &'a [Action],
+            next: u64,
+        }
+        let value = Transition {
+            previous: hash::state_hash(previous),
+            actions,
+            next: hash::state_hash(next),
+        };
+        hash::state_hash(&value)
+    }
+
+    /// Target lookup helper used by the search layer.
+    pub fn unit_id(&self, state: &BattleState, name: &str) -> Option<UnitId> {
+        state.units.iter().find(|u| u.name == name).map(|u| u.id.clone())
+    }
+
+    /// The rules this build knows it does not implement, for reporting.
+    pub fn unknown_rules(&self) -> Vec<&'static str> {
+        vec![
+            state::UnknownRule::SanityGainOnClash.text(),
+            state::UnknownRule::CoinFlipRng.text(),
+            state::UnknownRule::ClashTie.text(),
+        ]
+    }
+
+    pub fn strict_blockers(&self) -> Vec<String> {
+        let mut out = self.library.strict_blockers();
+        for (id, mech) in &self.mechanics.skills {
+            for line in &mech.unmodeled {
+                out.push(format!("mechanics {id}: {line}"));
+            }
+        }
+        out
+    }
+}

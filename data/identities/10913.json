@@ -1,0 +1,371 @@
+{
+  "id": "10913",
+  "kind": "identity",
+  "sinner": "Rodion",
+  "sinner_zh": "罗佳",
+  "title_en": "Lobotomy E.G.O:: The Sword Sharpened with Tears",
+  "title_zh": "脑叶公司E.G.O:: 泪锋之剑",
+  "wiki_title": "Lobotomy E.G.O::The Sword Sharpened with Tears Rodion",
+  "rarity": 3,
+  "season": "Walpurgisnacht - VI",
+  "release_date": "2025.07.17",
+  "world": "World of Lobotomy Corporation Headquarters - 1",
+  "keywords": [
+    "Lobotomy Corp. Headquarters",
+    "E.G.O Gear"
+  ],
+  "stats": {
+    "hp": 90,
+    "hp_growth": 3.14,
+    "defense_level_mod": 5,
+    "speed": {
+      "4": [
+        4,
+        7
+      ],
+      "3": [
+        3,
+        6
+      ],
+      "2": [
+        3,
+        5
+      ]
+    },
+    "resist": {
+      "slash": 1.0,
+      "pierce": 0.5,
+      "blunt": 2.0
+    },
+    "stagger_thresholds": [
+      50
+    ]
+  },
+  "skills": [
+    {
+      "id": "1091301",
+      "slot": "skill1",
+      "name": "The Knight's Sanctuary",
+      "type": "Pierce",
+      "rank": 1,
+      "upties": {
+        "1": {
+          "base_power": 3,
+          "coin_power": 4,
+          "coins": 2,
+          "offense_level_mod": 1,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Gloom",
+          "skill_amount": 3,
+          "on_use_text": "",
+          "coin_texts": [
+            "[On Hit] Inflict 1 [Sinking]",
+            "[On Hit] Gain 2 [Deep Tears]"
+          ],
+          "tags": []
+        },
+        "2": {
+          "base_power": 3,
+          "coin_power": 4,
+          "coins": 2,
+          "offense_level_mod": 1,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Gloom",
+          "skill_amount": 3,
+          "on_use_text": "If target has 6+ [Sinking], Coin Power +1",
+          "coin_texts": [
+            "[On Hit] Inflict 1 [Sinking]",
+            "[On Hit] Gain 2 [Deep Tears]"
+          ],
+          "tags": []
+        },
+        "3": {
+          "base_power": 4,
+          "coin_power": 4,
+          "coins": 2,
+          "offense_level_mod": 1,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Gloom",
+          "skill_amount": 3,
+          "on_use_text": "If target has 6+ [Sinking], Coin Power +1",
+          "coin_texts": [
+            "[On Hit] Inflict 1 [Sinking]",
+            "[On Hit] Gain 2 [Deep Tears]"
+          ],
+          "tags": []
+        },
+        "4": {
+          "base_power": 4,
+          "coin_power": 4,
+          "coins": 2,
+          "offense_level_mod": 1,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Gloom",
+          "skill_amount": 3,
+          "on_use_text": "If target has 6+ [Sinking], Coin Power +1\nAt 3+ [Protecting Sword], Clash Power +1",
+          "coin_texts": [
+            "[On Hit] Inflict 1 [Sinking]",
+            "[On Hit] Inflict 1 [Sinking]\n[On Hit] Gain 2 [Deep Tears]\n- Gain 1 additional [Deep Tears] for every 2 [Protecting Sword] (max 2)"
+          ],
+          "tags": []
+        }
+      },
+      "name_en": "The Knight's Sanctuary",
+      "name_zh": "骑士的护佑"
+    },
+    {
+      "id": "1091302",
+      "slot": "skill2",
+      "name": "With the Power of Justice",
+      "type": "Pierce",
+      "rank": 2,
+      "upties": {
+        "1": {
+          "base_power": 3,
+          "coin_power": 4,
+          "coins": 3,
+          "offense_level_mod": 2,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Envy",
+          "skill_amount": 2,
+          "on_use_text": "[On Use] At 15+ [Deep Tears], consume 5 [Deep Tears] to deal +15% damage",
+          "coin_texts": [],
+          "tags": []
+        },
+        "2": {
+          "base_power": 3,
+          "coin_power": 4,
+          "coins": 3,
+          "offense_level_mod": 2,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Envy",
+          "skill_amount": 2,
+          "on_use_text": "If target has 6+ [Sinking], Coin Power +1\n[On Use] At 15+ [Deep Tears], consume 5 [Deep Tears] to deal +15% damage",
+          "coin_texts": [],
+          "tags": []
+        },
+        "3": {
+          "base_power": 4,
+          "coin_power": 4,
+          "coins": 3,
+          "offense_level_mod": 2,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Envy",
+          "skill_amount": 2,
+          "on_use_text": "If target has 6+ [Sinking], Coin Power +1\n[On Use] At 15+ [Deep Tears], consume 5 [Deep Tears] to deal +15% damage",
+          "coin_texts": [],
+          "tags": []
+        },
+        "4": {
+          "base_power": 4,
+          "coin_power": 4,
+          "coins": 3,
+          "offense_level_mod": 2,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Envy",
+          "skill_amount": 2,
+          "on_use_text": "If target has 6+ [Sinking], Coin Power +1\nClash Power +1 for every 2 [Protecting Sword] (max 2)\n[On Use] At 15+ [Deep Tears], consume 5 [Deep Tears] to deal +15% damage",
+          "coin_texts": [],
+          "tags": []
+        }
+      },
+      "name_en": "With the Power of Justice",
+      "name_zh": "以正义之力"
+    },
+    {
+      "id": "1091303",
+      "slot": "skill3",
+      "name": "Arcana Pierce",
+      "type": "Pierce",
+      "rank": 3,
+      "upties": {
+        "1": {
+          "base_power": 4,
+          "coin_power": 4,
+          "coins": 3,
+          "offense_level_mod": 3,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Pride",
+          "skill_amount": 1,
+          "on_use_text": "If target has 6+ [Sinking], Coin Power +1\nClash Power +1 for every 2 [Protecting Sword] (max 2)\n[On Use] At 10+ [Deep Tears], consume up to 20 [Deep Tears]\n- Deal +(Stack consumed x 1.5)% damage\n[Attack End] If target is defeated, regain half of [Deep Tears] consumed by this Skill",
+          "coin_texts": [],
+          "tags": []
+        },
+        "2": {
+          "base_power": 4,
+          "coin_power": 4,
+          "coins": 3,
+          "offense_level_mod": 3,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Pride",
+          "skill_amount": 1,
+          "on_use_text": "If target has 6+ [Sinking], Coin Power +1\nClash Power +1 for every 2 [Protecting Sword] (max 2)\n[On Use] At 10+ [Deep Tears], consume up to 20 [Deep Tears]\n- Deal +(Stack consumed x 1.5)% damage\n[Attack End] If target is defeated, regain half of [Deep Tears] consumed by this Skill",
+          "coin_texts": [],
+          "tags": []
+        },
+        "3": {
+          "base_power": 4,
+          "coin_power": 4,
+          "coins": 3,
+          "offense_level_mod": 3,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Pride",
+          "skill_amount": 1,
+          "on_use_text": "If target has 6+ [Sinking], Coin Power +1\nClash Power +1 for every 2 [Protecting Sword] (max 2)\n[On Use] At 10+ [Deep Tears], consume up to 20 [Deep Tears]\n- Deal +(Stack consumed x 1.5)% damage\n[Attack End] If target is defeated, regain half of [Deep Tears] consumed by this Skill",
+          "coin_texts": [],
+          "tags": []
+        },
+        "4": {
+          "base_power": 5,
+          "coin_power": 4,
+          "coins": 3,
+          "offense_level_mod": 3,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Pride",
+          "skill_amount": 1,
+          "on_use_text": "If target has 6+ [Sinking], Coin Power +1\nClash Power +1 for every [Protecting Sword] (max 5)\n[On Use] At 10+ [Deep Tears], consume up to 20 [Deep Tears]\n- Deal +(Stack consumed x 1.5)% damage\n- Base Power +1 for every 5 Stack consumed\n[Attack End] If target is defeated, regain half of [Deep Tears] consumed by this Skill",
+          "coin_texts": [],
+          "tags": []
+        }
+      },
+      "name_en": "Arcana Pierce",
+      "name_zh": "阿卡纳穿刺"
+    },
+    {
+      "id": "1091304",
+      "slot": "defense",
+      "name": "The Knight's Faith",
+      "type": "Guard",
+      "rank": 1,
+      "upties": {
+        "1": {
+          "base_power": 3,
+          "coin_power": 7,
+          "coins": 1,
+          "offense_level_mod": null,
+          "attack_weight": 1,
+          "defense_level_mod": 1,
+          "sin_affinity": "Gloom",
+          "skill_amount": null,
+          "on_use_text": "[Clashable Guard]\n[Combat Start] Gain Shield equal to (SP / 5)% of this unit's max HP (once per turn)\n[On Use] Gain 3 [Deep Tears] (2 times per turn)\n[Turn End] At less than 3 [Tear-sharpened], lose 15 SP and gain 1 [Tear-sharpened] (once per turn)\n- If this unit has [Tear-sharpened], lose ([Tear-sharpened] Stack x 15) more SP",
+          "coin_texts": [
+            "[Unbreakable Coin]"
+          ],
+          "tags": []
+        },
+        "2": {
+          "base_power": 3,
+          "coin_power": 7,
+          "coins": 1,
+          "offense_level_mod": null,
+          "attack_weight": 1,
+          "defense_level_mod": 1,
+          "sin_affinity": "Gloom",
+          "skill_amount": null,
+          "on_use_text": "[Clashable Guard]\n[Combat Start] Gain Shield equal to (SP / 5)% of this unit's max HP (once per turn)\n[On Use] Gain 3 [Deep Tears] (2 times per turn)\n[Turn End] At less than 3 [Tear-sharpened], lose 15 SP and gain 1 [Tear-sharpened] (once per turn)\n- If this unit has [Tear-sharpened], lose ([Tear-sharpened] Stack x 15) more SP",
+          "coin_texts": [
+            "[Unbreakable Coin]"
+          ],
+          "tags": []
+        },
+        "3": {
+          "base_power": 3,
+          "coin_power": 7,
+          "coins": 1,
+          "offense_level_mod": null,
+          "attack_weight": 1,
+          "defense_level_mod": 1,
+          "sin_affinity": "Gloom",
+          "skill_amount": null,
+          "on_use_text": "[Clashable Guard]\n[Combat Start] Gain Shield equal to (SP / 5)% of this unit's max HP (once per turn)\n[On Use] Gain 3 [Deep Tears] (2 times per turn)\n[Turn End] At less than 3 [Tear-sharpened], lose 15 SP and gain 1 [Tear-sharpened] (once per turn)\n- If this unit has [Tear-sharpened], lose ([Tear-sharpened] Stack x 15) more SP",
+          "coin_texts": [
+            "[Unbreakable Coin]"
+          ],
+          "tags": []
+        },
+        "4": {
+          "base_power": 3,
+          "coin_power": 10,
+          "coins": 1,
+          "offense_level_mod": null,
+          "attack_weight": 1,
+          "defense_level_mod": 1,
+          "sin_affinity": "Gloom",
+          "skill_amount": null,
+          "on_use_text": "[Clashable Guard]\n[Combat Start] Coin Power +1 for every 2 [Protecting Sword] (max 2)\n[Combat Start] Gain Shield equal to (SP / 3)% of this unit's max HP (once per turn)\n[On Use] Gain 5 [Deep Tears] (2 times per turn)\n[Turn End] At less than 3 [Tear-sharpened], lose 15 SP to gain 1 [Tear-sharpened] (once per turn)\n- If this unit has [Tear-sharpened], lose ([Tear-sharpened] Stack x 15) more SP",
+          "coin_texts": [
+            "[Unbreakable Coin]"
+          ],
+          "tags": []
+        }
+      },
+      "name_en": "The Knight's Faith",
+      "name_zh": "骑士的信条"
+    }
+  ],
+  "passives": [
+    {
+      "kind": "combat_passive",
+      "uptie_from": 1,
+      "text": "Turn Start: at 0 or higher SP, gain [Blessing]\n- Uses Plus Coin Skills as Base Skills\nTurn Start: at less than 0 SP, gain [Despair]\n- Uses Minus Coin Skills as Base Skills\nWhen gaining [Charge] Count, gain [Deep Tears] instead\n- [Deep Tears] is unaffected by [Charge] Potency\nThis unit's SP does not drop below -40 from the following effects:\n- SP loss effects on this unit's Base Skills\n- SP loss effects from allied units' Support Passives\n- SP loss effects from [Tear-sharpened]\n- SP loss effects from ally death in this unit's 'Base factors decreasing Sanity'\nIn an Encounter, when this unit takes damage that brings its SP to -45, maintain this unit's SP at -44 for that turn (once per Encounter)\n(※ This applies only to SP damages; it does not apply to SP changes or SP consuming abilities like using E.G.O Skills)\nIf this unit has [Piercing Sword]: before hitting an enemy with a Base Attack Skill, consume 1 [Piercing Sword] to inflict 1 [Sinking]\n- If this unit has 2+ [Piercing Sword] before this turn's final Base Attack Skill's final Coin hits, consume all of it instead to inflict it as [Sinking]\nIf this unit has 3 [Tear-sharpened]: before hitting an enemy with the final Coin of a Base Attack Skill, consume all [Tear-sharpened] to inflict 3 [Sinking] and +3 [Sinking] Count, and deal +50% damage with that Coin\n- If this effect activated, reset to 0 SP if this unit has less than 0 SP at Turn End. (when in Panic or 'E.G.O Corrosion', recover) Then, heal 30 SP",
+      "raw_key": "passive0"
+    },
+    {
+      "kind": "support_passive_1",
+      "uptie_from": 1,
+      "text": "When in [Blessing] state…\nTake -(SP / 2)% HP damage from attacks (max 20%)\n- Combat Start: at 3+ [Protecting Sword], gain 1 [Protection]\n- Combat Start: at 5 [Protecting Sword], gain 2 [Protection] and 1 [Clash Power Up] instead\nWhen in [Despair] state…\n- Deal +(-SP/2)% damage with Base Skills (max 20%)\n- Combat Start: at 3+ [Piercing Sword], gain 1 [Damage Up]\n- Combat Start: at 5 [Piercing Sword], gain 2 [Damage Up] and 1 [Power Up] instead",
+      "raw_key": "passive1"
+    },
+    {
+      "kind": "support_passive_1",
+      "uptie_from": 3,
+      "text": "When in [Blessing] state…\nTake -(SP / 2)% HP damage from attacks (max 20%)\nWhen in [Despair] state…\n- Deal +(-SP/2)% damage with Base Skills (max 20%)",
+      "raw_key": "3passive1"
+    },
+    {
+      "kind": "support_passive_2",
+      "uptie_from": 1,
+      "text": "Combat Start: applies to the ally with the earliest Deployment order\nAt -15 or less SP, +1 Final Power to Minus Coin Skills\nAt -30 or less SP, +15% damage and +1 Final Power to Minus Coin Skills instead",
+      "raw_key": "passive2"
+    },
+    {
+      "kind": "support_passive_2",
+      "uptie_from": 3,
+      "text": "Combat Start: applies to the ally with the earliest Deployment order\nAt -15 or less SP, +1 Final Power to Minus Coin Skills",
+      "raw_key": "3passive2"
+    }
+  ],
+  "unparsed": [],
+  "sources": [
+    {
+      "kind": "wiki",
+      "url": "https://limbuscompany.wiki.gg/wiki/Lobotomy_E.G.O::The_Sword_Sharpened_with_Tears_Rodion",
+      "language": "en",
+      "verification": "single_source_verified"
+    },
+    {
+      "kind": "game_text",
+      "language": "en",
+      "id": "10913",
+      "verification": "official"
+    },
+    {
+      "kind": "game_text_zh_cn",
+      "language": "zh-CN",
+      "id": "10913",
+      "verification": "synthetic_translation"
+    }
+  ]
+}

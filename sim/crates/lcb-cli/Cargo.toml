@@ -1,0 +1,11 @@
+[package]
+name = "lcb-cli"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "CLI / JSON-RPC driver for the Limbus Company simulator core"
+
+[dependencies]
+lcb-core = { path = "../lcb-core" }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"

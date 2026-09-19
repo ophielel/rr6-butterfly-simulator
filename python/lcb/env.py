@@ -1,0 +1,211 @@
+"""Environment wrapper around the Rust simulator.
+
+The action space follows the plan: pick a unit -> pick a skill -> pick a target
+-> commit.  Every mutation goes through Rust so that the rules cannot be
+re-implemented (and therefore silently changed) on the Python side.
+"""
+
+from __future__ import annotations
+
+import json
+from dataclasses import dataclass
+from pathlib import Path
+from typing import Any, Dict, List, Optional
+
+try:  # pragma: no cover - import guard
+    from . import lcb_sim  # type: ignore
+
+    BACKEND = "pyo3"
+    TEAM: List[str] = list(lcb_sim.TEAM)
+    BOSS_IMAGO: str = lcb_sim.BOSS_IMAGO
+    BOSS_PUPA: str = lcb_sim.BOSS_PUPA
+except ImportError:  # pragma: no cover - fallback path
+    from .stdio_client import StdioSimulator
+
+    lcb_sim = None  # type: ignore
+    BACKEND = "stdio"
+    # Fixed content ids (kept in sync with sim/crates/lcb-core/src/setup.rs).
+    TEAM = ["10110", "10414", "10813", "10913", "11004", "11114", "11214"]
+    BOSS_IMAGO = "9567"
+    BOSS_PUPA = "9563"
+
+
+@dataclass(frozen=True)
+class Action:
+    """One submitted action."""
+
+    actor: str
+    slot: int
+    skill: str
+    target: str
+
+    def to_wire(self) -> str:
+        return json.dumps(
+            {
+                "Assign": {
+                    "actor": self.actor,
+                    "slot": self.slot,
+                    "skill": self.skill,
+                    "target": self.target,
+                }
+            }
+        )
+
+
+@dataclass(frozen=True)
+class EgoAction:
+    """An E.G.O usage (awakening / corrosion / overclock)."""
+
+    actor: str
+    slot: int
+    ego: str
+    kind: str  # "Awakening" | "Corrosion" | "Overclock"
+    target: str
+
+    def to_wire(self) -> str:
+        return json.dumps(
+            {
+                "UseEgo": {
+                    "actor": self.actor,
+                    "slot": self.slot,
+                    "ego": self.ego,
+                    "kind": self.kind,
+                    "target": self.target,
+                }
+            }
+        )
+
+
+def _decode(action: Dict[str, Any]) -> Any:
+    if "Assign" in action:
+        payload = action["Assign"]
+        return Action(
+            actor=payload["actor"],
+            slot=payload["slot"],
+            skill=payload["skill"],
+            target=payload["target"],
+        )
+    if "UseEgo" in action:
+        payload = action["UseEgo"]
+        return EgoAction(
+            actor=payload["actor"],
+            slot=payload["slot"],
+            ego=payload["ego"],
+            kind=payload["kind"],
+            target=payload["target"],
+        )
+    return action
+
+
+class LimbusEnv:
+    """Gym-like wrapper with clone/rollback support.
+
+    >>> env = LimbusEnv()
+    >>> env.reset(seed=1)
+    >>> for action in env.legal_actions():
+    ...     pass
+    >>> env.commit()          # resolve the turn
+    """
+
+    def __init__(self, data_dir: Optional[str] = None, strict: bool = False) -> None:
+        default = Path(__file__).resolve().parents[2] / "data"
+        self._data_dir = str(data_dir or default)
+        if BACKEND == "pyo3":
+            self._sim = lcb_sim.PySimulator(self._data_dir)
+        else:
+            self._sim = StdioSimulator(self._data_dir)
+        self.strict = strict
+        self.turn = 0
+
+    # -- lifecycle ---------------------------------------------------------
+    def reset(
+        self,
+        seed: int,
+        team: Optional[List[str]] = None,
+        enemies: Optional[List[str]] = None,
+    ) -> str:
+        return self._sim.reset(
+            int(seed),
+            list(team) if team else None,
+            list(enemies) if enemies else None,
+            bool(self.strict),
+        )
+
+    def clone_state(self) -> "LimbusEnv":
+        clone = object.__new__(LimbusEnv)
+        clone._sim = self._sim.clone_state()
+        clone.strict = self.strict
+        clone.turn = self.turn
+        return clone
+
+    def state_hash(self) -> str:
+        return self._sim.state_hash()
+
+    def state(self) -> Dict[str, Any]:
+        return json.loads(self._sim.state_json())
+
+    def transition_hash(self) -> Optional[str]:
+        return self._last_transition
+
+    # -- interaction -------------------------------------------------------
+    def legal_actions(self) -> List[Any]:
+        return [_decode(a) for a in json.loads(self._sim.legal_actions())]
+
+    def step(self, action: Any) -> Dict[str, Any]:
+        wire: Optional[str]
+        if action is None:
+            wire = None
+        elif isinstance(action, (Action, EgoAction)):
+            wire = action.to_wire()
+        else:
+            wire = json.dumps(action)
+        result = json.loads(self._sim.step(wire))
+        self._last_transition = result.get("transition_hash")
+        self.turn = result.get("turn", self.turn)
+        return result
+
+    def commit(self) -> Dict[str, Any]:
+        return self.step(None)
+
+    # -- diagnostics -------------------------------------------------------
+    def unknown_rules(self) -> List[str]:
+        return list(self._sim.unknown_rules())
+
+    def strict_blockers(self) -> List[str]:
+        return list(self._sim.strict_blockers())
+
+    # -- scoring (objective only; not a damage model) ----------------------
+    @staticmethod
+    def score(state: Dict[str, Any]) -> float:
+        """Difference in remaining HP, weighted towards the enemy.
+
+        This is the search objective.  It reads the *simulated* state, so it is
+        never a hand-written damage estimate.
+        """
+        sinners = 0
+        enemies = 0
+        for unit in state.get("units", []):
+            kind = unit.get("kind", {})
+            alive = unit.get("alive", True)
+            hp = unit.get("hp", 0) if alive else 0
+            if "Sinner" in kind:
+                sinners += hp
+            else:
+                enemies += hp
+        weighted = 1.0 * sinners - 4.0 * enemies
+        if state.get("winner") == "Sinners":
+            weighted += 10_000
+        elif state.get("winner") == "Enemies":
+            weighted -= 10_000
+        return weighted
+
+
+__all__ = [
+    "LimbusEnv",
+    "Action",
+    "EgoAction",
+    "TEAM",
+    "BOSS_IMAGO",
+    "BOSS_PUPA",
+    "BACKEND",
+]

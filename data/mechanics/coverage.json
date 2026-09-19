@@ -1,0 +1,82 @@
+{
+ "10110": {
+  "modelled": 80,
+  "unmodelled": 29
+ },
+ "10414": {
+  "modelled": 71,
+  "unmodelled": 14
+ },
+ "10813": {
+  "modelled": 71,
+  "unmodelled": 31
+ },
+ "10913": {
+  "modelled": 25,
+  "unmodelled": 35
+ },
+ "11004": {
+  "modelled": 24,
+  "unmodelled": 10
+ },
+ "11114": {
+  "modelled": 50,
+  "unmodelled": 60
+ },
+ "11214": {
+  "modelled": 39,
+  "unmodelled": 62
+ },
+ "20106": {
+  "modelled": 0,
+  "unmodelled": 6
+ },
+ "20109": {
+  "modelled": 9,
+  "unmodelled": 16
+ },
+ "20807": {
+  "modelled": 6,
+  "unmodelled": 10
+ },
+ "20810": {
+  "modelled": 7,
+  "unmodelled": 17
+ },
+ "20903": {
+  "modelled": 2,
+  "unmodelled": 5
+ },
+ "21009": {
+  "modelled": 8,
+  "unmodelled": 23
+ },
+ "21206": {
+  "modelled": 2,
+  "unmodelled": 5
+ },
+ "21207": {
+  "modelled": 3,
+  "unmodelled": 14
+ },
+ "9563": {
+  "modelled": 14,
+  "unmodelled": 10
+ },
+ "9564": {
+  "modelled": 0,
+  "unmodelled": 4
+ },
+ "9565": {
+  "modelled": 0,
+  "unmodelled": 4
+ },
+ "9566": {
+  "modelled": 0,
+  "unmodelled": 4
+ },
+ "9567": {
+  "modelled": 62,
+  "unmodelled": 46
+ }
+}

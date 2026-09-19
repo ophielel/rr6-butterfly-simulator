@@ -1,0 +1,16 @@
+[package]
+name = "lcb-py"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "PyO3 bindings for the Limbus Company simulator core"
+
+[lib]
+name = "lcb_sim"
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+lcb-core = { path = "../lcb-core" }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+pyo3 = { version = "0.23", features = ["extension-module", "abi3-py38"] }

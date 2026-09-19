@@ -1,0 +1,78 @@
+{
+  "id": "21009",
+  "kind": "ego",
+  "name_en": "Harmony",
+  "name_zh": "和声",
+  "wiki_title": "Harmony Sinclair",
+  "risk": "HE",
+  "sin_affinity": "Wrath",
+  "awakening_sp": 10,
+  "corrosion_sp": 30,
+  "resource_cost": {
+    "Wrath": 3,
+    "Lust": 2,
+    "Sloth": 1,
+    "Pride": 1,
+    "Envy": 1
+  },
+  "awakening": {
+    "name": "Harmony",
+    "sin": "Wrath",
+    "type": "Slash",
+    "base_power": 6,
+    "coin_power": 2,
+    "coins": 3,
+    "attack_weight": 3,
+    "offense_level_mod": 2,
+    "on_use_text": "Clash Power +1 for every 2 ([Bleed] + [Burn]) on the main target (max 8)\nDeal more damage based on missing HP on self (max 15%)\nDeal -50% damage against sub-targets\n[On Target Kill] All allies gain 2 [Rhythm] next turn (once per Skill)\n[Attack End] Heal 10 SP for (1 + highest Reson.) other allies with the least SP (max 4 units)\n[Attack End] For 2 turns, lose 8 SP at Combat End",
+    "coin_texts": [
+      "[On Hit] Inflict 2 [Bleed]",
+      "[On Hit] Inflict 2 [Burn]",
+      "[Heads Hit] At 10%+ HP, take 4 ~ 8 HP damage (once per Coin)\n- Then, Reuse this Coin (4 times per Skill)\n- This damage does not Stagger or reduce this unit's HP below 1\n[On Hit] Inflict 1 [Burn]\n[On Hit] Inflict 1 [Bleed]\n[On Hit] A random ally gains 1 ~ 2 [Rhythm] next turn (once per Coin)",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "reuse": true
+  },
+  "corrosion": {
+    "name": "Harmony",
+    "sin": "Wrath",
+    "type": "Slash",
+    "base_power": 14,
+    "coin_power": -2,
+    "coins": 3,
+    "attack_weight": 3,
+    "offense_level_mod": 4,
+    "on_use_text": "[Indiscriminate]\nTargets randomly\nClash Power +1 for every 2 ([Bleed] + [Burn]) on the main target (max 8)\nDeal more damage based on missing HP on self (max 15%)\nDeal -50% damage against sub-targets\n[Before Attack] Gain Atk Weight equal to (highest Reson. / 2) (max 2; rounded down)\n[Before Attack] Base Power -2 for every Cracked Coin (max -6)\n[Attack End] Heal 12 SP for 4 other allies with the least SP\n[Attack End] All allies gain 2 [Rhythm], 1 [Wrath DMG Up], 1 [Lust DMG Up], 1 [Envy DMG Up], 1 [Fragile] next turn\n- If target was killed, activate the effect above once more",
+    "coin_texts": [
+      "[Unbreakable Coin]\n[On Hit] Inflict 2 [Bleed]",
+      "[Unbreakable Coin]\n[On Hit] Inflict 2 [Burn]",
+      "[Unbreakable Coin]\n[On Hit] At 10%+ HP, take 10 ~ 20 HP damage (once per Coin)\n- Then, Reuse this Coin if the sum of HP lost due to this effect is less than 50 (4 times per Skill)\n- This damage does not Stagger or reduce this unit's HP below 1\n[On Hit] Inflict 1 [Burn]\n[On Hit] Inflict 1 [Bleed]\n[On Hit] A random ally gains 1 ~ 2 [Rhythm] next turn (once per Coin)",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "reuse": true
+  },
+  "passives": [],
+  "unparsed": [],
+  "sources": [
+    {
+      "kind": "wiki",
+      "url": "https://limbuscompany.wiki.gg/wiki/Harmony_Sinclair",
+      "language": "en",
+      "verification": "single_source_verified"
+    },
+    {
+      "kind": "game_text",
+      "language": "en",
+      "id": "21009",
+      "verification": "official"
+    }
+  ]
+}

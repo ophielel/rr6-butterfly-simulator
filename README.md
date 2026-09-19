@@ -1,0 +1,96 @@
+# RR6 Butterfly of Entangled Lives — simulator
+
+A small, source-driven combat simulator for the fixed content in
+`rr6_butterfly_simulator_plan_v2.md`: seven identities, seven E.G.O, and the
+Refraction Railway Line 6 encounter *Butterfly of Entangled Lives [羅生蝶]*
+(`9563` Pupa, `9567` Imago, `9564/9565/9566` illusory butterflies).
+
+Two rules shape the whole project:
+
+> Unknown mechanics are marked `UNKNOWN` / `NOT_IMPLEMENTED`, never guessed.
+> The simulator only simulates; search lives in Python.
+
+## Layout
+
+```
+data/          generated data library (identities, ego, enemies, statuses, mechanics)
+tools/         data pipeline (fetch -> parse -> extract -> report)
+sim/           Rust workspace
+  crates/lcb-core   rules: state, clash, damage, statuses, E.G.O, replay, hash
+  crates/lcb-cli    inspect / run / JSON-stdio driver
+  crates/lcb-py     PyO3 bindings (`lcb_sim`)
+python/lcb/    environment wrapper + search (random, greedy, beam)
+docs/          MECHANICS.md (rule -> source), STATUS.md, DATA.md, COVERAGE.md
+```
+
+## Build and test
+
+```bash
+# 1. data library (cached; only fetches what is missing)
+python3 tools/build_library.py
+python3 tools/extract_effects.py
+python3 tools/report.py
+
+# 2. Rust core + tests (Windows toolchain via WSL, or native cargo)
+cd sim && cargo test && cargo run -q -p lcb-cli -- inspect
+
+# 3. Python bindings
+cd sim && PYO3_PYTHON=$(python -c "import sys;print(sys.executable)") cargo build -p lcb-py --release
+cp target/release/lcb_sim.dll ../python/lcb/lcb_sim.pyd   # .so on Linux/macOS
+
+# 4. play a turn / run the Python smoke tests
+python python/demo.py --turns 3 --policy greedy --seed 1
+python python/tests/test_env.py
+```
+
+`sim/crates/lcb-cli serve` speaks a JSON line protocol (`reset`,
+`legal_actions`, `step`, `clone`, `state_hash`, `unknown_rules`,
+`strict_blockers`) if the extension cannot be built.
+
+## What the Python side sees
+
+```python
+from lcb import LimbusEnv, greedy_turn
+
+env = LimbusEnv()                 # data/ is found automatically
+env.reset(seed=1)                 # 7 fixed identities vs the Imago
+for action in greedy_turn(env):   # each candidate is scored by simulating it
+    env.step(action)
+env.commit()                      # resolve the turn
+env.state_hash()                  # every state is hashable
+clone = env.clone_state()         # deep copy, safe to mutate
+```
+
+Action space, as in the plan: pick unit → pick skill → pick target → commit.
+`legal_actions()` returns the full product, including E.G.O usages the team can
+currently afford.
+
+## Sources and honesty
+
+| Source | Use | Status |
+|--------|-----|--------|
+| wiki.gg (via `r.jina.ai`) | all numbers and effect text | `single_source_verified` |
+| in-game localisation dump | official names, ids, status text | `official` |
+| zh-CN community pack | Chinese display names only | `auxiliary_translation` |
+
+* `docs/MECHANICS.md` — each implemented rule with its source and status, plus
+  the list of rules that are deliberately `UNKNOWN`.
+* `docs/STATUS.md` — phase-by-phase status and the verification gaps (no golden
+  test from gameplay footage yet).
+* `docs/COVERAGE.md` — per-skill counts of modelled vs unmodelled effect lines.
+
+Strict mode (`strict=true` / `--strict`) refuses to run content whose effect
+text contains lines the engine does not model, so unimplemented mechanics can
+never quietly change a result.
+
+## Licence and attribution
+
+Code is MIT (see `LICENSE`).  Limbus Company and its data are (c) Project Moon;
+this project is unaffiliated.  The generated library only exists so the
+simulator can run, and each record keeps its provenance in `data/sources/`.
+wiki.gg text is CC BY-SA 4.0.  The raw upstream cache (`data/_raw/`, mirrored
+game localisation files and wiki pages) is deliberately **not** committed:
+
+```bash
+python3 tools/fetch_gamedata.py && python3 tools/fetch_pages.py
+```

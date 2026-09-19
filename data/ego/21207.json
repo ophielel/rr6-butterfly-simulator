@@ -1,0 +1,77 @@
+{
+  "id": "21207",
+  "kind": "ego",
+  "name_en": "Solemn Lament",
+  "name_zh": "庄严哀悼",
+  "wiki_title": "Solemn Lament Gregor",
+  "risk": "HE",
+  "sin_affinity": "Gloom",
+  "awakening_sp": 25,
+  "corrosion_sp": 30,
+  "resource_cost": {
+    "Lust": 1,
+    "Sloth": 2,
+    "Gloom": 2,
+    "Envy": 2
+  },
+  "awakening": {
+    "name": "Solemn Lament",
+    "sin": "Gloom",
+    "type": "Blunt",
+    "base_power": 8,
+    "coin_power": 1,
+    "coins": 3,
+    "attack_weight": 3,
+    "offense_level_mod": 2,
+    "on_use_text": "When this Skill flips Coins, each Coin flips against a random enemy among its targets.\n- The first Coin always targets the main target\n- All 'On Hit' effects and all damage dealt by each Coin are inflicted only against the random target the Coin selected\nWhen inflicting [Butterfly] using this Skill's effects: (Chance to flip Heads)% chance to inflict The Departed. If this unit did not inflict The Departed, inflict The Living instead. (calculates every [Butterfly] Stack independently)\n[Attack End] Heal (# of Coin 3 hits x 2) SP",
+    "coin_texts": [
+      "[On Hit] Inflict 1 random [Butterfly]",
+      "[On Hit] Inflict 1 random [Butterfly]",
+      "[On Hit] Inflict 1~2 random [Butterfly]\n[On Hit] Lose 2~6 SP\n[On Hit] At 0+ SP, Reuse this Coin (5 times max per Skill)",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "reuse": true
+  },
+  "corrosion": {
+    "name": "Solemn Lament",
+    "sin": "Gloom",
+    "type": "Blunt",
+    "base_power": 32,
+    "coin_power": -8,
+    "coins": 1,
+    "attack_weight": 5,
+    "offense_level_mod": 0,
+    "on_use_text": "[Indiscriminate]\nTargets randomly\nIf target has less than 0 SP, deal more damage the further their SP value is from 0 (+1% damage for every missing SP, max 45%)\nFor targets that are Non-SP Units, deal +1% damage for every 2 [Sinking] on target (max 45%)\n[On Kill] Heal 5 SP",
+    "coin_texts": [
+      "[On Hit] Inflict 4 [Butterfly](The Living)\n[On Hit] Inflict 4 [Butterfly](The Departed)\n[On Hit] Inflict +3 [Sinking] Count",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "reuse": false
+  },
+  "passives": [],
+  "unparsed": [],
+  "sources": [
+    {
+      "kind": "wiki",
+      "url": "https://limbuscompany.wiki.gg/wiki/Solemn_Lament_Gregor",
+      "language": "en",
+      "verification": "single_source_verified"
+    },
+    {
+      "kind": "game_text",
+      "language": "en",
+      "id": "21207",
+      "verification": "official"
+    }
+  ]
+}

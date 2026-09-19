@@ -1,0 +1,75 @@
+{
+  "id": "20106",
+  "kind": "ego",
+  "name_en": "Bygone Days",
+  "name_zh": "往昔",
+  "wiki_title": "Bygone Days Yi Sang",
+  "risk": "ZAYIN",
+  "sin_affinity": "Gloom",
+  "awakening_sp": 15,
+  "corrosion_sp": 15,
+  "resource_cost": {
+    "Sloth": 3,
+    "Gloom": 3
+  },
+  "awakening": {
+    "name": "Bygone Days",
+    "sin": "Gloom",
+    "type": "Pierce",
+    "base_power": 15,
+    "coin_power": 8,
+    "coins": 1,
+    "attack_weight": 3,
+    "offense_level_mod": 0,
+    "on_use_text": "[Attack End] Randomly inflict (6 + Gloom Reson.) [Sinking] between targets",
+    "coin_texts": [
+      "[On Hit] If target has 6+ [Sinking], inflict 2 [Bind] next turn",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "reuse": false
+  },
+  "corrosion": {
+    "name": "Bygone Days",
+    "sin": "Gloom",
+    "type": "Blunt",
+    "base_power": 22,
+    "coin_power": -6,
+    "coins": 1,
+    "attack_weight": 3,
+    "offense_level_mod": 0,
+    "on_use_text": "[Indiscriminate]\nTargets Randomly\n[Before Attack] At 3+ (Gloom Reson.), Atk Weight +1",
+    "coin_texts": [
+      "[On Hit] Inflict 2 [Sinking]. Inflict 2 [Bind] next turn\n[On Hit] If target has 6+ [Sinking], inflict 1 [Bind] next turn",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "reuse": false
+  },
+  "passives": [],
+  "unparsed": [],
+  "sources": [
+    {
+      "kind": "wiki",
+      "url": "https://limbuscompany.wiki.gg/wiki/Bygone_Days_Yi_Sang",
+      "language": "en",
+      "verification": "single_source_verified"
+    },
+    {
+      "kind": "game_text",
+      "language": "en",
+      "id": "20106",
+      "verification": "official"
+    }
+  ]
+}

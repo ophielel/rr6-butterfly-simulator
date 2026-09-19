@@ -1,0 +1,16 @@
+{
+  "en": {
+    "repo": "x1bViolet/Limbus-Localization-Files",
+    "commit": "5739498b5854c0b7349c1c96e20669329ff82370",
+    "language": "en",
+    "kind": "official_game_text",
+    "note": "mirror of LimbusCompany_Data Localize folder"
+  },
+  "zh_cn": {
+    "repo": "LocalizeLimbusCompany/LocalizeLimbusCompany",
+    "commit": "231a8bcfc347273e7769b70ebc4f9f3e2fecaa5a",
+    "language": "zh-CN",
+    "kind": "community_translation",
+    "note": "都市零协会汉化组 language pack; auxiliary source only"
+  }
+}

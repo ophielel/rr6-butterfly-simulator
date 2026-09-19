@@ -1,0 +1,58 @@
+{
+  "wiki": {
+    "site": "https://limbuscompany.wiki.gg/",
+    "access": "via r.jina.ai (direct access is WAF-blocked)",
+    "language": "en",
+    "verification": "single_source_verified",
+    "fetched_pages": [
+      "Butterfly_of_Entangled_Lives_羅生蝶.wikitext",
+      "Butterfly_of_Entangled_Lives_羅生蝶__Enemy__Butterfly_of_Entangled_Lives::Imago.wikitext",
+      "Bygone_Days_Gregor.wikitext",
+      "Bygone_Days_Ishmael.wikitext",
+      "Bygone_Days_Yi_Sang.wikitext",
+      "Clash.wikitext",
+      "Damage.wikitext",
+      "Harmony_Sinclair.wikitext",
+      "Jeong's_Office_Rep_Ishmael.wikitext",
+      "LCA_Udjat_Vanguard_Team_3_Leader_Outis.wikitext",
+      "Line_6:_Maru_no_Uchi_no_Sanzu_no_Kawa.wikitext",
+      "Lobotomy_E.G.O::Lamp_Gregor.wikitext",
+      "Lobotomy_E.G.O::Solemn_Lament_Yi_Sang.wikitext",
+      "Lobotomy_E.G.O::The_Sword_Sharpened_with_Tears_Rodion.wikitext",
+      "Lobotomy_EGO_Faint_Aroma_and_Solitude_Ryoshu.wikitext",
+      "Los_Mariachis_Jefe_Sinclair.wikitext",
+      "Rime_Shank_Rodion.wikitext",
+      "Solemn_Lament_Gregor.wikitext",
+      "Solemn_Lament_Yi_Sang.wikitext",
+      "Status_Effects.wikitext",
+      "Tidal_Elegy_Ishmael.wikitext",
+      "abno_imago.wikitext",
+      "abno_pupa.wikitext",
+      "boss_imago.wikitext",
+      "boss_pupa.wikitext",
+      "boss_pupa_enemy.wikitext",
+      "fandom_Battles.wikitext",
+      "illusory_future.wikitext",
+      "illusory_past.wikitext",
+      "illusory_present.wikitext",
+      "offense_defense_level.wikitext",
+      "sanity.wikitext"
+    ]
+  },
+  "game_text": {
+    "en": {
+      "repo": "x1bViolet/Limbus-Localization-Files",
+      "commit": "5739498b5854c0b7349c1c96e20669329ff82370",
+      "language": "en",
+      "kind": "official_game_text",
+      "note": "mirror of LimbusCompany_Data Localize folder"
+    },
+    "zh_cn": {
+      "repo": "LocalizeLimbusCompany/LocalizeLimbusCompany",
+      "commit": "231a8bcfc347273e7769b70ebc4f9f3e2fecaa5a",
+      "language": "zh-CN",
+      "kind": "community_translation",
+      "note": "都市零协会汉化组 language pack; auxiliary source only"
+    }
+  }
+}

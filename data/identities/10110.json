@@ -1,0 +1,391 @@
+{
+  "id": "10110",
+  "kind": "identity",
+  "sinner": "Yi Sang",
+  "sinner_zh": "李箱",
+  "title_en": "Lobotomy E.G.O:: Solemn Lament",
+  "title_zh": "脑叶公司E.G.O:: 庄严哀悼",
+  "wiki_title": "Lobotomy E.G.O::Solemn Lament Yi Sang",
+  "rarity": 3,
+  "season": "Walpurgisnacht - IV",
+  "release_date": "2024.09.05",
+  "world": "World of Lobotomy Corporation Headquarters - 1",
+  "keywords": [
+    "Lobotomy Corp. Headquarters",
+    "E.G.O Gear"
+  ],
+  "stats": {
+    "hp": 66,
+    "hp_growth": 2.28,
+    "defense_level_mod": 2,
+    "speed": {
+      "4": [
+        3,
+        8
+      ],
+      "3": [
+        3,
+        7
+      ],
+      "2": [
+        3,
+        6
+      ]
+    },
+    "resist": {
+      "slash": 1.0,
+      "pierce": 0.5,
+      "blunt": 2.0
+    },
+    "stagger_thresholds": [
+      60,
+      30,
+      15
+    ]
+  },
+  "skills": [
+    {
+      "id": "1011001",
+      "slot": "skill1",
+      "name": "Celebration for the Departed",
+      "type": "Pierce",
+      "rank": 1,
+      "upties": {
+        "1": {
+          "base_power": 3,
+          "coin_power": 4,
+          "coins": 2,
+          "offense_level_mod": 2,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Pride",
+          "skill_amount": 3,
+          "on_use_text": "",
+          "coin_texts": [
+            "Spend 1 [The Living & The Departed]\n[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
+            "Spend 1 [The Living & The Departed]\n[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent"
+          ],
+          "tags": []
+        },
+        "2": {
+          "base_power": 3,
+          "coin_power": 4,
+          "coins": 2,
+          "offense_level_mod": 2,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Pride",
+          "skill_amount": 3,
+          "on_use_text": "If the sum of the target's [Sinking] and both [Butterfly] is 6 or higher, Coin Power +1\n[Clash Win] Inflict +2 [Sinking] Count",
+          "coin_texts": [
+            "Spend 1 [The Living & The Departed]\n[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
+            "Spend 1 [The Living & The Departed]\n[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent"
+          ],
+          "tags": []
+        },
+        "3": {
+          "base_power": 4,
+          "coin_power": 4,
+          "coins": 2,
+          "offense_level_mod": 2,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Pride",
+          "skill_amount": 3,
+          "on_use_text": "If the sum of the target's [Sinking] and both [Butterfly] is 6 or higher, Coin Power +1\n[Clash Win] Inflict +2 [Sinking] Count",
+          "coin_texts": [
+            "Spend 1 [The Living & The Departed]\n[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
+            "Spend 1 [The Living & The Departed]\n[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent"
+          ],
+          "tags": []
+        },
+        "4": {
+          "base_power": 4,
+          "coin_power": 4,
+          "coins": 2,
+          "offense_level_mod": 2,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Pride",
+          "skill_amount": 3,
+          "on_use_text": "At 10+ [The Living & The Departed], Clash Power +1\nIf the sum of the target's [Sinking] and both [Butterfly] is 6 or higher, Coin Power +1\n[Clash Win] Inflict +2 [Sinking] Count",
+          "coin_texts": [
+            "Spend 1 [The Living & The Departed]\n[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
+            "Spend 1 [The Living & The Departed]\n[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent"
+          ],
+          "tags": []
+        }
+      },
+      "name_en": "Celebration for the Departed",
+      "name_zh": "予逝者以祝贺"
+    },
+    {
+      "id": "1011002",
+      "slot": "skill2",
+      "name": "Solemn Lament for the Living",
+      "type": "Pierce",
+      "rank": 2,
+      "upties": {
+        "1": {
+          "base_power": 4,
+          "coin_power": 5,
+          "coins": 2,
+          "offense_level_mod": 2,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Gloom",
+          "skill_amount": 2,
+          "on_use_text": "",
+          "coin_texts": [
+            "Spend 5 [The Living & The Departed]\n[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
+            "Spend 1 [The Living & The Departed]\n[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent"
+          ],
+          "tags": []
+        },
+        "2": {
+          "base_power": 4,
+          "coin_power": 5,
+          "coins": 2,
+          "offense_level_mod": 2,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Gloom",
+          "skill_amount": 2,
+          "on_use_text": "If the sum of the target's [Sinking] and both [Butterfly] is 6 or higher, Coin Power +1\n[Clash Win] Inflict +1 [Sinking] Count\n[Attack End] Gain (highest Reson.) of [The Living & The Departed] (max 6)\n- If the said Reson. was an A-Reson., gain (highest Reson. x 2) of [The Living & The Departed] (max 12)\n- If the said Reson. was at 4+ A-Reson., [Reload (Solemn Lament)] instead",
+          "coin_texts": [
+            "Spend 5 [The Living & The Departed]\n[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
+            "Spend 1 [The Living & The Departed]\n[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent"
+          ],
+          "tags": []
+        },
+        "3": {
+          "base_power": 4,
+          "coin_power": 6,
+          "coins": 2,
+          "offense_level_mod": 2,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Gloom",
+          "skill_amount": 2,
+          "on_use_text": "If the sum of the target's [Sinking] and both [Butterfly] is 6 or higher, Coin Power +1\n[Clash Win] Inflict +1 [Sinking] Count\n[Attack End] Gain (highest Reson.) of [The Living & The Departed] (max 6)\n- If the said Reson. was an A-Reson., gain (highest Reson. x 2) of [The Living & The Departed] (max 12)\n- If the said Reson. was at 4+ A-Reson., [Reload (Solemn Lament)] instead",
+          "coin_texts": [
+            "Spend 5 [The Living & The Departed]\n[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
+            "Spend 1 [The Living & The Departed]\n[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent"
+          ],
+          "tags": []
+        },
+        "4": {
+          "base_power": 4,
+          "coin_power": 6,
+          "coins": 2,
+          "offense_level_mod": 2,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Gloom",
+          "skill_amount": 2,
+          "on_use_text": "At 10+ [The Living & The Departed], Clash Power +1\nCoin Power +1 for every 6 value of the sum of the target's [Sinking] and both [Butterfly] (max 2)\n[Clash Win] Inflict +1 [Sinking] Count\n[Attack End] Gain (highest Reson.) of [The Living & The Departed] (max 6)\n- If the said Reson. was an A-Reson., gain (highest Reson. x 2) of [The Living & The Departed] (max 12)\n- If the said Reson. was at 4+ A-Reson., [Reload (Solemn Lament)] instead",
+          "coin_texts": [
+            "Spend 5 [The Living & The Departed]\n[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
+            "Spend 1 [The Living & The Departed]\n[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent"
+          ],
+          "tags": []
+        }
+      },
+      "name_en": "Solemn Lament for the Living",
+      "name_zh": "予弥留者以庄严哀悼"
+    },
+    {
+      "id": "1011003",
+      "slot": "skill3",
+      "name": "Goodbye Now, a Sorrow in You",
+      "type": "Pierce",
+      "rank": 3,
+      "upties": {
+        "1": {
+          "base_power": 4,
+          "coin_power": 3,
+          "coins": 4,
+          "offense_level_mod": 5,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Sloth",
+          "skill_amount": 1,
+          "on_use_text": "Base Power +1 for every 10 value of [The Living & The Departed] (max 2)\n[Clash Win] Inflict +3 [Sinking] Count\n[Attack End] [Reload (Solemn Lament)]",
+          "coin_texts": [
+            "Spend 1 [The Living & The Departed]\n[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
+            "Spend 6 [The Living & The Departed]\n[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
+            "Spend all of [The Living & The Departed] on self\n[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent\n[On Hit] Deal +2% damage for every value of [The Living & The Departed] spent by this Skill",
+            "[On Hit] Inflict Gloom Damage equal to \"All\" [Butterfly] on target\n- \"All\" = the sum of both The Living and The Departed on target"
+          ],
+          "tags": []
+        },
+        "2": {
+          "base_power": 4,
+          "coin_power": 3,
+          "coins": 4,
+          "offense_level_mod": 5,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Sloth",
+          "skill_amount": 1,
+          "on_use_text": "Base Power +1 for every 10 value of [The Living & The Departed] (max 2)\n[Clash Win] Inflict +3 [Sinking] Count\n[Attack End] [Reload (Solemn Lament)]",
+          "coin_texts": [
+            "Spend 1 [The Living & The Departed]\n[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
+            "Spend 6 [The Living & The Departed]\n[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
+            "Spend all of [The Living & The Departed] on self\n[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent\n[On Hit] Deal +2% damage for every value of [The Living & The Departed] spent by this Skill",
+            "[On Hit] Inflict Gloom Damage equal to \"All\" [Butterfly] on target\n- \"All\" = the sum of both The Living and The Departed on target"
+          ],
+          "tags": []
+        },
+        "3": {
+          "base_power": 4,
+          "coin_power": 3,
+          "coins": 4,
+          "offense_level_mod": 5,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Sloth",
+          "skill_amount": 1,
+          "on_use_text": "Base Power +1 for every 10 value of [The Living & The Departed] (max 2)\n[Clash Win] Inflict +3 [Sinking] Count\n[Attack End] [Reload (Solemn Lament)]",
+          "coin_texts": [
+            "Spend 1 [The Living & The Departed]\n[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
+            "Spend 6 [The Living & The Departed]\n[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
+            "Spend all of [The Living & The Departed] on self\n[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent\n[On Hit] Deal +2% damage for every value of [The Living & The Departed] spent by this Skill",
+            "[On Hit] Inflict Gloom Damage equal to \"All\" [Butterfly] on target\n- \"All\" = the sum of both The Living and The Departed on target"
+          ],
+          "tags": []
+        },
+        "4": {
+          "base_power": 4,
+          "coin_power": 3,
+          "coins": 4,
+          "offense_level_mod": 5,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Sloth",
+          "skill_amount": 1,
+          "on_use_text": "Base Power +1 for every 5 value of [The Living & The Departed] (max 4)\nCoin Power +1 for every 6 value of the sum of the target's [Sinking] and both [Butterfly] (max 2)\n[Clash Win] Inflict +3 [Sinking] Count\n[Attack End] [Reload (Solemn Lament)]",
+          "coin_texts": [
+            "Spend 1 [The Living & The Departed]\n[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
+            "Spend 6 [The Living & The Departed]\n[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
+            "Spend all of [The Living & The Departed] on self\n[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent\n[On Hit] Deal +4% damage for every value of [The Living & The Departed] spent by this Skill",
+            "[On Hit] Inflict Gloom Damage equal to \"All\" [Butterfly] on target\n- \"All\" = the sum of both The Living and The Departed on target"
+          ],
+          "tags": []
+        }
+      },
+      "name_en": "Goodbye Now, a Sorrow in You",
+      "name_zh": "葬仪师李箱，以上"
+    },
+    {
+      "id": "1011004",
+      "slot": "defense",
+      "name": "FromTheCoffinAButterflyTakesFlight",
+      "type": "Guard",
+      "rank": 1,
+      "upties": {
+        "1": {
+          "base_power": 10,
+          "coin_power": 4,
+          "coins": 1,
+          "offense_level_mod": null,
+          "attack_weight": 1,
+          "defense_level_mod": 1,
+          "sin_affinity": "Def",
+          "skill_amount": null,
+          "on_use_text": "[Combat Start] [Reload (Solemn Lament)] (once per turn)",
+          "coin_texts": [],
+          "tags": []
+        },
+        "2": {
+          "base_power": 10,
+          "coin_power": 4,
+          "coins": 1,
+          "offense_level_mod": null,
+          "attack_weight": 1,
+          "defense_level_mod": 1,
+          "sin_affinity": "Def",
+          "skill_amount": null,
+          "on_use_text": "[Combat Start] [Reload (Solemn Lament)] (once per turn)",
+          "coin_texts": [],
+          "tags": []
+        },
+        "3": {
+          "base_power": 10,
+          "coin_power": 4,
+          "coins": 1,
+          "offense_level_mod": null,
+          "attack_weight": 1,
+          "defense_level_mod": 1,
+          "sin_affinity": "Def",
+          "skill_amount": null,
+          "on_use_text": "[Combat Start] [Reload (Solemn Lament)] (once per turn)",
+          "coin_texts": [],
+          "tags": []
+        },
+        "4": {
+          "base_power": 10,
+          "coin_power": 4,
+          "coins": 1,
+          "offense_level_mod": null,
+          "attack_weight": 1,
+          "defense_level_mod": 1,
+          "sin_affinity": "Gloom",
+          "skill_amount": null,
+          "on_use_text": "[Combat Start] [Reload (Solemn Lament)] (once per turn)\n[Combat Start] Gain Shield equal to (the sum of both [Butterfly] on the selected target)% HP (max 20% per turn)",
+          "coin_texts": [],
+          "tags": []
+        }
+      },
+      "name_en": "FromTheCoffinAButterflyTakesFlight",
+      "name_zh": "蝶自棺中而来"
+    }
+  ],
+  "passives": [
+    {
+      "kind": "combat_passive",
+      "uptie_from": 1,
+      "text": "Begin encounters with 10 of each of [The Living & The Departed]\nWhen spending [The Living & The Departed], select randomly between The Living(Potency) and The Departed(Count) for each [The Living & The Departed] value\nWhen inflicting [Butterfly], inflict the same amount of The Living and The Departed as they were consumed. Example below:\n- If this unit spent X Living, inflict X Living\n- If this unit spent Y Departed, inflict Y Departed\nIf this unit runs out of [The Living & The Departed] midway through Skill use, cancel all subsequent Coins and [Reload (Solemn Lament)]\nWhen [Reload (Solemn Lament)]ing, or when gaining [The Living & The Departed], gain either The Living or The Departed based on this unit's current SP\n- At 0 or higher SP: 30% chance to gain The Living; 70% chance to gain The Departed.\n- At less than 0 SP: 70% chance to gain The Living; 30% chance to gain The Departed.\n- The probabilities are calculated separately for each ammo spent",
+      "raw_key": "passive0"
+    },
+    {
+      "kind": "support_passive_1",
+      "uptie_from": 1,
+      "text": "Attack End: If this unit killed the target with its Skill, [Reload (Solemn Lament)]\nWhen this unit gains [The Living & The Departed], gain 2 [Haste] next turn (once per turn)",
+      "raw_key": "passive1"
+    },
+    {
+      "kind": "support_passive_1",
+      "uptie_from": 3,
+      "text": "When this unit gains [The Living & The Departed], gain 2 [Haste] next turn (once per turn)",
+      "raw_key": "3passive1"
+    },
+    {
+      "kind": "support_passive_2",
+      "uptie_from": 1,
+      "text": "When an ally hits with a Skill, consume 2 [Sinking] on the target to inflict them with 1 [Butterfly] (3 times per turn)",
+      "raw_key": "passive2"
+    }
+  ],
+  "unparsed": [],
+  "sources": [
+    {
+      "kind": "wiki",
+      "url": "https://limbuscompany.wiki.gg/wiki/Lobotomy_E.G.O::Solemn_Lament_Yi_Sang",
+      "language": "en",
+      "verification": "single_source_verified"
+    },
+    {
+      "kind": "game_text",
+      "language": "en",
+      "id": "10110",
+      "verification": "official"
+    },
+    {
+      "kind": "game_text_zh_cn",
+      "language": "zh-CN",
+      "id": "10110",
+      "verification": "synthetic_translation"
+    }
+  ]
+}

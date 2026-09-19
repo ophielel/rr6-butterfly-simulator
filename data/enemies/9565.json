@@ -1,0 +1,99 @@
+{
+  "id": "9565",
+  "kind": "enemy",
+  "name_en": "Refracted Illusory Butterfly of Entangled Lives::The Present",
+  "wiki_title": "Illusory Butterfly of Entangled Lives::The Present",
+  "abno_code": "O-03-14-03-b",
+  "risk": "WAW-06",
+  "sin_affinity": "Lust",
+  "faction": "Butterfly of Entangled Lives",
+  "location": "Line 6: Maru no Uchi no Sanzu no Kawa",
+  "hp": 1,
+  "hp_growth": null,
+  "level": 60,
+  "parts": [
+    {
+      "name": "Body",
+      "hp": 1,
+      "hp_growth": null,
+      "level": 60,
+      "speed": "1~1",
+      "defense_level_mod": 0,
+      "stagger_thresholds": [
+        null,
+        null,
+        null,
+        null
+      ],
+      "resist_physical": {
+        "slash": 1.0,
+        "pierce": 1.0,
+        "blunt": 1.0
+      },
+      "resist_sin": {
+        "wrath": 1.0,
+        "lust": 1.0,
+        "sloth": 1.0,
+        "gluttony": 1.0,
+        "gloom": 1.0,
+        "pride": 1.0,
+        "envy": 1.0
+      }
+    }
+  ],
+  "skills": [
+    {
+      "key": "skill1",
+      "name": "Eclosion",
+      "hint": null,
+      "level": 60,
+      "sin": "Pride",
+      "rank": 3,
+      "type": "Pierce",
+      "base_power": 8,
+      "coin_power": 8,
+      "coins": 1,
+      "attack_weight": 7,
+      "offense_level_mod": 0,
+      "on_use_text": "[Unclashable][Target Fixed]\nThis Attack Skill deals 0 damage\n[Attack End] End the Encounter\n- If the Shield is broken, proceed to the next turn instead and [face a unique Choice Event] before the Encounter ends",
+      "coin_texts": [
+        "[Unbreakable Coin]",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "id": "956501"
+    }
+  ],
+  "passives": [
+    {
+      "name": "Eclosion - Life That Is",
+      "hint": null,
+      "text": "Fix this unit's Speed to 1; this unit's HP does not drop below 1\nFirst Turn Start after entering the Encounter: Gain 333 Shield\nAt Attack End of the Skill \"Eclosion\", end Encounter\n- If the Shield is broken, proceed to the next turn instead and [face a unique Choice Event] before the Encounter ends"
+    },
+    {
+      "name": "Kṣaṇa of Circumvolution",
+      "hint": null,
+      "text": "Quadruple the effects of [Acuate Scale Dust]\nTake +100% damage from E.G.O Skills"
+    }
+  ],
+  "unparsed": [],
+  "sources": [
+    {
+      "kind": "wiki",
+      "url": "https://limbuscompany.wiki.gg/wiki/Illusory_Butterfly_of_Entangled_Lives::The_Present",
+      "language": "en",
+      "verification": "single_source_verified"
+    },
+    {
+      "kind": "game_text",
+      "language": "en",
+      "id": "9565",
+      "verification": "official"
+    }
+  ]
+}

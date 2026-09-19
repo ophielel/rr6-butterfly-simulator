@@ -1,0 +1,75 @@
+{
+  "id": "20810",
+  "kind": "ego",
+  "name_en": "Tidal Elegy",
+  "name_zh": "涌潮悲歌",
+  "wiki_title": "Tidal Elegy Ishmael",
+  "risk": "HE",
+  "sin_affinity": "Gloom",
+  "awakening_sp": 20,
+  "corrosion_sp": 25,
+  "resource_cost": {
+    "Gloom": 4,
+    "Pride": 2
+  },
+  "awakening": {
+    "name": "Tidal Elegy",
+    "sin": "Gloom",
+    "type": "Blunt",
+    "base_power": 8,
+    "coin_power": 4,
+    "coins": 3,
+    "attack_weight": 3,
+    "offense_level_mod": 3,
+    "on_use_text": "When attacking just a single target(in Focused Encounters, a Core and its connected Parts count as a single target), Coin Power +2 and deal +100% damage\n[On Use] If the main target has 4+ [Sinking], Clash Power +1\n[Before Attack] If the main target has higher than 1 Gloom Resist., deal +3% damage for every 0.1 excess Resist. (max 15%)\n[Before Attack] At 2+ Gloom Reson., deal +8% damage for every Gloom Reson. (max 32%)\n[Attack End] If 1 or more targets are killed, deal ([Sinking] Potency on each target / 2) Gloom damage against 2 random enemies (max 15; prioritizes targeted enemies with the most [Sinking] Potency)",
+    "coin_texts": [
+      "[Unbreakable Coin]\n[On Hit] Inflict 2 [Sinking]\n[On Hit] Inflict 2 [Tremor]",
+      "[Unbreakable Coin]\n[On Hit without Cracking] Inflict 1 [Bind] next turn",
+      "[Unbreakable Coin]\n[On Hit] If there are Staggered, Part broken, or killed units among the targets, inflict 2 [Sinking] against a random non-targeted enemy (once per turn; in Focused Encounters, each Part count as 1 target)\n- When attacking just a single target, apply it to 3 targets instead\n[On Hit] Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "reuse": false
+  },
+  "corrosion": {
+    "name": "Tidal Elegy",
+    "sin": "Gloom",
+    "type": "Blunt",
+    "base_power": 13,
+    "coin_power": -3,
+    "coins": 4,
+    "attack_weight": 3,
+    "offense_level_mod": 5,
+    "on_use_text": "[Indiscriminate]\nTargets randomly\n[On Use] Clash Power +1 for every 5 [Sinking] on the main target (max 2)\n[Before Attack] Gain the following effects for every 3 highest Reson.\n- Gain +1 Atk Weight (max 2)\n- Deal +15% damage (max 30%)\n[Attack End] Apply 1 [Blunt DMG Up] next turn to (highest Reson.) random allies (including this unit; max 4 allies; once per turn)\n- If the said Reson. was a Gloom Reson. or an A-Reson., apply 1 [Gloom DMG Up] as well",
+    "coin_texts": [
+      "[On Hit] Inflict 1 [Sinking]",
+      "[On Hit] Inflict 1 [Sinking]",
+      "[On Hit] Inflict 1 [Tremor]",
+      "[On Hit] Inflict 1 [Tremor]\n[On Hit] If there are Staggered, Part broken, or killed units among the targets, inflict 1 [Gloom Fragility] next turn against a random non-targeted enemy (once per turn; for Focused Encounters, each Part counts as 1 target)\n[On Hit] Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "reuse": false
+  },
+  "passives": [],
+  "unparsed": [],
+  "sources": [
+    {
+      "kind": "wiki",
+      "url": "https://limbuscompany.wiki.gg/wiki/Tidal_Elegy_Ishmael",
+      "language": "en",
+      "verification": "single_source_verified"
+    },
+    {
+      "kind": "game_text",
+      "language": "en",
+      "id": "20810",
+      "verification": "official"
+    }
+  ]
+}
