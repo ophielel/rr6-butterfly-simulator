@@ -1609,7 +1609,7 @@ fn section5_golden_replay_is_deterministic() {
     assert_eq!(first_hp, vec![25483, 25245, 24783], "Imago HP after turns 1-3");
     assert_eq!(
         format!("{first_hash:016x}"),
-        "90e7bd4714fa9426",
+        "18bfd36b30336cd4",
         "recorded state hash"
     );
 }
@@ -1737,6 +1737,46 @@ fn status_text_runs_as_effects() {
     state.units[0].statuses.add_potency("Burn", 2);
     let (_, taken) = battle::passive_modifiers_for_test(&state, 0, Some(1));
     assert!((taken - 0.03).abs() < 1e-9, "6 combined = +3% taken: {taken}");
+}
+
+/// Status riders: "[When Clash ends] inflict 2 [Sinking]" (Blessing) and
+/// "[When hit] inflict 2 [Sinking] on the attacker".
+/// Source: wiki.gg `Status Effects` (Blessing / Despair).
+#[test]
+fn status_clash_end_and_hit_riders_fire() {
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&["10913"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    // Blessing rides on the unit that holds it.
+    state.units[0].statuses.remove("Blessing");
+    state.units[0].statuses.add_stack("Blessing", 1);
+    let target = state.units.iter().position(|u| !u.kind.is_sinner()).unwrap();
+    let before = state.units[target].statuses.potency("Sinking");
+    // A Clash between the two ends: the rider inflicts 2 [Sinking] on the other
+    // unit (once per turn).
+    let mut a = battle::build_use(
+        &state,
+        &sim.library,
+        &sim.mechanics,
+        0,
+        &SkillId::new("1091301"),
+    )
+    .unwrap();
+    let mut b = battle::build_use(
+        &state,
+        &sim.library,
+        &sim.mechanics,
+        target,
+        &SkillId::new("956701"),
+    )
+    .unwrap();
+    battle::resolve_clash(&mut state, 0, target, &mut a, &mut b);
+    let after = state.units[target].statuses.potency("Sinking");
+    assert!(
+        after >= before + 2,
+        "Blessing inflicted [Sinking] when the Clash ended: {before} -> {after}"
+    );
 }
 
 /// A full turn keeps the battle in a consistent, serialisable state.

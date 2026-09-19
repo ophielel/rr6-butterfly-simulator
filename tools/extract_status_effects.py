@@ -119,10 +119,41 @@ STATUS_PATTERNS = [
      lambda m: {"kind": "gain", "status": m.group(2), "potency": int(m.group(1))}),
     (re.compile(r"^Unique \[Ammo\]$"),
      lambda m: {"kind": "noop", "note": "ammo status"}),
-    # Clash / hit riders are recorded but not modelled (they need Clash hooks).
-    (re.compile(r"^When Clash ends, .+$"),
-     lambda m: {"kind": "noop", "note": "clash-end rider"}),
-    (re.compile(r"^When hit, .+$"),
+    # Prefix-free forms: the trigger was already stripped, so the phase decides
+    # when these resolve.
+    (re.compile(rf"^inflict {N} {ST}$"),
+     lambda m: {"kind": "inflict", "status": m.group(2), "potency": int(m.group(1))}),
+    (re.compile(rf"^inflict \+{N} {ST} Count$"),
+     lambda m: {"kind": "inflict", "status": m.group(2), "count": int(m.group(1))}),
+    (re.compile(rf"^inflict {N} {ST} on the attacker$"),
+     lambda m: {"kind": "inflict", "status": m.group(2), "potency": int(m.group(1)),
+                "on_attacker": True}),
+    (re.compile(rf"^inflict {N} {ST} against the attacker$"),
+     lambda m: {"kind": "inflict", "status": m.group(2), "potency": int(m.group(1)),
+                "on_attacker": True}),
+    (re.compile(rf"^inflict {N} {ST} on the attacker(?: and lose {N} Stack)?$"),
+     lambda m: {"kind": "inflict", "status": m.group(2), "potency": int(m.group(1)),
+                "on_attacker": True}),
+    # Clash-end / on-hit riders.
+    (re.compile(rf"^When Clash ends, inflict {N} {ST}$"),
+     lambda m: {"kind": "inflict", "status": m.group(2), "potency": int(m.group(1))}),
+    (re.compile(rf"^When Clash ends, inflict \+{N} {ST} Count$"),
+     lambda m: {"kind": "inflict", "status": m.group(2), "count": int(m.group(1))}),
+    (re.compile(rf"^When hit, inflict {N} {ST} on the attacker$"),
+     lambda m: {"kind": "inflict", "status": m.group(2), "potency": int(m.group(1)),
+                "on_attacker": True}),
+    (re.compile(rf"^When hit, inflict {N} {ST} against the attacker$"),
+     lambda m: {"kind": "inflict", "status": m.group(2), "potency": int(m.group(1)),
+                "on_attacker": True}),
+    (re.compile(rf"^On Hit with the first Coin of a Base Attack Skill, inflict \+{N} {ST} Count$"),
+     lambda m: {"kind": "inflict", "status": m.group(2), "count": int(m.group(1)),
+                "first_coin_only": True}),
+    (re.compile(rf"^On Hit, inflict {N} {ST}$"),
+     lambda m: {"kind": "inflict", "status": m.group(2), "potency": int(m.group(1))}),
+    (re.compile(rf"^When hit, inflict {N} {ST}$"),
+     lambda m: {"kind": "inflict", "status": m.group(2), "potency": int(m.group(1)),
+                "on_attacker": True}),
+    (re.compile(rf"^When hit, .+$"),
      lambda m: {"kind": "noop", "note": "on-hit rider"}),
     (re.compile(r"^On Hit with .+$"),
      lambda m: {"kind": "noop", "note": "on-hit rider"}),
@@ -146,6 +177,8 @@ def parse_status(text: str) -> Dict[str, object]:
     out: Dict[str, object] = {
         "turn_start": [],
         "turn_end": [],
+        "clash_end": [],
+        "on_hit": [],
         "passive": [],
         "unmodeled": [],
     }
@@ -153,17 +186,37 @@ def parse_status(text: str) -> Dict[str, object]:
         trigger = None
         body = clause
         where = None
-        match = re.match(r"^(Turn Start|Turn End|On Hit|When hit|When Clash ends|Always Active):\s*(.+)$", clause)
-        if match:
+        match = re.match(
+            r"^(Turn Start|Turn End|On Hit|When hit|When Hit|When Clash ends|Always Active):?\s*(.+)$",
+            clause,
+        )
+        if match and match.group(1) in (
+            "Turn Start",
+            "Turn End",
+            "On Hit",
+            "When hit",
+            "When Hit",
+            "When Clash ends",
+            "Always Active",
+        ):
             where = match.group(1)
-            body = match.group(2).strip()
+            body = match.group(2).strip().lstrip(",: ").strip()
             trigger = {
                 "Turn Start": "turn_start",
                 "Turn End": "turn_end",
+                "On Hit": "on_hit",
+                "When hit": "on_hit",
+                "When Hit": "on_hit",
+                "When Clash ends": "clash_end",
             }.get(where)
         # Everything else is a continuous clause unless a pattern says otherwise.
+        limits = None
+        body, limits = E.strip_limits(body)
         effect = None
-        for candidate in (body, f"{where}: {body}" if trigger else body):
+        candidates = [body, clause]
+        if where:
+            candidates.append(f"{where}: {body}")
+        for candidate in candidates:
             for pattern, handler in STATUS_PATTERNS:
                 found = pattern.match(candidate)
                 if found:
@@ -182,6 +235,8 @@ def parse_status(text: str) -> Dict[str, object]:
             out["max_stack"] = int(effect.get("value") or 0)
             continue
         effect["raw"] = clause
+        if limits:
+            effect.update(limits)
         if trigger:
             out[trigger].append(effect)
         else:

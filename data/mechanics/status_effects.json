@@ -2,7 +2,9 @@
  "statuses": {
   "Accumulated Past (E.G.O)": {
    "effects": {
+    "clash_end": [],
     "max_stack": 12,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -25,6 +27,8 @@
   },
   "Acuate Scale Dust": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -47,6 +51,8 @@
   },
   "Aggro": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -69,6 +75,8 @@
   },
   "Ailing Heart (Ally)": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -95,6 +103,8 @@
   },
   "Ammo": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -117,6 +127,8 @@
   },
   "Ammo - Atelier Logic": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -141,6 +153,8 @@
   },
   "Amplitude Conversion": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -164,6 +178,8 @@
   },
   "Amplitude Entanglement": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -189,6 +205,8 @@
   },
   "Appetite": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -211,7 +229,9 @@
   },
   "Armure Éveillée": {
    "effects": {
+    "clash_end": [],
     "max_stack": 100,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -240,6 +260,8 @@
   },
   "Arrow - Shi": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -264,6 +286,8 @@
   },
   "Art Medium": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -286,6 +310,8 @@
   },
   "Artwork - Fascia (Faust)": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -312,6 +338,8 @@
   },
   "Artwork - Tibia (Hong Lu)": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -339,7 +367,9 @@
   },
   "Assist -援-": {
    "effects": {
+    "clash_end": [],
     "max_stack": 1,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -362,6 +392,8 @@
   },
   "Assist Attack (Ishmael)": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -385,7 +417,9 @@
   },
   "Assist Defense": {
    "effects": {
+    "clash_end": [],
     "max_stack": 3,
+    "on_hit": [],
     "passive": [
      {
       "kind": "remove_at_turn_end",
@@ -415,6 +449,8 @@
   },
   "Attack Power Down": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -437,6 +473,8 @@
   },
   "Attack Power Up": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -459,6 +497,8 @@
   },
   "Avenging My Family": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -482,6 +522,8 @@
   },
   "B.M.": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [
      {
@@ -511,6 +553,8 @@
   },
   "Backup Candy": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -535,6 +579,8 @@
   },
   "Base Power Up": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -557,6 +603,8 @@
   },
   "Battle Ready": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -581,7 +629,9 @@
   },
   "Battleblood Instinct": {
    "effects": {
+    "clash_end": [],
     "max_stack": 20,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -605,6 +655,8 @@
   },
   "Battlefield Retreat": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -629,6 +681,8 @@
   },
   "Beauty of the Physique": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -653,6 +707,8 @@
   },
   "Before the King": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -675,6 +731,8 @@
   },
   "Before the King in Binds": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -697,6 +755,8 @@
   },
   "Bind": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -719,7 +779,9 @@
   },
   "Bladetrail -Afterimage-": {
    "effects": {
+    "clash_end": [],
     "max_stack": 100,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -742,6 +804,8 @@
   },
   "Blazing": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [
      {
       "kind": "remove_at_turn_end",
@@ -771,6 +835,8 @@
   },
   "Bleed": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -794,6 +860,25 @@
   },
   "Blessing": {
    "effects": {
+    "clash_end": [
+     {
+      "kind": "inflict",
+      "per_turn": 1,
+      "potency": 2,
+      "raw": "When Clash ends, inflict 2 [Sinking] (once per turn)",
+      "status": "Sinking"
+     }
+    ],
+    "on_hit": [
+     {
+      "kind": "inflict",
+      "on_attacker": true,
+      "per_turn": 1,
+      "potency": 2,
+      "raw": "When hit, inflict 2 [Sinking] on the attacker (once per turn)",
+      "status": "Sinking"
+     }
+    ],
     "passive": [],
     "turn_end": [],
     "turn_start": [
@@ -811,9 +896,7 @@
     ],
     "unmodeled": [
      "For every 20 SP, inflict +1 more [Sinking] Potency with above effects (max 2)",
-     "Replace this unit's Base Skills with Plus Coin Skills",
-     "When Clash ends, inflict 2 [Sinking] (once per turn)",
-     "When hit, inflict 2 [Sinking] on the attacker (once per turn)"
+     "Replace this unit's Base Skills with Plus Coin Skills"
     ]
    },
    "key": "wiki:Blessing",
@@ -831,6 +914,8 @@
   },
   "Blessing (E.G.O Gift)": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [
@@ -860,6 +945,8 @@
   },
   "Blood-tinged Scissorblades (Ally)": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -889,6 +976,8 @@
   },
   "Bloodfeast": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -915,6 +1004,8 @@
   },
   "Bloodfeast Consumed (shared)": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -937,7 +1028,9 @@
   },
   "Bloodflame -血炎-": {
    "effects": {
+    "clash_end": [],
     "max_stack": 3,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -963,6 +1056,8 @@
   },
   "Bloodied Hand (Ally)": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -991,6 +1086,8 @@
   },
   "Blooming Thorn (Ally)": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -1022,6 +1119,8 @@
   },
   "Blubberbubble": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -1048,6 +1147,8 @@
   },
   "Blue Sand": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [
      {
@@ -1085,6 +1186,8 @@
   },
   "Blunt DMG Down": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -1107,6 +1210,8 @@
   },
   "Blunt DMG Up": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -1129,6 +1234,8 @@
   },
   "Blunt Fragility": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -1151,6 +1258,8 @@
   },
   "Blunt Power Down": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -1173,6 +1282,8 @@
   },
   "Blunt Power Up": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -1195,6 +1306,8 @@
   },
   "Blunt Protection": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -1217,6 +1330,8 @@
   },
   "Blunt Resist Down": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -1240,7 +1355,9 @@
   },
   "Book of Vengeance -Heathcliff-": {
    "effects": {
+    "clash_end": [],
     "max_stack": 30,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -1263,7 +1380,9 @@
   },
   "Book of Vengeance -Sinclair-": {
    "effects": {
+    "clash_end": [],
     "max_stack": 30,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -1290,6 +1409,8 @@
   },
   "Book of Vengeance -The House of Spiders-": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [
      {
       "kind": "remove_at_turn_end",
@@ -1319,6 +1440,8 @@
   },
   "Borrowed Time": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -1345,6 +1468,8 @@
   },
   "Bright -光-": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -1370,6 +1495,8 @@
   },
   "Bullet - Solitude": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -1395,6 +1522,8 @@
   },
   "Burgeoning of Horns -發角-": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [
      {
@@ -1426,6 +1555,8 @@
   },
   "Burn": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -1449,6 +1580,8 @@
   },
   "Butterfly": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -1478,7 +1611,9 @@
   },
   "Centipede Venom": {
    "effects": {
+    "clash_end": [],
     "max_stack": 20,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -1503,7 +1638,9 @@
   },
   "Changing Room (Ishmael)": {
    "effects": {
+    "clash_end": [],
     "max_stack": 2,
+    "on_hit": [],
     "passive": [],
     "turn_end": [
      {
@@ -1549,6 +1686,8 @@
   },
   "Charge": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -1571,6 +1710,8 @@
   },
   "Charge Barrier": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -1596,7 +1737,9 @@
   },
   "Charged Sting": {
    "effects": {
+    "clash_end": [],
     "max_stack": 5,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -1621,6 +1764,8 @@
   },
   "Charm of the Beastly": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -1645,7 +1790,9 @@
   },
   "Check This Out, Kiddo! (Outis)": {
    "effects": {
+    "clash_end": [],
     "max_stack": 10,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -1670,6 +1817,8 @@
   },
   "Clash Power Down": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -1692,6 +1841,8 @@
   },
   "Clash Power Up": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -1714,6 +1865,8 @@
   },
   "Clashable Guard": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -1738,6 +1891,8 @@
   },
   "Coffin": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -1764,6 +1919,8 @@
   },
   "Commanding Cry": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [
      {
       "kind": "remove_at_turn_end",
@@ -1791,7 +1948,9 @@
   },
   "Concentration-Sniper-": {
    "effects": {
+    "clash_end": [],
     "max_stack": 4,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -1814,7 +1973,9 @@
   },
   "Concussion": {
    "effects": {
+    "clash_end": [],
     "max_stack": 2,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -1838,7 +1999,9 @@
   },
   "Contempt (Ryoshu)": {
    "effects": {
+    "clash_end": [],
     "max_stack": 1,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -1864,6 +2027,8 @@
   },
   "Contempt of the Gaze": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -1890,6 +2055,8 @@
   },
   "Corpus Ingredient (Ally)": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -1915,6 +2082,8 @@
   },
   "Corpus Theater (Hong Lu)": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -1941,6 +2110,8 @@
   },
   "Courier Trunk": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -1973,6 +2144,8 @@
   },
   "Crit DMG Up": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -1995,7 +2168,9 @@
   },
   "Cumulus Wall": {
    "effects": {
+    "clash_end": [],
     "max_stack": 1,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -2019,6 +2194,8 @@
   },
   "Curio": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -2041,6 +2218,8 @@
   },
   "Curse": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -2064,6 +2243,8 @@
   },
   "Damage Down": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -2086,6 +2267,8 @@
   },
   "Damage Up": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -2108,7 +2291,9 @@
   },
   "Dark Cloud": {
    "effects": {
+    "clash_end": [],
     "max_stack": 1,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -2133,7 +2318,9 @@
   },
   "Dark Cloud Blade": {
    "effects": {
+    "clash_end": [],
     "max_stack": 1,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -2157,6 +2344,8 @@
   },
   "Dark Flame": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -2182,6 +2371,8 @@
   },
   "Dazzle": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [
      {
       "condition": {
@@ -2235,6 +2426,8 @@
   },
   "Deathrite -Fissure-": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -2261,6 +2454,8 @@
   },
   "Deathrite -Haste-": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -2286,6 +2481,8 @@
   },
   "Deathrite -Venom-": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -2313,6 +2510,8 @@
   },
   "Declared Duel": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -2336,7 +2535,9 @@
   },
   "Deep Inhale": {
    "effects": {
+    "clash_end": [],
     "max_stack": 20,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -2359,7 +2560,9 @@
   },
   "Deep Tears": {
    "effects": {
+    "clash_end": [],
     "max_stack": 20,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -2383,6 +2586,8 @@
   },
   "Deep Wound": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -2409,6 +2614,8 @@
   },
   "Defense Level Down": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -2431,6 +2638,8 @@
   },
   "Defense Level Up": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -2453,6 +2662,8 @@
   },
   "Defense Power Down": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -2475,6 +2686,8 @@
   },
   "Defense Power Up": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -2497,6 +2710,8 @@
   },
   "Defensive Stance": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [
      {
       "component": "stack",
@@ -2535,7 +2750,9 @@
   },
   "Delicateness": {
    "effects": {
+    "clash_end": [],
     "max_stack": 10,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -2558,6 +2775,8 @@
   },
   "Denial -不許-": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -2582,6 +2801,8 @@
   },
   "Desire for Acknowledgement Sated": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -2605,6 +2826,16 @@
   },
   "Despair": {
    "effects": {
+    "clash_end": [
+     {
+      "count": 1,
+      "kind": "inflict",
+      "per_turn": 1,
+      "raw": "When Clash ends, inflict +1 [Sinking] Count (once per turn)",
+      "status": "Sinking"
+     }
+    ],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [
@@ -2623,8 +2854,7 @@
     "unmodeled": [
      "For every -20 SP, inflict +1 more [Sinking] Count with above effects (max 2)",
      "On Hit with the first Coin of a Base Attack Skill, inflict +1 [Sinking] Count (once per turn)",
-     "Replace this unit's Base Skills with Minus Coin Skills",
-     "When Clash ends, inflict +1 [Sinking] Count (once per turn)"
+     "Replace this unit's Base Skills with Minus Coin Skills"
     ]
    },
    "key": "wiki:Despair",
@@ -2642,7 +2872,9 @@
   },
   "Desperado": {
    "effects": {
+    "clash_end": [],
     "max_stack": 2,
+    "on_hit": [],
     "passive": [
      {
       "kind": "remove_at_turn_end",
@@ -2671,7 +2903,9 @@
   },
   "Dhyāna": {
    "effects": {
+    "clash_end": [],
     "max_stack": 108,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -2694,7 +2928,9 @@
   },
   "Dihui Star's Blade": {
    "effects": {
+    "clash_end": [],
     "max_stack": 70,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -2720,6 +2956,8 @@
   },
   "Dimensional Rift": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -2742,6 +2980,8 @@
   },
   "Discard": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -2765,7 +3005,9 @@
   },
   "District 12 Fuel": {
    "effects": {
+    "clash_end": [],
     "max_stack": 100,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -2789,6 +3031,8 @@
   },
   "Dullahan": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -2816,6 +3060,8 @@
   },
   "E.G.O Resource Amp": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -2838,6 +3084,8 @@
   },
   "Echoes of the Manor": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [
      {
       "component": "stack",
@@ -2872,6 +3120,8 @@
   },
   "Embers": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -2901,7 +3151,9 @@
   },
   "Emergency Barrier Battery": {
    "effects": {
+    "clash_end": [],
     "max_stack": 7,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -2924,7 +3176,9 @@
   },
   "Entangled Life -羅生-": {
    "effects": {
+    "clash_end": [],
     "max_stack": 999,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -2949,7 +3203,9 @@
   },
   "Entanglement": {
    "effects": {
+    "clash_end": [],
     "max_stack": 4,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -2975,6 +3231,8 @@
   },
   "Envy DMG Down": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -2997,6 +3255,8 @@
   },
   "Envy DMG Up": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -3019,6 +3279,8 @@
   },
   "Envy Fragility": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -3041,6 +3303,8 @@
   },
   "Envy Power Down": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -3068,6 +3332,8 @@
   },
   "Envy Power Up": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -3090,6 +3356,8 @@
   },
   "Envy Protection": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -3112,6 +3380,8 @@
   },
   "Envy Resist Down": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -3141,6 +3411,8 @@
   },
   "Erudition": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -3167,6 +3439,8 @@
   },
   "Exalted Command": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -3191,6 +3465,8 @@
   },
   "Excision Coin": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -3216,6 +3492,8 @@
   },
   "Exquisite Aesthetics": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -3240,7 +3518,9 @@
   },
   "Faint Aroma": {
    "effects": {
+    "clash_end": [],
     "max_stack": 30,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -3266,7 +3546,9 @@
   },
   "Fairy Lure": {
    "effects": {
+    "clash_end": [],
     "max_stack": 5,
+    "on_hit": [],
     "passive": [
      {
       "component": "stack",
@@ -3301,7 +3583,9 @@
   },
   "Faith Beyond Question": {
    "effects": {
+    "clash_end": [],
     "max_stack": 1,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -3327,6 +3611,8 @@
   },
   "Fanatic": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -3349,6 +3635,8 @@
   },
   "Fatal Wound": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -3375,7 +3663,9 @@
   },
   "Fell Bullet": {
    "effects": {
+    "clash_end": [],
     "max_stack": 1,
+    "on_hit": [],
     "passive": [
      {
       "kind": "remove_at_turn_end",
@@ -3405,6 +3695,8 @@
   },
   "Festive Fever (Ally)": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [
      {
       "kind": "remove_at_turn_end",
@@ -3434,6 +3726,8 @@
   },
   "Final Augment": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -3456,7 +3750,9 @@
   },
   "Firepower": {
    "effects": {
+    "clash_end": [],
     "max_stack": 10,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -3479,6 +3775,8 @@
   },
   "First Seal Removed (Outis)": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -3503,6 +3801,8 @@
   },
   "Fixed Panic": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -3525,7 +3825,9 @@
   },
   "Flower-burying Pin -埋花針-": {
    "effects": {
+    "clash_end": [],
     "max_stack": 20,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -3551,7 +3853,9 @@
   },
   "Flower-burying Wedge -埋花櫼-": {
    "effects": {
+    "clash_end": [],
     "max_stack": 3,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -3582,6 +3886,8 @@
   },
   "Focused Attack (Allies)": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -3611,7 +3917,9 @@
   },
   "Focused Performance": {
    "effects": {
+    "clash_end": [],
     "max_stack": 3,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -3639,6 +3947,8 @@
   },
   "Fragile": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -3661,6 +3971,8 @@
   },
   "Full Makeover": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -3687,6 +3999,8 @@
   },
   "Gaze": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -3709,7 +4023,9 @@
   },
   "Gaze (Ryoshu)": {
    "effects": {
+    "clash_end": [],
     "max_stack": 7,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -3734,6 +4050,8 @@
   },
   "Gaze of Contempt": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -3759,6 +4077,8 @@
   },
   "Gebura's Blade": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [
      {
       "kind": "remove_at_turn_end",
@@ -3792,7 +4112,9 @@
   },
   "Glimpse of Precognition": {
    "effects": {
+    "clash_end": [],
     "max_stack": 5,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -3819,6 +4141,8 @@
   },
   "Gloom DMG Down": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -3841,6 +4165,8 @@
   },
   "Gloom DMG Up": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -3863,6 +4189,8 @@
   },
   "Gloom Fragility": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -3885,6 +4213,8 @@
   },
   "Gloom Power Down": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -3907,6 +4237,8 @@
   },
   "Gloom Power Up": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -3929,6 +4261,8 @@
   },
   "Gloom Protection": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -3951,6 +4285,8 @@
   },
   "Gloom Resist Down": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -3974,7 +4310,9 @@
   },
   "Gluttonous Thorn (貪食棘)": {
    "effects": {
+    "clash_end": [],
     "max_stack": 9,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -3998,6 +4336,8 @@
   },
   "Gluttony DMG Down": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -4020,6 +4360,8 @@
   },
   "Gluttony DMG Up": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -4042,6 +4384,8 @@
   },
   "Gluttony Fragility": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -4064,6 +4408,8 @@
   },
   "Gluttony Power Down": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -4086,6 +4432,8 @@
   },
   "Gluttony Power Up": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -4108,6 +4456,8 @@
   },
   "Gluttony Protection": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -4130,7 +4480,9 @@
   },
   "Grace of the Prescript": {
    "effects": {
+    "clash_end": [],
     "max_stack": 9,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -4153,6 +4505,8 @@
   },
   "Guardians of the Forest": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -4178,6 +4532,8 @@
   },
   "HP Healing Boost": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -4200,6 +4556,8 @@
   },
   "HP Healing Down": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -4222,6 +4580,8 @@
   },
   "Hand - Blue Sakura Suit": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -4245,6 +4605,8 @@
   },
   "Hand - Pine Crane Suit": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -4268,6 +4630,8 @@
   },
   "Hand - Susuki Grass Suit": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -4291,7 +4655,9 @@
   },
   "Hardblood (Ally)": {
    "effects": {
+    "clash_end": [],
     "max_stack": 10,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -4321,7 +4687,9 @@
   },
   "Hardblood Armor": {
    "effects": {
+    "clash_end": [],
     "max_stack": 5,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -4346,7 +4714,9 @@
   },
   "Hardblood Cast": {
    "effects": {
+    "clash_end": [],
     "max_stack": 3,
+    "on_hit": [],
     "passive": [
      {
       "component": "stack",
@@ -4378,7 +4748,9 @@
   },
   "Hardened Shell-Barrier": {
    "effects": {
+    "clash_end": [],
     "max_stack": 10,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -4403,6 +4775,8 @@
   },
   "Haste": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -4425,6 +4799,8 @@
   },
   "Heated Gas Harpoon": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -4447,7 +4823,9 @@
   },
   "Heishou Bolus Contamination -黑獸丸染-": {
    "effects": {
+    "clash_end": [],
     "max_stack": 11,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -4480,6 +4858,8 @@
   },
   "Here Comes Magical Girl!": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -4503,7 +4883,9 @@
   },
   "High-voltage Exoskeleton": {
    "effects": {
+    "clash_end": [],
     "max_stack": 20,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -4528,7 +4910,9 @@
   },
   "Higher Thunderer": {
    "effects": {
+    "clash_end": [],
     "max_stack": 5,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -4552,6 +4936,8 @@
   },
   "Hornet -Rifle-": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -4574,6 +4960,8 @@
   },
   "Hornet -Shotgun-": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -4598,7 +4986,9 @@
   },
   "Hunger (Kkomi)": {
    "effects": {
+    "clash_end": [],
     "max_stack": 3,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -4622,7 +5012,9 @@
   },
   "Hyped-up": {
    "effects": {
+    "clash_end": [],
     "max_stack": 3,
+    "on_hit": [],
     "passive": [
      {
       "kind": "remove_at_turn_end",
@@ -4651,7 +5043,9 @@
   },
   "Hysteria": {
    "effects": {
+    "clash_end": [],
     "max_stack": 3,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -4677,7 +5071,9 @@
   },
   "I Got Praised! (Ishmael)": {
    "effects": {
+    "clash_end": [],
     "max_stack": 10,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -4702,6 +5098,8 @@
   },
   "Immobilized": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -4724,6 +5122,8 @@
   },
   "Impending Ruin": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [
      {
       "component": "stack",
@@ -4758,6 +5158,8 @@
   },
   "Imperfections Addressed": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -4782,7 +5184,9 @@
   },
   "In the Future": {
    "effects": {
+    "clash_end": [],
     "max_stack": 30,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -4809,7 +5213,9 @@
   },
   "In the Future (Deactivated)": {
    "effects": {
+    "clash_end": [],
     "max_stack": 30,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -4832,7 +5238,9 @@
   },
   "In the Past": {
    "effects": {
+    "clash_end": [],
     "max_stack": 30,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -4859,7 +5267,9 @@
   },
   "In the Past (Deactivated)": {
    "effects": {
+    "clash_end": [],
     "max_stack": 30,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -4882,7 +5292,9 @@
   },
   "In the Present": {
    "effects": {
+    "clash_end": [],
     "max_stack": 30,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -4909,7 +5321,9 @@
   },
   "In the Present (Deactivated)": {
    "effects": {
+    "clash_end": [],
     "max_stack": 30,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -4932,6 +5346,8 @@
   },
   "Incandescent Indulgence": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -4955,6 +5371,8 @@
   },
   "Incandescent Scale Dust": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -4977,6 +5395,8 @@
   },
   "Indulgence in Prescripts": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [
      {
       "kind": "remove_at_turn_end",
@@ -5008,6 +5428,8 @@
   },
   "Insight": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -5030,6 +5452,8 @@
   },
   "Iron Maiden": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -5054,6 +5478,8 @@
   },
   "K Corp Ampule": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -5077,7 +5503,9 @@
   },
   "Karmic Consequence": {
    "effects": {
+    "clash_end": [],
     "max_stack": 100,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -5102,7 +5530,9 @@
   },
   "L'Hommage": {
    "effects": {
+    "clash_end": [],
     "max_stack": 3,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -5126,6 +5556,8 @@
   },
   "LCA Fracture Round": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -5151,7 +5583,9 @@
   },
   "La Mancha Parade": {
    "effects": {
+    "clash_end": [],
     "max_stack": 4,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -5177,7 +5611,9 @@
   },
   "Lamp": {
    "effects": {
+    "clash_end": [],
     "max_stack": 8,
+    "on_hit": [],
     "passive": [],
     "turn_end": [
      {
@@ -5218,6 +5654,8 @@
   },
   "Lasso": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -5242,7 +5680,9 @@
   },
   "Launcher -始-": {
    "effects": {
+    "clash_end": [],
     "max_stack": 6,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -5267,6 +5707,8 @@
   },
   "Le Fauvisme - Masque de Chien": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -5291,6 +5733,8 @@
   },
   "Le Fauvisme - Masque de Loup": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -5316,7 +5760,9 @@
   },
   "Le Noir Gabardine Overcoat": {
    "effects": {
+    "clash_end": [],
     "max_stack": 100,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -5349,7 +5795,9 @@
   },
   "Leash-holder of All Heishou": {
    "effects": {
+    "clash_end": [],
     "max_stack": 11,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -5376,7 +5824,9 @@
   },
   "Life from Death -死中求活-": {
    "effects": {
+    "clash_end": [],
     "max_stack": 5,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -5402,6 +5852,8 @@
   },
   "Liferender": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [
      {
       "kind": "remove_at_turn_end",
@@ -5430,7 +5882,9 @@
   },
   "Linebreaker": {
    "effects": {
+    "clash_end": [],
     "max_stack": 5,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -5455,6 +5909,8 @@
   },
   "Load": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -5480,7 +5936,9 @@
   },
   "Lodged Arrow": {
    "effects": {
+    "clash_end": [],
     "max_stack": 4,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -5506,7 +5964,9 @@
   },
   "Lordsguard": {
    "effects": {
+    "clash_end": [],
     "max_stack": 1,
+    "on_hit": [],
     "passive": [
      {
       "kind": "remove_at_turn_end",
@@ -5537,6 +5997,8 @@
   },
   "Love-Hate": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -5562,7 +6024,9 @@
   },
   "Loyalty Pheromone": {
    "effects": {
+    "clash_end": [],
     "max_stack": 3,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -5588,6 +6052,8 @@
   },
   "Lust DMG Down": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -5610,6 +6076,8 @@
   },
   "Lust DMG Up": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -5632,6 +6100,8 @@
   },
   "Lust Fragility": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -5654,6 +6124,8 @@
   },
   "Lust Power Down": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -5676,6 +6148,8 @@
   },
   "Lust Power Up": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -5698,6 +6172,8 @@
   },
   "Lust Protection": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -5720,6 +6196,8 @@
   },
   "Lævateinn (Outis)": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -5745,6 +6223,8 @@
   },
   "Maggots": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -5767,6 +6247,8 @@
   },
   "Magic Bullet": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -5791,7 +6273,9 @@
   },
   "Magical Arcana": {
    "effects": {
+    "clash_end": [],
     "max_stack": 3,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -5815,7 +6299,9 @@
   },
   "Magical Girl's Chant": {
    "effects": {
+    "clash_end": [],
     "max_stack": 2,
+    "on_hit": [],
     "passive": [
      {
       "component": "stack",
@@ -5847,7 +6333,9 @@
   },
   "Man in Scabbard": {
    "effects": {
+    "clash_end": [],
     "max_stack": 40,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -5873,7 +6361,9 @@
   },
   "Mark of Decay": {
    "effects": {
+    "clash_end": [],
     "max_stack": 1,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -5898,6 +6388,8 @@
   },
   "Mark of Villainy": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -5921,6 +6413,8 @@
   },
   "Mark of the Prescript": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -5943,7 +6437,9 @@
   },
   "Mauled Color -Bleu-": {
    "effects": {
+    "clash_end": [],
     "max_stack": 9,
+    "on_hit": [],
     "passive": [],
     "turn_end": [
      {
@@ -5975,7 +6471,9 @@
   },
   "Mauled Color -Rouge-": {
    "effects": {
+    "clash_end": [],
     "max_stack": 9,
+    "on_hit": [],
     "passive": [],
     "turn_end": [
      {
@@ -6021,6 +6519,8 @@
   },
   "Melee Support": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -6044,6 +6544,8 @@
   },
   "Microprecision Time Acceleration": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [
      {
       "component": "stack",
@@ -6076,6 +6578,8 @@
   },
   "Minus Coin Boost": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -6098,6 +6602,8 @@
   },
   "Minus Coin Drop": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -6120,7 +6626,9 @@
   },
   "Moonlit Azure Blade": {
    "effects": {
+    "clash_end": [],
     "max_stack": 20,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -6144,6 +6652,8 @@
   },
   "Nails": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -6168,7 +6678,9 @@
   },
   "Near-light Superbattery": {
    "effects": {
+    "clash_end": [],
     "max_stack": 100,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -6197,7 +6709,9 @@
   },
   "Nebulizer α": {
    "effects": {
+    "clash_end": [],
     "max_stack": 5,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -6221,7 +6735,9 @@
   },
   "Nebulizer β": {
    "effects": {
+    "clash_end": [],
     "max_stack": 5,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -6245,6 +6761,8 @@
   },
   "Needle": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -6269,7 +6787,9 @@
   },
   "Nerve Strike": {
    "effects": {
+    "clash_end": [],
     "max_stack": 3,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -6297,6 +6817,8 @@
   },
   "Offense Level Down": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -6319,6 +6841,8 @@
   },
   "Offense Level Down ": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -6341,6 +6865,8 @@
   },
   "Offense Level Up": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -6363,6 +6889,8 @@
   },
   "Only Ashes Remain": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -6388,7 +6916,9 @@
   },
   "Open Wound": {
    "effects": {
+    "clash_end": [],
     "max_stack": 2,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -6412,6 +6942,8 @@
   },
   "Overcharge": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -6441,6 +6973,8 @@
   },
   "Overheat": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -6469,7 +7003,9 @@
   },
   "Overheated Fuel": {
    "effects": {
+    "clash_end": [],
     "max_stack": 100,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -6494,6 +7030,8 @@
   },
   "Overheated Gas Harpoon": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -6516,7 +7054,9 @@
   },
   "Palette Vibrante": {
    "effects": {
+    "clash_end": [],
     "max_stack": 4,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -6542,6 +7082,8 @@
   },
   "Paralyze": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -6564,6 +7106,8 @@
   },
   "Penitence": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -6595,7 +7139,9 @@
   },
   "Petals": {
    "effects": {
+    "clash_end": [],
     "max_stack": 30,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -6619,7 +7165,9 @@
   },
   "Phantom Trace": {
    "effects": {
+    "clash_end": [],
     "max_stack": 1,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -6643,6 +7191,8 @@
   },
   "Pheromone": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -6666,6 +7216,8 @@
   },
   "Pheromone Mark": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [
      {
       "kind": "remove_at_turn_end",
@@ -6693,6 +7245,8 @@
   },
   "Photoelectricity": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -6718,6 +7272,8 @@
   },
   "Pierce DMG Down": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -6740,6 +7296,8 @@
   },
   "Pierce DMG Up": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -6762,6 +7320,8 @@
   },
   "Pierce Fragility": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -6784,6 +7344,8 @@
   },
   "Pierce Power Down": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -6806,6 +7368,8 @@
   },
   "Pierce Power Up": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -6828,6 +7392,8 @@
   },
   "Pierce Protection": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -6850,6 +7416,8 @@
   },
   "Pierce Resist Down": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -6873,7 +7441,9 @@
   },
   "Piercing Sword": {
    "effects": {
+    "clash_end": [],
     "max_stack": 5,
+    "on_hit": [],
     "passive": [
      {
       "kind": "remove_at_turn_end",
@@ -6916,7 +7486,9 @@
   },
   "Pink Petals": {
    "effects": {
+    "clash_end": [],
     "max_stack": 30,
+    "on_hit": [],
     "passive": [],
     "turn_end": [
      {
@@ -6949,6 +7521,8 @@
   },
   "Pink Ribbons": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -6971,6 +7545,8 @@
   },
   "Plus Coin Boost": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -6993,6 +7569,8 @@
   },
   "Plus Coin Drop": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -7015,6 +7593,8 @@
   },
   "Poise": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -7037,6 +7617,8 @@
   },
   "Poison": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -7059,6 +7641,8 @@
   },
   "Polydipsic Rose": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -7083,6 +7667,8 @@
   },
   "Power Down": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -7105,6 +7691,8 @@
   },
   "Power Up": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -7127,6 +7715,8 @@
   },
   "Prescript": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -7150,6 +7740,8 @@
   },
   "Prescript (Device)": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -7173,6 +7765,8 @@
   },
   "Prescript: -Device- I": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -7198,6 +7792,8 @@
   },
   "Prescript: -Device- II": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -7223,6 +7819,8 @@
   },
   "Prescript: -Device- III": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -7248,6 +7846,8 @@
   },
   "Prescript: -Device- III (Yi Sang)": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -7273,6 +7873,8 @@
   },
   "Prescript: -Device- IV": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -7297,6 +7899,8 @@
   },
   "Prescript: -Paper Slip- I": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -7322,6 +7926,8 @@
   },
   "Prescript: -Paper Slip- II": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -7347,6 +7953,8 @@
   },
   "Prescript: -Paper Slip- III": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -7372,6 +7980,8 @@
   },
   "Prescript: -Paper Slip- IV": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -7396,6 +8006,8 @@
   },
   "Preservation": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -7422,6 +8034,8 @@
   },
   "Pride DMG Down": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -7444,6 +8058,8 @@
   },
   "Pride DMG Up": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -7466,6 +8082,8 @@
   },
   "Pride Fragility": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -7488,6 +8106,8 @@
   },
   "Pride Power Down": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -7510,6 +8130,8 @@
   },
   "Pride Power Up": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -7532,6 +8154,8 @@
   },
   "Pride Protection": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -7554,7 +8178,9 @@
   },
   "Procuration -Hermes-": {
    "effects": {
+    "clash_end": [],
     "max_stack": 9,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -7579,7 +8205,9 @@
   },
   "Protecting Sword": {
    "effects": {
+    "clash_end": [],
     "max_stack": 5,
+    "on_hit": [],
     "passive": [
      {
       "kind": "remove_at_turn_end",
@@ -7635,6 +8263,8 @@
   },
   "Protection": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -7657,7 +8287,9 @@
   },
   "Protector's Stance": {
    "effects": {
+    "clash_end": [],
     "max_stack": 2,
+    "on_hit": [],
     "passive": [],
     "turn_end": [
      {
@@ -7690,6 +8322,8 @@
   },
   "Pulsation": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -7715,7 +8349,9 @@
   },
   "Ready -待-": {
    "effects": {
+    "clash_end": [],
     "max_stack": 3,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -7738,6 +8374,8 @@
   },
   "Ready to Loose": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -7764,6 +8402,8 @@
   },
   "Red Eyes": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -7794,6 +8434,8 @@
   },
   "Red Plum Blossom": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -7820,7 +8462,9 @@
   },
   "Reflux": {
    "effects": {
+    "clash_end": [],
     "max_stack": 3,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -7847,6 +8491,8 @@
   },
   "Regressive Transformation - Reversed": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -7869,6 +8515,8 @@
   },
   "Reload": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -7894,6 +8542,8 @@
   },
   "Reload (Solemn Lament)": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -7919,6 +8569,8 @@
   },
   "Reload -Germination-": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -7942,6 +8594,8 @@
   },
   "Remembrance": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -7965,6 +8619,8 @@
   },
   "Requested Target": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -7987,7 +8643,9 @@
   },
   "Resident Reg. Microchip": {
    "effects": {
+    "clash_end": [],
     "max_stack": 2,
+    "on_hit": [],
     "passive": [],
     "turn_end": [
      {
@@ -8019,6 +8677,8 @@
   },
   "Responsibility": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -8044,7 +8704,9 @@
   },
   "Rhythm": {
    "effects": {
+    "clash_end": [],
     "max_stack": 5,
+    "on_hit": [],
     "passive": [
      {
       "condition": {
@@ -8088,6 +8750,8 @@
   },
   "Ridiculous Grit (Outis)": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [
      {
@@ -8121,6 +8785,8 @@
   },
   "Rising Fever": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -8146,6 +8812,8 @@
   },
   "Rose Wedge": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -8175,6 +8843,8 @@
   },
   "Rupture": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -8198,6 +8868,8 @@
   },
   "Rupture Protection": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -8220,6 +8892,8 @@
   },
   "Rusted Scale Dust": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -8242,7 +8916,9 @@
   },
   "Réflexion": {
    "effects": {
+    "clash_end": [],
     "max_stack": 2,
+    "on_hit": [],
     "passive": [],
     "turn_end": [
      {
@@ -8275,6 +8951,8 @@
   },
   "SP Heal Efficiency": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -8298,6 +8976,8 @@
   },
   "SP Loss Efficiency": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -8321,6 +9001,8 @@
   },
   "Savage Tigermark Round": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -8347,7 +9029,9 @@
   },
   "Scarlet Moth": {
    "effects": {
+    "clash_end": [],
     "max_stack": 3,
+    "on_hit": [],
     "passive": [],
     "turn_end": [
      {
@@ -8379,6 +9063,8 @@
   },
   "Scorch Propellant Ammo": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -8404,6 +9090,8 @@
   },
   "Sealed Sword (Outis)": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -8428,7 +9116,9 @@
   },
   "Searing Birdcage": {
    "effects": {
+    "clash_end": [],
     "max_stack": 5,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -8454,6 +9144,8 @@
   },
   "Second Seal Removed (Outis)": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -8478,6 +9170,8 @@
   },
   "Self Resonance Circuitry": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -8503,7 +9197,9 @@
   },
   "Self-charge (Gregor)": {
    "effects": {
+    "clash_end": [],
     "max_stack": 20,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -8532,7 +9228,9 @@
   },
   "Serpent Arm": {
    "effects": {
+    "clash_end": [],
     "max_stack": 3,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -8557,6 +9255,8 @@
   },
   "Sewing Target (Ally)": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -8581,6 +9281,8 @@
   },
   "Shallow Exhale": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [
      {
       "kind": "remove_at_turn_end",
@@ -8609,7 +9311,9 @@
   },
   "Shattered World": {
    "effects": {
+    "clash_end": [],
     "max_stack": 1,
+    "on_hit": [],
     "passive": [
      {
       "kind": "remove_at_turn_end",
@@ -8638,6 +9342,8 @@
   },
   "Shattermark": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -8668,7 +9374,9 @@
   },
   "Sheut Fracture": {
    "effects": {
+    "clash_end": [],
     "max_stack": 10,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -8695,7 +9403,9 @@
   },
   "Shimmering -Bloodfiend- (Ally)": {
    "effects": {
+    "clash_end": [],
     "max_stack": 50,
+    "on_hit": [],
     "passive": [
      {
       "kind": "remove_at_turn_end",
@@ -8724,6 +9434,8 @@
   },
   "Shin (心) - Dihui Star -地慧星-": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -8749,6 +9461,8 @@
   },
   "Shin (心) - Fate": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -8773,7 +9487,9 @@
   },
   "Shin (心) - Procuration": {
    "effects": {
+    "clash_end": [],
     "max_stack": 1,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -8799,7 +9515,9 @@
   },
   "Sibling Vengeance Mark": {
    "effects": {
+    "clash_end": [],
     "max_stack": 1,
+    "on_hit": [],
     "passive": [
      {
       "kind": "remove_at_turn_end",
@@ -8827,6 +9545,8 @@
   },
   "Sinking": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -8851,6 +9571,8 @@
   },
   "Sinking Deluge": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -8874,6 +9596,8 @@
   },
   "Sizzling Wound": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -8899,6 +9623,8 @@
   },
   "Slash DMG Down": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -8921,6 +9647,8 @@
   },
   "Slash DMG Up": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -8943,6 +9671,8 @@
   },
   "Slash Fragility": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -8965,6 +9695,8 @@
   },
   "Slash Power Down": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -8987,6 +9719,8 @@
   },
   "Slash Power Up": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -9009,6 +9743,8 @@
   },
   "Slash Protection": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -9031,6 +9767,8 @@
   },
   "Slash Resist Down": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -9054,6 +9792,8 @@
   },
   "Sloth DMG Down": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -9076,6 +9816,8 @@
   },
   "Sloth DMG Up": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -9098,6 +9840,8 @@
   },
   "Sloth Fragility": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -9120,6 +9864,8 @@
   },
   "Sloth Power Down": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -9142,6 +9888,8 @@
   },
   "Sloth Power Up": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -9164,6 +9912,8 @@
   },
   "Sloth Protection": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -9186,6 +9936,8 @@
   },
   "Solitude": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [
      {
@@ -9223,6 +9975,8 @@
   },
   "Somatic Frisson-inspiring Melody": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -9246,6 +10000,8 @@
   },
   "Spark Discharge": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -9268,6 +10024,8 @@
   },
   "Spark of Inspiration": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -9290,7 +10048,9 @@
   },
   "Spore": {
    "effects": {
+    "clash_end": [],
     "max_stack": 15,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -9314,7 +10074,9 @@
   },
   "Spore Round -Base-": {
    "effects": {
+    "clash_end": [],
     "max_stack": 10,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -9340,7 +10102,9 @@
   },
   "Spore Round -Buckshot-": {
    "effects": {
+    "clash_end": [],
     "max_stack": 6,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -9366,7 +10130,9 @@
   },
   "Strider -Mao-": {
    "effects": {
+    "clash_end": [],
     "max_stack": 3,
+    "on_hit": [],
     "passive": [
      {
       "component": "stack",
@@ -9397,7 +10163,9 @@
   },
   "Strider -Wu-": {
    "effects": {
+    "clash_end": [],
     "max_stack": 3,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -9422,7 +10190,9 @@
   },
   "String Severance -絕緣-": {
    "effects": {
+    "clash_end": [],
     "max_stack": 4,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -9448,6 +10218,8 @@
   },
   "Surgery": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -9473,6 +10245,8 @@
   },
   "Sword of the Homeland - Penetrating": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -9495,6 +10269,8 @@
   },
   "Sword of the Homeland - Rending": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -9517,6 +10293,8 @@
   },
   "Swordplay of the Homeland": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -9540,7 +10318,9 @@
   },
   "Talisman": {
    "effects": {
+    "clash_end": [],
     "max_stack": 6,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -9565,7 +10345,9 @@
   },
   "Target Aim": {
    "effects": {
+    "clash_end": [],
     "max_stack": 4,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -9588,6 +10370,8 @@
   },
   "Target Spotted": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -9611,7 +10395,9 @@
   },
   "Tarnished Blood": {
    "effects": {
+    "clash_end": [],
     "max_stack": 5,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -9636,7 +10422,9 @@
   },
   "Tear-sharpened": {
    "effects": {
+    "clash_end": [],
     "max_stack": 3,
+    "on_hit": [],
     "passive": [
      {
       "condition": {
@@ -9700,7 +10488,9 @@
   },
   "Temporal Disjunction": {
    "effects": {
+    "clash_end": [],
     "max_stack": 10,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -9725,6 +10515,8 @@
   },
   "The Living & The Departed": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -9751,7 +10543,9 @@
   },
   "The Middle - Grudge (Outis)": {
    "effects": {
+    "clash_end": [],
     "max_stack": 15,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -9774,7 +10568,9 @@
   },
   "The Middle - Vengeance Tattoo -Great Sister-": {
    "effects": {
+    "clash_end": [],
     "max_stack": 10,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -9798,7 +10594,9 @@
   },
   "The Middle Styled Augmentation Tattoos": {
    "effects": {
+    "clash_end": [],
     "max_stack": 10,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -9822,6 +10620,8 @@
   },
   "The Prescript's Target": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -9845,6 +10645,8 @@
   },
   "The Self Unbound - Flow State": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -9869,7 +10671,9 @@
   },
   "The Udjat -Vanguard-": {
    "effects": {
+    "clash_end": [],
     "max_stack": 2,
+    "on_hit": [],
     "passive": [],
     "turn_end": [
      {
@@ -9905,6 +10709,8 @@
   },
   "The Uninvited": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -9930,7 +10736,9 @@
   },
   "Thermal Blades": {
    "effects": {
+    "clash_end": [],
     "max_stack": 2,
+    "on_hit": [],
     "passive": [],
     "turn_end": [
      {
@@ -9962,7 +10770,9 @@
   },
   "Thunderer": {
    "effects": {
+    "clash_end": [],
     "max_stack": 5,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -9986,7 +10796,9 @@
   },
   "Tianjiu Star's Blade": {
    "effects": {
+    "clash_end": [],
     "max_stack": 20,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -10010,6 +10822,8 @@
   },
   "Tigermark Round": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -10035,6 +10849,8 @@
   },
   "Time Moratorium": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -10060,6 +10876,8 @@
   },
   "Torn Memory": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -10083,6 +10901,8 @@
   },
   "Total Bloodfeast Consumed": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -10106,7 +10926,9 @@
   },
   "Touche Hardie": {
    "effects": {
+    "clash_end": [],
     "max_stack": 2,
+    "on_hit": [],
     "passive": [],
     "turn_end": [
      {
@@ -10137,6 +10959,8 @@
   },
   "Trauma Shield": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [
      {
       "component": "stack",
@@ -10168,6 +10992,8 @@
   },
   "Tremor": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -10191,6 +11017,8 @@
   },
   "Tremor - Chain": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [
      {
@@ -10222,6 +11050,8 @@
   },
   "Tremor - Clockwinding": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [
      {
@@ -10254,6 +11084,8 @@
   },
   "Tremor - Decay": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [
      {
@@ -10285,6 +11117,8 @@
   },
   "Tremor - Distribution": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [
      {
@@ -10316,6 +11150,8 @@
   },
   "Tremor - Everlasting": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [
      {
@@ -10348,6 +11184,8 @@
   },
   "Tremor - Fracture": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [
      {
@@ -10380,6 +11218,8 @@
   },
   "Tremor - Hemorrhage": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -10404,6 +11244,8 @@
   },
   "Tremor - Reverb": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [
      {
@@ -10435,6 +11277,8 @@
   },
   "Tremor - Scorch": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [
      {
@@ -10466,6 +11310,8 @@
   },
   "Tremor - Superposition": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -10489,6 +11335,8 @@
   },
   "Tremor Burst": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -10511,7 +11359,9 @@
   },
   "Twisted Curse Talisman": {
    "effects": {
+    "clash_end": [],
     "max_stack": 10,
+    "on_hit": [],
     "passive": [
      {
       "kind": "remove_at_turn_end",
@@ -10541,6 +11391,8 @@
   },
   "Unbreakable Coin": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -10565,6 +11417,8 @@
   },
   "Unfocused Volley": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -10589,6 +11443,8 @@
   },
   "Unjust Enrichment": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -10612,6 +11468,8 @@
   },
   "Unlock": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -10636,6 +11494,8 @@
   },
   "Unlock - I": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -10659,6 +11519,8 @@
   },
   "Unlock - II": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -10682,6 +11544,8 @@
   },
   "Unlock - III": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -10705,7 +11569,9 @@
   },
   "Unrelenting Spirit - Shin -剛氣-心-": {
    "effects": {
+    "clash_end": [],
     "max_stack": 1,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -10730,7 +11596,9 @@
   },
   "Unrelenting Spirit -剛氣-": {
    "effects": {
+    "clash_end": [],
     "max_stack": 1,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -10756,7 +11624,9 @@
   },
   "Unrelenting Storm": {
    "effects": {
+    "clash_end": [],
     "max_stack": 2,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -10780,7 +11650,9 @@
   },
   "Vendetta Mark": {
    "effects": {
+    "clash_end": [],
     "max_stack": 10,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -10806,6 +11678,8 @@
   },
   "Vengeance Mark": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -10828,7 +11702,9 @@
   },
   "Vengeance Tattoo": {
    "effects": {
+    "clash_end": [],
     "max_stack": 20,
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -10851,6 +11727,8 @@
   },
   "Viewing the Tableau (Hong Lu)": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [
      {
@@ -10881,6 +11759,8 @@
   },
   "Violent Collections": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -10904,12 +11784,20 @@
   },
   "Volatile Passion": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [
+     {
+      "kind": "inflict",
+      "potency": 1,
+      "raw": "On Hit, inflict 1 [Burn]",
+      "status": "Burn"
+     }
+    ],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
     "unmodeled": [
      "If the main target has [Burn], Final Power +1",
-     "On Hit, inflict 1 [Burn]",
      "Turn End: lose (# of turns spent in Volatile E.G.O state x 5) SP. (Max SP Loss: 40)",
      "When hit, if this unit had a Defense Skill chained at Combat Start, inflict 1 [Burn] per hit against the attacker for the turn"
     ]
@@ -10929,6 +11817,8 @@
   },
   "Weak-resist DMG Boost": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -10951,6 +11841,8 @@
   },
   "Weakness Analyzed": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -10973,6 +11865,8 @@
   },
   "When boring a 20-inch hole with a lance... (Yi Sang)": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -10997,6 +11891,8 @@
   },
   "When caving in the back of the skull with a hammer... (Yi Sang)": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -11021,6 +11917,8 @@
   },
   "When cleaving through the shoulder and the skull with a bastard sword... (Yi Sang)": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -11045,6 +11943,8 @@
   },
   "When hacking through the ribs with a hatchet... (Yi Sang)": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -11068,6 +11968,8 @@
   },
   "When lacerating through space itself with a scythe, like a certain someone... (Yi Sang)": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -11092,6 +11994,8 @@
   },
   "When penetrating the lungs with a stiletto... (Yi Sang)": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -11115,6 +12019,8 @@
   },
   "When punching 10 or more holes in the torso with a rapier... (Yi Sang)": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -11139,6 +12045,8 @@
   },
   "When rending the body with a great sword... (Yi Sang)": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -11163,6 +12071,8 @@
   },
   "When ripping the flesh to ten thousand strips with a whip... (Yi Sang)": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -11187,6 +12097,8 @@
   },
   "Wild Hunt": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -11212,6 +12124,8 @@
   },
   "Wound-casing Mask": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -11235,6 +12149,8 @@
   },
   "Wrath DMG Down": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -11257,6 +12173,8 @@
   },
   "Wrath DMG Up": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -11279,6 +12197,8 @@
   },
   "Wrath Fragility": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -11301,6 +12221,8 @@
   },
   "Wrath Power Down": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -11323,6 +12245,8 @@
   },
   "Wrath Power Up": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -11345,6 +12269,8 @@
   },
   "Wrath Protection": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -11367,6 +12293,8 @@
   },
   "Wrath Resist Down": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -11390,6 +12318,8 @@
   },
   "Your Will Guides My Blade.": {
    "effects": {
+    "clash_end": [],
+    "on_hit": [],
     "passive": [],
     "turn_end": [],
     "turn_start": [],

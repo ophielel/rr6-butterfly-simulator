@@ -269,6 +269,12 @@ pub struct Effect {
     /// unique Sinking is inflicted.
     #[serde(default)]
     pub butterfly_part: Option<String>,
+    /// A status rider that inflicts on the attacker instead of the target.
+    #[serde(default)]
+    pub on_attacker: bool,
+    /// A status rider that only fires on the first Coin of a Skill.
+    #[serde(default)]
+    pub first_coin_only: bool,
     /// "On Hit with a Base Attack Skill" (a passive that rides on hits).
     #[serde(default)]
     pub on_base_attack_hit: bool,
@@ -321,6 +327,12 @@ pub struct SkillMechanics {
     /// "On Tails Hit" clauses.
     #[serde(default)]
     pub tails_hit: Vec<Effect>,
+    /// "[When Clash ends]" clauses of a status.
+    #[serde(default)]
+    pub clash_end: Vec<Effect>,
+    /// "[When hit]" clauses of a status.
+    #[serde(default)]
+    pub on_hit: Vec<Effect>,
     /// "[Before Attack]" - resolved after On Use and before the first toss.
     #[serde(default)]
     pub before_attack: Vec<Effect>,

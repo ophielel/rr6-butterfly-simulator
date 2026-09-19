@@ -2329,6 +2329,21 @@ pub fn resolve_clash(
     a: &mut SkillUse,
     b: &mut SkillUse,
 ) -> ClashResult {
+    let outcome = resolve_clash_inner(state, a_index, b_index, a, b);
+    // "[When Clash ends]" clauses of the statuses both units hold (Rodion's
+    // Blessing / Despair inflict [Sinking] once per turn when a Clash ends).
+    apply_status_event(state, a_index, "clash_end", Some(b_index));
+    apply_status_event(state, b_index, "clash_end", Some(a_index));
+    outcome
+}
+
+fn resolve_clash_inner(
+    state: &mut BattleState,
+    a_index: usize,
+    b_index: usize,
+    a: &mut SkillUse,
+    b: &mut SkillUse,
+) -> ClashResult {
     let mut rounds = 0;
     loop {
         if !a.has_fresh_coins() || !b.has_fresh_coins() {
@@ -3001,6 +3016,9 @@ fn apply_hit(
         use_.coins.len(),
         defender_index,
     );
+    // "[When hit]" clauses of the defender's statuses ("inflict 2 [Sinking] on
+    // the attacker").
+    apply_status_event(state, defender_index, "on_hit", Some(attacker_index));
     // Rupture: "When hit by an attack, take fixed damage by the effect's
     // Potency. Then, reduce its Count by 1." (wiki.gg `Status Effects`).
     let rupture = state.units[defender_index].statuses.potency("Rupture");
@@ -3387,6 +3405,57 @@ fn apply_status_phase(
             for note in notes {
                 state.warnings.push(note);
             }
+        }
+    }
+}
+
+/// Run the `[When Clash ends]` / `[When hit]` clauses of a unit's statuses.
+/// `target` is the other unit ("inflict 2 [Sinking] on the attacker").
+fn apply_status_event(state: &mut BattleState, index: usize, phase: &str, target: Option<usize>) {
+    let Some(book) = state.status_book.clone() else { return };
+    let held: Vec<(String, i32)> = state.units[index]
+        .statuses
+        .iter()
+        .map(|(key, instance)| {
+            (key.clone(), instance.potency + instance.count + instance.stack)
+        })
+        .collect();
+    for (status, total) in held {
+        if total <= 0 {
+            continue;
+        }
+        let Some(behaviour) = book.get(&status) else { continue };
+        let list: Vec<Effect> = if phase == "clash_end" {
+            behaviour.effects.clash_end.clone()
+        } else {
+            behaviour.effects.on_hit.clone()
+        };
+        if list.is_empty() {
+            continue;
+        }
+        let list: Vec<Effect> = list
+            .iter()
+            .map(|effect| {
+                let mut effect = resolve_self(effect, &status);
+                if effect.on_attacker {
+                    effect.source = Some("target".to_string());
+                }
+                effect
+            })
+            .collect();
+        let mut notes = Vec::new();
+        let mut ctx = EffectContext {
+            actor_index: index,
+            target_index: target,
+            clash_count: 0,
+            clash_lost: false,
+            slot: 0,
+            mechanics_note: &mut notes,
+        };
+        let mut use_ctx = UseContext::default();
+        apply_effects(state, &list, &mut ctx, &mut use_ctx);
+        for note in notes {
+            state.warnings.push(note);
         }
     }
 }
