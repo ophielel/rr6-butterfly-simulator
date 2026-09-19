@@ -554,6 +554,90 @@ STATUS_KEYS = [
 ]
 
 
+# Statuses the fixed content uses beyond the hand-listed core ones; each is
+# resolved by display name in the in-game data so the official key is used.
+EXTRA_STATUS_NAMES = [
+    "Tremor", "Tremor Burst", "Amplitude Conversion", "Charge", "Rupture", "Protection",
+    "Damage Up", "Damage Down", "Power Up", "Power Down", "Attack Power Up", "Attack Power Down",
+    "Offense Level Up", "Offense Level Down", "Defense Level Up", "Defense Level Down",
+    "Bind", "Haste", "Paralyze", "Plus Coin Boost", "Minus Coin Drop", "Clash Power Up",
+    "HP Healing Down", "Wrath Fragility", "Gloom Fragility", "Gloom Resist Down",
+    "Slash Resist Down", "Pierce Resist Down", "Blunt Resist Down", "Unbreakable Coin",
+    "No Damage Taken", "Discard", "Aggro", "Dazzle", "Deep Tears", "Tear-sharpened",
+    "Protecting Sword", "Faint Aroma", "Blue Sand", "Bright -光-", "Suit", "Lamp",
+    "Incandescent Scale Dust", "Acuate Scale Dust", "Rusted Scale Dust",
+    "The Udjat -Vanguard-", "LCA Fracture Round", "Bullet - Solitude", "Tremor - Decay",
+]
+
+
+# Names the wiki/game data treat as Stack-based but whose text is ambiguous.
+STACK_STATUS_NAMES = {
+    "In the Past", "In the Present", "In the Future", "Temporal Disjunction",
+    "Dazzle", "Faint Aroma", "Lamp", "Deep Tears", "Tear-sharpened",
+    "Protecting Sword", "Bright -光-", "Suit", "Aggro", "Blue Sand",
+    "LCA Fracture Round", "Bullet - Solitude", "The Udjat -Vanguard-",
+}
+
+
+def status_is_stack(text: str, name: str = "") -> bool:
+    """A status is Stack-based when its text is about Stack and not about
+    Potency/Count (the engine applies the two differently)."""
+    if name in STACK_STATUS_NAMES:
+        return True
+    if name.endswith("Resist Down") or "Fragility" in name or name in (
+        "Fragile",
+        "Protection",
+    ):
+        return False
+    lowered = text.lower()
+    if "potency and the count" in lowered:
+        return False
+    if "count" in lowered and "stack" not in lowered:
+        return False
+    if "per count" in lowered or "count)" in lowered.replace("stack)", ""):
+        return False
+    return any(marker in text for marker in ("Max Stack", "per Stack", "Stack)", "Stack:", "Stack "))
+
+
+def build_extra_statuses(tables_en, tables_zh, existing: List[dict]) -> List[dict]:
+    by_name = {}
+    for table in tables_en:
+        for key, entry in table.items():
+            name = (entry.get("name") or "").strip()
+            if name and name not in by_name:
+                by_name[name] = (key, entry)
+    zh_by_key = {}
+    for table in tables_zh:
+        zh_by_key.update(table)
+    known = {record["wiki_name"] or "" for record in existing}
+    out = []
+    for name in EXTRA_STATUS_NAMES:
+        found = by_name.get(name)
+        if not found:
+            continue
+        key, entry = found
+        if key in {record["key"] for record in existing}:
+            continue
+        text = entry.get("desc", "")
+        stack_based = status_is_stack(text, entry.get("name") or "")
+        zh = zh_by_key.get(key) or {}
+        out.append({
+            "key": key,
+            "structure": "stack" if stack_based else "potency_count",
+            "name_en": entry.get("name"),
+            "name_zh": zh.get("name"),
+            "wiki_name": name,
+            "text_en": text.strip(),
+            "text_zh": (zh.get("desc") or "").strip(),
+            "source_kind": "buff",
+            "sources": [
+                {"kind": "game_text", "language": "en", "id": key, "verification": "official"}
+            ],
+        })
+    _ = known
+    return out
+
+
 def build_statuses(kw_en, kw_zh, bufs_en, bufs_zh) -> List[dict]:
     out = []
     tables_en = [(kw_en, "keyword"), (bufs_en, "buff")]
@@ -571,8 +655,13 @@ def build_statuses(kw_en, kw_zh, bufs_en, bufs_zh) -> List[dict]:
         if entry is None:
             continue
         zh = lookup_zh.get(key)
+        text = entry.get("desc", "")
+        # Stack-based statuses ("Max Stack: N", "per Stack", "Lose 1 Stack")
+        # behave differently from Potency/Count statuses.
+        stack_based = status_is_stack(text, entry.get("name") or "")
         out.append({
             "key": key,
+            "structure": "stack" if stack_based else "potency_count",
             "name_en": entry.get("name"),
             "name_zh": (zh or {}).get("name"),
             "wiki_name": wiki_name,
@@ -644,6 +733,13 @@ def main() -> int:
     merge(bufs_zh, game_index("Bufs_Refraction6.json", "zh"))
     merge(bufs_zh, game_index("BattleKeywords_Refraction6.json", "zh"))
     statuses = build_statuses(kw_en, kw_zh, bufs_en, bufs_zh)
+    statuses.extend(
+        build_extra_statuses(
+            [kw_en, bufs_en, game_index("Bufs-a1c10p1.json"), game_index("BattleKeywords-a1c10p1.json")],
+            [kw_zh, bufs_zh, game_index("Bufs-a1c10p1.json", "zh"), game_index("BattleKeywords-a1c10p1.json", "zh")],
+            statuses,
+        )
+    )
     dump("statuses", "statuses.json", statuses)
     print(f"statuses {len(statuses)}")
 

@@ -721,6 +721,14 @@ pub fn apply_effects(
                     });
                     continue;
                 }
+                // Stack-based statuses (In the Past/Present/Future, Dazzle, …)
+                // are written to Stack instead of Potency/Count.
+                if effect.component == Some(Component::Stack) {
+                    let store = &mut state.units[index].statuses;
+                    let amount = if potency != 0 { potency } else { count };
+                    store.add_stack(&status, amount);
+                    continue;
+                }
                 let count_status = effect.status2.clone().unwrap_or_else(|| status.clone());
                 // A state of time makes the unit inflict or gain more of its
                 // status (Burn / Poise / Bleed).

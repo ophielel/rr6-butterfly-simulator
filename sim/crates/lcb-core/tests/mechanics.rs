@@ -1217,6 +1217,53 @@ fn section5_imago_acts_while_staggered() {
     assert_eq!(slots.len(), 6, "the Imago keeps its Skill Slots while Staggered");
 }
 
+/// The Imago drives its own states of time: Clash Win grants +5 Stacks, Clash
+/// Lose halves them, and the Stack bonus scales the state's status.
+/// Sources: wiki.gg Imago skill text, in-game `Bufs_Refraction6`.
+#[test]
+fn imago_stack_gains_halve_and_bonuses() {
+    use lcb_core::effects::Effect;
+    use lcb_core::scripts::TimeState;
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&[fixed::TEAM[0]], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    let imago = state.units.iter().position(|u| !u.kind.is_sinner()).unwrap();
+    assert_eq!(state.units[imago].time_state, Some(TimeState::Past));
+    let gain = Effect {
+        kind: "gain".to_string(),
+        status: Some("In the Past".to_string()),
+        potency: Some(5),
+        component: Some(lcb_core::effects::Component::Stack),
+        ..Default::default()
+    };
+    let mut notes = Vec::new();
+    let mut ctx = battle::UseContext::default();
+    battle::apply_effects_for_test(&mut state, &[gain], imago, Some(0), &mut notes, &mut ctx);
+    assert_eq!(state.units[imago].statuses.stack("In the Past"), 15);
+    // 11-20 Stacks: Clash Power +1 and +2 Burn Potency / +1 Burn Count.
+    let (_, bonus) = battle::time_state_bonus(&state, imago).unwrap();
+    assert_eq!((bonus.clash_power, bonus.final_power, bonus.potency, bonus.count), (1, 0, 2, 1));
+    let burn = Effect {
+        kind: "inflict".to_string(),
+        status: Some("Burn".to_string()),
+        potency: Some(1),
+        count: Some(1),
+        ..Default::default()
+    };
+    battle::apply_effects_for_test(&mut state, &[burn], imago, Some(0), &mut notes, &mut ctx);
+    assert_eq!(state.units[0].statuses.potency("Burn"), 3, "1 + 2 from the Stack bonus");
+    assert_eq!(state.units[0].statuses.count("Burn"), 2, "1 + 1 from the Stack bonus");
+    // "Halve [In the Past] (rounded down)".
+    let halve = Effect {
+        kind: "halve_status".to_string(),
+        status: Some("In the Past".to_string()),
+        ..Default::default()
+    };
+    battle::apply_effects_for_test(&mut state, &[halve], imago, Some(0), &mut notes, &mut ctx);
+    assert_eq!(state.units[imago].statuses.stack("In the Past"), 7);
+}
+
 /// A full turn keeps the battle in a consistent, serialisable state.
 #[test]
 fn turn_advances_phase_and_logs() {

@@ -31,6 +31,12 @@ attack, guard replacing the Defense Level).  Tests:
 `mechanics::clash_loser_loses_one_coin_per_round`, `mechanics::damage_formula_matches_source`,
 `mechanics::stagger_levels_match_source`.
 
+The Imago's own state machine is driven by its skills ("[Clash Win] Gain 5 [In the
+Past]", "[Clash Lose] Halve [In the Past]"), which required status grants to
+respect Stack vs Potency/Count — a bug fixed at the data level
+(`structure` per status in `data/statuses/statuses.json`).
+Tests: `mechanics::imago_stack_gains_halve_and_bonuses`.
+
 ## Phase 4 — statuses — partial
 
 Implemented: Burn, Bleed, Sinking, Butterfly (unique Sinking), The Living & The

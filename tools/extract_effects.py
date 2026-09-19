@@ -303,7 +303,7 @@ PATTERNS = [
     (re.compile(r"^Trigger \[([^\]]+)\]; then, reduce target's \[([^\]]+)\] Count by (\d+)$"),
      lambda m: {"kind": "tremor_burst" if m.group(1) == "Tremor Burst" else "activate_status",
                 "status": m.group(1), "consume_count": int(m.group(3))}),
-    (re.compile(r"^Activate \[([^\]]+)\] on target (once|twice|\d+ times?)\. Target loses (\d+) \[([^\]]+)\] Count$"),
+    (re.compile(r"^[Aa]ctivate \[([^\]]+)\] on (?:the main )?target (once|twice|\d+ times?)\. Target loses (\d+) \[([^\]]+)\] Count$"),
      lambda m: {"kind": "activate_status", "status": m.group(1),
                 "times": {"once": 1, "twice": 2}.get(m.group(2), None) or int(re.sub(r"\D", "", m.group(2)) or 1),
                 "consume_count": int(m.group(3))}),
@@ -401,6 +401,7 @@ def parse_triggered(trigger: str, text: str, raw: str) -> Optional[dict]:
         if trigger == "coin_clash_lose":
             effect["only_after_clash_lose"] = True
             effect["trigger"] = "coin"
+        effect = apply_stack_component(effect)
         if limits:
             effect.update(limits)
         if next_turn:
@@ -467,6 +468,34 @@ TAG_LINES = {
 
 def format_status_count_floor(status: str) -> str:
     return f"status_count_floor:{status}"
+
+
+def load_stack_statuses() -> set:
+    """Statuses the engine stores as Stack (from data/statuses/statuses.json)."""
+    path = os.path.join(DATA, "statuses", "statuses.json")
+    if not os.path.exists(path):
+        return set()
+    with open(path, encoding="utf-8") as fh:
+        records = json.load(fh)
+    return {
+        (record.get("name_en") or "")
+        for record in records
+        if record.get("structure") == "stack"
+    }
+
+
+STACK_STATUSES = load_stack_statuses()
+
+
+def apply_stack_component(effect: dict) -> dict:
+    """Grants of Stack-based statuses go to Stack, not Potency/Count."""
+    if effect.get("kind") not in ("inflict", "gain"):
+        return effect
+    for key in ("status", "status2"):
+        if effect.get(key) in STACK_STATUSES:
+            effect["component"] = "stack"
+            break
+    return effect
 
 
 def clean_line(line: str) -> str:

@@ -1,6 +1,7 @@
 [
   {
     "key": "Burn",
+    "structure": "potency_count",
     "name_en": "Burn",
     "name_zh": "烧伤",
     "wiki_name": "Burn",
@@ -18,6 +19,7 @@
   },
   {
     "key": "Combustion",
+    "structure": "potency_count",
     "name_en": "Burn",
     "name_zh": "烧伤",
     "wiki_name": "Burn",
@@ -35,6 +37,7 @@
   },
   {
     "key": "Laceration",
+    "structure": "potency_count",
     "name_en": "Bleed",
     "name_zh": "流血",
     "wiki_name": "Bleed",
@@ -52,6 +55,7 @@
   },
   {
     "key": "Sinking",
+    "structure": "potency_count",
     "name_en": "Sinking",
     "name_zh": "沉沦",
     "wiki_name": "Sinking",
@@ -69,6 +73,7 @@
   },
   {
     "key": "SinkingWhite",
+    "structure": "potency_count",
     "name_en": "Butterfly",
     "name_zh": "蝶",
     "wiki_name": "Butterfly",
@@ -86,6 +91,7 @@
   },
   {
     "key": "BulletLament",
+    "structure": "potency_count",
     "name_en": "The Living & The Departed",
     "name_zh": "生蝶·亡蝶",
     "wiki_name": "The Living & The Departed",
@@ -103,6 +109,7 @@
   },
   {
     "key": "ReloadLament",
+    "structure": "potency_count",
     "name_en": "Reload",
     "name_zh": "再次装填",
     "wiki_name": "Reload (Solemn Lament)",
@@ -120,6 +127,7 @@
   },
   {
     "key": "Vulnerable",
+    "structure": "potency_count",
     "name_en": "Fragile",
     "name_zh": "易损",
     "wiki_name": "Fragile",
@@ -137,6 +145,7 @@
   },
   {
     "key": "StackPast",
+    "structure": "stack",
     "name_en": "In the Past (Deactivated)",
     "name_zh": "过去状态（已禁用）",
     "wiki_name": "In the Past (Deactivated)",
@@ -154,6 +163,7 @@
   },
   {
     "key": "StackPresent",
+    "structure": "stack",
     "name_en": "In the Present (Deactivated)",
     "name_zh": "现在状态（已禁用）",
     "wiki_name": "In the Present (Deactivated)",
@@ -171,6 +181,7 @@
   },
   {
     "key": "StackFuture",
+    "structure": "stack",
     "name_en": "In the Future (Deactivated)",
     "name_zh": "未来状态（已禁用）",
     "wiki_name": "In the Future (Deactivated)",
@@ -188,6 +199,7 @@
   },
   {
     "key": "StackPastActivate",
+    "structure": "stack",
     "name_en": "In the Past",
     "name_zh": "过去状态",
     "wiki_name": "In the Past",
@@ -205,6 +217,7 @@
   },
   {
     "key": "StackPresentActivate",
+    "structure": "stack",
     "name_en": "In the Present",
     "name_zh": "现在状态",
     "wiki_name": "In the Present",
@@ -222,6 +235,7 @@
   },
   {
     "key": "StackFutureActivate",
+    "structure": "stack",
     "name_en": "In the Future",
     "name_zh": "未来状态",
     "wiki_name": "In the Future",
@@ -239,6 +253,7 @@
   },
   {
     "key": "TimeGap",
+    "structure": "stack",
     "name_en": "Temporal Disjunction",
     "name_zh": "时间背离",
     "wiki_name": "Temporal Disjunction",
@@ -256,6 +271,7 @@
   },
   {
     "key": "HeatedWingScales",
+    "structure": "potency_count",
     "name_en": "Incandescent Scale Dust",
     "name_zh": "灼热的鳞粉",
     "wiki_name": "Incandescent Scale Dust",
@@ -273,6 +289,7 @@
   },
   {
     "key": "TransparentWingScales",
+    "structure": "potency_count",
     "name_en": "Acuate Scale Dust",
     "name_zh": "锐利的鳞粉",
     "wiki_name": "Acuate Scale Dust",
@@ -290,6 +307,7 @@
   },
   {
     "key": "RustedWingScales",
+    "structure": "potency_count",
     "name_en": "Rusted Scale Dust",
     "name_zh": "锈蚀的鳞粉",
     "wiki_name": "Rusted Scale Dust",
@@ -301,6 +319,744 @@
         "kind": "game_text",
         "language": "en",
         "id": "RustedWingScales",
+        "verification": "official"
+      }
+    ]
+  },
+  {
+    "key": "Vibration",
+    "structure": "potency_count",
+    "name_en": "Tremor",
+    "name_zh": "震颤",
+    "wiki_name": "Tremor",
+    "text_en": "When attacked by skills that trigger Tremor Burst, raise the Stagger Threshold by the effect’s Potency.\nAt the end of the turn, reduce the Count by 1.",
+    "text_zh": "在{1}回合内，受到造成震颤引爆 的攻击时，混乱阈值前移{0}。",
+    "source_kind": "buff",
+    "sources": [
+      {
+        "kind": "game_text",
+        "language": "en",
+        "id": "Vibration",
+        "verification": "official"
+      }
+    ]
+  },
+  {
+    "key": "VibrationExplosion",
+    "structure": "potency_count",
+    "name_en": "Tremor Burst",
+    "name_zh": "震颤引爆",
+    "wiki_name": "Tremor Burst",
+    "text_en": "Raise target's Stagger Threshold by Tremor Potency on target",
+    "text_zh": "使目标的混乱阈值前移与震颤 强度相同的数值",
+    "source_kind": "buff",
+    "sources": [
+      {
+        "kind": "game_text",
+        "language": "en",
+        "id": "VibrationExplosion",
+        "verification": "official"
+      }
+    ]
+  },
+  {
+    "key": "Switch_Vibration",
+    "structure": "potency_count",
+    "name_en": "Amplitude Conversion",
+    "name_zh": "振幅转换",
+    "wiki_name": "Amplitude Conversion",
+    "text_en": "Converts Tremor or already converted Tremor on target to a different type of Tremor.\nPotency and Count values do not change over the conversion.",
+    "text_zh": "将目标的震颤 与已转换的震颤 转换为其他类型的震颤。\n转换时，现有震颤的强度与层数保持不变。",
+    "source_kind": "buff",
+    "sources": [
+      {
+        "kind": "game_text",
+        "language": "en",
+        "id": "Switch_Vibration",
+        "verification": "official"
+      }
+    ]
+  },
+  {
+    "key": "Charge",
+    "structure": "potency_count",
+    "name_en": "Charge",
+    "name_zh": "充能",
+    "wiki_name": "Charge",
+    "text_en": "Resource used by certain skills for additional effects. Its Count can go up to 20. Count lowers by 1 at the end of each turn.",
+    "text_zh": "特定技能发动附加效果所需的资源。最多叠加至20层。回合结束时，本效果的层数减少1层。\n\n<color=#1aece7>累计消耗层数：{2}</color>",
+    "source_kind": "buff",
+    "sources": [
+      {
+        "kind": "game_text",
+        "language": "en",
+        "id": "Charge",
+        "verification": "official"
+      }
+    ]
+  },
+  {
+    "key": "Burst",
+    "structure": "potency_count",
+    "name_en": "Rupture",
+    "name_zh": "破裂",
+    "wiki_name": "Rupture",
+    "text_en": "When hit by an attack, take fixed damage by the effect’s Potency.\nThen, reduce its Count by 1.",
+    "text_zh": "下{1}次受到攻击时，额外受到{0}点固定伤害。",
+    "source_kind": "buff",
+    "sources": [
+      {
+        "kind": "game_text",
+        "language": "en",
+        "id": "Burst",
+        "verification": "official"
+      }
+    ]
+  },
+  {
+    "key": "Protection",
+    "structure": "potency_count",
+    "name_en": "Protection",
+    "name_zh": "守护",
+    "wiki_name": "Protection",
+    "text_en": "Take less damage from skills based on the effect’s Count for one turn. (Max 10)",
+    "text_zh": "本回合内受到的伤害-{0}0%(最多-100%)",
+    "source_kind": "buff",
+    "sources": [
+      {
+        "kind": "game_text",
+        "language": "en",
+        "id": "Protection",
+        "verification": "official"
+      }
+    ]
+  },
+  {
+    "key": "AttackDmgUp",
+    "structure": "potency_count",
+    "name_en": "Damage Up",
+    "name_zh": "伤害强化",
+    "wiki_name": "Damage Up",
+    "text_en": "Deal more damage with skills based on the effect’s Count for one turn. (Max 10)",
+    "text_zh": "本回合内技能造成的伤害+{0}0%(最多+100%)",
+    "source_kind": "buff",
+    "sources": [
+      {
+        "kind": "game_text",
+        "language": "en",
+        "id": "AttackDmgUp",
+        "verification": "official"
+      }
+    ]
+  },
+  {
+    "key": "AttackDmgDown",
+    "structure": "potency_count",
+    "name_en": "Damage Down",
+    "name_zh": "伤害弱化",
+    "wiki_name": "Damage Down",
+    "text_en": "Deal less damage with skills based on the effect’s Count for one turn. (Max 10)",
+    "text_zh": "本回合内技能造成的伤害-{0}0%(最多-100%)",
+    "source_kind": "buff",
+    "sources": [
+      {
+        "kind": "game_text",
+        "language": "en",
+        "id": "AttackDmgDown",
+        "verification": "official"
+      }
+    ]
+  },
+  {
+    "key": "ResultEnhancement",
+    "structure": "potency_count",
+    "name_en": "Power Up",
+    "name_zh": "威力提升",
+    "wiki_name": "Power Up",
+    "text_en": "Skills gain final Power by the effect’s Count for one turn.",
+    "text_zh": "本回合内技能的最终威力+{0}。",
+    "source_kind": "buff",
+    "sources": [
+      {
+        "kind": "game_text",
+        "language": "en",
+        "id": "ResultEnhancement",
+        "verification": "official"
+      }
+    ]
+  },
+  {
+    "key": "ResultReduction",
+    "structure": "potency_count",
+    "name_en": "Power Down",
+    "name_zh": "威力降低",
+    "wiki_name": "Power Down",
+    "text_en": "All skills lose final Power by the effect’s Count for one turn.",
+    "text_zh": "本回合内技能的最终威力-{0}。",
+    "source_kind": "buff",
+    "sources": [
+      {
+        "kind": "game_text",
+        "language": "en",
+        "id": "ResultReduction",
+        "verification": "official"
+      }
+    ]
+  },
+  {
+    "key": "Enhancement",
+    "structure": "potency_count",
+    "name_en": "Attack Power Up",
+    "name_zh": "强壮",
+    "wiki_name": "Attack Power Up",
+    "text_en": "Attack skills gain final Power by the effect’s Count for one turn.",
+    "text_zh": "本回合内攻击技能的最终威力+{0}",
+    "source_kind": "buff",
+    "sources": [
+      {
+        "kind": "game_text",
+        "language": "en",
+        "id": "Enhancement",
+        "verification": "official"
+      }
+    ]
+  },
+  {
+    "key": "Reduction",
+    "structure": "potency_count",
+    "name_en": "Attack Power Down",
+    "name_zh": "虚弱",
+    "wiki_name": "Attack Power Down",
+    "text_en": "Attack skills lose final Power by the effect’s Count for one turn.",
+    "text_zh": "本回合内攻击技能的最终威力-{0}",
+    "source_kind": "buff",
+    "sources": [
+      {
+        "kind": "game_text",
+        "language": "en",
+        "id": "Reduction",
+        "verification": "official"
+      }
+    ]
+  },
+  {
+    "key": "AttackUp",
+    "structure": "potency_count",
+    "name_en": "Offense Level Up",
+    "name_zh": "攻击等级提升",
+    "wiki_name": "Offense Level Up",
+    "text_en": "Offense level increases based on the effect's Potency for one turn.",
+    "text_zh": "本回合内攻击等级+{0}",
+    "source_kind": "buff",
+    "sources": [
+      {
+        "kind": "game_text",
+        "language": "en",
+        "id": "AttackUp",
+        "verification": "official"
+      }
+    ]
+  },
+  {
+    "key": "AttackDown",
+    "structure": "potency_count",
+    "name_en": "Offense Level Down ",
+    "name_zh": "攻击等级降低",
+    "wiki_name": "Offense Level Down",
+    "text_en": "Offense level decreases based on the effect's Potency for one turn.",
+    "text_zh": "本回合内攻击等级-{0}",
+    "source_kind": "buff",
+    "sources": [
+      {
+        "kind": "game_text",
+        "language": "en",
+        "id": "AttackDown",
+        "verification": "official"
+      }
+    ]
+  },
+  {
+    "key": "DefenseUp",
+    "structure": "potency_count",
+    "name_en": "Defense Level Up",
+    "name_zh": "防御等级提升",
+    "wiki_name": "Defense Level Up",
+    "text_en": "Defense Level increases based on the effect's Potency for one turn.",
+    "text_zh": "本回合内防御等级+{0}",
+    "source_kind": "buff",
+    "sources": [
+      {
+        "kind": "game_text",
+        "language": "en",
+        "id": "DefenseUp",
+        "verification": "official"
+      }
+    ]
+  },
+  {
+    "key": "DefenseDown",
+    "structure": "potency_count",
+    "name_en": "Defense Level Down",
+    "name_zh": "防御等级降低",
+    "wiki_name": "Defense Level Down",
+    "text_en": "Defense Level decreases based on the effect's Potency for one turn.",
+    "text_zh": "本回合内防御等级-{0}",
+    "source_kind": "buff",
+    "sources": [
+      {
+        "kind": "game_text",
+        "language": "en",
+        "id": "DefenseDown",
+        "verification": "official"
+      }
+    ]
+  },
+  {
+    "key": "Binding",
+    "structure": "potency_count",
+    "name_en": "Bind",
+    "name_zh": "束缚",
+    "wiki_name": "Bind",
+    "text_en": "Speed decreases by the effect’s Count for one turn.",
+    "text_zh": "本回合内速度值-{0}。",
+    "source_kind": "buff",
+    "sources": [
+      {
+        "kind": "game_text",
+        "language": "en",
+        "id": "Binding",
+        "verification": "official"
+      }
+    ]
+  },
+  {
+    "key": "Agility",
+    "structure": "potency_count",
+    "name_en": "Haste",
+    "name_zh": "迅捷",
+    "wiki_name": "Haste",
+    "text_en": "Speed increases by the effect’s Count for one turn.",
+    "text_zh": "本回合内速度值+{0}。",
+    "source_kind": "buff",
+    "sources": [
+      {
+        "kind": "game_text",
+        "language": "en",
+        "id": "Agility",
+        "verification": "official"
+      }
+    ]
+  },
+  {
+    "key": "Paralysis",
+    "structure": "potency_count",
+    "name_en": "Paralyze",
+    "name_zh": "麻痹",
+    "wiki_name": "Paralyze",
+    "text_en": "Fix the Power of Coins to 0 for one turn, with one Coin per the effect’s Count.",
+    "text_zh": "本回合内使{0}枚硬币的变动值固定为0。",
+    "source_kind": "buff",
+    "sources": [
+      {
+        "kind": "game_text",
+        "language": "en",
+        "id": "Paralysis",
+        "verification": "official"
+      }
+    ]
+  },
+  {
+    "key": "PlusCoinValueUp",
+    "structure": "potency_count",
+    "name_en": "Plus Coin Boost",
+    "name_zh": "加算硬币强化",
+    "wiki_name": "Plus Coin Boost",
+    "text_en": "Raise the Power of Plus Coins by the effect’s Count.",
+    "text_zh": "本回合内变动值为加算的技能硬币威力+{0}。",
+    "source_kind": "buff",
+    "sources": [
+      {
+        "kind": "game_text",
+        "language": "en",
+        "id": "PlusCoinValueUp",
+        "verification": "official"
+      }
+    ]
+  },
+  {
+    "key": "MinusCoinValueDown",
+    "structure": "potency_count",
+    "name_en": "Minus Coin Drop",
+    "name_zh": "减算硬币弱化",
+    "wiki_name": "Minus Coin Drop",
+    "text_en": "Reduce the power of Minus Coins by the effect’s Count.",
+    "text_zh": "本回合内变动值为减算的技能硬币威力-{0}。",
+    "source_kind": "buff",
+    "sources": [
+      {
+        "kind": "game_text",
+        "language": "en",
+        "id": "MinusCoinValueDown",
+        "verification": "official"
+      }
+    ]
+  },
+  {
+    "key": "TakeHpHealReduce",
+    "structure": "potency_count",
+    "name_en": "HP Healing Down",
+    "name_zh": "体力恢复降低",
+    "wiki_name": "HP Healing Down",
+    "text_en": "HP healed by Passives, Skill effects, or Coin effects decreases proportionally to the value of this effect. (Max 5)",
+    "text_zh": "本回合内通过被动，技能以及硬币效果恢复的体力量-{0}0%。(最多5层)",
+    "source_kind": "buff",
+    "sources": [
+      {
+        "kind": "game_text",
+        "language": "en",
+        "id": "TakeHpHealReduce",
+        "verification": "official"
+      }
+    ]
+  },
+  {
+    "key": "CrimsonTakeDamageUp",
+    "structure": "potency_count",
+    "name_en": "Wrath Fragility",
+    "name_zh": "暴怒易损",
+    "wiki_name": "Wrath Fragility",
+    "text_en": "Take more damage from Wrath skills based on the effect’s Count for one turn. (Max 10)",
+    "text_zh": "本回合内受到来自暴怒技能的伤害+{0}0%(最多+100%)",
+    "source_kind": "buff",
+    "sources": [
+      {
+        "kind": "game_text",
+        "language": "en",
+        "id": "CrimsonTakeDamageUp",
+        "verification": "official"
+      }
+    ]
+  },
+  {
+    "key": "AzureTakeDamageUp",
+    "structure": "potency_count",
+    "name_en": "Gloom Fragility",
+    "name_zh": "忧郁易损",
+    "wiki_name": "Gloom Fragility",
+    "text_en": "Take more damage from Gloom skills based on the effect’s Count for one turn. (Max 10)",
+    "text_zh": "本回合内受到来自忧郁技能的伤害+{0}0%(最多+100%)",
+    "source_kind": "buff",
+    "sources": [
+      {
+        "kind": "game_text",
+        "language": "en",
+        "id": "AzureTakeDamageUp",
+        "verification": "official"
+      }
+    ]
+  },
+  {
+    "key": "AzureResistDown",
+    "structure": "potency_count",
+    "name_en": "Gloom Resist Down",
+    "name_zh": "忧郁抗性弱化",
+    "wiki_name": "Gloom Resist Down",
+    "text_en": "Increase Gloom Resistance based on Stack.\n(0.1 per Stack)",
+    "text_zh": "目标的忧郁抗性增加{0:F1}",
+    "source_kind": "buff",
+    "sources": [
+      {
+        "kind": "game_text",
+        "language": "en",
+        "id": "AzureResistDown",
+        "verification": "official"
+      }
+    ]
+  },
+  {
+    "key": "SlashResistDown",
+    "structure": "potency_count",
+    "name_en": "Slash Resist Down",
+    "name_zh": "斩击抗性弱化",
+    "wiki_name": "Slash Resist Down",
+    "text_en": "Increase Slash Resistance based on Stack.\n(0.1 per Stack)",
+    "text_zh": "目标的斩击抗性增加{0:F1}",
+    "source_kind": "buff",
+    "sources": [
+      {
+        "kind": "game_text",
+        "language": "en",
+        "id": "SlashResistDown",
+        "verification": "official"
+      }
+    ]
+  },
+  {
+    "key": "PenetrateResistDown",
+    "structure": "potency_count",
+    "name_en": "Pierce Resist Down",
+    "name_zh": "突刺抗性弱化",
+    "wiki_name": "Pierce Resist Down",
+    "text_en": "Increase Pierce Resistance based on Stack.\n(0.1 per Stack)",
+    "text_zh": "目标的突刺抗性增加{0:F1}",
+    "source_kind": "buff",
+    "sources": [
+      {
+        "kind": "game_text",
+        "language": "en",
+        "id": "PenetrateResistDown",
+        "verification": "official"
+      }
+    ]
+  },
+  {
+    "key": "HitResistDown",
+    "structure": "potency_count",
+    "name_en": "Blunt Resist Down",
+    "name_zh": "打击抗性弱化",
+    "wiki_name": "Blunt Resist Down",
+    "text_en": "Increase Blunt Resistance based on Stack.\n(0.1 per Stack)",
+    "text_zh": "目标的打击抗性增加{0:F1}",
+    "source_kind": "buff",
+    "sources": [
+      {
+        "kind": "game_text",
+        "language": "en",
+        "id": "HitResistDown",
+        "verification": "official"
+      }
+    ]
+  },
+  {
+    "key": "SuperCoin",
+    "structure": "potency_count",
+    "name_en": "Unbreakable Coin",
+    "name_zh": "不可摧毁的硬币",
+    "wiki_name": "Unbreakable Coin",
+    "text_en": "- This coin does not break upon Clash Lose.\n- If an Attack Skill has this Coin, attack with this Coin after getting hit.\n- Upon Clash Lose, fix the Coin Power of the unbroken Coin to 1",
+    "text_zh": "- 此类硬币不会因为拼点失败而被摧毁。\n- 若攻击技能带有此类硬币，则受到攻击后以此类硬币进行攻击。\n- 拼点失败时，使此类硬币的硬币威力固定为1。",
+    "source_kind": "buff",
+    "sources": [
+      {
+        "kind": "game_text",
+        "language": "en",
+        "id": "SuperCoin",
+        "verification": "official"
+      }
+    ]
+  },
+  {
+    "key": "Discard",
+    "structure": "potency_count",
+    "name_en": "Discard",
+    "name_zh": "丢弃",
+    "wiki_name": "Discard",
+    "text_en": "- Delete Skills that fit the condition and are selectable during the Chaining Phase from the Dashboard. (Defensive & E.G.O Skills do not count. Does not delete the Skill from the upcoming Skills list)\n- Discarded Skills will not activate Skill effects or Coin effects other than effects from Discard, and will not give E.G.O resources.",
+    "text_zh": "- 连接技能时，将可选技能中符合条件的技能从仪表盘上丢弃。(不包括守备技能，E.G.O技能。被丢弃的技能不会移出技能池。)\n- 技能被丢弃时不会发动与“被丢弃”相关效果之外的技能效果，不会发动硬币效果，且不会获得该技能的E.G.O资源。",
+    "source_kind": "buff",
+    "sources": [
+      {
+        "kind": "game_text",
+        "language": "en",
+        "id": "Discard",
+        "verification": "official"
+      }
+    ]
+  },
+  {
+    "key": "Aggro",
+    "structure": "stack",
+    "name_en": "Aggro",
+    "name_zh": "挑衅值",
+    "wiki_name": "Aggro",
+    "text_en": "In focused encounters, slots with higher Aggro values are more likely to be targeted by enemies.",
+    "text_zh": "在集中遭遇战中，挑衅值越高的行动槽受到敌方单位攻击的概率越高。",
+    "source_kind": "buff",
+    "sources": [
+      {
+        "kind": "game_text",
+        "language": "en",
+        "id": "Aggro",
+        "verification": "official"
+      }
+    ]
+  },
+  {
+    "key": "DelusionGregBigBird",
+    "structure": "stack",
+    "name_en": "Dazzle",
+    "name_zh": "眩惑",
+    "wiki_name": "Dazzle",
+    "text_en": "- For every 1 (Sinking + Burn), take +0.5% damage from Base Attack Skills (max 10%)\n- SP Units: Change their Panic Type to \"Dazzle\"\n- Non-SP Units: Defense Level -2\n- Turn End: Lose 1 Stack\n- This effect is not cumulative; inflicting it will replace the current value with the inflicted value\n- Apply the \"Non-SP Units\" conditional to certain enemies that have SP but can't change their Panic Types\n\n※ Dazzle Panic-type Effects\n- Low Morale: Turn End: Gain 1 Bind and 2 Offense Level Down next turn\n- Panic: Turn End: Gain 1 Bind and 4 Offense Level Down next turn",
+    "text_zh": "- 自身的沉沦 强度与烧伤 强度之和每有1级，使自身受到来自基础攻击技能的伤害+0.5%(最多+10%)\n- 若目标带有理智值，则使其恐慌类型转变为“眩惑”\n- 若目标未带有理智值，则使其防御等级-2\n- 回合结束时，本效果层数减少1层\n- 本效果无法叠加，施加本效果时会改为将现存层数变为施加的层数\n- 对于带有理智值但不会改变恐慌类型的特定敌方单位，适用于未带有理智值时的效果\n\n※ 眩惑恐慌类型效果\n- 士气低落：回合结束时，下回合对自身施加1层束缚 与2层攻击等级降低 \n- 陷入恐慌：回合结束时，下回合对自身施加1层束缚 与4层攻击等级降低",
+    "source_kind": "buff",
+    "sources": [
+      {
+        "kind": "game_text",
+        "language": "en",
+        "id": "DelusionGregBigBird",
+        "verification": "official"
+      }
+    ]
+  },
+  {
+    "key": "AlriuneEGOThey",
+    "structure": "stack",
+    "name_en": "Faint Aroma",
+    "name_zh": "余香",
+    "wiki_name": "Faint Aroma",
+    "text_en": "- Max Stack: 30\n- Gain 1 Stack if this unit takes Sinking damage\n- Upon Tremor Burst, apply 1~2 Faint Aroma on 3 other random allies (for Abnormalities, the Part)\n- At max Stack, gain 2 Tremor and trigger Tremor Burst on self; then, take Gloom damage equal to Sinking on self and lose all Faint Aroma. Cannot gain Faint Aroma for the rest of the turn.\n- If this unit is killed, inflict (remaining Faint Aroma on this unit / 2) Faint Aroma randomly between this unit's allies (rounded down)",
+    "text_zh": "- 最大值：30\n- 自身受到沉沦 伤害时，对自身施加1层本效果\n- 受到震颤引爆 时，随机对除自身以外的3名友方单位施加1~2层余香 (若是异想体，则改为以部位判定)\n- 若本效果层数为最大值，则使自身增加2级震颤 强度，使自身震颤引爆 ，受到相当于自身沉沦 强度的忧郁伤害并解除自身的余香 。本回合内自身不会被施加余香 \n- 若自身阵亡，则将自身的余香 层数的一半随机施加给全体友方单位(向下取整)",
+    "source_kind": "buff",
+    "sources": [
+      {
+        "kind": "game_text",
+        "language": "en",
+        "id": "AlriuneEGOThey",
+        "verification": "official"
+      }
+    ]
+  },
+  {
+    "key": "BlueSand",
+    "structure": "stack",
+    "name_en": "Blue Sand",
+    "name_zh": "青沙",
+    "wiki_name": "Blue Sand",
+    "text_en": "- On Clash Lose, gain +1 Sinking Count (3 times per turn)\n- SP Units: change their Panic Type to \"Blue Sand\"\n- Non-SP Units: Min & Max Speed -1\n- Turn End: Reduce 1 Stack\n- This effect is not cumulative; inflicting it will replace the current value with the inflicted value\n- Apply the \"Non-SP Units\" conditional to certain enemies that have SP but can't change their Panic Types\n\n※ Blue Sand Panic Effects\n- Low Morale: Clash Power -1, Min & Max Speed -1\n- Panic: Clash Power -2, Min & Max Speed -1",
+    "text_zh": "- 拼点失败时，对自身施加1层沉沦 (每回合最多3次)\n- 若带有理智值，恐慌类型转变为“青沙”\n- 若未带有理智值，则使最小与最大速度值-1\n- 回合结束时，本效果层数减少1层\n- 本效果无法叠加，施加本效果时会改为将现存层数变为施加的层数\n- 对于带有理智值但不会改变恐慌类型的特定敌方单位，适用于未带有理智值时的效果。\n\n※ 青沙恐慌类型效果\n士气低落：自身的拼点威力-1，最小与最大速度值-1\n陷入恐慌：自身的拼点威力-2，最小与最大速度值-1",
+    "source_kind": "buff",
+    "sources": [
+      {
+        "kind": "game_text",
+        "language": "en",
+        "id": "BlueSand",
+        "verification": "official"
+      }
+    ]
+  },
+  {
+    "key": "LanternGregBigBird",
+    "structure": "stack",
+    "name_en": "Lamp",
+    "name_zh": "目灯",
+    "wiki_name": "Lamp",
+    "text_en": "- Max Stack: 8\n- Turn End: Gain 1 Bind next turn for every 2 Stack (max 4)\n- Turn End: At max Stack, if there are enemies on the field, consume all Stack to activate the following effects next turn:\n• Gain +10 Aggro to the leftmost Slot\n• Inflict 3 Dazzle to the enemy(Core) with the most current HP",
+    "text_zh": "- 最大值：8\n- 回合结束时，每带有2层本效果，下回合对自身施加1层束缚 (最多4层)\n- 回合结束时，若本效果层数为最大值，且若有敌方单位在场，则消耗所有本效果层数并在下回合触发以下效果\n· 使自身最左侧行动槽的挑衅值 +10\n· 对现存体力最高的敌方单位(本体)施加3层眩惑",
+    "source_kind": "buff",
+    "sources": [
+      {
+        "kind": "game_text",
+        "language": "en",
+        "id": "LanternGregBigBird",
+        "verification": "official"
+      }
+    ]
+  },
+  {
+    "key": "HeatedWingScalesExplain",
+    "structure": "potency_count",
+    "name_en": "Incandescent Scale Dust",
+    "name_zh": "灼热的鳞粉",
+    "wiki_name": "Incandescent Scale Dust",
+    "text_en": "- +0.25 to Resistances against Attack Types and Affinities of Skills that Clashed against \"Entangled Life - Regression\" Skill of \"Butterfly of Entangled Lives::The Pupa\"",
+    "text_zh": "- 与罗生蝶::蛹使用的技能“罗生-回归”拼点的技能对应的攻击类型与罪孽属性的抗性+0.25",
+    "source_kind": "buff",
+    "sources": [
+      {
+        "kind": "game_text",
+        "language": "en",
+        "id": "HeatedWingScalesExplain",
+        "verification": "official"
+      }
+    ]
+  },
+  {
+    "key": "TransparentWingScalesExplain",
+    "structure": "potency_count",
+    "name_en": "Acuate Scale Dust",
+    "name_zh": "锐利的鳞粉",
+    "wiki_name": "Acuate Scale Dust",
+    "text_en": "- +0.25 to Resistances against Attack Types and Affinities of Skills that Clashed against \"Entangled Life - Manifestation\" Skill of \"Butterfly of Entangled Lives::The Pupa\"",
+    "text_zh": "- 与罗生蝶::蛹使用的技能“罗生-显现”拼点的技能对应的攻击类型与罪孽属性的抗性+0.25",
+    "source_kind": "buff",
+    "sources": [
+      {
+        "kind": "game_text",
+        "language": "en",
+        "id": "TransparentWingScalesExplain",
+        "verification": "official"
+      }
+    ]
+  },
+  {
+    "key": "RustedWingScalesExplain",
+    "structure": "potency_count",
+    "name_en": "Rusted Scale Dust",
+    "name_zh": "锈蚀的鳞粉",
+    "wiki_name": "Rusted Scale Dust",
+    "text_en": "- +0.25 to Resistances against Attack Types and Affinities of Skills that Clashed against \"Entangled Life - Advent\" Skill of \"Butterfly of Entangled Lives::The Pupa\"",
+    "text_zh": "- 与罗生蝶::蛹使用的技能“罗生-到来”拼点的技能对应的攻击类型与罪孽属性的抗性+0.25",
+    "source_kind": "buff",
+    "sources": [
+      {
+        "kind": "game_text",
+        "language": "en",
+        "id": "RustedWingScalesExplain",
+        "verification": "official"
+      }
+    ]
+  },
+  {
+    "key": "LCA_Bullet",
+    "structure": "stack",
+    "name_en": "LCA Fracture Round",
+    "name_zh": "LCA龟裂弹",
+    "wiki_name": "LCA Fracture Round",
+    "text_en": "- Unique Ammo\n- Max Capacity: 16\n- Spent by certain Skills\n- Some attacks cancel if lacking Ammo",
+    "text_zh": "- 特殊弹药 \n- 最大值：16\n- 特定技能使用时消耗\n- 若缺少弹药 ，部分攻击会取消",
+    "source_kind": "buff",
+    "sources": [
+      {
+        "kind": "game_text",
+        "language": "en",
+        "id": "LCA_Bullet",
+        "verification": "official"
+      }
+    ]
+  },
+  {
+    "key": "BulletGodok",
+    "structure": "stack",
+    "name_en": "Bullet - Solitude",
+    "name_zh": "弹药-孤独",
+    "wiki_name": "Bullet - Solitude",
+    "text_en": "- Unique Ammo\n- Max Capacity: 6\nSpent when using certain Skills\n\n- This Ammo's count cannot be gained or lost due to external effects",
+    "text_zh": "- 特殊弹药\n- 最大值：6\n特定技能使用时消耗\n\n- 本弹药不会因外部效果获得或增加",
+    "source_kind": "buff",
+    "sources": [
+      {
+        "kind": "game_text",
+        "language": "en",
+        "id": "BulletGodok",
+        "verification": "official"
+      }
+    ]
+  },
+  {
+    "key": "VibrationCollapse",
+    "structure": "potency_count",
+    "name_en": "Tremor - Decay",
+    "name_zh": "震颤-崩坏",
+    "wiki_name": "Tremor - Decay",
+    "text_en": "Lose 1 Defense Level for every 4 Tremor Potency on self\nWhen Hit by Skills that trigger Tremor Burst, raise the Stagger Threshold by the effect's Potency\nTurn End: reduce the Count by 1\n(Interacts the same way as normal Tremor does to effects that raises or reduces Tremor Potency/Count)",
+    "text_zh": "目标每带有4级震颤 强度，防御等级减少1级\n在{1}回合内，受到造成震颤引爆 的攻击时，混乱阈值前移{0}。\n(本效果强度与层数的增减同样受普通震颤 影响)",
+    "source_kind": "buff",
+    "sources": [
+      {
+        "kind": "game_text",
+        "language": "en",
+        "id": "VibrationCollapse",
         "verification": "official"
       }
     ]

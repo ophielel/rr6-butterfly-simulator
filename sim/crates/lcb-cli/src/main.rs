@@ -193,13 +193,24 @@ fn run(sim: &Simulator, seed: u64, turns: u32, team: &[String], enemies: &[Strin
 fn print_turn(state: &BattleState) {
     println!("turn {} (phase {:?})", state.turn, state.phase);
     for unit in &state.units {
+        let time = unit
+            .time_state
+            .map(|state| {
+                format!(
+                    " [{:?} {}]",
+                    state,
+                    unit.statuses.stack(state.stack_key())
+                )
+            })
+            .unwrap_or_default();
         println!(
-            "  {:<34} HP {}/{} SP {} speed {} {}",
+            "  {:<34} HP {}/{} SP {} speed {}{} {}",
             unit.name,
             unit.hp,
             unit.max_hp,
             unit.sanity.sp(),
             unit.speed,
+            time,
             if unit.is_staggered() { "STAGGERED" } else { "" }
         );
     }
