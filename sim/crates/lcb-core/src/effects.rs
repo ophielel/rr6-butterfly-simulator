@@ -62,12 +62,44 @@ pub struct Condition {
     /// Any sin's Resonance count is at least this value.
     #[serde(default)]
     pub resonance_gte: Option<i32>,
+    /// The Resonance count of one specific sin must be at least `resonance_gte`
+    /// ("At 3+ (Gloom Reson.)").
+    #[serde(default)]
+    pub resonance_of: Option<String>,
     /// The target's SP is below this value.
     #[serde(default)]
     pub target_sp_below: Option<i32>,
     /// `hp_below_percent` includes equality (the wiki writes "N% or less").
     #[serde(default)]
     pub hp_or_equal: Option<bool>,
+    /// "If the target has more than N% HP" (also reads the actor when
+    /// `source` is left at its `self` default).
+    #[serde(default)]
+    pub hp_above_percent: Option<i32>,
+    /// "If the target is defeated" / "If target survives this attack".
+    #[serde(default)]
+    pub target_defeated: bool,
+    #[serde(default)]
+    pub target_survived: bool,
+    /// "If target is a SP Unit" / "For targets that are Non-SP Units".
+    #[serde(default)]
+    pub target_is_sp_unit: bool,
+    #[serde(default)]
+    pub target_is_non_sp_unit: bool,
+    /// "If this unit has [X]" - every listed status must be present.
+    #[serde(default)]
+    pub has_status: Vec<String>,
+    /// "If target is in an [Amplitude Conversion] or [Amplitude Entanglement]
+    /// state".
+    #[serde(default)]
+    pub target_has_amplitude: bool,
+    /// The listed status must be absent ("If target isn't in an [Amplitude
+    /// Conversion] state").
+    #[serde(default)]
+    pub lacks_status: Vec<String>,
+    /// "If 1 or more targets are killed" (by this Skill's use).
+    #[serde(default)]
+    pub any_target_killed: bool,
 }
 
 /// A single mechanical effect.  The struct is deliberately loose: every kind
@@ -131,11 +163,109 @@ pub struct Effect {
     /// `gain_from_resonance`: multiplier applied to the highest Resonance.
     #[serde(default)]
     pub multiplier: Option<i32>,
+    /// A `[min ~ max]` random amount (HP damage taken, status gained).
+    #[serde(default)]
+    pub range_min: Option<i32>,
+    #[serde(default)]
+    pub range_max: Option<i32>,
+    /// Several effects written as one wiki line (resolved in order).
+    #[serde(default)]
+    pub sub_effects: Vec<Effect>,
+    /// The resonance that must be present for a per-Resonance scaling, and the
+    /// status whose amount the scaling reads.
+    #[serde(default)]
+    pub resonance_of: Option<String>,
+    #[serde(default)]
+    pub from_resonance: bool,
+    #[serde(default)]
+    pub per_ammo: bool,
+    /// "For 2 turns, lose 8 SP at Combat End": how many Combat Ends.
+    #[serde(default)]
+    pub turns: Option<i32>,
+    /// The Coin this clause belongs to (filled by the extractor / attack loop).
+    #[serde(default)]
+    pub coin_index: Option<u32>,
+    /// `ally_count`/heal targets taken from a status on the actor:
+    /// "([Bind] on self / 3) other allies".
+    #[serde(default)]
+    pub ally_from_status: Option<String>,
+    #[serde(default)]
+    pub ally_from_divisor: Option<i32>,
     /// The resonance that produced this effect must be an Absolute Resonance.
     #[serde(default)]
     pub requires_a_reson: bool,
     #[serde(default)]
     pub a_reson_gte: Option<i32>,
+    /// "50% chance to ..." - a coin flip taken from the replayable RNG stream.
+    #[serde(default)]
+    pub chance: Option<i32>,
+    /// "Gain [X] up to N Stack" - the gain stops at N.
+    #[serde(default)]
+    pub up_to: Option<i32>,
+    /// Which units a Heal / SP Heal / gain reaches.  `self` (default),
+    /// `all_allies`, `lowest_hp`, `lowest_sp`, `slowest`, `random`.
+    #[serde(default)]
+    pub ally: Option<String>,
+    #[serde(default)]
+    pub ally_count: Option<i32>,
+    /// "self and N other allies" / "N other allies" - whether the actor is
+    /// part of an `ally` selection.
+    #[serde(default)]
+    pub include_self: Option<bool>,
+    /// "take HP damage equal to 1% of max HP" (self-inflicted downsides).
+    #[serde(default)]
+    pub self_damage_percent: Option<i32>,
+    #[serde(default)]
+    pub self_damage_min: Option<i32>,
+    #[serde(default)]
+    pub self_damage_max: Option<i32>,
+    /// "this effect does not reduce this unit's HP below 1" /
+    /// "does not get Staggered due to this effect".
+    #[serde(default)]
+    pub hp_floor_one: bool,
+    #[serde(default)]
+    pub no_stagger: bool,
+    /// "[On Hit] Lose 2~6 SP" / "lose 15 SP".
+    #[serde(default)]
+    pub self_sp_damage: Option<i32>,
+    #[serde(default)]
+    pub self_sp_damage_min: Option<i32>,
+    #[serde(default)]
+    pub self_sp_damage_max: Option<i32>,
+    /// "regain half of [X] consumed by this Skill" - percentage of the amount
+    /// the skill consumed.
+    #[serde(default)]
+    pub refund_percent: Option<i32>,
+    /// "trigger [Amplitude Conversion] into [Tremor - Decay]".
+    #[serde(default)]
+    pub amplitude_into: Option<String>,
+    /// "Deal Gloom damage equal to (N)% of this Coin's final damage".
+    #[serde(default)]
+    pub final_damage_percent: Option<i32>,
+    /// "[Butterfly](The Departed)" / "(The Living)" - which half of the
+    /// unique Sinking is inflicted.
+    #[serde(default)]
+    pub butterfly_part: Option<String>,
+    /// "Deal more damage based on missing HP on self (max 15%)": percent at
+    /// 100% HP lost equals this value.
+    #[serde(default)]
+    pub damage_percent_missing_hp: Option<i32>,
+    /// "[Before Attack] At 3+ (Gloom Reson.), Atk Weight +1".
+    #[serde(default)]
+    pub attack_weight: Option<i32>,
+    /// "Then, Reuse this Coin (N times per Skill)".
+    #[serde(default)]
+    pub reuse_coin: Option<i32>,
+    /// "If target was killed, activate the effect above once more".
+    #[serde(default)]
+    pub repeat_on_kill: bool,
+    /// "Heal SP equal to [X] Potency on target (Max SP heal: N)".
+    #[serde(default)]
+    pub heal_from_status: Option<String>,
+    #[serde(default)]
+    pub heal_from_component: Option<Component>,
+    #[serde(default)]
+    pub heal_from_divisor: Option<i32>,
 }
 
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
@@ -154,6 +284,19 @@ pub struct SkillMechanics {
     pub attack_end: Vec<Effect>,
     #[serde(default)]
     pub turn_start: Vec<Effect>,
+    /// "[Before Attack]" - resolved after On Use and before the first toss.
+    #[serde(default)]
+    pub before_attack: Vec<Effect>,
+    /// "[Heads Hit]" - resolved in addition to the coin's On Hit effects when
+    /// that coin lands on Heads.
+    #[serde(default)]
+    pub heads_hit: BTreeMap<String, Vec<Effect>>,
+    /// "[On Target Kill]" / "[On Kill]" - resolved when a Coin kills.
+    #[serde(default)]
+    pub on_kill: Vec<Effect>,
+    /// "[On Evade]" - resolved when this defense skill evades.
+    #[serde(default)]
+    pub on_evade: Vec<Effect>,
     /// coin index (1-based, as string) -> effects resolved when that coin lands.
     #[serde(default)]
     pub coins: BTreeMap<String, Vec<Effect>>,
@@ -165,6 +308,14 @@ pub struct SkillMechanics {
 }
 
 impl SkillMechanics {
+    /// "[Heads Hit]" effects of a coin (resolved on top of its On Hit ones).
+    pub fn heads_hit(&self, index: u32) -> &[Effect] {
+        self.heads_hit
+            .get(&index.to_string())
+            .map(|v| v.as_slice())
+            .unwrap_or(&[])
+    }
+
     pub fn coin(&self, index: u32) -> &[Effect] {
         self.coins
             .get(&index.to_string())

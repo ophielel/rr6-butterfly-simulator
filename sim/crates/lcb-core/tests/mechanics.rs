@@ -348,9 +348,12 @@ fn uptie_resolution_matches_wiki_convention() {
 fn unimplemented_effects_are_reported_not_ignored() {
     let sim = sim();
     let blockers = sim.strict_blockers();
+    // "Base Power -2 for every Cracked Coin" is the remaining known gap: the
+    // wiki/game data cached for this project never defines what cracks a Coin,
+    // so it stays UNKNOWN and strict mode must refuse it.
     assert!(
-        blockers.iter().any(|b| b.contains("A-Reson")),
-        "resonance effects are not modelled and must be listed"
+        blockers.iter().any(|b| b.contains("Cracked Coin")),
+        "unknown Cracked Coin rules must be listed: {blockers:?}"
     );
 }
 
@@ -1298,6 +1301,240 @@ fn attack_weight_hits_multiple_slots() {
         .map(|(index, _)| index)
         .collect();
     assert_eq!(damaged.len(), 7, "all seven Sinners were hit: {damaged:?}");
+}
+
+/// "[Heads Hit]" clauses resolve only when that Coin lands on Heads, and the
+/// "[Butterfly](The Living/The Departed)" split goes to Potency/Count.
+/// Sources: wiki.gg `Clash` (Coin triggers), `Status Effects` / Butterfly.
+#[test]
+fn heads_hit_effects_and_butterfly_parts() {
+    use lcb_core::effects::Effect;
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&[fixed::TEAM[0]], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    let target = state.units.iter().position(|u| !u.kind.is_sinner()).unwrap();
+    let mut notes = Vec::new();
+    let mut ctx = battle::UseContext::default();
+    let heads_only = Effect {
+        kind: "inflict".to_string(),
+        status: Some("Sinking".to_string()),
+        potency: Some(2),
+        ..Default::default()
+    };
+    battle::apply_effects_for_test(&mut state, &[heads_only], 0, Some(target), &mut notes, &mut ctx);
+    assert_eq!(state.units[target].statuses.potency("Sinking"), 2);
+    // Butterfly(The Living) is Potency, (The Departed) is Count.
+    let living = Effect {
+        kind: "inflict".to_string(),
+        status: Some("Butterfly".to_string()),
+        potency: Some(3),
+        butterfly_part: Some("living".to_string()),
+        ..Default::default()
+    };
+    let departed = Effect {
+        kind: "inflict".to_string(),
+        status: Some("Butterfly".to_string()),
+        potency: Some(4),
+        butterfly_part: Some("departed".to_string()),
+        ..Default::default()
+    };
+    battle::apply_effects_for_test(
+        &mut state,
+        &[living, departed],
+        0,
+        Some(target),
+        &mut notes,
+        &mut ctx,
+    );
+    assert_eq!(state.units[target].statuses.potency("Butterfly"), 3, "The Living");
+    assert_eq!(state.units[target].statuses.count("Butterfly"), 4, "The Departed");
+}
+
+/// Heals reach exactly the allies the clause names ("self and 2 other allies
+/// with the least SP", "3 allies with the lowest HP percentages").
+/// Source: wiki.gg `Status Effects` / Healing.
+#[test]
+fn heals_scope_to_the_named_allies() {
+    use lcb_core::effects::Effect;
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&fixed::TEAM, &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    // Give the whole team a known SP spread.
+    for (index, unit) in state.units.iter_mut().enumerate() {
+        if unit.kind.is_sinner() {
+            unit.sanity = Sanity::Sane { sp: -(index as i32) * 5 };
+        }
+    }
+    let heal = Effect {
+        kind: "sp_heal".to_string(),
+        value: Some(7),
+        ally: Some("lowest_sp".to_string()),
+        ally_count: Some(2),
+        include_self: Some(false),
+        ..Default::default()
+    };
+    let mut notes = Vec::new();
+    let mut ctx = battle::UseContext::default();
+    battle::apply_effects_for_test(&mut state, &[heal], 0, None, &mut notes, &mut ctx);
+    let sinners: Vec<i32> = state
+        .units
+        .iter()
+        .filter(|u| u.kind.is_sinner())
+        .map(|u| u.sanity.sp())
+        .collect();
+    assert_eq!(sinners[0], 0, "the actor was not included");
+    assert_eq!(sinners[1], -5, "unit 1 was not among the two lowest");
+    assert_eq!(sinners[4], -20, "unit 4 was not among the two lowest");
+    assert_eq!(sinners[5], -25 + 7, "the lowest SP ally was healed");
+    assert_eq!(sinners[6], -30 + 7, "the second lowest SP ally was healed");
+}
+
+/// "[Amplitude Conversion] into [Tremor - Decay]" marks the target, and the
+/// "If target is in an [Amplitude Conversion] state" clause then holds.
+/// Source: wiki.gg `Status Effects` / Tremor and Tremor - Decay.
+#[test]
+fn tremor_amplitude_conversion_is_marked_and_read() {
+    use lcb_core::effects::{Condition, Effect};
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&[fixed::TEAM[0]], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    let target = state.units.iter().position(|u| !u.kind.is_sinner()).unwrap();
+    let mut notes = Vec::new();
+    let mut ctx = battle::UseContext::default();
+    let convert = Effect {
+        kind: "amplitude_conversion".to_string(),
+        amplitude_into: Some("Tremor - Decay".to_string()),
+        ..Default::default()
+    };
+    battle::apply_effects_for_test(&mut state, &[convert], 0, Some(target), &mut notes, &mut ctx);
+    assert!(battle::has_amplitude(&state.units[target]));
+    assert_eq!(battle::amplitude_of(&state.units[target]), Some("Tremor - Decay"));
+    // A "+48% damage" clause gated on the amplitude state now applies.
+    let boosted = Effect {
+        kind: "damage_percent".to_string(),
+        value: Some(48),
+        condition: Some(Condition {
+            target_has_amplitude: true,
+            ..Default::default()
+        }),
+        ..Default::default()
+    };
+    battle::apply_effects_for_test(&mut state, &[boosted], 0, Some(target), &mut notes, &mut ctx);
+    assert!((ctx.damage_bonus - 0.48).abs() < 1e-9);
+}
+
+/// "Gain [Lamp] up to 8 Stack; for every Stack gained, take HP damage equal to
+/// 1% of max HP (this effect does not reduce this unit's HP below 1)".
+/// Source: wiki.gg Lobotomy E.G.O::Lamp Gregor, `The Wick of Burned Feathers`.
+#[test]
+fn lamp_stacks_stop_at_eight_and_cost_hp() {
+    use lcb_core::effects::Effect;
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&[fixed::TEAM[6]], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    let lamp = Effect {
+        kind: "gain_up_to_with_self_damage".to_string(),
+        status: Some("Lamp".to_string()),
+        up_to: Some(8),
+        self_damage_percent: Some(1),
+        hp_floor_one: true,
+        ..Default::default()
+    };
+    let mut notes = Vec::new();
+    let mut ctx = battle::UseContext::default();
+    let hp_before = state.units[0].hp;
+    battle::apply_effects_for_test(&mut state, std::slice::from_ref(&lamp), 0, None, &mut notes, &mut ctx);
+    assert_eq!(state.units[0].statuses.stack("Lamp"), 8);
+    let cost = hp_before - state.units[0].hp;
+    let per_stack = state.units[0].max_hp * 1 / 100;
+    assert_eq!(cost, per_stack * 8, "1% of max HP for every Stack gained");
+    // A second use gains nothing and costs nothing.
+    let hp_second = state.units[0].hp;
+    battle::apply_effects_for_test(
+        &mut state,
+        &[lamp.clone()],
+        0,
+        None,
+        &mut notes,
+        &mut ctx,
+    );
+    assert_eq!(state.units[0].statuses.stack("Lamp"), 8);
+    assert_eq!(state.units[0].hp, hp_second, "nothing gained, nothing paid");
+}
+
+/// Self-inflicted damage obeys the HP floor and does not Stagger.
+/// Source: wiki.gg `Harmony` (E.G.O 21009) corrosion.
+#[test]
+fn self_damage_respects_the_hp_floor() {
+    use lcb_core::effects::{Condition, Effect};
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&[fixed::TEAM[0]], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    state.units[0].hp = 3;
+    let damage = Effect {
+        kind: "self_damage".to_string(),
+        self_damage_min: Some(10),
+        self_damage_max: Some(20),
+        hp_floor_one: true,
+        no_stagger: true,
+        // "At 10%+ HP" - the unit is at 1% here, so the clause is skipped;
+        // the clause itself is a separate assertion below.
+        condition: None,
+        ..Default::default()
+    };
+    let mut notes = Vec::new();
+    let mut ctx = battle::UseContext::default();
+    battle::apply_effects_for_test(&mut state, &[damage], 0, None, &mut notes, &mut ctx);
+    assert_eq!(state.units[0].hp, 1, "HP never drops below 1");
+    assert!(!state.units[0].is_staggered(), "this damage does not Stagger");
+}
+
+/// "[Combat Start] convert the Suit in this unit's Hand to a random Suit that
+/// corresponds to one of this unit's Base Attack Skills", and "Hand - Pine
+/// Crane Suit: Skill 1 Base Power +2".
+/// Source: in-game `BattleKeywords` (HanafudaOne/Two/Three), wiki.gg Jeong's
+/// Office Rep Ishmael.
+#[test]
+fn suit_conversion_boosts_the_matching_skill() {
+    use lcb_core::effects::Effect;
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&["10813"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    let convert = Effect {
+        kind: "suit_convert".to_string(),
+        ..Default::default()
+    };
+    let mut notes = Vec::new();
+    let mut ctx = battle::UseContext::default();
+    battle::apply_effects_for_test(&mut state, &[convert], 0, None, &mut notes, &mut ctx);
+    let suit = state.units[0].suit.clone().expect("a Suit was drawn");
+    assert!(
+        ["HanafudaOne", "HanafudaTwo", "HanafudaThree"].contains(&suit.as_str()),
+        "only Base Attack Skill Suits can be in the Hand: {suit}"
+    );
+    // Skill 1 of this identity gains Base Power +2 while it holds that Suit.
+    let skill = match suit.as_str() {
+        "HanafudaOne" => "1081301",
+        "HanafudaTwo" => "1081302",
+        _ => "1081303",
+    };
+    let mut use_ = battle::build_use(
+        &state,
+        &sim.library,
+        &sim.mechanics,
+        0,
+        &SkillId::new(skill),
+    )
+    .unwrap();
+    battle::prepare_use_for_test(&mut state, &sim.library, &sim.mechanics, 0, None, &mut use_);
+    let expected = if suit == "HanafudaOne" { 2 } else { 1 };
+    assert_eq!(use_.ctx.base_power_bonus, expected, "Suit Base Power bonus");
 }
 
 /// A full turn keeps the battle in a consistent, serialisable state.

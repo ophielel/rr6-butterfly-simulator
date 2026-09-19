@@ -2,6 +2,7 @@
  "skills": {
   "1011001@1": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -35,13 +36,19 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Celebration for the Departed",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "1011001@2": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [
     {
@@ -82,7 +89,10 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Celebration for the Departed",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "condition": {
@@ -101,10 +111,13 @@
     }
    ],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "1011001@3": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [
     {
@@ -145,7 +158,10 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Celebration for the Departed",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "condition": {
@@ -164,10 +180,13 @@
     }
    ],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "1011001@4": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [
     {
@@ -208,7 +227,10 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Celebration for the Departed",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "condition": {
@@ -237,10 +259,13 @@
     }
    ],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "1011002@1": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -274,9 +299,14 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Solemn Lament for the Living",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "1011002@2": {
@@ -289,6 +319,7 @@
      "status": "The Living & The Departed"
     }
    ],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [
     {
@@ -329,7 +360,10 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Solemn Lament for the Living",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "condition": {
@@ -361,6 +395,8 @@
     }
    ],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "1011002@3": {
@@ -373,6 +409,7 @@
      "status": "The Living & The Departed"
     }
    ],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [
     {
@@ -413,7 +450,10 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Solemn Lament for the Living",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "condition": {
@@ -445,6 +485,8 @@
     }
    ],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "1011002@4": {
@@ -457,6 +499,7 @@
      "status": "The Living & The Departed"
     }
    ],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [
     {
@@ -497,7 +540,10 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Solemn Lament for the Living",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "condition": {
@@ -540,6 +586,8 @@
     }
    ],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "1011003@1": {
@@ -549,6 +597,7 @@
      "raw": "[Attack End] [Reload (Solemn Lament)]"
     }
    ],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [
     {
@@ -619,7 +668,10 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Goodbye Now, a Sorrow in You",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "condition": {
@@ -636,6 +688,8 @@
     }
    ],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "1011003@2": {
@@ -645,6 +699,7 @@
      "raw": "[Attack End] [Reload (Solemn Lament)]"
     }
    ],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [
     {
@@ -715,7 +770,10 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Goodbye Now, a Sorrow in You",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "condition": {
@@ -732,6 +790,8 @@
     }
    ],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "1011003@3": {
@@ -741,6 +801,7 @@
      "raw": "[Attack End] [Reload (Solemn Lament)]"
     }
    ],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [
     {
@@ -811,7 +872,10 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Goodbye Now, a Sorrow in You",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "condition": {
@@ -828,6 +892,8 @@
     }
    ],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "1011003@4": {
@@ -837,6 +903,7 @@
      "raw": "[Attack End] [Reload (Solemn Lament)]"
     }
    ],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [
     {
@@ -907,7 +974,10 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Goodbye Now, a Sorrow in You",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "condition": {
@@ -940,68 +1010,85 @@
     }
    ],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "1011004@1": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {},
    "combat_start": [
     {
      "kind": "reload_ammo",
-     "per_turn": 1,
      "raw": "[Combat Start] [Reload (Solemn Lament)] (once per turn)"
     }
    ],
+   "heads_hit": {},
    "note": "FromTheCoffinAButterflyTakesFlight",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "1011004@2": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {},
    "combat_start": [
     {
      "kind": "reload_ammo",
-     "per_turn": 1,
      "raw": "[Combat Start] [Reload (Solemn Lament)] (once per turn)"
     }
    ],
+   "heads_hit": {},
    "note": "FromTheCoffinAButterflyTakesFlight",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "1011004@3": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {},
    "combat_start": [
     {
      "kind": "reload_ammo",
-     "per_turn": 1,
      "raw": "[Combat Start] [Reload (Solemn Lament)] (once per turn)"
     }
    ],
+   "heads_hit": {},
    "note": "FromTheCoffinAButterflyTakesFlight",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "1011004@4": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {},
    "combat_start": [
     {
      "kind": "reload_ammo",
-     "per_turn": 1,
      "raw": "[Combat Start] [Reload (Solemn Lament)] (once per turn)"
     },
     {
@@ -1018,13 +1105,19 @@
      "raw": "[Combat Start] Gain Shield equal to (the sum of both [Butterfly] on the selected target)% HP (max 20% per turn)"
     }
    ],
+   "heads_hit": {},
    "note": "FromTheCoffinAButterflyTakesFlight",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "1041401@1": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -1058,13 +1151,19 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Bang. Bang.",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "1041401@2": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -1098,7 +1197,10 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Bang. Bang.",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "condition": {
@@ -1116,10 +1218,13 @@
     }
    ],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "1041401@3": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -1153,7 +1258,10 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Bang. Bang.",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "condition": {
@@ -1171,10 +1279,13 @@
     }
    ],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "1041401@4": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -1208,7 +1319,10 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Bang. Bang.",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "condition": {
@@ -1228,10 +1342,13 @@
     }
    ],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "1041402@1": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -1281,13 +1398,19 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Blossoming Fragrance in the Void",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "1041402@2": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -1337,7 +1460,10 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Blossoming Fragrance in the Void",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "condition": {
@@ -1355,10 +1481,13 @@
     }
    ],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "1041402@3": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -1408,7 +1537,10 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Blossoming Fragrance in the Void",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "condition": {
@@ -1426,10 +1558,13 @@
     }
    ],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "1041402@4": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -1479,7 +1614,10 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Blossoming Fragrance in the Void",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "condition": {
@@ -1511,10 +1649,13 @@
     }
    ],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "1041403@1": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -1571,7 +1712,10 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Full Bloom",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "condition": {
@@ -1589,10 +1733,13 @@
     }
    ],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "1041403@2": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -1649,7 +1796,10 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Full Bloom",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "condition": {
@@ -1667,10 +1817,13 @@
     }
    ],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "1041403@3": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -1727,7 +1880,10 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Full Bloom",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "condition": {
@@ -1745,10 +1901,13 @@
     }
    ],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "1041403@4": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -1801,11 +1960,20 @@
       "kind": "tremor_burst",
       "raw": "[On Hit] Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1",
       "status": "Tremor Burst"
+     },
+     {
+      "component": "potency",
+      "kind": "gloom_damage_equal_target_status",
+      "raw": "[On Hit] Deal Gloom damage equal to [Sinking] on target",
+      "status": "Sinking"
      }
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Full Bloom",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "condition": {
@@ -1837,56 +2005,133 @@
     }
    ],
    "tags": [],
-   "unmodeled": [
-    "[On Hit] Deal Gloom damage equal to [Sinking] on target"
-   ]
+   "turn_end": [],
+   "turn_start": [],
+   "unmodeled": []
   },
   "1041404@1": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {},
    "combat_start": [],
+   "heads_hit": {},
    "note": "A.A.T.",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [],
    "tags": [],
+   "turn_end": [
+    {
+     "kind": "gain",
+     "potency": 10,
+     "raw": "[Turn End] Gain 10 [Petals] (once per turn)",
+     "status": "Petals"
+    },
+    {
+     "kind": "gain",
+     "potency": 2,
+     "raw": "[Turn End] Gain 2 [Fragile] and 2 [Attack Power Up] next turn (once per turn)",
+     "status": "Fragile"
+    }
+   ],
+   "turn_start": [],
    "unmodeled": []
   },
   "1041404@2": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {},
    "combat_start": [],
+   "heads_hit": {},
    "note": "A.A.T.",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [],
    "tags": [],
+   "turn_end": [
+    {
+     "kind": "gain",
+     "potency": 10,
+     "raw": "[Turn End] Gain 10 [Petals] (once per turn)",
+     "status": "Petals"
+    },
+    {
+     "kind": "gain",
+     "potency": 2,
+     "raw": "[Turn End] Gain 2 [Fragile] and 2 [Attack Power Up] next turn (once per turn)",
+     "status": "Fragile"
+    }
+   ],
+   "turn_start": [],
    "unmodeled": []
   },
   "1041404@3": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {},
    "combat_start": [],
+   "heads_hit": {},
    "note": "A.A.T.",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [],
    "tags": [],
+   "turn_end": [
+    {
+     "kind": "gain",
+     "potency": 10,
+     "raw": "[Turn End] Gain 10 [Petals] (once per turn)",
+     "status": "Petals"
+    },
+    {
+     "kind": "gain",
+     "potency": 2,
+     "raw": "[Turn End] Gain 2 [Fragile] and 2 [Attack Power Up] next turn (once per turn)",
+     "status": "Fragile"
+    }
+   ],
+   "turn_start": [],
    "unmodeled": []
   },
   "1041404@4": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {},
    "combat_start": [],
+   "heads_hit": {},
    "note": "A.A.T.",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [],
    "tags": [],
+   "turn_end": [
+    {
+     "kind": "gain",
+     "potency": 10,
+     "raw": "[Turn End] Gain 10 [Petals] (once per turn)",
+     "status": "Petals"
+    },
+    {
+     "kind": "gain",
+     "potency": 2,
+     "raw": "[Turn End] Gain 2 [Fragile] and 2 [Attack Power Up] next turn (once per turn)",
+     "status": "Fragile"
+    }
+   ],
+   "turn_start": [],
    "unmodeled": []
   },
   "1081301@1": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -1908,7 +2153,10 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Tsuru-giri [鶴斬り]",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "kind": "discard_other_in_slot",
@@ -1916,10 +2164,13 @@
     }
    ],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "1081301@2": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -1929,7 +2180,20 @@
       "kind": "inflict",
       "raw": "[On Hit] Inflict +1 [Sinking] Count",
       "status": "Sinking"
-     },
+     }
+    ],
+    "2": [
+     {
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +1 [Tremor] Count",
+      "status": "Tremor"
+     }
+    ]
+   },
+   "combat_start": [],
+   "heads_hit": {
+    "1": [
      {
       "count": 1,
       "kind": "inflict",
@@ -1941,19 +2205,14 @@
      {
       "count": 1,
       "kind": "inflict",
-      "raw": "[On Hit] Inflict +1 [Tremor] Count",
-      "status": "Tremor"
-     },
-     {
-      "count": 1,
-      "kind": "inflict",
       "raw": "[Heads Hit] Inflict +1 [Tremor] Count",
       "status": "Tremor"
      }
     ]
    },
-   "combat_start": [],
    "note": "Tsuru-giri [鶴斬り]",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "kind": "discard_other_in_slot",
@@ -1975,10 +2234,13 @@
     }
    ],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "1081301@3": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -1988,7 +2250,20 @@
       "kind": "inflict",
       "raw": "[On Hit] Inflict +1 [Sinking] Count",
       "status": "Sinking"
-     },
+     }
+    ],
+    "2": [
+     {
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +1 [Tremor] Count",
+      "status": "Tremor"
+     }
+    ]
+   },
+   "combat_start": [],
+   "heads_hit": {
+    "1": [
      {
       "count": 1,
       "kind": "inflict",
@@ -2000,19 +2275,14 @@
      {
       "count": 1,
       "kind": "inflict",
-      "raw": "[On Hit] Inflict +1 [Tremor] Count",
-      "status": "Tremor"
-     },
-     {
-      "count": 1,
-      "kind": "inflict",
       "raw": "[Heads Hit] Inflict +1 [Tremor] Count",
       "status": "Tremor"
      }
     ]
    },
-   "combat_start": [],
    "note": "Tsuru-giri [鶴斬り]",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "kind": "discard_other_in_slot",
@@ -2034,10 +2304,13 @@
     }
    ],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "1081301@4": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -2047,12 +2320,6 @@
       "kind": "inflict",
       "raw": "[On Hit] Inflict +1 [Sinking] Count",
       "status": "Sinking"
-     },
-     {
-      "count": 1,
-      "kind": "inflict",
-      "raw": "[Heads Hit] Inflict +1 [Sinking] Count",
-      "status": "Sinking"
      }
     ],
     "2": [
@@ -2061,7 +2328,20 @@
       "kind": "inflict",
       "raw": "[On Hit] Inflict +1 [Tremor] Count",
       "status": "Tremor"
-     },
+     }
+    ]
+   },
+   "combat_start": [],
+   "heads_hit": {
+    "1": [
+     {
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[Heads Hit] Inflict +1 [Sinking] Count",
+      "status": "Sinking"
+     }
+    ],
+    "2": [
      {
       "count": 1,
       "kind": "inflict",
@@ -2070,8 +2350,9 @@
      }
     ]
    },
-   "combat_start": [],
    "note": "Tsuru-giri [鶴斬り]",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "kind": "discard_other_in_slot",
@@ -2095,10 +2376,13 @@
     }
    ],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "1081302@1": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -2120,7 +2404,10 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Susuki Misdirection",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "kind": "discard_other_in_slot",
@@ -2128,10 +2415,13 @@
     }
    ],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "1081302@2": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -2141,7 +2431,20 @@
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Sinking]",
       "status": "Sinking"
-     },
+     }
+    ],
+    "2": [
+     {
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Tremor]",
+      "status": "Tremor"
+     }
+    ]
+   },
+   "combat_start": [],
+   "heads_hit": {
+    "1": [
      {
       "kind": "inflict",
       "potency": 1,
@@ -2152,20 +2455,15 @@
     "2": [
      {
       "kind": "inflict",
-      "potency": 2,
-      "raw": "[On Hit] Inflict 2 [Tremor]",
-      "status": "Tremor"
-     },
-     {
-      "kind": "inflict",
       "potency": 1,
       "raw": "[Heads Hit] Inflict 1 [Tremor]",
       "status": "Tremor"
      }
     ]
    },
-   "combat_start": [],
    "note": "Susuki Misdirection",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "kind": "discard_other_in_slot",
@@ -2187,10 +2485,13 @@
     }
    ],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "1081302@3": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -2200,7 +2501,20 @@
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Sinking]",
       "status": "Sinking"
-     },
+     }
+    ],
+    "2": [
+     {
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Tremor]",
+      "status": "Tremor"
+     }
+    ]
+   },
+   "combat_start": [],
+   "heads_hit": {
+    "1": [
      {
       "kind": "inflict",
       "potency": 1,
@@ -2211,20 +2525,15 @@
     "2": [
      {
       "kind": "inflict",
-      "potency": 2,
-      "raw": "[On Hit] Inflict 2 [Tremor]",
-      "status": "Tremor"
-     },
-     {
-      "kind": "inflict",
       "potency": 1,
       "raw": "[Heads Hit] Inflict 1 [Tremor]",
       "status": "Tremor"
      }
     ]
    },
-   "combat_start": [],
    "note": "Susuki Misdirection",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "kind": "discard_other_in_slot",
@@ -2246,10 +2555,13 @@
     }
    ],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "1081302@4": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -2259,7 +2571,27 @@
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Sinking]",
       "status": "Sinking"
-     },
+     }
+    ],
+    "2": [
+     {
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Tremor]",
+      "status": "Tremor"
+     }
+    ],
+    "3": [
+     {
+      "kind": "sp_heal",
+      "raw": "[On Hit] Heal 5 SP",
+      "value": 5
+     }
+    ]
+   },
+   "combat_start": [],
+   "heads_hit": {
+    "1": [
      {
       "kind": "inflict",
       "potency": 1,
@@ -2270,20 +2602,15 @@
     "2": [
      {
       "kind": "inflict",
-      "potency": 2,
-      "raw": "[On Hit] Inflict 2 [Tremor]",
-      "status": "Tremor"
-     },
-     {
-      "kind": "inflict",
       "potency": 1,
       "raw": "[Heads Hit] Inflict 1 [Tremor]",
       "status": "Tremor"
      }
     ]
    },
-   "combat_start": [],
    "note": "Susuki Misdirection",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "kind": "discard_other_in_slot",
@@ -2307,12 +2634,13 @@
     }
    ],
    "tags": [],
-   "unmodeled": [
-    "[On Hit] Heal 5 SP"
-   ]
+   "turn_end": [],
+   "turn_start": [],
+   "unmodeled": []
   },
   "1081303@1": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -2328,12 +2656,6 @@
       "kind": "inflict",
       "raw": "[On Hit] Inflict +2 [Sinking] Count",
       "status": "Sinking"
-     },
-     {
-      "count": 1,
-      "kind": "inflict",
-      "raw": "[Heads Hit] Inflict +1 [Sinking] Count",
-      "status": "Sinking"
      }
     ],
     "2": [
@@ -2348,7 +2670,33 @@
       "potency": 3,
       "raw": "[On Hit] Inflict 3 [Sinking]",
       "status": "Sinking"
-     },
+     }
+    ],
+    "3": [
+     {
+      "amplitude_into": "Tremor - Decay",
+      "condition": {
+       "lacks_status": [
+        "Amplitude Conversion"
+       ],
+       "source": "target"
+      },
+      "kind": "amplitude_conversion",
+      "raw": "[On Hit] If target isn't in an [Amplitude Conversion] state, trigger [Amplitude Conversion] into [Tremor - Decay]"
+     }
+    ]
+   },
+   "combat_start": [],
+   "heads_hit": {
+    "1": [
+     {
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[Heads Hit] Inflict +1 [Sinking] Count",
+      "status": "Sinking"
+     }
+    ],
+    "2": [
      {
       "count": 1,
       "kind": "inflict",
@@ -2357,8 +2705,9 @@
      }
     ]
    },
-   "combat_start": [],
    "note": "Sakura-sen [桜閃]",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "condition": {
@@ -2392,12 +2741,13 @@
     }
    ],
    "tags": [],
-   "unmodeled": [
-    "[On Hit] If target isn't in an [Amplitude Conversion] state, trigger [Amplitude Conversion] into [Tremor - Decay]"
-   ]
+   "turn_end": [],
+   "turn_start": [],
+   "unmodeled": []
   },
   "1081303@2": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -2413,12 +2763,6 @@
       "kind": "inflict",
       "raw": "[On Hit] Inflict +2 [Sinking] Count",
       "status": "Sinking"
-     },
-     {
-      "count": 1,
-      "kind": "inflict",
-      "raw": "[Heads Hit] Inflict +1 [Sinking] Count",
-      "status": "Sinking"
      }
     ],
     "2": [
@@ -2433,7 +2777,33 @@
       "potency": 3,
       "raw": "[On Hit] Inflict 3 [Sinking]",
       "status": "Sinking"
-     },
+     }
+    ],
+    "3": [
+     {
+      "amplitude_into": "Tremor - Decay",
+      "condition": {
+       "lacks_status": [
+        "Amplitude Conversion"
+       ],
+       "source": "target"
+      },
+      "kind": "amplitude_conversion",
+      "raw": "[On Hit] If target isn't in an [Amplitude Conversion] state, trigger [Amplitude Conversion] into [Tremor - Decay]"
+     }
+    ]
+   },
+   "combat_start": [],
+   "heads_hit": {
+    "1": [
+     {
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[Heads Hit] Inflict +1 [Sinking] Count",
+      "status": "Sinking"
+     }
+    ],
+    "2": [
      {
       "count": 1,
       "kind": "inflict",
@@ -2442,8 +2812,9 @@
      }
     ]
    },
-   "combat_start": [],
    "note": "Sakura-sen [桜閃]",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "condition": {
@@ -2477,12 +2848,13 @@
     }
    ],
    "tags": [],
-   "unmodeled": [
-    "[On Hit] If target isn't in an [Amplitude Conversion] state, trigger [Amplitude Conversion] into [Tremor - Decay]"
-   ]
+   "turn_end": [],
+   "turn_start": [],
+   "unmodeled": []
   },
   "1081303@3": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -2498,12 +2870,6 @@
       "kind": "inflict",
       "raw": "[On Hit] Inflict +2 [Sinking] Count",
       "status": "Sinking"
-     },
-     {
-      "count": 1,
-      "kind": "inflict",
-      "raw": "[Heads Hit] Inflict +1 [Sinking] Count",
-      "status": "Sinking"
      }
     ],
     "2": [
@@ -2518,7 +2884,33 @@
       "potency": 3,
       "raw": "[On Hit] Inflict 3 [Sinking]",
       "status": "Sinking"
-     },
+     }
+    ],
+    "3": [
+     {
+      "amplitude_into": "Tremor - Decay",
+      "condition": {
+       "lacks_status": [
+        "Amplitude Conversion"
+       ],
+       "source": "target"
+      },
+      "kind": "amplitude_conversion",
+      "raw": "[On Hit] If target isn't in an [Amplitude Conversion] state, trigger [Amplitude Conversion] into [Tremor - Decay]"
+     }
+    ]
+   },
+   "combat_start": [],
+   "heads_hit": {
+    "1": [
+     {
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[Heads Hit] Inflict +1 [Sinking] Count",
+      "status": "Sinking"
+     }
+    ],
+    "2": [
      {
       "count": 1,
       "kind": "inflict",
@@ -2527,8 +2919,9 @@
      }
     ]
    },
-   "combat_start": [],
    "note": "Sakura-sen [桜閃]",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "condition": {
@@ -2562,12 +2955,13 @@
     }
    ],
    "tags": [],
-   "unmodeled": [
-    "[On Hit] If target isn't in an [Amplitude Conversion] state, trigger [Amplitude Conversion] into [Tremor - Decay]"
-   ]
+   "turn_end": [],
+   "turn_start": [],
+   "unmodeled": []
   },
   "1081303@4": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -2583,12 +2977,6 @@
       "kind": "inflict",
       "raw": "[On Hit] Inflict +2 [Sinking] Count",
       "status": "Sinking"
-     },
-     {
-      "count": 1,
-      "kind": "inflict",
-      "raw": "[Heads Hit] Inflict +1 [Sinking] Count",
-      "status": "Sinking"
      }
     ],
     "2": [
@@ -2603,7 +2991,41 @@
       "potency": 3,
       "raw": "[On Hit] Inflict 3 [Sinking]",
       "status": "Sinking"
+     }
+    ],
+    "3": [
+     {
+      "condition": {
+       "target_has_amplitude": true
+      },
+      "kind": "damage_percent",
+      "raw": "If target is in either [Amplitude Conversion] or [Amplitude Entanglement] states, this Coin deals +48% damage",
+      "value": 48
      },
+     {
+      "amplitude_into": "Tremor - Decay",
+      "condition": {
+       "lacks_status": [
+        "Amplitude Conversion"
+       ],
+       "source": "target"
+      },
+      "kind": "amplitude_conversion",
+      "raw": "[On Hit] If target isn't in an [Amplitude Conversion] state, trigger [Amplitude Conversion] into [Tremor - Decay]"
+     }
+    ]
+   },
+   "combat_start": [],
+   "heads_hit": {
+    "1": [
+     {
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[Heads Hit] Inflict +1 [Sinking] Count",
+      "status": "Sinking"
+     }
+    ],
+    "2": [
      {
       "count": 1,
       "kind": "inflict",
@@ -2612,8 +3034,9 @@
      }
     ]
    },
-   "combat_start": [],
    "note": "Sakura-sen [桜閃]",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "condition": {
@@ -2630,17 +3053,31 @@
     {
      "kind": "discard_other_in_slot",
      "raw": "[On Use] If the other Skill in the same Skill Slot is a different Skill, [Discard] that Skill"
+    },
+    {
+     "condition": {
+      "source": "target",
+      "statuses": [
+       "Tremor",
+       "Sinking"
+      ]
+     },
+     "kind": "coin_power",
+     "max": 3,
+     "per": 6,
+     "raw": "[On Use] Coin Power +1 for every 6 ([Tremor] + [Sinking]), on target (max 3)",
+     "step": 1,
+     "value": 0
     }
    ],
    "tags": [],
-   "unmodeled": [
-    "If target is in either [Amplitude Conversion] or [Amplitude Entanglement] states, this Coin deals +48% damage",
-    "[On Hit] If target isn't in an [Amplitude Conversion] state, trigger [Amplitude Conversion] into [Tremor - Decay]",
-    "[On Use] Coin Power +1 for every 6 ([Tremor] + [Sinking]), on target (max 3)"
-   ]
+   "turn_end": [],
+   "turn_start": [],
+   "unmodeled": []
   },
   "1081304@1": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -2664,20 +3101,31 @@
    "combat_start": [
     {
      "kind": "discard_lowest_rank",
-     "per_turn": 1,
      "raw": "[Combat Start] [Discard] 2 Skills of the lowest rank in all of this unit's Skill Slots (once per turn)",
      "value": 2
+    },
+    {
+     "condition": {
+      "slot": "leftmost"
+     },
+     "kind": "suit_convert",
+     "next_turn": true,
+     "raw": "[Combat Start] If this Skill was equipped on this unit's leftmost Skill Slot, convert the Suit in this unit's Hand to a random Suit that corresponds to one of this unit's Base Attack Skills next turn. (once per turn; excluding the Suit already in this unit's Hand)"
     }
    ],
+   "heads_hit": {},
    "note": "Shuffle Hands - Floral Deck",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [],
    "tags": [],
-   "unmodeled": [
-    "[Combat Start] If this Skill was equipped on this unit's leftmost Skill Slot, convert the Suit in this unit's Hand to a random Suit that corresponds to one of this unit's Base Attack Skills next turn. (once per turn; excluding the Suit already in this unit's Hand)"
-   ]
+   "turn_end": [],
+   "turn_start": [],
+   "unmodeled": []
   },
   "1081304@2": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -2701,20 +3149,31 @@
    "combat_start": [
     {
      "kind": "discard_lowest_rank",
-     "per_turn": 1,
      "raw": "[Combat Start] [Discard] 2 Skills of the lowest rank in all of this unit's Skill Slots (once per turn)",
      "value": 2
+    },
+    {
+     "condition": {
+      "slot": "leftmost"
+     },
+     "kind": "suit_convert",
+     "next_turn": true,
+     "raw": "[Combat Start] If this Skill was equipped on this unit's leftmost Skill Slot, convert the Suit in this unit's Hand to a random Suit that corresponds to one of this unit's Base Attack Skills next turn. (once per turn; excluding the Suit already in this unit's Hand)"
     }
    ],
+   "heads_hit": {},
    "note": "Shuffle Hands - Floral Deck",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [],
    "tags": [],
-   "unmodeled": [
-    "[Combat Start] If this Skill was equipped on this unit's leftmost Skill Slot, convert the Suit in this unit's Hand to a random Suit that corresponds to one of this unit's Base Attack Skills next turn. (once per turn; excluding the Suit already in this unit's Hand)"
-   ]
+   "turn_end": [],
+   "turn_start": [],
+   "unmodeled": []
   },
   "1081304@3": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -2738,20 +3197,31 @@
    "combat_start": [
     {
      "kind": "discard_lowest_rank",
-     "per_turn": 1,
      "raw": "[Combat Start] [Discard] 2 Skills of the lowest rank in all of this unit's Skill Slots (once per turn)",
      "value": 2
+    },
+    {
+     "condition": {
+      "slot": "leftmost"
+     },
+     "kind": "suit_convert",
+     "next_turn": true,
+     "raw": "[Combat Start] If this Skill was equipped on this unit's leftmost Skill Slot, convert the Suit in this unit's Hand to a random Suit that corresponds to one of this unit's Base Attack Skills next turn. (once per turn; excluding the Suit already in this unit's Hand)"
     }
    ],
+   "heads_hit": {},
    "note": "Shuffle Hands - Floral Deck",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [],
    "tags": [],
-   "unmodeled": [
-    "[Combat Start] If this Skill was equipped on this unit's leftmost Skill Slot, convert the Suit in this unit's Hand to a random Suit that corresponds to one of this unit's Base Attack Skills next turn. (once per turn; excluding the Suit already in this unit's Hand)"
-   ]
+   "turn_end": [],
+   "turn_start": [],
+   "unmodeled": []
   },
   "1081304@4": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -2775,22 +3245,52 @@
    "combat_start": [
     {
      "kind": "discard_lowest_rank",
-     "per_turn": 1,
      "raw": "[Combat Start] [Discard] 2 Skills of the lowest rank in all of this unit's Skill Slots (once per turn)",
      "value": 2
+    },
+    {
+     "condition": {
+      "slot": "leftmost"
+     },
+     "kind": "suit_convert",
+     "next_turn": true,
+     "raw": "[Combat Start] If this Skill was equipped on this unit's leftmost Skill Slot, convert the Suit in this unit's Hand to a random Suit that corresponds to one of this unit's Base Attack Skills next turn. (once per turn; excluding the Suit already in this unit's Hand)"
+    },
+    {
+     "chance": 50,
+     "kind": "gain",
+     "potency": 1,
+     "raw": "[Combat Start] 50% chance to gain 1 [Bright -光-] Potency (once per turn)",
+     "status": "Bright -光-"
     }
    ],
+   "heads_hit": {},
    "note": "Shuffle Hands - Floral Deck",
-   "on_use": [],
+   "on_evade": [],
+   "on_kill": [],
+   "on_use": [
+    {
+     "condition": {
+      "component": "potency",
+      "source": "self",
+      "status": "Bright -光-"
+     },
+     "kind": "coin_power",
+     "max": 2,
+     "per": 2,
+     "raw": "[On Use] Coin Power +1 for every 2 [Bright -光-] Potency on self (max 2)",
+     "step": 1,
+     "value": 0
+    }
+   ],
    "tags": [],
-   "unmodeled": [
-    "[Combat Start] 50% chance to gain 1 [Bright -光-] Potency (once per turn)",
-    "[Combat Start] If this Skill was equipped on this unit's leftmost Skill Slot, convert the Suit in this unit's Hand to a random Suit that corresponds to one of this unit's Base Attack Skills next turn. (once per turn; excluding the Suit already in this unit's Hand)",
-    "[On Use] Coin Power +1 for every 2 [Bright -光-] Potency on self (max 2)"
-   ]
+   "turn_end": [],
+   "turn_start": [],
+   "unmodeled": []
   },
   "1091301@1": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -2812,13 +3312,19 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "The Knight's Sanctuary",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "1091301@2": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -2840,7 +3346,10 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "The Knight's Sanctuary",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "condition": {
@@ -2855,10 +3364,13 @@
     }
    ],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "1091301@3": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -2880,7 +3392,10 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "The Knight's Sanctuary",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "condition": {
@@ -2895,10 +3410,13 @@
     }
    ],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "1091301@4": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -2941,7 +3459,10 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "The Knight's Sanctuary",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "condition": {
@@ -2966,15 +3487,21 @@
     }
    ],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "1091302@1": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {},
    "combat_start": [],
+   "heads_hit": {},
    "note": "With the Power of Justice",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "kind": "consume_status_for_damage",
@@ -2986,15 +3513,21 @@
     }
    ],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "1091302@2": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {},
    "combat_start": [],
+   "heads_hit": {},
    "note": "With the Power of Justice",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "condition": {
@@ -3017,15 +3550,21 @@
     }
    ],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "1091302@3": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {},
    "combat_start": [],
+   "heads_hit": {},
    "note": "With the Power of Justice",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "condition": {
@@ -3048,15 +3587,21 @@
     }
    ],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "1091302@4": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {},
    "combat_start": [],
+   "heads_hit": {},
    "note": "With the Power of Justice",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "condition": {
@@ -3092,15 +3637,31 @@
     }
    ],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "1091303@1": {
-   "attack_end": [],
+   "attack_end": [
+    {
+     "condition": {
+      "target_defeated": true
+     },
+     "kind": "refund_consumed_status",
+     "raw": "[Attack End] If target is defeated, regain half of [Deep Tears] consumed by this Skill",
+     "refund_percent": 50,
+     "status": "Deep Tears"
+    }
+   ],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {},
    "combat_start": [],
+   "heads_hit": {},
    "note": "Arcana Pierce",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "condition": {
@@ -3140,17 +3701,31 @@
     }
    ],
    "tags": [],
-   "unmodeled": [
-    "[Attack End] If target is defeated, regain half of [Deep Tears] consumed by this Skill"
-   ]
+   "turn_end": [],
+   "turn_start": [],
+   "unmodeled": []
   },
   "1091303@2": {
-   "attack_end": [],
+   "attack_end": [
+    {
+     "condition": {
+      "target_defeated": true
+     },
+     "kind": "refund_consumed_status",
+     "raw": "[Attack End] If target is defeated, regain half of [Deep Tears] consumed by this Skill",
+     "refund_percent": 50,
+     "status": "Deep Tears"
+    }
+   ],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {},
    "combat_start": [],
+   "heads_hit": {},
    "note": "Arcana Pierce",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "condition": {
@@ -3190,17 +3765,31 @@
     }
    ],
    "tags": [],
-   "unmodeled": [
-    "[Attack End] If target is defeated, regain half of [Deep Tears] consumed by this Skill"
-   ]
+   "turn_end": [],
+   "turn_start": [],
+   "unmodeled": []
   },
   "1091303@3": {
-   "attack_end": [],
+   "attack_end": [
+    {
+     "condition": {
+      "target_defeated": true
+     },
+     "kind": "refund_consumed_status",
+     "raw": "[Attack End] If target is defeated, regain half of [Deep Tears] consumed by this Skill",
+     "refund_percent": 50,
+     "status": "Deep Tears"
+    }
+   ],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {},
    "combat_start": [],
+   "heads_hit": {},
    "note": "Arcana Pierce",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "condition": {
@@ -3240,17 +3829,31 @@
     }
    ],
    "tags": [],
-   "unmodeled": [
-    "[Attack End] If target is defeated, regain half of [Deep Tears] consumed by this Skill"
-   ]
+   "turn_end": [],
+   "turn_start": [],
+   "unmodeled": []
   },
   "1091303@4": {
-   "attack_end": [],
+   "attack_end": [
+    {
+     "condition": {
+      "target_defeated": true
+     },
+     "kind": "refund_consumed_status",
+     "raw": "[Attack End] If target is defeated, regain half of [Deep Tears] consumed by this Skill",
+     "refund_percent": 50,
+     "status": "Deep Tears"
+    }
+   ],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {},
    "combat_start": [],
+   "heads_hit": {},
    "note": "Arcana Pierce",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "condition": {
@@ -3264,6 +3867,19 @@
      "value": 1
     },
     {
+     "condition": {
+      "component": "stack",
+      "source": "self",
+      "status": "Protecting Sword"
+     },
+     "kind": "clash_power",
+     "max": 5,
+     "per": 1,
+     "raw": "Clash Power +1 for every [Protecting Sword] (max 5)",
+     "step": 1,
+     "value": 0
+    },
+    {
      "kind": "consume_status_up_to",
      "raw": "[On Use] At 10+ [Deep Tears], consume up to 20 [Deep Tears]",
      "status": "Deep Tears",
@@ -3274,101 +3890,172 @@
      "kind": "damage_percent_per_consumed_status",
      "raw": "Deal +(Stack consumed x 1.5)% damage",
      "step": 15
+    },
+    {
+     "kind": "base_power_from_consumed",
+     "per": 5,
+     "raw": "Base Power +1 for every 5 Stack consumed",
+     "step": 1
     }
    ],
    "tags": [],
-   "unmodeled": [
-    "Base Power +1 for every 5 Stack consumed",
-    "Clash Power +1 for every [Protecting Sword] (max 5)",
-    "[Attack End] If target is defeated, regain half of [Deep Tears] consumed by this Skill"
-   ]
+   "turn_end": [],
+   "turn_start": [],
+   "unmodeled": []
   },
   "1091304@1": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {},
    "combat_start": [
     {
      "kind": "shield_percent_from_sp",
-     "per_turn": 1,
      "raw": "[Combat Start] Gain Shield equal to (SP / 5)% of this unit's max HP (once per turn)",
      "value": 5
     }
    ],
+   "heads_hit": {},
    "note": "The Knight's Faith",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "kind": "gain",
-     "per_turn": 2,
      "potency": 3,
      "raw": "[On Use] Gain 3 [Deep Tears] (2 times per turn)",
      "status": "Deep Tears"
+    },
+    {
+     "condition": {
+      "gte": 1,
+      "source": "self",
+      "status": "Tear-sharpened"
+     },
+     "kind": "sp_damage_self_per_stack",
+     "raw": "If this unit has [Tear-sharpened], lose ([Tear-sharpened] Stack x 15) more SP",
+     "status": "Tear-sharpened",
+     "step": 15
     }
    ],
    "tags": [],
-   "unmodeled": [
-    "If this unit has [Tear-sharpened], lose ([Tear-sharpened] Stack x 15) more SP"
-   ]
+   "turn_end": [
+    {
+     "count": 1,
+     "kind": "turn_end_sp_and_gain",
+     "raw": "[Turn End] At less than 3 [Tear-sharpened], lose 15 SP and gain 1 [Tear-sharpened] (once per turn)",
+     "status": "Tear-sharpened",
+     "threshold": 3,
+     "value": 15
+    }
+   ],
+   "turn_start": [],
+   "unmodeled": []
   },
   "1091304@2": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {},
    "combat_start": [
     {
      "kind": "shield_percent_from_sp",
-     "per_turn": 1,
      "raw": "[Combat Start] Gain Shield equal to (SP / 5)% of this unit's max HP (once per turn)",
      "value": 5
     }
    ],
+   "heads_hit": {},
    "note": "The Knight's Faith",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "kind": "gain",
-     "per_turn": 2,
      "potency": 3,
      "raw": "[On Use] Gain 3 [Deep Tears] (2 times per turn)",
      "status": "Deep Tears"
+    },
+    {
+     "condition": {
+      "gte": 1,
+      "source": "self",
+      "status": "Tear-sharpened"
+     },
+     "kind": "sp_damage_self_per_stack",
+     "raw": "If this unit has [Tear-sharpened], lose ([Tear-sharpened] Stack x 15) more SP",
+     "status": "Tear-sharpened",
+     "step": 15
     }
    ],
    "tags": [],
-   "unmodeled": [
-    "If this unit has [Tear-sharpened], lose ([Tear-sharpened] Stack x 15) more SP"
-   ]
+   "turn_end": [
+    {
+     "count": 1,
+     "kind": "turn_end_sp_and_gain",
+     "raw": "[Turn End] At less than 3 [Tear-sharpened], lose 15 SP and gain 1 [Tear-sharpened] (once per turn)",
+     "status": "Tear-sharpened",
+     "threshold": 3,
+     "value": 15
+    }
+   ],
+   "turn_start": [],
+   "unmodeled": []
   },
   "1091304@3": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {},
    "combat_start": [
     {
      "kind": "shield_percent_from_sp",
-     "per_turn": 1,
      "raw": "[Combat Start] Gain Shield equal to (SP / 5)% of this unit's max HP (once per turn)",
      "value": 5
     }
    ],
+   "heads_hit": {},
    "note": "The Knight's Faith",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "kind": "gain",
-     "per_turn": 2,
      "potency": 3,
      "raw": "[On Use] Gain 3 [Deep Tears] (2 times per turn)",
      "status": "Deep Tears"
+    },
+    {
+     "condition": {
+      "gte": 1,
+      "source": "self",
+      "status": "Tear-sharpened"
+     },
+     "kind": "sp_damage_self_per_stack",
+     "raw": "If this unit has [Tear-sharpened], lose ([Tear-sharpened] Stack x 15) more SP",
+     "status": "Tear-sharpened",
+     "step": 15
     }
    ],
    "tags": [],
-   "unmodeled": [
-    "If this unit has [Tear-sharpened], lose ([Tear-sharpened] Stack x 15) more SP"
-   ]
+   "turn_end": [
+    {
+     "count": 1,
+     "kind": "turn_end_sp_and_gain",
+     "raw": "[Turn End] At less than 3 [Tear-sharpened], lose 15 SP and gain 1 [Tear-sharpened] (once per turn)",
+     "status": "Tear-sharpened",
+     "threshold": 3,
+     "value": 15
+    }
+   ],
+   "turn_start": [],
+   "unmodeled": []
   },
   "1091304@4": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {},
@@ -3388,32 +4075,55 @@
     },
     {
      "kind": "shield_percent_from_sp",
-     "per_turn": 1,
      "raw": "[Combat Start] Gain Shield equal to (SP / 3)% of this unit's max HP (once per turn)",
      "value": 3
     }
    ],
+   "heads_hit": {},
    "note": "The Knight's Faith",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "kind": "gain",
-     "per_turn": 2,
      "potency": 5,
      "raw": "[On Use] Gain 5 [Deep Tears] (2 times per turn)",
      "status": "Deep Tears"
+    },
+    {
+     "condition": {
+      "gte": 1,
+      "source": "self",
+      "status": "Tear-sharpened"
+     },
+     "kind": "sp_damage_self_per_stack",
+     "raw": "If this unit has [Tear-sharpened], lose ([Tear-sharpened] Stack x 15) more SP",
+     "status": "Tear-sharpened",
+     "step": 15
     }
    ],
    "tags": [],
-   "unmodeled": [
-    "If this unit has [Tear-sharpened], lose ([Tear-sharpened] Stack x 15) more SP",
-    "[Turn End] At less than 3 [Tear-sharpened], lose 15 SP to gain 1 [Tear-sharpened] (once per turn)"
-   ]
+   "turn_end": [
+    {
+     "count": 1,
+     "kind": "turn_end_sp_and_gain",
+     "raw": "[Turn End] At less than 3 [Tear-sharpened], lose 15 SP to gain 1 [Tear-sharpened] (once per turn)",
+     "status": "Tear-sharpened",
+     "threshold": 3,
+     "value": 15
+    }
+   ],
+   "turn_start": [],
+   "unmodeled": []
   },
   "1100401@1": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
-   "coins": {
+   "coins": {},
+   "combat_start": [],
+   "heads_hit": {
     "1": [
      {
       "kind": "inflict",
@@ -3423,17 +4133,23 @@
      }
     ]
    },
-   "combat_start": [],
    "note": "Baile y Rola",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "1100401@2": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
-   "coins": {
+   "coins": {},
+   "combat_start": [],
+   "heads_hit": {
     "1": [
      {
       "kind": "inflict",
@@ -3443,17 +4159,23 @@
      }
     ]
    },
-   "combat_start": [],
    "note": "Baile y Rola",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "1100401@3": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
-   "coins": {
+   "coins": {},
+   "combat_start": [],
+   "heads_hit": {
     "1": [
      {
       "kind": "inflict",
@@ -3463,14 +4185,18 @@
      }
     ]
    },
-   "combat_start": [],
    "note": "Baile y Rola",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "1100401@4": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -3484,7 +4210,10 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Baile y Rola",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "condition": {
@@ -3499,10 +4228,13 @@
     }
    ],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "1100402@1": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -3532,13 +4264,19 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Danza de Pasión",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "1100402@2": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -3548,12 +4286,6 @@
       "potency": 2,
       "raw": "[On Hit] Gain 2 [Poise]",
       "status": "Poise"
-     },
-     {
-      "count": 1,
-      "kind": "gain",
-      "raw": "[Heads Hit] Gain +1 [Poise] Count",
-      "status": "Poise"
      }
     ],
     "2": [
@@ -3561,12 +4293,6 @@
       "kind": "inflict",
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Sinking]",
-      "status": "Sinking"
-     },
-     {
-      "count": 1,
-      "kind": "inflict",
-      "raw": "[Heads Hit] Inflict +1 [Sinking] Count",
       "status": "Sinking"
      }
     ],
@@ -3580,13 +4306,36 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {
+    "1": [
+     {
+      "count": 1,
+      "kind": "gain",
+      "raw": "[Heads Hit] Gain +1 [Poise] Count",
+      "status": "Poise"
+     }
+    ],
+    "2": [
+     {
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[Heads Hit] Inflict +1 [Sinking] Count",
+      "status": "Sinking"
+     }
+    ]
+   },
    "note": "Danza de Pasión",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "1100402@3": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -3596,12 +4345,6 @@
       "potency": 2,
       "raw": "[On Hit] Gain 2 [Poise]",
       "status": "Poise"
-     },
-     {
-      "count": 1,
-      "kind": "gain",
-      "raw": "[Heads Hit] Gain +1 [Poise] Count",
-      "status": "Poise"
      }
     ],
     "2": [
@@ -3609,12 +4352,6 @@
       "kind": "inflict",
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Sinking]",
-      "status": "Sinking"
-     },
-     {
-      "count": 1,
-      "kind": "inflict",
-      "raw": "[Heads Hit] Inflict +1 [Sinking] Count",
       "status": "Sinking"
      }
     ],
@@ -3628,13 +4365,36 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {
+    "1": [
+     {
+      "count": 1,
+      "kind": "gain",
+      "raw": "[Heads Hit] Gain +1 [Poise] Count",
+      "status": "Poise"
+     }
+    ],
+    "2": [
+     {
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[Heads Hit] Inflict +1 [Sinking] Count",
+      "status": "Sinking"
+     }
+    ]
+   },
    "note": "Danza de Pasión",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "1100402@4": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -3676,7 +4436,10 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Danza de Pasión",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "condition": {
@@ -3691,13 +4454,18 @@
     }
    ],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "1100403@1": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
-   "coins": {
+   "coins": {},
+   "combat_start": [],
+   "heads_hit": {
     "1": [
      {
       "kind": "lower_own_stagger_threshold",
@@ -3706,8 +4474,9 @@
      }
     ]
    },
-   "combat_start": [],
    "note": "Pañata Party",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "condition": {
@@ -3718,13 +4487,18 @@
     }
    ],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "1100403@2": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
-   "coins": {
+   "coins": {},
+   "combat_start": [],
+   "heads_hit": {
     "1": [
      {
       "kind": "lower_own_stagger_threshold",
@@ -3733,8 +4507,9 @@
      }
     ]
    },
-   "combat_start": [],
    "note": "Pañata Party",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "condition": {
@@ -3745,13 +4520,18 @@
     }
    ],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "1100403@3": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
-   "coins": {
+   "coins": {},
+   "combat_start": [],
+   "heads_hit": {
     "1": [
      {
       "kind": "lower_own_stagger_threshold",
@@ -3760,8 +4540,9 @@
      }
     ]
    },
-   "combat_start": [],
    "note": "Pañata Party",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "condition": {
@@ -3772,10 +4553,13 @@
     }
    ],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "1100403@4": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -3788,7 +4572,10 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Pañata Party",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "condition": {
@@ -3810,56 +4597,88 @@
     }
    ],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "1100404@1": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {},
    "combat_start": [],
+   "heads_hit": {},
    "note": "Evade",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "1100404@2": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {},
    "combat_start": [],
+   "heads_hit": {},
    "note": "Evade",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "1100404@3": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {},
    "combat_start": [],
+   "heads_hit": {},
    "note": "Evade",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "1100404@4": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {},
    "combat_start": [],
+   "heads_hit": {},
    "note": "Evade",
+   "on_evade": [
+    {
+     "count": 1,
+     "kind": "gain",
+     "raw": "[On Evade] Gain +1 [Poise] Count",
+     "status": "Poise"
+    }
+   ],
+   "on_kill": [],
    "on_use": [],
    "tags": [],
-   "unmodeled": [
-    "[On Evade] Gain +1 [Poise] Count"
-   ]
+   "turn_end": [],
+   "turn_start": [],
+   "unmodeled": []
   },
   "1111401@1": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -3879,7 +4698,10 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Khopesh Swordplay",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "assumption": "slot_scoped",
@@ -3893,10 +4715,13 @@
     }
    ],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "1111401@2": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -3916,7 +4741,10 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Khopesh Swordplay",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "assumption": "slot_scoped",
@@ -3946,10 +4774,13 @@
     }
    ],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "1111401@3": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -3969,7 +4800,10 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Khopesh Swordplay",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "assumption": "slot_scoped",
@@ -3999,10 +4833,13 @@
     }
    ],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "1111401@4": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [
     {
@@ -4031,7 +4868,6 @@
      {
       "kind": "gain",
       "next_turn": true,
-      "per_turn": 1,
       "potency": 1,
       "raw": "[On Hit] Gain 1 [Protection] next turn (once per turn)",
       "status": "Protection"
@@ -4039,7 +4875,10 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Khopesh Swordplay",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "assumption": "slot_scoped",
@@ -4079,10 +4918,13 @@
     }
    ],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "1111402@1": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -4118,7 +4960,10 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Mirage Incision",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "assumption": "slot_scoped",
@@ -4132,10 +4977,13 @@
     }
    ],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "1111402@2": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -4171,7 +5019,10 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Mirage Incision",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "assumption": "slot_scoped",
@@ -4201,10 +5052,13 @@
     }
    ],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "1111402@3": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -4240,7 +5094,10 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Mirage Incision",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "assumption": "slot_scoped",
@@ -4270,10 +5127,13 @@
     }
    ],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "1111402@4": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [
     {
@@ -4316,7 +5176,6 @@
      {
       "kind": "gain",
       "next_turn": true,
-      "per_turn": 1,
       "potency": 1,
       "raw": "[On Hit] Gain 1 [Protection] next turn (once per turn)",
       "status": "Protection"
@@ -4324,7 +5183,10 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Mirage Incision",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "assumption": "slot_scoped",
@@ -4351,19 +5213,37 @@
      "raw": "[On Use] Coin Power +1 for every 6 ([Sinking] + [Tremor]) on target (max 2)",
      "step": 1,
      "value": 0
+    },
+    {
+     "condition": {
+      "gte": 1,
+      "source": "self",
+      "status": "The Udjat -Vanguard-"
+     },
+     "kind": "compound",
+     "raw": "[On Use] If this unit has [The Udjat -Vanguard-], Clash Power +2 and deal +30% damage",
+     "sub_effects": [
+      {
+       "kind": "clash_power",
+       "value": 2
+      },
+      {
+       "kind": "damage_percent",
+       "value": 30
+      }
+     ]
     }
    ],
    "tags": [],
-   "unmodeled": [
-    "[On Use] If this unit has [The Udjat -Vanguard-], Clash Power +2 and deal +30% damage"
-   ]
+   "turn_end": [],
+   "turn_start": [],
+   "unmodeled": []
   },
   "1111403@1": {
    "attack_end": [
     {
      "kind": "gain",
      "next_turn": true,
-     "per_turn": 1,
      "potency": 2,
      "raw": "[Attack End] Gain 2 [Protection] next turn (once per turn)",
      "status": "Protection"
@@ -4375,10 +5255,10 @@
       "status": "LCA Fracture Round"
      },
      "kind": "reload_ammo",
-     "per_encounter": 5,
      "raw": "[Attack End] At 2 or fewer [LCA Fracture Round], [Reload] (5 times per Encounter)"
     }
    ],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -4419,7 +5299,6 @@
      },
      {
       "kind": "inflict",
-      "per_turn": 1,
       "potency": 1,
       "raw": "[On Hit] Inflict 1 [Gloom Resist Down] (once per turn)",
       "status": "Gloom Resist Down"
@@ -4447,7 +5326,10 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "The Vanguard will See it Done",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "assumption": "slot_scoped",
@@ -4467,6 +5349,8 @@
     }
    ],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "1111403@2": {
@@ -4474,7 +5358,6 @@
     {
      "kind": "gain",
      "next_turn": true,
-     "per_turn": 1,
      "potency": 2,
      "raw": "[Attack End] Gain 2 [Protection] next turn (once per turn)",
      "status": "Protection"
@@ -4486,10 +5369,10 @@
       "status": "LCA Fracture Round"
      },
      "kind": "reload_ammo",
-     "per_encounter": 5,
      "raw": "[Attack End] At 2 or fewer [LCA Fracture Round], [Reload] (5 times per Encounter)"
     }
    ],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -4530,7 +5413,6 @@
      },
      {
       "kind": "inflict",
-      "per_turn": 1,
       "potency": 1,
       "raw": "[On Hit] Inflict 1 [Gloom Resist Down] (once per turn)",
       "status": "Gloom Resist Down"
@@ -4558,7 +5440,10 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "The Vanguard will See it Done",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "assumption": "slot_scoped",
@@ -4578,6 +5463,8 @@
     }
    ],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "1111403@3": {
@@ -4585,7 +5472,6 @@
     {
      "kind": "gain",
      "next_turn": true,
-     "per_turn": 1,
      "potency": 2,
      "raw": "[Attack End] Gain 2 [Protection] next turn (once per turn)",
      "status": "Protection"
@@ -4597,10 +5483,10 @@
       "status": "LCA Fracture Round"
      },
      "kind": "reload_ammo",
-     "per_encounter": 5,
      "raw": "[Attack End] At 2 or fewer [LCA Fracture Round], [Reload] (5 times per Encounter)"
     }
    ],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -4641,7 +5527,6 @@
      },
      {
       "kind": "inflict",
-      "per_turn": 1,
       "potency": 1,
       "raw": "[On Hit] Inflict 1 [Gloom Resist Down] (once per turn)",
       "status": "Gloom Resist Down"
@@ -4669,7 +5554,10 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "The Vanguard will See it Done",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "assumption": "slot_scoped",
@@ -4689,6 +5577,8 @@
     }
    ],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "1111403@4": {
@@ -4696,7 +5586,6 @@
     {
      "kind": "gain",
      "next_turn": true,
-     "per_turn": 1,
      "potency": 2,
      "raw": "[Attack End] Gain 2 [Protection] next turn (once per turn)",
      "status": "Protection"
@@ -4708,10 +5597,10 @@
       "status": "LCA Fracture Round"
      },
      "kind": "reload_ammo",
-     "per_encounter": 5,
      "raw": "[Attack End] At 2 or fewer [LCA Fracture Round], [Reload] (5 times per Encounter)"
     }
    ],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -4758,7 +5647,6 @@
      },
      {
       "kind": "inflict",
-      "per_turn": 1,
       "potency": 1,
       "raw": "[On Hit] Inflict 1 [Gloom Resist Down] (once per turn)",
       "status": "Gloom Resist Down"
@@ -4778,6 +5666,16 @@
       "step": 30
      },
      {
+      "condition": {
+       "target_sp_below": 0
+      },
+      "kind": "inflict",
+      "per_turn": 1,
+      "potency": 1,
+      "raw": "If target has less than 0 SP, inflict 1 [Gloom Fragility] (once per turn)",
+      "status": "Gloom Fragility"
+     },
+     {
       "kind": "inflict",
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Sinking]",
@@ -4788,11 +5686,23 @@
       "kind": "tremor_burst",
       "raw": "[On Hit] Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1",
       "status": "Tremor Burst"
+     },
+     {
+      "condition": {
+       "target_is_sp_unit": true
+      },
+      "consume_count": 1,
+      "kind": "tremor_burst",
+      "raw": "[On Hit] If target is a SP Unit, trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1",
+      "status": "Tremor Burst"
      }
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "The Vanguard will See it Done",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "condition": {
@@ -4815,6 +5725,19 @@
      "status": "Aggro"
     },
     {
+     "condition": {
+      "gte": 6,
+      "source": "target",
+      "statuses": [
+       "Sinking",
+       "Tremor"
+      ]
+     },
+     "kind": "coin_power",
+     "raw": "[On Use] At 6+ ([Sinking] + [Tremor]) on target, Coin Power +1",
+     "value": 1
+    },
+    {
      "kind": "base_power_per_ammo_planned",
      "raw": "[On Use] Base Power +1 for every [LCA Fracture Round] about to be spent by this Skill",
      "status": "LCA Fracture Round",
@@ -4822,103 +5745,173 @@
     }
    ],
    "tags": [],
-   "unmodeled": [
-    "If target has less than 0 SP, inflict 1 [Gloom Fragility] (once per turn)",
-    "[On Hit] If target is a SP Unit, trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1",
-    "[On Use] At 6+ ([Sinking] + [Tremor]) on target, Coin Power +1"
-   ]
+   "turn_end": [],
+   "turn_start": [],
+   "unmodeled": []
   },
   "1111404@1": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {},
    "combat_start": [],
+   "heads_hit": {},
    "note": "Composure",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "kind": "inflict_on_attacker",
-     "per_turn": 3,
      "potency": 3,
      "raw": "When hit while this unit has Shield, inflict 3 [Sinking] against the attacker (3 times per turn)",
      "requires_shield": true,
      "status": "Sinking"
+    },
+    {
+     "condition": {
+      "component": "count",
+      "source": "self",
+      "status": "Protection"
+     },
+     "kind": "shield_percent_per_status",
+     "max": 15,
+     "percent": 5,
+     "raw": "[On Use] For every [Protection] on self, gain Shield equal to 5% of this unit's max HP (max 15%; once per turn)",
+     "status": "Protection"
     }
    ],
    "tags": [],
-   "unmodeled": [
-    "[On Use] For every [Protection] on self, gain Shield equal to 5% of this unit's max HP (max 15%; once per turn)"
-   ]
+   "turn_end": [],
+   "turn_start": [],
+   "unmodeled": []
   },
   "1111404@2": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {},
    "combat_start": [],
+   "heads_hit": {},
    "note": "Composure",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "kind": "inflict_on_attacker",
-     "per_turn": 3,
      "potency": 3,
      "raw": "When hit while this unit has Shield, inflict 3 [Sinking] against the attacker (3 times per turn)",
      "requires_shield": true,
      "status": "Sinking"
+    },
+    {
+     "condition": {
+      "component": "count",
+      "source": "self",
+      "status": "Protection"
+     },
+     "kind": "shield_percent_per_status",
+     "max": 15,
+     "percent": 5,
+     "raw": "[On Use] For every [Protection] on self, gain Shield equal to 5% of this unit's max HP (max 15%; once per turn)",
+     "status": "Protection"
     }
    ],
    "tags": [],
-   "unmodeled": [
-    "[On Use] For every [Protection] on self, gain Shield equal to 5% of this unit's max HP (max 15%; once per turn)"
-   ]
+   "turn_end": [],
+   "turn_start": [],
+   "unmodeled": []
   },
   "1111404@3": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {},
    "combat_start": [],
+   "heads_hit": {},
    "note": "Composure",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "kind": "inflict_on_attacker",
-     "per_turn": 3,
      "potency": 3,
      "raw": "When hit while this unit has Shield, inflict 3 [Sinking] against the attacker (3 times per turn)",
      "requires_shield": true,
      "status": "Sinking"
+    },
+    {
+     "condition": {
+      "component": "count",
+      "source": "self",
+      "status": "Protection"
+     },
+     "kind": "shield_percent_per_status",
+     "max": 15,
+     "percent": 5,
+     "raw": "[On Use] For every [Protection] on self, gain Shield equal to 5% of this unit's max HP (max 15%; once per turn)",
+     "status": "Protection"
     }
    ],
    "tags": [],
-   "unmodeled": [
-    "[On Use] For every [Protection] on self, gain Shield equal to 5% of this unit's max HP (max 15%; once per turn)"
-   ]
+   "turn_end": [],
+   "turn_start": [],
+   "unmodeled": []
   },
   "1111404@4": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {},
    "combat_start": [],
+   "heads_hit": {},
    "note": "Composure",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "kind": "inflict_on_attacker",
-     "per_turn": 3,
      "potency": 3,
      "raw": "When hit while this unit has Shield, inflict 3 [Sinking] against the attacker (3 times per turn)",
      "requires_shield": true,
      "status": "Sinking"
+    },
+    {
+     "condition": {
+      "gte": 1,
+      "source": "self",
+      "status": "The Udjat -Vanguard-"
+     },
+     "kind": "gain",
+     "per_turn": 1,
+     "potency": 1,
+     "raw": "[On Use] If this unit has [The Udjat -Vanguard-], gain 1 [Protection] (once per turn)",
+     "status": "Protection"
+    },
+    {
+     "condition": {
+      "component": "count",
+      "source": "self",
+      "status": "Protection"
+     },
+     "kind": "shield_percent_per_status",
+     "max": 15,
+     "percent": 5,
+     "raw": "[On Use] For every [Protection] on self, gain Shield equal to 5% of this unit's max HP (max 15%; once per turn)",
+     "status": "Protection"
     }
    ],
    "tags": [],
-   "unmodeled": [
-    "[On Use] For every [Protection] on self, gain Shield equal to 5% of this unit's max HP (max 15%; once per turn)",
-    "[On Use] If this unit has [The Udjat -Vanguard-], gain 1 [Protection] (once per turn)"
-   ]
+   "turn_end": [],
+   "turn_start": [],
+   "unmodeled": []
   },
   "1121401@1": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -4940,7 +5933,10 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Intense Stare: Zero-Range",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "kind": "gain",
@@ -4951,10 +5947,13 @@
     }
    ],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "1121401@2": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -4976,7 +5975,10 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Intense Stare: Zero-Range",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "condition": {
@@ -5004,10 +6006,13 @@
     }
    ],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "1121401@3": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -5029,7 +6034,10 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Intense Stare: Zero-Range",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "condition": {
@@ -5057,10 +6065,13 @@
     }
    ],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "1121401@4": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -5082,7 +6093,10 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Intense Stare: Zero-Range",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "condition": {
@@ -5127,10 +6141,13 @@
     }
    ],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "1121402@1": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -5170,13 +6187,19 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Destroy the Visible with the Invisible",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "1121402@2": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -5224,7 +6247,10 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Destroy the Visible with the Invisible",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "condition": {
@@ -5245,10 +6271,13 @@
     }
    ],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "1121402@3": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -5296,7 +6325,10 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Destroy the Visible with the Invisible",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "condition": {
@@ -5317,10 +6349,13 @@
     }
    ],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "1121402@4": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -5368,7 +6403,10 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Destroy the Visible with the Invisible",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "condition": {
@@ -5406,10 +6444,13 @@
     }
    ],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "1121403@1": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -5438,6 +6479,25 @@
     "3": [
      {
       "condition": {
+       "any_of": [
+        {
+         "hp_below_percent": 25,
+         "hp_or_equal": true,
+         "source": "target"
+        },
+        {
+         "gte": 1,
+         "source": "target",
+         "status": "Dazzle"
+        }
+       ]
+      },
+      "kind": "damage_percent",
+      "raw": "If the target(Core) has 25% or less HP, or if target has [Dazzle], deal +60% damage",
+      "value": 60
+     },
+     {
+      "condition": {
        "gte": 1,
        "source": "target",
        "status": "Dazzle"
@@ -5449,7 +6509,10 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Salvation for those Enchanted by the Lamp",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "condition": {
@@ -5497,12 +6560,13 @@
     }
    ],
    "tags": [],
-   "unmodeled": [
-    "If the target(Core) has 25% or less HP, or if target has [Dazzle], deal +60% damage"
-   ]
+   "turn_end": [],
+   "turn_start": [],
+   "unmodeled": []
   },
   "1121403@2": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -5531,6 +6595,25 @@
     "3": [
      {
       "condition": {
+       "any_of": [
+        {
+         "hp_below_percent": 25,
+         "hp_or_equal": true,
+         "source": "target"
+        },
+        {
+         "gte": 1,
+         "source": "target",
+         "status": "Dazzle"
+        }
+       ]
+      },
+      "kind": "damage_percent",
+      "raw": "If the target(Core) has 25% or less HP, or if target has [Dazzle], deal +60% damage",
+      "value": 60
+     },
+     {
+      "condition": {
        "gte": 1,
        "source": "target",
        "status": "Dazzle"
@@ -5542,7 +6625,10 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Salvation for those Enchanted by the Lamp",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "condition": {
@@ -5590,12 +6676,13 @@
     }
    ],
    "tags": [],
-   "unmodeled": [
-    "If the target(Core) has 25% or less HP, or if target has [Dazzle], deal +60% damage"
-   ]
+   "turn_end": [],
+   "turn_start": [],
+   "unmodeled": []
   },
   "1121403@3": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -5624,6 +6711,25 @@
     "3": [
      {
       "condition": {
+       "any_of": [
+        {
+         "hp_below_percent": 25,
+         "hp_or_equal": true,
+         "source": "target"
+        },
+        {
+         "gte": 1,
+         "source": "target",
+         "status": "Dazzle"
+        }
+       ]
+      },
+      "kind": "damage_percent",
+      "raw": "If the target(Core) has 25% or less HP, or if target has [Dazzle], deal +60% damage",
+      "value": 60
+     },
+     {
+      "condition": {
        "gte": 1,
        "source": "target",
        "status": "Dazzle"
@@ -5635,7 +6741,10 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Salvation for those Enchanted by the Lamp",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "condition": {
@@ -5683,12 +6792,33 @@
     }
    ],
    "tags": [],
-   "unmodeled": [
-    "If the target(Core) has 25% or less HP, or if target has [Dazzle], deal +60% damage"
-   ]
+   "turn_end": [],
+   "turn_start": [],
+   "unmodeled": []
   },
   "1121403@4": {
-   "attack_end": [],
+   "attack_end": [
+    {
+     "condition": {
+      "any_of": [
+       {
+        "target_defeated": true
+       },
+       {
+        "gte": 3,
+        "source": "target",
+        "status": "Dazzle"
+       }
+      ]
+     },
+     "kind": "gain",
+     "next_turn": true,
+     "potency": 1,
+     "raw": "[Attack End] If target is defeated, or if it has 3 [Dazzle], gain 1 [Plus Coin Boost] next turn (once per turn)",
+     "status": "Plus Coin Boost"
+    }
+   ],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -5723,6 +6853,25 @@
     "3": [
      {
       "condition": {
+       "any_of": [
+        {
+         "hp_below_percent": 25,
+         "hp_or_equal": true,
+         "source": "target"
+        },
+        {
+         "gte": 1,
+         "source": "target",
+         "status": "Dazzle"
+        }
+       ]
+      },
+      "kind": "damage_percent",
+      "raw": "If the target(Core) has 25% or less HP, or if target has [Dazzle], deal +60% damage",
+      "value": 60
+     },
+     {
+      "condition": {
        "gte": 1,
        "source": "target",
        "status": "Dazzle"
@@ -5734,7 +6883,10 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Salvation for those Enchanted by the Lamp",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "condition": {
@@ -5802,102 +6954,280 @@
     }
    ],
    "tags": [],
-   "unmodeled": [
-    "If the target(Core) has 25% or less HP, or if target has [Dazzle], deal +60% damage",
-    "[Attack End] If target is defeated, or if it has 3 [Dazzle], gain 1 [Plus Coin Boost] next turn (once per turn)"
-   ]
+   "turn_end": [],
+   "turn_start": [],
+   "unmodeled": []
   },
   "1121404@1": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {},
-   "combat_start": [],
+   "combat_start": [
+    {
+     "hp_floor_one": true,
+     "kind": "gain_up_to_with_self_damage",
+     "raw": "[Combat Start] Gain [Lamp] up to 8 Stack; for every Stack gained, take HP damage equal to 1% of max HP (this effect does not reduce this unit's HP below 1)",
+     "self_damage_percent": 1,
+     "status": "Lamp",
+     "up_to": 8
+    }
+   ],
+   "heads_hit": {},
    "note": "The Wick of Burned Feathers",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [],
    "tags": [],
-   "unmodeled": [
-    "[Combat Start] Gain [Lamp] up to 8 Stack; for every Stack gained, take HP damage equal to 1% of max HP (this effect does not reduce this unit's HP below 1)",
-    "[Turn End] Apply 1 [Haste] next turn to ([Bind] on self / 3) other allies with the slowest Speed (once per turn; rounded down)"
-   ]
+   "turn_end": [
+    {
+     "ally": "slowest",
+     "ally_from_divisor": 3,
+     "ally_from_status": "Bind",
+     "include_self": false,
+     "kind": "gain",
+     "next_turn": true,
+     "potency": 1,
+     "raw": "[Turn End] Apply 1 [Haste] next turn to ([Bind] on self / 3) other allies with the slowest Speed (once per turn; rounded down)",
+     "status": "Haste"
+    }
+   ],
+   "turn_start": [],
+   "unmodeled": []
   },
   "1121404@2": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {},
-   "combat_start": [],
+   "combat_start": [
+    {
+     "hp_floor_one": true,
+     "kind": "gain_up_to_with_self_damage",
+     "raw": "[Combat Start] Gain [Lamp] up to 8 Stack; for every Stack gained, take HP damage equal to 1% of max HP (this effect does not reduce this unit's HP below 1)",
+     "self_damage_percent": 1,
+     "status": "Lamp",
+     "up_to": 8
+    }
+   ],
+   "heads_hit": {},
    "note": "The Wick of Burned Feathers",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [],
    "tags": [],
-   "unmodeled": [
-    "[Combat Start] Gain [Lamp] up to 8 Stack; for every Stack gained, take HP damage equal to 1% of max HP (this effect does not reduce this unit's HP below 1)",
-    "[Turn End] Apply 1 [Haste] next turn to ([Bind] on self / 3) other allies with the slowest Speed (once per turn; rounded down)"
-   ]
+   "turn_end": [
+    {
+     "ally": "slowest",
+     "ally_from_divisor": 3,
+     "ally_from_status": "Bind",
+     "include_self": false,
+     "kind": "gain",
+     "next_turn": true,
+     "potency": 1,
+     "raw": "[Turn End] Apply 1 [Haste] next turn to ([Bind] on self / 3) other allies with the slowest Speed (once per turn; rounded down)",
+     "status": "Haste"
+    }
+   ],
+   "turn_start": [],
+   "unmodeled": []
   },
   "1121404@3": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {},
-   "combat_start": [],
+   "combat_start": [
+    {
+     "hp_floor_one": true,
+     "kind": "gain_up_to_with_self_damage",
+     "raw": "[Combat Start] Gain [Lamp] up to 8 Stack; for every Stack gained, take HP damage equal to 1% of max HP (this effect does not reduce this unit's HP below 1)",
+     "self_damage_percent": 1,
+     "status": "Lamp",
+     "up_to": 8
+    }
+   ],
+   "heads_hit": {},
    "note": "The Wick of Burned Feathers",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [],
    "tags": [],
-   "unmodeled": [
-    "[Combat Start] Gain [Lamp] up to 8 Stack; for every Stack gained, take HP damage equal to 1% of max HP (this effect does not reduce this unit's HP below 1)",
-    "[Turn End] Apply 1 [Haste] next turn to ([Bind] on self / 3) other allies with the slowest Speed (once per turn; rounded down)"
-   ]
+   "turn_end": [
+    {
+     "ally": "slowest",
+     "ally_from_divisor": 3,
+     "ally_from_status": "Bind",
+     "include_self": false,
+     "kind": "gain",
+     "next_turn": true,
+     "potency": 1,
+     "raw": "[Turn End] Apply 1 [Haste] next turn to ([Bind] on self / 3) other allies with the slowest Speed (once per turn; rounded down)",
+     "status": "Haste"
+    }
+   ],
+   "turn_start": [],
+   "unmodeled": []
   },
   "1121404@4": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {},
-   "combat_start": [],
+   "combat_start": [
+    {
+     "hp_floor_one": true,
+     "kind": "gain_up_to_with_self_damage",
+     "raw": "[Combat Start] Gain [Lamp] up to 8 Stack; for every Stack gained, take HP damage equal to 1% of max HP (this effect does not reduce this unit's HP below 1)",
+     "self_damage_percent": 1,
+     "status": "Lamp",
+     "up_to": 8
+    }
+   ],
+   "heads_hit": {},
    "note": "The Wick of Burned Feathers",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [],
    "tags": [],
-   "unmodeled": [
-    "[Combat Start] Gain [Lamp] up to 8 Stack; for every Stack gained, take HP damage equal to 1% of max HP (this effect does not reduce this unit's HP below 1)",
-    "[Turn End] Apply 1 [Haste] next turn to ([Bind] on self / 2) other allies with the slowest Speed (once per turn; rounded down)"
-   ]
+   "turn_end": [
+    {
+     "ally": "slowest",
+     "ally_from_divisor": 2,
+     "ally_from_status": "Bind",
+     "include_self": false,
+     "kind": "gain",
+     "next_turn": true,
+     "potency": 1,
+     "raw": "[Turn End] Apply 1 [Haste] next turn to ([Bind] on self / 2) other allies with the slowest Speed (once per turn; rounded down)",
+     "status": "Haste"
+    }
+   ],
+   "turn_start": [],
+   "unmodeled": []
   },
   "20106.awakening@1": {
-   "attack_end": [],
+   "attack_end": [
+    {
+     "kind": "inflict",
+     "multiplier": 1,
+     "raw": "[Attack End] Randomly inflict (6 + Gloom Reson.) [Sinking] between targets",
+     "resonance_of": "Gloom",
+     "status": "Sinking",
+     "value": 6
+    }
+   ],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
-   "coins": {},
+   "coins": {
+    "1": [
+     {
+      "condition": {
+       "gte": 6,
+       "source": "target",
+       "status": "Sinking"
+      },
+      "kind": "inflict",
+      "next_turn": true,
+      "potency": 2,
+      "raw": "[On Hit] If target has 6+ [Sinking], inflict 2 [Bind] next turn",
+      "status": "Bind"
+     }
+    ]
+   },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Bygone Days",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [],
    "tags": [],
-   "unmodeled": [
-    "[Attack End] Randomly inflict (6 + Gloom Reson.) [Sinking] between targets",
-    "[On Hit] If target has 6+ [Sinking], inflict 2 [Bind] next turn"
-   ]
+   "turn_end": [],
+   "turn_start": [],
+   "unmodeled": []
   },
   "20106.corrosion@1": {
    "attack_end": [],
+   "before_attack": [
+    {
+     "condition": {
+      "resonance_gte": 3,
+      "resonance_of": "Gloom"
+     },
+     "kind": "attack_weight",
+     "raw": "[Before Attack] At 3+ (Gloom Reson.), Atk Weight +1",
+     "value": 1
+    }
+   ],
    "clash_lose": [],
    "clash_win": [],
-   "coins": {},
+   "coins": {
+    "1": [
+     {
+      "kind": "compound",
+      "next_turn": true,
+      "raw": "[On Hit] Inflict 2 [Sinking]. Inflict 2 [Bind] next turn",
+      "sub_effects": [
+       {
+        "kind": "inflict",
+        "potency": 2,
+        "status": "Sinking"
+       },
+       {
+        "kind": "inflict",
+        "potency": 2,
+        "status": "Bind"
+       }
+      ]
+     },
+     {
+      "condition": {
+       "gte": 6,
+       "source": "target",
+       "status": "Sinking"
+      },
+      "kind": "inflict",
+      "next_turn": true,
+      "potency": 1,
+      "raw": "[On Hit] If target has 6+ [Sinking], inflict 1 [Bind] next turn",
+      "status": "Bind"
+     }
+    ]
+   },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Bygone Days",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [],
-   "tags": [],
-   "unmodeled": [
-    "Targets Randomly",
-    "[Before Attack] At 3+ (Gloom Reson.), Atk Weight +1",
-    "[On Hit] If target has 6+ [Sinking], inflict 1 [Bind] next turn",
-    "[On Hit] Inflict 2 [Sinking]. Inflict 2 [Bind] next turn"
-   ]
+   "tags": [
+    "targets_random"
+   ],
+   "turn_end": [],
+   "turn_start": [],
+   "unmodeled": []
   },
   "20109.awakening@1": {
    "attack_end": [
     {
      "kind": "reload_ammo",
      "raw": "[Attack End] [Reload (Solemn Lament)]"
+    }
+   ],
+   "before_attack": [
+    {
+     "kind": "gain_from_resonance",
+     "max": 7,
+     "multiplier": 1,
+     "raw": "[Before Attack] Gain a random assortment of (Gloom Reson. + 1) [The Living & The Departed] (max 7)",
+     "resonance_of": "Gloom",
+     "status": "The Living & The Departed",
+     "value": 1
     }
    ],
    "clash_lose": [],
@@ -5941,6 +7271,11 @@
     ],
     "5": [
      {
+      "kind": "spend_ammo_all",
+      "raw": "Spend all [The Living & The Departed] on self",
+      "status": "The Living & The Departed"
+     },
+     {
       "kind": "inflict",
       "potency": 3,
       "raw": "[On Hit] Inflict 3 [Sinking]",
@@ -5953,33 +7288,92 @@
       "status": "Tremor"
      },
      {
+      "butterfly_part": "living",
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Butterfly](The Living)",
+      "status": "Butterfly"
+     },
+     {
+      "butterfly_part": "departed",
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Butterfly](The Departed)",
+      "status": "Butterfly"
+     },
+     {
       "consume_count": 1,
       "kind": "tremor_burst",
       "raw": "[On Hit] Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1",
       "status": "Tremor Burst"
+     },
+     {
+      "kind": "gloom_damage_equal_target_status",
+      "raw": "[On Hit] Deal Gloom damage equal to the sum of both [Butterfly] on target",
+      "status": "Butterfly"
+     },
+     {
+      "final_damage_percent": 0,
+      "kind": "extra_damage_percent_of_damage",
+      "per_ammo": true,
+      "raw": "[On Hit] Deal Gloom damage equal to ([The Living & The Departed] spent by this Coin x 2)% of this Coin's final damage",
+      "step": 2
      }
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Solemn Lament",
-   "on_use": [],
-   "tags": [],
-   "unmodeled": [
-    "If Lobotomy E.G.O::Solemn Lament Yi Sang used this Skill:",
-    "Spend all [The Living & The Departed] on self",
-    "When inflicting [Butterfly] using this Skill's effects: (Chance to flip Heads)% chance to inflict The Departed. If this unit did not inflict The Departed, inflict The Living instead. (calculates every [Butterfly] Stack independently)",
-    "[Before Attack] Gain a random assortment of (Gloom Reson. + 1) [The Living & The Departed] (max 7)",
-    "[On Hit] Deal Gloom damage equal to ([The Living & The Departed] spent by this Coin x 2)% of this Coin's final damage",
-    "[On Hit] Deal Gloom damage equal to the sum of both [Butterfly] on target",
-    "[On Hit] Inflict 2 [Butterfly](The Departed)",
-    "[On Hit] Inflict 2 [Butterfly](The Living)"
-   ]
+   "on_evade": [],
+   "on_kill": [],
+   "on_use": [
+    {
+     "kind": "noop",
+     "note": "identity gate (always true for this team)",
+     "raw": "If Lobotomy E.G.O::Solemn Lament Yi Sang used this Skill:"
+    }
+   ],
+   "tags": [
+    "butterfly_split"
+   ],
+   "turn_end": [],
+   "turn_start": [],
+   "unmodeled": []
   },
   "20109.corrosion@1": {
    "attack_end": [],
+   "before_attack": [
+    {
+     "from_resonance": true,
+     "kind": "attack_weight",
+     "max": 2,
+     "per": 2,
+     "raw": "[Before Attack] Gain +(highest Reson. / 2) Atk Weight (max 2, rounded down)",
+     "step": 1,
+     "value": 0
+    }
+   ],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
+    "1": [
+     {
+      "butterfly_part": "living",
+      "kind": "inflict",
+      "potency": 3,
+      "raw": "[On Hit] Inflict 3 [Butterfly](The Living)",
+      "status": "Butterfly"
+     }
+    ],
+    "2": [
+     {
+      "butterfly_part": "departed",
+      "kind": "inflict",
+      "potency": 3,
+      "raw": "[On Hit] Inflict 3 [Butterfly](The Departed)",
+      "status": "Butterfly"
+     }
+    ],
     "3": [
      {
       "kind": "inflict",
@@ -5998,24 +7392,60 @@
       "kind": "tremor_burst",
       "raw": "[On Hit] Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1",
       "status": "Tremor Burst"
+     },
+     {
+      "kind": "gloom_damage_equal_target_status",
+      "raw": "[On Hit] Deal Gloom damage equal to the sum of both [Butterfly] on target",
+      "status": "Butterfly"
      }
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Solemn Lament",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [],
-   "tags": [],
+   "tags": [
+    "targets_random"
+   ],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": [
-    "Targets randomly",
-    "[Before Attack] Base Power -2 for every Cracked Coin (max -6)",
-    "[Before Attack] Gain +(highest Reson. / 2) Atk Weight (max 2, rounded down)",
-    "[On Hit] Deal Gloom damage equal to the sum of both [Butterfly] on target",
-    "[On Hit] Inflict 3 [Butterfly](The Departed)",
-    "[On Hit] Inflict 3 [Butterfly](The Living)"
+    "[Before Attack] Base Power -2 for every Cracked Coin (max -6)"
    ]
   },
   "20807.awakening@1": {
-   "attack_end": [],
+   "attack_end": [
+    {
+     "ally": "lowest_hp",
+     "ally_count": 2,
+     "condition": {
+      "source": "target",
+      "statuses": [
+       "Sinking",
+       "Sinking"
+      ]
+     },
+     "include_self": true,
+     "kind": "heal_percent_hp",
+     "max": 15,
+     "per": 3,
+     "raw": "[Attack End] Heal 2 allies with the lowest HP percentages by (10 + ([Sinking] on the main target + [Sinking] Count on the main target)/3)% HP (max 15%)",
+     "step": 1,
+     "value": 10
+    }
+   ],
+   "before_attack": [
+    {
+     "condition": {
+      "resonance_gte": 4
+     },
+     "kind": "attack_weight",
+     "raw": "[Before Attack] At 4+ highest Reson., gain +1 Atk Weight",
+     "value": 1
+    }
+   ],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -6033,6 +7463,16 @@
       "status": "Curse"
      },
      {
+      "condition": {
+       "resonance_gte": 4,
+       "resonance_of": "Gloom"
+      },
+      "kind": "inflict",
+      "potency": 1,
+      "raw": "[On Hit] At 4+ Gloom Reson., inflict 1 [Gloom Fragility]",
+      "status": "Gloom Fragility"
+     },
+     {
       "kind": "inflict",
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [The Uninvited]",
@@ -6041,18 +7481,75 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Bygone Days",
-   "on_use": [],
+   "on_evade": [],
+   "on_kill": [],
+   "on_use": [
+    {
+     "condition": {
+      "resonance_gte": 1,
+      "resonance_of": "Gloom"
+     },
+     "kind": "attack_weight",
+     "raw": "If the said Reson. was a Gloom Reson., gain +1 Atk Weight",
+     "value": 1
+    }
+   ],
    "tags": [],
-   "unmodeled": [
-    "If the said Reson. was a Gloom Reson., gain +1 Atk Weight",
-    "[Attack End] Heal 2 allies with the lowest HP percentages by (10 + ([Sinking] on the main target + [Sinking] Count on the main target)/3)% HP (max 15%)",
-    "[Before Attack] At 4+ highest Reson., gain +1 Atk Weight",
-    "[On Hit] At 4+ Gloom Reson., inflict 1 [Gloom Fragility]"
-   ]
+   "turn_end": [],
+   "turn_start": [],
+   "unmodeled": []
   },
   "20807.corrosion@1": {
-   "attack_end": [],
+   "attack_end": [
+    {
+     "ally": "lowest_hp",
+     "ally_count": 3,
+     "condition": {
+      "resonance_gte": 4,
+      "source": "target",
+      "statuses": [
+       "Sinking",
+       "Sinking"
+      ]
+     },
+     "include_self": false,
+     "kind": "heal_percent_hp",
+     "max": 15,
+     "per": 3,
+     "raw": "[Attack End] Heal 3 other allies with the lowest HP percentages by (10 + ([Sinking] on the main target + [Sinking] Count on the main target)/3)% HP (max 15%)",
+     "step": 1,
+     "value": 10
+    },
+    {
+     "ally": "lowest_hp",
+     "ally_count": 1,
+     "condition": {
+      "resonance_gte": 4,
+      "source": "target",
+      "statuses": [
+       "Sinking",
+       "Sinking"
+      ]
+     },
+     "include_self": false,
+     "kind": "heal_percent_hp",
+     "max": 15,
+     "per": 3,
+     "raw": "At 4+ highest Reson., heal 1 additional ally",
+     "step": 1,
+     "value": 10
+    }
+   ],
+   "before_attack": [
+    {
+     "kind": "self_damage",
+     "no_stagger": true,
+     "raw": "[Before Attack] Lose HP by 10% of Max HP (does not get Staggered due to this effect)",
+     "self_damage_percent": 10
+    }
+   ],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -6070,6 +7567,16 @@
       "status": "Curse"
      },
      {
+      "condition": {
+       "resonance_gte": 3,
+       "resonance_of": "Gloom"
+      },
+      "kind": "inflict",
+      "potency": 1,
+      "raw": "[On Hit] At 3+ Gloom Reson., inflict 1 [Gloom Fragility]",
+      "status": "Gloom Fragility"
+     },
+     {
       "kind": "inflict",
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [The Uninvited]",
@@ -6085,19 +7592,53 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Bygone Days",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [],
-   "tags": [],
-   "unmodeled": [
-    "At 4+ highest Reson., heal 1 additional ally",
-    "Prioritizes targets that have the most [Sinking]",
-    "[Attack End] Heal 3 other allies with the lowest HP percentages by (10 + ([Sinking] on the main target + [Sinking] Count on the main target)/3)% HP (max 15%)",
-    "[Before Attack] Lose HP by 10% of Max HP (does not get Staggered due to this effect)",
-    "[On Hit] At 3+ Gloom Reson., inflict 1 [Gloom Fragility]"
-   ]
+   "tags": [
+    "targets_most_status:Sinking"
+   ],
+   "turn_end": [],
+   "turn_start": [],
+   "unmodeled": []
   },
   "20810.awakening@1": {
-   "attack_end": [],
+   "attack_end": [
+    {
+     "ally": "random",
+     "ally_count": 2,
+     "condition": {
+      "any_target_killed": true
+     },
+     "kind": "gloom_damage_equal_target_status",
+     "max": 15,
+     "raw": "[Attack End] If 1 or more targets are killed, deal ([Sinking] Potency on each target / 2) Gloom damage against 2 random enemies (max 15; prioritizes targeted enemies with the most [Sinking] Potency)",
+     "status": "Sinking",
+     "value": 2
+    }
+   ],
+   "before_attack": [
+    {
+     "kind": "damage_percent_from_resist",
+     "max": 15,
+     "raw": "[Before Attack] If the main target has higher than 1 Gloom Resist., deal +3% damage for every 0.1 excess Resist. (max 15%)",
+     "step": 3,
+     "value": 10
+    },
+    {
+     "condition": {
+      "resonance_gte": 2,
+      "resonance_of": "Gloom"
+     },
+     "kind": "damage_percent_per_resonance",
+     "max": 32,
+     "raw": "[Before Attack] At 2+ Gloom Reson., deal +8% damage for every Gloom Reson. (max 32%)",
+     "resonance_of": "Gloom",
+     "step": 8
+    }
+   ],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -6126,6 +7667,17 @@
     ],
     "3": [
      {
+      "kind": "noop",
+      "note": "single-target skills hit 3",
+      "raw": "When attacking just a single target, apply it to 3 targets instead"
+     },
+     {
+      "kind": "inflict_on_random_other",
+      "potency": 2,
+      "raw": "[On Hit] If there are Staggered, Part broken, or killed units among the targets, inflict 2 [Sinking] against a random non-targeted enemy (once per turn; in Focused Encounters, each Part count as 1 target)",
+      "status": "Sinking"
+     },
+     {
       "consume_count": 1,
       "kind": "tremor_burst",
       "raw": "[On Hit] Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1",
@@ -6134,26 +7686,48 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Tidal Elegy",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "kind": "damage_percent",
      "raw": "When attacking just a single target(in Focused Encounters, a Core and its connected Parts count as a single target), Coin Power +2 and deal +100% damage",
      "value": 100
+    },
+    {
+     "condition": {
+      "gte": 4,
+      "source": "target",
+      "status": "Sinking"
+     },
+     "kind": "clash_power",
+     "raw": "[On Use] If the main target has 4+ [Sinking], Clash Power +1",
+     "value": 1
     }
    ],
    "tags": [],
-   "unmodeled": [
-    "When attacking just a single target, apply it to 3 targets instead",
-    "[Attack End] If 1 or more targets are killed, deal ([Sinking] Potency on each target / 2) Gloom damage against 2 random enemies (max 15; prioritizes targeted enemies with the most [Sinking] Potency)",
-    "[Before Attack] At 2+ Gloom Reson., deal +8% damage for every Gloom Reson. (max 32%)",
-    "[Before Attack] If the main target has higher than 1 Gloom Resist., deal +3% damage for every 0.1 excess Resist. (max 15%)",
-    "[On Hit] If there are Staggered, Part broken, or killed units among the targets, inflict 2 [Sinking] against a random non-targeted enemy (once per turn; in Focused Encounters, each Part count as 1 target)",
-    "[On Use] If the main target has 4+ [Sinking], Clash Power +1"
-   ]
+   "turn_end": [],
+   "turn_start": [],
+   "unmodeled": []
   },
   "20810.corrosion@1": {
-   "attack_end": [],
+   "attack_end": [
+    {
+     "ally": "random",
+     "ally_count": 1,
+     "from_resonance": true,
+     "include_self": true,
+     "kind": "gain",
+     "max": 4,
+     "next_turn": true,
+     "potency": 1,
+     "raw": "[Attack End] Apply 1 [Blunt DMG Up] next turn to (highest Reson.) random allies (including this unit; max 4 allies; once per turn)",
+     "status": "Blunt DMG Up"
+    }
+   ],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -6189,6 +7763,13 @@
       "status": "Tremor"
      },
      {
+      "kind": "inflict_on_random_other",
+      "next_turn": true,
+      "potency": 1,
+      "raw": "[On Hit] If there are Staggered, Part broken, or killed units among the targets, inflict 1 [Gloom Fragility] next turn against a random non-targeted enemy (once per turn; for Focused Encounters, each Part counts as 1 target)",
+      "status": "Gloom Fragility"
+     },
+     {
       "consume_count": 1,
       "kind": "tremor_burst",
       "raw": "[On Hit] Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1",
@@ -6197,7 +7778,10 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Tidal Elegy",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "condition": {
@@ -6211,25 +7795,50 @@
      "raw": "[On Use] Clash Power +1 for every 5 [Sinking] on the main target (max 2)",
      "step": 1,
      "value": 0
+    },
+    {
+     "from_resonance": true,
+     "kind": "attack_weight",
+     "per": 3,
+     "raw": "Gain +1 Atk Weight (max 2)",
+     "step": 1
+    },
+    {
+     "kind": "damage_percent_per_resonance",
+     "max": 30,
+     "per": 3,
+     "raw": "Deal +15% damage (max 30%)",
+     "step": 15
+    },
+    {
+     "condition": {
+      "resonance_gte": 1,
+      "resonance_of": "Gloom"
+     },
+     "kind": "gain",
+     "potency": 1,
+     "raw": "If the said Reson. was a Gloom Reson. or an A-Reson., apply 1 [Gloom DMG Up] as well",
+     "status": "Gloom DMG Up"
     }
    ],
-   "tags": [],
-   "unmodeled": [
-    "Deal +15% damage (max 30%)",
-    "Gain +1 Atk Weight (max 2)",
-    "If the said Reson. was a Gloom Reson. or an A-Reson., apply 1 [Gloom DMG Up] as well",
-    "Targets randomly",
-    "[Attack End] Apply 1 [Blunt DMG Up] next turn to (highest Reson.) random allies (including this unit; max 4 allies; once per turn)",
-    "[Before Attack] Gain the following effects for every 3 highest Reson.",
-    "[On Hit] If there are Staggered, Part broken, or killed units among the targets, inflict 1 [Gloom Fragility] next turn against a random non-targeted enemy (once per turn; for Focused Encounters, each Part counts as 1 target)"
-   ]
+   "tags": [
+    "targets_random"
+   ],
+   "turn_end": [],
+   "turn_start": [],
+   "unmodeled": []
   },
   "20903.awakening@1": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
     "1": [
+     {
+      "kind": "tremor_burst",
+      "raw": "[On Hit] Trigger [Tremor Burst]"
+     },
      {
       "count": 3,
       "kind": "inflict",
@@ -6239,20 +7848,37 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Rime Shank",
-   "on_use": [],
+   "on_evade": [],
+   "on_kill": [],
+   "on_use": [
+    {
+     "condition": {
+      "hp_above_percent": 50,
+      "source": "target"
+     },
+     "kind": "damage_percent",
+     "raw": "If target’s HP is above 50%, deal +30% damage",
+     "value": 30
+    }
+   ],
    "tags": [],
-   "unmodeled": [
-    "If target’s HP is above 50%, deal +30% damage",
-    "[On Hit] Trigger [Tremor Burst]"
-   ]
+   "turn_end": [],
+   "turn_start": [],
+   "unmodeled": []
   },
   "20903.corrosion@1": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
     "1": [
+     {
+      "kind": "tremor_burst",
+      "raw": "[On Hit] Trigger [Tremor Burst]"
+     },
      {
       "count": 6,
       "kind": "inflict",
@@ -6262,17 +7888,48 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Rime Shank",
-   "on_use": [],
-   "tags": [],
-   "unmodeled": [
-    "If target’s HP is above 50%, +30% Damage",
-    "Targets the unit with the most HP",
-    "[On Hit] Trigger [Tremor Burst]"
-   ]
+   "on_evade": [],
+   "on_kill": [],
+   "on_use": [
+    {
+     "condition": {
+      "hp_above_percent": 50,
+      "source": "target"
+     },
+     "kind": "damage_percent",
+     "raw": "If target’s HP is above 50%, +30% Damage",
+     "value": 30
+    }
+   ],
+   "tags": [
+    "targets_most_hp"
+   ],
+   "turn_end": [],
+   "turn_start": [],
+   "unmodeled": []
   },
   "21009.awakening@1": {
-   "attack_end": [],
+   "attack_end": [
+    {
+     "ally": "lowest_sp",
+     "ally_count": 1,
+     "from_resonance": true,
+     "include_self": false,
+     "kind": "sp_heal",
+     "max": 4,
+     "raw": "[Attack End] Heal 10 SP for (1 + highest Reson.) other allies with the least SP (max 4 units)",
+     "value": 10
+    },
+    {
+     "kind": "combat_end_sp_damage",
+     "raw": "[Attack End] For 2 turns, lose 8 SP at Combat End",
+     "turns": 2,
+     "value": 8
+    }
+   ],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -6294,6 +7951,16 @@
     ],
     "3": [
      {
+      "kind": "reuse_coin",
+      "raw": "Then, Reuse this Coin (4 times per Skill)",
+      "reuse_coin": 1
+     },
+     {
+      "kind": "noop",
+      "note": "hp floor 1",
+      "raw": "This damage does not Stagger or reduce this unit's HP below 1"
+     },
+     {
       "kind": "inflict",
       "potency": 1,
       "raw": "[On Hit] Inflict 1 [Burn]",
@@ -6304,28 +7971,143 @@
       "potency": 1,
       "raw": "[On Hit] Inflict 1 [Bleed]",
       "status": "Bleed"
+     },
+     {
+      "ally": "random",
+      "ally_count": 1,
+      "kind": "gain",
+      "next_turn": true,
+      "range_max": 2,
+      "range_min": 1,
+      "raw": "[On Hit] A random ally gains 1 ~ 2 [Rhythm] next turn (once per Coin)",
+      "status": "Rhythm"
      }
     ]
    },
    "combat_start": [],
+   "heads_hit": {
+    "3": [
+     {
+      "condition": {
+       "hp_above_percent": 10
+      },
+      "kind": "self_damage",
+      "raw": "[Heads Hit] At 10%+ HP, take 4 ~ 8 HP damage (once per Coin)",
+      "self_damage_max": 8,
+      "self_damage_min": 4
+     }
+    ]
+   },
    "note": "Harmony",
-   "on_use": [],
+   "on_evade": [],
+   "on_kill": [
+    {
+     "ally": "all_allies",
+     "include_self": true,
+     "kind": "gain",
+     "next_turn": true,
+     "potency": 2,
+     "raw": "[On Target Kill] All allies gain 2 [Rhythm] next turn (once per Skill)",
+     "status": "Rhythm"
+    }
+   ],
+   "on_use": [
+    {
+     "condition": {
+      "component": "potency",
+      "source": "target",
+      "statuses": [
+       "Bleed",
+       "Burn"
+      ]
+     },
+     "kind": "clash_power",
+     "max": 8,
+     "per": 2,
+     "raw": "Clash Power +1 for every 2 ([Bleed] + [Burn]) on the main target (max 8)",
+     "step": 1,
+     "value": 0
+    },
+    {
+     "damage_percent_missing_hp": 15,
+     "kind": "damage_percent_missing_hp",
+     "raw": "Deal more damage based on missing HP on self (max 15%)"
+    },
+    {
+     "kind": "sub_target_damage",
+     "percent": -50,
+     "raw": "Deal -50% damage against sub-targets"
+    }
+   ],
    "tags": [],
-   "unmodeled": [
-    "Clash Power +1 for every 2 ([Bleed] + [Burn]) on the main target (max 8)",
-    "Deal -50% damage against sub-targets",
-    "Deal more damage based on missing HP on self (max 15%)",
-    "Then, Reuse this Coin (4 times per Skill)",
-    "This damage does not Stagger or reduce this unit's HP below 1",
-    "[Attack End] For 2 turns, lose 8 SP at Combat End",
-    "[Attack End] Heal 10 SP for (1 + highest Reson.) other allies with the least SP (max 4 units)",
-    "[Heads Hit] At 10%+ HP, take 4 ~ 8 HP damage (once per Coin)",
-    "[On Hit] A random ally gains 1 ~ 2 [Rhythm] next turn (once per Coin)",
-    "[On Target Kill] All allies gain 2 [Rhythm] next turn (once per Skill)"
-   ]
+   "turn_end": [],
+   "turn_start": [],
+   "unmodeled": []
   },
   "21009.corrosion@1": {
-   "attack_end": [],
+   "attack_end": [
+    {
+     "ally": "lowest_sp",
+     "ally_count": 4,
+     "include_self": false,
+     "kind": "sp_heal",
+     "raw": "[Attack End] Heal 12 SP for 4 other allies with the least SP",
+     "value": 12
+    },
+    {
+     "kind": "compound",
+     "next_turn": true,
+     "raw": "[Attack End] All allies gain 2 [Rhythm], 1 [Wrath DMG Up], 1 [Lust DMG Up], 1 [Envy DMG Up], 1 [Fragile] next turn",
+     "sub_effects": [
+      {
+       "ally": "all_allies",
+       "include_self": true,
+       "kind": "gain",
+       "potency": 2,
+       "status": "Rhythm"
+      },
+      {
+       "ally": "all_allies",
+       "include_self": true,
+       "kind": "gain",
+       "potency": 1,
+       "status": "Wrath DMG Up"
+      },
+      {
+       "ally": "all_allies",
+       "include_self": true,
+       "kind": "gain",
+       "potency": 1,
+       "status": "Lust DMG Up"
+      },
+      {
+       "ally": "all_allies",
+       "include_self": true,
+       "kind": "gain",
+       "potency": 1,
+       "status": "Envy DMG Up"
+      },
+      {
+       "ally": "all_allies",
+       "include_self": true,
+       "kind": "gain",
+       "potency": 1,
+       "status": "Fragile"
+      }
+     ]
+    }
+   ],
+   "before_attack": [
+    {
+     "from_resonance": true,
+     "kind": "attack_weight",
+     "max": 2,
+     "per": 2,
+     "raw": "[Before Attack] Gain Atk Weight equal to (highest Reson. / 2) (max 2; rounded down)",
+     "step": 1,
+     "value": 0
+    }
+   ],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -6347,6 +8129,26 @@
     ],
     "3": [
      {
+      "kind": "reuse_coin",
+      "raw": "Then, Reuse this Coin if the sum of HP lost due to this effect is less than 50 (4 times per Skill)",
+      "reuse_coin": 4,
+      "threshold": 50
+     },
+     {
+      "kind": "noop",
+      "note": "hp floor 1",
+      "raw": "This damage does not Stagger or reduce this unit's HP below 1"
+     },
+     {
+      "condition": {
+       "hp_above_percent": 10
+      },
+      "kind": "self_damage",
+      "raw": "[On Hit] At 10%+ HP, take 10 ~ 20 HP damage (once per Coin)",
+      "self_damage_max": 20,
+      "self_damage_min": 10
+     },
+     {
       "kind": "inflict",
       "potency": 1,
       "raw": "[On Hit] Inflict 1 [Burn]",
@@ -6357,50 +8159,166 @@
       "potency": 1,
       "raw": "[On Hit] Inflict 1 [Bleed]",
       "status": "Bleed"
+     },
+     {
+      "ally": "random",
+      "ally_count": 1,
+      "kind": "gain",
+      "next_turn": true,
+      "range_max": 2,
+      "range_min": 1,
+      "raw": "[On Hit] A random ally gains 1 ~ 2 [Rhythm] next turn (once per Coin)",
+      "status": "Rhythm"
      }
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Harmony",
-   "on_use": [],
-   "tags": [],
+   "on_evade": [],
+   "on_kill": [],
+   "on_use": [
+    {
+     "condition": {
+      "component": "potency",
+      "source": "target",
+      "statuses": [
+       "Bleed",
+       "Burn"
+      ]
+     },
+     "kind": "clash_power",
+     "max": 8,
+     "per": 2,
+     "raw": "Clash Power +1 for every 2 ([Bleed] + [Burn]) on the main target (max 8)",
+     "step": 1,
+     "value": 0
+    },
+    {
+     "damage_percent_missing_hp": 15,
+     "kind": "damage_percent_missing_hp",
+     "raw": "Deal more damage based on missing HP on self (max 15%)"
+    },
+    {
+     "kind": "sub_target_damage",
+     "percent": -50,
+     "raw": "Deal -50% damage against sub-targets"
+    },
+    {
+     "kind": "noop",
+     "note": "repeat on kill",
+     "raw": "If target was killed, activate the effect above once more"
+    }
+   ],
+   "tags": [
+    "targets_random"
+   ],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": [
-    "Clash Power +1 for every 2 ([Bleed] + [Burn]) on the main target (max 8)",
-    "Deal -50% damage against sub-targets",
-    "Deal more damage based on missing HP on self (max 15%)",
-    "If target was killed, activate the effect above once more",
-    "Targets randomly",
-    "Then, Reuse this Coin if the sum of HP lost due to this effect is less than 50 (4 times per Skill)",
-    "This damage does not Stagger or reduce this unit's HP below 1",
-    "[Attack End] All allies gain 2 [Rhythm], 1 [Wrath DMG Up], 1 [Lust DMG Up], 1 [Envy DMG Up], 1 [Fragile] next turn",
-    "[Attack End] Heal 12 SP for 4 other allies with the least SP",
-    "[Before Attack] Base Power -2 for every Cracked Coin (max -6)",
-    "[Before Attack] Gain Atk Weight equal to (highest Reson. / 2) (max 2; rounded down)",
-    "[On Hit] A random ally gains 1 ~ 2 [Rhythm] next turn (once per Coin)",
-    "[On Hit] At 10%+ HP, take 10 ~ 20 HP damage (once per Coin)"
+    "[Before Attack] Base Power -2 for every Cracked Coin (max -6)"
    ]
   },
   "21206.awakening@1": {
-   "attack_end": [],
+   "attack_end": [
+    {
+     "ally": "lowest_sp",
+     "ally_count": 2,
+     "include_self": true,
+     "kind": "sp_heal",
+     "raw": "[Attack End] Heal 12 SP to self and 2 other allies with the least SP",
+     "value": 12
+    }
+   ],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {},
    "combat_start": [],
+   "heads_hit": {},
    "note": "Bygone Days",
-   "on_use": [],
+   "on_evade": [],
+   "on_kill": [],
+   "on_use": [
+    {
+     "condition": {
+      "target_survived": true
+     },
+     "kind": "compound",
+     "raw": "If target survives this attack, consume 5 [Sinking] Count on target, then heal additional SP(to self & affected allies) equal to [Sinking] Potency on target (Max SP heal: 20)",
+     "sub_effects": [
+      {
+       "kind": "lose_status_count",
+       "status": "Sinking",
+       "value": 5
+      },
+      {
+       "ally": "all_allies",
+       "heal_from_component": "potency",
+       "heal_from_status": "Sinking",
+       "include_self": true,
+       "kind": "heal_from_status",
+       "max": 20
+      }
+     ]
+    },
+    {
+     "condition": {
+      "target_defeated": true
+     },
+     "kind": "compound",
+     "raw": "If target is defeated, inflict 3 [Sinking] and 1 [Curse] on 2 random enemies (For Focused Encounters, random Parts)",
+     "sub_effects": [
+      {
+       "ally": "random",
+       "ally_count": 2,
+       "kind": "inflict",
+       "potency": 3,
+       "status": "Sinking"
+      },
+      {
+       "ally": "random",
+       "ally_count": 2,
+       "kind": "inflict",
+       "potency": 1,
+       "status": "Curse"
+      }
+     ]
+    }
+   ],
    "tags": [],
-   "unmodeled": [
-    "If target is defeated, inflict 3 [Sinking] and 1 [Curse] on 2 random enemies (For Focused Encounters, random Parts)",
-    "If target survives this attack, consume 5 [Sinking] Count on target, then heal additional SP(to self & affected allies) equal to [Sinking] Potency on target (Max SP heal: 20)",
-    "[Attack End] Heal 12 SP to self and 2 other allies with the least SP"
-   ]
+   "turn_end": [],
+   "turn_start": [],
+   "unmodeled": []
   },
   "21206.corrosion@1": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
     "1": [
+     {
+      "kind": "compound",
+      "raw": "[On Hit] Inflict 2 [Gloom Fragility]. Inflict 1 additional [Gloom Fragility] for every 3 Gloom Reson. (max 2)",
+      "sub_effects": [
+       {
+        "kind": "inflict",
+        "potency": 2,
+        "status": "Gloom Fragility"
+       },
+       {
+        "kind": "inflict",
+        "max": 2,
+        "multiplier": 1,
+        "per": 3,
+        "potency": 1,
+        "resonance_of": "Gloom",
+        "status": "Gloom Fragility",
+        "step": 1
+       }
+      ]
+     },
      {
       "count": 3,
       "kind": "inflict",
@@ -6416,16 +8334,28 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Bygone Days",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [],
-   "tags": [],
-   "unmodeled": [
-    "Targets randomly",
-    "[On Hit] Inflict 2 [Gloom Fragility]. Inflict 1 additional [Gloom Fragility] for every 3 Gloom Reson. (max 2)"
-   ]
+   "tags": [
+    "targets_random"
+   ],
+   "turn_end": [],
+   "turn_start": [],
+   "unmodeled": []
   },
   "21207.awakening@1": {
-   "attack_end": [],
+   "attack_end": [
+    {
+     "ally": "self",
+     "kind": "heal_per_coin_hits",
+     "raw": "[Attack End] Heal (# of Coin 3 hits x 2) SP",
+     "value": 2
+    }
+   ],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -6446,29 +8376,78 @@
       "raw": "[On Hit] Inflict 1 random [Butterfly]",
       "status": "Butterfly"
      }
+    ],
+    "3": [
+     {
+      "assumption": "random part",
+      "kind": "inflict",
+      "range_max": 2,
+      "range_min": 1,
+      "raw": "[On Hit] Inflict 1~2 random [Butterfly]",
+      "status": "Butterfly"
+     },
+     {
+      "kind": "self_sp_damage",
+      "raw": "[On Hit] Lose 2~6 SP",
+      "self_sp_damage_max": 6,
+      "self_sp_damage_min": 2
+     },
+     {
+      "condition": {
+       "self_sp_at_least": 0
+      },
+      "kind": "reuse_coin",
+      "raw": "[On Hit] At 0+ SP, Reuse this Coin (5 times max per Skill)",
+      "reuse_coin": 5
+     }
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Solemn Lament",
-   "on_use": [],
-   "tags": [],
-   "unmodeled": [
-    "All 'On Hit' effects and all damage dealt by each Coin are inflicted only against the random target the Coin selected",
-    "The first Coin always targets the main target",
-    "When inflicting [Butterfly] using this Skill's effects: (Chance to flip Heads)% chance to inflict The Departed. If this unit did not inflict The Departed, inflict The Living instead. (calculates every [Butterfly] Stack independently)",
-    "When this Skill flips Coins, each Coin flips against a random enemy among its targets.",
-    "[Attack End] Heal (# of Coin 3 hits x 2) SP",
-    "[On Hit] At 0+ SP, Reuse this Coin (5 times max per Skill)",
-    "[On Hit] Inflict 1~2 random [Butterfly]",
-    "[On Hit] Lose 2~6 SP"
-   ]
+   "on_evade": [],
+   "on_kill": [],
+   "on_use": [
+    {
+     "kind": "noop",
+     "note": "random Coin targets",
+     "raw": "When this Skill flips Coins, each Coin flips against a random enemy among its targets."
+    },
+    {
+     "kind": "noop",
+     "note": "first Coin keeps the main target",
+     "raw": "The first Coin always targets the main target"
+    }
+   ],
+   "tags": [
+    "butterfly_split",
+    "random_coin_targets"
+   ],
+   "turn_end": [],
+   "turn_start": [],
+   "unmodeled": []
   },
   "21207.corrosion@1": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
     "1": [
+     {
+      "butterfly_part": "living",
+      "kind": "inflict",
+      "potency": 4,
+      "raw": "[On Hit] Inflict 4 [Butterfly](The Living)",
+      "status": "Butterfly"
+     },
+     {
+      "butterfly_part": "departed",
+      "kind": "inflict",
+      "potency": 4,
+      "raw": "[On Hit] Inflict 4 [Butterfly](The Departed)",
+      "status": "Butterfly"
+     },
      {
       "count": 3,
       "kind": "inflict",
@@ -6478,20 +8457,51 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Solemn Lament",
-   "on_use": [],
-   "tags": [],
-   "unmodeled": [
-    "For targets that are Non-SP Units, deal +1% damage for every 2 [Sinking] on target (max 45%)",
-    "If target has less than 0 SP, deal more damage the further their SP value is from 0 (+1% damage for every missing SP, max 45%)",
-    "Targets randomly",
-    "[On Hit] Inflict 4 [Butterfly](The Departed)",
-    "[On Hit] Inflict 4 [Butterfly](The Living)",
-    "[On Kill] Heal 5 SP"
-   ]
+   "on_evade": [],
+   "on_kill": [
+    {
+     "kind": "sp_heal",
+     "raw": "[On Kill] Heal 5 SP",
+     "value": 5
+    }
+   ],
+   "on_use": [
+    {
+     "condition": {
+      "target_sp_below": 0
+     },
+     "kind": "damage_percent_from_missing_sp",
+     "max": 45,
+     "raw": "If target has less than 0 SP, deal more damage the further their SP value is from 0 (+1% damage for every missing SP, max 45%)",
+     "step": 1
+    },
+    {
+     "condition": {
+      "component": "potency",
+      "source": "target",
+      "status": "Sinking",
+      "target_is_non_sp_unit": true
+     },
+     "kind": "damage_percent",
+     "max": 45,
+     "per": 2,
+     "raw": "For targets that are Non-SP Units, deal +1% damage for every 2 [Sinking] on target (max 45%)",
+     "step": 1,
+     "value": 0
+    }
+   ],
+   "tags": [
+    "targets_random"
+   ],
+   "turn_end": [],
+   "turn_start": [],
+   "unmodeled": []
   },
   "956301@1": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -6525,7 +8535,10 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Fluttering Havoc",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "condition": {
@@ -6564,10 +8577,13 @@
     }
    ],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "956302@1": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -6601,7 +8617,10 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Pulverization",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "condition": {
@@ -6640,15 +8659,21 @@
     }
    ],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "956303@1": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {},
    "combat_start": [],
+   "heads_hit": {},
    "note": "The Quickening",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "kind": "zero_damage",
@@ -6660,6 +8685,8 @@
     }
    ],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": [
     "[Attack End] End the Encounter",
     "[Unclashable], [Target Fixed]"
@@ -6667,13 +8694,19 @@
   },
   "956304@1": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {},
    "combat_start": [],
+   "heads_hit": {},
    "note": "Entangled Life - Regression",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": [
     "Attack Type and Affinity of Skills that Clashed with this Skill affect the impending Past",
     "Enemy units of Stage 2 gain [Incandescent Scale Dust]"
@@ -6681,13 +8714,19 @@
   },
   "956305@1": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {},
    "combat_start": [],
+   "heads_hit": {},
    "note": "Entangled Life - Manifestation",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": [
     "Attack Type and Affinity of Skills that Clashed with this Skill affect the impending Present",
     "Enemy units of Stage 3 gain [Acuate Scale Dust]"
@@ -6695,13 +8734,19 @@
   },
   "956306@1": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {},
    "combat_start": [],
+   "heads_hit": {},
    "note": "Entangled Life - Advent",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": [
     "Attack Type and Affinity of Skills that Clashed with this Skill affect the impending Future",
     "Enemy units of Stage 4 gain [Rusted Scale Dust]"
@@ -6709,11 +8754,15 @@
   },
   "956401@1": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {},
    "combat_start": [],
+   "heads_hit": {},
    "note": "Eclosion",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "kind": "zero_damage",
@@ -6721,6 +8770,8 @@
     }
    ],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": [
     "If the Shield is broken, proceed to the next turn instead and face a unique Choice Event before the Encounter ends",
     "[Attack End] End the Encounter",
@@ -6729,11 +8780,15 @@
   },
   "956501@1": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {},
    "combat_start": [],
+   "heads_hit": {},
    "note": "Eclosion",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "kind": "zero_damage",
@@ -6741,6 +8796,8 @@
     }
    ],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": [
     "If the Shield is broken, proceed to the next turn instead and face a unique Choice Event before the Encounter ends",
     "[Attack End] End the Encounter",
@@ -6749,11 +8806,15 @@
   },
   "956601@1": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {},
    "combat_start": [],
+   "heads_hit": {},
    "note": "Eclosion",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "kind": "zero_damage",
@@ -6761,6 +8822,8 @@
     }
    ],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": [
     "If the Shield is broken, proceed to the next turn instead and face a unique Choice Event before the Encounter ends",
     "[Attack End] End the Encounter",
@@ -6769,6 +8832,7 @@
   },
   "956701@1": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -6802,7 +8866,10 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Fluttering Havoc",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "condition": {
@@ -6858,10 +8925,13 @@
     }
    ],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "956702@1": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -6895,7 +8965,10 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Pulverization",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "condition": {
@@ -6951,10 +9024,13 @@
     }
    ],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "956703@1": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [
     {
      "kind": "gain",
@@ -6993,7 +9069,10 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Chaotic Turmoil",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "condition": {
@@ -7026,17 +9105,14 @@
     }
    ],
    "tags": [],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "956704@1": {
    "attack_end": [],
-   "clash_lose": [
-    {
-     "kind": "tag",
-     "raw": "[Clash Lose] Target cannot be Staggered until this Skill's Attack End",
-     "tag": "no_stagger_target"
-    }
-   ],
+   "before_attack": [],
+   "clash_lose": [],
    "clash_win": [],
    "coins": {
     "1": [
@@ -7060,7 +9136,10 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Temper and Cast",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "condition": {
@@ -7094,19 +9173,17 @@
     }
    ],
    "tags": [
-    "clash_any_speed"
+    "clash_any_speed",
+    "no_stagger_target"
    ],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "956705@1": {
    "attack_end": [],
-   "clash_lose": [
-    {
-     "kind": "tag",
-     "raw": "[Clash Lose] Target cannot be Staggered until this Skill's Attack End",
-     "tag": "no_stagger_target"
-    }
-   ],
+   "before_attack": [],
+   "clash_lose": [],
    "clash_win": [],
    "coins": {
     "1": [
@@ -7147,7 +9224,10 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Immolation",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "condition": {
@@ -7195,12 +9275,16 @@
     }
    ],
    "tags": [
-    "clash_any_speed"
+    "clash_any_speed",
+    "no_stagger_target"
    ],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "956706@1": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [
     {
@@ -7263,7 +9347,10 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Kalpāgni",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "condition": {
@@ -7301,27 +9388,28 @@
      "potency": 2,
      "raw": "Gain 2 [Damage Down] and 4 [Paralyze]",
      "status": "Damage Down"
-    },
-    {
-     "kind": "tag",
-     "raw": "Target cannot be Staggered until this Skill's Attack End",
-     "tag": "no_stagger_target"
     }
    ],
    "tags": [
-    "clash_any_speed"
+    "clash_any_speed",
+    "no_stagger_target"
    ],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "956707@1": {
    "attack_end": [],
-   "clash_lose": [
+   "before_attack": [
     {
-     "kind": "tag",
-     "raw": "[Clash Lose] Target cannot be Staggered until this Skill's Attack End",
-     "tag": "no_stagger_target"
+     "count": 2,
+     "kind": "gain",
+     "potency": 2,
+     "raw": "[Before Attack] Gain 2 [Poise] and +2 [Poise] Count",
+     "status": "Poise"
     }
    ],
+   "clash_lose": [],
    "clash_win": [],
    "coins": {
     "1": [
@@ -7345,7 +9433,10 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Anitya",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "kind": "clash_power",
@@ -7368,29 +9459,28 @@
      "hp_below_percent": 33,
      "kind": "unbreakable_coin",
      "raw": "At less than 33% HP, convert all Coins into [Unbreakable Coin]s"
-    },
-    {
-     "count": 2,
-     "kind": "gain",
-     "potency": 2,
-     "raw": "[Before Attack] Gain 2 [Poise] and +2 [Poise] Count",
-     "status": "Poise"
     }
    ],
    "tags": [
-    "clash_any_speed"
+    "clash_any_speed",
+    "no_stagger_target"
    ],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "956708@1": {
    "attack_end": [],
-   "clash_lose": [
+   "before_attack": [
     {
-     "kind": "tag",
-     "raw": "[Clash Lose] Target cannot be Staggered until this Skill's Attack End",
-     "tag": "no_stagger_target"
+     "count": 2,
+     "kind": "gain",
+     "potency": 3,
+     "raw": "[Before Attack] Gain 3 [Poise] and +2 [Poise] Count",
+     "status": "Poise"
     }
    ],
+   "clash_lose": [],
    "clash_win": [],
    "coins": {
     "1": [
@@ -7465,7 +9555,10 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Skypiercer",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "kind": "clash_power",
@@ -7503,26 +9596,32 @@
      "hp_below_percent": 33,
      "kind": "unbreakable_coin",
      "raw": "At less than 33% HP, convert all Coins into [Unbreakable Coin]s"
-    },
-    {
-     "count": 2,
-     "kind": "gain",
-     "potency": 3,
-     "raw": "[Before Attack] Gain 3 [Poise] and +2 [Poise] Count",
-     "status": "Poise"
     }
    ],
    "tags": [
-    "clash_any_speed"
+    "clash_any_speed",
+    "no_stagger_target"
    ],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "956709@1": {
    "attack_end": [
     {
      "kind": "reuse_on_kill",
-     "per_turn": 1,
      "raw": "[Attack End] If target is killed, Reuse this Skill on the target that has the highest HP (once per turn)"
+    }
+   ],
+   "before_attack": [
+    {
+     "kind": "consume_surplus_status",
+     "max": 100,
+     "raw": "[Before Attack] If this unit has 20+ [Poise] Potency, consume up to 20 surplus [Poise] Potency past 20 to deal +([Poise] consumed x 5)% damage (max 100%)",
+     "status": "Poise",
+     "step": 5,
+     "threshold": 20,
+     "value": 20
     }
    ],
    "clash_lose": [],
@@ -7560,7 +9659,10 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Smite the Wicked",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "kind": "base_power",
@@ -7589,15 +9691,6 @@
      "value": 0
     },
     {
-     "kind": "consume_surplus_status",
-     "max": 100,
-     "raw": "[Before Attack] If this unit has 20+ [Poise] Potency, consume up to 20 surplus [Poise] Potency past 20 to deal +([Poise] consumed x 5)% damage (max 100%)",
-     "status": "Poise",
-     "step": 5,
-     "threshold": 20,
-     "value": 20
-    },
-    {
      "kind": "noop",
      "note": "clash-lose gate",
      "raw": "On Clash Lose, this effect does not activate"
@@ -7614,30 +9707,23 @@
      "status": "Damage Down"
     },
     {
-     "kind": "tag",
-     "raw": "Target cannot be Staggered until this Skill's Attack End",
-     "tag": "no_stagger_target"
-    },
-    {
      "kind": "noop",
      "note": "clash-lose gate",
      "raw": "On Clash Lose, this effect does not activate"
     }
    ],
    "tags": [
-    "clash_any_speed"
+    "clash_any_speed",
+    "no_stagger_target"
    ],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "956710@1": {
    "attack_end": [],
-   "clash_lose": [
-    {
-     "kind": "tag",
-     "raw": "[Clash Lose] Target cannot be Staggered until this Skill's Attack End",
-     "tag": "no_stagger_target"
-    }
-   ],
+   "before_attack": [],
+   "clash_lose": [],
    "clash_win": [],
    "coins": {
     "1": [
@@ -7661,7 +9747,10 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Corrosive Disintegration",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
     {
      "condition": {
@@ -7695,19 +9784,17 @@
     }
    ],
    "tags": [
-    "clash_any_speed"
+    "clash_any_speed",
+    "no_stagger_target"
    ],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "956711@1": {
    "attack_end": [],
-   "clash_lose": [
-    {
-     "kind": "tag",
-     "raw": "[Clash Lose] Target cannot be Staggered until this Skill's Attack End",
-     "tag": "no_stagger_target"
-    }
-   ],
+   "before_attack": [],
+   "clash_lose": [],
    "clash_win": [],
    "coins": {
     "1": [
@@ -7742,13 +9829,11 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Rotting Annihilation",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
-    {
-     "kind": "tag",
-     "raw": "While Clashing with this Skill, the main target's [Bleed] Count does not drop below 1",
-     "tag": "status_count_floor:Bleed"
-    },
     {
      "condition": {
       "component": "potency",
@@ -7794,12 +9879,17 @@
     }
    ],
    "tags": [
-    "clash_any_speed"
+    "clash_any_speed",
+    "no_stagger_target",
+    "status_count_floor:Bleed"
    ],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   },
   "956712@1": {
    "attack_end": [],
+   "before_attack": [],
    "clash_lose": [],
    "clash_win": [
     {
@@ -7851,13 +9941,11 @@
     ]
    },
    "combat_start": [],
+   "heads_hit": {},
    "note": "Bloodflower",
+   "on_evade": [],
+   "on_kill": [],
    "on_use": [
-    {
-     "kind": "tag",
-     "raw": "While Clashing with this Skill, the main target's [Bleed] Count does not drop below 1",
-     "tag": "status_count_floor:Bleed"
-    },
     {
      "condition": {
       "component": "potency",
@@ -7894,16 +9982,15 @@
      "potency": 2,
      "raw": "Gain 2 [Damage Down] and 2 [Paralyze]",
      "status": "Damage Down"
-    },
-    {
-     "kind": "tag",
-     "raw": "Target cannot be Staggered until this Skill's Attack End",
-     "tag": "no_stagger_target"
     }
    ],
    "tags": [
-    "clash_any_speed"
+    "clash_any_speed",
+    "no_stagger_target",
+    "status_count_floor:Bleed"
    ],
+   "turn_end": [],
+   "turn_start": [],
    "unmodeled": []
   }
  },

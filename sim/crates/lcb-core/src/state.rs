@@ -375,6 +375,21 @@ pub struct Unit {
     pub resist_sin: BTreeMap<String, f64>,
     pub stagger: StaggerState,
     pub statuses: StatusSet,
+    /// Targets this unit's most recent Skill killed (for "[Attack End] If 1 or
+    /// more targets are killed" clauses).
+    #[serde(default)]
+    pub skill_kills: i32,
+    /// Suit currently in this unit's Hand (Hanafuda markers).
+    #[serde(default)]
+    pub suit: Option<String>,
+    /// "[Attack End] For N turns, lose X SP at Combat End".
+    #[serde(default)]
+    pub combat_end_sp_loss: Vec<(i32, i32)>,
+    /// Marker statuses that have no numeric value of their own: the Tremor
+    /// amplitudes ("Amplitude Conversion: Tremor - Decay"), the Suit in this
+    /// unit's hand, and the like (wiki.gg `Status Effects`).
+    #[serde(default)]
+    pub status_markers: Vec<String>,
     pub deck: SkillDeck,
     pub dashboard: Vec<DashboardSlot>,
     /// E.G.O resources per sin, shared by the team (stored on the team state).
@@ -446,6 +461,9 @@ pub struct Unit {
     /// the battle state so conditions can read it).
     #[serde(default)]
     pub resonance_max: i32,
+    /// Per-sin Resonance counts for this turn ("At 3+ (Gloom Reson.)").
+    #[serde(default)]
+    pub resonance_of: BTreeMap<String, i32>,
     #[serde(default)]
     pub a_reson_max: i32,
 }
@@ -743,6 +761,19 @@ impl BattleState {
     /// Flip a coin: scripted results win, otherwise the RNG is used with the
     /// unit's heads chance.  Every flip advances `flip_cursor`, so a replay is
     /// exact regardless of the generator.
+    /// A uniform roll in `0..=range` from the replayable RNG stream (used by
+    /// "take 4 ~ 8 HP damage" and "gain 1 ~ 2 [X]" clauses).
+    pub fn roll_inclusive(&mut self, range: i32) -> i32 {
+        if range <= 0 {
+            return 0;
+        }
+        if self.flip_cursor < self.preset_flips.len() {
+            self.flip_cursor += 1;
+            return range / 2;
+        }
+        self.rng.below(range as u32 + 1) as i32
+    }
+
     pub fn flip(&mut self, percent: i32) -> bool {
         if self.flip_cursor < self.preset_flips.len() {
             let value = self.preset_flips[self.flip_cursor];

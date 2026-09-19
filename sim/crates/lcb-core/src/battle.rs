@@ -13,6 +13,7 @@ use crate::state::{
     BattleState, Phase, Sanity, SubmittedAction, Unit, UnitKind, Winner, SP_LIMIT,
 };
 use serde::{Deserialize, Serialize};
+use std::collections::BTreeMap;
 
 /// Skill ids that mean "no skill": enemy slots that are empty.
 pub const EMPTY_SKILL: &str = "";
@@ -106,6 +107,39 @@ pub struct UseContext {
     /// Running skill power during an attack (Base Power + Heads Coin Power).
     #[serde(default)]
     pub accumulated: i32,
+    /// "[Before Attack] At 3+ (Gloom Reson.), Atk Weight +1".
+    #[serde(default)]
+    pub attack_weight_bonus: i32,
+    /// "Then, Reuse this Coin (N times per Skill)": coin index -> repeats left.
+    #[serde(default)]
+    pub reuse_coins: BTreeMap<u32, i32>,
+    /// Number of times each Coin has hit ("# of Coin 3 hits").
+    #[serde(default)]
+    pub coin_hits: BTreeMap<u32, i32>,
+    /// "Then, Reuse this Coin (N times per Skill)" budget for this use.
+    #[serde(default)]
+    pub reuse_coin_budget: i32,
+    /// HP this unit lost to its own Skill ("HP lost due to this effect").
+    #[serde(default)]
+    pub self_damage_taken: i32,
+    /// "[Attack End] If ... targets are killed" bookkeeping.
+    #[serde(default)]
+    pub kills: i32,
+    /// "Deal -N% damage against sub-targets".
+    #[serde(default)]
+    pub sub_target_damage_percent: i32,
+    /// "each Coin flips against a random enemy among its targets".
+    #[serde(default)]
+    pub random_coin_targets: bool,
+    /// "[On Target Kill] ... (once per Skill)" bookkeeping.
+    #[serde(default)]
+    pub on_kill_done: bool,
+    /// Amount of each status this use consumed ("Stack consumed").
+    #[serde(default)]
+    pub consumed_by_status: BTreeMap<String, i32>,
+    /// "Deal Gloom damage equal to (N)% of this Coin's final damage".
+    #[serde(default)]
+    pub final_damage_percent: i32,
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
@@ -537,7 +571,11 @@ fn condition_holds(
         }
     }
     if let Some(required) = condition.resonance_gte {
-        if actor.resonance_max < required {
+        let have = match condition.resonance_of.as_deref() {
+            Some(sin) => actor.resonance_of.get(sin).copied().unwrap_or(0),
+            None => actor.resonance_max,
+        };
+        if have < required {
             return false;
         }
     }
@@ -553,6 +591,11 @@ fn condition_holds(
     } else {
         actor
     };
+    if let Some(hp) = condition.hp_above_percent {
+        if unit.hp_percent() <= hp {
+            return false;
+        }
+    }
     if let Some(hp) = condition.hp_below_percent {
         let percent = unit.hp_percent();
         let ok = if condition.hp_or_equal.unwrap_or(false) {
@@ -566,6 +609,51 @@ fn condition_holds(
     }
     if let Some(count) = condition.clash_count_gte {
         if clash_count < count {
+            return false;
+        }
+    }
+    if condition.target_defeated {
+        match target {
+            Some(target) if !target.alive => {}
+            _ => return false,
+        }
+    }
+    if condition.target_survived {
+        match target {
+            Some(target) if target.alive => {}
+            _ => return false,
+        }
+    }
+    if condition.target_is_sp_unit {
+        match target {
+            Some(target) if !matches!(target.sanity, Sanity::None) => {}
+            _ => return false,
+        }
+    }
+    if condition.target_is_non_sp_unit {
+        match target {
+            Some(target) if matches!(target.sanity, Sanity::None) => {}
+            _ => return false,
+        }
+    }
+    if condition.any_target_killed {
+        if actor.skill_kills <= 0 {
+            return false;
+        }
+    }
+    if condition.target_has_amplitude {
+        match target {
+            Some(target) if has_amplitude(target) => {}
+            _ => return false,
+        }
+    }
+    for required in &condition.has_status {
+        if !has_named(unit, required) {
+            return false;
+        }
+    }
+    for absent in &condition.lacks_status {
+        if has_named(unit, absent) {
             return false;
         }
     }
@@ -615,6 +703,106 @@ fn amount(base: i32, effect: &Effect, measured: i32) -> i32 {
 // effect application
 // --------------------------------------------------------------------------- //
 
+/// Tremor amplitudes: "[Amplitude Conversion] into [Tremor - Decay]" is stored
+/// as a marker status on the unit (wiki.gg `Status Effects` / Tremor).
+pub const AMPLITUDE_CONVERSION: &str = "Amplitude Conversion";
+pub const AMPLITUDE_ENTANGLEMENT: &str = "Amplitude Entanglement";
+
+/// A status is "present" if it carries a value or is a marker (amplitudes).
+fn has_named(unit: &Unit, name: &str) -> bool {
+    unit_status_value(unit, name, None) > 0
+        || unit.status_markers.iter().any(|marker| marker.starts_with(name))
+}
+
+#[doc(hidden)]
+pub fn has_amplitude(unit: &Unit) -> bool {
+    unit.status_markers
+        .iter()
+        .any(|marker| marker.starts_with(AMPLITUDE_CONVERSION) || marker.starts_with(AMPLITUDE_ENTANGLEMENT))
+}
+
+#[doc(hidden)]
+pub fn amplitude_of(unit: &Unit) -> Option<&str> {
+    unit.status_markers
+        .iter()
+        .find(|marker| marker.starts_with(AMPLITUDE_CONVERSION))
+        .map(|marker| {
+            marker
+                .trim_start_matches(AMPLITUDE_CONVERSION)
+                .trim_start_matches(':')
+                .trim()
+        })
+}
+
+/// Units a Heal / SP Heal / status gain reaches.  The wiki writes these as
+/// "self and 2 other allies with the least SP", "3 allies with the lowest HP
+/// percentages", "N random allies" (wiki.gg `Status Effects`).
+fn ally_targets(state: &BattleState, ctx: &EffectContext<'_>, effect: &Effect) -> Vec<usize> {
+    let actor_index = ctx.actor_index;
+    let actor = &state.units[actor_index];
+    let include_self = effect.include_self.unwrap_or(matches!(effect.ally.as_deref(), None | Some("self")));
+    let same_side = |unit: &Unit| unit.alive && unit.kind.is_sinner() == actor.kind.is_sinner();
+    let mut others: Vec<usize> = state
+        .units
+        .iter()
+        .enumerate()
+        .filter(|(index, unit)| *index != actor_index && same_side(unit))
+        .map(|(index, _)| index)
+        .collect();
+    let kind = effect.ally.as_deref().unwrap_or("self");
+    let count = effect
+        .ally_count
+        .or(effect.value)
+        .unwrap_or(0)
+        .max(0) as usize;
+    if kind == "self" {
+        return vec![actor_index];
+    }
+    match kind {
+        "all_allies" | "all" => {
+            if include_self {
+                others.insert(0, actor_index);
+            }
+            return others;
+        }
+        "lowest_hp" => {
+            others.sort_by_key(|index| state.units[*index].hp_percent());
+            return finish(others, count, actor_index, include_self);
+        }
+        "lowest_sp" => {
+            others.sort_by_key(|index| state.units[*index].sanity.sp());
+            return finish(others, count, actor_index, include_self);
+        }
+        "slowest" => {
+            others.sort_by_key(|index| state.units[*index].speed);
+            return finish(others, count, actor_index, include_self);
+        }
+        "random" => {
+            // Deterministic shuffle so replays stay identical.
+            let mut seed = state.rng.clone();
+            let mut picked = Vec::new();
+            let mut pool = others;
+            while !pool.is_empty() && picked.len() < count {
+                let index = seed.below(pool.len() as u32) as usize;
+                picked.push(pool.remove(index));
+            }
+            if include_self {
+                picked.insert(0, actor_index);
+            }
+            return picked;
+        }
+        _ => return vec![actor_index],
+    }
+}
+
+fn finish(allies: Vec<usize>, count: usize, actor_index: usize, include_self: bool) -> Vec<usize> {
+    let mut picked: Vec<usize> = allies.into_iter().take(count).collect();
+    if include_self {
+        picked.insert(0, actor_index);
+    }
+    picked
+}
+
 pub struct EffectContext<'a> {
     pub actor_index: usize,
     pub target_index: Option<usize>,
@@ -637,6 +825,21 @@ pub fn apply_effects(
         if effect.only_after_clash_lose && !ctx.clash_lost {
             continue;
         }
+        // "50% chance to ..." and other probabilistic clauses take their flip
+        // from the replayable RNG stream so replays stay identical.
+        if let Some(chance) = effect.chance {
+            if !state.flip(chance.clamp(0, 100)) {
+                continue;
+            }
+        }
+        // "If target was killed, activate the effect above once more".
+        let repeat = if effect.repeat_on_kill {
+            ctx.target_index
+                .map(|index| !state.units[index].alive)
+                .unwrap_or(false)
+        } else {
+            false
+        };
         // "(N times per Encounter)" limits live in the unit's usage map too,
         // keyed with an `encounter:` prefix so Turn Start does not clear them.
         if let Some(limit) = effect.per_encounter {
@@ -691,6 +894,26 @@ pub fn apply_effects(
                 };
                 let Some(index) = index else { continue };
                 let Some(status) = effect.status.clone() else { continue };
+                // "inflict 3 [Sinking] on 2 random enemies" and other clauses
+                // that reach beyond the main target.
+                if effect.ally.is_some() {
+                    let targets = ally_targets(state, ctx, effect);
+                    let base = effect.potency.or(effect.count).unwrap_or(0);
+                    for target in targets {
+                        let unit = &mut state.units[target];
+                        match effect.butterfly_part.as_deref() {
+                            Some("departed") | Some("count") => {
+                                unit.statuses.add_count(&status, base)
+                            }
+                            Some(_) => unit.statuses.add_potency(&status, base),
+                            None => {
+                                unit.statuses.add_potency(&status, base);
+                                unit.statuses.add_count(&status, effect.count.unwrap_or(base));
+                            }
+                        }
+                    }
+                    continue;
+                }
                 let measured = effect
                     .condition
                     .as_ref()
@@ -711,6 +934,31 @@ pub fn apply_effects(
                     .count
                     .map(|base| amount(base, effect, measured))
                     .unwrap_or(0);
+                // "A random ally gains 1 ~ 2 [Rhythm]".
+                let (potency, count) = if let (Some(lo), Some(hi)) =
+                    (effect.range_min, effect.range_max)
+                {
+                    let rolled = lo + state.roll_inclusive(hi - lo);
+                    (rolled, 0)
+                } else {
+                    (potency, count)
+                };
+                let potency = if effect.multiplier.is_some() || effect.from_resonance {
+                    // "(6 + Gloom Reson.) [Sinking]", "(Gloom Reson. + 1) ..."
+                    let base = effect.value.unwrap_or(0);
+                    let multiplier = effect.multiplier.unwrap_or(1);
+                    let reson = match effect.resonance_of.as_deref() {
+                        Some(sin) => state.units[ctx.actor_index]
+                            .resonance_of
+                            .get(sin)
+                            .copied()
+                            .unwrap_or(0),
+                        None => state.units[ctx.actor_index].resonance_max,
+                    };
+                    (base + multiplier * reson).min(effect.max.unwrap_or(i32::MAX))
+                } else {
+                    potency
+                };
                 if effect.next_turn {
                     // "Gain 2 Protection next turn" -> applied at the next
                     // Turn Start.
@@ -725,8 +973,27 @@ pub fn apply_effects(
                 // are written to Stack instead of Potency/Count.
                 if effect.component == Some(Component::Stack) {
                     let store = &mut state.units[index].statuses;
-                    let amount = if potency != 0 { potency } else { count };
+                    let mut amount = if potency != 0 { potency } else { count };
+                    // "Gain [X] up to N Stack".
+                    if let Some(cap) = effect.up_to {
+                        amount = amount.min((cap - store.stack(&status)).max(0));
+                    }
                     store.add_stack(&status, amount);
+                    continue;
+                }
+                // "[Butterfly](The Departed)" is the Count half of the unique
+                // Sinking, "[Butterfly](The Living)" its Potency (wiki.gg
+                // `Status Effects` / Butterfly).
+                if let Some(part) = effect.butterfly_part.as_deref() {
+                    let unit = &mut state.units[index];
+                    match part {
+                        "departed" | "count" => {
+                            unit.statuses.add_count(&status, count.max(potency));
+                        }
+                        _ => {
+                            unit.statuses.add_potency(&status, potency.max(count));
+                        }
+                    }
                     continue;
                 }
                 let count_status = effect.status2.clone().unwrap_or_else(|| status.clone());
@@ -822,15 +1089,6 @@ pub fn apply_effects(
                 let unit = &mut state.units[ctx.actor_index];
                 let shield = unit.max_hp * gain / 100;
                 use_ctx.shield_gain += shield;
-            }
-            "heal_hp" => {
-                let value = effect.value.unwrap_or(0);
-                state.units[ctx.actor_index].heal(value);
-            }
-            "sp_heal" => {
-                let value = effect.value.unwrap_or(0);
-                let sanity = state.units[ctx.actor_index].sanity;
-                state.units[ctx.actor_index].sanity = sanity.add(value);
             }
             "sp_damage" => {
                 if let Some(index) = ctx.target_index {
@@ -957,6 +1215,15 @@ pub fn apply_effects(
             "reuse_on_kill" => {
                 use_ctx.reuse_on_kill = true;
             }
+            "damage_percent_missing_hp" => {
+                // "Deal more damage based on missing HP on self (max 15%)".
+                let percent = effect.damage_percent_missing_hp.unwrap_or(0);
+                let missing = 100 - state.units[ctx.actor_index].hp_percent();
+                use_ctx.damage_bonus += (percent * missing / 100) as f64 / 100.0;
+            }
+            "extra_damage_percent_of_damage" => {
+                use_ctx.final_damage_percent += effect.final_damage_percent.unwrap_or(0);
+            }
             "resist_floor" => {
                 if let Some(kind) = effect.status.clone() {
                     let value = effect.value.unwrap_or(0) as f64 / 10.0;
@@ -1041,6 +1308,7 @@ pub fn apply_effects(
                     let consumed = have.min(limit);
                     state.units[ctx.actor_index].statuses.remove(&status);
                     use_ctx.consumed_status += consumed;
+                    *use_ctx.consumed_by_status.entry(status).or_insert(0) += consumed;
                 }
             }
             "damage_percent_per_consumed_status" => {
@@ -1090,7 +1358,8 @@ pub fn apply_effects(
                     let unit = &mut state.units[ctx.actor_index];
                     unit.statuses.remove(&status);
                     use_ctx.damage_bonus += effect.percent.unwrap_or(0) as f64 / 100.0;
-                    let _ = consume;
+                    use_ctx.consumed_status += consume;
+                    *use_ctx.consumed_by_status.entry(status).or_insert(0) += consume;
                 }
             }
             "shield_percent_from_sp" => {
@@ -1121,6 +1390,320 @@ pub fn apply_effects(
             "no_damage_taken" => {
                 let unit = &mut state.units[ctx.actor_index];
                 unit.statuses.set_stack("No Damage Taken", 1);
+            }
+            "attack_weight" => {
+                if effect.from_resonance || effect.per.is_some() {
+                    let per = effect.per.unwrap_or(1).max(1);
+                    let step = effect.step.unwrap_or(1);
+                    let max = effect.max.unwrap_or(i32::MAX);
+                    let reson = match effect.resonance_of.as_deref() {
+                        Some(sin) => state.units[ctx.actor_index]
+                            .resonance_of
+                            .get(sin)
+                            .copied()
+                            .unwrap_or(0),
+                        None => state.units[ctx.actor_index].resonance_max,
+                    };
+                    use_ctx.attack_weight_bonus += ((reson / per) * step).min(max);
+                } else {
+                    use_ctx.attack_weight_bonus += effect.value.unwrap_or(1);
+                }
+            }
+            "self_damage" => {
+                let unit = &state.units[ctx.actor_index];
+                let max_hp = unit.max_hp;
+                let percent = effect.self_damage_percent.unwrap_or(0);
+                let mut damage = max_hp * percent / 100;
+                if let (Some(lo), Some(hi)) = (effect.self_damage_min, effect.self_damage_max) {
+                    damage = lo + state.roll_inclusive(hi - lo);
+                }
+                if damage <= 0 {
+                    continue;
+                }
+                // "does not reduce this unit's HP below 1" / "does not get
+                // Staggered due to this effect".
+                let unit = &mut state.units[ctx.actor_index];
+                let floor = if effect.hp_floor_one { 1 } else { 0 };
+                let applied = damage.min((unit.hp - floor).max(0));
+                let hp = (unit.hp - applied).max(floor);
+                unit.hp = hp;
+                use_ctx.self_damage_taken += applied;
+                let name = unit.name.clone();
+                state.push_log(
+                    "self-damage",
+                    format!("{name} took {applied} HP damage from its own Skill"),
+                );
+                if !effect.no_stagger {
+                    check_stagger(state, ctx.actor_index);
+                }
+            }
+            "self_sp_damage" => {
+                let mut amount = effect.self_sp_damage.unwrap_or(0);
+                if let (Some(lo), Some(hi)) = (effect.self_sp_damage_min, effect.self_sp_damage_max) {
+                    amount = lo + state.roll_inclusive(hi - lo);
+                }
+                if amount == 0 {
+                    continue;
+                }
+                let sanity = state.units[ctx.actor_index].sanity;
+                state.units[ctx.actor_index].sanity = sanity.add(-amount);
+            }
+            "sp_heal" | "heal_hp" | "heal_percent_hp" => {
+                let targets = ally_targets(state, ctx, effect);
+                let percent = effect.percent.unwrap_or(0);
+                let measured = measured_from_condition(
+                    effect,
+                    &state.units[ctx.actor_index],
+                    ctx.target_index.map(|i| &state.units[i]),
+                );
+                for index in targets {
+                    match effect.kind.as_str() {
+                        "sp_heal" => {
+                            let value = effect.value.unwrap_or(0);
+                            let sanity = state.units[index].sanity;
+                            state.units[index].sanity = sanity.add(value);
+                        }
+                        "heal_hp" => {
+                            let value = effect.value.unwrap_or(0);
+                            state.units[index].heal(value);
+                        }
+                        _ => {
+                            // "Heal N allies with the lowest HP percentages by
+                            // (10 + (...)/3)% HP (max 15%)".
+                            let _ = percent;
+                            let gain = scaled(effect, measured);
+                            let heal = state.units[index].max_hp * gain / 100;
+                            state.units[index].heal(heal);
+                        }
+                    }
+                }
+            }
+            "heal_from_status" => {
+                let Some(status) = effect.heal_from_status.clone() else { continue };
+                let divisor = effect.heal_from_divisor.unwrap_or(1).max(1);
+                let cap = effect.max.unwrap_or(i32::MAX);
+                let amount = ctx
+                    .target_index
+                    .map(|index| {
+                        unit_status_value(&state.units[index], &status, effect.heal_from_component)
+                            / divisor
+                    })
+                    .unwrap_or(0)
+                    .min(cap);
+                let targets = ally_targets(state, ctx, effect);
+                for index in targets {
+                    let sanity = state.units[index].sanity;
+                    state.units[index].sanity = sanity.add(amount);
+                }
+            }
+            "refund_consumed_status" => {
+                let Some(status) = effect.status.clone() else { continue };
+                let percent = effect.refund_percent.unwrap_or(50);
+                let consumed = use_ctx
+                    .consumed_by_status
+                    .get(&status)
+                    .copied()
+                    .unwrap_or_else(|| {
+                        if use_ctx.consumed_status > 0 {
+                            use_ctx.consumed_status
+                        } else {
+                            0
+                        }
+                    });
+                let refund = consumed * percent / 100;
+                if refund > 0 {
+                    state.units[ctx.actor_index].statuses.add_potency(&status, refund);
+                }
+            }
+            "amplitude_conversion" => {
+                let Some(index) = ctx.target_index else { continue };
+                let into = effect
+                    .amplitude_into
+                    .clone()
+                    .unwrap_or_else(|| "Tremor".to_string());
+                let unit = &mut state.units[index];
+                unit.status_markers
+                    .retain(|marker| !marker.starts_with(AMPLITUDE_CONVERSION));
+                unit.status_markers
+                    .push(format!("{AMPLITUDE_CONVERSION}: {into}"));
+                let name = unit.name.clone();
+                state.push_log(
+                    "amplitude",
+                    format!("{name} entered [Amplitude Conversion] into [{into}]"),
+                );
+            }
+            "amplitude_entanglement" => {
+                let Some(index) = ctx.target_index else { continue };
+                let into = effect
+                    .amplitude_into
+                    .clone()
+                    .unwrap_or_else(|| "Tremor".to_string());
+                let unit = &mut state.units[index];
+                unit.status_markers
+                    .retain(|marker| !marker.starts_with(AMPLITUDE_ENTANGLEMENT));
+                unit.status_markers
+                    .push(format!("{AMPLITUDE_ENTANGLEMENT}: {into}"));
+            }
+            "compound" => {
+                // A wiki line that carries several effects ("... ; then ...").
+                let subs = effect.sub_effects.clone();
+                apply_effects(state, &subs, ctx, use_ctx);
+            }
+            "base_power_from_consumed" => {
+                // "Base Power +1 for every 5 Stack consumed".
+                let per = effect.per.unwrap_or(1).max(1);
+                let step = effect.step.unwrap_or(1);
+                use_ctx.base_power_bonus += (use_ctx.consumed_status / per) * step;
+            }
+            "damage_percent_from_missing_sp" => {
+                // "deal more damage the further their SP value is from 0".
+                let step = effect.step.unwrap_or(0);
+                let max = effect.max.unwrap_or(i32::MAX);
+                let missing = ctx
+                    .target_index
+                    .map(|index| 0 - state.units[index].sanity.sp())
+                    .unwrap_or(0)
+                    .max(0);
+                use_ctx.damage_bonus += (step * missing).min(max) as f64 / 100.0;
+            }
+            "damage_percent_per_resonance" => {
+                // "At 2+ Gloom Reson., deal +8% damage for every Gloom Reson."
+                let step = effect.step.unwrap_or(0);
+                let max = effect.max.unwrap_or(i32::MAX);
+                let reson = match effect.resonance_of.as_deref() {
+                    Some(sin) => state.units[ctx.actor_index]
+                        .resonance_of
+                        .get(sin)
+                        .copied()
+                        .unwrap_or(0),
+                    None => state.units[ctx.actor_index].resonance_max,
+                };
+                let per = effect.per.unwrap_or(1).max(1);
+                use_ctx.damage_bonus += ((reson / per) * step).min(max) as f64 / 100.0;
+            }
+            "damage_percent_from_resist" => {
+                // "If the main target has higher than N Sin Resist., deal +X%
+                // damage for every 0.1 excess Resist. (max Y%)".
+                let Some(index) = ctx.target_index else { continue };
+                let base = effect.value.unwrap_or(10) as f64 / 10.0;
+                let resist = state.units[index].resist_sin(Sin::Gloom);
+                let excess = (resist - base).max(0.0);
+                let step = effect.step.unwrap_or(0);
+                let max = effect.max.unwrap_or(i32::MAX);
+                let percent = ((excess * 10.0).floor() as i32 * step).min(max);
+                use_ctx.damage_bonus += percent as f64 / 100.0;
+            }
+            "gain_up_to_with_self_damage" => {
+                // "Gain [Lamp] up to 8 Stack; for every Stack gained, take HP
+                // damage equal to 1% of max HP (does not reduce HP below 1)".
+                let Some(status) = effect.status.clone() else { continue };
+                let cap = effect.up_to.unwrap_or(0);
+                let percent = effect.self_damage_percent.unwrap_or(0);
+                let (gained, max_hp) = {
+                    let unit = &mut state.units[ctx.actor_index];
+                    let have = unit.statuses.stack(&status);
+                    let gained = (cap - have).max(0);
+                    unit.statuses.add_stack(&status, gained);
+                    (gained, unit.max_hp)
+                };
+                let damage = (max_hp * percent / 100) * gained;
+                if damage > 0 {
+                    let unit = &mut state.units[ctx.actor_index];
+                    let floor = if effect.hp_floor_one { 1 } else { 0 };
+                    unit.hp = (unit.hp - damage).max(floor);
+                    let name = unit.name.clone();
+                    state.push_log(
+                        "self-damage",
+                        format!("{name} took {damage} HP damage for {gained} [{status}] Stack"),
+                    );
+                }
+            }
+            "reuse_coin" => {
+                // "Then, Reuse this Coin (N times per Skill)" - replayed by the
+                // attack loop; "(if the sum of HP lost due to this effect is
+                // less than N)" stops the repeats early.
+                if let Some(times) = effect.reuse_coin {
+                    let allowed = match effect.threshold {
+                        Some(limit) => use_ctx.self_damage_taken < limit,
+                        None => true,
+                    };
+                    if allowed {
+                        use_ctx.reuse_coin_budget += times.max(0);
+                    }
+                }
+            }
+            "heal_per_coin_hits" => {
+                // "Heal (# of Coin 3 hits x 2) SP".
+                let per = effect.value.unwrap_or(0);
+                let hits = use_ctx.coin_hits.values().copied().sum::<i32>();
+                let amount = per * hits;
+                for index in ally_targets(state, ctx, effect) {
+                    let sanity = state.units[index].sanity;
+                    state.units[index].sanity = sanity.add(amount);
+                }
+            }
+            "combat_end_sp_damage" => {
+                // "[Attack End] For 2 turns, lose 8 SP at Combat End".
+                let amount = effect.value.unwrap_or(0);
+                let turns = effect.turns.unwrap_or(1);
+                if amount != 0 && turns > 0 {
+                    state.units[ctx.actor_index]
+                        .combat_end_sp_loss
+                        .push((amount, turns));
+                }
+            }
+            "inflict_on_random_other" => {
+                // "inflict N [X] against a random non-targeted enemy".
+                let Some(status) = effect.status.clone() else { continue };
+                let potency = effect.potency.unwrap_or(0);
+                let actor_is_sinner = state.units[ctx.actor_index].kind.is_sinner();
+                let mut pool: Vec<usize> = state
+                    .units
+                    .iter()
+                    .enumerate()
+                    .filter(|(index, unit)| {
+                        unit.alive
+                            && *index != ctx.actor_index
+                            && unit.kind.is_sinner() != actor_is_sinner
+                            && Some(*index) != ctx.target_index
+                    })
+                    .map(|(index, _)| index)
+                    .collect();
+                if pool.is_empty() {
+                    pool = state
+                        .units
+                        .iter()
+                        .enumerate()
+                        .filter(|(index, unit)| {
+                            unit.alive && *index != ctx.actor_index && Some(*index) != ctx.target_index
+                        })
+                        .map(|(index, _)| index)
+                        .collect();
+                }
+                if pool.is_empty() {
+                    continue;
+                }
+                let pick = state.rng.below(pool.len() as u32) as usize;
+                let target = pool[pick];
+                state.units[target].statuses.add_potency(&status, potency);
+            }
+            "suit_convert" => {
+                // "[Combat Start] convert the Suit in this unit's Hand to a
+                // random Suit that corresponds to one of this unit's Base Attack
+                // Skills" (wiki.gg `Status Effects` / Hand - Suit).
+                let suits = ["HanafudaOne", "HanafudaTwo", "HanafudaThree"];
+                let pick = state.rng.below(suits.len() as u32) as usize;
+                state.units[ctx.actor_index].suit = Some(suits[pick].to_string());
+            }
+            "sub_target_damage" => {
+                use_ctx.sub_target_damage_percent = effect.percent.unwrap_or(0);
+            }
+            "tag" => {
+                // Tags are lifted to Skill tags by the extractor; a stray one
+                // carries no value of its own.
+            }
+            "bonus_damage_percent_of_coin" => {
+                // Resolved in `apply_hit`, where the Coin's final damage is known.
             }
             "noop" => {}
             other => {
@@ -1729,7 +2312,7 @@ pub fn one_sided_attack(
     let mut order: Vec<usize> = (0..use_.coins.len())
         .filter(|i| use_.coins[*i].state == CoinState::Fresh)
         .collect();
-    let mut reuse_budget = reuse_budget(&use_.ctx);
+    let mut reuse_budget = reuse_budget(&use_.ctx) + use_.ctx.reuse_coin_budget;
     loop {
         let Some(coin_index) = order.first().copied() else { break };
         order.remove(0);
@@ -1747,10 +2330,27 @@ pub fn one_sided_attack(
             use_.ctx.accumulated += effective_coin_power(state, attacker_index, use_, coin_index);
         }
         let power = use_.ctx.accumulated;
+        // "each Coin flips against a random enemy among its targets" - the first
+        // Coin keeps the main target (E.G.O Solemn Lament).
+        let mut target = defender_index;
+        if use_.ctx.random_coin_targets && coin_index > 0 {
+            let pool: Vec<usize> = state
+                .units
+                .iter()
+                .enumerate()
+                .filter(|(_, unit)| {
+                    unit.alive && unit.kind.is_sinner() != state.units[attacker_index].kind.is_sinner()
+                })
+                .map(|(index, _)| index)
+                .collect();
+            if pool.len() > 1 {
+                target = pool[state.rng.below(pool.len() as u32) as usize];
+            }
+        }
         let hit = apply_hit(
             state,
             attacker_index,
-            defender_index,
+            target,
             use_,
             coin_index,
             power,
@@ -1760,6 +2360,7 @@ pub fn one_sided_attack(
         hits.push(hit);
         if reuse_budget > 0 {
             reuse_budget -= 1;
+            use_.ctx.reuse_coin_budget = (use_.ctx.reuse_coin_budget - 1).max(0);
             if let Some(coin) = use_.coins.get_mut(coin_index) {
                 coin.state = CoinState::Fresh;
                 coin.heads = None;
@@ -1935,8 +2536,11 @@ fn splash_attack(
             if !state.units[target].alive {
                 break;
             }
-            let damage =
+            let mut damage =
                 compute_hit_damage(state, attacker_index, target, use_, hit.power, false, clash_count);
+            if use_.ctx.sub_target_damage_percent != 0 {
+                damage = damage * (100 + use_.ctx.sub_target_damage_percent) / 100;
+            }
             if damage > 0 {
                 state.units[target].take_damage(damage);
                 check_stagger(state, target);
@@ -2027,6 +2631,24 @@ fn apply_hit(
             power >= power_of_incoming
         };
         if evaded {
+            // "[On Evade]" clauses of the defense Skill.
+            let on_evade = state.defenses[defense].mechanics.on_evade.clone();
+            if !on_evade.is_empty() {
+                let mut notes = Vec::new();
+                let mut ctx = EffectContext {
+                    actor_index: defender_index,
+                    target_index: Some(attacker_index),
+                    clash_count: 0,
+                    clash_lost: false,
+                    slot: 0,
+                    mechanics_note: &mut notes,
+                };
+                let mut local = UseContext::default();
+                apply_effects(state, &on_evade, &mut ctx, &mut local);
+                for note in notes {
+                    state.warnings.push(note);
+                }
+            }
             return HitResult {
                 coin_index,
                 heads,
@@ -2096,8 +2718,13 @@ fn apply_hit(
     let damage = if use_.ctx.zero_damage { 0 } else { breakdown.final_damage };
     let (_, hp_lost) = state.units[defender_index].take_damage(damage);
 
+    *use_.ctx.coin_hits.entry(coin_index as u32 + 1).or_insert(0) += 1;
     // [On Hit] coin effects.
-    let effects: Vec<Effect> = use_.mechanics.coin(coin_index as u32 + 1).to_vec();
+    let mut effects: Vec<Effect> = use_.mechanics.coin(coin_index as u32 + 1).to_vec();
+    if heads {
+        // "[Heads Hit]" clauses resolve on top of the Coin's On Hit effects.
+        effects.extend_from_slice(use_.mechanics.heads_hit(coin_index as u32 + 1));
+    }
     let mut notes = Vec::new();
     {
         let mut ctx = EffectContext {
@@ -2111,6 +2738,12 @@ fn apply_hit(
         let mut local = UseContext::default();
         apply_effects(state, &effects, &mut ctx, &mut local);
         use_.ctx.ammo_spent = local.ammo_spent.max(use_.ctx.ammo_spent);
+        // Coin-level clauses may add Reuse budget, consume statuses or lose HP.
+        use_.ctx.reuse_coin_budget += local.reuse_coin_budget;
+        use_.ctx.self_damage_taken += local.self_damage_taken;
+        use_.ctx.damage_bonus += local.damage_bonus;
+        use_.ctx.final_damage_percent += local.final_damage_percent;
+        use_.ctx.consumed_status += local.consumed_status;
     }
     for note in notes {
         state.warnings.push(note);
@@ -2124,6 +2757,33 @@ fn apply_hit(
         let percent = effect.percent.unwrap_or(0);
         if percent > 0 && damage > 0 {
             let extra = (damage as f64 * percent as f64 / 100.0).floor() as i32;
+            if extra > 0 {
+                state.units[defender_index].take_damage(extra);
+            }
+        }
+    }
+    // "Deal Gloom damage equal to (N)% of this Coin's final damage" (the E.G.O
+    // adders of Solemn Lament); the extra damage follows the same Gloom
+    // resistance rule as any other Gloom hit.
+    {
+        let percent: i32 = use_
+            .mechanics
+            .coin(coin_index as u32 + 1)
+            .iter()
+            .filter(|e| e.kind == "extra_damage_percent_of_damage")
+            .map(|e| {
+                let base = e.final_damage_percent.unwrap_or(0);
+                if e.per_ammo {
+                    base + e.step.unwrap_or(0) * use_.ctx.ammo_spent
+                } else {
+                    base
+                }
+            })
+            .sum();
+        if percent > 0 && damage > 0 {
+            let gloom = state.units[defender_index].resist_sin(crate::ids::Sin::Gloom);
+            let raw = (damage as f64 * percent as f64 / 100.0).floor();
+            let extra = (raw * (1.0 + crate::damage::resistance_modifier(gloom))).floor() as i32;
             if extra > 0 {
                 state.units[defender_index].take_damage(extra);
             }
@@ -2242,7 +2902,27 @@ fn apply_hit(
     };
     let killed = !state.units[defender_index].alive;
     if killed {
+        use_.ctx.kills += 1;
         state.units[attacker_index].statuses.add_potency("Poise", 0);
+        // "[On Target Kill] / [On Kill]" clauses of this Skill.
+        if !use_.ctx.on_kill_done && !use_.mechanics.on_kill.is_empty() {
+            use_.ctx.on_kill_done = true;
+            let on_kill = use_.mechanics.on_kill.clone();
+            let mut notes = Vec::new();
+            let mut ctx = EffectContext {
+                actor_index: attacker_index,
+                target_index: Some(defender_index),
+                clash_count,
+                clash_lost: use_.ctx.lost_clash,
+                slot: use_.slot,
+                mechanics_note: &mut notes,
+            };
+            let mut local = UseContext::default();
+            apply_effects(state, &on_kill, &mut ctx, &mut local);
+            for note in notes {
+                state.warnings.push(note);
+            }
+        }
     }
     HitResult {
         coin_index,
@@ -2982,9 +3662,11 @@ fn compute_resonance(state: &mut BattleState, library: &Library) {
     }
     let highest = highest_resonance(state);
     let longest = state.a_resonance.values().copied().max().unwrap_or(0);
+    let counts = state.resonance.clone();
     for unit in state.units.iter_mut() {
         unit.resonance_max = highest;
         unit.a_reson_max = longest;
+        unit.resonance_of = counts.clone();
     }
     // Longest run of consecutive equal affinities.
     let mut run_key: Option<u32> = None;
@@ -3211,7 +3893,48 @@ fn prepare_use(
         if tag == "no_stagger_target" {
             use_.ctx.no_stagger_target = true;
         }
+        if tag == "random_coin_targets" {
+            use_.ctx.random_coin_targets = true;
+        }
     }
+    // "[Before Attack]" clauses resolve after On Use and before the first toss.
+    let before_attack = use_.mechanics.before_attack.clone();
+    if !before_attack.is_empty() {
+        let mut ctx = EffectContext {
+            actor_index: unit_index,
+            target_index,
+            clash_count: 0,
+            clash_lost: false,
+            slot,
+            mechanics_note: &mut notes,
+        };
+        apply_effects(state, &before_attack, &mut ctx, &mut use_.ctx);
+    }
+    // "Hand - Pine Crane Suit: Skill 1 Base Power +2" and friends: the Suit in
+    // this unit's Hand boosts the Base Power of the matching Skill.
+    {
+        let suit = state.units[unit_index].suit.clone();
+        let skill_index: i32 = use_
+            .skill
+            .as_str()
+            .chars()
+            .rev()
+            .take(2)
+            .collect::<String>()
+            .chars()
+            .rev()
+            .collect::<String>()
+            .parse()
+            .unwrap_or(0);
+        let bonus = match (suit.as_deref(), skill_index) {
+            (Some("HanafudaOne"), 1) => 2,
+            (Some("HanafudaTwo"), 2) => 1,
+            (Some("HanafudaThree"), 3) => 1,
+            _ => 0,
+        };
+        use_.ctx.base_power_bonus += bonus;
+    }
+    use_.attack_weight = (use_.attack_weight as i32 + use_.ctx.attack_weight_bonus).max(1) as u32;
     use_.ctx.sin = use_.sin;
     // `Plus Coin Boost` / `Minus Coin Drop` are read when the skill is used.
     {
@@ -3294,6 +4017,8 @@ fn apply_attack_end(
     use_: &mut SkillUse,
 ) {
     let list = use_.mechanics.attack_end.clone();
+    // "[Attack End] If 1 or more targets are killed" reads this Skill's kills.
+    state.units[unit_index].skill_kills = use_.ctx.kills;
     if list.is_empty() {
         return;
     }

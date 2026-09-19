@@ -23,12 +23,30 @@ def load(path: str):
         return json.load(fh)
 
 
+def count_one(effect: Dict) -> int:
+    """Count an effect, including the sub-effects of a compound clause."""
+    return 1 + sum(count_one(sub) for sub in effect.get("sub_effects", []))
+
+
 def count_effects(entry: Dict) -> int:
     total = 0
-    for key in ("on_use", "clash_win", "clash_lose", "attack_end", "combat_start"):
-        total += len(entry.get(key, []))
+    for key in (
+        "on_use",
+        "clash_win",
+        "clash_lose",
+        "attack_end",
+        "combat_start",
+        "before_attack",
+        "on_kill",
+        "on_evade",
+        "turn_start",
+        "turn_end",
+    ):
+        total += sum(count_one(e) for e in entry.get(key, []))
     for coins in entry.get("coins", {}).values():
-        total += len(coins)
+        total += sum(count_one(e) for e in coins)
+    for coins in entry.get("heads_hit", {}).values():
+        total += sum(count_one(e) for e in coins)
     return total
 
 

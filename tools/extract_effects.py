@@ -32,14 +32,16 @@ TRIGGERS = {
     "attack end": "attack_end",
     "combat start": "combat_start",
     "start battle": "combat_start",
-    "before attack": "on_use",
+    "before attack": "before_attack",
     "on hit": "coin",
     "on succeed attack": "coin",
     "onhit": "coin",
     "on hit without cracking": "coin",
-    "heads hit": "coin",
+    "heads hit": "heads_hit",
+    "on evade": "on_evade",
     "hit after clash lose": "coin_clash_lose",
     "on kill": "on_kill",
+    "on target kill": "on_kill",
     "turn end": "turn_end",
     "turn start": "turn_start",
     "end skill": "attack_end",
@@ -340,6 +342,374 @@ PATTERNS = [
      lambda m: {"kind": "gain", "status": m.group(2), "potency": int(m.group(1)),
                 "value": int(m.group(1)), "step": 0, "per": int(m.group(5)), "max": int(m.group(1)) + int(m.group(5)),
                 "condition": {"source": "self", "status": m.group(4), "component": "stack"}}),
+
+    # ------------------------------------------------------------------ #
+    # Heals (HP / SP) and their ally scoping
+    # ------------------------------------------------------------------ #
+    (re.compile(rf"^Heal {N} SP to self and {N} other allies with the least SP$"),
+     lambda m: {"kind": "sp_heal", "value": int(m.group(1)), "ally": "lowest_sp",
+                "ally_count": int(m.group(2)), "include_self": True}),
+    (re.compile(rf"^Heal {N} SP for {N} other allies with the least SP$"),
+     lambda m: {"kind": "sp_heal", "value": int(m.group(1)), "ally": "lowest_sp",
+                "ally_count": int(m.group(2)), "include_self": False}),
+    (re.compile(rf"^Heal {N} SP for \(1 \+ highest Reson\.\) other allies with the least SP \(max {N} units\)$"),
+     lambda m: {"kind": "sp_heal", "value": int(m.group(1)), "ally": "lowest_sp",
+                "ally_count": 1, "from_resonance": True, "max": int(m.group(2)),
+                "include_self": False}),
+    (re.compile(rf"^Heal \(# of Coin {N} hits x {N}\) SP$"),
+     lambda m: {"kind": "heal_per_coin_hits", "value": int(m.group(2)),
+                "ally": "self"}),
+    (re.compile(rf"^Heal {N} SP$"),
+     lambda m: {"kind": "sp_heal", "value": int(m.group(1))}),
+    (re.compile(rf"^Heal {N} (?:other )?allies with the lowest HP percentages by \({N} \+ \({ST} on the main target \+ {ST} Count on the main target\)/{N}\)% HP \(max {N}%\)$"),
+     lambda m: {"kind": "heal_percent_hp", "value": int(m.group(2)), "ally": "lowest_hp",
+                "ally_count": int(m.group(1)), "per": int(m.group(5)), "step": 1,
+                "max": int(m.group(6)), "include_self": "other" not in m.group(0),
+                "condition": {"source": "target", "statuses": [m.group(3), m.group(4)]}}),
+    (re.compile(rf"^Heal additional SP \(to self & affected allies\) equal to {ST} Potency on target \(Max SP heal: {N}\)$"),
+     lambda m: {"kind": "heal_from_status", "heal_from_status": m.group(1),
+                "heal_from_component": "potency", "max": int(m.group(2)),
+                "ally": "all_allies", "include_self": True}),
+    # ------------------------------------------------------------------ #
+    # Tremor amplitudes
+    # ------------------------------------------------------------------ #
+    (re.compile(rf"^If target isn't in an {ST} state, trigger {ST} into {ST}$"),
+     lambda m: {"kind": "amplitude_conversion", "amplitude_into": m.group(3),
+                "condition": {"source": "target", "lacks_status": [m.group(1)]}}),
+    (re.compile(rf"^If target is in either {ST} or {ST} states, this Coin deals \+{N}% damage$"),
+     lambda m: {"kind": "damage_percent", "value": int(m.group(3)),
+                "condition": {"target_has_amplitude": True}}),
+    # ------------------------------------------------------------------ #
+    # Chance-based gains and self-inflicted damage
+    # ------------------------------------------------------------------ #
+    (re.compile(rf"^{N}% chance to gain {N} {ST} Potency$"),
+     lambda m: {"kind": "gain", "status": m.group(3), "potency": int(m.group(2)),
+                "chance": int(m.group(1))}),
+    (re.compile(rf"^Lose HP by {N}% of Max HP$"),
+     lambda m: {"kind": "self_damage", "self_damage_percent": int(m.group(1)),
+                "no_stagger": True}),
+    (re.compile(rf"^At {N}%\+ HP, take {N} ~ {N} HP damage$"),
+     lambda m: {"kind": "self_damage", "self_damage_min": int(m.group(2)),
+                "self_damage_max": int(m.group(3)),
+                "condition": {"hp_above_percent": int(m.group(1))}}),
+    (re.compile(rf"^Lose {N} ~ {N} SP$"),
+     lambda m: {"kind": "self_sp_damage", "self_sp_damage_min": int(m.group(1)),
+                "self_sp_damage_max": int(m.group(2))}),
+    (re.compile(rf"^For {N} turns?, lose {N} SP at Combat End$"),
+     lambda m: {"kind": "combat_end_sp_damage", "value": int(m.group(2)),
+                "turns": int(m.group(1))}),
+    # ------------------------------------------------------------------ #
+    # Rodion: Deep Tears / Tear-sharpened / Protecting Sword
+    # ------------------------------------------------------------------ #
+    (re.compile(rf"^If target is defeated, regain half of {ST} consumed by this Skill$"),
+     lambda m: {"kind": "refund_consumed_status", "status": m.group(1), "refund_percent": 50,
+                "condition": {"target_defeated": True}}),
+    (re.compile(rf"^Base Power \+{N} for every {N} Stack consumed$"),
+     lambda m: {"kind": "base_power_from_consumed", "step": int(m.group(1)),
+                "per": int(m.group(2))}),
+    (re.compile(rf"^Clash Power \+{N} for every {ST} \(max {N}\)$"),
+     lambda m: {"kind": "clash_power", "value": 0, "step": int(m.group(1)), "per": 1,
+                "max": int(m.group(3)),
+                "condition": {"source": "self", "status": m.group(2), "component": "stack"}}),
+    (re.compile(rf"^lose \({ST} Stack x {N}\) more SP$"),
+     lambda m: {"kind": "sp_damage_self_per_stack", "status": m.group(1),
+                "step": int(m.group(2))}),
+    (re.compile(rf"^At less than {N} {ST}, lose {N} SP to gain {N} {ST}$"),
+     lambda m: {"kind": "turn_end_sp_and_gain", "status": m.group(2),
+                "threshold": int(m.group(1)), "value": int(m.group(3)),
+                "count": int(m.group(4))}),
+    # ------------------------------------------------------------------ #
+    # Outis: The Udjat -Vanguard-, Tremor Burst, Protection
+    # ------------------------------------------------------------------ #
+    (re.compile(rf"^If this unit has {ST}, Clash Power \+{N} and deal \+{N}% damage$"),
+     lambda m: {"kind": "compound", "condition": {"source": "self", "status": m.group(1), "gte": 1},
+                "sub_effects": [{"kind": "clash_power", "value": int(m.group(2))},
+                                {"kind": "damage_percent", "value": int(m.group(3))}]}),
+    (re.compile(rf"^If target is a SP Unit, trigger {ST}; then, reduce target's {ST} Count by {N}$"),
+     lambda m: {"kind": "tremor_burst", "status": m.group(1), "consume_count": int(m.group(3)),
+                "condition": {"target_is_sp_unit": True}}),
+    (re.compile(rf"^At {N}\+ \({ST} \+ {ST}\) on target, Coin Power \+{N}$"),
+     lambda m: {"kind": "coin_power", "value": int(m.group(4)),
+                "condition": {"source": "target", "statuses": [m.group(2), m.group(3)],
+                              "gte": int(m.group(1))}}),
+    (re.compile(rf"^If this unit has {ST}, gain {N} {ST}$"),
+     lambda m: {"kind": "gain", "status": m.group(3), "potency": int(m.group(2)),
+                "condition": {"source": "self", "status": m.group(1), "gte": 1}}),
+    # ------------------------------------------------------------------ #
+    # Gregor: Dazzle conditions, Lamp, Haste to the slowest allies
+    # ------------------------------------------------------------------ #
+    (re.compile(rf"^If the target\(Core\) has {N}% or less HP, or if target has {ST}, deal \+{N}% damage$"),
+     lambda m: {"kind": "damage_percent", "value": int(m.group(3)),
+                "condition": {"any_of": [
+                    {"source": "target", "hp_below_percent": int(m.group(1)), "hp_or_equal": True},
+                    {"source": "target", "status": m.group(2), "gte": 1}]}}),
+    (re.compile(rf"^If target is defeated, or if it has {N} {ST}, gain {N} {ST}$"),
+     lambda m: {"kind": "gain", "status": m.group(4), "potency": int(m.group(3)),
+                "condition": {"any_of": [{"target_defeated": True},
+                    {"source": "target", "status": m.group(2), "gte": int(m.group(1))}]}}),
+    (re.compile(rf"^Gain {ST} up to {N} Stack; for every Stack gained, take HP damage equal to {N}% of max HP$"),
+     lambda m: {"kind": "gain_up_to_with_self_damage", "status": m.group(1),
+                "up_to": int(m.group(2)), "self_damage_percent": int(m.group(3)),
+                "hp_floor_one": True}),
+    (re.compile(rf"^Apply {N} {ST} next turn to \({ST} on self / {N}\) other allies with the slowest Speed$"),
+     lambda m: {"kind": "gain", "status": m.group(2), "potency": int(m.group(1)),
+                "next_turn": True, "ally": "slowest", "ally_from_status": m.group(3),
+                "ally_from_divisor": int(m.group(4)), "include_self": False}),
+    # ------------------------------------------------------------------ #
+    # E.G.O: Sin Resonance gates, attack adders and Butterfly
+    # ------------------------------------------------------------------ #
+    (re.compile(rf"^Randomly inflict \({N} \+ Gloom Reson\.\) {ST} between targets$"),
+     lambda m: {"kind": "inflict", "status": m.group(2), "value": int(m.group(1)),
+                "multiplier": 1, "resonance_of": "Gloom"}),
+    (re.compile(rf"^If target has {N}\+ {ST}, inflict {N} {ST}$"),
+     lambda m: {"kind": "inflict", "status": m.group(4), "potency": int(m.group(3)),
+                "condition": {"source": "target", "status": m.group(2), "gte": int(m.group(1))}}),
+    (re.compile(rf"^At {N}\+ \(Gloom Reson\.\), Atk Weight \+{N}$"),
+     lambda m: {"kind": "attack_weight", "value": int(m.group(2)),
+                "condition": {"resonance_gte": int(m.group(1)), "resonance_of": "Gloom"}}),
+    (re.compile(rf"^At {N}\+ highest Reson\., gain \+{N} Atk Weight$"),
+     lambda m: {"kind": "attack_weight", "value": int(m.group(2)),
+                "condition": {"resonance_gte": int(m.group(1))}}),
+    (re.compile(rf"^Gain \+\(highest Reson\. / {N}\) Atk Weight \(max {N}, rounded down\)$"),
+     lambda m: {"kind": "attack_weight", "value": 0, "per": int(m.group(1)), "step": 1,
+                "max": int(m.group(2)), "from_resonance": True}),
+    (re.compile(rf"^Gain \+{N} Atk Weight \(max {N}\)$"),
+     lambda m: {"kind": "attack_weight", "value": int(m.group(1))}),
+    (re.compile(rf"^If target[’']s HP is above {N}%, (?:deal )?\+{N}% [Dd]amage$"),
+     lambda m: {"kind": "damage_percent", "value": int(m.group(2)),
+                "condition": {"source": "target", "hp_above_percent": int(m.group(1))}}),
+    (re.compile(rf"^Deal \+{N}% damage \(max {N}%\)$"),
+     lambda m: {"kind": "damage_percent", "value": int(m.group(1)), "max": int(m.group(2))}),
+    (re.compile(r"^Trigger \[Tremor Burst\]$"),
+     lambda m: {"kind": "tremor_burst"}),
+    (re.compile(rf"^Deal more damage based on missing HP on self \(max {N}%\)$"),
+     lambda m: {"kind": "damage_percent_missing_hp",
+                "damage_percent_missing_hp": int(m.group(1))}),
+    (re.compile(rf"^Then, Reuse this Coin \({N} times? per Skill\)$"),
+     lambda m: {"kind": "reuse_coin", "reuse_coin": int(m.group(1))}),
+    (re.compile(rf"^At {N}\+ SP, Reuse this Coin \({N} times? max per Skill\)$"),
+     lambda m: {"kind": "reuse_coin", "reuse_coin": int(m.group(2)),
+                "condition": {"self_sp_at_least": int(m.group(1))}}),
+    (re.compile(r"^This damage does not Stagger or reduce this unit's HP below 1$"),
+     lambda m: {"kind": "noop", "note": "hp floor 1"}),
+    (re.compile(rf"^Deal -{N}% damage against sub-targets$"),
+     lambda m: {"kind": "sub_target_damage", "percent": -int(m.group(1))}),
+    (re.compile(rf"^For targets that are Non-SP Units, deal \+{N}% damage for every {N} {ST} on target \(max {N}%\)$"),
+     lambda m: {"kind": "damage_percent", "value": 0, "step": int(m.group(1)),
+                "per": int(m.group(2)), "max": int(m.group(4)),
+                "condition": {"source": "target", "status": m.group(3),
+                              "component": "potency", "target_is_non_sp_unit": True}}),
+    (re.compile(rf"^If target has less than {N} SP, deal more damage the further their SP value is from 0 \(\+{N}% damage for every missing SP, max {N}%\)$"),
+     lambda m: {"kind": "damage_percent_from_missing_sp", "step": int(m.group(2)),
+                "max": int(m.group(3))}),
+    (re.compile(rf"^deal more damage the further their SP value is from 0 \(\+{N}% damage for every missing SP, max {N}%\)$"),
+     lambda m: {"kind": "damage_percent_from_missing_sp", "step": int(m.group(1)),
+                "max": int(m.group(2))}),
+    (re.compile(rf"^If target is defeated, inflict {N} {ST} and {N} {ST} on {N} random enemies \(For Focused Encounters, random Parts\)$"),
+     lambda m: {"kind": "compound", "condition": {"target_defeated": True}, "sub_effects": [
+        {"kind": "inflict", "status": m.group(2), "potency": int(m.group(1)),
+         "ally": "random", "ally_count": int(m.group(5))},
+        {"kind": "inflict", "status": m.group(4), "potency": int(m.group(3)),
+         "ally": "random", "ally_count": int(m.group(5))}]}),
+    (re.compile(rf"^Inflict {N} {ST}\. Inflict {N} {ST}$"),
+     lambda m: {"kind": "compound", "sub_effects": [
+        {"kind": "inflict", "status": m.group(2), "potency": int(m.group(1))},
+        {"kind": "inflict", "status": m.group(4), "potency": int(m.group(3))}]}),
+    (re.compile(rf"^All allies gain {N} {ST}, {N} {ST}, {N} {ST}, {N} {ST}, {N} {ST}$"),
+     lambda m: {"kind": "compound", "sub_effects": [
+        {"kind": "gain", "status": m.group(2), "potency": int(m.group(1)),
+         "ally": "all_allies", "include_self": True},
+        {"kind": "gain", "status": m.group(4), "potency": int(m.group(3)),
+         "ally": "all_allies", "include_self": True},
+        {"kind": "gain", "status": m.group(6), "potency": int(m.group(5)),
+         "ally": "all_allies", "include_self": True},
+        {"kind": "gain", "status": m.group(8), "potency": int(m.group(7)),
+         "ally": "all_allies", "include_self": True},
+        {"kind": "gain", "status": m.group(10), "potency": int(m.group(9)),
+         "ally": "all_allies", "include_self": True}]}),
+    (re.compile(rf"^Apply {N} {ST} next turn to \(highest Reson\.\) random allies(?: \(including this unit; max {N} allies(?:; once per turn)?\))?$"),
+     lambda m: {"kind": "gain", "status": m.group(2), "potency": int(m.group(1)),
+                "next_turn": True, "ally": "random", "ally_count": 1, "from_resonance": True,
+                "max": int(m.group(3)) if m.group(3) else 4, "include_self": True}),
+    (re.compile(r"^At 4\+ highest Reson\., heal 1 additional ally$"),
+     lambda m: {"kind": "heal_extra_ally", "value": 1,
+                "condition": {"resonance_gte": 4}}),
+    (re.compile(rf"^Gain the following effects for every {N} highest Reson\.$"),
+     lambda m: {"kind": "noop", "note": "per-Resonance block", "per": int(m.group(1)),
+                "from_resonance": True}),
+    (re.compile(rf"^convert the Suit in this unit's Hand to a random Suit that corresponds to one of this unit's Base Attack Skills$"),
+     lambda m: {"kind": "suit_convert"}),
+    (re.compile(rf"^If this Skill was equipped on this unit's leftmost Skill Slot, convert the Suit in this unit's Hand to a random Suit that corresponds to one of this unit's Base Attack Skills$"),
+     lambda m: {"kind": "suit_convert", "condition": {"slot": "leftmost"}}),
+    (re.compile(rf"^Inflict {N} {ST}\(The (Living|Departed)\)$"),
+     lambda m: {"kind": "inflict", "status": m.group(2), "potency": int(m.group(1)),
+                "butterfly_part": m.group(3).lower()}),
+    (re.compile(rf"^Deal Gloom damage equal to the sum of {ST} on target$"),
+     lambda m: {"kind": "gloom_damage_equal_target_status", "status": m.group(1)}),
+    (re.compile(rf"^Deal Gloom damage equal to \({ST} spent by this Coin x {N}\)% of this Coin's final damage$"),
+     lambda m: {"kind": "extra_damage_percent_of_damage", "final_damage_percent": 0,
+                "step": int(m.group(2)), "per_ammo": True}),
+    (re.compile(rf"^Spend all {ST} on self$"),
+     lambda m: {"kind": "spend_ammo_all", "status": m.group(1)}),
+    (re.compile(rf"^Gain a random assortment of \(Gloom Reson\. \+ {N}\) {ST} \(max {N}\)$"),
+     lambda m: {"kind": "gain_from_resonance", "status": m.group(2), "value": int(m.group(1)),
+                "multiplier": 1, "max": int(m.group(3)), "resonance_of": "Gloom"}),
+    (re.compile(r"^\(Chance to flip Heads\)% chance to inflict The Departed"),
+     lambda m: {"kind": "tag", "tag": "butterfly_split"}),
+    (re.compile(rf"^A random ally gains {N} ~ {N} {ST}$"),
+     lambda m: {"kind": "gain", "status": m.group(3), "range_min": int(m.group(1)),
+                "range_max": int(m.group(2)), "ally": "random", "ally_count": 1}),
+    (re.compile(rf"^All allies gain {N} {ST}$"),
+     lambda m: {"kind": "gain", "status": m.group(2), "potency": int(m.group(1)),
+                "ally": "all_allies", "include_self": True}),
+    (re.compile(rf"^Inflict {N} {ST}\. Inflict {N} additional {ST} for every {N} Gloom Reson\. \(max {N}\)$"),
+     lambda m: {"kind": "compound", "sub_effects": [
+        {"kind": "inflict", "status": m.group(2), "potency": int(m.group(1))},
+        {"kind": "inflict", "status": m.group(4), "potency": int(m.group(3)),
+         "per": int(m.group(5)), "step": 1, "max": int(m.group(6)),
+         "multiplier": 1, "resonance_of": "Gloom"}]}),
+    (re.compile(rf"^At {N}\+ Gloom Reson\., inflict {N} {ST}$"),
+     lambda m: {"kind": "inflict", "status": m.group(3), "potency": int(m.group(2)),
+                "condition": {"resonance_gte": int(m.group(1)), "resonance_of": "Gloom"}}),
+    (re.compile(rf"^If target is defeated, inflict {N} {ST} and {N} {ST} on {N} random enemies$"),
+     lambda m: {"kind": "compound", "condition": {"target_defeated": True}, "sub_effects": [
+        {"kind": "inflict", "status": m.group(2), "potency": int(m.group(1)),
+         "ally": "random", "ally_count": int(m.group(5))},
+        {"kind": "inflict", "status": m.group(4), "potency": int(m.group(3)),
+         "ally": "random", "ally_count": int(m.group(5))}]}),
+    (re.compile(rf"^If target survives this attack, consume {N} {ST} Count on target, then heal additional SP \(to self & affected allies\) equal to {ST} Potency on target \(Max SP heal: {N}\)$"),
+     lambda m: {"kind": "compound", "condition": {"target_survived": True}, "sub_effects": [
+        {"kind": "lose_status_count", "status": m.group(2), "value": int(m.group(1))},
+        {"kind": "heal_from_status", "heal_from_status": m.group(3),
+         "heal_from_component": "potency", "max": int(m.group(4)),
+         "ally": "all_allies", "include_self": True}]}),
+    (re.compile(rf"^If there are Staggered, Part broken, or killed units among the targets, inflict {N} {ST} against a random non-targeted enemy$"),
+     lambda m: {"kind": "inflict_on_random_other", "status": m.group(2),
+                "potency": int(m.group(1))}),
+    (re.compile(rf"^If there are Staggered, Part broken, or killed units among the targets, inflict {N} {ST} next turn against a random non-targeted enemy$"),
+     lambda m: {"kind": "inflict_on_random_other", "status": m.group(2),
+                "potency": int(m.group(1)), "next_turn": True}),
+    (re.compile(rf"^Apply {N} {ST} next turn to \(highest Reson\.\) random allies \(including this unit; max {N} allies\)$"),
+     lambda m: {"kind": "gain", "status": m.group(2), "potency": int(m.group(1)),
+                "next_turn": True, "ally": "random", "ally_count": 1,
+                "from_resonance": True, "max": int(m.group(3)), "include_self": True}),
+    (re.compile(rf"^If the said Reson\. was a Gloom Reson\. or an A-Reson\., apply {N} {ST} as well$"),
+     lambda m: {"kind": "gain", "status": m.group(2), "potency": int(m.group(1)),
+                "condition": {"resonance_gte": 1, "resonance_of": "Gloom"}}),
+    (re.compile(rf"^If the main target has higher than {N} Gloom Resist\., deal \+{N}% damage for every 0\.1 excess Resist\. \(max {N}%\)$"),
+     lambda m: {"kind": "damage_percent_from_resist", "value": int(m.group(1)) * 10,
+                "step": int(m.group(2)), "max": int(m.group(3))}),
+    (re.compile(rf"^At {N}\+ (Gloom|Wrath|Lust|Sloth|Gluttony|Pride|Envy) Reson\., deal \+{N}% damage for every (?:Gloom|Wrath|Lust|Sloth|Gluttony|Pride|Envy) Reson\. \(max {N}%\)$"),
+     lambda m: {"kind": "damage_percent_per_resonance", "step": int(m.group(3)),
+                "max": int(m.group(4)), "resonance_of": m.group(2),
+                "condition": {"resonance_gte": int(m.group(1)), "resonance_of": m.group(2)}}),
+
+    # ------------------------------------------------------------------ #
+    # Remaining clauses (second pass)
+    # ------------------------------------------------------------------ #
+    (re.compile(rf"^[Dd]eal Gloom damage equal to {ST} on target$"),
+     lambda m: {"kind": "gloom_damage_equal_target_status", "status": m.group(1),
+                "component": "potency"}),
+    (re.compile(rf"^Coin Power \+{N} for every {N} \({ST} \+ {ST}\), on target \(max {N}\)$"),
+     lambda m: {"kind": "coin_power", "value": 0, "step": int(m.group(1)), "per": int(m.group(2)),
+                "max": int(m.group(5)),
+                "condition": {"source": "target", "statuses": [m.group(3), m.group(4)]}}),
+    (re.compile(rf"^Coin Power \+{N} for every {N} {ST} Potency on self \(max {N}\)$"),
+     lambda m: {"kind": "coin_power", "value": 0, "step": int(m.group(1)), "per": int(m.group(2)),
+                "max": int(m.group(4)),
+                "condition": {"source": "self", "status": m.group(3), "component": "potency"}}),
+    (re.compile(rf"^Clash Power \+{N} and deal \+{N}% damage$"),
+     lambda m: {"kind": "compound", "sub_effects": [
+        {"kind": "clash_power", "value": int(m.group(1))},
+        {"kind": "damage_percent", "value": int(m.group(2))}]}),
+    (re.compile(rf"^Inflict {N} {ST}\. Inflict {N} {ST}$"),
+     lambda m: {"kind": "compound", "sub_effects": [
+        {"kind": "inflict", "status": m.group(2), "potency": int(m.group(1))},
+        {"kind": "inflict", "status": m.group(4), "potency": int(m.group(3))}]}),
+    (re.compile(r"^If Lobotomy E\.G\.O::Solemn Lament Yi Sang used this Skill:$"),
+     lambda m: {"kind": "noop", "note": "identity gate (always true for this team)"}),
+    (re.compile(rf"^If the said Reson\. was a Gloom Reson\., gain \+{N} Atk Weight$"),
+     lambda m: {"kind": "attack_weight", "value": int(m.group(1)),
+                "condition": {"resonance_gte": 1, "resonance_of": "Gloom"}}),
+    (re.compile(r"^When attacking just a single target, apply it to 3 targets instead$"),
+     lambda m: {"kind": "noop", "note": "single-target skills hit 3"}),
+    (re.compile(rf"^Gain Atk Weight equal to \(highest Reson\. / {N}\) \(max {N}$"),
+     lambda m: {"kind": "attack_weight", "value": 0, "per": int(m.group(1)), "step": 1,
+                "max": int(m.group(2)), "from_resonance": True}),
+    (re.compile(r"^All 'On Hit' effects and all damage dealt by each Coin are inflicted only against the random target the Coin selected$"),
+     lambda m: {"kind": "tag", "tag": "random_coin_targets"}),
+    (re.compile(r"^The first Coin always targets the main target$"),
+     lambda m: {"kind": "noop", "note": "first Coin keeps the main target"}),
+    (re.compile(r"^When this Skill flips Coins, each Coin flips against a random enemy among its targets\.?$"),
+     lambda m: {"kind": "noop", "note": "random Coin targets"}),
+    (re.compile(r"^Then, Reuse this Coin$"),
+     lambda m: {"kind": "reuse_coin", "reuse_coin": 1}),
+    (re.compile(rf"^When inflicting {ST} using this Skill's effects: \(Chance to flip Heads\)% chance to inflict The Departed.*$"),
+     lambda m: {"kind": "tag", "tag": "butterfly_split"}),
+    (re.compile(rf"^Clash Power \+{N} for every {N} \({ST} \+ {ST}\) on the main target \(max {N}\)$"),
+     lambda m: {"kind": "clash_power", "value": 0, "step": int(m.group(1)), "per": int(m.group(2)),
+                "max": int(m.group(5)),
+                "condition": {"source": "target", "statuses": [m.group(3), m.group(4)],
+                              "component": "potency"}}),
+    (re.compile(rf"^Gain Atk Weight equal to \(highest Reson\. / {N}\) \(max {N}\)$"),
+     lambda m: {"kind": "attack_weight", "value": 0, "per": int(m.group(1)), "step": 1,
+                "max": int(m.group(2)), "from_resonance": True}),
+    (re.compile(rf"^If 1 or more targets are killed, deal \({ST} Potency on each target / {N}\) Gloom damage against {N} random enemies \(max {N};.*\)$"),
+     lambda m: {"kind": "gloom_damage_equal_target_status", "status": m.group(1),
+                "value": int(m.group(2)), "max": int(m.group(4)),
+                "ally": "random", "ally_count": int(m.group(3)),
+                "condition": {"any_target_killed": True}}),
+    (re.compile(r"^When this Skill flips Coins, each Coin flips against a random enemy among its targets\.?$"),
+     lambda m: {"kind": "noop", "note": "random Coin targets"}),
+    (re.compile(r"^Then, Reuse this Coin$"),
+     lambda m: {"kind": "reuse_coin", "reuse_coin": 1}),
+    (re.compile(rf"^Inflict {N}~{N} random {ST}$"),
+     lambda m: {"kind": "inflict", "status": m.group(3), "range_min": int(m.group(1)),
+                "range_max": int(m.group(2)), "assumption": "random part"}),
+    (re.compile(rf"^Lose {N}~{N} SP$"),
+     lambda m: {"kind": "self_sp_damage", "self_sp_damage_min": int(m.group(1)),
+                "self_sp_damage_max": int(m.group(2))}),
+    (re.compile(rf"^At {N}%\+ HP, take {N}~{N} HP damage$"),
+     lambda m: {"kind": "self_damage", "self_damage_min": int(m.group(2)),
+                "self_damage_max": int(m.group(3)),
+                "condition": {"hp_above_percent": int(m.group(1))}}),
+    (re.compile(rf"^If the main target has {N}\+ {ST}, Clash Power \+{N}$"),
+     lambda m: {"kind": "clash_power", "value": int(m.group(3)),
+                "condition": {"source": "target", "status": m.group(2), "gte": int(m.group(1))}}),
+    (re.compile(rf"^If there are Staggered, Part broken, or killed units among the targets, inflict {N} {ST} against a random non-targeted enemy$"),
+     lambda m: {"kind": "inflict_on_random_other", "status": m.group(2),
+                "potency": int(m.group(1))}),
+    (re.compile(rf"^If there are Staggered, Part broken, or killed units among the targets, inflict {N} {ST}$"),
+     lambda m: {"kind": "inflict_on_random_other", "status": m.group(2),
+                "potency": int(m.group(1))}),
+    (re.compile(rf"^Apply {N} {ST} next turn to \(highest Reson\.\) random allies \(including this unit; max {N} allies$"),
+     lambda m: {"kind": "gain", "status": m.group(2), "potency": int(m.group(1)),
+                "next_turn": True, "ally": "random", "ally_count": 1,
+                "from_resonance": True, "max": int(m.group(3)), "include_self": True}),
+    (re.compile(rf"^If target survives this attack, consume {N} {ST} Count on target, then heal additional SP\(to self & affected allies\) equal to {ST} Potency on target \(Max SP heal: {N}\)$"),
+     lambda m: {"kind": "compound", "condition": {"target_survived": True}, "sub_effects": [
+        {"kind": "lose_status_count", "status": m.group(2), "value": int(m.group(1))},
+        {"kind": "heal_from_status", "heal_from_status": m.group(3),
+         "heal_from_component": "potency", "max": int(m.group(4)),
+         "ally": "all_allies", "include_self": True}]}),
+    (re.compile(rf"^If target is defeated, inflict {N} {ST} and {N} {ST} on {N} random enemies$"),
+     lambda m: {"kind": "compound", "condition": {"target_defeated": True}, "sub_effects": [
+        {"kind": "inflict", "status": m.group(2), "potency": int(m.group(1)),
+         "ally": "random", "ally_count": int(m.group(5))},
+        {"kind": "inflict", "status": m.group(4), "potency": int(m.group(3)),
+         "ally": "random", "ally_count": int(m.group(5))}]}),
+    (re.compile(rf"^Then, Reuse this Coin if the sum of HP lost due to this effect is less than {N}$"),
+     lambda m: {"kind": "reuse_coin", "reuse_coin": 4, "threshold": int(m.group(1))}),
+    (re.compile(r"^If target was killed, activate the effect above once more$"),
+     lambda m: {"kind": "noop", "note": "repeat on kill"}),
+]
+
+
+TAG_PATTERNS = [
+    (re.compile(r"^targets? randomly$", re.I), lambda m: "targets_random"),
+    (re.compile(r"^targets the unit with the most hp$", re.I), lambda m: "targets_most_hp"),
+    (re.compile(rf"^prioritizes targets that have the most {ST}$", re.I),
+     lambda m: f"targets_most_status:{m.group(1)}"),
 ]
 
 
@@ -351,16 +721,36 @@ def parse_triggered(trigger: str, text: str, raw: str) -> Optional[dict]:
     the status appears twice (summing Potency + Count).
     """
     text = text.strip()
+    # Parentheticals that carry a limit plus a remark: "(max 15%; once per
+    # turn)", "(once per turn; rounded down)", "(once per Coin)".
+    LIMIT_WORDS = r"(once|twice|\d+ times?) per (turn|Encounter|Coin|Skill)"
+    note_match = re.search(rf"\((max [\d.]+%);\s*{LIMIT_WORDS}(?:;[^)]*)?\)", text)
+    if note_match:
+        text = text[: note_match.start()] + f"({note_match.group(1)})" + text[note_match.end():]
+    note_match = re.search(rf"\({LIMIT_WORDS}(?:;[^)]*)?\)", text)
+    if note_match and not re.fullmatch(rf"\({LIMIT_WORDS}\)", note_match.group(0)):
+        text = text[: note_match.start()] + text[note_match.end():]
+    text = re.sub(r"\((max [\d.]+);\s*rounded down\)", r"(\1)", text)
+    # "(once per turn; excluding the Suit already in this unit's Hand)"
+    text = re.sub(r"\([^()]*?(?:once|twice|\d+ times?) per (?:turn|Encounter|Coin|Skill)[^()]*\)", "", text)
+    # "(this effect does not reduce this unit's HP below 1)" and friends.
+    text = re.sub(
+        r"\((?:this effect does not reduce this unit's HP below \d+|does not get Staggered due to this effect|excluding the Suit already in this unit's Hand)\)",
+        "",
+        text,
+    ).strip()
+    text = re.sub(r"\s{2,}", " ", text)
     # Trailing per-turn / per-encounter limits: "(2 times per turn)".
     limits = None
-    limit_match = re.search(r"\((once|twice|\d+ times?) per (turn|Encounter)\)", text)
+    limit_match = re.search(rf"\({LIMIT_WORDS}\)", text)
     if limit_match:
         word = limit_match.group(1)
         count = {"once": 1, "twice": 2}.get(word, None)
         if count is None:
             count = int(re.sub(r"\D", "", word) or 1)
+        unit = limit_match.group(2)
         limits = {
-            "per_turn" if limit_match.group(2) == "turn" else "per_encounter": count
+            "per_turn" if unit in ("turn", "Coin") else ("per_skill" if unit == "Skill" else "per_encounter"): count
         }
         text = (text[: limit_match.start()] + text[limit_match.end():]).strip()
         # Tidy a dangling separator left inside a parenthetical.
@@ -368,15 +758,17 @@ def parse_triggered(trigger: str, text: str, raw: str) -> Optional[dict]:
         text = re.sub(r"\(max (\d+)%;?\)", r"(max \1%)", text)
     # "next turn" buffs are applied at the start of the following turn.
     next_turn = False
-    if text.endswith(" next turn"):
+    if text.endswith(" next turn") or text.endswith(" next turn."):
         next_turn = True
-        text = text[: -len(" next turn")].strip()
+        text = re.sub(r"\s+next turn\.?$", "", text).strip()
     normalized = text.replace("both [", "[")
     for pattern, handler in PATTERNS:
         match = pattern.match(normalized)
         if not match:
             continue
         effect = handler(match)
+        if effect.get("kind") == "reuse_coin" and limits and "reuse_coin" not in effect:
+            effect["reuse_coin"] = limits.get("per_skill") or limits.get("per_turn") or 1
         # "both [X]" means X contributes Potency **and** Count, which the
         # evaluator expresses by listing X twice.  Patterns that already emit the
         # pair are left alone.
@@ -432,7 +824,27 @@ CONDITION_PATTERNS = [
 ANY_OF_RE = re.compile(r"^If any of the following conditions are met, (.+)$")
 INLINE_IF_RE = re.compile(rf"^If (?:the target|target) has {ST}, (.+)$")
 INLINE_IF_SELF_RE = re.compile(rf"^If this unit has {ST}, (.+)$")
-INLINE_IF_SP_RE = re.compile(r"^If target's SP is below (\d+), (.+)$")
+INLINE_IF_SP_RE = re.compile(r"^If target[’']s SP is below (\d+), (.+)$")
+INLINE_IF_SP2_RE = re.compile(r"^If target has less than (\d+) SP, (.+)$")
+
+
+def strip_limits(text: str):
+    """Remove a trailing "(once per turn)" style limit; return (text, limits)."""
+    match = re.search(r"\((once|twice|\d+ times?) per (turn|Encounter|Coin|Skill)\)", text)
+    if not match:
+        return text, None
+    word = match.group(1)
+    count = {"once": 1, "twice": 2}.get(word)
+    if count is None:
+        count = int(re.sub(r"\D", "", word) or 1)
+    unit = match.group(2)
+    key = {
+        "turn": "per_turn",
+        "Coin": "per_turn",
+        "Skill": "per_skill",
+        "Encounter": "per_encounter",
+    }[unit]
+    return (text[: match.start()] + text[match.end():]).strip(), {key: count}
 
 
 def parse_condition_line(line: str):
@@ -530,9 +942,23 @@ def expand_coin_effects(effect: dict, coin_count: int) -> dict:
 
 def parse_text_block(text: str, coin_count: int) -> Tuple[Dict[str, List[dict]], List[str]]:
     """Split a block of effect text into buckets, plus the unmodeled lines."""
-    buckets: Dict[str, List[dict]] = {"on_use": [], "clash_win": [], "clash_lose": [], "attack_end": [], "combat_start": [], "coin": []}
+    buckets: Dict[str, List[dict]] = {
+        "on_use": [],
+        "clash_win": [],
+        "clash_lose": [],
+        "attack_end": [],
+        "combat_start": [],
+        "before_attack": [],
+        "on_kill": [],
+        "on_evade": [],
+        "turn_start": [],
+        "turn_end": [],
+        "heads_hit": [],
+        "coin": [],
+    }
     unmodeled: List[str] = []
     pending_trigger = "on_use"
+    pending_resonance = None
     all_lines = text.split("\n")
     line_index = 0
     while line_index < len(all_lines):
@@ -550,6 +976,29 @@ def parse_text_block(text: str, coin_count: int) -> Tuple[Dict[str, List[dict]],
             # a bare trigger token with no clause carries no effect of its own
             continue
         trigger, rest = split_trigger(line)
+        # "[BeforeAttack] Gain the following effects for every N highest Reson."
+        # scales each of the bullets that follow it.
+        header = re.match(r"^Gain the following effects for every (\d+) highest Reson\.$", rest)
+        if header:
+            pending_resonance = int(header.group(1))
+            continue
+        # "At 4+ highest Reson., heal 1 additional ally" widens the heal above it.
+        extra_ally = re.match(r"^At (\d+)\+ highest Reson\., heal (\d+) additional all", rest)
+        if extra_ally:
+            for bucket in buckets.values():
+                for existing in reversed(bucket):
+                    if existing.get("kind") in ("sp_heal", "heal_percent_hp", "heal_hp"):
+                        clone = dict(existing)
+                        clone["ally_count"] = int(extra_ally.group(2))
+                        clone["include_self"] = False
+                        clone.setdefault("condition", {})["resonance_gte"] = int(extra_ally.group(1))
+                        clone["raw"] = line
+                        bucket.append(clone)
+                        break
+                else:
+                    continue
+                break
+            continue
         # "If any of the following conditions are met, <effect>" followed by the
         # condition bullets: attach the whole list as an any-of condition.
         any_of = ANY_OF_RE.match(rest)
@@ -601,18 +1050,21 @@ def parse_text_block(text: str, coin_count: int) -> Tuple[Dict[str, List[dict]],
                 continue
             # Not an "At less than N% HP" clause after all (e.g. "convert all
             # Coins into Unbreakable Coins"): fall through to the normal patterns.
-        inline_if_sp = INLINE_IF_SP_RE.match(rest)
+        inline_if_sp = INLINE_IF_SP_RE.match(rest) or INLINE_IF_SP2_RE.match(rest)
         if inline_if_sp:
             condition = {"target_sp_below": int(inline_if_sp.group(1))}
             effect = None
+            body, body_limits = strip_limits(inline_if_sp.group(2))
             for pattern, handler in PATTERNS:
-                match = pattern.match(inline_if_sp.group(2))
+                match = pattern.match(body) or pattern.match(body[:1].upper() + body[1:])
                 if not match:
                     continue
                 effect = handler(match)
                 effect["raw"] = line
                 effect["trigger"] = trigger
                 effect["condition"] = condition
+                if body_limits:
+                    effect.update(body_limits)
                 break
             if effect is not None:
                 buckets.setdefault(trigger if trigger != "coin" else "coin", []).append(effect)
@@ -623,14 +1075,19 @@ def parse_text_block(text: str, coin_count: int) -> Tuple[Dict[str, List[dict]],
         if inline_if_self:
             condition = {"source": "self", "status": inline_if_self.group(1), "gte": 1}
             effect = None
+            self_body, self_limits = strip_limits(inline_if_self.group(2))
             for pattern, handler in PATTERNS:
-                match = pattern.match(inline_if_self.group(2))
+                match = pattern.match(self_body) or pattern.match(
+                    self_body[:1].upper() + self_body[1:]
+                )
                 if not match:
                     continue
                 effect = handler(match)
                 effect["raw"] = line
                 effect["trigger"] = trigger
                 effect["condition"] = condition
+                if self_limits:
+                    effect.update(self_limits)
                 break
             if effect is not None:
                 buckets.setdefault(trigger if trigger != "coin" else "coin", []).append(effect)
@@ -656,6 +1113,17 @@ def parse_text_block(text: str, coin_count: int) -> Tuple[Dict[str, List[dict]],
                 continue
             unmodeled.append(line)
             continue
+        for tag_re, tag_of in TAG_PATTERNS:
+            tag_match = tag_re.match(rest)
+            if tag_match:
+                buckets.setdefault("tags", []).append(
+                    {"kind": "tag", "tag": tag_of(tag_match), "raw": line}
+                )
+                break
+        else:
+            tag_match = None
+        if tag_match:
+            continue
         lower = rest.lower().rstrip(".")
         if lower in TAG_LINES:
             buckets.setdefault("tags", []).append({"kind": "tag", "tag": TAG_LINES[lower], "raw": line})
@@ -663,6 +1131,20 @@ def parse_text_block(text: str, coin_count: int) -> Tuple[Dict[str, List[dict]],
         if trigger == "on_use" and not TRIGGER_RE.match(line):
             rest = line
         effect = parse_triggered(trigger, rest, line)
+        if effect is not None and pending_resonance:
+            if effect.get("kind") == "damage_percent":
+                effect = {
+                    "kind": "damage_percent_per_resonance",
+                    "step": effect.get("value", 0),
+                    "max": effect.get("max", 0) or 0,
+                    "per": pending_resonance,
+                }
+                effect["raw"] = line
+                effect["trigger"] = trigger
+            elif effect.get("kind") == "attack_weight":
+                effect["per"] = pending_resonance
+                effect["step"] = effect.pop("value", 1)
+                effect["from_resonance"] = True
         if effect is None:
             # try splitting "X and Y" compounds
             parts = re.split(r"\s+and\s+", rest)
@@ -693,12 +1175,29 @@ def build_skill_entry(skill: dict, tier: dict, enemies: bool) -> dict:
         "clash_lose": [],
         "attack_end": [],
         "combat_start": [],
+        "before_attack": [],
+        "on_kill": [],
+        "on_evade": [],
+        "turn_start": [],
+        "turn_end": [],
+        "heads_hit": {},
         "coins": {},
         "tags": [],
         "unmodeled": [],
     }
     buckets, unmodeled = parse_text_block(tier.get("on_use_text") or "", coin_count)
-    for key in ("on_use", "clash_win", "clash_lose", "attack_end", "combat_start"):
+    for key in (
+        "on_use",
+        "clash_win",
+        "clash_lose",
+        "attack_end",
+        "combat_start",
+        "before_attack",
+        "on_kill",
+        "on_evade",
+        "turn_start",
+        "turn_end",
+    ):
         entry[key] = [strip_trigger(e) for e in buckets.get(key, [])]
     entry["tags"] = [e["tag"] for e in buckets.get("tags", [])]
     for index, coin_text in enumerate(tier.get("coin_texts") or [], start=1):
@@ -706,6 +1205,9 @@ def build_skill_entry(skill: dict, tier: dict, enemies: bool) -> dict:
         merged: List[dict] = []
         for key in ("on_use", "coin", "clash_win", "clash_lose", "attack_end", "combat_start"):
             merged.extend(coin_buckets.get(key, []))
+        heads = coin_buckets.get("heads_hit", [])
+        if heads:
+            entry["heads_hit"][str(index)] = [strip_trigger(e) for e in heads]
         for extra in coin_buckets.get("clash_win", []):
             entry["clash_win"].append(strip_trigger(extra))
         for extra in coin_buckets.get("clash_lose", []):
@@ -716,6 +1218,45 @@ def build_skill_entry(skill: dict, tier: dict, enemies: bool) -> dict:
         if own:
             entry["coins"][str(index)] = [strip_trigger(e) for e in own]
         unmodeled.extend(coin_unmodeled)
+    # Tag-only clauses ("Target cannot be Staggered ...", "[Discard] ...") become
+    # Skill tags wherever they were written.
+    tags = set(entry["tags"])
+    for key in (
+        "on_use",
+        "clash_win",
+        "clash_lose",
+        "attack_end",
+        "combat_start",
+        "before_attack",
+        "on_kill",
+        "on_evade",
+        "turn_start",
+        "turn_end",
+    ):
+        kept = []
+        for effect in entry[key]:
+            if effect.get("kind") == "tag" and effect.get("tag"):
+                tags.add(effect["tag"])
+                continue
+            kept.append(effect)
+        entry[key] = kept
+    for coin_key, effects in list(entry["coins"].items()):
+        kept = []
+        for effect in effects:
+            if effect.get("kind") == "tag" and effect.get("tag"):
+                tags.add(effect["tag"])
+                continue
+            kept.append(effect)
+        entry["coins"][coin_key] = kept
+    for coin_key, effects in list(entry["heads_hit"].items()):
+        kept = []
+        for effect in effects:
+            if effect.get("kind") == "tag" and effect.get("tag"):
+                tags.add(effect["tag"])
+                continue
+            kept.append(effect)
+        entry["heads_hit"][coin_key] = kept
+    entry["tags"] = sorted(tags)
     entry["unmodeled"] = sorted(set(unmodeled))
     return entry
 
