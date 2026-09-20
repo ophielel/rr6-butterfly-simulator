@@ -139,6 +139,21 @@ effects (HP Healing Down, Wrath Fragility).
 | MCTS | **not implemented on purpose** — `lcb.search.mcts_turn` raises, see the plan's "do not start large-scale search before the simulator is finished" |
 | Learning | not started |
 
+## Full-review items still open (2026-09-20)
+
+`REVIEW_SIMULATOR_FULL.md` lists 20 groups.  The ones below are **not** fixed yet
+and are left as honest gaps rather than guesses.
+
+| Item | Status | Why it is still open |
+|---|---|---|
+| Ammo subsystem (The Living & The Departed, Bullet - Solitude, LCA Fracture Round) | `NOT_IMPLEMENTED` (partial) | `spend_ammo` still spends the wrong pool for LCA Fracture Round / Ryoshu's bullets, the opening amounts are Combat Start passives that are not modelled, and an emptied pool neither stops the remaining Coins nor runs the Reload executor.  Ammo is modelled for Yi Sang's Solemn Lament only. |
+| Rodion / Hong Lu / Ryoshu / Sinclair core passives | `NOT_IMPLEMENTED` (partial) | Blessing & Despair coin switching, the Hanafuda next-turn conversion, Ryoshu's Petals / automatic follow-up attacks, Sinclair's Evade-driven Stagger-threshold reduction.  Only the hand-curated `HAND_EFFECTS` set is live. |
+| Gregor's "Clash regardless of Speed" passive | `NOT_IMPLEMENTED` | `Action::Engage` requires out-speeding the enemy Slot; the personal passive that lifts that requirement (and the `clash_any_speed` tag for enemy Skills) is not wired into `submit`. |
+| E.G.O target counts and Corrosion targeting | `PARTIAL` | Coin-3 hit counting, "2 allies including this unit" and the Resonance-driven SP-heal count are fixed; the general Corrosion target selection is still approximated. |
+| Illusory butterflies / Pupa, Parts, "End the Encounter" | `NOT_IMPLEMENTED` | Loaded as documentation only. |
+| Breath (Poise) critical rate coefficient | `UNKNOWN` | The wiki only says "chance based on Potency"; the Potency-percent reading has no primary source, so it stays an explicit assumption. |
+| Sin Resonance level-gain table | `NOT_IMPLEMENTED` | The wiki markup is malformed; only the Resonance counts are modelled. |
+
 ## Verification gaps
 
 * No golden test from gameplay footage or screenshots yet (the plan requires

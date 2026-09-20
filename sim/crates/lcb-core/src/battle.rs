@@ -96,6 +96,9 @@ pub struct UseContext {
     /// matched against an enemy attack instead of only arming the unit.
     #[serde(default)]
     pub clashable_defense: bool,
+    /// An E.G.O's SP cost, paid at the [Before Attack] timing.
+    #[serde(default)]
+    pub ego_sp_pending: Option<i32>,
     /// "Reuse this Skill on the target that has the highest HP" when it kills.
     #[serde(default)]
     pub reuse_on_kill: bool,
@@ -603,6 +606,13 @@ fn ego_affordable(state: &BattleState, unit: &Unit, ego: &crate::library::EgoRec
 /// the SP left after paying for it.  Source: JA-wiki 戦闘システム詳細.
 fn corrosion_chance(state: &BattleState, unit_index: usize) -> Option<i32> {
     let sp = state.units[unit_index].sanity.sp();
+    corrosion_chance_for_sp(sp)
+}
+
+/// The same table for an SP value the unit does not have yet (the E.G.O cost is
+/// paid at [Before Attack], but the random Corrosion roll happens when the Skill
+/// is built).
+fn corrosion_chance_for_sp(sp: i32) -> Option<i32> {
     if sp >= -24 {
         return None;
     }
@@ -630,19 +640,35 @@ fn refund_overclock_surcharge(
 }
 
 /// Pay the E.G.O costs.  Returns a description for the log.
-fn pay_ego(state: &mut BattleState, unit_index: usize, ego: &crate::library::EgoRecord, kind: EgoSkillKind) -> String {
+/// The SP an E.G.O costs, before it is paid.
+pub fn ego_sp_cost(ego: &crate::library::EgoRecord, kind: EgoSkillKind) -> i32 {
     let (sp_cost, multiplier) = match kind {
         EgoSkillKind::Awakening => (ego.awakening_sp.unwrap_or(0), 1.0),
         EgoSkillKind::Corrosion => (ego.corrosion_sp.unwrap_or(0), 1.0),
         EgoSkillKind::Overclock => (ego.corrosion_sp.unwrap_or(0), 1.5),
     };
-    let sp = if multiplier == 1.0 {
+    if multiplier == 1.0 {
         sp_cost
     } else {
         (sp_cost as f64 * multiplier).ceil() as i32
-    };
+    }
+}
+
+/// Spend the E.G.O's SP.  The wiki puts this at the **[Before Attack]** timing,
+/// after the Clash is decided and before the attack rolls, so the SP loss cannot
+/// change the Clash's Heads rate
+/// (JA-wiki ダメージ / 攻撃の流れ: "「攻撃前」のタイミングが発生。攻撃前効果が発動し、
+/// E.G.Oを使用していた場合は精神力が低下する"; wiki.gg `Clash`).
+pub fn pay_ego_sp(state: &mut BattleState, unit_index: usize, sp: i32) {
     let sanity = state.units[unit_index].sanity;
     state.units[unit_index].sanity = sanity.add(-sp);
+}
+
+fn pay_ego(state: &mut BattleState, _unit_index: usize, ego: &crate::library::EgoRecord, kind: EgoSkillKind) -> String {
+    let multiplier = match kind {
+        EgoSkillKind::Overclock => 1.5,
+        _ => 1.0,
+    };
     let mut spent = Vec::new();
     for (sin, amount) in crate::library::Library::ego_cost(ego) {
         let needed = if multiplier == 1.0 {
@@ -654,7 +680,7 @@ fn pay_ego(state: &mut BattleState, unit_index: usize, ego: &crate::library::Ego
         *entry -= needed;
         spent.push(format!("{needed} {sin}"));
     }
-    format!("SP -{sp}, resources: {}", spent.join(", "))
+    format!("resources: {}", spent.join(", "))
 }
 
 // --------------------------------------------------------------------------- //
@@ -745,7 +771,13 @@ fn condition_holds(
     }
     if let Some(required) = condition.resonance_gte {
         let have = match condition.resonance_of.as_deref() {
-            Some(sin) => actor.resonance_of.get(sin).copied().unwrap_or(0),
+            // The Resonance table is keyed by the lowercase sin (`gloom`), while
+            // the Skill text writes `Gloom`.
+            Some(sin) => actor
+                .resonance_of
+                .get(&sin.to_lowercase())
+                .copied()
+                .unwrap_or(0),
             None => actor.resonance_max,
         };
         if have < required {
@@ -968,7 +1000,15 @@ fn ally_targets(state: &BattleState, ctx: &EffectContext<'_>, effect: &Effect) -
     let kind = effect.ally.as_deref().unwrap_or("self");
     // "Apply 1 [Haste] next turn to ([Bind] on self / 3) other allies with the
     // slowest Speed": the number of allies comes from a status on the actor.
-    let count = match effect.ally_from_status.as_deref() {
+    let count = match effect.from_resonance {
+        // "Heal 10 SP for (1 + highest Reson.) other allies with the least SP
+        // (max 4 units)": the number of allies comes from the Resonance.
+        true => {
+            let base = effect.ally_count.unwrap_or(effect.value.unwrap_or(1));
+            let reson = actor.resonance_max;
+            ((base + reson).max(0) as usize).min(effect.max.unwrap_or(i32::MAX) as usize)
+        }
+        false => match effect.ally_from_status.as_deref() {
         Some(status) => {
             let divisor = effect.ally_from_divisor.unwrap_or(1).max(1);
             let have = actor.statuses.count(status)
@@ -976,11 +1016,12 @@ fn ally_targets(state: &BattleState, ctx: &EffectContext<'_>, effect: &Effect) -
                 + actor.statuses.stack(status);
             (have / divisor).max(0) as usize
         }
-        None => effect
-            .ally_count
-            .or(effect.value)
-            .unwrap_or(0)
-            .max(0) as usize,
+            None => effect
+                .ally_count
+                .or(effect.value)
+                .unwrap_or(0)
+                .max(0) as usize,
+        },
     };
     if kind == "self" {
         return vec![actor_index];
@@ -1022,12 +1063,16 @@ fn ally_targets(state: &BattleState, ctx: &EffectContext<'_>, effect: &Effect) -
     }
 }
 
+/// Pick up to `count` allies.  "(including this unit)" means the unit is one of
+/// the `count`, not an extra one.
 fn finish(allies: Vec<usize>, count: usize, actor_index: usize, include_self: bool) -> Vec<usize> {
-    let mut picked: Vec<usize> = allies.into_iter().take(count).collect();
     if include_self {
+        let others = count.saturating_sub(1);
+        let mut picked: Vec<usize> = allies.into_iter().take(others).collect();
         picked.insert(0, actor_index);
+        return picked;
     }
-    picked
+    allies.into_iter().take(count).collect()
 }
 
 pub struct EffectContext<'a> {
@@ -1060,7 +1105,7 @@ pub fn apply_effects(
             }
         }
         // "If target was killed, activate the effect above once more".
-        let repeat = if effect.repeat_on_kill {
+        let _repeat = if effect.repeat_on_kill {
             ctx.target_index
                 .map(|index| !state.units[index].alive)
                 .unwrap_or(false)
@@ -1196,6 +1241,20 @@ pub fn apply_effects(
                     let sp = state.units[ctx.actor_index].sanity.sp();
                     let steps = (sp.abs() / per_sp).max(0);
                     (steps * effect.potency.unwrap_or(1)).min(effect.max.unwrap_or(i32::MAX))
+                } else if effect.from_resonance && effect.per.is_some() {
+                    // "Gain 1 [Lamp] for every 2 Gloom Reson. (max 3)": one step
+                    // per whole `per` Resonance.
+                    let per = effect.per.unwrap_or(1).max(1);
+                    let step = effect.value.or(effect.potency).unwrap_or(1);
+                    let reson = match effect.resonance_of.as_deref() {
+                        Some(sin) => state.units[ctx.actor_index]
+                            .resonance_of
+                            .get(&sin.to_lowercase())
+                            .copied()
+                            .unwrap_or(0),
+                        None => state.units[ctx.actor_index].resonance_max,
+                    };
+                    ((reson / per) * step).min(effect.max.unwrap_or(i32::MAX))
                 } else if effect.multiplier.is_some() || effect.from_resonance {
                     // "(6 + Gloom Reson.) [Sinking]", "(Gloom Reson. + 1) ..."
                     let base = effect.value.unwrap_or(0);
@@ -1203,7 +1262,7 @@ pub fn apply_effects(
                     let reson = match effect.resonance_of.as_deref() {
                         Some(sin) => state.units[ctx.actor_index]
                             .resonance_of
-                            .get(sin)
+                            .get(&sin.to_lowercase())
                             .copied()
                             .unwrap_or(0),
                         None => state.units[ctx.actor_index].resonance_max,
@@ -1745,7 +1804,7 @@ pub fn apply_effects(
                     let reson = match effect.resonance_of.as_deref() {
                         Some(sin) => state.units[ctx.actor_index]
                             .resonance_of
-                            .get(sin)
+                            .get(&sin.to_lowercase())
                             .copied()
                             .unwrap_or(0),
                         None => state.units[ctx.actor_index].resonance_max,
@@ -1999,9 +2058,13 @@ pub fn apply_effects(
                 }
             }
             "heal_per_coin_hits" => {
-                // "Heal (# of Coin 3 hits x 2) SP".
+                // "Heal (# of Coin 3 hits x 2) SP": the hits of the Coin the
+                // clause belongs to, not every Coin of the Skill.
                 let per = effect.value.unwrap_or(0);
-                let hits = use_ctx.coin_hits.values().copied().sum::<i32>();
+                let hits = match effect.coin_index {
+                    Some(coin) => use_ctx.coin_hits.get(&coin).copied().unwrap_or(0),
+                    None => use_ctx.coin_hits.values().copied().sum::<i32>(),
+                };
                 let amount = per * hits;
                 for index in ally_targets(state, ctx, effect) {
                     let sanity = state.units[index].sanity;
@@ -2670,8 +2733,16 @@ pub fn match_power(
     total
 }
 
+/// A Clash is counted per **pair** of units, so the key is canonical: whether
+/// the Sinner or the enemy moved first must not change it.
 fn clash_key(state: &BattleState, a: usize, b: usize) -> String {
-    format!("{}|{}", state.units[a].id, state.units[b].id)
+    let first = state.units[a].id.to_string();
+    let second = state.units[b].id.to_string();
+    if first <= second {
+        format!("{first}|{second}")
+    } else {
+        format!("{second}|{first}")
+    }
 }
 
 fn clash_count_swing(
@@ -2813,6 +2884,11 @@ pub fn one_sided_attack(
     use_: &mut SkillUse,
     clash_count: i32,
 ) -> Vec<HitResult> {
+    // An E.G.O's SP cost belongs to the "[Before Attack]" timing: it is paid once
+    // the Clash is over and just before the first Coin is tossed.
+    if let Some(sp) = use_.ctx.ego_sp_pending.take() {
+        pay_ego_sp(state, attacker_index, sp);
+    }
     let mut hits = Vec::new();
     let mut order: Vec<usize> = (0..use_.coins.len())
         .filter(|i| use_.coins[*i].state == CoinState::Fresh)
@@ -2925,42 +3001,6 @@ pub fn one_sided_attack(
         }
         if !state.units[defender_index].alive {
             break;
-        }
-    }
-    // "[Attack End] If target is killed, Reuse this Skill on the target that has
-    // the highest HP (once per turn)" (Smite the Wicked).
-    if use_.ctx.reuse_on_kill
-        && !state.units[defender_index].alive
-        && state.units[attacker_index].alive
-        && state.units[attacker_index]
-            .turn_effect_usage
-            .get("reuse_on_kill")
-            .copied()
-            .unwrap_or(0)
-            < 1
-    {
-        state.units[attacker_index]
-            .turn_effect_usage
-            .insert("reuse_on_kill".to_string(), 1);
-        if let Some(next) = state
-            .units
-            .iter()
-            .enumerate()
-            .filter(|(index, unit)| {
-                unit.alive && !unit.kind.is_sinner() && *index != defender_index
-            })
-            .max_by_key(|(_, unit)| unit.hp)
-            .map(|(index, _)| index)
-        {
-            let mut repeat = use_.clone();
-            for coin in repeat.coins.iter_mut() {
-                coin.state = CoinState::Fresh;
-                coin.heads = None;
-            }
-            repeat.ctx.accumulated = 0;
-            repeat.ctx.reuse_on_kill = false;
-            state.push_log("reuse", format!("{} was reused", use_.name));
-            hits.extend(one_sided_attack(state, attacker_index, next, &mut repeat, clash_count));
         }
     }
     // Cracked Unbreakable Coins attack after getting hit (wiki.gg `Clash`):
@@ -3931,11 +3971,13 @@ fn apply_sanity_states(state: &mut BattleState) {
             continue;
         }
         // Effects that are marked as applying at Turn End wait for `end_turn`.
-        let (now, later): (Vec<Effect>, Vec<Effect>) = list
+        let (now, _later): (Vec<Effect>, Vec<Effect>) = list
             .iter()
             .cloned()
             .partition(|effect| !effect.trigger_turn_end);
-        for batch in [now, later] {
+        // Only the immediate half applies now; the "[Turn End]" half waits for
+        // `end_turn` (`apply_panic_turn_end`), or it would run twice per turn.
+        for batch in [now] {
             if batch.is_empty() {
                 continue;
             }
@@ -4636,6 +4678,14 @@ pub fn begin_turn(
         state.units[index].hits_taken = 0;
         state.units[index].segmentation_healed.clear();
     }
+    // The state of time for this turn is decided **before** the passives of that
+    // state run, so a turn that switches from Present to Future already gains
+    // Future's [In the Future] and Poise.
+    for index in 0..state.units.len() {
+        if state.units[index].alive && !state.units[index].kind.is_sinner() {
+            update_time_state(state, scripts, index);
+        }
+    }
     // Past / Present / Future turn-start effects.
     for index in 0..state.units.len() {
         if state.units[index].alive && !state.units[index].kind.is_sinner() {
@@ -4656,17 +4706,9 @@ pub fn begin_turn(
     // Sanity: clamp SP, then Low Morale (-30) / Panic (-45) for Sinners.
     // Source: wiki.gg `Sanity` + `Clash`.
     apply_sanity_states(state);
-    // Passives: "[Combat Start]" then "[Turn Start]" clauses, per unit.
-    for index in 0..state.units.len() {
-        if !state.units[index].alive {
-            continue;
-        }
-        let target = state
-            .units
-            .iter()
-            .position(|u| u.alive && u.kind.is_sinner() != state.units[index].kind.is_sinner());
-        apply_passive_phase(state, index, target, |m| &m.combat_start);
-    }
+    // Passives: "[Turn Start]" clauses, per unit.  The "[Combat Start]" half runs
+    // once the Skills for the turn are chosen (see `resolve_combat`), because a
+    // passive can read the turn's Sin Resonance.
     for index in 0..state.units.len() {
         if !state.units[index].alive {
             continue;
@@ -5009,6 +5051,24 @@ pub fn end_turn(state: &mut BattleState, mechanics: &MechanicsBook) {
     }
 }
 
+/// "the target that has the highest HP": the other units of the **opposing**
+/// side (a Sinner's Skill reuses onto another enemy and vice versa).
+fn next_reuse_target(state: &BattleState, defender_index: usize, attacker_index: usize) -> Option<usize> {
+    let attacker_is_sinner = state.units[attacker_index].kind.is_sinner();
+    state
+        .units
+        .iter()
+        .enumerate()
+        .filter(|(index, unit)| {
+            unit.alive
+                && *index != defender_index
+                && *index != attacker_index
+                && unit.kind.is_sinner() != attacker_is_sinner
+        })
+        .max_by_key(|(_, unit)| unit.hp)
+        .map(|(index, _)| index)
+}
+
 /// Can this unit still take the action it submitted this turn?  A unit that died,
 /// got Staggered or Panicked earlier in the same turn drops the rest of its
 /// action ("[T]he queue is checked again when the turn comes").
@@ -5026,7 +5086,6 @@ fn can_act_now(state: &BattleState, index: usize) -> bool {
 /// Resolve the combat phase: pair up skills into clashes in speed order.
 pub fn resolve_combat(state: &mut BattleState, library: &Library, mechanics: &MechanicsBook) -> Vec<ClashResult> {
     let mut results = Vec::new();
-    let mut pending: Vec<(usize, SubmittedAction, Option<usize>)> = Vec::new();
     let mut actions = state.actions.clone();
     // A Corroding Sinner "will go out of control and use E.G.O Corrosion Skills
     // indiscriminately": their submitted action is replaced by the Corrosion
@@ -5088,11 +5147,25 @@ pub fn resolve_combat(state: &mut BattleState, library: &Library, mechanics: &Me
     });
 
     compute_resonance(state, library);
+    // Passives' "[Combat Start]" clauses: they belong to the turn's Skill
+    // selection, so they run here - after the panel is submitted and the Sin
+    // Resonance of the selection is known.
+    for index in 0..state.units.len() {
+        if !state.units[index].alive {
+            continue;
+        }
+        let target = state
+            .units
+            .iter()
+            .position(|u| u.alive && u.kind.is_sinner() != state.units[index].kind.is_sinner());
+        apply_passive_phase(state, index, target, |m| &m.combat_start);
+    }
     // Defense Skills are not attacks: they arm the unit for the turn.  A
     // "[Clashable Guard]" / "[Clashable Counter]" stays in the queue, so it can
     // be matched against an enemy attack like any other Skill, and only arms the
     // unit when nothing clashes with it (wiki.gg `Battles` / Defense Skills).
     let mut pending: Vec<(usize, SubmittedAction, Option<usize>)> = Vec::new();
+    let _ = &mut pending;
     let mut clashable_defenses: Vec<(usize, u32, DefenseKind)> = Vec::new();
     for (index, action, target) in pending_draft {
         if let Some(kind) = action_defense_kind(state, library, &action) {
@@ -5443,21 +5516,15 @@ fn compute_resonance(state: &mut BattleState, library: &Library) {
             table.push((action.slot, sin.index() as u32));
         }
     }
-    // Sorted by slot index (the Dashboard reads left to right).
-    table.sort();
+    // Sorted by slot index only (the Dashboard reads left to right); a stable
+    // sort keeps the order the Skills were submitted in within a Slot, which is
+    // what the Resonance chain is read from.
+    table.sort_by_key(|(slot, _)| *slot);
     for (_, index) in table.iter() {
         *state
             .resonance
             .entry(sin_key_by_index(*index).to_string())
             .or_insert(0) += 1;
-    }
-    let highest = highest_resonance(state);
-    let longest = state.a_resonance.values().copied().max().unwrap_or(0);
-    let counts = state.resonance.clone();
-    for unit in state.units.iter_mut() {
-        unit.resonance_max = highest;
-        unit.a_reson_max = longest;
-        unit.resonance_of = counts.clone();
     }
     // Longest run of consecutive equal affinities.
     let mut run_key: Option<u32> = None;
@@ -5477,6 +5544,16 @@ fn compute_resonance(state: &mut BattleState, library: &Library) {
             *entry = (*entry).max(run_len);
         }
     }
+    // The units read the finished tables (an Absolute Resonance value copied
+    // before the chains were measured would always be 0).
+    let highest = highest_resonance(state);
+    let longest = state.a_resonance.values().copied().max().unwrap_or(0);
+    let counts = state.resonance.clone();
+    for unit in state.units.iter_mut() {
+        unit.resonance_max = highest;
+        unit.a_reson_max = longest;
+        unit.resonance_of = counts.clone();
+    }
 }
 
 /// Affinity of a Skill, looked up in the library (identity skills first, then
@@ -5494,6 +5571,27 @@ fn sin_of(library: &Library, skill: &SkillId) -> Option<Sin> {
             .find(|s| s.skill_id() == skill.0 || s.display_name() == skill.0)
         {
             return record.sin();
+        }
+    }
+    // E.G.O Skills are submitted as `<ego id>.awakening` / `<ego id>.corrosion`
+    // and take part in Resonance like any other Skill.
+    if let Some(record) = library.ego(&crate::ids::EgoId::new(skill.0.clone())) {
+        // An E.G.O action is submitted under its bare id; Awakening and
+        // Corrosion share the same affinity.
+        if let Some(part) = record.awakening.as_ref().or(record.corrosion.as_ref()) {
+            return part.sin();
+        }
+    }
+    if let Some((ego_id, kind)) = skill.0.split_once('.') {
+        if let Some(record) = library.ego(&crate::ids::EgoId::new(ego_id)) {
+            let part = if kind == "corrosion" {
+                record.corrosion.as_ref()
+            } else {
+                record.awakening.as_ref()
+            };
+            if let Some(part) = part {
+                return part.sin();
+            }
         }
     }
     None
@@ -5655,12 +5753,18 @@ fn build_action_use(
         let record = library.ego(&ego_id)?.clone();
         let mut use_ = build_ego_use(state, library, mechanics, unit_index, &ego_id, kind)?;
         use_.slot = action.slot;
+        // The resources are spent here, the **SP** cost is paid at [Before Attack]
+        // (see `one_sided_attack`): paying it before the Clash would lower the
+        // Heads rate of the Clash it takes part in.
+        let sp_cost = ego_sp_cost(&record, kind);
+        use_.ctx.ego_sp_pending = Some(sp_cost);
         let mut detail = pay_ego(state, unit_index, &record, kind);
         // Random Corrosion: with negative SP an E.G.O may fire its Corrosion
         // Skill instead of its Awakening one.  The chance depends on the SP left
         // after paying: -24 or higher 0%, -25..-34 25%, -35..-44 75%, -45 100%
         // (JA-wiki 戦闘システム詳細 / ランダム侵蝕の仕様).
-        if let Some(chance) = corrosion_chance(state, unit_index)
+        let projected_sp = state.units[unit_index].sanity.sp() - sp_cost;
+        if let Some(chance) = corrosion_chance_for_sp(projected_sp)
         {
             if state.flip(chance) {
                 if let Some(corrosion) = build_ego_use(
@@ -5899,6 +6003,39 @@ fn apply_clash_result(
     for note in notes {
         state.warnings.push(note);
     }
+    // "[Attack End] If target is killed, Reuse this Skill on the target that has
+    // the highest HP (once per turn)" (Smite the Wicked).  The clause is written
+    // under [Attack End], so the repeat can only start once that list resolved.
+    let killed_target = target_index
+        .map(|index| !state.units[index].alive)
+        .unwrap_or(false);
+    if use_.ctx.reuse_on_kill
+        && killed_target
+        && state.units[unit_index].alive
+        && state.units[unit_index]
+            .turn_effect_usage
+            .get("reuse_on_kill")
+            .copied()
+            .unwrap_or(0)
+            < 1
+    {
+        state.units[unit_index]
+            .turn_effect_usage
+            .insert("reuse_on_kill".to_string(), 1);
+        if let Some(next) = target_index.and_then(|defender| {
+            next_reuse_target(state, defender, unit_index)
+        }) {
+            let mut repeat = use_.clone();
+            for coin in repeat.coins.iter_mut() {
+                coin.state = CoinState::Fresh;
+                coin.heads = None;
+            }
+            repeat.ctx.accumulated = 0;
+            repeat.ctx.reuse_on_kill = false;
+            state.push_log("reuse", format!("{} was reused", use_.name));
+            one_sided_attack(state, unit_index, next, &mut repeat, 0);
+        }
+    }
 }
 
 fn apply_attack_end(
@@ -5926,6 +6063,39 @@ fn apply_attack_end(
     apply_effects(state, &list, &mut ctx, &mut use_.ctx);
     for note in notes {
         state.warnings.push(note);
+    }
+    // "[Attack End] If target is killed, Reuse this Skill on the target that has
+    // the highest HP (once per turn)" (Smite the Wicked).  The clause is written
+    // under [Attack End], so the repeat can only start once that list resolved.
+    let killed_target = target_index
+        .map(|index| !state.units[index].alive)
+        .unwrap_or(false);
+    if use_.ctx.reuse_on_kill
+        && killed_target
+        && state.units[unit_index].alive
+        && state.units[unit_index]
+            .turn_effect_usage
+            .get("reuse_on_kill")
+            .copied()
+            .unwrap_or(0)
+            < 1
+    {
+        state.units[unit_index]
+            .turn_effect_usage
+            .insert("reuse_on_kill".to_string(), 1);
+        if let Some(next) = target_index.and_then(|defender| {
+            next_reuse_target(state, defender, unit_index)
+        }) {
+            let mut repeat = use_.clone();
+            for coin in repeat.coins.iter_mut() {
+                coin.state = CoinState::Fresh;
+                coin.heads = None;
+            }
+            repeat.ctx.accumulated = 0;
+            repeat.ctx.reuse_on_kill = false;
+            state.push_log("reuse", format!("{} was reused", use_.name));
+            one_sided_attack(state, unit_index, next, &mut repeat, 0);
+        }
     }
 }
 

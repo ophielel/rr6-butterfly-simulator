@@ -379,7 +379,7 @@ PATTERNS = [
                 "include_self": False}),
     (re.compile(rf"^Heal \(# of Coin {N} hits x {N}\) SP$"),
      lambda m: {"kind": "heal_per_coin_hits", "value": int(m.group(2)),
-                "ally": "self"}),
+                "coin_index": int(m.group(1)), "ally": "self"}),
     (re.compile(rf"^Heal {N} SP$"),
      lambda m: {"kind": "sp_heal", "value": int(m.group(1))}),
     (re.compile(rf"^Heal {N} (?:other )?allies with the lowest HP percentages by \({N} \+ \({ST} on the main target \+ {ST} Count on the main target\)/{N}\)% HP \(max {N}%\)$"),

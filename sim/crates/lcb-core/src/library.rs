@@ -186,6 +186,12 @@ impl IdentityRecord {
     }
 }
 
+impl EgoSkill {
+    pub fn sin(&self) -> Option<Sin> {
+        self.sin.as_deref().and_then(Sin::parse)
+    }
+}
+
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
 pub struct EgoSkill {
     #[serde(default)]

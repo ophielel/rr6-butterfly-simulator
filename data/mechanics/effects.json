@@ -8848,6 +8848,7 @@
    "attack_end": [
     {
      "ally": "self",
+     "coin_index": 3,
      "kind": "heal_per_coin_hits",
      "raw": "[Attack End] Heal (# of Coin 3 hits x 2) SP",
      "value": 2

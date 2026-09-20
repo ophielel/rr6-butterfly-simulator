@@ -1714,7 +1714,7 @@ fn section5_golden_replay_is_deterministic() {
     assert_eq!(first_hp, vec![25489, 25383, 25280], "Imago HP after turns 1-3");
     assert_eq!(
         format!("{first_hash:016x}"),
-        "6ac5ae88854825d4",
+        "e2684ebc90e9942f",
         "recorded state hash"
     );
 }
@@ -2122,9 +2122,13 @@ fn fixed_content_skills_all_resolve_mechanics() {
 #[test]
 fn first_turn_already_applies_passives() {
     let sim = sim();
-    let state = sim
+    let mut state = sim
         .new_encounter(&fixed::TEAM, &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
         .unwrap();
+    // A passive's "[Combat Start]" belongs to the turn's Skill selection, so it
+    // resolves once the panel is submitted (see `resolve_combat`).
+    state.actions.clear();
+    battle::resolve_combat(&mut state, &sim.library, &sim.mechanics);
     let jeong = state
         .units
         .iter()
@@ -2154,9 +2158,13 @@ fn first_turn_already_applies_passives() {
 #[test]
 fn support_passives_are_not_applied() {
     let sim = sim();
-    let state = sim
+    let mut state = sim
         .new_encounter(&fixed::TEAM, &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
         .unwrap();
+    // A passive's "[Combat Start]" belongs to the turn's Skill selection, so it
+    // resolves once the panel is submitted (see `resolve_combat`).
+    state.actions.clear();
+    battle::resolve_combat(&mut state, &sim.library, &sim.mechanics);
     let support_notes: Vec<String> = sim
         .passives
         .passives
@@ -3208,4 +3216,512 @@ fn turn_advances_phase_and_logs() {
     assert!(state.turn >= 2);
     assert!(matches!(state.phase, Phase::AwaitingActions | Phase::Finished));
     let _ = EncounterBuilder::new(&sim.library, &sim.mechanics);
+}
+
+// ------------------------------------------------------------------------- //
+// Full-review regressions (REVIEW_SIMULATOR_FULL.md)
+// ------------------------------------------------------------------------- //
+
+/// A flat conditional bonus is not scaled by the value in its condition.
+/// "If the sum of the target's [Sinking] and both [Butterfly] is 6 or higher,
+/// Coin Power +1" (Sinclair's Solemn Lament) is a threshold, so 4 or 10 Sinking
+/// both give +1.  Source: in-game Skill text.
+#[test]
+fn flat_conditional_bonus_is_not_scaled_by_its_condition() {
+    let sim = sim();
+    for (sinking, expected) in [(0, 0), (4, 1), (10, 1)] {
+        let mut state = sim
+            .new_encounter(&["11004"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+            .unwrap();
+        state.units[1].statuses.add_potency("Sinking", sinking);
+        let mut use_ = battle::build_use(
+            &state,
+            &sim.library,
+            &sim.mechanics,
+            0,
+            &SkillId::new("1100401"),
+        )
+        .unwrap();
+        battle::prepare_use_for_test(
+            &mut state,
+            &sim.library,
+            &sim.mechanics,
+            0,
+            Some(1),
+            &mut use_,
+        );
+        assert_eq!(
+            use_.ctx.coin_power_bonus, expected,
+            "Sinking {sinking} must give a flat Coin Power bonus"
+        );
+    }
+}
+
+/// A Clash Power clause written by the Skill reaches `match_power`, and the
+/// generic Power statuses reach the accumulating attack power as well as the
+/// Final Power.  Source: wiki.gg `Status Effects` / `Clash`.
+#[test]
+fn power_modifiers_reach_both_clash_and_attack() {
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&["11214"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    state.units[1].statuses.add_stack("Dazzle", 1);
+    let mut use_ = battle::build_use(
+        &state,
+        &sim.library,
+        &sim.mechanics,
+        0,
+        &SkillId::new("1121403"),
+    )
+    .unwrap();
+    battle::prepare_use_for_test(
+        &mut state,
+        &sim.library,
+        &sim.mechanics,
+        0,
+        Some(1),
+        &mut use_,
+    );
+    assert!(use_.ctx.clash_power_bonus > 0, "the Skill grants Clash Power");
+    let opponent = use_.clone();
+    let with_bonus = battle::match_power(&mut state, 0, 1, &mut use_, &opponent);
+    use_.ctx.clash_power_bonus = 0;
+    let without = battle::match_power(&mut state, 0, 1, &mut use_, &opponent);
+    assert!(
+        with_bonus > without,
+        "match_power must read the Skill's Clash Power bonus ({with_bonus} vs {without})"
+    );
+
+    // "Attack Power Up" now raises the attack itself, not only `final_power`.
+    let mut state = sim
+        .new_encounter(&["11214"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    let mut plain = {
+        let mut use_ = battle::build_use(
+            &state,
+            &sim.library,
+            &sim.mechanics,
+            0,
+            &SkillId::new("1121401"),
+        )
+        .unwrap();
+        for coin in use_.coins.iter_mut() {
+            coin.heads = Some(true);
+        }
+        use_
+    };
+    let plain_hits = battle::one_sided_attack(&mut state.clone(), 0, 1, &mut plain, 0);
+    state.units[0].statuses.add_count("Attack Power Up", 3);
+    let mut boosted = {
+        let mut use_ = battle::build_use(
+            &state,
+            &sim.library,
+            &sim.mechanics,
+            0,
+            &SkillId::new("1121401"),
+        )
+        .unwrap();
+        for coin in use_.coins.iter_mut() {
+            coin.heads = Some(true);
+        }
+        use_
+    };
+    let boosted_hits = battle::one_sided_attack(&mut state, 0, 1, &mut boosted, 0);
+    assert_eq!(
+        boosted_hits[0].power - plain_hits[0].power,
+        3,
+        "Attack Power Up raises the attack power"
+    );
+}
+
+/// A Coin's own damage clause applies to that Coin ("At less than 50% HP or if
+/// the target has [Dazzle], deal +60% damage") and does not leak into the next
+/// one.  Source: in-game Skill text.
+#[test]
+fn coin_damage_clause_applies_to_its_own_coin() {
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&["11214"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    state.units[1].statuses.add_stack("Dazzle", 1);
+    let mut use_ = battle::build_use(
+        &state,
+        &sim.library,
+        &sim.mechanics,
+        0,
+        &SkillId::new("1121403"),
+    )
+    .unwrap();
+    for coin in use_.coins.iter_mut() {
+        coin.heads = Some(true);
+    }
+    state.preset_flips = vec![false; 256];
+    state.flip_cursor = 0;
+    let hits = battle::one_sided_attack(&mut state, 0, 1, &mut use_, 0);
+    let last = hits.last().expect("hits").damage;
+    let without = {
+        let mut state = sim
+            .new_encounter(&["11214"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+            .unwrap();
+        state.units[1].statuses.add_stack("Dazzle", 1);
+        let mut use_ = battle::build_use(
+            &state,
+            &sim.library,
+            &sim.mechanics,
+            0,
+            &SkillId::new("1121403"),
+        )
+        .unwrap();
+        for coin in use_.coins.iter_mut() {
+            coin.heads = Some(true);
+        }
+        state.preset_flips = vec![false; 256];
+        state.flip_cursor = 0;
+        let clauses: Vec<Vec<lcb_core::effects::Effect>> = use_
+            .mechanics
+            .coins
+            .values_mut()
+            .map(|effects| {
+                effects.retain(|effect| effect.kind != "damage_percent");
+                effects.clone()
+            })
+            .collect();
+        let _ = clauses;
+        battle::one_sided_attack(&mut state, 0, 1, &mut use_, 0)
+            .last()
+            .expect("hits")
+            .damage
+    };
+    assert!(
+        last > without,
+        "the last Coin's +60% must land on that Coin ({last} vs {without})"
+    );
+    assert_eq!(use_.ctx.damage_bonus, 0.0, "the bonus stays with its Coin");
+}
+
+/// Stagger lines are consumed: a second crossing escalates to 混乱+ without
+/// refreshing the duration, and a recovered unit does not re-Stagger on 1 HP.
+/// Source: JA-wiki 戦闘システム詳細 ("混乱区間はステージ中復活しない").
+#[test]
+fn stagger_lines_are_consumed_and_escalate() {
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&["10414"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    let max = state.units[0].max_hp;
+    state.units[0].hp = max * 60 / 100;
+    assert!(battle::check_stagger(&mut state, 0));
+    assert_eq!(state.units[0].stagger.level, 1);
+    state.units[0].hp = max * 30 / 100;
+    battle::check_stagger(&mut state, 0);
+    assert_eq!(state.units[0].stagger.level, 2, "crossing again escalates");
+    // Recover, then take 1 damage above the remaining lines.
+    state.units[0].stagger.turns_remaining = 0;
+    state.units[0].stagger.level = 0;
+    state.units[0].hp = max * 40 / 100;
+    assert!(
+        !battle::check_stagger(&mut state, 0),
+        "a consumed line does not come back"
+    );
+    assert_eq!(state.units[0].stagger.consumed, 2);
+}
+
+/// Stagger lines are HP amounts: a 10 Potency [Tremor Burst] moves the line by
+/// 10 HP, not by 10% of max HP.
+#[test]
+fn stagger_thresholds_move_in_hp() {
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&["11114"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    state.units[1].statuses.add_potency("Tremor", 10);
+    state.units[1].statuses.add_count("Tremor", 5);
+    let before = state.units[1].stagger.threshold_hp(0).unwrap();
+    let effect = lcb_core::effects::Effect {
+        kind: "tremor_burst".to_string(),
+        ..Default::default()
+    };
+    battle::apply_effects_for_test(
+        &mut state,
+        &[effect],
+        0,
+        Some(1),
+        &mut Vec::new(),
+        &mut battle::UseContext::default(),
+    );
+    assert_eq!(state.units[1].stagger.threshold_hp(0).unwrap(), before + 10);
+}
+
+/// "[Clashable Guard]" / "[Clashable Counter]" Skills take part in a Clash
+/// instead of only arming the unit, and a normal Counter answers once per
+/// incoming Skill.  Source: wiki.gg `Battles` / Defense Skills.
+#[test]
+fn clashable_defenses_take_part_in_clashes() {
+    let sim = sim();
+    for (identity, defense) in [("10913", "1091304"), ("10813", "1081304")] {
+        let mut state = sim
+            .new_encounter(&[identity], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+            .unwrap();
+        state.actions = vec![
+            lcb_core::state::SubmittedAction {
+                actor: state.units[0].id.clone(),
+                target: Some(state.units[1].id.clone()),
+                skill: SkillId::new(defense),
+                slot: 0,
+                is_ego: false,
+                ego: None,
+                ego_kind: None,
+                enemy_slot: None,
+                used_top: false,
+            },
+            lcb_core::state::SubmittedAction {
+                actor: state.units[1].id.clone(),
+                target: Some(state.units[0].id.clone()),
+                skill: SkillId::new("956701"),
+                slot: 0,
+                is_ego: false,
+                ego: None,
+                ego_kind: None,
+                enemy_slot: None,
+                used_top: false,
+            },
+        ];
+        state.preset_flips = vec![true; 256];
+        let results = battle::resolve_combat(&mut state, &sim.library, &sim.mechanics);
+        assert_eq!(results.len(), 1, "{defense} must Clash");
+        assert_eq!(
+            state.log.iter().filter(|entry| entry.kind == "counter").count(),
+            0,
+            "{defense} clashed, so no Counter fires"
+        );
+    }
+}
+
+/// An Atk Weight splash resolves the full hit for every extra target (its own On
+/// Hit clauses and its own triggers), while the user's own events stay with the
+/// main target.  Source: wiki.gg `Battles` / Atk Weight.
+#[test]
+fn splash_targets_resolve_their_own_hit() {
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(
+            &[fixed::TEAM[0], fixed::TEAM[1], fixed::TEAM[2]],
+            &[fixed::BOSS_IMAGO],
+            3,
+            BattleConfig::default(),
+        )
+        .unwrap();
+    for index in 0..3 {
+        state.units[index].hp = 10_000;
+        state.units[index].max_hp = 10_000;
+        state.units[index].statuses = lcb_core::state::StatusSet::default();
+    }
+    let mut use_ = battle::build_use(
+        &state,
+        &sim.library,
+        &sim.mechanics,
+        3,
+        &SkillId::new("956706"),
+    )
+    .unwrap();
+    battle::prepare_use_for_test(
+        &mut state,
+        &sim.library,
+        &sim.mechanics,
+        3,
+        Some(0),
+        &mut use_,
+    );
+    let mut hits = Vec::new();
+    for coin in use_.coins.iter_mut() {
+        coin.heads = Some(true);
+    }
+    state.preset_flips = vec![false; 256];
+    hits.extend(battle::one_sided_attack(&mut state, 3, 0, &mut use_, 0));
+    battle::splash_attack_for_test(&mut state, 3, 0, &mut use_, &hits, 0);
+    for index in 0..3 {
+        assert!(
+            state.units[index].statuses.potency("Burn") > 0,
+            "target {index} must receive the Coin's [On Hit] clause"
+        );
+    }
+}
+
+/// A per-turn / per-encounter allowance is only spent once the clause resolves:
+/// five failed "At 2 or fewer [LCA Fracture Round], [Reload]" checks must not
+/// exhaust the encounter budget.  Source: in-game Skill text.
+#[test]
+fn failed_conditions_do_not_spend_the_allowance() {
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&["11114"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    let use_ = battle::build_use(
+        &state,
+        &sim.library,
+        &sim.mechanics,
+        0,
+        &SkillId::new("1111403"),
+    )
+    .unwrap();
+    let reload: Vec<lcb_core::effects::Effect> = use_
+        .mechanics
+        .attack_end
+        .iter()
+        .filter(|effect| effect.kind == "reload_ammo")
+        .cloned()
+        .collect();
+    assert!(!reload.is_empty(), "the Skill has a Reload clause");
+    state.units[0].statuses.add_potency("LCA Fracture Round", 10);
+    for _ in 0..5 {
+        battle::apply_effects_for_test(
+            &mut state,
+            &reload,
+            0,
+            Some(1),
+            &mut Vec::new(),
+            &mut battle::UseContext::default(),
+        );
+    }
+    assert!(
+        state.units[0].turn_effect_usage.is_empty(),
+        "failed checks must not spend the limit: {:?}",
+        state.units[0].turn_effect_usage
+    );
+}
+
+/// A hit resolves damage, then the defender's own effects, then the attacker's
+/// [On Hit] clauses - so a freshly inflicted [Sinking] survives the hit that
+/// applied it.  Source: JA-wiki ダメージ / 攻撃の流れ.
+#[test]
+fn freshly_inflicted_status_survives_its_own_hit() {
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&["11004"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    let mut use_ = battle::build_use(
+        &state,
+        &sim.library,
+        &sim.mechanics,
+        0,
+        &SkillId::new("1100401"),
+    )
+    .unwrap();
+    // Only the first Coin (whose [Heads Hit] inflicts Sinking) lands.
+    use_.coins.truncate(1);
+    use_.coins[0].heads = Some(true);
+    state.preset_flips = vec![false; 128];
+    battle::one_sided_attack(&mut state, 0, 1, &mut use_, 0);
+    assert!(
+        state.units[1].statuses.potency("Sinking") > 0,
+        "the Sinking applied by this hit must not be consumed by it"
+    );
+}
+
+/// Status components agree between writer and reader: "Gain 1 [Plus Coin Boost]"
+/// fills Count (its text says it works by Count), and a Stack-measured status
+/// keeps its Stack through the "next turn" queue.  Source: in-game status text.
+#[test]
+fn status_components_round_trip() {
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&["11214"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    state.units[1].statuses.add_stack("Dazzle", 3);
+    let use_ = battle::build_use(
+        &state,
+        &sim.library,
+        &sim.mechanics,
+        0,
+        &SkillId::new("1121403"),
+    )
+    .unwrap();
+    battle::apply_effects_for_test(
+        &mut state,
+        &use_.mechanics.attack_end.clone(),
+        0,
+        Some(1),
+        &mut Vec::new(),
+        &mut battle::UseContext::default(),
+    );
+    battle::begin_turn(&mut state, &sim.library, &sim.mechanics, &sim.scripts);
+    let mut next = battle::build_use(
+        &state,
+        &sim.library,
+        &sim.mechanics,
+        0,
+        &SkillId::new("1121401"),
+    )
+    .unwrap();
+    battle::prepare_use_for_test(
+        &mut state,
+        &sim.library,
+        &sim.mechanics,
+        0,
+        Some(1),
+        &mut next,
+    );
+    assert_eq!(
+        next.ctx.coin_power_boost, 1,
+        "Plus Coin Boost must be read from the component it was written to"
+    );
+
+    // "Inflict 3 [Blue Sand] next turn" keeps its Stack.
+    let mut state = sim
+        .new_encounter(&["11114"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    let use_ = battle::build_use(
+        &state,
+        &sim.library,
+        &sim.mechanics,
+        0,
+        &SkillId::new("1111403"),
+    )
+    .unwrap();
+    let sand: Vec<lcb_core::effects::Effect> = use_
+        .mechanics
+        .coin(2)
+        .iter()
+        .filter(|effect| effect.status.as_deref() == Some("Blue Sand"))
+        .cloned()
+        .collect();
+    battle::apply_effects_for_test(
+        &mut state,
+        &sand,
+        0,
+        Some(1),
+        &mut Vec::new(),
+        &mut battle::UseContext::default(),
+    );
+    assert!(
+        state.units[1].pending_next_turn.iter().any(|entry| entry.stack == 3),
+        "the queued Blue Sand keeps its Stack"
+    );
+    battle::begin_turn(&mut state, &sim.library, &sim.mechanics, &sim.scripts);
+    assert_eq!(state.units[1].statuses.stack("Blue Sand"), 3);
+}
+
+/// A Boss decides its state of time **before** that state's Turn Start passive
+/// runs, so a switch to Future already uses Future's bonuses.
+/// Source: wiki.gg `Butterfly of Entangled Lives::Imago` passives.
+#[test]
+fn time_state_is_decided_before_its_turn_start_passive() {
+    use lcb_core::scripts::TimeState;
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&["11004"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    let enemy = state.units.iter().position(|u| !u.kind.is_sinner()).unwrap();
+    state.units[enemy].time_state = Some(TimeState::Present);
+    state.units[enemy].statuses.remove("Poise");
+    state.units[enemy].statuses.set_stack("In the Present", 10);
+    state.units[enemy].statuses.set_stack("In the Future", 20);
+    battle::begin_turn(&mut state, &sim.library, &sim.mechanics, &sim.scripts);
+    assert_eq!(state.units[enemy].time_state, Some(TimeState::Future));
+    assert_eq!(
+        state.units[enemy].statuses.potency("Poise"),
+        0,
+        "the Future passive must run, not the Present one"
+    );
 }

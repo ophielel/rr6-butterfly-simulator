@@ -75,7 +75,7 @@ Behaviour parsed from each status's own text (`data/mechanics/status_effects.jso
 | Protection | 0 | 0 | 0 | 1 |
 | Sheut Fracture | 0 | 0 | 0 | 5 |
 | Sinking | 0 | 0 | 0 | 3 |
-| Tear-sharpened | 1 | 1 | 2 | 2 |
+| Tear-sharpened | 1 | 0 | 2 | 2 |
 | The Living & The Departed | 0 | 0 | 0 | 5 |
 | The Udjat -Vanguard- | 0 | 1 | 0 | 6 |
 | Tremor | 0 | 0 | 0 | 2 |
