@@ -8,6 +8,7 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "kind": "spend_ammo",
       "raw": "Spend 1 [The Living & The Departed]",
       "status": "The Living & The Departed",
@@ -15,6 +16,7 @@
      },
      {
       "ammo": "The Living & The Departed",
+      "coin_index": 1,
       "kind": "inflict_equal_ammo_spent",
       "raw": "[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
       "status": "Butterfly"
@@ -22,6 +24,7 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "kind": "spend_ammo",
       "raw": "Spend 1 [The Living & The Departed]",
       "status": "The Living & The Departed",
@@ -29,6 +32,7 @@
      },
      {
       "ammo": "The Living & The Departed",
+      "coin_index": 2,
       "kind": "inflict_equal_ammo_spent",
       "raw": "[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
       "status": "Butterfly"
@@ -61,6 +65,7 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "kind": "spend_ammo",
       "raw": "Spend 1 [The Living & The Departed]",
       "status": "The Living & The Departed",
@@ -68,6 +73,7 @@
      },
      {
       "ammo": "The Living & The Departed",
+      "coin_index": 1,
       "kind": "inflict_equal_ammo_spent",
       "raw": "[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
       "status": "Butterfly"
@@ -75,6 +81,7 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "kind": "spend_ammo",
       "raw": "Spend 1 [The Living & The Departed]",
       "status": "The Living & The Departed",
@@ -82,6 +89,7 @@
      },
      {
       "ammo": "The Living & The Departed",
+      "coin_index": 2,
       "kind": "inflict_equal_ammo_spent",
       "raw": "[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
       "status": "Butterfly"
@@ -130,6 +138,7 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "kind": "spend_ammo",
       "raw": "Spend 1 [The Living & The Departed]",
       "status": "The Living & The Departed",
@@ -137,6 +146,7 @@
      },
      {
       "ammo": "The Living & The Departed",
+      "coin_index": 1,
       "kind": "inflict_equal_ammo_spent",
       "raw": "[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
       "status": "Butterfly"
@@ -144,6 +154,7 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "kind": "spend_ammo",
       "raw": "Spend 1 [The Living & The Departed]",
       "status": "The Living & The Departed",
@@ -151,6 +162,7 @@
      },
      {
       "ammo": "The Living & The Departed",
+      "coin_index": 2,
       "kind": "inflict_equal_ammo_spent",
       "raw": "[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
       "status": "Butterfly"
@@ -199,6 +211,7 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "kind": "spend_ammo",
       "raw": "Spend 1 [The Living & The Departed]",
       "status": "The Living & The Departed",
@@ -206,6 +219,7 @@
      },
      {
       "ammo": "The Living & The Departed",
+      "coin_index": 1,
       "kind": "inflict_equal_ammo_spent",
       "raw": "[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
       "status": "Butterfly"
@@ -213,6 +227,7 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "kind": "spend_ammo",
       "raw": "Spend 1 [The Living & The Departed]",
       "status": "The Living & The Departed",
@@ -220,6 +235,7 @@
      },
      {
       "ammo": "The Living & The Departed",
+      "coin_index": 2,
       "kind": "inflict_equal_ammo_spent",
       "raw": "[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
       "status": "Butterfly"
@@ -271,6 +287,7 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "kind": "spend_ammo",
       "raw": "Spend 5 [The Living & The Departed]",
       "status": "The Living & The Departed",
@@ -278,6 +295,7 @@
      },
      {
       "ammo": "The Living & The Departed",
+      "coin_index": 1,
       "kind": "inflict_equal_ammo_spent",
       "raw": "[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
       "status": "Butterfly"
@@ -285,6 +303,7 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "kind": "spend_ammo",
       "raw": "Spend 1 [The Living & The Departed]",
       "status": "The Living & The Departed",
@@ -292,6 +311,7 @@
      },
      {
       "ammo": "The Living & The Departed",
+      "coin_index": 2,
       "kind": "inflict_equal_ammo_spent",
       "raw": "[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
       "status": "Butterfly"
@@ -332,6 +352,7 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "kind": "spend_ammo",
       "raw": "Spend 5 [The Living & The Departed]",
       "status": "The Living & The Departed",
@@ -339,6 +360,7 @@
      },
      {
       "ammo": "The Living & The Departed",
+      "coin_index": 1,
       "kind": "inflict_equal_ammo_spent",
       "raw": "[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
       "status": "Butterfly"
@@ -346,6 +368,7 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "kind": "spend_ammo",
       "raw": "Spend 1 [The Living & The Departed]",
       "status": "The Living & The Departed",
@@ -353,6 +376,7 @@
      },
      {
       "ammo": "The Living & The Departed",
+      "coin_index": 2,
       "kind": "inflict_equal_ammo_spent",
       "raw": "[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
       "status": "Butterfly"
@@ -422,6 +446,7 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "kind": "spend_ammo",
       "raw": "Spend 5 [The Living & The Departed]",
       "status": "The Living & The Departed",
@@ -429,6 +454,7 @@
      },
      {
       "ammo": "The Living & The Departed",
+      "coin_index": 1,
       "kind": "inflict_equal_ammo_spent",
       "raw": "[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
       "status": "Butterfly"
@@ -436,6 +462,7 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "kind": "spend_ammo",
       "raw": "Spend 1 [The Living & The Departed]",
       "status": "The Living & The Departed",
@@ -443,6 +470,7 @@
      },
      {
       "ammo": "The Living & The Departed",
+      "coin_index": 2,
       "kind": "inflict_equal_ammo_spent",
       "raw": "[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
       "status": "Butterfly"
@@ -512,6 +540,7 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "kind": "spend_ammo",
       "raw": "Spend 5 [The Living & The Departed]",
       "status": "The Living & The Departed",
@@ -519,6 +548,7 @@
      },
      {
       "ammo": "The Living & The Departed",
+      "coin_index": 1,
       "kind": "inflict_equal_ammo_spent",
       "raw": "[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
       "status": "Butterfly"
@@ -526,6 +556,7 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "kind": "spend_ammo",
       "raw": "Spend 1 [The Living & The Departed]",
       "status": "The Living & The Departed",
@@ -533,6 +564,7 @@
      },
      {
       "ammo": "The Living & The Departed",
+      "coin_index": 2,
       "kind": "inflict_equal_ammo_spent",
       "raw": "[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
       "status": "Butterfly"
@@ -610,6 +642,7 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "kind": "spend_ammo",
       "raw": "Spend 1 [The Living & The Departed]",
       "status": "The Living & The Departed",
@@ -617,6 +650,7 @@
      },
      {
       "ammo": "The Living & The Departed",
+      "coin_index": 1,
       "kind": "inflict_equal_ammo_spent",
       "raw": "[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
       "status": "Butterfly"
@@ -624,6 +658,7 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "kind": "spend_ammo",
       "raw": "Spend 6 [The Living & The Departed]",
       "status": "The Living & The Departed",
@@ -631,6 +666,7 @@
      },
      {
       "ammo": "The Living & The Departed",
+      "coin_index": 2,
       "kind": "inflict_equal_ammo_spent",
       "raw": "[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
       "status": "Butterfly"
@@ -638,17 +674,20 @@
     ],
     "3": [
      {
+      "coin_index": 3,
       "kind": "spend_ammo_all",
       "raw": "Spend all of [The Living & The Departed] on self",
       "status": "The Living & The Departed"
      },
      {
       "ammo": "The Living & The Departed",
+      "coin_index": 3,
       "kind": "inflict_equal_ammo_spent",
       "raw": "[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
       "status": "Butterfly"
      },
      {
+      "coin_index": 3,
       "kind": "damage_percent_per_ammo_spent",
       "raw": "[On Hit] Deal +2% damage for every value of [The Living & The Departed] spent by this Skill",
       "status": "The Living & The Departed",
@@ -657,10 +696,12 @@
     ],
     "4": [
      {
+      "coin_index": 4,
       "kind": "noop",
       "raw": "\"All\" = the sum of both The Living and The Departed on target"
      },
      {
+      "coin_index": 4,
       "kind": "gloom_damage_equal_target_status",
       "raw": "[On Hit] Inflict Gloom Damage equal to \"All\" [Butterfly] on target",
       "status": "Butterfly"
@@ -712,6 +753,7 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "kind": "spend_ammo",
       "raw": "Spend 1 [The Living & The Departed]",
       "status": "The Living & The Departed",
@@ -719,6 +761,7 @@
      },
      {
       "ammo": "The Living & The Departed",
+      "coin_index": 1,
       "kind": "inflict_equal_ammo_spent",
       "raw": "[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
       "status": "Butterfly"
@@ -726,6 +769,7 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "kind": "spend_ammo",
       "raw": "Spend 6 [The Living & The Departed]",
       "status": "The Living & The Departed",
@@ -733,6 +777,7 @@
      },
      {
       "ammo": "The Living & The Departed",
+      "coin_index": 2,
       "kind": "inflict_equal_ammo_spent",
       "raw": "[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
       "status": "Butterfly"
@@ -740,17 +785,20 @@
     ],
     "3": [
      {
+      "coin_index": 3,
       "kind": "spend_ammo_all",
       "raw": "Spend all of [The Living & The Departed] on self",
       "status": "The Living & The Departed"
      },
      {
       "ammo": "The Living & The Departed",
+      "coin_index": 3,
       "kind": "inflict_equal_ammo_spent",
       "raw": "[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
       "status": "Butterfly"
      },
      {
+      "coin_index": 3,
       "kind": "damage_percent_per_ammo_spent",
       "raw": "[On Hit] Deal +2% damage for every value of [The Living & The Departed] spent by this Skill",
       "status": "The Living & The Departed",
@@ -759,10 +807,12 @@
     ],
     "4": [
      {
+      "coin_index": 4,
       "kind": "noop",
       "raw": "\"All\" = the sum of both The Living and The Departed on target"
      },
      {
+      "coin_index": 4,
       "kind": "gloom_damage_equal_target_status",
       "raw": "[On Hit] Inflict Gloom Damage equal to \"All\" [Butterfly] on target",
       "status": "Butterfly"
@@ -814,6 +864,7 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "kind": "spend_ammo",
       "raw": "Spend 1 [The Living & The Departed]",
       "status": "The Living & The Departed",
@@ -821,6 +872,7 @@
      },
      {
       "ammo": "The Living & The Departed",
+      "coin_index": 1,
       "kind": "inflict_equal_ammo_spent",
       "raw": "[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
       "status": "Butterfly"
@@ -828,6 +880,7 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "kind": "spend_ammo",
       "raw": "Spend 6 [The Living & The Departed]",
       "status": "The Living & The Departed",
@@ -835,6 +888,7 @@
      },
      {
       "ammo": "The Living & The Departed",
+      "coin_index": 2,
       "kind": "inflict_equal_ammo_spent",
       "raw": "[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
       "status": "Butterfly"
@@ -842,17 +896,20 @@
     ],
     "3": [
      {
+      "coin_index": 3,
       "kind": "spend_ammo_all",
       "raw": "Spend all of [The Living & The Departed] on self",
       "status": "The Living & The Departed"
      },
      {
       "ammo": "The Living & The Departed",
+      "coin_index": 3,
       "kind": "inflict_equal_ammo_spent",
       "raw": "[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
       "status": "Butterfly"
      },
      {
+      "coin_index": 3,
       "kind": "damage_percent_per_ammo_spent",
       "raw": "[On Hit] Deal +2% damage for every value of [The Living & The Departed] spent by this Skill",
       "status": "The Living & The Departed",
@@ -861,10 +918,12 @@
     ],
     "4": [
      {
+      "coin_index": 4,
       "kind": "noop",
       "raw": "\"All\" = the sum of both The Living and The Departed on target"
      },
      {
+      "coin_index": 4,
       "kind": "gloom_damage_equal_target_status",
       "raw": "[On Hit] Inflict Gloom Damage equal to \"All\" [Butterfly] on target",
       "status": "Butterfly"
@@ -916,6 +975,7 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "kind": "spend_ammo",
       "raw": "Spend 1 [The Living & The Departed]",
       "status": "The Living & The Departed",
@@ -923,6 +983,7 @@
      },
      {
       "ammo": "The Living & The Departed",
+      "coin_index": 1,
       "kind": "inflict_equal_ammo_spent",
       "raw": "[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
       "status": "Butterfly"
@@ -930,6 +991,7 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "kind": "spend_ammo",
       "raw": "Spend 6 [The Living & The Departed]",
       "status": "The Living & The Departed",
@@ -937,6 +999,7 @@
      },
      {
       "ammo": "The Living & The Departed",
+      "coin_index": 2,
       "kind": "inflict_equal_ammo_spent",
       "raw": "[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
       "status": "Butterfly"
@@ -944,17 +1007,20 @@
     ],
     "3": [
      {
+      "coin_index": 3,
       "kind": "spend_ammo_all",
       "raw": "Spend all of [The Living & The Departed] on self",
       "status": "The Living & The Departed"
      },
      {
       "ammo": "The Living & The Departed",
+      "coin_index": 3,
       "kind": "inflict_equal_ammo_spent",
       "raw": "[On Hit] Inflict [Butterfly] equal to [The Living & The Departed] spent",
       "status": "Butterfly"
      },
      {
+      "coin_index": 3,
       "kind": "damage_percent_per_ammo_spent",
       "raw": "[On Hit] Deal +4% damage for every value of [The Living & The Departed] spent by this Skill",
       "status": "The Living & The Departed",
@@ -963,10 +1029,12 @@
     ],
     "4": [
      {
+      "coin_index": 4,
       "kind": "noop",
       "raw": "\"All\" = the sum of both The Living and The Departed on target"
      },
      {
+      "coin_index": 4,
       "kind": "gloom_damage_equal_target_status",
       "raw": "[On Hit] Inflict Gloom Damage equal to \"All\" [Butterfly] on target",
       "status": "Butterfly"
@@ -1023,6 +1091,7 @@
    "combat_start": [
     {
      "kind": "reload_ammo",
+     "per_turn": 1,
      "raw": "[Combat Start] [Reload (Solemn Lament)] (once per turn)"
     }
    ],
@@ -1045,6 +1114,7 @@
    "combat_start": [
     {
      "kind": "reload_ammo",
+     "per_turn": 1,
      "raw": "[Combat Start] [Reload (Solemn Lament)] (once per turn)"
     }
    ],
@@ -1067,6 +1137,7 @@
    "combat_start": [
     {
      "kind": "reload_ammo",
+     "per_turn": 1,
      "raw": "[Combat Start] [Reload (Solemn Lament)] (once per turn)"
     }
    ],
@@ -1089,6 +1160,7 @@
    "combat_start": [
     {
      "kind": "reload_ammo",
+     "per_turn": 1,
      "raw": "[Combat Start] [Reload (Solemn Lament)] (once per turn)"
     },
     {
@@ -1123,12 +1195,14 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "kind": "spend_ammo",
       "raw": "Spend 1 [Bullet - Solitude]",
       "status": "Bullet - Solitude",
       "value": 1
      },
      {
+      "coin_index": 1,
       "count": 2,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +2 [Sinking] Count",
@@ -1137,12 +1211,14 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "kind": "spend_ammo",
       "raw": "Spend 1 [Bullet - Solitude]",
       "status": "Bullet - Solitude",
       "value": 1
      },
      {
+      "coin_index": 2,
       "kind": "inflict",
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Tremor]",
@@ -1169,12 +1245,14 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "kind": "spend_ammo",
       "raw": "Spend 1 [Bullet - Solitude]",
       "status": "Bullet - Solitude",
       "value": 1
      },
      {
+      "coin_index": 1,
       "count": 2,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +2 [Sinking] Count",
@@ -1183,12 +1261,14 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "kind": "spend_ammo",
       "raw": "Spend 1 [Bullet - Solitude]",
       "status": "Bullet - Solitude",
       "value": 1
      },
      {
+      "coin_index": 2,
       "kind": "inflict",
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Tremor]",
@@ -1230,12 +1310,14 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "kind": "spend_ammo",
       "raw": "Spend 1 [Bullet - Solitude]",
       "status": "Bullet - Solitude",
       "value": 1
      },
      {
+      "coin_index": 1,
       "count": 2,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +2 [Sinking] Count",
@@ -1244,12 +1326,14 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "kind": "spend_ammo",
       "raw": "Spend 1 [Bullet - Solitude]",
       "status": "Bullet - Solitude",
       "value": 1
      },
      {
+      "coin_index": 2,
       "kind": "inflict",
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Tremor]",
@@ -1291,12 +1375,14 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "kind": "spend_ammo",
       "raw": "Spend 1 [Bullet - Solitude]",
       "status": "Bullet - Solitude",
       "value": 1
      },
      {
+      "coin_index": 1,
       "count": 2,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +2 [Sinking] Count",
@@ -1305,12 +1391,14 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "kind": "spend_ammo",
       "raw": "Spend 1 [Bullet - Solitude]",
       "status": "Bullet - Solitude",
       "value": 1
      },
      {
+      "coin_index": 2,
       "kind": "inflict",
       "potency": 3,
       "raw": "[On Hit] Inflict 3 [Tremor]",
@@ -1354,12 +1442,14 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "kind": "spend_ammo",
       "raw": "Spend 1 [Bullet - Solitude]",
       "status": "Bullet - Solitude",
       "value": 1
      },
      {
+      "coin_index": 1,
       "count": 2,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +2 [Sinking] Count",
@@ -1368,6 +1458,7 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "component": "stack",
       "kind": "inflict",
       "potency": 2,
@@ -1375,6 +1466,7 @@
       "status": "Faint Aroma"
      },
      {
+      "coin_index": 2,
       "count": 1,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +1 [Tremor] Count",
@@ -1383,6 +1475,7 @@
     ],
     "3": [
      {
+      "coin_index": 3,
       "component": "stack",
       "kind": "inflict",
       "potency": 2,
@@ -1390,6 +1483,7 @@
       "status": "Faint Aroma"
      },
      {
+      "coin_index": 3,
       "count": 1,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +1 [Tremor] Count",
@@ -1416,12 +1510,14 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "kind": "spend_ammo",
       "raw": "Spend 1 [Bullet - Solitude]",
       "status": "Bullet - Solitude",
       "value": 1
      },
      {
+      "coin_index": 1,
       "count": 2,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +2 [Sinking] Count",
@@ -1430,6 +1526,7 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "component": "stack",
       "kind": "inflict",
       "potency": 3,
@@ -1437,6 +1534,7 @@
       "status": "Faint Aroma"
      },
      {
+      "coin_index": 2,
       "count": 2,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +2 [Tremor] Count",
@@ -1445,6 +1543,7 @@
     ],
     "3": [
      {
+      "coin_index": 3,
       "component": "stack",
       "kind": "inflict",
       "potency": 3,
@@ -1452,6 +1551,7 @@
       "status": "Faint Aroma"
      },
      {
+      "coin_index": 3,
       "count": 2,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +2 [Tremor] Count",
@@ -1493,12 +1593,14 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "kind": "spend_ammo",
       "raw": "Spend 1 [Bullet - Solitude]",
       "status": "Bullet - Solitude",
       "value": 1
      },
      {
+      "coin_index": 1,
       "count": 2,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +2 [Sinking] Count",
@@ -1507,6 +1609,7 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "component": "stack",
       "kind": "inflict",
       "potency": 3,
@@ -1514,6 +1617,7 @@
       "status": "Faint Aroma"
      },
      {
+      "coin_index": 2,
       "count": 2,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +2 [Tremor] Count",
@@ -1522,6 +1626,7 @@
     ],
     "3": [
      {
+      "coin_index": 3,
       "component": "stack",
       "kind": "inflict",
       "potency": 3,
@@ -1529,6 +1634,7 @@
       "status": "Faint Aroma"
      },
      {
+      "coin_index": 3,
       "count": 2,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +2 [Tremor] Count",
@@ -1570,12 +1676,14 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "kind": "spend_ammo",
       "raw": "Spend 1 [Bullet - Solitude]",
       "status": "Bullet - Solitude",
       "value": 1
      },
      {
+      "coin_index": 1,
       "count": 3,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +3 [Sinking] Count",
@@ -1584,6 +1692,7 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "component": "stack",
       "kind": "inflict",
       "potency": 3,
@@ -1591,6 +1700,7 @@
       "status": "Faint Aroma"
      },
      {
+      "coin_index": 2,
       "count": 2,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +2 [Tremor] Count",
@@ -1599,6 +1709,7 @@
     ],
     "3": [
      {
+      "coin_index": 3,
       "component": "stack",
       "kind": "inflict",
       "potency": 3,
@@ -1606,6 +1717,7 @@
       "status": "Faint Aroma"
      },
      {
+      "coin_index": 3,
       "count": 2,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +2 [Tremor] Count",
@@ -1661,6 +1773,7 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "component": "stack",
       "kind": "inflict",
       "potency": 1,
@@ -1668,6 +1781,7 @@
       "status": "Faint Aroma"
      },
      {
+      "coin_index": 1,
       "count": 3,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +3 [Sinking] Count",
@@ -1676,6 +1790,7 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "component": "stack",
       "kind": "inflict",
       "potency": 1,
@@ -1683,6 +1798,7 @@
       "status": "Faint Aroma"
      },
      {
+      "coin_index": 2,
       "kind": "inflict",
       "potency": 4,
       "raw": "[On Hit] Inflict 4 [Sinking]",
@@ -1691,6 +1807,7 @@
     ],
     "3": [
      {
+      "coin_index": 3,
       "component": "stack",
       "kind": "inflict",
       "potency": 2,
@@ -1698,12 +1815,14 @@
       "status": "Faint Aroma"
      },
      {
+      "coin_index": 3,
       "kind": "inflict",
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Tremor]",
       "status": "Tremor"
      },
      {
+      "coin_index": 3,
       "consume_count": 1,
       "kind": "tremor_burst",
       "raw": "[On Hit] Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1",
@@ -1745,6 +1864,7 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "component": "stack",
       "kind": "inflict",
       "potency": 1,
@@ -1752,6 +1872,7 @@
       "status": "Faint Aroma"
      },
      {
+      "coin_index": 1,
       "count": 3,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +3 [Sinking] Count",
@@ -1760,6 +1881,7 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "component": "stack",
       "kind": "inflict",
       "potency": 1,
@@ -1767,6 +1889,7 @@
       "status": "Faint Aroma"
      },
      {
+      "coin_index": 2,
       "kind": "inflict",
       "potency": 4,
       "raw": "[On Hit] Inflict 4 [Sinking]",
@@ -1775,6 +1898,7 @@
     ],
     "3": [
      {
+      "coin_index": 3,
       "component": "stack",
       "kind": "inflict",
       "potency": 2,
@@ -1782,12 +1906,14 @@
       "status": "Faint Aroma"
      },
      {
+      "coin_index": 3,
       "kind": "inflict",
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Tremor]",
       "status": "Tremor"
      },
      {
+      "coin_index": 3,
       "consume_count": 1,
       "kind": "tremor_burst",
       "raw": "[On Hit] Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1",
@@ -1829,6 +1955,7 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "component": "stack",
       "kind": "inflict",
       "potency": 1,
@@ -1836,6 +1963,7 @@
       "status": "Faint Aroma"
      },
      {
+      "coin_index": 1,
       "count": 3,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +3 [Sinking] Count",
@@ -1844,6 +1972,7 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "component": "stack",
       "kind": "inflict",
       "potency": 1,
@@ -1851,6 +1980,7 @@
       "status": "Faint Aroma"
      },
      {
+      "coin_index": 2,
       "kind": "inflict",
       "potency": 4,
       "raw": "[On Hit] Inflict 4 [Sinking]",
@@ -1859,6 +1989,7 @@
     ],
     "3": [
      {
+      "coin_index": 3,
       "component": "stack",
       "kind": "inflict",
       "potency": 2,
@@ -1866,12 +1997,14 @@
       "status": "Faint Aroma"
      },
      {
+      "coin_index": 3,
       "kind": "inflict",
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Tremor]",
       "status": "Tremor"
      },
      {
+      "coin_index": 3,
       "consume_count": 1,
       "kind": "tremor_burst",
       "raw": "[On Hit] Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1",
@@ -1913,6 +2046,7 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "component": "stack",
       "kind": "inflict",
       "potency": 1,
@@ -1920,6 +2054,7 @@
       "status": "Faint Aroma"
      },
      {
+      "coin_index": 1,
       "count": 3,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +3 [Sinking] Count",
@@ -1928,6 +2063,7 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "component": "stack",
       "kind": "inflict",
       "potency": 1,
@@ -1935,6 +2071,7 @@
       "status": "Faint Aroma"
      },
      {
+      "coin_index": 2,
       "kind": "inflict",
       "potency": 4,
       "raw": "[On Hit] Inflict 4 [Sinking]",
@@ -1943,6 +2080,7 @@
     ],
     "3": [
      {
+      "coin_index": 3,
       "component": "stack",
       "kind": "inflict",
       "potency": 2,
@@ -1950,18 +2088,21 @@
       "status": "Faint Aroma"
      },
      {
+      "coin_index": 3,
       "kind": "inflict",
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Tremor]",
       "status": "Tremor"
      },
      {
+      "coin_index": 3,
       "consume_count": 1,
       "kind": "tremor_burst",
       "raw": "[On Hit] Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1",
       "status": "Tremor Burst"
      },
      {
+      "coin_index": 3,
       "component": "potency",
       "kind": "gloom_damage_equal_target_status",
       "raw": "[On Hit] Deal Gloom damage equal to [Sinking] on target",
@@ -2025,6 +2166,7 @@
    "turn_end": [
     {
      "kind": "gain",
+     "per_turn": 1,
      "potency": 10,
      "raw": "[Turn End] Gain 10 [Petals] (once per turn)",
      "status": "Petals"
@@ -2055,6 +2197,7 @@
    "turn_end": [
     {
      "kind": "gain",
+     "per_turn": 1,
      "potency": 10,
      "raw": "[Turn End] Gain 10 [Petals] (once per turn)",
      "status": "Petals"
@@ -2085,6 +2228,7 @@
    "turn_end": [
     {
      "kind": "gain",
+     "per_turn": 1,
      "potency": 10,
      "raw": "[Turn End] Gain 10 [Petals] (once per turn)",
      "status": "Petals"
@@ -2115,6 +2259,7 @@
    "turn_end": [
     {
      "kind": "gain",
+     "per_turn": 1,
      "potency": 10,
      "raw": "[Turn End] Gain 10 [Petals] (once per turn)",
      "status": "Petals"
@@ -2137,6 +2282,7 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "count": 1,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +1 [Sinking] Count",
@@ -2145,6 +2291,7 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "count": 1,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +1 [Tremor] Count",
@@ -2176,6 +2323,7 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "count": 1,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +1 [Sinking] Count",
@@ -2184,6 +2332,7 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "count": 1,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +1 [Tremor] Count",
@@ -2246,6 +2395,7 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "count": 1,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +1 [Sinking] Count",
@@ -2254,6 +2404,7 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "count": 1,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +1 [Tremor] Count",
@@ -2316,6 +2467,7 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "count": 1,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +1 [Sinking] Count",
@@ -2324,6 +2476,7 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "count": 1,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +1 [Tremor] Count",
@@ -2388,6 +2541,7 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "kind": "inflict",
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Sinking]",
@@ -2396,6 +2550,7 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "kind": "inflict",
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Tremor]",
@@ -2427,6 +2582,7 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "kind": "inflict",
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Sinking]",
@@ -2435,6 +2591,7 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "kind": "inflict",
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Tremor]",
@@ -2497,6 +2654,7 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "kind": "inflict",
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Sinking]",
@@ -2505,6 +2663,7 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "kind": "inflict",
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Tremor]",
@@ -2567,6 +2726,7 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "kind": "inflict",
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Sinking]",
@@ -2575,6 +2735,7 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "kind": "inflict",
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Tremor]",
@@ -2583,6 +2744,7 @@
     ],
     "3": [
      {
+      "coin_index": 3,
       "kind": "sp_heal",
       "raw": "[On Hit] Heal 5 SP",
       "value": 5
@@ -2646,12 +2808,14 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "count": 2,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +2 [Tremor] Count",
       "status": "Tremor"
      },
      {
+      "coin_index": 1,
       "count": 2,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +2 [Sinking] Count",
@@ -2660,12 +2824,14 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "kind": "inflict",
       "potency": 3,
       "raw": "[On Hit] Inflict 3 [Tremor]",
       "status": "Tremor"
      },
      {
+      "coin_index": 2,
       "kind": "inflict",
       "potency": 3,
       "raw": "[On Hit] Inflict 3 [Sinking]",
@@ -2675,6 +2841,7 @@
     "3": [
      {
       "amplitude_into": "Tremor - Decay",
+      "coin_index": 3,
       "condition": {
        "lacks_status": [
         "Amplitude Conversion"
@@ -2753,12 +2920,14 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "count": 2,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +2 [Tremor] Count",
       "status": "Tremor"
      },
      {
+      "coin_index": 1,
       "count": 2,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +2 [Sinking] Count",
@@ -2767,12 +2936,14 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "kind": "inflict",
       "potency": 3,
       "raw": "[On Hit] Inflict 3 [Tremor]",
       "status": "Tremor"
      },
      {
+      "coin_index": 2,
       "kind": "inflict",
       "potency": 3,
       "raw": "[On Hit] Inflict 3 [Sinking]",
@@ -2782,6 +2953,7 @@
     "3": [
      {
       "amplitude_into": "Tremor - Decay",
+      "coin_index": 3,
       "condition": {
        "lacks_status": [
         "Amplitude Conversion"
@@ -2860,12 +3032,14 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "count": 2,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +2 [Tremor] Count",
       "status": "Tremor"
      },
      {
+      "coin_index": 1,
       "count": 2,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +2 [Sinking] Count",
@@ -2874,12 +3048,14 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "kind": "inflict",
       "potency": 3,
       "raw": "[On Hit] Inflict 3 [Tremor]",
       "status": "Tremor"
      },
      {
+      "coin_index": 2,
       "kind": "inflict",
       "potency": 3,
       "raw": "[On Hit] Inflict 3 [Sinking]",
@@ -2889,6 +3065,7 @@
     "3": [
      {
       "amplitude_into": "Tremor - Decay",
+      "coin_index": 3,
       "condition": {
        "lacks_status": [
         "Amplitude Conversion"
@@ -2967,12 +3144,14 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "count": 2,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +2 [Tremor] Count",
       "status": "Tremor"
      },
      {
+      "coin_index": 1,
       "count": 2,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +2 [Sinking] Count",
@@ -2981,12 +3160,14 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "kind": "inflict",
       "potency": 3,
       "raw": "[On Hit] Inflict 3 [Tremor]",
       "status": "Tremor"
      },
      {
+      "coin_index": 2,
       "kind": "inflict",
       "potency": 3,
       "raw": "[On Hit] Inflict 3 [Sinking]",
@@ -2995,6 +3176,7 @@
     ],
     "3": [
      {
+      "coin_index": 3,
       "condition": {
        "target_has_amplitude": true
       },
@@ -3004,6 +3186,7 @@
      },
      {
       "amplitude_into": "Tremor - Decay",
+      "coin_index": 3,
       "condition": {
        "lacks_status": [
         "Amplitude Conversion"
@@ -3083,6 +3266,7 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "count": 1,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +1 [Sinking] Count",
@@ -3091,6 +3275,7 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "kind": "inflict",
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Tremor]",
@@ -3101,6 +3286,7 @@
    "combat_start": [
     {
      "kind": "discard_lowest_rank",
+     "per_turn": 1,
      "raw": "[Combat Start] [Discard] 2 Skills of the lowest rank in all of this unit's Skill Slots (once per turn)",
      "value": 2
     },
@@ -3131,6 +3317,7 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "count": 1,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +1 [Sinking] Count",
@@ -3139,6 +3326,7 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "kind": "inflict",
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Tremor]",
@@ -3149,6 +3337,7 @@
    "combat_start": [
     {
      "kind": "discard_lowest_rank",
+     "per_turn": 1,
      "raw": "[Combat Start] [Discard] 2 Skills of the lowest rank in all of this unit's Skill Slots (once per turn)",
      "value": 2
     },
@@ -3179,6 +3368,7 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "count": 1,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +1 [Sinking] Count",
@@ -3187,6 +3377,7 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "kind": "inflict",
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Tremor]",
@@ -3197,6 +3388,7 @@
    "combat_start": [
     {
      "kind": "discard_lowest_rank",
+     "per_turn": 1,
      "raw": "[Combat Start] [Discard] 2 Skills of the lowest rank in all of this unit's Skill Slots (once per turn)",
      "value": 2
     },
@@ -3227,6 +3419,7 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "count": 1,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +1 [Sinking] Count",
@@ -3235,6 +3428,7 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "kind": "inflict",
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Tremor]",
@@ -3245,6 +3439,7 @@
    "combat_start": [
     {
      "kind": "discard_lowest_rank",
+     "per_turn": 1,
      "raw": "[Combat Start] [Discard] 2 Skills of the lowest rank in all of this unit's Skill Slots (once per turn)",
      "value": 2
     },
@@ -3259,6 +3454,7 @@
     {
      "chance": 50,
      "kind": "gain",
+     "per_turn": 1,
      "potency": 1,
      "raw": "[Combat Start] 50% chance to gain 1 [Bright -光-] Potency (once per turn)",
      "status": "Bright -光-"
@@ -3296,6 +3492,7 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "kind": "inflict",
       "potency": 1,
       "raw": "[On Hit] Inflict 1 [Sinking]",
@@ -3304,6 +3501,7 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "kind": "gain",
       "potency": 2,
       "raw": "[On Hit] Gain 2 [Deep Tears]",
@@ -3330,6 +3528,7 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "kind": "inflict",
       "potency": 1,
       "raw": "[On Hit] Inflict 1 [Sinking]",
@@ -3338,6 +3537,7 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "kind": "gain",
       "potency": 2,
       "raw": "[On Hit] Gain 2 [Deep Tears]",
@@ -3376,6 +3576,7 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "kind": "inflict",
       "potency": 1,
       "raw": "[On Hit] Inflict 1 [Sinking]",
@@ -3384,6 +3585,7 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "kind": "gain",
       "potency": 2,
       "raw": "[On Hit] Gain 2 [Deep Tears]",
@@ -3422,6 +3624,7 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "kind": "inflict",
       "potency": 1,
       "raw": "[On Hit] Inflict 1 [Sinking]",
@@ -3430,6 +3633,7 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "condition": {
        "component": "stack",
        "source": "self",
@@ -3445,12 +3649,14 @@
       "value": 1
      },
      {
+      "coin_index": 2,
       "kind": "inflict",
       "potency": 1,
       "raw": "[On Hit] Inflict 1 [Sinking]",
       "status": "Sinking"
      },
      {
+      "coin_index": 2,
       "kind": "gain",
       "potency": 2,
       "raw": "[On Hit] Gain 2 [Deep Tears]",
@@ -3912,6 +4118,7 @@
    "combat_start": [
     {
      "kind": "shield_percent_from_sp",
+     "per_turn": 1,
      "raw": "[Combat Start] Gain Shield equal to (SP / 5)% of this unit's max HP (once per turn)",
      "value": 5
     }
@@ -3923,6 +4130,7 @@
    "on_use": [
     {
      "kind": "gain",
+     "per_turn": 2,
      "potency": 3,
      "raw": "[On Use] Gain 3 [Deep Tears] (2 times per turn)",
      "status": "Deep Tears"
@@ -3944,6 +4152,7 @@
     {
      "count": 1,
      "kind": "turn_end_sp_and_gain",
+     "per_turn": 1,
      "raw": "[Turn End] At less than 3 [Tear-sharpened], lose 15 SP and gain 1 [Tear-sharpened] (once per turn)",
      "status": "Tear-sharpened",
      "threshold": 3,
@@ -3962,6 +4171,7 @@
    "combat_start": [
     {
      "kind": "shield_percent_from_sp",
+     "per_turn": 1,
      "raw": "[Combat Start] Gain Shield equal to (SP / 5)% of this unit's max HP (once per turn)",
      "value": 5
     }
@@ -3973,6 +4183,7 @@
    "on_use": [
     {
      "kind": "gain",
+     "per_turn": 2,
      "potency": 3,
      "raw": "[On Use] Gain 3 [Deep Tears] (2 times per turn)",
      "status": "Deep Tears"
@@ -3994,6 +4205,7 @@
     {
      "count": 1,
      "kind": "turn_end_sp_and_gain",
+     "per_turn": 1,
      "raw": "[Turn End] At less than 3 [Tear-sharpened], lose 15 SP and gain 1 [Tear-sharpened] (once per turn)",
      "status": "Tear-sharpened",
      "threshold": 3,
@@ -4012,6 +4224,7 @@
    "combat_start": [
     {
      "kind": "shield_percent_from_sp",
+     "per_turn": 1,
      "raw": "[Combat Start] Gain Shield equal to (SP / 5)% of this unit's max HP (once per turn)",
      "value": 5
     }
@@ -4023,6 +4236,7 @@
    "on_use": [
     {
      "kind": "gain",
+     "per_turn": 2,
      "potency": 3,
      "raw": "[On Use] Gain 3 [Deep Tears] (2 times per turn)",
      "status": "Deep Tears"
@@ -4044,6 +4258,7 @@
     {
      "count": 1,
      "kind": "turn_end_sp_and_gain",
+     "per_turn": 1,
      "raw": "[Turn End] At less than 3 [Tear-sharpened], lose 15 SP and gain 1 [Tear-sharpened] (once per turn)",
      "status": "Tear-sharpened",
      "threshold": 3,
@@ -4075,6 +4290,7 @@
     },
     {
      "kind": "shield_percent_from_sp",
+     "per_turn": 1,
      "raw": "[Combat Start] Gain Shield equal to (SP / 3)% of this unit's max HP (once per turn)",
      "value": 3
     }
@@ -4086,6 +4302,7 @@
    "on_use": [
     {
      "kind": "gain",
+     "per_turn": 2,
      "potency": 5,
      "raw": "[On Use] Gain 5 [Deep Tears] (2 times per turn)",
      "status": "Deep Tears"
@@ -4107,6 +4324,7 @@
     {
      "count": 1,
      "kind": "turn_end_sp_and_gain",
+     "per_turn": 1,
      "raw": "[Turn End] At less than 3 [Tear-sharpened], lose 15 SP to gain 1 [Tear-sharpened] (once per turn)",
      "status": "Tear-sharpened",
      "threshold": 3,
@@ -4202,6 +4420,7 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "kind": "inflict",
       "potency": 4,
       "raw": "[On Hit] Inflict 4 [Sinking]",
@@ -4240,6 +4459,7 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "kind": "gain",
       "potency": 2,
       "raw": "[On Hit] Gain 2 [Poise]",
@@ -4248,6 +4468,7 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "kind": "inflict",
       "potency": 1,
       "raw": "[On Hit] Inflict 1 [Sinking]",
@@ -4256,6 +4477,7 @@
     ],
     "3": [
      {
+      "coin_index": 3,
       "kind": "inflict",
       "potency": 1,
       "raw": "[On Hit] Inflict 1 [Sinking]",
@@ -4282,6 +4504,7 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "kind": "gain",
       "potency": 2,
       "raw": "[On Hit] Gain 2 [Poise]",
@@ -4290,6 +4513,7 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "kind": "inflict",
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Sinking]",
@@ -4298,6 +4522,7 @@
     ],
     "3": [
      {
+      "coin_index": 3,
       "kind": "inflict",
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Sinking]",
@@ -4341,6 +4566,7 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "kind": "gain",
       "potency": 2,
       "raw": "[On Hit] Gain 2 [Poise]",
@@ -4349,6 +4575,7 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "kind": "inflict",
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Sinking]",
@@ -4357,6 +4584,7 @@
     ],
     "3": [
      {
+      "coin_index": 3,
       "kind": "inflict",
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Sinking]",
@@ -4400,12 +4628,14 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "kind": "gain",
       "potency": 2,
       "raw": "[On Hit] Gain 2 [Poise]",
       "status": "Poise"
      },
      {
+      "coin_index": 1,
       "count": 1,
       "kind": "gain",
       "raw": "[On Hit] Gain +1 [Poise] Count",
@@ -4414,12 +4644,14 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "kind": "inflict",
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Sinking]",
       "status": "Sinking"
      },
      {
+      "coin_index": 2,
       "count": 1,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +1 [Sinking] Count",
@@ -4428,6 +4660,7 @@
     ],
     "3": [
      {
+      "coin_index": 3,
       "kind": "inflict",
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Sinking]",
@@ -4565,6 +4798,7 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "kind": "lower_own_stagger_threshold",
       "percent": 50,
       "raw": "[On Hit] Lower user’s Stagger Threshold by 50% of damage dealt"
@@ -4684,12 +4918,14 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "count": 1,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +1 [Sinking] Count",
       "status": "Sinking"
      },
      {
+      "coin_index": 1,
       "count": 1,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +1 [Tremor] Count",
@@ -4727,12 +4963,14 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "count": 1,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +1 [Sinking] Count",
       "status": "Sinking"
      },
      {
+      "coin_index": 1,
       "count": 1,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +1 [Tremor] Count",
@@ -4786,12 +5024,14 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "count": 1,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +1 [Sinking] Count",
       "status": "Sinking"
      },
      {
+      "coin_index": 1,
       "count": 1,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +1 [Tremor] Count",
@@ -4852,12 +5092,14 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "count": 1,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +1 [Sinking] Count",
       "status": "Sinking"
      },
      {
+      "coin_index": 1,
       "count": 1,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +1 [Tremor] Count",
@@ -4866,8 +5108,10 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "kind": "gain",
       "next_turn": true,
+      "per_turn": 1,
       "potency": 1,
       "raw": "[On Hit] Gain 1 [Protection] next turn (once per turn)",
       "status": "Protection"
@@ -4930,6 +5174,7 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "count": 2,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +2 [Sinking] Count",
@@ -4938,6 +5183,7 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "count": 1,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +1 [Tremor] Count",
@@ -4946,12 +5192,14 @@
     ],
     "3": [
      {
+      "coin_index": 3,
       "kind": "inflict",
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Sinking]",
       "status": "Sinking"
      },
      {
+      "coin_index": 3,
       "kind": "inflict",
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Tremor]",
@@ -4989,6 +5237,7 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "count": 2,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +2 [Sinking] Count",
@@ -4997,6 +5246,7 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "count": 1,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +1 [Tremor] Count",
@@ -5005,12 +5255,14 @@
     ],
     "3": [
      {
+      "coin_index": 3,
       "kind": "inflict",
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Sinking]",
       "status": "Sinking"
      },
      {
+      "coin_index": 3,
       "kind": "inflict",
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Tremor]",
@@ -5064,6 +5316,7 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "count": 2,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +2 [Sinking] Count",
@@ -5072,6 +5325,7 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "count": 1,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +1 [Tremor] Count",
@@ -5080,12 +5334,14 @@
     ],
     "3": [
      {
+      "coin_index": 3,
       "kind": "inflict",
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Sinking]",
       "status": "Sinking"
      },
      {
+      "coin_index": 3,
       "kind": "inflict",
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Tremor]",
@@ -5146,6 +5402,7 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "count": 2,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +2 [Sinking] Count",
@@ -5154,6 +5411,7 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "count": 1,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +1 [Tremor] Count",
@@ -5162,20 +5420,24 @@
     ],
     "3": [
      {
+      "coin_index": 3,
       "kind": "inflict",
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Sinking]",
       "status": "Sinking"
      },
      {
+      "coin_index": 3,
       "kind": "inflict",
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Tremor]",
       "status": "Tremor"
      },
      {
+      "coin_index": 3,
       "kind": "gain",
       "next_turn": true,
+      "per_turn": 1,
       "potency": 1,
       "raw": "[On Hit] Gain 1 [Protection] next turn (once per turn)",
       "status": "Protection"
@@ -5244,6 +5506,7 @@
     {
      "kind": "gain",
      "next_turn": true,
+     "per_turn": 1,
      "potency": 2,
      "raw": "[Attack End] Gain 2 [Protection] next turn (once per turn)",
      "status": "Protection"
@@ -5255,6 +5518,7 @@
       "status": "LCA Fracture Round"
      },
      "kind": "reload_ammo",
+     "per_encounter": 5,
      "raw": "[Attack End] At 2 or fewer [LCA Fracture Round], [Reload] (5 times per Encounter)"
     }
    ],
@@ -5264,18 +5528,21 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "kind": "spend_ammo",
       "raw": "Spend 2 [LCA Fracture Round]",
       "status": "LCA Fracture Round",
       "value": 2
      },
      {
+      "coin_index": 1,
       "count": 2,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +2 [Sinking] Count",
       "status": "Sinking"
      },
      {
+      "coin_index": 1,
       "count": 2,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +2 [Tremor] Count",
@@ -5284,12 +5551,14 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "kind": "inflict",
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Sinking]",
       "status": "Sinking"
      },
      {
+      "coin_index": 2,
       "component": "stack",
       "kind": "inflict",
       "next_turn": true,
@@ -5298,7 +5567,9 @@
       "status": "Blue Sand"
      },
      {
+      "coin_index": 2,
       "kind": "inflict",
+      "per_turn": 1,
       "potency": 1,
       "raw": "[On Hit] Inflict 1 [Gloom Resist Down] (once per turn)",
       "status": "Gloom Resist Down"
@@ -5306,18 +5577,21 @@
     ],
     "3": [
      {
+      "coin_index": 3,
       "kind": "spend_ammo",
       "raw": "Spend 2 [LCA Fracture Round]",
       "status": "LCA Fracture Round",
       "value": 2
      },
      {
+      "coin_index": 3,
       "kind": "inflict",
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Sinking]",
       "status": "Sinking"
      },
      {
+      "coin_index": 3,
       "consume_count": 1,
       "kind": "tremor_burst",
       "raw": "[On Hit] Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1",
@@ -5358,6 +5632,7 @@
     {
      "kind": "gain",
      "next_turn": true,
+     "per_turn": 1,
      "potency": 2,
      "raw": "[Attack End] Gain 2 [Protection] next turn (once per turn)",
      "status": "Protection"
@@ -5369,6 +5644,7 @@
       "status": "LCA Fracture Round"
      },
      "kind": "reload_ammo",
+     "per_encounter": 5,
      "raw": "[Attack End] At 2 or fewer [LCA Fracture Round], [Reload] (5 times per Encounter)"
     }
    ],
@@ -5378,18 +5654,21 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "kind": "spend_ammo",
       "raw": "Spend 2 [LCA Fracture Round]",
       "status": "LCA Fracture Round",
       "value": 2
      },
      {
+      "coin_index": 1,
       "count": 2,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +2 [Sinking] Count",
       "status": "Sinking"
      },
      {
+      "coin_index": 1,
       "count": 2,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +2 [Tremor] Count",
@@ -5398,12 +5677,14 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "kind": "inflict",
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Sinking]",
       "status": "Sinking"
      },
      {
+      "coin_index": 2,
       "component": "stack",
       "kind": "inflict",
       "next_turn": true,
@@ -5412,7 +5693,9 @@
       "status": "Blue Sand"
      },
      {
+      "coin_index": 2,
       "kind": "inflict",
+      "per_turn": 1,
       "potency": 1,
       "raw": "[On Hit] Inflict 1 [Gloom Resist Down] (once per turn)",
       "status": "Gloom Resist Down"
@@ -5420,18 +5703,21 @@
     ],
     "3": [
      {
+      "coin_index": 3,
       "kind": "spend_ammo",
       "raw": "Spend 2 [LCA Fracture Round]",
       "status": "LCA Fracture Round",
       "value": 2
      },
      {
+      "coin_index": 3,
       "kind": "inflict",
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Sinking]",
       "status": "Sinking"
      },
      {
+      "coin_index": 3,
       "consume_count": 1,
       "kind": "tremor_burst",
       "raw": "[On Hit] Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1",
@@ -5472,6 +5758,7 @@
     {
      "kind": "gain",
      "next_turn": true,
+     "per_turn": 1,
      "potency": 2,
      "raw": "[Attack End] Gain 2 [Protection] next turn (once per turn)",
      "status": "Protection"
@@ -5483,6 +5770,7 @@
       "status": "LCA Fracture Round"
      },
      "kind": "reload_ammo",
+     "per_encounter": 5,
      "raw": "[Attack End] At 2 or fewer [LCA Fracture Round], [Reload] (5 times per Encounter)"
     }
    ],
@@ -5492,18 +5780,21 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "kind": "spend_ammo",
       "raw": "Spend 2 [LCA Fracture Round]",
       "status": "LCA Fracture Round",
       "value": 2
      },
      {
+      "coin_index": 1,
       "count": 2,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +2 [Sinking] Count",
       "status": "Sinking"
      },
      {
+      "coin_index": 1,
       "count": 2,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +2 [Tremor] Count",
@@ -5512,12 +5803,14 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "kind": "inflict",
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Sinking]",
       "status": "Sinking"
      },
      {
+      "coin_index": 2,
       "component": "stack",
       "kind": "inflict",
       "next_turn": true,
@@ -5526,7 +5819,9 @@
       "status": "Blue Sand"
      },
      {
+      "coin_index": 2,
       "kind": "inflict",
+      "per_turn": 1,
       "potency": 1,
       "raw": "[On Hit] Inflict 1 [Gloom Resist Down] (once per turn)",
       "status": "Gloom Resist Down"
@@ -5534,18 +5829,21 @@
     ],
     "3": [
      {
+      "coin_index": 3,
       "kind": "spend_ammo",
       "raw": "Spend 2 [LCA Fracture Round]",
       "status": "LCA Fracture Round",
       "value": 2
      },
      {
+      "coin_index": 3,
       "kind": "inflict",
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Sinking]",
       "status": "Sinking"
      },
      {
+      "coin_index": 3,
       "consume_count": 1,
       "kind": "tremor_burst",
       "raw": "[On Hit] Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1",
@@ -5586,6 +5884,7 @@
     {
      "kind": "gain",
      "next_turn": true,
+     "per_turn": 1,
      "potency": 2,
      "raw": "[Attack End] Gain 2 [Protection] next turn (once per turn)",
      "status": "Protection"
@@ -5597,6 +5896,7 @@
       "status": "LCA Fracture Round"
      },
      "kind": "reload_ammo",
+     "per_encounter": 5,
      "raw": "[Attack End] At 2 or fewer [LCA Fracture Round], [Reload] (5 times per Encounter)"
     }
    ],
@@ -5606,24 +5906,28 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "kind": "spend_ammo",
       "raw": "Spend 2 [LCA Fracture Round]",
       "status": "LCA Fracture Round",
       "value": 2
      },
      {
+      "coin_index": 1,
       "kind": "damage_percent_per_ammo_spent",
       "raw": "Deal +([LCA Fracture Round] spent x 30)% damage",
       "status": "LCA Fracture Round",
       "step": 30
      },
      {
+      "coin_index": 1,
       "count": 2,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +2 [Sinking] Count",
       "status": "Sinking"
      },
      {
+      "coin_index": 1,
       "count": 2,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +2 [Tremor] Count",
@@ -5632,12 +5936,14 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "kind": "inflict",
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Sinking]",
       "status": "Sinking"
      },
      {
+      "coin_index": 2,
       "component": "stack",
       "kind": "inflict",
       "next_turn": true,
@@ -5646,7 +5952,9 @@
       "status": "Blue Sand"
      },
      {
+      "coin_index": 2,
       "kind": "inflict",
+      "per_turn": 1,
       "potency": 1,
       "raw": "[On Hit] Inflict 1 [Gloom Resist Down] (once per turn)",
       "status": "Gloom Resist Down"
@@ -5654,18 +5962,21 @@
     ],
     "3": [
      {
+      "coin_index": 3,
       "kind": "spend_ammo",
       "raw": "Spend 2 [LCA Fracture Round]",
       "status": "LCA Fracture Round",
       "value": 2
      },
      {
+      "coin_index": 3,
       "kind": "damage_percent_per_ammo_spent",
       "raw": "Deal +([LCA Fracture Round] spent x 30)% damage",
       "status": "LCA Fracture Round",
       "step": 30
      },
      {
+      "coin_index": 3,
       "condition": {
        "target_sp_below": 0
       },
@@ -5676,18 +5987,21 @@
       "status": "Gloom Fragility"
      },
      {
+      "coin_index": 3,
       "kind": "inflict",
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Sinking]",
       "status": "Sinking"
      },
      {
+      "coin_index": 3,
       "consume_count": 1,
       "kind": "tremor_burst",
       "raw": "[On Hit] Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1",
       "status": "Tremor Burst"
      },
      {
+      "coin_index": 3,
       "condition": {
        "target_is_sp_unit": true
       },
@@ -5763,6 +6077,7 @@
    "on_use": [
     {
      "kind": "inflict_on_attacker",
+     "per_turn": 3,
      "potency": 3,
      "raw": "When hit while this unit has Shield, inflict 3 [Sinking] against the attacker (3 times per turn)",
      "requires_shield": true,
@@ -5800,6 +6115,7 @@
    "on_use": [
     {
      "kind": "inflict_on_attacker",
+     "per_turn": 3,
      "potency": 3,
      "raw": "When hit while this unit has Shield, inflict 3 [Sinking] against the attacker (3 times per turn)",
      "requires_shield": true,
@@ -5837,6 +6153,7 @@
    "on_use": [
     {
      "kind": "inflict_on_attacker",
+     "per_turn": 3,
      "potency": 3,
      "raw": "When hit while this unit has Shield, inflict 3 [Sinking] against the attacker (3 times per turn)",
      "requires_shield": true,
@@ -5874,6 +6191,7 @@
    "on_use": [
     {
      "kind": "inflict_on_attacker",
+     "per_turn": 3,
      "potency": 3,
      "raw": "When hit while this unit has Shield, inflict 3 [Sinking] against the attacker (3 times per turn)",
      "requires_shield": true,
@@ -5917,6 +6235,7 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "kind": "inflict",
       "potency": 1,
       "raw": "[On Hit] Inflict 1 [Burn]",
@@ -5925,6 +6244,7 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "kind": "inflict",
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Sinking]",
@@ -5959,6 +6279,7 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "kind": "inflict",
       "potency": 1,
       "raw": "[On Hit] Inflict 1 [Burn]",
@@ -5967,6 +6288,7 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "kind": "inflict",
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Sinking]",
@@ -6018,6 +6340,7 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "kind": "inflict",
       "potency": 1,
       "raw": "[On Hit] Inflict 1 [Burn]",
@@ -6026,6 +6349,7 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "kind": "inflict",
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Sinking]",
@@ -6077,6 +6401,7 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "kind": "inflict",
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Burn]",
@@ -6085,6 +6410,7 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "kind": "inflict",
       "potency": 3,
       "raw": "[On Hit] Inflict 3 [Sinking]",
@@ -6153,12 +6479,14 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "count": 1,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +1 [Sinking] Count",
       "status": "Sinking"
      },
      {
+      "coin_index": 1,
       "kind": "bonus_damage_percent_of_coin",
       "percent": 30,
       "raw": "[On Hit] Deal (30% of this Coin's final damage) Blunt damage"
@@ -6166,12 +6494,14 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "kind": "inflict",
       "potency": 1,
       "raw": "[On Hit] Inflict 1 [Sinking]",
       "status": "Sinking"
      },
      {
+      "coin_index": 2,
       "kind": "bonus_damage_percent_of_coin",
       "percent": 30,
       "raw": "[On Hit] Deal (30% of this Coin's final damage) Blunt damage"
@@ -6179,6 +6509,7 @@
     ],
     "3": [
      {
+      "coin_index": 3,
       "kind": "inflict",
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Burn]",
@@ -6205,12 +6536,14 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "count": 2,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +2 [Sinking] Count",
       "status": "Sinking"
      },
      {
+      "coin_index": 1,
       "kind": "bonus_damage_percent_of_coin",
       "percent": 30,
       "raw": "[On Hit] Deal (30% of this Coin's final damage) Blunt damage"
@@ -6218,12 +6551,14 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "kind": "inflict",
       "potency": 1,
       "raw": "[On Hit] Inflict 1 [Sinking]",
       "status": "Sinking"
      },
      {
+      "coin_index": 2,
       "kind": "bonus_damage_percent_of_coin",
       "percent": 30,
       "raw": "[On Hit] Deal (30% of this Coin's final damage) Blunt damage"
@@ -6231,6 +6566,7 @@
     ],
     "3": [
      {
+      "coin_index": 3,
       "kind": "inflict",
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Burn]",
@@ -6239,6 +6575,7 @@
     ],
     "4": [
      {
+      "coin_index": 4,
       "count": 1,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +1 [Burn] Count",
@@ -6283,12 +6620,14 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "count": 2,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +2 [Sinking] Count",
       "status": "Sinking"
      },
      {
+      "coin_index": 1,
       "kind": "bonus_damage_percent_of_coin",
       "percent": 30,
       "raw": "[On Hit] Deal (30% of this Coin's final damage) Blunt damage"
@@ -6296,12 +6635,14 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "kind": "inflict",
       "potency": 1,
       "raw": "[On Hit] Inflict 1 [Sinking]",
       "status": "Sinking"
      },
      {
+      "coin_index": 2,
       "kind": "bonus_damage_percent_of_coin",
       "percent": 30,
       "raw": "[On Hit] Deal (30% of this Coin's final damage) Blunt damage"
@@ -6309,6 +6650,7 @@
     ],
     "3": [
      {
+      "coin_index": 3,
       "kind": "inflict",
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Burn]",
@@ -6317,6 +6659,7 @@
     ],
     "4": [
      {
+      "coin_index": 4,
       "count": 1,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +1 [Burn] Count",
@@ -6361,12 +6704,14 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "count": 3,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +3 [Sinking] Count",
       "status": "Sinking"
      },
      {
+      "coin_index": 1,
       "kind": "bonus_damage_percent_of_coin",
       "percent": 30,
       "raw": "[On Hit] Deal (30% of this Coin's final damage) Blunt damage"
@@ -6374,12 +6719,14 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "kind": "inflict",
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Sinking]",
       "status": "Sinking"
      },
      {
+      "coin_index": 2,
       "kind": "bonus_damage_percent_of_coin",
       "percent": 30,
       "raw": "[On Hit] Deal (30% of this Coin's final damage) Blunt damage"
@@ -6387,6 +6734,7 @@
     ],
     "3": [
      {
+      "coin_index": 3,
       "kind": "inflict",
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Burn]",
@@ -6395,6 +6743,7 @@
     ],
     "4": [
      {
+      "coin_index": 4,
       "count": 2,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +2 [Burn] Count",
@@ -6456,6 +6805,7 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "count": 2,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +2 [Sinking] Count",
@@ -6464,12 +6814,14 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "kind": "inflict",
       "potency": 3,
       "raw": "[On Hit] Inflict 3 [Burn]",
       "status": "Burn"
      },
      {
+      "coin_index": 2,
       "kind": "inflict",
       "potency": 3,
       "raw": "[On Hit] Inflict 3 [Sinking]",
@@ -6478,6 +6830,7 @@
     ],
     "3": [
      {
+      "coin_index": 3,
       "condition": {
        "any_of": [
         {
@@ -6497,6 +6850,7 @@
       "value": 60
      },
      {
+      "coin_index": 3,
       "condition": {
        "gte": 1,
        "source": "target",
@@ -6572,6 +6926,7 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "count": 2,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +2 [Sinking] Count",
@@ -6580,12 +6935,14 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "kind": "inflict",
       "potency": 3,
       "raw": "[On Hit] Inflict 3 [Burn]",
       "status": "Burn"
      },
      {
+      "coin_index": 2,
       "kind": "inflict",
       "potency": 3,
       "raw": "[On Hit] Inflict 3 [Sinking]",
@@ -6594,6 +6951,7 @@
     ],
     "3": [
      {
+      "coin_index": 3,
       "condition": {
        "any_of": [
         {
@@ -6613,6 +6971,7 @@
       "value": 60
      },
      {
+      "coin_index": 3,
       "condition": {
        "gte": 1,
        "source": "target",
@@ -6688,6 +7047,7 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "count": 2,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +2 [Sinking] Count",
@@ -6696,12 +7056,14 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "kind": "inflict",
       "potency": 3,
       "raw": "[On Hit] Inflict 3 [Burn]",
       "status": "Burn"
      },
      {
+      "coin_index": 2,
       "kind": "inflict",
       "potency": 3,
       "raw": "[On Hit] Inflict 3 [Sinking]",
@@ -6710,6 +7072,7 @@
     ],
     "3": [
      {
+      "coin_index": 3,
       "condition": {
        "any_of": [
         {
@@ -6729,6 +7092,7 @@
       "value": 60
      },
      {
+      "coin_index": 3,
       "condition": {
        "gte": 1,
        "source": "target",
@@ -6813,6 +7177,7 @@
      },
      "kind": "gain",
      "next_turn": true,
+     "per_turn": 1,
      "potency": 1,
      "raw": "[Attack End] If target is defeated, or if it has 3 [Dazzle], gain 1 [Plus Coin Boost] next turn (once per turn)",
      "status": "Plus Coin Boost"
@@ -6824,12 +7189,14 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "count": 1,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +1 [Burn] Count",
       "status": "Burn"
      },
      {
+      "coin_index": 1,
       "count": 3,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +3 [Sinking] Count",
@@ -6838,12 +7205,14 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "kind": "inflict",
       "potency": 3,
       "raw": "[On Hit] Inflict 3 [Burn]",
       "status": "Burn"
      },
      {
+      "coin_index": 2,
       "kind": "inflict",
       "potency": 3,
       "raw": "[On Hit] Inflict 3 [Sinking]",
@@ -6852,6 +7221,7 @@
     ],
     "3": [
      {
+      "coin_index": 3,
       "condition": {
        "any_of": [
         {
@@ -6871,6 +7241,7 @@
       "value": 60
      },
      {
+      "coin_index": 3,
       "condition": {
        "gte": 1,
        "source": "target",
@@ -7127,6 +7498,7 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "condition": {
        "gte": 6,
        "source": "target",
@@ -7169,6 +7541,7 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "kind": "compound",
       "next_turn": true,
       "raw": "[On Hit] Inflict 2 [Sinking]. Inflict 2 [Bind] next turn",
@@ -7186,6 +7559,7 @@
       ]
      },
      {
+      "coin_index": 1,
       "condition": {
        "gte": 6,
        "source": "target",
@@ -7236,6 +7610,7 @@
     "1": [
      {
       "assumption": "random",
+      "coin_index": 1,
       "kind": "inflict",
       "potency": 1,
       "raw": "[On Hit] Inflict 1 random [Butterfly]",
@@ -7245,6 +7620,7 @@
     "2": [
      {
       "assumption": "random",
+      "coin_index": 2,
       "kind": "inflict",
       "potency": 2,
       "raw": "[On Hit] Inflict 2 random [Butterfly]",
@@ -7254,6 +7630,7 @@
     "3": [
      {
       "assumption": "random",
+      "coin_index": 3,
       "kind": "inflict",
       "potency": 2,
       "raw": "[On Hit] Inflict 2 random [Butterfly]",
@@ -7263,6 +7640,7 @@
     "4": [
      {
       "assumption": "random",
+      "coin_index": 4,
       "kind": "inflict",
       "potency": 3,
       "raw": "[On Hit] Inflict 3 random [Butterfly]",
@@ -7271,17 +7649,20 @@
     ],
     "5": [
      {
+      "coin_index": 5,
       "kind": "spend_ammo_all",
       "raw": "Spend all [The Living & The Departed] on self",
       "status": "The Living & The Departed"
      },
      {
+      "coin_index": 5,
       "kind": "inflict",
       "potency": 3,
       "raw": "[On Hit] Inflict 3 [Sinking]",
       "status": "Sinking"
      },
      {
+      "coin_index": 5,
       "kind": "inflict",
       "potency": 3,
       "raw": "[On Hit] Inflict 3 [Tremor]",
@@ -7289,6 +7670,7 @@
      },
      {
       "butterfly_part": "living",
+      "coin_index": 5,
       "kind": "inflict",
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Butterfly](The Living)",
@@ -7296,23 +7678,27 @@
      },
      {
       "butterfly_part": "departed",
+      "coin_index": 5,
       "kind": "inflict",
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Butterfly](The Departed)",
       "status": "Butterfly"
      },
      {
+      "coin_index": 5,
       "consume_count": 1,
       "kind": "tremor_burst",
       "raw": "[On Hit] Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1",
       "status": "Tremor Burst"
      },
      {
+      "coin_index": 5,
       "kind": "gloom_damage_equal_target_status",
       "raw": "[On Hit] Deal Gloom damage equal to the sum of both [Butterfly] on target",
       "status": "Butterfly"
      },
      {
+      "coin_index": 5,
       "final_damage_percent": 0,
       "kind": "extra_damage_percent_of_damage",
       "per_ammo": true,
@@ -7359,6 +7745,7 @@
     "1": [
      {
       "butterfly_part": "living",
+      "coin_index": 1,
       "kind": "inflict",
       "potency": 3,
       "raw": "[On Hit] Inflict 3 [Butterfly](The Living)",
@@ -7368,6 +7755,7 @@
     "2": [
      {
       "butterfly_part": "departed",
+      "coin_index": 2,
       "kind": "inflict",
       "potency": 3,
       "raw": "[On Hit] Inflict 3 [Butterfly](The Departed)",
@@ -7376,24 +7764,28 @@
     ],
     "3": [
      {
+      "coin_index": 3,
       "kind": "inflict",
       "potency": 5,
       "raw": "[On Hit] Inflict 5 [Sinking]",
       "status": "Sinking"
      },
      {
+      "coin_index": 3,
       "kind": "inflict",
       "potency": 5,
       "raw": "[On Hit] Inflict 5 [Tremor]",
       "status": "Tremor"
      },
      {
+      "coin_index": 3,
       "consume_count": 1,
       "kind": "tremor_burst",
       "raw": "[On Hit] Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1",
       "status": "Tremor Burst"
      },
      {
+      "coin_index": 3,
       "kind": "gloom_damage_equal_target_status",
       "raw": "[On Hit] Deal Gloom damage equal to the sum of both [Butterfly] on target",
       "status": "Butterfly"
@@ -7451,18 +7843,21 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "count": 2,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +2 [Sinking] Count",
       "status": "Sinking"
      },
      {
+      "coin_index": 1,
       "kind": "inflict",
       "potency": 1,
       "raw": "[On Hit] Inflict 1 [Curse]",
       "status": "Curse"
      },
      {
+      "coin_index": 1,
       "condition": {
        "resonance_gte": 4,
        "resonance_of": "Gloom"
@@ -7473,6 +7868,7 @@
       "status": "Gloom Fragility"
      },
      {
+      "coin_index": 1,
       "kind": "inflict",
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [The Uninvited]",
@@ -7555,18 +7951,21 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "count": 2,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +2 [Sinking] Count",
       "status": "Sinking"
      },
      {
+      "coin_index": 1,
       "kind": "inflict",
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Curse]",
       "status": "Curse"
      },
      {
+      "coin_index": 1,
       "condition": {
        "resonance_gte": 3,
        "resonance_of": "Gloom"
@@ -7577,12 +7976,14 @@
       "status": "Gloom Fragility"
      },
      {
+      "coin_index": 1,
       "kind": "inflict",
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [The Uninvited]",
       "status": "The Uninvited"
      },
      {
+      "coin_index": 1,
       "kind": "inflict",
       "next_turn": true,
       "potency": 2,
@@ -7644,12 +8045,14 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "kind": "inflict",
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Sinking]",
       "status": "Sinking"
      },
      {
+      "coin_index": 1,
       "kind": "inflict",
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Tremor]",
@@ -7658,6 +8061,7 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "kind": "inflict",
       "next_turn": true,
       "potency": 1,
@@ -7667,17 +8071,20 @@
     ],
     "3": [
      {
+      "coin_index": 3,
       "kind": "noop",
       "note": "single-target skills hit 3",
       "raw": "When attacking just a single target, apply it to 3 targets instead"
      },
      {
+      "coin_index": 3,
       "kind": "inflict_on_random_other",
       "potency": 2,
       "raw": "[On Hit] If there are Staggered, Part broken, or killed units among the targets, inflict 2 [Sinking] against a random non-targeted enemy (once per turn; in Focused Encounters, each Part count as 1 target)",
       "status": "Sinking"
      },
      {
+      "coin_index": 3,
       "consume_count": 1,
       "kind": "tremor_burst",
       "raw": "[On Hit] Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1",
@@ -7733,6 +8140,7 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "kind": "inflict",
       "potency": 1,
       "raw": "[On Hit] Inflict 1 [Sinking]",
@@ -7741,6 +8149,7 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "kind": "inflict",
       "potency": 1,
       "raw": "[On Hit] Inflict 1 [Sinking]",
@@ -7749,6 +8158,7 @@
     ],
     "3": [
      {
+      "coin_index": 3,
       "kind": "inflict",
       "potency": 1,
       "raw": "[On Hit] Inflict 1 [Tremor]",
@@ -7757,12 +8167,14 @@
     ],
     "4": [
      {
+      "coin_index": 4,
       "kind": "inflict",
       "potency": 1,
       "raw": "[On Hit] Inflict 1 [Tremor]",
       "status": "Tremor"
      },
      {
+      "coin_index": 4,
       "kind": "inflict_on_random_other",
       "next_turn": true,
       "potency": 1,
@@ -7770,6 +8182,7 @@
       "status": "Gloom Fragility"
      },
      {
+      "coin_index": 4,
       "consume_count": 1,
       "kind": "tremor_burst",
       "raw": "[On Hit] Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1",
@@ -7836,10 +8249,12 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "kind": "tremor_burst",
       "raw": "[On Hit] Trigger [Tremor Burst]"
      },
      {
+      "coin_index": 1,
       "count": 3,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +3 [Sinking] Count",
@@ -7876,10 +8291,12 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "kind": "tremor_burst",
       "raw": "[On Hit] Trigger [Tremor Burst]"
      },
      {
+      "coin_index": 1,
       "count": 6,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +6 [Sinking] Count",
@@ -7935,6 +8352,7 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "kind": "inflict",
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Bleed]",
@@ -7943,6 +8361,7 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "kind": "inflict",
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Burn]",
@@ -7951,22 +8370,26 @@
     ],
     "3": [
      {
+      "coin_index": 3,
       "kind": "reuse_coin",
       "raw": "Then, Reuse this Coin (4 times per Skill)",
-      "reuse_coin": 1
+      "reuse_coin": 4
      },
      {
+      "coin_index": 3,
       "kind": "noop",
       "note": "hp floor 1",
       "raw": "This damage does not Stagger or reduce this unit's HP below 1"
      },
      {
+      "coin_index": 3,
       "kind": "inflict",
       "potency": 1,
       "raw": "[On Hit] Inflict 1 [Burn]",
       "status": "Burn"
      },
      {
+      "coin_index": 3,
       "kind": "inflict",
       "potency": 1,
       "raw": "[On Hit] Inflict 1 [Bleed]",
@@ -7975,8 +8398,10 @@
      {
       "ally": "random",
       "ally_count": 1,
+      "coin_index": 3,
       "kind": "gain",
       "next_turn": true,
+      "per_turn": 1,
       "range_max": 2,
       "range_min": 1,
       "raw": "[On Hit] A random ally gains 1 ~ 2 [Rhythm] next turn (once per Coin)",
@@ -7992,6 +8417,7 @@
        "hp_above_percent": 10
       },
       "kind": "self_damage",
+      "per_turn": 1,
       "raw": "[Heads Hit] At 10%+ HP, take 4 ~ 8 HP damage (once per Coin)",
       "self_damage_max": 8,
       "self_damage_min": 4
@@ -8006,6 +8432,7 @@
      "include_self": true,
      "kind": "gain",
      "next_turn": true,
+     "per_skill": 1,
      "potency": 2,
      "raw": "[On Target Kill] All allies gain 2 [Rhythm] next turn (once per Skill)",
      "status": "Rhythm"
@@ -8113,6 +8540,7 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "kind": "inflict",
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Bleed]",
@@ -8121,6 +8549,7 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "kind": "inflict",
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Burn]",
@@ -8129,32 +8558,38 @@
     ],
     "3": [
      {
+      "coin_index": 3,
       "kind": "reuse_coin",
       "raw": "Then, Reuse this Coin if the sum of HP lost due to this effect is less than 50 (4 times per Skill)",
       "reuse_coin": 4,
       "threshold": 50
      },
      {
+      "coin_index": 3,
       "kind": "noop",
       "note": "hp floor 1",
       "raw": "This damage does not Stagger or reduce this unit's HP below 1"
      },
      {
+      "coin_index": 3,
       "condition": {
        "hp_above_percent": 10
       },
       "kind": "self_damage",
+      "per_turn": 1,
       "raw": "[On Hit] At 10%+ HP, take 10 ~ 20 HP damage (once per Coin)",
       "self_damage_max": 20,
       "self_damage_min": 10
      },
      {
+      "coin_index": 3,
       "kind": "inflict",
       "potency": 1,
       "raw": "[On Hit] Inflict 1 [Burn]",
       "status": "Burn"
      },
      {
+      "coin_index": 3,
       "kind": "inflict",
       "potency": 1,
       "raw": "[On Hit] Inflict 1 [Bleed]",
@@ -8163,8 +8598,10 @@
      {
       "ally": "random",
       "ally_count": 1,
+      "coin_index": 3,
       "kind": "gain",
       "next_turn": true,
+      "per_turn": 1,
       "range_max": 2,
       "range_min": 1,
       "raw": "[On Hit] A random ally gains 1 ~ 2 [Rhythm] next turn (once per Coin)",
@@ -8299,6 +8736,7 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "kind": "compound",
       "raw": "[On Hit] Inflict 2 [Gloom Fragility]. Inflict 1 additional [Gloom Fragility] for every 3 Gloom Reson. (max 2)",
       "sub_effects": [
@@ -8320,12 +8758,14 @@
       ]
      },
      {
+      "coin_index": 1,
       "count": 3,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +3 [Sinking] Count",
       "status": "Sinking"
      },
      {
+      "coin_index": 1,
       "kind": "inflict",
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Curse]",
@@ -8362,6 +8802,7 @@
     "1": [
      {
       "assumption": "random",
+      "coin_index": 1,
       "kind": "inflict",
       "potency": 1,
       "raw": "[On Hit] Inflict 1 random [Butterfly]",
@@ -8371,6 +8812,7 @@
     "2": [
      {
       "assumption": "random",
+      "coin_index": 2,
       "kind": "inflict",
       "potency": 1,
       "raw": "[On Hit] Inflict 1 random [Butterfly]",
@@ -8380,6 +8822,7 @@
     "3": [
      {
       "assumption": "random part",
+      "coin_index": 3,
       "kind": "inflict",
       "range_max": 2,
       "range_min": 1,
@@ -8387,12 +8830,14 @@
       "status": "Butterfly"
      },
      {
+      "coin_index": 3,
       "kind": "self_sp_damage",
       "raw": "[On Hit] Lose 2~6 SP",
       "self_sp_damage_max": 6,
       "self_sp_damage_min": 2
      },
      {
+      "coin_index": 3,
       "condition": {
        "self_sp_at_least": 0
       },
@@ -8436,6 +8881,7 @@
     "1": [
      {
       "butterfly_part": "living",
+      "coin_index": 1,
       "kind": "inflict",
       "potency": 4,
       "raw": "[On Hit] Inflict 4 [Butterfly](The Living)",
@@ -8443,12 +8889,14 @@
      },
      {
       "butterfly_part": "departed",
+      "coin_index": 1,
       "kind": "inflict",
       "potency": 4,
       "raw": "[On Hit] Inflict 4 [Butterfly](The Departed)",
       "status": "Butterfly"
      },
      {
+      "coin_index": 1,
       "count": 3,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +3 [Sinking] Count",
@@ -8507,12 +8955,14 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "kind": "inflict",
       "potency": 1,
       "raw": "[On Hit] Inflict 1 [Burn]",
       "status": "Burn"
      },
      {
+      "coin_index": 1,
       "kind": "inflict",
       "potency": 1,
       "raw": "[On Hit] Inflict 1 [Bleed]",
@@ -8521,12 +8971,14 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "count": 1,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +1 [Burn] Count",
       "status": "Burn"
      },
      {
+      "coin_index": 2,
       "count": 1,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +1 [Bleed] Count",
@@ -8589,12 +9041,14 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "count": 1,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +1 [Burn] Count",
       "status": "Burn"
      },
      {
+      "coin_index": 1,
       "count": 1,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +1 [Bleed] Count",
@@ -8603,12 +9057,14 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "kind": "inflict",
       "potency": 1,
       "raw": "[On Hit] Inflict 1 [Burn]",
       "status": "Burn"
      },
      {
+      "coin_index": 2,
       "kind": "inflict",
       "potency": 1,
       "raw": "[On Hit] Inflict 1 [Bleed]",
@@ -8838,12 +9294,14 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "kind": "inflict",
       "potency": 1,
       "raw": "[On Hit] Inflict 1 [Burn]",
       "status": "Burn"
      },
      {
+      "coin_index": 1,
       "kind": "inflict",
       "potency": 1,
       "raw": "[On Hit] Inflict 1 [Bleed]",
@@ -8852,12 +9310,14 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "count": 1,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +1 [Burn] Count",
       "status": "Burn"
      },
      {
+      "coin_index": 2,
       "count": 1,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +1 [Bleed] Count",
@@ -8937,12 +9397,14 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "count": 1,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +1 [Burn] Count",
       "status": "Burn"
      },
      {
+      "coin_index": 1,
       "count": 1,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +1 [Bleed] Count",
@@ -8951,12 +9413,14 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "kind": "inflict",
       "potency": 1,
       "raw": "[On Hit] Inflict 1 [Burn]",
       "status": "Burn"
      },
      {
+      "coin_index": 2,
       "kind": "inflict",
       "potency": 1,
       "raw": "[On Hit] Inflict 1 [Bleed]",
@@ -9043,24 +9507,28 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "kind": "reuse_percent_missing_hp",
       "max": 2,
       "per": 33,
       "raw": "Reuse this Coin once for every 33% missing HP (max 2 times)"
      },
      {
+      "coin_index": 1,
       "kind": "inflict",
       "potency": 1,
       "raw": "[On Hit] Inflict 1 [Burn]",
       "status": "Burn"
      },
      {
+      "coin_index": 1,
       "kind": "inflict",
       "potency": 1,
       "raw": "[On Hit] Inflict 1 [Bleed]",
       "status": "Bleed"
      },
      {
+      "coin_index": 1,
       "kind": "gain",
       "potency": 1,
       "raw": "[On Hit] Gain 1 [Poise]",
@@ -9117,6 +9585,7 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "count": 1,
       "kind": "inflict",
       "potency": 1,
@@ -9127,6 +9596,7 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "consume_count": 1,
       "kind": "activate_status",
       "raw": "[On Hit without Cracking] Activate [Burn] on target once. Target loses 1 [Burn] Count",
@@ -9188,6 +9658,7 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "count": 2,
       "kind": "inflict",
       "raw": "[On Hit] Inflict +2 [Burn] Count",
@@ -9196,6 +9667,7 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "kind": "inflict",
       "potency": 3,
       "raw": "[On Hit] Inflict 3 [Burn]",
@@ -9204,6 +9676,7 @@
     ],
     "3": [
      {
+      "coin_index": 3,
       "consume_count": 2,
       "kind": "activate_status",
       "raw": "[On Hit without Cracking] Activate [Burn] on target 2 times. Target loses 2 [Burn] Count",
@@ -9211,6 +9684,7 @@
       "times": 2
      },
      {
+      "coin_index": 3,
       "condition": {
        "hp_below_percent": 33
       },
@@ -9298,6 +9772,7 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "count": 1,
       "kind": "inflict",
       "potency": 1,
@@ -9308,6 +9783,7 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "count": 1,
       "kind": "inflict",
       "potency": 1,
@@ -9318,6 +9794,7 @@
     ],
     "3": [
      {
+      "coin_index": 3,
       "consume_count": 1,
       "kind": "activate_status",
       "raw": "[On Hit without Cracking] Activate [Burn] on target once. Target loses 1 [Burn] Count",
@@ -9327,6 +9804,7 @@
     ],
     "4": [
      {
+      "coin_index": 4,
       "consume_count": 2,
       "kind": "activate_status",
       "raw": "[On Hit without Cracking] Activate [Burn] on target 2 times. Target loses 2 [Burn] Count",
@@ -9334,6 +9812,7 @@
       "times": 2
      },
      {
+      "coin_index": 4,
       "condition": {
        "hp_below_percent": 33
       },
@@ -9414,6 +9893,7 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "count": 1,
       "kind": "gain",
       "potency": 1,
@@ -9423,6 +9903,7 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "count": 1,
       "kind": "damage_from_status_divisor",
       "raw": "[On Hit without Cracking] Deal ([Poise] on self / 2) Pride damage on target and lose 1 [Poise] Count (rounded down)",
@@ -9485,6 +9966,7 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "count": 1,
       "kind": "gain",
       "raw": "[On Hit] Gain +1 [Poise] Count",
@@ -9493,6 +9975,7 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "kind": "gain",
       "potency": 1,
       "raw": "[On Hit] Gain 1 [Poise]",
@@ -9501,6 +9984,7 @@
     ],
     "3": [
      {
+      "coin_index": 3,
       "condition": {
        "component": "potency",
        "source": "self",
@@ -9514,6 +9998,7 @@
       "value": 0
      },
      {
+      "coin_index": 3,
       "condition": {
        "hp_below_percent": 33
       },
@@ -9528,6 +10013,7 @@
     ],
     "4": [
      {
+      "coin_index": 4,
       "condition": {
        "component": "potency",
        "source": "self",
@@ -9541,6 +10027,7 @@
       "value": 0
      },
      {
+      "coin_index": 4,
       "condition": {
        "hp_below_percent": 33
       },
@@ -9610,6 +10097,7 @@
    "attack_end": [
     {
      "kind": "reuse_on_kill",
+     "per_turn": 1,
      "raw": "[Attack End] If target is killed, Reuse this Skill on the target that has the highest HP (once per turn)"
     }
    ],
@@ -9637,17 +10125,20 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "kind": "resist_floor",
       "raw": "If target's Pierce Resist. is below \"Weak\" (1.5), treat is as Weak (1.5) (max 50%)",
       "status": "pierce",
       "value": 15
      },
      {
+      "coin_index": 1,
       "kind": "noop",
       "note": "clash-lose gate",
       "raw": "On Clash Lose, this effect does not activate"
      },
      {
+      "coin_index": 1,
       "condition": {
        "hp_below_percent": 33
       },
@@ -9728,6 +10219,7 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "count": 1,
       "kind": "inflict",
       "potency": 1,
@@ -9738,6 +10230,7 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "consume_count": 1,
       "kind": "activate_status",
       "raw": "[On Hit without Cracking] Activate [Bleed] on target once. Target loses 1 [Bleed] Count",
@@ -9799,6 +10292,7 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "count": 2,
       "kind": "inflict",
       "potency": 2,
@@ -9809,6 +10303,7 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "consume_count": 2,
       "kind": "activate_status",
       "raw": "[On Hit without Cracking] Activate [Bleed] on target 2 times. Target loses 2 [Bleed] Count",
@@ -9816,6 +10311,7 @@
       "times": 2
      },
      {
+      "coin_index": 2,
       "condition": {
        "hp_below_percent": 33
       },
@@ -9903,6 +10399,7 @@
    "coins": {
     "1": [
      {
+      "coin_index": 1,
       "count": 1,
       "kind": "inflict",
       "potency": 1,
@@ -9913,6 +10410,7 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "count": 3,
       "kind": "inflict",
       "potency": 2,
@@ -9921,6 +10419,7 @@
       "status2": "Burn"
      },
      {
+      "coin_index": 2,
       "consume_count": 2,
       "kind": "activate_status",
       "raw": "[On Hit without Cracking] Activate [Bleed] on target 2 times. Target loses 2 [Bleed] Count",
@@ -9928,6 +10427,7 @@
       "times": 2
      },
      {
+      "coin_index": 2,
       "condition": {
        "hp_below_percent": 33
       },

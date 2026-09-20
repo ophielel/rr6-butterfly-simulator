@@ -42,6 +42,8 @@ TRIGGERS = {
     "hit after clash lose": "coin_clash_lose",
     "on kill": "on_kill",
     "on target kill": "on_kill",
+    "reuse - on hit": "coin_reuse",
+    "reuse - on crit": "coin_reuse",
     "turn end": "turn_end",
     "turn start": "turn_start",
     "end skill": "attack_end",
@@ -487,9 +489,29 @@ PATTERNS = [
                 "damage_percent_missing_hp": int(m.group(1))}),
     (re.compile(rf"^Then, Reuse this Coin \({N} times? per Skill\)$"),
      lambda m: {"kind": "reuse_coin", "reuse_coin": int(m.group(1))}),
+    (re.compile(rf"^Then, Reuse this Coin \(once per Skill\)$"),
+     lambda m: {"kind": "reuse_coin", "reuse_coin": 1}),
+    (re.compile(rf"^Then, Reuse this Coin \({N} times? max\)$"),
+     lambda m: {"kind": "reuse_coin", "reuse_coin": int(m.group(1))}),
+    (re.compile(rf"^Reuse this Coin \({N} times? max\)$"),
+     lambda m: {"kind": "reuse_coin", "reuse_coin": int(m.group(1))}),
+    (re.compile(rf"^Reuse this Coin \((?:once|{N} times?) per Skill\)$"),
+     lambda m: {"kind": "reuse_coin", "reuse_coin": int(m.group(1) or 1)}),
+    (re.compile(r"^Reuse this Coin$"),
+     lambda m: {"kind": "reuse_coin", "reuse_coin": 1}),
+    # "Reuse this Coin ([X] Potency - 1) times (4 times max)" - the count is the
+    # status minus one, capped.
+    (re.compile(rf"^Reuse this Coin \({ST} Potency - {N}\) times \({N} times max\)$"),
+     lambda m: {"kind": "reuse_coin", "reuse_coin": int(m.group(3)),
+                "reuse_from_status": m.group(1), "reuse_minus": int(m.group(2))}),
     (re.compile(rf"^At {N}\+ SP, Reuse this Coin \({N} times? max per Skill\)$"),
      lambda m: {"kind": "reuse_coin", "reuse_coin": int(m.group(2)),
                 "condition": {"self_sp_at_least": int(m.group(1))}}),
+    (re.compile(rf"^At {N}\+ SP, Reuse this Coin$"),
+     lambda m: {"kind": "reuse_coin", "reuse_coin": 1,
+                "condition": {"self_sp_at_least": int(m.group(1))}}),
+    (re.compile(rf"^Reuse this Coin \({N} times? max\)$"),
+     lambda m: {"kind": "reuse_coin", "reuse_coin": int(m.group(1))}),
     (re.compile(r"^This damage does not Stagger or reduce this unit's HP below 1$"),
      lambda m: {"kind": "noop", "note": "hp floor 1"}),
     (re.compile(rf"^Deal -{N}% damage against sub-targets$"),
@@ -723,7 +745,7 @@ def parse_triggered(trigger: str, text: str, raw: str) -> Optional[dict]:
     text = text.strip()
     # Parentheticals that carry a limit plus a remark: "(max 15%; once per
     # turn)", "(once per turn; rounded down)", "(once per Coin)".
-    LIMIT_WORDS = r"(once|twice|\d+ times?) per (turn|Encounter|Coin|Skill)"
+    LIMIT_WORDS = r"(once|twice|\d+ times?(?: max)?) per (turn|Encounter|Coin|Skill)"
     note_match = re.search(rf"\((max [\d.]+%);\s*{LIMIT_WORDS}(?:;[^)]*)?\)", text)
     if note_match:
         text = text[: note_match.start()] + f"({note_match.group(1)})" + text[note_match.end():]
@@ -731,8 +753,8 @@ def parse_triggered(trigger: str, text: str, raw: str) -> Optional[dict]:
     if note_match and not re.fullmatch(rf"\({LIMIT_WORDS}\)", note_match.group(0)):
         text = text[: note_match.start()] + text[note_match.end():]
     text = re.sub(r"\((max [\d.]+);\s*rounded down\)", r"(\1)", text)
-    # "(once per turn; excluding the Suit already in this unit's Hand)"
-    text = re.sub(r"\([^()]*?(?:once|twice|\d+ times?) per (?:turn|Encounter|Coin|Skill)[^()]*\)", "", text)
+    # The limits themselves are read below, before any remark is removed, so a
+    # "(4 times per Skill)" is not swallowed by the remark pass.
     # "(this effect does not reduce this unit's HP below 1)" and friends.
     text = re.sub(
         r"\((?:this effect does not reduce this unit's HP below \d+|does not get Staggered due to this effect|excluding the Suit already in this unit's Hand)\)",
@@ -756,19 +778,34 @@ def parse_triggered(trigger: str, text: str, raw: str) -> Optional[dict]:
         # Tidy a dangling separator left inside a parenthetical.
         text = re.sub(r"\(max (\d+)%;\s*\)", r"(max \1%)", text)
         text = re.sub(r"\(max (\d+)%;?\)", r"(max \1%)", text)
+    else:
+        # No bare limit: drop remark parentheticals that merely mention one,
+        # e.g. "(once per turn; excluding the Suit already in this unit's Hand)".
+        text = re.sub(
+            r"\([^()]*?(?:once|twice|\d+ times?) per (?:turn|Encounter|Coin|Skill)[^()]*\)",
+            "",
+            text,
+        ).strip()
     # "next turn" buffs are applied at the start of the following turn.
     next_turn = False
     if text.endswith(" next turn") or text.endswith(" next turn."):
         next_turn = True
         text = re.sub(r"\s+next turn\.?$", "", text).strip()
     normalized = text.replace("both [", "[")
+    if __import__("os").environ.get("LCB_DBG2"):
+        print("DBG2 limits", limits, "text", repr(text))
     for pattern, handler in PATTERNS:
         match = pattern.match(normalized)
         if not match:
             continue
         effect = handler(match)
-        if effect.get("kind") == "reuse_coin" and limits and "reuse_coin" not in effect:
-            effect["reuse_coin"] = limits.get("per_skill") or limits.get("per_turn") or 1
+        if __import__("os").environ.get("LCB_DBG"):
+            print("DBG matched", pattern.pattern, "limits", limits, "text", repr(normalized))
+        if effect.get("kind") == "reuse_coin" and limits:
+            effect["reuse_coin"] = (
+                limits.get("per_skill") or limits.get("per_turn") or effect.get("reuse_coin") or 1
+            )
+            effect.pop("per_skill", None)
         # "both [X]" means X contributes Potency **and** Count, which the
         # evaluator expresses by listing X twice.  Patterns that already emit the
         # pair are left alone.
@@ -793,8 +830,14 @@ def parse_triggered(trigger: str, text: str, raw: str) -> Optional[dict]:
         if trigger == "coin_clash_lose":
             effect["only_after_clash_lose"] = True
             effect["trigger"] = "coin"
+        if trigger == "coin_reuse":
+            effect["reuse_only"] = True
+            effect["trigger"] = "coin"
         effect = apply_stack_component(effect)
         if limits:
+            if effect.get("kind") == "reuse_coin":
+                # The count already carries the "(N times per Skill)" cap.
+                limits = {k: v for k, v in limits.items() if k != "per_skill"}
             effect.update(limits)
         if next_turn:
             effect["next_turn"] = True
@@ -1215,6 +1258,9 @@ def build_skill_entry(skill: dict, tier: dict, enemies: bool) -> dict:
         for extra in coin_buckets.get("attack_end", []):
             entry["attack_end"].append(strip_trigger(extra))
         own = [e for e in merged if e.get("trigger") in (None, "coin", "on_use")]
+        for effect in own:
+            # The Coin an effect belongs to, so "Reuse this Coin" knows which.
+            effect["coin_index"] = index
         if own:
             entry["coins"][str(index)] = [strip_trigger(e) for e in own]
         unmodeled.extend(coin_unmodeled)

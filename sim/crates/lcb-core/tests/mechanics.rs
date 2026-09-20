@@ -1606,10 +1606,10 @@ fn section5_golden_replay_is_deterministic() {
     // action per Slot").  Update only together with a sourced rule change, and
     // name the source in the commit message.  Last updated when the identities'
     // passives started applying (in-game `Passives.json`).
-    assert_eq!(first_hp, vec![25483, 25245, 24696], "Imago HP after turns 1-3");
+    assert_eq!(first_hp, vec![25483, 25245, 24688], "Imago HP after turns 1-3");
     assert_eq!(
         format!("{first_hash:016x}"),
-        "297a0ff8e6359dd2",
+        "3389d6de1fab1da6",
         "recorded state hash"
     );
 }
@@ -1811,6 +1811,88 @@ fn corrosion_replaces_panic_at_minus_forty_five() {
         "a Corrosion E.G.O Skill was used: {:?}",
         state.log.iter().map(|e| e.detail.clone()).collect::<Vec<_>>()
     );
+}
+
+/// "Then, Reuse this Coin (4 times per Skill)" really uses the Coin again (and
+/// re-tosses it): E.G.O `21009` Harmony's third Coin is Reused four times, so
+/// the Skill produces four more hits than it has Coins.
+/// Sources: wiki.gg `Clash` (the `Reuse` trigger prefix), JA-wiki 守備スキル
+/// ("再使用はコインを投げるごとに「スキルを使用した」という判定").
+#[test]
+fn reuse_coin_uses_the_coin_again() {
+    use lcb_core::ids::EgoId;
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&["11004"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    let target = state.units.iter().position(|u| !u.kind.is_sinner()).unwrap();
+    let mut use_ = battle::build_ego_use(
+        &state,
+        &sim.library,
+        &sim.mechanics,
+        0,
+        &EgoId::new("21009"),
+        EgoSkillKind::Awakening,
+    )
+    .expect("Harmony builds");
+    let coins = use_.coins.len();
+    // Give the E.G.O the resources it would have been paid with.
+    for sin in ["wrath", "lust", "sloth", "pride", "envy"] {
+        state.ego_resources.insert(sin.to_string(), 5);
+    }
+    state.preset_flips = (0..4096).map(|i| i % 2 == 0).collect();
+    state.flip_cursor = 0;
+    let hits = battle::one_sided_attack(&mut state, 0, target, &mut use_, 0);
+    assert_eq!(
+        hits.len(),
+        coins + 4,
+        "four Reuses of the third Coin: {coins} Coins -> {} hits",
+        hits.len()
+    );
+    // The reused Coin kept its index, so it appears five times in total.
+    let third = hits.iter().filter(|hit| hit.coin_index == 2).count();
+    assert_eq!(third, 5, "the third Coin was used five times");
+}
+
+/// E.G.O Skill effect text must actually reach the engine.  The E.G.O entries
+/// are keyed `<ego id>.<kind>@<tier>`, so a lookup by the bare id silently
+/// produced an empty SkillMechanics and every E.G.O clause was dead.
+/// Source: `data/mechanics/effects.json` (extracted from in-game E.G.O text).
+#[test]
+fn ego_skills_load_their_mechanics() {
+    use lcb_core::ids::EgoId;
+    let sim = sim();
+    let state = sim
+        .new_encounter(&["11004"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    for (ego, kind, expected) in [
+        ("21009", "awakening", "Harmony"),
+        ("21009", "corrosion", "Harmony"),
+        ("21207", "awakening", "Solemn Lament"),
+    ] {
+        let use_ = battle::build_ego_use(
+            &state,
+            &sim.library,
+            &sim.mechanics,
+            0,
+            &EgoId::new(ego),
+            if kind == "awakening" {
+                EgoSkillKind::Awakening
+            } else {
+                EgoSkillKind::Corrosion
+            },
+        )
+        .expect("E.G.O builds");
+        assert_eq!(
+            use_.mechanics.note.as_deref(),
+            Some(expected),
+            "{ego}.{kind} mechanics were not loaded"
+        );
+        assert!(
+            !use_.mechanics.coins.is_empty() || !use_.mechanics.on_use.is_empty(),
+            "{ego}.{kind} has clauses"
+        );
+    }
 }
 
 /// A full turn keeps the battle in a consistent, serialisable state.

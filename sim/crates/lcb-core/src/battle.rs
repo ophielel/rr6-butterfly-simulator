@@ -116,9 +116,10 @@ pub struct UseContext {
     /// Number of times each Coin has hit ("# of Coin 3 hits").
     #[serde(default)]
     pub coin_hits: BTreeMap<u32, i32>,
-    /// "Then, Reuse this Coin (N times per Skill)" budget for this use.
+    /// "Then, Reuse this Coin (N times per Skill)": Coin -> times it may be used
+    /// again in this Skill use.
     #[serde(default)]
-    pub reuse_coin_budget: i32,
+    pub reuse_caps: BTreeMap<u32, i32>,
     /// HP this unit lost to its own Skill ("HP lost due to this effect").
     #[serde(default)]
     pub self_damage_taken: i32,
@@ -134,6 +135,9 @@ pub struct UseContext {
     /// "(Chance to flip Heads)% chance to inflict The Departed".
     #[serde(default)]
     pub butterfly_split: bool,
+    /// How many times a Coin of this use has been Reused so far.
+    #[serde(default)]
+    pub reuse_uses: i32,
     /// "Take -N% HP damage from attacks" (incoming damage modifier).
     #[serde(default)]
     pub damage_taken_bonus: f64,
@@ -1733,12 +1737,26 @@ pub fn apply_effects(
                 // attack loop; "(if the sum of HP lost due to this effect is
                 // less than N)" stops the repeats early.
                 if let Some(times) = effect.reuse_coin {
+                    // "(4 times per Skill)" is a per-Skill cap on that Coin, not
+                    // a budget that the reuse itself may extend.
                     let allowed = match effect.threshold {
                         Some(limit) => use_ctx.self_damage_taken < limit,
                         None => true,
                     };
-                    if allowed {
-                        use_ctx.reuse_coin_budget += times.max(0);
+                    // "Reuse this Coin ([Bright -光-] Potency - 1) times (4 times
+                    // max)": the status sets how many repeats are available.
+                    let times = match effect.reuse_from_status.as_deref() {
+                        Some(status) => {
+                            let have = state.units[ctx.actor_index].statuses.potency(status);
+                            (have - effect.reuse_minus.unwrap_or(0)).clamp(0, times)
+                        }
+                        None => times,
+                    };
+                    // `coin_index` is 1-based, matching `coin_hits`.
+                    let coin = effect.coin_index.unwrap_or(0);
+                    if allowed && times > 0 {
+                        let entry = use_ctx.reuse_caps.entry(coin).or_insert(0);
+                        *entry = (*entry).max(times);
                     }
                 }
             }
@@ -1893,10 +1911,7 @@ pub fn build_ego_use(
         }
     };
     let skill = skill?;
-    let mech = mechanics
-        .get(&SkillId::new(format!("{}.{}", ego_id.as_str(), key)))
-        .cloned()
-        .unwrap_or_default();
+    let mech = mechanics.get_ego(ego_id.as_str(), key);
     let coins = (0..skill.coins.unwrap_or(1))
         .map(|index| {
             CoinRuntime::fresh(
@@ -2429,7 +2444,7 @@ fn tick_bleed_with_floor(state: &mut BattleState, unit_index: usize, keep_count:
 pub fn one_sided_attack(
     state: &mut BattleState,
     attacker_index: usize,
-    defender_index: usize,
+    mut defender_index: usize,
     use_: &mut SkillUse,
     clash_count: i32,
 ) -> Vec<HitResult> {
@@ -2437,7 +2452,10 @@ pub fn one_sided_attack(
     let mut order: Vec<usize> = (0..use_.coins.len())
         .filter(|i| use_.coins[*i].state == CoinState::Fresh)
         .collect();
-    let mut reuse_budget = reuse_budget(&use_.ctx) + use_.ctx.reuse_coin_budget;
+    // Two budgets: the one known before the attack ("Reuse this Coin once for
+    // every N% missing HP" is evaluated On Use) and the one the Coin itself
+    // grants while it resolves ("Then, Reuse this Coin (4 times per Skill)").
+    let mut reuse_budget = reuse_budget(&use_.ctx);
     loop {
         let Some(coin_index) = order.first().copied() else { break };
         order.remove(0);
@@ -2483,15 +2501,46 @@ pub fn one_sided_attack(
             clash_count,
         );
         hits.push(hit);
-        if reuse_budget > 0 {
-            reuse_budget -= 1;
-            use_.ctx.reuse_coin_budget = (use_.ctx.reuse_coin_budget - 1).max(0);
+        // "Then, Reuse this Coin (N times per Skill)": the Coin may be used again
+        // while it is under its cap, which is granted while the Coin resolves.
+        let used_times = *use_.ctx.coin_hits.get(&(coin_index as u32 + 1)).unwrap_or(&1);
+        let cap = use_.ctx.reuse_caps.get(&(coin_index as u32 + 1)).copied().unwrap_or(0);
+        let under_cap = used_times - 1 < cap;
+        if under_cap || reuse_budget > 0 {
+            if !under_cap {
+                reuse_budget -= 1;
+            }
+            // "The Coin is used again": it is tossed again (JA-wiki 守備スキル
+            // "再使用はコインを投げるごとに「スキルを使用した」という判定").
             if let Some(coin) = use_.coins.get_mut(coin_index) {
                 coin.state = CoinState::Fresh;
                 coin.heads = None;
                 coin.paralyzed = false;
             }
+            use_.ctx.reuse_uses += 1;
             order.insert(0, coin_index);
+            // "通常戦闘の場合、再使用や広域のサブターゲットと同じメカニズムで
+            // 対象を自動で選択しなおす" (JA-wiki ダメージ): a Reuse picks a new
+            // target once the current one is gone.
+            if !state.units[defender_index].alive {
+                let next = state
+                    .units
+                    .iter()
+                    .enumerate()
+                    .find(|(index, unit)| {
+                        unit.alive
+                            && *index != attacker_index
+                            && unit.kind.is_sinner() != state.units[attacker_index].kind.is_sinner()
+                    })
+                    .map(|(index, _)| index);
+                match next {
+                    Some(next) => {
+                        defender_index = next;
+                    }
+                    None => break,
+                }
+            }
+            continue;
         }
         if !state.units[defender_index].alive {
             break;
@@ -2888,8 +2937,17 @@ fn apply_hit(
     let (_, hp_lost) = state.units[defender_index].take_damage(damage);
 
     *use_.ctx.coin_hits.entry(coin_index as u32 + 1).or_insert(0) += 1;
-    // [On Hit] coin effects.
-    let mut effects: Vec<Effect> = use_.mechanics.coin(coin_index as u32 + 1).to_vec();
+    // [On Hit] coin effects.  "[Reuse - ...]" clauses only resolve on a Coin
+    // that is being used again (wiki.gg `Clash`, trigger table).
+    let hits_so_far = use_.ctx.coin_hits.get(&(coin_index as u32 + 1)).copied().unwrap_or(0);
+    let reused = hits_so_far > 1;
+    let mut effects: Vec<Effect> = use_
+        .mechanics
+        .coin(coin_index as u32 + 1)
+        .iter()
+        .filter(|effect| !effect.reuse_only || reused)
+        .cloned()
+        .collect();
     if heads {
         // "[Heads Hit]" clauses resolve on top of the Coin's On Hit effects.
         effects.extend_from_slice(use_.mechanics.heads_hit(coin_index as u32 + 1));
@@ -2920,7 +2978,10 @@ fn apply_hit(
         apply_effects(state, &effects, &mut ctx, &mut local);
         use_.ctx.ammo_spent = local.ammo_spent.max(use_.ctx.ammo_spent);
         // Coin-level clauses may add Reuse budget, consume statuses or lose HP.
-        use_.ctx.reuse_coin_budget += local.reuse_coin_budget;
+        for (coin, cap) in local.reuse_caps {
+            let entry = use_.ctx.reuse_caps.entry(coin).or_insert(0);
+            *entry = (*entry).max(cap);
+        }
         use_.ctx.self_damage_taken += local.self_damage_taken;
         use_.ctx.damage_bonus += local.damage_bonus;
         use_.ctx.final_damage_percent += local.final_damage_percent;

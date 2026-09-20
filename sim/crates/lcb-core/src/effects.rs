@@ -272,6 +272,16 @@ pub struct Effect {
     /// A status rider that inflicts on the attacker instead of the target.
     #[serde(default)]
     pub on_attacker: bool,
+    /// "[Reuse - On Hit]": the clause only resolves on a Reused Coin (wiki.gg
+    /// `Clash`, trigger table).
+    #[serde(default)]
+    pub reuse_only: bool,
+    /// "Reuse this Coin ([X] Potency - N) times (max K)": the count comes from a
+    /// status on the actor.
+    #[serde(default)]
+    pub reuse_from_status: Option<String>,
+    #[serde(default)]
+    pub reuse_minus: Option<i32>,
     /// A status rider that only fires on the first Coin of a Skill.
     #[serde(default)]
     pub first_coin_only: bool,
@@ -605,6 +615,22 @@ impl MechanicsBook {
 
     pub fn get_or_default_for(&self, id: &SkillId, uptie: crate::ids::Uptie) -> SkillMechanics {
         self.get_for(id, uptie).cloned().unwrap_or_default()
+    }
+
+    /// Mechanics of an E.G.O Skill.  E.G.O entries are keyed `<ego id>.<kind>`
+    /// and stored with an uptie suffix (`<ego id>.awakening@1`), so an exact
+    /// lookup by the bare id would miss them.
+    pub fn get_ego(&self, ego_id: &str, kind: &str) -> SkillMechanics {
+        let base = format!("{ego_id}.{kind}");
+        if let Some(found) = self.skills.get(&base) {
+            return found.clone();
+        }
+        for tier in [1u8, 2, 3, 4] {
+            if let Some(found) = self.skills.get(&format!("{base}@{tier}")) {
+                return found.clone();
+            }
+        }
+        SkillMechanics::default()
     }
 
     /// Skills referenced by the fixed content that are missing from the book.

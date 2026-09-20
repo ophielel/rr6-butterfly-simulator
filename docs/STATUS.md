@@ -67,7 +67,8 @@ Sin Resonance.  Anything not modelled is listed per skill in
 ## Phase 5 — E.G.O — partial
 
 Implemented: resource costs, SP costs, Awakening/Corrosion selection, Overclock
-(1.5x cost, rounded up), coin reuse from "Reuse this Coin ..." text, resource
+(1.5x cost, rounded up), reuse from "Reuse this Coin ..." text (tossed again, cap
+per Skill), resource
 generation from base attack skills.
 
 Not implemented: E.G.O passives, `Indiscriminate` targeting, E.G.O corrosion
