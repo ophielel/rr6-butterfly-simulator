@@ -453,6 +453,7 @@ fn guard_gains_shield_when_attacked() {
         is_ego: false,
         ego: None,
         ego_kind: None,
+        enemy_slot: None,
         used_top: false,
     });
     state.preset_flips = vec![true; 32];
@@ -1004,7 +1005,6 @@ fn sin_resonance_is_counted_from_the_dashboard() {
             continue;
         };
         state.actions.push(lcb_core::state::SubmittedAction {
-            used_top: false,
             actor: unit.id.clone(),
             slot: 0,
             skill: SkillId::new(skill.id.clone()),
@@ -1012,6 +1012,8 @@ fn sin_resonance_is_counted_from_the_dashboard() {
             is_ego: false,
             ego: None,
             ego_kind: None,
+            enemy_slot: None,
+            used_top: false,
         });
         chosen += 1;
     }
@@ -1646,16 +1648,33 @@ fn section5_golden_replay_is_deterministic() {
             // Deterministic policy: every Sinner uses the first legal action of
             // the first Slot that still needs one.
             let mut used: Vec<(lcb_core::ids::UnitId, u32)> = Vec::new();
+            let mut engages = 0;
             for action in sim.legal_actions(&state) {
-                if let Action::Assign { actor, slot, skill, target } = action {
-                    if used.contains(&(actor.clone(), slot)) {
-                        continue;
+                match action {
+                    Action::Assign { actor, slot, skill, target } => {
+                        if used.contains(&(actor.clone(), slot)) {
+                            continue;
+                        }
+                        used.push((actor.clone(), slot));
+                        sim.submit(&mut state, Action::Assign { actor, slot, skill, target })
+                            .unwrap();
                     }
-                    used.push((actor.clone(), slot));
-                    sim.submit(&mut state, Action::Assign { actor, slot, skill, target })
+                    Action::Engage { actor, slot, skill, enemy_slot } => {
+                        if used.contains(&(actor.clone(), slot)) {
+                            continue;
+                        }
+                        used.push((actor.clone(), slot));
+                        engages += 1;
+                        sim.submit(
+                            &mut state,
+                            Action::Engage { actor, slot, skill, enemy_slot },
+                        )
                         .unwrap();
+                    }
+                    _ => {}
                 }
             }
+            let _ = engages;
             sim.step_turn(&mut state).unwrap();
             enemy_hp.push(state.units[enemy].hp);
         }
@@ -1674,10 +1693,10 @@ fn section5_golden_replay_is_deterministic() {
     // action per Slot").  Update only together with a sourced rule change, and
     // name the source in the commit message.  Last updated when the identities'
     // passives started applying (in-game `Passives.json`).
-    assert_eq!(first_hp, vec![25495, 25342, 25138], "Imago HP after turns 1-3");
+    assert_eq!(first_hp, vec![25495, 25348, 25221], "Imago HP after turns 1-3");
     assert_eq!(
         format!("{first_hash:016x}"),
-        "ab0c10b98246be50",
+        "e1e52f0ee21a0e1e",
         "recorded state hash"
     );
 }
@@ -2273,7 +2292,9 @@ fn corrosion_is_not_a_player_choice() {
 
 fn action_actor(action: &Action) -> &lcb_core::ids::UnitId {
     match action {
-        Action::Assign { actor, .. } | Action::UseEgo { actor, .. } => actor,
+        Action::Assign { actor, .. }
+        | Action::Engage { actor, .. }
+        | Action::UseEgo { actor, .. } => actor,
         Action::Commit => unreachable!(),
     }
 }
@@ -2741,6 +2762,119 @@ fn sinking_stops_once_its_count_is_gone() {
     assert_eq!(
         state.units[target].hp, after_first,
         "a second trigger does nothing"
+    );
+}
+
+/// PROBE: can a fast Sinner pull an enemy Skill that targets someone else into
+/// a Clash?  "スキルをセットする際、自分速度が相手のスロットよりも早ければ、その
+/// スキルの使用先を自分に向けさせることができる" (JA-wiki 戦闘システム詳細 /
+/// 集中戦闘), and "幻想体戦では、速度で勝っている敵のスキルの使用先を変更することが
+/// できる".
+#[test]
+fn probe_fast_sinner_pulls_an_enemy_skill() {
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&fixed::TEAM, &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    let enemy = state.units.iter().position(|u| !u.kind.is_sinner()).unwrap();
+    // Sinner 0 is much faster than the enemy; every enemy Slot targets Sinner 1.
+    for unit in state.units.iter_mut().filter(|u| u.kind.is_sinner()) {
+        unit.speed = 2;
+    }
+    state.units[0].speed = 9;
+    state.units[enemy].speed = 4;
+    let slow = state.units[1].id.clone();
+    for action in state.actions.iter_mut() {
+        if action.actor == state.units[enemy].id {
+            action.target = Some(slow.clone());
+        }
+    }
+    // The fast Sinner is offered a chain to every enemy Slot it out-speeds.
+    let actor = state.units[0].id.clone();
+    let skill = state.units[0].dashboard[0].current.clone();
+    let engages: Vec<u32> = sim
+        .legal_actions(&state)
+        .iter()
+        .filter_map(|action| match action {
+            Action::Engage {
+                actor: who,
+                enemy_slot,
+                ..
+            } if *who == actor => Some(*enemy_slot),
+            _ => None,
+        })
+        .collect();
+    assert!(
+        engages.contains(&0),
+        "the fast Sinner may chain to enemy Slot 0: {engages:?}"
+    );
+    sim.submit(
+        &mut state,
+        Action::Engage {
+            actor,
+            slot: 0,
+            skill,
+            enemy_slot: 0,
+        },
+    )
+    .unwrap();
+    state.preset_flips = vec![true; 256];
+    state.flip_cursor = 0;
+    battle::resolve_combat(&mut state, &sim.library, &sim.mechanics);
+    assert_eq!(
+        state.log.iter().filter(|e| e.kind == "clash").count(),
+        1,
+        "the pulled enemy Skill Clashed with the fast Sinner: {:?}",
+        state
+            .log
+            .iter()
+            .map(|e| format!("[{}] {}", e.kind, e.detail))
+            .collect::<Vec<_>>()
+    );
+}
+
+/// A slow Sinner cannot pull an enemy Skill aimed at someone else: their Speed
+/// is not higher than the enemy Slot's, so both sides attack one-sidedly
+/// ("自分の速度が相手のスロットの速度以下であり、かつ矢印が自分に向いていない場合、
+/// その攻撃にマッチすることは出来ない").
+#[test]
+fn slow_sinner_cannot_pull_and_engage_is_rejected() {
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&fixed::TEAM, &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    let enemy = state.units.iter().position(|u| !u.kind.is_sinner()).unwrap();
+    for unit in state.units.iter_mut().filter(|u| u.kind.is_sinner()) {
+        unit.speed = 1;
+    }
+    state.units[enemy].speed = 8;
+    let slow = state.units[1].id.clone();
+    for action in state.actions.iter_mut() {
+        if action.actor == state.units[enemy].id {
+            action.target = Some(slow.clone());
+        }
+    }
+    let actor = state.units[0].id.clone();
+    let skill = state.units[0].dashboard[0].current.clone();
+    assert!(
+        !sim.legal_actions(&state).iter().any(|action| matches!(
+            action,
+            Action::Engage { actor: who, .. } if *who == actor
+        )),
+        "no chain is offered to a slower Sinner"
+    );
+    assert!(
+        sim.submit(
+            &mut state,
+            Action::Engage {
+                actor,
+                slot: 0,
+                skill,
+                enemy_slot: 0,
+            },
+        )
+        .is_err(),
+        "the engine rejects an illegal chain"
     );
 }
 

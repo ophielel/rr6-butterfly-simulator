@@ -53,6 +53,31 @@ class Action:
 
 
 @dataclass(frozen=True)
+class EngageAction:
+    """Chain a Skill to a specific enemy Skill Slot (focused encounters only)."""
+
+    actor: str
+    slot: int
+    skill: str
+    enemy_slot: int
+    #: The enemy unit that owns the Slot (the wire format does not carry it, so
+    #: the wrapper fills it from the current state for the search layer).
+    target: str = ""
+
+    def to_wire(self) -> str:
+        return json.dumps(
+            {
+                "Engage": {
+                    "actor": self.actor,
+                    "slot": self.slot,
+                    "skill": self.skill,
+                    "enemy_slot": self.enemy_slot,
+                }
+            }
+        )
+
+
+@dataclass(frozen=True)
 class EgoAction:
     """An E.G.O usage (awakening / corrosion / overclock)."""
 
@@ -84,6 +109,14 @@ def _decode(action: Dict[str, Any]) -> Any:
             slot=payload["slot"],
             skill=payload["skill"],
             target=payload["target"],
+        )
+    if "Engage" in action:
+        payload = action["Engage"]
+        return EngageAction(
+            actor=payload["actor"],
+            slot=payload["slot"],
+            skill=payload["skill"],
+            enemy_slot=payload["enemy_slot"],
         )
     if "UseEgo" in action:
         payload = action["UseEgo"]
@@ -149,13 +182,36 @@ class LimbusEnv:
 
     # -- interaction -------------------------------------------------------
     def legal_actions(self) -> List[Any]:
-        return [_decode(a) for a in json.loads(self._sim.legal_actions())]
+        actions = [_decode(a) for a in json.loads(self._sim.legal_actions())]
+        # `EngageAction` chains to an enemy Skill Slot; the enemy unit that owns
+        # it comes from the state so callers can treat every action uniformly.
+        enemy_ids = [
+            unit["id"]
+            for unit in self.state()["units"]
+            if "Sinner" not in unit.get("kind", {})
+        ]
+        if enemy_ids:
+            actions = [
+                (
+                    EngageAction(
+                        actor=a.actor,
+                        slot=a.slot,
+                        skill=a.skill,
+                        enemy_slot=a.enemy_slot,
+                        target=enemy_ids[0],
+                    )
+                    if isinstance(a, EngageAction)
+                    else a
+                )
+                for a in actions
+            ]
+        return actions
 
     def step(self, action: Any) -> Dict[str, Any]:
         wire: Optional[str]
         if action is None:
             wire = None
-        elif isinstance(action, (Action, EgoAction)):
+        elif isinstance(action, (Action, EngageAction, EgoAction)):
             wire = action.to_wire()
         else:
             wire = json.dumps(action)

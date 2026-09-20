@@ -11,7 +11,7 @@ from __future__ import annotations
 import random
 from typing import Any, Dict, List, Optional, Tuple
 
-from .env import LimbusEnv, Action, EgoAction
+from .env import EngageAction, LimbusEnv, Action, EgoAction
 
 
 def _default_action_for(env: LimbusEnv, actor: str, used: set) -> Optional[Any]:
@@ -19,7 +19,7 @@ def _default_action_for(env: LimbusEnv, actor: str, used: set) -> Optional[Any]:
     candidates = [
         a
         for a in env.legal_actions()
-        if isinstance(a, (Action, EgoAction)) and a.actor == actor and actor not in used
+        if isinstance(a, (Action, EngageAction, EgoAction)) and a.actor == actor and actor not in used
     ]
     if not candidates:
         return None
@@ -90,7 +90,7 @@ def greedy_turn(env: LimbusEnv, verbose: bool = False) -> List[Any]:
         options = [
             a
             for a in current.legal_actions()
-            if isinstance(a, (Action, EgoAction)) and a.actor == actor
+            if isinstance(a, (Action, EngageAction, EgoAction)) and a.actor == actor
         ]
         if not options:
             break
@@ -122,7 +122,7 @@ def random_turn(env: LimbusEnv, rng: Optional[random.Random] = None) -> List[Any
         options = [
             a
             for a in probe.legal_actions()
-            if isinstance(a, (Action, EgoAction))
+            if isinstance(a, (Action, EngageAction, EgoAction))
             and a.actor not in {c.actor for c in chosen}
         ]
         if not options:
@@ -146,7 +146,7 @@ def beam_turn(env: LimbusEnv, width: int = 3, horizon: int = 1) -> List[Any]:
         expanded: List[Tuple[float, List[Any], LimbusEnv]] = []
         for _, plan, node in beams:
             for action in node.legal_actions():
-                if not isinstance(action, (Action, EgoAction)):
+                if not isinstance(action, (Action, EngageAction, EgoAction)):
                     continue
                 probe = node.clone_state()
                 probe.step(action)

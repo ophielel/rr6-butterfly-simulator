@@ -689,6 +689,13 @@ pub struct BattleConfig {
     /// Refuse to run skills whose effect text is not fully modelled.
     pub strict_mechanics: bool,
     pub max_turns: u32,
+    /// Focused encounter (an Abnormality fight).  Only there can a Sinner whose
+    /// Speed is higher than an enemy Slot's redirect that enemy Skill onto
+    /// itself ("幻想体戦では、速度で勝っている敵のスキルの使用先を変更することが
+    /// できる", JA-wiki 戦闘システム詳細); in normal battles the Clash partners are
+    /// decided by the game's own front-to-back matching.
+    #[serde(default)]
+    pub focused_encounter: bool,
     /// Imago: the state of time the encounter starts in.  The wiki ties it to
     /// the choice events of the previous stations, so it is configurable; the
     /// default is the first listed state.
@@ -708,6 +715,7 @@ impl Default for BattleConfig {
             sp_on_clash_win: None,
             sp_on_clash_lose: None,
             strict_mechanics: true,
+            focused_encounter: true,
             max_turns: 30,
             initial_time_state: crate::scripts::TimeState::Past,
         }
@@ -839,6 +847,11 @@ pub struct SubmittedAction {
     pub skill: SkillId,
     pub target: Option<UnitId>,
     pub is_ego: bool,
+    /// The enemy Skill Slot this action chains to (focused encounters): a Skill
+    /// may redirect an enemy Skill whose Speed it beats, or one already aimed at
+    /// it, and the Clash is then formed against that Slot.
+    #[serde(default)]
+    pub enemy_slot: Option<u32>,
     /// True when the action used the **top** card of the Slot (its `next`
     /// skill).  The panel is not modified on submit; the used card is consumed
     /// when the turn resolves, and the other card stays available.

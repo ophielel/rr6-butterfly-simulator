@@ -272,6 +272,16 @@ pub enum Action {
         skill: SkillId,
         target: UnitId,
     },
+    /// Chain this Skill to a specific enemy Skill Slot.  Focused encounters
+    /// only, and only when the enemy Skill already targets this unit or this
+    /// unit's Speed is higher than that Slot's Speed (JA-wiki 戦闘システム詳細 /
+    /// 集中戦闘).
+    Engage {
+        actor: UnitId,
+        slot: u32,
+        skill: SkillId,
+        enemy_slot: u32,
+    },
     /// Use an E.G.O skill (wiki.gg `Clash` / E.G.O Skills).
     UseEgo {
         actor: UnitId,
@@ -327,8 +337,42 @@ pub fn legal_actions(state: &BattleState, library: &Library) -> Vec<Action> {
         }
         skills.sort();
         skills.dedup();
+        // Enemy Skill Slots this unit may chain to: the ones already aimed at it,
+        // plus (in a focused encounter) any Slot it out-speeds
+        // ("幻想体戦では、速度で勝っている敵のスキルの使用先を変更することができる").
+        let pullable: Vec<u32> = if state.config.focused_encounter {
+            state
+                .actions
+                .iter()
+                .filter(|a| {
+                    !state
+                        .index_of(&a.actor)
+                        .map(|index| state.units[index].kind.is_sinner())
+                        .unwrap_or(false)
+                })
+                .filter(|a| {
+                    let aimed_at_me = a.target.as_ref() == Some(&unit.id);
+                    let owner_speed = state
+                        .index_of(&a.actor)
+                        .map(|index| state.units[index].speed)
+                        .unwrap_or(0);
+                    aimed_at_me || unit.speed > owner_speed
+                })
+                .map(|a| a.slot)
+                .collect()
+        } else {
+            Vec::new()
+        };
         for slot in unit.dashboard.iter().map(|s| s.slot).collect::<Vec<_>>() {
             for skill in &skills {
+                for enemy_slot in &pullable {
+                    out.push(Action::Engage {
+                        actor: unit.id.clone(),
+                        slot,
+                        skill: skill.clone(),
+                        enemy_slot: *enemy_slot,
+                    });
+                }
                 for target in &enemies {
                     out.push(Action::Assign {
                         actor: unit.id.clone(),
@@ -409,6 +453,65 @@ pub fn submit(state: &mut BattleState, action: Action) -> Result<(), String> {
                 is_ego: false,
                 ego: None,
                 ego_kind: None,
+                enemy_slot: None,
+                used_top,
+            });
+            Ok(())
+        }
+        Action::Engage {
+            actor,
+            slot,
+            skill,
+            enemy_slot,
+        } => {
+            let Some(unit) = state.unit(&actor) else {
+                return Err(format!("unknown unit {actor}"));
+            };
+            if !unit.alive {
+                return Err(format!("{actor} is not alive"));
+            }
+            // The pull is only legal when this Skill already has that enemy
+            // Slot aimed at it, or beats its Speed.
+            let Some(enemy) = state.units.iter().find(|u| !u.kind.is_sinner()) else {
+                return Err("no enemy".to_string());
+            };
+            let enemy_index = state.index_of(&enemy.id).unwrap_or(0);
+            let aimed_at_me = state.actions.iter().any(|a| {
+                a.actor == enemy.id && a.slot == enemy_slot && a.target.as_ref() == Some(&actor)
+            });
+            let faster = unit.speed > state.units[enemy_index].speed;
+            if !(aimed_at_me || (state.config.focused_encounter && faster)) {
+                return Err(format!(
+                    "{actor} cannot chain to enemy Slot {enemy_slot} (Speed {} vs {})",
+                    unit.speed, state.units[enemy_index].speed
+                ));
+            }
+            let target = enemy.id.clone();
+            let Some(entry) = state
+                .unit_mut(&actor)
+                .and_then(|unit| unit.dashboard.iter_mut().find(|s| s.slot == slot))
+            else {
+                return Err(format!("{actor} has no slot {slot}"));
+            };
+            let used_top = entry.next == skill && entry.current != skill;
+            entry.target = Some(target.clone());
+            if entry.current != skill && !used_top {
+                entry.converted = true;
+                if entry.replaced.is_none() {
+                    entry.replaced = Some(entry.current.clone());
+                }
+                entry.current = skill.clone();
+            }
+            state.actions.retain(|a| !(a.actor == actor && a.slot == slot));
+            state.actions.push(SubmittedAction {
+                actor,
+                slot,
+                skill,
+                target: Some(target),
+                is_ego: false,
+                ego: None,
+                ego_kind: None,
+                enemy_slot: Some(enemy_slot),
                 used_top,
             });
             Ok(())
@@ -438,6 +541,7 @@ pub fn submit(state: &mut BattleState, action: Action) -> Result<(), String> {
                 is_ego: true,
                 ego: Some(ego),
                 ego_kind: Some(kind),
+                enemy_slot: None,
                 used_top: false,
             });
             Ok(())
@@ -4133,6 +4237,7 @@ pub fn begin_turn(
                 is_ego: false,
                 ego: None,
                 ego_kind: None,
+                enemy_slot: None,
                 used_top: false,
             });
         }
@@ -4550,16 +4655,33 @@ pub fn resolve_combat(state: &mut BattleState, library: &Library, mechanics: &Me
             continue;
         }
         let (actor_i, action_i, target_i) = pending[i].clone();
-        // Does the target also act against the actor with an attack skill?
         let mut opponent_slot = None;
-        if let Some(target) = target_i {
-            for (j, (actor_j, _, target_j)) in pending.iter().enumerate() {
-                if done[j] || *actor_j != target {
+        // An explicit chain to an enemy Skill Slot (focused encounters) pairs
+        // with exactly that Slot.
+        if let Some(wanted) = action_i.enemy_slot {
+            for (j, (actor_j, action_j, _)) in pending.iter().enumerate() {
+                if done[j] || *actor_j == actor_i || action_j.slot != wanted {
                     continue;
                 }
-                if *target_j == Some(actor_i) {
-                    opponent_slot = Some(j);
-                    break;
+                if state.units[*actor_j].kind.is_sinner() {
+                    continue;
+                }
+                opponent_slot = Some(j);
+                break;
+            }
+        }
+        // Otherwise: does the target also act against the actor with an attack
+        // skill?
+        if opponent_slot.is_none() {
+            if let Some(target) = target_i {
+                for (j, (actor_j, _, target_j)) in pending.iter().enumerate() {
+                    if done[j] || *actor_j != target {
+                        continue;
+                    }
+                    if *target_j == Some(actor_i) {
+                        opponent_slot = Some(j);
+                        break;
+                    }
                 }
             }
         }

@@ -12,7 +12,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "python"))
 
-from lcb import LimbusEnv, greedy_turn, random_turn  # noqa: E402
+from lcb import EngageAction, LimbusEnv, greedy_turn, random_turn  # noqa: E402
 from lcb.env import BACKEND, BOSS_IMAGO, TEAM, Action  # noqa: E402
 from lcb.search import _fill_and_commit  # noqa: E402
 
@@ -71,9 +71,15 @@ def test_greedy_picks_the_best_simulated_option() -> None:
     env = LimbusEnv()
     env.reset(seed=42)
     actor = next(
-        a.actor for a in env.legal_actions() if isinstance(a, Action)
+        a.actor
+        for a in env.legal_actions()
+        if isinstance(a, (Action, EngageAction))
     )
-    options = [a for a in env.legal_actions() if isinstance(a, Action) and a.actor == actor]
+    options = [
+        a
+        for a in env.legal_actions()
+        if isinstance(a, (Action, EngageAction)) and a.actor == actor
+    ]
     assert len(options) > 1, "need several options to make the choice meaningful"
 
     scores = {}

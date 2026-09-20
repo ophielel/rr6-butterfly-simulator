@@ -71,7 +71,8 @@ Implemented: resource costs, SP costs, Awakening/Corrosion selection, Overclock
 per Skill), resource
 generation from base attack skills.
 
-Not implemented: E.G.O passives, `Indiscriminate` targeting, E.G.O corrosion
+Not implemented: E.G.O passives, `Indiscriminate` splash targeting for
+hand-written Corrosion Skills, E.G.O corrosion
 forced actions, threadspin tiers beyond the highest variant.
 
 ## Phase 6 — Section 5 boss — essentially complete
