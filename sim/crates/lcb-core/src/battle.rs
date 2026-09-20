@@ -1260,7 +1260,7 @@ pub fn apply_effects(
                 let Some(status) = effect.status.clone() else { continue };
                 let Some(index) = ctx.target_index else { continue };
                 let amount = effect.count.or(effect.value).unwrap_or(1);
-                state.units[index].statuses.add_count(&status, -amount);
+                tick_status(state, index, &status, 0, -amount);
             }
             "reload_ammo" => {
                 let unit = &state.units[ctx.actor_index];
@@ -1329,8 +1329,9 @@ pub fn apply_effects(
                 let potency = unit.statuses.potency(&status);
                 if potency > threshold {
                     let surplus = (potency - threshold).min(limit);
-                    let unit = &mut state.units[ctx.actor_index];
-                    unit.statuses.add_potency(&status, -surplus);
+                    // Consuming Potency can empty the status: remove it when the
+                    // value it uses reaches 0.
+                    tick_status(state, ctx.actor_index, &status, -surplus, 0);
                     use_ctx.damage_bonus += ((surplus * step).min(max)) as f64 / 100.0;
                 }
             }
@@ -1373,6 +1374,9 @@ pub fn apply_effects(
                 let unit = &mut state.units[ctx.actor_index];
                 let stack = unit.statuses.stack(&status);
                 unit.statuses.set_stack(&status, stack / 2);
+                if !has_named(&state.units[ctx.actor_index], &status) {
+                    state.units[ctx.actor_index].statuses.remove(&status);
+                }
             }
             "damage_from_status_divisor" => {
                 // "Deal ([Poise] on self / 2) Pride damage on target"
@@ -3938,6 +3942,8 @@ pub fn begin_turn(
     state.turn += 1;
     state.phase = Phase::TurnStart;
     state.actions.clear();
+    // Defense Slots armed last turn that never made it into a rotation.
+    state.defense_slots_used.clear();
     // "Next turn" buffs arrive before this turn is resolved, so a queued Haste
     // or Bind moves the Speed of the turn it applies to.
     for index in 0..state.units.len() {
