@@ -4646,6 +4646,17 @@ pub fn resolve_combat(state: &mut BattleState, library: &Library, mechanics: &Me
             true
         })
         .collect();
+    // "味方のスキルによって敵のスキルの使用先を変更させるのを同じスロットに対して
+    // 複数回行った場合、敵のスキルの使用先は当然「最後に行った使用先の変更」に準拠
+    // する" (JA-wiki 戦闘システム詳細): when several Skills chain to the same enemy
+    // Slot, the last one submitted owns it.
+    let mut pull_owner: std::collections::BTreeMap<u32, crate::ids::UnitId> =
+        std::collections::BTreeMap::new();
+    for action in state.actions.iter() {
+        if let Some(slot) = action.enemy_slot {
+            pull_owner.insert(slot, action.actor.clone());
+        }
+    }
     let mut done: Vec<bool> = vec![false; pending.len()];
     // (unit index, slot) of skills that were actually used this turn; these are
     // the slot rotations the panel performs at the end of the turn.
@@ -4658,7 +4669,12 @@ pub fn resolve_combat(state: &mut BattleState, library: &Library, mechanics: &Me
         let mut opponent_slot = None;
         // An explicit chain to an enemy Skill Slot (focused encounters) pairs
         // with exactly that Slot.
-        if let Some(wanted) = action_i.enemy_slot {
+        if let Some(wanted) = action_i.enemy_slot.filter(|slot| {
+            pull_owner
+                .get(slot)
+                .map(|owner| *owner == state.units[actor_i].id)
+                .unwrap_or(false)
+        }) {
             for (j, (actor_j, action_j, _)) in pending.iter().enumerate() {
                 if done[j] || *actor_j == actor_i || action_j.slot != wanted {
                     continue;

@@ -1693,10 +1693,10 @@ fn section5_golden_replay_is_deterministic() {
     // action per Slot").  Update only together with a sourced rule change, and
     // name the source in the commit message.  Last updated when the identities'
     // passives started applying (in-game `Passives.json`).
-    assert_eq!(first_hp, vec![25495, 25348, 25221], "Imago HP after turns 1-3");
+    assert_eq!(first_hp, vec![25495, 25342, 25138], "Imago HP after turns 1-3");
     assert_eq!(
         format!("{first_hash:016x}"),
-        "e1e52f0ee21a0e1e",
+        "298496bb649e5dff",
         "recorded state hash"
     );
 }
@@ -2825,6 +2825,98 @@ fn probe_fast_sinner_pulls_an_enemy_skill() {
         state.log.iter().filter(|e| e.kind == "clash").count(),
         1,
         "the pulled enemy Skill Clashed with the fast Sinner: {:?}",
+        state
+            .log
+            .iter()
+            .map(|e| format!("[{}] {}", e.kind, e.detail))
+            .collect::<Vec<_>>()
+    );
+}
+
+/// When two Skills chain to the same enemy Slot, the **last** change wins
+/// ("敵のスキルの使用先は当然「最後に行った使用先の変更」に準拠する",
+/// JA-wiki 戦闘システム詳細).
+#[test]
+fn the_last_chain_to_an_enemy_slot_wins() {
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&fixed::TEAM, &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    let enemy = state.units.iter().position(|u| !u.kind.is_sinner()).unwrap();
+    // Both Sinner 0 and Sinner 1 out-speed the enemy, which aims at Sinner 2.
+    for unit in state.units.iter_mut().filter(|u| u.kind.is_sinner()) {
+        unit.speed = 1;
+    }
+    state.units[0].speed = 7;
+    state.units[1].speed = 9;
+    state.units[enemy].speed = 3;
+    let slow = state.units[2].id.clone();
+    for action in state.actions.iter_mut() {
+        if action.actor == state.units[enemy].id {
+            action.target = Some(slow.clone());
+        }
+    }
+    let first = state.units[0].id.clone();
+    let last = state.units[1].id.clone();
+    let skill0 = state.units[0].dashboard[0].current.clone();
+    let skill1 = state.units[1].dashboard[0].current.clone();
+    // Ask the engine what the two Skills are called in the log, before the turn
+    // resolves and the panel rotates.
+    let name_of = |state: &lcb_core::state::BattleState,
+                   index: usize,
+                   skill: &SkillId|
+     -> String {
+        battle::build_use(state, &sim.library, &sim.mechanics, index, skill)
+            .map(|use_| use_.name)
+            .unwrap_or_default()
+    };
+    let first_skill = name_of(&state, 0, &skill0);
+    let last_skill = name_of(&state, 1, &skill1);
+    sim.submit(
+        &mut state,
+        Action::Engage {
+            actor: first.clone(),
+            slot: 0,
+            skill: skill0,
+            enemy_slot: 0,
+        },
+    )
+    .unwrap();
+    sim.submit(
+        &mut state,
+        Action::Engage {
+            actor: last.clone(),
+            slot: 0,
+            skill: skill1,
+            enemy_slot: 0,
+        },
+    )
+    .unwrap();
+    state.preset_flips = vec![true; 512];
+    state.flip_cursor = 0;
+    battle::resolve_combat(&mut state, &sim.library, &sim.mechanics);
+    let clash = state
+        .log
+        .iter()
+        .find(|entry| entry.kind == "clash")
+        .expect("a Clash happened");
+    assert!(
+        clash.detail.contains(&last_skill),
+        "the last chain owns the Slot: clash {:?} vs last skill {last_skill:?}",
+        clash.detail
+    );
+    assert!(
+        !clash.detail.contains(&first_skill),
+        "the overridden chain does not Clash: {:?} vs {first_skill:?}",
+        clash.detail
+    );
+    // The overridden Skill still attacks, one-sidedly.
+    assert!(
+        state
+            .log
+            .iter()
+            .any(|entry| entry.kind == "attack" && entry.detail.contains(&first_skill)),
+        "the overridden Skill attacks one-sidedly: {:?}",
         state
             .log
             .iter()
