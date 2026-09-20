@@ -2229,11 +2229,8 @@ fn effective_coin_power(
     coin_index: usize,
 ) -> i32 {
     let coin = &use_.coins[coin_index];
-    if coin.state == CoinState::Cracked {
-        // Cracked Unbreakable Coins fix Coin Power to 1 (+1 for plus coins).
-        return if use_.coin_power > 0 { 2 } else { 1 };
-    }
     if coin.paralyzed {
+        // "麻痺": the Coin contributes no Coin Power.
         return 0;
     }
     let boost = use_.ctx.coin_power_bonus
@@ -2243,6 +2240,13 @@ fn effective_coin_power(
         } else {
             -use_.ctx.coin_power_drop
         };
+    if coin.state == CoinState::Cracked {
+        // "破壊不能コインはマッチで破壊されると**コイン威力が1になる**。ただし、
+        // 元のコイン威力が1になるだけで、後からコイン威力増加が適用される"
+        // (JA-wiki 破壊不能コイン): the destroyed Unbreakable Coin's own Coin
+        // Power becomes 1, then the Coin Power increases still apply.
+        return 1 + boost;
+    }
     use_.coin_power + boost
 }
 
@@ -2758,11 +2762,22 @@ pub fn one_sided_attack(
             hits.extend(one_sided_attack(state, attacker_index, next, &mut repeat, clash_count));
         }
     }
-    // Cracked Unbreakable Coins attack after getting hit (wiki.gg `Clash`).
+    // Cracked Unbreakable Coins attack after getting hit (wiki.gg `Clash`):
+    // they keep the Skill's Base Power and the Coin Power accumulation, and the
+    // Coin keeps the result it was tossed with during the Clash.
     for coin_index in use_.cracked_coins() {
         tick_bleed(state, attacker_index);
-        // A cracked coin comes back with its Coin Power fixed to 1 (+1 plus).
-        let power = effective_coin_power(state, attacker_index, use_, coin_index);
+        if use_.coins[coin_index].heads.is_none() {
+            toss_single(state, attacker_index, use_, coin_index);
+        }
+        let heads = use_.coins[coin_index].heads.unwrap_or(false);
+        if use_.ctx.accumulated == 0 {
+            use_.ctx.accumulated = use_.base_power + use_.ctx.base_power_bonus;
+        }
+        if heads {
+            use_.ctx.accumulated += effective_coin_power(state, attacker_index, use_, coin_index);
+        }
+        let power = use_.ctx.accumulated;
         let hit = apply_hit(
             state,
             attacker_index,
@@ -2770,7 +2785,7 @@ pub fn one_sided_attack(
             use_,
             coin_index,
             power,
-            false,
+            heads,
             clash_count,
         );
         hits.push(hit);
@@ -4687,17 +4702,26 @@ pub fn resolve_combat(state: &mut BattleState, library: &Library, mechanics: &Me
             }
         }
         // Otherwise: does the target also act against the actor with an attack
-        // skill?
+        // skill?  A Slot that someone else chained to is spoken for, so it can
+        // no longer be picked up through its old target.
         if opponent_slot.is_none() {
             if let Some(target) = target_i {
-                for (j, (actor_j, _, target_j)) in pending.iter().enumerate() {
+                for (j, (actor_j, action_j, target_j)) in pending.iter().enumerate() {
                     if done[j] || *actor_j != target {
                         continue;
                     }
-                    if *target_j == Some(actor_i) {
-                        opponent_slot = Some(j);
-                        break;
+                    if *target_j != Some(actor_i) {
+                        continue;
                     }
+                    let taken_by_other = pull_owner
+                        .get(&action_j.slot)
+                        .map(|owner| *owner != state.units[actor_i].id)
+                        .unwrap_or(false);
+                    if taken_by_other {
+                        continue;
+                    }
+                    opponent_slot = Some(j);
+                    break;
                 }
             }
         }

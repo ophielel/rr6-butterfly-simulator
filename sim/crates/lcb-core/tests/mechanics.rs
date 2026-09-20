@@ -1693,10 +1693,10 @@ fn section5_golden_replay_is_deterministic() {
     // action per Slot").  Update only together with a sourced rule change, and
     // name the source in the commit message.  Last updated when the identities'
     // passives started applying (in-game `Passives.json`).
-    assert_eq!(first_hp, vec![25495, 25342, 25138], "Imago HP after turns 1-3");
+    assert_eq!(first_hp, vec![25502, 25359, 25211], "Imago HP after turns 1-3");
     assert_eq!(
         format!("{first_hash:016x}"),
-        "298496bb649e5dff",
+        "86bb192ab6bc28f7",
         "recorded state hash"
     );
 }
@@ -2421,6 +2421,87 @@ fn only_gregors_third_skill_converts_to_unbreakable_coins() {
     assert!(guard < 2, "the guard has a single Unbreakable Coin: {guard}");
 }
 
+/// A destroyed ("cracked") Unbreakable Coin keeps the Skill's Base Power and the
+/// per-Coin accumulation, and the Coin keeps the result it was tossed with:
+/// "破壊不能コインはマッチで破壊されると**コイン威力が1になる**。ただし、元のコイン
+/// 威力が1になるだけで、**後からコイン威力増加が適用される**"
+/// (JA-wiki 破壊不能コイン).
+#[test]
+fn cracked_unbreakable_coins_keep_base_power_and_coin_power_bonus() {
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&[fixed::TEAM[0]], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    let enemy = state.units.iter().position(|u| !u.kind.is_sinner()).unwrap();
+    let target = 0usize;
+    // Fluttering Havoc: Base Power 4, Coin Power 3, 2 Coins.
+    let build = |state: &mut lcb_core::state::BattleState, bonus: i32| {
+        state.units[enemy].hp = state.units[enemy].max_hp * 30 / 100;
+        let mut use_ = battle::build_use(
+            state,
+            &sim.library,
+            &sim.mechanics,
+            enemy,
+            &SkillId::new("956701"),
+        )
+        .unwrap();
+        battle::prepare_use_for_test(
+            state,
+            &sim.library,
+            &sim.mechanics,
+            enemy,
+            Some(target),
+            &mut use_,
+        );
+        // Both Coins became Unbreakable and were destroyed by the Clash.
+        assert!(
+            use_.coins.iter().all(|coin| coin.unbreakable),
+            "both Coins are Unbreakable below 33% HP"
+        );
+        for coin in use_.coins.iter_mut() {
+            coin.state = CoinState::Cracked;
+        }
+        use_.ctx.coin_power_bonus = bonus;
+        use_
+    };
+    let powers = |state: &mut lcb_core::state::BattleState, heads: bool, bonus: i32| -> Vec<i32> {
+        let mut use_ = build(state, bonus);
+        for coin in use_.coins.iter_mut() {
+            coin.heads = Some(heads);
+        }
+        let hits = battle::one_sided_attack(state, enemy, target, &mut use_, 1);
+        hits.iter().map(|hit| hit.power).collect()
+    };
+    assert_eq!(
+        powers(&mut state, true, 0),
+        vec![5, 6],
+        "Base Power 4 + cracked Coin Power 1 per Heads Coin"
+    );
+    assert_eq!(
+        powers(&mut state, false, 0),
+        vec![4, 4],
+        "Tails adds no Coin Power"
+    );
+    assert_eq!(
+        powers(&mut state, true, 2),
+        vec![7, 10],
+        "Coin Power increases apply after the cracked Coin Power of 1"
+    );
+    // The cracked Coins still resolve their On Hit clauses.
+    let hits = {
+        let mut use_ = build(&mut state, 0);
+        for coin in use_.coins.iter_mut() {
+            coin.heads = Some(true);
+        }
+        battle::one_sided_attack(&mut state, enemy, target, &mut use_, 1)
+    };
+    assert_eq!(hits.len(), 2, "both cracked Coins attacked");
+    assert!(
+        state.units[target].statuses.potency("Burn") > 0,
+        "the cracked Coins' On Hit clauses resolved"
+    );
+}
+
 /// A Skill that **loses** a Clash: its Unbreakable Coins survive as "cracked"
 /// (Coin Power 1) and still land, so the order is "winner's attack, then the
 /// loser's Unbreakable Coins".  "[Attack End] activates only once after an
@@ -2825,6 +2906,109 @@ fn probe_fast_sinner_pulls_an_enemy_skill() {
         state.log.iter().filter(|e| e.kind == "clash").count(),
         1,
         "the pulled enemy Skill Clashed with the fast Sinner: {:?}",
+        state
+            .log
+            .iter()
+            .map(|e| format!("[{}] {}", e.kind, e.detail))
+            .collect::<Vec<_>>()
+    );
+}
+
+/// The review's case: the last chain wins even when its owner is *slower* than
+/// the Sinner the enemy Slot originally aimed at (it still has to out-speed the
+/// enemy itself).  The original target must not steal the Slot back through the
+/// automatic matching.
+/// Source: JA-wiki 戦闘システム詳細 ("敵のスキルの使用先は当然「最後に行った使用先の
+/// 変更」に準拠する").
+#[test]
+fn last_chain_wins_even_when_it_is_slower_than_the_original_target() {
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&fixed::TEAM, &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    let enemy = state.units.iter().position(|u| !u.kind.is_sinner()).unwrap();
+    // The enemy Slot aims at Sinner 2.  Sinner 0 (speed 9) chains first, Sinner 1
+    // (speed 7) chains last: both out-speed the enemy (3), but the *original
+    // target* is Sinner 0's victim?  No - the original target is Sinner 2, so
+    // make Sinner 0 the original target and let the slower Sinner 1 take over.
+    for unit in state.units.iter_mut().filter(|u| u.kind.is_sinner()) {
+        unit.speed = 1;
+    }
+    state.units[0].speed = 9;
+    state.units[1].speed = 7;
+    state.units[enemy].speed = 3;
+    // Only Slot 0 aims at Sinner 0 (the original target of the pulled Slot); the
+    // rest aim elsewhere, so the overridden chain has nothing else to Clash with.
+    let original_target = state.units[0].id.clone();
+    let elsewhere = state.units[2].id.clone();
+    for action in state.actions.iter_mut() {
+        if action.actor != state.units[enemy].id {
+            continue;
+        }
+        action.target = Some(if action.slot == 0 {
+            original_target.clone()
+        } else {
+            elsewhere.clone()
+        });
+    }
+    let first = state.units[0].id.clone();
+    let last = state.units[1].id.clone();
+    let skill0 = state.units[0].dashboard[0].current.clone();
+    let skill1 = state.units[1].dashboard[0].current.clone();
+    let name_of =
+        |state: &lcb_core::state::BattleState, index: usize, skill: &SkillId| -> String {
+            battle::build_use(state, &sim.library, &sim.mechanics, index, skill)
+                .map(|use_| use_.name)
+                .unwrap_or_default()
+        };
+    let first_skill = name_of(&state, 0, &skill0);
+    let last_skill = name_of(&state, 1, &skill1);
+    // The original target chains first, the slower Sinner chains last.
+    sim.submit(
+        &mut state,
+        Action::Engage {
+            actor: first.clone(),
+            slot: 0,
+            skill: skill0,
+            enemy_slot: 0,
+        },
+    )
+    .unwrap();
+    sim.submit(
+        &mut state,
+        Action::Engage {
+            actor: last.clone(),
+            slot: 0,
+            skill: skill1,
+            enemy_slot: 0,
+        },
+    )
+    .unwrap();
+    state.preset_flips = vec![true; 512];
+    state.flip_cursor = 0;
+    battle::resolve_combat(&mut state, &sim.library, &sim.mechanics);
+    let clash = state
+        .log
+        .iter()
+        .find(|entry| entry.kind == "clash")
+        .expect("a Clash happened");
+    assert!(
+        clash.detail.contains(&last_skill),
+        "the last chain owns the Slot even though it is slower: {:?} vs {last_skill:?}",
+        clash.detail
+    );
+    assert!(
+        !clash.detail.contains(&first_skill),
+        "the original target does not Clash: {:?} vs {first_skill:?}",
+        clash.detail
+    );
+    // Its Skill still attacks, one-sidedly, instead of stealing the Slot back.
+    assert!(
+        state
+            .log
+            .iter()
+            .any(|entry| entry.kind == "attack" && entry.detail.contains(&first_skill)),
+        "the overridden chain attacks one-sidedly: {:?}",
         state
             .log
             .iter()
