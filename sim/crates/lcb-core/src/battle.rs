@@ -4525,6 +4525,7 @@ pub fn resolve_combat(state: &mut BattleState, library: &Library, mechanics: &Me
                             // Skill behaves differently depending on whether it
                             // Clashed (wiki.gg `Clash` / Skill use phases).
                             apply_attack_end(state, actor_i, Some(target), action_i.slot, a);
+                            clash_loser_follow_up(state, actor_j, actor_i, action_j.slot, b, clash_count);
                         }
                     } else if outcome.winner.as_ref() == Some(&state.units[actor_j].id) {
                         apply_clash_result(state, actor_j, Some(actor_i), b, true);
@@ -4533,6 +4534,7 @@ pub fn resolve_combat(state: &mut BattleState, library: &Library, mechanics: &Me
                         let hits = one_sided_attack(state, actor_j, actor_i, b, clash_count);
                         splash_attack(state, actor_j, actor_i, b, &hits, clash_count);
                         apply_attack_end(state, actor_j, Some(actor_i), action_j.slot, b);
+                        clash_loser_follow_up(state, actor_i, actor_j, action_i.slot, a, clash_count);
                     } else {
                         apply_clash_result(state, actor_i, Some(actor_j), a, false);
                         apply_clash_result(state, actor_j, Some(actor_i), b, false);
@@ -4657,6 +4659,37 @@ fn rotate_used_slots(state: &mut BattleState, executed: &[(usize, u32)]) {
             target.converted = false;
             target.target = None;
         }
+    }
+}
+
+/// What happens to the Skill that lost a Clash.
+///
+/// Its **Unbreakable Coins** are not destroyed by the Clash: they come back
+/// "cracked" (Coin Power 1) and still land, so the order of a won Clash is
+/// "our attack, then theirs" (JA-wiki 破壊不能コイン: 「破壊不能コインが含まれる攻撃
+/// スキルにマッチ勝利すると、こちらの攻撃→相手の攻撃 という順で処理が行われる」).
+///
+/// "[Attack End] activates only once after an Attack Skill has used all of its
+/// Coins" (wiki.gg `Clash`): Coins destroyed in the Clash do not count as used,
+/// while Unbreakable Coins do, so a Skill that lost the Clash only reaches its
+/// Attack End when every Coin it had was an Unbreakable Coin.
+fn clash_loser_follow_up(
+    state: &mut BattleState,
+    loser_index: usize,
+    winner_index: usize,
+    loser_slot: u32,
+    loser_use: &mut SkillUse,
+    clash_count: i32,
+) {
+    let cracked = loser_use.cracked_coins();
+    let all_unbreakable = !loser_use.coins.is_empty()
+        && loser_use.coins.iter().all(|coin| coin.unbreakable);
+    if !cracked.is_empty() && state.units[loser_index].alive {
+        let hits = one_sided_attack(state, loser_index, winner_index, loser_use, clash_count);
+        splash_attack(state, loser_index, winner_index, loser_use, &hits, clash_count);
+    }
+    if all_unbreakable {
+        apply_attack_end(state, loser_index, Some(winner_index), loser_slot, loser_use);
     }
 }
 

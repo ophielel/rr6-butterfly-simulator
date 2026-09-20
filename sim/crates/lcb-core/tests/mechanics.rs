@@ -1674,10 +1674,10 @@ fn section5_golden_replay_is_deterministic() {
     // action per Slot").  Update only together with a sourced rule change, and
     // name the source in the commit message.  Last updated when the identities'
     // passives started applying (in-game `Passives.json`).
-    assert_eq!(first_hp, vec![25364, 24648, 24152], "Imago HP after turns 1-3");
+    assert_eq!(first_hp, vec![25392, 24631, 23650], "Imago HP after turns 1-3");
     assert_eq!(
         format!("{first_hash:016x}"),
-        "5f126275e2e22056",
+        "278e54598fd51784",
         "recorded state hash"
     );
 }
@@ -2314,6 +2314,98 @@ fn attack_end_runs_after_a_clash_win() {
         queued,
         Some(2),
         "the Clash-winning attack ended and queued 2 Protection Count"
+    );
+}
+
+/// A Skill that **loses** a Clash: its Unbreakable Coins survive as "cracked"
+/// (Coin Power 1) and still land, so the order is "winner's attack, then the
+/// loser's Unbreakable Coins".  "[Attack End] activates only once after an
+/// Attack Skill has used all of its Coins": destroyed normal Coins do not count
+/// as used, Unbreakable Coins do - so the loser reaches its Attack End only when
+/// every Coin it had was Unbreakable.
+/// Sources: JA-wiki 破壊不能コイン, wiki.gg `Clash` (Attack End / Unbreakable Coin).
+#[test]
+fn clash_loser_keeps_its_unbreakable_coins() {
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&["11214"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    let enemy = state.units.iter().position(|u| !u.kind.is_sinner()).unwrap();
+    // Gregor's 1121403 converts all of its Coins to Unbreakable Coins while the
+    // target has [Dazzle]; put it on his panel and make the Clash a loss.
+    state.units[enemy].statuses.add_count("Dazzle", 3);
+    state.units[0].dashboard[0].current = SkillId::new("1121403");
+    state.units[0].level = 1;
+    state.units[enemy].level = 60;
+    state.preset_flips = vec![false; 64];
+    state.flip_cursor = 0;
+    let skill = SkillId::new("1121403");
+    let actor = state.units[0].id.clone();
+    let target = state.units[enemy].id.clone();
+    sim.submit(
+        &mut state,
+        Action::Assign {
+            actor: actor.clone(),
+            slot: 0,
+            skill,
+            target: target.clone(),
+        },
+    )
+    .unwrap();
+    let hp_before = state.units[enemy].hp;
+    battle::resolve_combat(&mut state, &sim.library, &sim.mechanics);
+    assert_eq!(
+        state.log.iter().filter(|e| e.kind == "clash").count(),
+        1,
+        "a Clash happened"
+    );
+    assert!(
+        state.units[enemy].hp < hp_before,
+        "the loser's Unbreakable Coins still landed: {} -> {}",
+        hp_before,
+        state.units[enemy].hp
+    );
+    assert!(
+        state.units[0]
+            .pending_next_turn
+            .iter()
+            .any(|pending| pending.status == "Plus Coin Boost"),
+        "the losing all-Unbreakable Skill reached its Attack End"
+    );
+}
+
+/// A Skill that loses a Clash with normal Coins does not reach [Attack End].
+#[test]
+fn clash_loser_with_normal_coins_has_no_attack_end() {
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&["11114"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    let enemy = state.units.iter().position(|u| !u.kind.is_sinner()).unwrap();
+    state.units[0].dashboard[0].current = SkillId::new("1111403");
+    state.units[0].level = 1;
+    state.units[enemy].level = 60;
+    state.preset_flips = vec![false; 64];
+    state.flip_cursor = 0;
+    let actor = state.units[0].id.clone();
+    let target = state.units[enemy].id.clone();
+    sim.submit(
+        &mut state,
+        Action::Assign {
+            actor: actor.clone(),
+            slot: 0,
+            skill: SkillId::new("1111403"),
+            target,
+        },
+    )
+    .unwrap();
+    battle::resolve_combat(&mut state, &sim.library, &sim.mechanics);
+    assert!(
+        !state.units[0]
+            .pending_next_turn
+            .iter()
+            .any(|pending| pending.status == "Protection"),
+        "destroyed normal Coins do not count as used"
     );
 }
 
