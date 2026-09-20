@@ -1895,6 +1895,40 @@ fn ego_skills_load_their_mechanics() {
     }
 }
 
+/// "Reuse this Coin once for every 33% missing HP (max 2 times)": the Imago's
+/// 滅多斬り re-uses its Coin only when its own HP is low enough.
+/// Source: wiki.gg Imago skill text (`Reuse this Coin once for every 33% missing
+/// HP (max 2 times)`).
+#[test]
+fn reuse_from_missing_hp_scales_with_hp() {
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&fixed::TEAM, &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    let enemy = state.units.iter().position(|u| !u.kind.is_sinner()).unwrap();
+    let target = 0usize;
+    let hits_at = |state: &mut lcb_core::state::BattleState, hp_percent: i32| -> usize {
+        state.units[enemy].hp = state.units[enemy].max_hp * hp_percent / 100;
+        let mut use_ = battle::build_use(
+            state,
+            &sim.library,
+            &sim.mechanics,
+            enemy,
+            &SkillId::new("956703"),
+        )
+        .unwrap();
+        state.preset_flips = (0..4096).map(|i| i % 2 == 0).collect();
+        state.flip_cursor = 0;
+        battle::one_sided_attack(state, enemy, target, &mut use_, 0).len()
+    };
+    let full = hits_at(&mut state, 100);
+    let low = hits_at(&mut state, 10);
+    assert!(
+        low > full,
+        "more missing HP means more Reuses: {full} -> {low}"
+    );
+}
+
 /// Data guard: every Skill the fixed content can use - identity Skills, their
 /// defense Skill, every E.G.O Skill of the loadout and the Imago's six Slots -
 /// must have a mechanics entry.  A keyed lookup that silently misses turns the

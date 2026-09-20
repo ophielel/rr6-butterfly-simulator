@@ -120,6 +120,12 @@ pub struct UseContext {
     /// again in this Skill use.
     #[serde(default)]
     pub reuse_caps: BTreeMap<u32, i32>,
+    /// "Reuse this Coin once for every N% missing HP (max K times)".
+    #[serde(default)]
+    pub reuse_hp: Option<(i32, i32)>,
+    /// How many of the missing-HP Reuses were already spent.
+    #[serde(default)]
+    pub reuse_hp_used: i32,
     /// HP this unit lost to its own Skill ("HP lost due to this effect").
     #[serde(default)]
     pub self_damage_taken: i32,
@@ -1223,12 +1229,8 @@ pub fn apply_effects(
                 unit.statuses.add_potency("Reload (Solemn Lament)", 1);
             }
             "reuse_percent_missing_hp" => {
-                // Recorded on the context; the attack loop re-uses the coin.
-                use_ctx.notes.push(format!(
-                    "reuse:per={}:max={}",
-                    effect.per.unwrap_or(33),
-                    effect.max.unwrap_or(1)
-                ));
+                // "Reuse this Coin once for every N% missing HP (max K times)".
+                use_ctx.reuse_hp = Some((effect.per.unwrap_or(33).max(1), effect.max.unwrap_or(1)));
             }
             "inflict_on_attacker" => {
                 // Stored on the defender and applied when it is hit with Shield.
@@ -2455,7 +2457,7 @@ pub fn one_sided_attack(
     // Two budgets: the one known before the attack ("Reuse this Coin once for
     // every N% missing HP" is evaluated On Use) and the one the Coin itself
     // grants while it resolves ("Then, Reuse this Coin (4 times per Skill)").
-    let mut reuse_budget = reuse_budget(&use_.ctx);
+
     loop {
         let Some(coin_index) = order.first().copied() else { break };
         order.remove(0);
@@ -2506,9 +2508,19 @@ pub fn one_sided_attack(
         let used_times = *use_.ctx.coin_hits.get(&(coin_index as u32 + 1)).unwrap_or(&1);
         let cap = use_.ctx.reuse_caps.get(&(coin_index as u32 + 1)).copied().unwrap_or(0);
         let under_cap = used_times - 1 < cap;
-        if under_cap || reuse_budget > 0 {
+        // "Reuse this Coin once for every N% missing HP (max K times)".
+        let hp_budget = use_
+            .ctx
+            .reuse_hp
+            .map(|(per, max)| {
+                ((100 - state.units[attacker_index].hp_percent()) / per).clamp(0, max)
+                    - use_.ctx.reuse_hp_used
+            })
+            .unwrap_or(0)
+            .max(0);
+        if under_cap || hp_budget > 0 {
             if !under_cap {
-                reuse_budget -= 1;
+                use_.ctx.reuse_hp_used += 1;
             }
             // "The Coin is used again": it is tossed again (JA-wiki 守備スキル
             // "再使用はコインを投げるごとに「スキルを使用した」という判定").
@@ -2622,18 +2634,7 @@ fn toss_single(
     }
 }
 
-fn reuse_budget(use_: &UseContext) -> i32 {
-    for note in &use_.notes {
-        if let Some(rest) = note.strip_prefix("reuse:") {
-            let mut parts = rest.split(':');
-            let per: i32 = parts.next().and_then(|p| p.trim_start_matches("per=").parse().ok()).unwrap_or(33);
-            let max: i32 = parts.next().and_then(|p| p.trim_start_matches("max=").parse().ok()).unwrap_or(1);
-            let _ = per;
-            return max.max(0);
-        }
-    }
-    0
-}
+
 
 /// Damage-only calculation shared by normal hits and Attack Weight splash hits.
 fn compute_hit_damage(
@@ -2982,6 +2983,10 @@ fn apply_hit(
             let entry = use_.ctx.reuse_caps.entry(coin).or_insert(0);
             *entry = (*entry).max(cap);
         }
+        if local.reuse_hp.is_some() {
+            use_.ctx.reuse_hp = local.reuse_hp;
+        }
+        use_.ctx.reuse_hp_used += local.reuse_hp_used;
         use_.ctx.self_damage_taken += local.self_damage_taken;
         use_.ctx.damage_bonus += local.damage_bonus;
         use_.ctx.final_damage_percent += local.final_damage_percent;
