@@ -1609,7 +1609,7 @@ fn section5_golden_replay_is_deterministic() {
     assert_eq!(first_hp, vec![25483, 25245, 24688], "Imago HP after turns 1-3");
     assert_eq!(
         format!("{first_hash:016x}"),
-        "3389d6de1fab1da6",
+        "91436594309b4671",
         "recorded state hash"
     );
 }
@@ -1893,6 +1893,60 @@ fn ego_skills_load_their_mechanics() {
             "{ego}.{kind} has clauses"
         );
     }
+}
+
+/// Data guard: every Skill the fixed content can use - identity Skills, their
+/// defense Skill, every E.G.O Skill of the loadout and the Imago's six Slots -
+/// must have a mechanics entry.  A keyed lookup that silently misses turns the
+/// whole effect text into a no-op (that is how "Reuse this Coin" stayed dead).
+#[test]
+fn fixed_content_skills_all_resolve_mechanics() {
+    use lcb_core::ids::EgoId;
+    let sim = sim();
+    let mut missing = Vec::new();
+    for identity in fixed::TEAM {
+        let record = sim
+            .library
+            .identity(&lcb_core::ids::IdentityId::new(identity))
+            .expect("identity");
+        for skill in &record.skills {
+            if sim
+                .mechanics
+                .get_for(&SkillId::new(skill.id.clone()), Uptie(4))
+                .is_none()
+            {
+                missing.push(skill.id.clone());
+            }
+        }
+    }
+    for (_, ego) in fixed::EGO_LOADOUT {
+        for kind in ["awakening", "corrosion"] {
+            let mech = sim.mechanics.get_ego(ego, kind);
+            let record = sim.library.ego(&EgoId::new(ego)).expect("ego");
+            let has_skill = if kind == "awakening" {
+                record.awakening.is_some()
+            } else {
+                record.corrosion.is_some()
+            };
+            if has_skill && mech.note.is_none() {
+                missing.push(format!("{ego}.{kind}"));
+            }
+        }
+    }
+    let script = sim.scripts.for_enemy(fixed::BOSS_IMAGO).expect("Imago script");
+    for state in lcb_core::scripts::TimeState::ALL {
+        for turn in 0..3 {
+            for skill in script.turn_skills(100, state, turn) {
+                let id = SkillId::new(skill.clone());
+                if sim.mechanics.get_for(&id, Uptie(1)).is_none() {
+                    missing.push(skill);
+                }
+            }
+        }
+    }
+    missing.sort();
+    missing.dedup();
+    assert!(missing.is_empty(), "skills without mechanics: {missing:?}");
 }
 
 /// A full turn keeps the battle in a consistent, serialisable state.

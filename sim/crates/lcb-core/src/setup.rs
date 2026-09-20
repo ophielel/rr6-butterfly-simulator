@@ -178,7 +178,11 @@ impl<'a> EncounterBuilder<'a> {
                 if let UnitKind::Sinner { identity } = &unit.kind {
                     if let Some(record) = self.library.identity(identity) {
                         for skill in &record.skills {
-                            let mech = self.mechanics.get(&SkillId::new(skill.id.clone()));
+                            // Keys are `id@tier`; a bare-id lookup would always
+                            // miss and warn about every Skill.
+                            let mech = self
+                                .mechanics
+                                .get_for(&SkillId::new(skill.id.clone()), self.config.uptie);
                             match mech {
                                 None => warnings.push(format!(
                                     "skill {} ({}) has no mechanics entry",
