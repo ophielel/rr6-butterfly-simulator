@@ -3356,7 +3356,9 @@
    "on_evade": [],
    "on_kill": [],
    "on_use": [],
-   "tags": [],
+   "tags": [
+    "clashable_defense"
+   ],
    "turn_end": [],
    "turn_start": [],
    "unmodeled": []
@@ -3407,7 +3409,9 @@
    "on_evade": [],
    "on_kill": [],
    "on_use": [],
-   "tags": [],
+   "tags": [
+    "clashable_defense"
+   ],
    "turn_end": [],
    "turn_start": [],
    "unmodeled": []
@@ -3458,7 +3462,9 @@
    "on_evade": [],
    "on_kill": [],
    "on_use": [],
-   "tags": [],
+   "tags": [
+    "clashable_defense"
+   ],
    "turn_end": [],
    "turn_start": [],
    "unmodeled": []
@@ -3531,7 +3537,9 @@
      "value": 0
     }
    ],
-   "tags": [],
+   "tags": [
+    "clashable_defense"
+   ],
    "turn_end": [],
    "turn_start": [],
    "unmodeled": []
@@ -4188,7 +4196,9 @@
      "status": "Deep Tears"
     }
    ],
-   "tags": [],
+   "tags": [
+    "clashable_defense"
+   ],
    "turn_end": [
     {
      "count": 1,
@@ -4231,7 +4241,9 @@
      "status": "Deep Tears"
     }
    ],
-   "tags": [],
+   "tags": [
+    "clashable_defense"
+   ],
    "turn_end": [
     {
      "count": 1,
@@ -4274,7 +4286,9 @@
      "status": "Deep Tears"
     }
    ],
-   "tags": [],
+   "tags": [
+    "clashable_defense"
+   ],
    "turn_end": [
     {
      "count": 1,
@@ -4330,7 +4344,9 @@
      "status": "Deep Tears"
     }
    ],
-   "tags": [],
+   "tags": [
+    "clashable_defense"
+   ],
    "turn_end": [
     {
      "count": 1,
@@ -7376,7 +7392,9 @@
    "on_evade": [],
    "on_kill": [],
    "on_use": [],
-   "tags": [],
+   "tags": [
+    "clashable_defense"
+   ],
    "turn_end": [
     {
      "ally": "slowest",
@@ -7414,7 +7432,9 @@
    "on_evade": [],
    "on_kill": [],
    "on_use": [],
-   "tags": [],
+   "tags": [
+    "clashable_defense"
+   ],
    "turn_end": [
     {
      "ally": "slowest",
@@ -7452,7 +7472,9 @@
    "on_evade": [],
    "on_kill": [],
    "on_use": [],
-   "tags": [],
+   "tags": [
+    "clashable_defense"
+   ],
    "turn_end": [
     {
      "ally": "slowest",
@@ -7490,7 +7512,9 @@
    "on_evade": [],
    "on_kill": [],
    "on_use": [],
-   "tags": [],
+   "tags": [
+    "clashable_defense"
+   ],
    "turn_end": [
     {
      "ally": "slowest",

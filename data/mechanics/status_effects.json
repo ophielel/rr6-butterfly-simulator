@@ -11980,14 +11980,7 @@
       "value": 0
      }
     ],
-    "turn_end": [
-     {
-      "kind": "sp_damage_self_per_stack",
-      "raw": "Turn End: lose (Stack x 15) SP",
-      "status": "self",
-      "step": 15
-     }
-    ],
+    "turn_end": [],
     "turn_start": [
      {
       "kind": "gain",

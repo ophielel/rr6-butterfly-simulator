@@ -938,6 +938,10 @@ TAG_LINES = {
     "can clash with this skill regardless of speed": "clash_any_speed",
     "[unclashable]": "unclashable",
     "[target fixed]": "target_fixed",
+    # "[Clashable Guard]" / "[Clashable Counter]" - a defense Skill that can also
+    # be matched against an enemy attack (wiki.gg `Battles` / Defense Skills).
+    "[clashable guard]": "clashable_defense",
+    "[clashable counter]": "clashable_defense",
 }
 
 
@@ -1128,8 +1132,15 @@ def parse_text_block(text: str, coin_count: int) -> Tuple[Dict[str, List[dict]],
         if stripped:
             line = stripped
         if re.fullmatch(r"\[[^\]]+\]", line):
-            # A bare trigger token opens a block: the bullets below it belong to
-            # that phase ("[Clash Lose]" followed by "- Halve [In the Past]").
+            # A bare token is either a Skill marker ("[Clashable Guard]",
+            # "[Unbreakable Coin]") or a trigger that opens a block ("[Clash Lose]"
+            # followed by "- Halve [In the Past]").
+            marker = TAG_LINES.get(line.lower())
+            if marker:
+                buckets.setdefault("tags", []).append(
+                    {"kind": "tag", "tag": marker, "raw": line}
+                )
+                continue
             block = TRIGGERS.get(line.strip("[]").strip().lower())
             if block:
                 pending_trigger = block

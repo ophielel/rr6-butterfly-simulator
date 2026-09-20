@@ -297,6 +297,17 @@ def used_statuses() -> set:
     return names
 
 
+# Clauses a status page restates that the Skill granting the status already
+# carries.  Keeping both would apply them twice: Rodion's The Knight's Faith has
+# "[Turn End] At less than 3 [Tear-sharpened], lose 15 SP to gain 1
+# [Tear-sharpened] / - If this unit has [Tear-sharpened], lose ([Tear-sharpened]
+# Stack x 15) more SP" as its own Turn End upkeep, which is exactly what the
+# status page lists again.
+STATUS_CLAUSES_OWNED_BY_A_SKILL = {
+    "Tear-sharpened": {"sp_damage_self_per_stack"},
+}
+
+
 def infer_structure(text: str, primary: str) -> str:
     """Which values a status carries, for statuses the localisation dump lacks.
 
@@ -362,6 +373,16 @@ def main() -> int:
         entries.append((name, f"wiki:{name}", wiki[name], "wiki"))
     for name, key, text, source_kind in entries:
         parsed = parse_status(text)
+        owned = STATUS_CLAUSES_OWNED_BY_A_SKILL.get(name)
+        if owned:
+            for phase, value in parsed.items():
+                if not isinstance(value, list):
+                    continue
+                parsed[phase] = [
+                    effect
+                    for effect in value
+                    if not isinstance(effect, dict) or effect.get("kind") not in owned
+                ]
         modelled += sum(
             len(v) for k, v in parsed.items() if isinstance(v, list) and k != "unmodeled"
         )

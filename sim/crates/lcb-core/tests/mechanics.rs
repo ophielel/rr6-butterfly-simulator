@@ -1362,7 +1362,7 @@ fn attack_weight_hits_multiple_slots() {
     let hp_before: Vec<i32> = state.units.iter().map(|u| u.hp).collect();
     let target = 0usize;
     let hits = battle::one_sided_attack(&mut state, imago, target, &mut use_, 0);
-    battle::splash_attack_for_test(&mut state, imago, target, &use_, &hits, 0);
+    battle::splash_attack_for_test(&mut state, imago, target, &mut use_, &hits, 0);
     let damaged: Vec<usize> = state
         .units
         .iter()
@@ -1624,6 +1624,19 @@ fn dashboard_skills_run_their_turn_end_clauses() {
         .unwrap();
     state.units[0].statuses.remove("Tear-sharpened");
     state.units[0].sanity = Sanity::Sane { sp: 0 };
+    // A Skill's Turn End upkeep belongs to the Skill the unit used: an unselected
+    // defense Skill pays nothing (see `apply_dashboard_phase`).
+    state.actions = vec![lcb_core::state::SubmittedAction {
+        actor: state.units[0].id.clone(),
+        target: Some(state.units[1].id.clone()),
+        skill: SkillId::new("1091304"),
+        slot: 0,
+        is_ego: false,
+        ego: None,
+        ego_kind: None,
+        enemy_slot: None,
+        used_top: false,
+    }];
     lcb_core::battle::end_turn(&mut state, &sim.mechanics);
     assert_eq!(state.units[0].statuses.stack("Tear-sharpened"), 1);
     assert_eq!(state.units[0].sanity.sp(), -15, "15 SP paid for the Stack");
@@ -1698,10 +1711,10 @@ fn section5_golden_replay_is_deterministic() {
     // action per Slot").  Update only together with a sourced rule change, and
     // name the source in the commit message.  Last updated when the identities'
     // passives started applying (in-game `Passives.json`).
-    assert_eq!(first_hp, vec![25489, 25379, 25235], "Imago HP after turns 1-3");
+    assert_eq!(first_hp, vec![25489, 25383, 25280], "Imago HP after turns 1-3");
     assert_eq!(
         format!("{first_hash:016x}"),
-        "f6049451b65db55a",
+        "6ac5ae88854825d4",
         "recorded state hash"
     );
 }

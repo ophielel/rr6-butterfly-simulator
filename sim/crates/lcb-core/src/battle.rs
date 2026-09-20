@@ -92,6 +92,10 @@ pub struct UseContext {
     /// "Target cannot be Staggered until this Skill's Attack End".
     #[serde(default)]
     pub no_stagger_target: bool,
+    /// "[Clashable Guard]" / "[Clashable Counter]": the defense Skill may be
+    /// matched against an enemy attack instead of only arming the unit.
+    #[serde(default)]
+    pub clashable_defense: bool,
     /// "Reuse this Skill on the target that has the highest HP" when it kills.
     #[serde(default)]
     pub reuse_on_kill: bool,
@@ -962,11 +966,22 @@ fn ally_targets(state: &BattleState, ctx: &EffectContext<'_>, effect: &Effect) -
         .map(|(index, _)| index)
         .collect();
     let kind = effect.ally.as_deref().unwrap_or("self");
-    let count = effect
-        .ally_count
-        .or(effect.value)
-        .unwrap_or(0)
-        .max(0) as usize;
+    // "Apply 1 [Haste] next turn to ([Bind] on self / 3) other allies with the
+    // slowest Speed": the number of allies comes from a status on the actor.
+    let count = match effect.ally_from_status.as_deref() {
+        Some(status) => {
+            let divisor = effect.ally_from_divisor.unwrap_or(1).max(1);
+            let have = actor.statuses.count(status)
+                + actor.statuses.potency(status)
+                + actor.statuses.stack(status);
+            (have / divisor).max(0) as usize
+        }
+        None => effect
+            .ally_count
+            .or(effect.value)
+            .unwrap_or(0)
+            .max(0) as usize,
+    };
     if kind == "self" {
         return vec![actor_index];
     }
@@ -1054,6 +1069,9 @@ pub fn apply_effects(
         };
         // "(N times per Encounter)" limits live in the unit's usage map too,
         // keyed with an `encounter:` prefix so Turn Start does not clear them.
+        // The attempt is only recorded once the clause actually applies, so a
+        // failed condition does not spend the allowance.
+        let mut usage_grants: Vec<String> = Vec::new();
         if let Some(limit) = effect.per_encounter {
             let key = format!(
                 "encounter:{}",
@@ -1067,9 +1085,7 @@ pub fn apply_effects(
             if used >= limit {
                 continue;
             }
-            state.units[ctx.actor_index]
-                .turn_effect_usage
-                .insert(key, used + 1);
+            usage_grants.push(key);
         }
         // "(N times per turn)" limits.
         if let Some(limit) = effect.per_turn {
@@ -1082,9 +1098,7 @@ pub fn apply_effects(
             if used >= limit {
                 continue;
             }
-            state.units[ctx.actor_index]
-                .turn_effect_usage
-                .insert(key, used + 1);
+            usage_grants.push(key);
         }
         let holds = match &effect.condition {
             Some(cond) => {
@@ -1112,6 +1126,24 @@ pub fn apply_effects(
                     let targets = ally_targets(state, ctx, effect);
                     let base = effect.potency.or(effect.count).unwrap_or(0);
                     for target in targets {
+                        if effect.next_turn {
+                            // "All allies gain 2 [Rhythm] next turn": the grant is
+                            // queued, exactly like the self-targeted form.
+                            let stack = effect.stack.unwrap_or(0);
+                            state.units[target].pending_next_turn.push(
+                                crate::state::PendingStatus {
+                                    status: status.clone(),
+                                    potency: if stack == 0 { base } else { 0 },
+                                    count: if stack == 0 {
+                                        effect.count.unwrap_or(base)
+                                    } else {
+                                        0
+                                    },
+                                    stack,
+                                },
+                            );
+                            continue;
+                        }
                         let unit = &mut state.units[target];
                         match effect.butterfly_part.as_deref() {
                             Some("departed") | Some("count") => {
@@ -1860,7 +1892,13 @@ pub fn apply_effects(
             }
             "compound" => {
                 // A wiki line that carries several effects ("... ; then ...").
-                let subs = effect.sub_effects.clone();
+                // The line's own "next turn" applies to every sub-effect.
+                let mut subs = effect.sub_effects.clone();
+                if effect.next_turn {
+                    for sub in subs.iter_mut() {
+                        sub.next_turn = true;
+                    }
+                }
                 apply_effects(state, &subs, ctx, use_ctx);
             }
             "base_power_from_consumed" => {
@@ -2048,6 +2086,18 @@ pub fn apply_effects(
                 ctx.mechanics_note
                     .push(format!("unhandled effect kind `{other}` ({:?})", effect.raw));
             }
+        }
+        // The clause resolved, so its per-turn / per-encounter allowance is spent
+        // now (and not when its condition merely failed).
+        for key in usage_grants {
+            let used = state.units[ctx.actor_index]
+                .turn_effect_usage
+                .get(&key)
+                .copied()
+                .unwrap_or(0);
+            state.units[ctx.actor_index]
+                .turn_effect_usage
+                .insert(key, used + 1);
         }
     }
 }
@@ -2300,6 +2350,23 @@ fn coin_clause_applies(
     }
 }
 
+/// Clauses of a Coin that act on the unit being hit (stati, activations,
+/// target damage).  An Atk Weight splash runs these for every extra target, but
+/// the Skill's own bookkeeping happens only with the main target.
+fn is_target_facing_clause(effect: &Effect) -> bool {
+    matches!(
+        effect.kind.as_str(),
+        "inflict"
+            | "activate_status"
+            | "tremor_burst"
+            | "lose_status_count"
+            | "gloom_damage_equal_target_status"
+            | "damage_from_status_divisor"
+            | "consume_status_to_inflict"
+            | "convert_status"
+    )
+}
+
 /// Clauses that only raise the damage of the Coin they are written on.
 ///
 /// They have to be resolved **before** that Coin's damage is computed; the rest
@@ -2390,7 +2457,9 @@ fn power_base(state: &mut BattleState, unit_index: usize, use_: &SkillUse) -> i3
         let statuses = &state.units[unit_index].statuses;
         let all = statuses.count("Power Up") - statuses.potency("Power Down");
         let attack = if use_.is_defense {
-            0
+            // A defense Skill reads Defense Power Up/Down instead of the attack
+            // variants ("Defense Power Up: +1 Defense Skill Power").
+            statuses.count("Defense Power Up") - statuses.potency("Defense Power Down")
         } else {
             statuses.count("Attack Power Up") - statuses.potency("Attack Power Down")
         };
@@ -3004,7 +3073,7 @@ fn splash_attack(
     state: &mut BattleState,
     attacker_index: usize,
     main_target: usize,
-    use_: &SkillUse,
+    use_: &mut SkillUse,
     hits: &[HitResult],
     clash_count: i32,
 ) {
@@ -3033,18 +3102,23 @@ fn splash_attack(
         .collect();
     for target in defenders.into_iter().take(extra) {
         for hit in hits {
-            if !state.units[target].alive {
+            if !state.units[target].alive || !state.units[attacker_index].alive {
                 break;
             }
-            let mut damage =
-                compute_hit_damage(state, attacker_index, target, use_, hit.power, false, clash_count);
-            if use_.ctx.sub_target_damage_percent != 0 {
-                damage = damage * (100 + use_.ctx.sub_target_damage_percent) / 100;
-            }
-            if damage > 0 {
-                state.units[target].take_damage(damage);
-                check_stagger(state, target);
-            }
+            // The extra target shares the Coin's toss result and power but
+            // resolves the hit like any other: its own On Hit effects, its own
+            // Sinking / Rupture triggers and its own Guard or Evade.
+            apply_hit_inner(
+                state,
+                attacker_index,
+                target,
+                use_,
+                hit.coin_index,
+                hit.power,
+                hit.heads,
+                clash_count,
+                true,
+            );
         }
     }
 }
@@ -3071,6 +3145,34 @@ fn apply_hit(
     power: i32,
     heads: bool,
     clash_count: i32,
+) -> HitResult {
+    apply_hit_inner(
+        state,
+        attacker_index,
+        defender_index,
+        use_,
+        coin_index,
+        power,
+        heads,
+        clash_count,
+        false,
+    )
+}
+
+/// `sub_target` marks an extra target of an Atk Weight splash: it shares the
+/// Coin's toss result but runs the whole hit resolution for itself, while the
+/// Skill's own events (ammo, self damage, Reuse) stay with the main target.
+#[allow(clippy::too_many_arguments)]
+fn apply_hit_inner(
+    state: &mut BattleState,
+    attacker_index: usize,
+    defender_index: usize,
+    use_: &mut SkillUse,
+    coin_index: usize,
+    power: i32,
+    heads: bool,
+    clash_count: i32,
+    sub_target: bool,
 ) -> HitResult {
     let power_of_incoming = power;
     // A dead attacker deals no more damage (the Coin may have been forfeited to
@@ -3145,9 +3247,39 @@ fn apply_hit(
         .position(|d| d.unit == state.units[defender_index].id && d.kind == DefenseKind::Evade && !d.lost)
     {
         let evaded = {
-            let heads = state.flip(heads_percent(state, &state.units[defender_index]));
-            let defense = &state.defenses[defense];
-            let power = defense.base_power + if heads { defense.coin_power } else { 0 };
+            // The Evade rolls its own Coin and compares its **Final Power**,
+            // which carries the Skill's modifiers, Paralysis and the defense
+            // level correction like any other Skill
+            // (JA-wiki 防御スキル: "回避スキルの値が攻撃スキルの値と同じかそれ以上なら
+            // 攻撃は的中せず").
+            let mut defense_use = {
+                let defense = &state.defenses[defense];
+                SkillUse {
+                    actor: defense.unit.clone(),
+                    target: Some(state.units[attacker_index].id.clone()),
+                    slot: 0,
+                    skill: defense.skill.clone(),
+                    name: defense.name.clone(),
+                    sin: defense.sin,
+                    damage_type: defense.damage_type,
+                    base_power: defense.base_power,
+                    coin_power: defense.coin_power,
+                    offense_level_mod: defense.offense_level_mod,
+                    defense_level_mod: Some(defense.defense_level_mod),
+                    attack_weight: 1,
+                    coins: defense.coins.clone(),
+                    mechanics: defense.mechanics.clone(),
+                    ctx: defense.ctx.clone(),
+                    is_defense: true,
+                    is_ego: false,
+                    ego: None,
+                }
+            };
+            toss_all(state, defender_index, &mut defense_use);
+            let power = final_power(state, defender_index, &mut defense_use);
+            if let Some(entry) = state.defenses.get_mut(defense) {
+                entry.coins = defense_use.coins.clone();
+            }
             power >= power_of_incoming
         };
         if evaded {
@@ -3332,7 +3464,11 @@ fn apply_hit(
         ..Default::default()
     };
     let breakdown = compute_damage(&inputs);
-    let damage = if use_.ctx.zero_damage { 0 } else { breakdown.final_damage };
+    let mut damage = if use_.ctx.zero_damage { 0 } else { breakdown.final_damage };
+    if sub_target && use_.ctx.sub_target_damage_percent != 0 {
+        // "Deal -50% damage against sub-targets".
+        damage = damage * (100 + use_.ctx.sub_target_damage_percent) / 100;
+    }
     let (_, hp_lost) = state.units[defender_index].take_damage(damage);
 
     *use_.ctx.coin_hits.entry(coin_index as u32 + 1).or_insert(0) += 1;
@@ -3414,6 +3550,7 @@ fn apply_hit(
         let clauses: Vec<Effect> = effects
             .iter()
             .filter(|effect| !is_coin_damage_clause(effect))
+            .filter(|effect| !sub_target || is_target_facing_clause(effect))
             .cloned()
             .collect();
         apply_effects(state, &clauses, &mut ctx, &mut local);
@@ -3558,10 +3695,14 @@ fn apply_hit(
         use_.coins.len(),
         defender_index,
     );
-    // A Counter skill strikes back at whoever attacked the unit.
+    // A Counter skill strikes back at whoever attacked the unit.  It answers the
+    // Skill that attacked it once and is then spent (wiki.gg `Battles` /
+    // Defense Skills: a normal Counter triggers per incoming Skill, not per Coin).
     if state.units[defender_index].alive {
         if let Some(position) = state.defenses.iter().position(|d| {
-            d.unit == state.units[defender_index].id && d.kind == DefenseKind::Counter
+            d.unit == state.units[defender_index].id
+                && d.kind == DefenseKind::Counter
+                && !d.lost
         }) {
             let counter = state.defenses[position].clone();
             let mut use_ = SkillUse {
@@ -3585,6 +3726,9 @@ fn apply_hit(
                 ego: None,
             };
             state.push_log("counter", format!("{} counterattacked", counter.name));
+            if let Some(entry) = state.defenses.get_mut(position) {
+                entry.lost = true;
+            }
             one_sided_attack(state, defender_index, attacker_index, &mut use_, 0);
         }
     }
@@ -4280,20 +4424,42 @@ fn apply_dashboard_phase(state: &mut BattleState, mechanics: &MechanicsBook, sta
             continue;
         }
         let mut seen: Vec<String> = Vec::new();
-        let mut slots: Vec<(u32, SkillId)> = state.units[index]
-            .dashboard
-            .iter()
-            .enumerate()
-            .flat_map(|(slot, entry)| {
-                // Both visible Skills of a Slot are equipped, as is the preview.
-                [&entry.current, &entry.next, &entry.preview]
-                    .into_iter()
-                    .map(move |skill| (slot as u32 + 1, skill.clone()))
-            })
-            .collect();
+        let mut slots: Vec<(u32, SkillId)> = if start {
+            // At Turn Start the panel is what the unit is holding, so every
+            // equipped Skill's upkeep applies.
+            state.units[index]
+                .dashboard
+                .iter()
+                .enumerate()
+                .flat_map(|(slot, entry)| {
+                    // Both visible Skills of a Slot are equipped, as is the preview.
+                    [&entry.current, &entry.next, &entry.preview]
+                        .into_iter()
+                        .map(move |skill| (slot as u32 + 1, skill.clone()))
+                })
+                .collect()
+        } else {
+            // At Turn End only the Skills this unit actually used carry their
+            // upkeep: a defense Skill that was never selected does not pay its
+            // SP or hand out its Petals.
+            state
+                .actions
+                .iter()
+                .filter(|action| action.actor == state.units[index].id)
+                .map(|action| (action.slot, action.skill.clone()))
+                .collect()
+        };
         // The defense Skill is not drawn on the Dashboard but carries its own
         // Turn Start / Turn End upkeep.
         for skill in &state.units[index].identity_skills {
+            if !start
+                && !state
+                    .defenses
+                    .iter()
+                    .any(|defense| defense.unit == state.units[index].id && &defense.skill == skill)
+            {
+                continue;
+            }
             if !slots.iter().any(|(_, owned)| owned == skill) {
                 slots.push((4, skill.clone()));
             }
@@ -4724,14 +4890,16 @@ fn enemy_targets(
 
 pub fn end_turn(state: &mut BattleState, mechanics: &MechanicsBook) {
     state.phase = Phase::TurnEnd;
+    // The Skills the unit used read their "[Turn End]" clauses **before** the
+    // statuses tick down, so a clause can still see the [Bind] it converts
+    // ("Apply 1 [Haste] next turn to ([Bind] on self / 2) other allies").
+    apply_dashboard_phase(state, mechanics, false);
     // Status upkeep: "[Turn End]" clauses of every status the unit holds.
     if let Some(book) = state.status_book.clone() {
         apply_status_phase(state, &book, false);
     }
     // The Turn End half of a Panic Type ("Turn End: Gain 1 [Bind] ...").
     apply_panic_turn_end(state);
-    // Equipped Skills' "[Turn End]" clauses (Rodion's Tear-sharpened upkeep).
-    apply_dashboard_phase(state, mechanics, false);
     for index in 0..state.units.len() {
         if !state.units[index].alive {
             continue;
@@ -4888,6 +5056,7 @@ pub fn resolve_combat(state: &mut BattleState, library: &Library, mechanics: &Me
         action.ego = Some(ego);
         action.ego_kind = Some(EgoSkillKind::Corrosion);
     }
+    let mut pending_draft: Vec<(usize, SubmittedAction, Option<usize>)> = Vec::new();
     for action in actions {
         let Some(actor) = state.index_of(&action.actor) else { continue };
         if !state.units[actor].alive {
@@ -4905,10 +5074,10 @@ pub fn resolve_combat(state: &mut BattleState, library: &Library, mechanics: &Me
             continue;
         }
         let target = action.target.as_ref().and_then(|t| state.index_of(t));
-        pending.push((actor, action, target));
+        pending_draft.push((actor, action, target));
     }
     // Sort by speed (descending), then by deployment order.
-    pending.sort_by_key(|(index, _, _): &(usize, SubmittedAction, Option<usize>)| {
+    pending_draft.sort_by_key(|(index, _, _): &(usize, SubmittedAction, Option<usize>)| {
         let speed = state.units[*index].speed;
         let order = state
             .deployment
@@ -4919,45 +5088,32 @@ pub fn resolve_combat(state: &mut BattleState, library: &Library, mechanics: &Me
     });
 
     compute_resonance(state, library);
-    // Defense skills are not attacks: they arm the unit for the turn.
-    let mut pending: Vec<(usize, SubmittedAction, Option<usize>)> = pending
-        .into_iter()
-        .filter(|(index, action, target)| {
-            if let Some(kind) = action_defense_kind(state, library, action) {
-                let mut use_ = build_action_use(state, library, mechanics, *index, action);
-                if let Some(use_) = use_.as_mut() {
-                    prepare_use(state, library, mechanics, *index, *target, action.slot, use_);
-                    let defense = ActiveDefense {
-                        unit: state.units[*index].id.clone(),
-                        kind,
-                        skill: use_.skill.clone(),
-                        name: use_.name.clone(),
-                        sin: use_.sin,
-                        damage_type: use_.damage_type,
-                        base_power: use_.base_power,
-                        coin_power: use_.coin_power,
-                        offense_level_mod: use_.offense_level_mod,
-                        coins: use_.coins.clone(),
-                        mechanics: use_.mechanics.clone(),
-                        ctx: use_.ctx.clone(),
-                        lost: false,
-                        activated: false,
-                        defense_level_mod: use_.defense_level_mod.unwrap_or(0),
-                    };
-                    // Guards are not applied here: the Shield is gained when the
-                    // unit is first attacked this turn (see `activate_guard`).
-                    state.defenses.push(defense);
-                    // The defense Skill consumes the Slot: it and the card it
-                    // replaced leave the panel ("使った守備スキルは守備スキルに
-                    // 変更した元のスキルごとパネルから消え"), so the Slot rotates
-                    // even when the defense never fires.
-                    state.defense_slots_used.push((*index, action.slot));
-                }
-                return false;
+    // Defense Skills are not attacks: they arm the unit for the turn.  A
+    // "[Clashable Guard]" / "[Clashable Counter]" stays in the queue, so it can
+    // be matched against an enemy attack like any other Skill, and only arms the
+    // unit when nothing clashes with it (wiki.gg `Battles` / Defense Skills).
+    let mut pending: Vec<(usize, SubmittedAction, Option<usize>)> = Vec::new();
+    let mut clashable_defenses: Vec<(usize, u32, DefenseKind)> = Vec::new();
+    for (index, action, target) in pending_draft {
+        if let Some(kind) = action_defense_kind(state, library, &action) {
+            let mut use_ = build_action_use(state, library, mechanics, index, &action);
+            let mut is_clashable = false;
+            if let Some(use_) = use_.as_mut() {
+                prepare_use(state, library, mechanics, index, target, action.slot, use_);
+                is_clashable = use_.ctx.clashable_defense;
             }
-            true
-        })
-        .collect();
+            if is_clashable {
+                clashable_defenses.push((pending.len(), action.slot, kind));
+                pending.push((index, action, target));
+                continue;
+            }
+            if let Some(use_) = use_.as_ref() {
+                arm_defense(state, index, action.slot, kind, use_);
+            }
+            continue;
+        }
+        pending.push((index, action, target));
+    }
     // "味方のスキルによって敵のスキルの使用先を変更させるのを同じスロットに対して
     // 複数回行った場合、敵のスキルの使用先は当然「最後に行った使用先の変更」に準拠
     // する" (JA-wiki 戦闘システム詳細): when several Skills chain to the same enemy
@@ -5107,13 +5263,28 @@ pub fn resolve_combat(state: &mut BattleState, library: &Library, mechanics: &Me
                     done[i] = true;
                     continue;
                 }
+                // A clashable defense that found no partner arms the unit.
+                if let Some((_, slot, kind)) = clashable_defenses
+                    .iter()
+                    .find(|(pending_index, _, _)| *pending_index == i)
+                    .copied()
+                {
+                    if let Some(use_) =
+                        build_action_use(state, library, mechanics, actor_i, &action_i)
+                    {
+                        arm_defense(state, actor_i, slot, kind, &use_);
+                    }
+                    done[i] = true;
+                    executed.push((actor_i, action_i.slot));
+                    continue;
+                }
                 if let Some(target) = target_i.filter(|t| state.units[*t].alive) {
                     if let Some(mut use_) =
                         build_action_use(state, library, mechanics, actor_i, &action_i)
                     {
                         prepare_use(state, library, mechanics, actor_i, Some(target), action_i.slot, &mut use_);
                         let hits = one_sided_attack(state, actor_i, target, &mut use_, 0);
-                        splash_attack(state, actor_i, target, &use_, &hits, 0);
+                        splash_attack(state, actor_i, target, &mut use_, &hits, 0);
                         apply_attack_end(state, actor_i, Some(target), action_i.slot, &mut use_);
                         let total: i32 = hits.iter().map(|h| h.damage).sum();
                         let rolls: Vec<i32> = hits.iter().map(|h| h.power).collect();
@@ -5439,6 +5610,39 @@ fn action_defense_kind(
     })
 }
 
+/// Arm a defense Skill for the turn (Guard Shield, Evade coins, Counter stance).
+fn arm_defense(
+    state: &mut BattleState,
+    index: usize,
+    slot: u32,
+    kind: DefenseKind,
+    use_: &SkillUse,
+) {
+    state.defenses.push(ActiveDefense {
+        unit: state.units[index].id.clone(),
+        kind,
+        skill: use_.skill.clone(),
+        name: use_.name.clone(),
+        sin: use_.sin,
+        damage_type: use_.damage_type,
+        base_power: use_.base_power,
+        coin_power: use_.coin_power,
+        offense_level_mod: use_.offense_level_mod,
+        coins: use_.coins.clone(),
+        mechanics: use_.mechanics.clone(),
+        ctx: use_.ctx.clone(),
+        lost: false,
+        activated: false,
+        defense_level_mod: use_.defense_level_mod.unwrap_or(0),
+    });
+    // Guards are not applied here: the Shield is gained when the unit is first
+    // attacked this turn (see `activate_guard`).
+    // The defense Skill consumes the Slot: it and the card it replaced leave the
+    // panel ("使った守備スキルは守備スキルに変更した元のスキルごとパネルから消
+    // え"), so the Slot rotates even when the defense never fires.
+    state.defense_slots_used.push((index, slot));
+}
+
 /// Build a use from a submitted action, paying E.G.O costs when needed.
 fn build_action_use(
     state: &mut BattleState,
@@ -5568,6 +5772,9 @@ fn prepare_use(
         }
         if tag == "butterfly_split" {
             use_.ctx.butterfly_split = true;
+        }
+        if tag == "clashable_defense" {
+            use_.ctx.clashable_defense = true;
         }
     }
     // "[Before Attack]" clauses resolve after On Use and before the first toss.
@@ -5842,7 +6049,7 @@ pub fn splash_attack_for_test(
     state: &mut BattleState,
     attacker_index: usize,
     main_target: usize,
-    use_: &SkillUse,
+    use_: &mut SkillUse,
     hits: &[HitResult],
     clash_count: i32,
 ) {
