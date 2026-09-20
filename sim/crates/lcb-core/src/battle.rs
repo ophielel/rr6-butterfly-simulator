@@ -392,7 +392,12 @@ pub fn submit(state: &mut BattleState, action: Action) -> Result<(), String> {
             let used_top = entry.next == skill && entry.current != skill;
             entry.target = Some(target.clone());
             if entry.current != skill && !used_top {
+                // A defense Skill or an E.G.O replaces the bottom card; keep the
+                // card it replaced so the rotation consumes the right one.
                 entry.converted = true;
+                if entry.replaced.is_none() {
+                    entry.replaced = Some(entry.current.clone());
+                }
                 entry.current = skill.clone();
             }
             state.actions.retain(|a| !(a.actor == actor && a.slot == slot));
@@ -2342,13 +2347,16 @@ pub fn match_power(
     unit_index: usize,
     opponent_index: usize,
     use_: &mut SkillUse,
+    opponent_use: &SkillUse,
 ) -> i32 {
     let power = final_power(state, unit_index, use_);
+    // "お互いの攻撃スキルの攻撃レベルを参照し、差がある場合は差3ごとに高い方に
+    // マッチ威力+1の補正がかかる" (JA-wiki 威力): a Clash compares both Skills'
+    // **attack (Offense) Levels**, including each Skill's own level modifier -
+    // the opponent's Defense Level plays no part here.
     let my_level = state.units[unit_index].offense_level() + use_.offense_level_mod;
-    let their_level = match use_.defense_level_mod {
-        Some(modifier) => state.units[opponent_index].offense_level() + modifier,
-        None => state.units[opponent_index].defense_level(),
-    };
+    let their_level =
+        state.units[opponent_index].offense_level() + opponent_use.offense_level_mod;
     let mut total = power + level_clash_bonus(my_level, their_level);
     total += state.units[unit_index].statuses.count("Clash Power Up");
     if let Some((_, bonus)) = time_state_bonus(state, unit_index) {
@@ -2415,8 +2423,8 @@ fn resolve_clash_inner(
         }
         toss_all(state, a_index, a);
         toss_all(state, b_index, b);
-        let a_power = match_power(state, a_index, b_index, a);
-        let b_power = match_power(state, b_index, a_index, b);
+        let a_power = match_power(state, a_index, b_index, a, b);
+        let b_power = match_power(state, b_index, a_index, b, a);
         rounds += 1;
         if a_power > b_power {
             destroy_first_coin(&mut b.coins, b_index);
@@ -2472,7 +2480,8 @@ fn tick_bleed_with_floor(state: &mut BattleState, unit_index: usize, keep_count:
     let (_, hp_lost) = state.units[unit_index].take_damage(potency);
     let count = state.units[unit_index].statuses.count("Bleed");
     if !(keep_count && count <= 1) {
-        state.units[unit_index].statuses.add_count("Bleed", -1);
+        // "Then, reduce its Count by 1" - reaching 0 removes the status.
+        tick_status(state, unit_index, "Bleed", 0, -1);
     }
     // Future passive: "Whenever Bleed activates on self or on Sinners, heal HP
     // equal to the said Bleed damage."
@@ -3147,7 +3156,7 @@ fn apply_hit(
     let rupture = state.units[defender_index].statuses.potency("Rupture");
     if rupture > 0 {
         state.units[defender_index].take_damage(rupture);
-        state.units[defender_index].statuses.add_count("Rupture", -1);
+        tick_status(state, defender_index, "Rupture", 0, -1);
     }
     // Sinking: when hit, SP damage by Potency then Count -1.
     apply_sinking(state, defender_index);
@@ -3298,7 +3307,8 @@ pub fn apply_sinking(state: &mut BattleState, unit_index: usize) {
             state.units[unit_index].sanity = sanity.add(-sinking);
         }
     }
-    state.units[unit_index].statuses.add_count("Sinking", -1);
+    // "Then, reduce its Count by 1": a status whose Count reaches 0 is gone.
+    tick_status(state, unit_index, "Sinking", 0, -1);
 }
 
 /// While a Guard is active, the unit's Defense Level is replaced by the skill's
@@ -3627,6 +3637,49 @@ fn apply_status_phase(
     }
 }
 
+/// Consume Potency / Count of a status and remove the status once a value it
+/// uses reaches 0.
+///
+/// Source: wiki.gg `Status Effects` (Overview): "In single-value or double-value
+/// modes, if one or more of the values reach 0, the status effect is removed
+/// from the unit."  Called at every tick that consumes a value, so a status a
+/// Skill merely inflicted with Count 0 (the game writes "Inflict N [X]" for
+/// Potency) is left alone until something actually consumes it.
+fn tick_status(
+    state: &mut BattleState,
+    unit_index: usize,
+    status: &str,
+    potency_delta: i32,
+    count_delta: i32,
+) {
+    {
+        let unit = &mut state.units[unit_index];
+        if potency_delta != 0 {
+            unit.statuses.add_potency(status, potency_delta);
+        }
+        if count_delta != 0 {
+            unit.statuses.add_count(status, count_delta);
+        }
+    }
+    let policy = state
+        .status_book
+        .as_ref()
+        .and_then(|book| book.get(status))
+        .and_then(|behaviour| behaviour.expiry.clone())
+        .unwrap_or_else(|| "either_zero".to_string());
+    let instance = state.units[unit_index].statuses.get(status);
+    let gone = match policy.as_str() {
+        "none" => false,
+        "both_zero" => instance.potency == 0 && instance.count == 0,
+        "count_zero" => instance.count == 0,
+        "potency_zero" => instance.potency == 0,
+        _ => instance.potency == 0 || instance.count == 0,
+    };
+    if gone {
+        state.units[unit_index].statuses.remove(status);
+    }
+}
+
 /// Run the `[When Clash ends]` / `[When hit]` clauses of a unit's statuses.
 /// `target` is the other unit ("inflict 2 [Sinking] on the attacker").
 fn apply_status_event(state: &mut BattleState, index: usize, phase: &str, target: Option<usize>) {
@@ -3885,6 +3938,16 @@ pub fn begin_turn(
     state.turn += 1;
     state.phase = Phase::TurnStart;
     state.actions.clear();
+    // "Next turn" buffs arrive before this turn is resolved, so a queued Haste
+    // or Bind moves the Speed of the turn it applies to.
+    for index in 0..state.units.len() {
+        let queued: Vec<crate::state::PendingStatus> =
+            std::mem::take(&mut state.units[index].pending_next_turn);
+        for entry in queued {
+            state.units[index].statuses.add_potency(&entry.status, entry.potency);
+            state.units[index].statuses.add_count(&entry.status, entry.count);
+        }
+    }
     // Shield does not carry over between turns (wiki.gg `Clash` / Shield).
     for unit in state.units.iter_mut() {
         unit.shield = 0;
@@ -3991,14 +4054,8 @@ pub fn begin_turn(
             }
         }
     }
-    // Flush queued "next turn" buffs and reset per-turn effect limits.
+    // Per-turn bookkeeping.
     for index in 0..state.units.len() {
-        let queued: Vec<crate::state::PendingStatus> =
-            std::mem::take(&mut state.units[index].pending_next_turn);
-        for entry in queued {
-            state.units[index].statuses.add_potency(&entry.status, entry.potency);
-            state.units[index].statuses.add_count(&entry.status, entry.count);
-        }
         state.units[index]
             .turn_effect_usage
             .retain(|key, _| key.starts_with("encounter:"));
@@ -4318,19 +4375,19 @@ pub fn end_turn(state: &mut BattleState, mechanics: &MechanicsBook) {
         let burn = state.units[index].statuses.potency("Burn");
         if burn > 0 {
             state.units[index].take_damage(burn);
-            state.units[index].statuses.add_count("Burn", -1);
+            tick_status(state, index, "Burn", 0, -1);
         }
         // Poise: end of turn, Count -1.
         if state.units[index].statuses.count("Poise") > 0 {
-            state.units[index].statuses.add_count("Poise", -1);
+            tick_status(state, index, "Poise", 0, -1);
         }
         // Tremor: "At the end of the turn, reduce the Count by 1."
         if state.units[index].statuses.count("Tremor") > 0 {
-            state.units[index].statuses.add_count("Tremor", -1);
+            tick_status(state, index, "Tremor", 0, -1);
         }
         // Charge: "Count lowers by 1 at the end of each turn."
         if state.units[index].statuses.count("Charge") > 0 {
-            state.units[index].statuses.add_count("Charge", -1);
+            tick_status(state, index, "Charge", 0, -1);
         }
         // Butterfly: "Turn End: Reset The Departed of this effect to 0; then,
         // gain [Sinking] equal to The Living and convert The Living into The
@@ -4467,6 +4524,11 @@ pub fn resolve_combat(state: &mut BattleState, library: &Library, mechanics: &Me
                     // Guards are not applied here: the Shield is gained when the
                     // unit is first attacked this turn (see `activate_guard`).
                     state.defenses.push(defense);
+                    // The defense Skill consumes the Slot: it and the card it
+                    // replaced leave the panel ("使った守備スキルは守備スキルに
+                    // 変更した元のスキルごとパネルから消え"), so the Slot rotates
+                    // even when the defense never fires.
+                    state.defense_slots_used.push((*index, action.slot));
                 }
                 return false;
             }
@@ -4614,39 +4676,49 @@ pub fn resolve_combat(state: &mut BattleState, library: &Library, mechanics: &Me
 /// Source: Japanese wiki `戦闘システム詳細` ("スキル構成", "パネル上に空きが出ると
 /// その分だけスキル構成から継ぎ足される").
 fn rotate_used_slots(state: &mut BattleState, executed: &[(usize, u32)]) {
-    for (unit_index, slot) in executed {
-        let Some(entry) = state.units[*unit_index]
+    let mut all: Vec<(usize, u32)> = executed.to_vec();
+    for entry in state.defense_slots_used.clone() {
+        if !all.contains(&entry) {
+            all.push(entry);
+        }
+    }
+    state.defense_slots_used.clear();
+    for (unit_index, slot) in all.into_iter() {
+        let Some(entry) = state.units[unit_index]
             .dashboard
             .iter()
-            .find(|s| s.slot == *slot)
+            .find(|s| s.slot == slot)
             .cloned()
         else {
             continue;
         };
         // Which card did the unit actually use?  The panel was left untouched
         // when the action was submitted, so the answer is in the action.
-        let actor = state.units[*unit_index].id.clone();
+        let actor = state.units[unit_index].id.clone();
         let used_top = state
             .actions
             .iter()
-            .find(|a| a.actor == actor && a.slot == *slot)
+            .find(|a| a.actor == actor && a.slot == slot)
             .map(|a| a.used_top)
             .unwrap_or(false);
         if used_top {
             // The top card is consumed; the bottom card stays available and the
             // panel refills from the top.
-            state.units[*unit_index].deck.consume(&entry.next);
+            state.units[unit_index].deck.consume(&entry.next);
+        } else if let Some(replaced) = entry.replaced.clone() {
+            // A defense skill / E.G.O replaced the bottom card: both leave the
+            // panel, so the card that was replaced is the one consumed.
+            state.units[unit_index].deck.consume(&replaced);
         } else {
-            // The bottom card is consumed (also when it was replaced by a
-            // defense skill or E.G.O): the top card rotates down.
-            state.units[*unit_index].deck.consume(&entry.current);
+            // The bottom card is consumed: the top card rotates down.
+            state.units[unit_index].deck.consume(&entry.current);
         }
-        let drawn = crate::setup::draw_for_unit(state, *unit_index)
+        let drawn = crate::setup::draw_for_unit(state, unit_index)
             .unwrap_or_else(crate::setup::empty_skill);
-        if let Some(target) = state.units[*unit_index]
+        if let Some(target) = state.units[unit_index]
             .dashboard
             .iter_mut()
-            .find(|s| s.slot == *slot)
+            .find(|s| s.slot == slot)
         {
             if used_top {
                 target.next = entry.preview.clone();
@@ -4657,6 +4729,7 @@ fn rotate_used_slots(state: &mut BattleState, executed: &[(usize, u32)]) {
                 target.preview = drawn;
             }
             target.converted = false;
+            target.replaced = None;
             target.target = None;
         }
     }

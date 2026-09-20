@@ -306,10 +306,12 @@ def main() -> int:
     statuses = load(os.path.join(DATA, "statuses", "statuses.json"))
     primary: Dict[str, str] = {}
     expires: Dict[str, bool] = {}
+    expiry: Dict[str, str] = {}
     for record in statuses:
         name = record.get("name_en") or record.get("wiki_name")
         if name:
             primary.setdefault(name, record.get("primary") or "potency")
+            expiry.setdefault(name, record.get("expiry") or "either_zero")
             if record.get("expires_at_turn_end"):
                 expires[name] = True
     wiki = load(os.path.join(DATA, "_raw", "wiki_status_text.json"))
@@ -345,6 +347,7 @@ def main() -> int:
             "key": key,
             "used_by_fixed_content": name in used,
             "primary": primary.get(name, "potency"),
+            "expiry": expiry.get(name, "either_zero"),
             "expires_at_turn_end": bool(expires.get(name, False)),
             "name": name,
             "text": text,

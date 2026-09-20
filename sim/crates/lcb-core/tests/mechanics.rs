@@ -1674,10 +1674,10 @@ fn section5_golden_replay_is_deterministic() {
     // action per Slot").  Update only together with a sourced rule change, and
     // name the source in the commit message.  Last updated when the identities'
     // passives started applying (in-game `Passives.json`).
-    assert_eq!(first_hp, vec![25364, 24648, 24152], "Imago HP after turns 1-3");
+    assert_eq!(first_hp, vec![25495, 25342, 25138], "Imago HP after turns 1-3");
     assert_eq!(
         format!("{first_hash:016x}"),
-        "5f126275e2e22056",
+        "ab0c10b98246be50",
         "recorded state hash"
     );
 }
@@ -2173,7 +2173,10 @@ fn butterfly_dot_and_turn_end_conversion() {
     let mut notes = Vec::new();
     let mut ctx = battle::UseContext::default();
     state.units[0].sanity = Sanity::Sane { sp: -10 };
+    // The DoT reads the [Sinking] Potency on the unit, and Sinking itself is
+    // consumed by the same hit ("reduce its Count by 1"), so it needs Count.
     state.units[target].statuses.add_potency("Sinking", 40);
+    state.units[target].statuses.add_count("Sinking", 5);
     let hp_before = state.units[target].hp;
     let mark = Effect {
         kind: "noop".to_string(),
@@ -2580,6 +2583,165 @@ fn protection_lands_on_count_and_one_turn_statuses_expire() {
         "Protection lasts one turn"
     );
     let _ = enemy;
+}
+
+/// A "next turn" Bind / Haste queued by a Skill affects the Speed of the turn it
+/// applies to: the queued statuses arrive before Speed is rolled.
+/// Source: Gregor's 1121401 (`[On Use] Gain 1 [Bind] next turn`) and the Speed
+/// rules (in-game `Bufs`: Binding / Agility).
+#[test]
+fn next_turn_speed_status_arrives_before_speed_is_rolled() {
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&["11214"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    state.units[0].speed_range = (5, 5);
+    state.units[0].statuses.remove("Bind");
+    state.units[0].statuses.remove("Haste");
+    lcb_core::battle::begin_turn(&mut state, &sim.library, &sim.mechanics, &sim.scripts);
+    assert_eq!(state.units[0].speed, 5, "no Bind yet");
+    // The Skill queued "[On Use] Gain 1 [Bind] next turn".
+    state.units[0].pending_next_turn.push(lcb_core::state::PendingStatus {
+        status: "Bind".to_string(),
+        potency: 0,
+        count: 1,
+    });
+    lcb_core::battle::begin_turn(&mut state, &sim.library, &sim.mechanics, &sim.scripts);
+    assert_eq!(
+        state.units[0].speed,
+        4,
+        "the queued Bind lowered this turn's Speed"
+    );
+    assert_eq!(state.units[0].statuses.count("Bind"), 1);
+}
+
+/// Using a defense Skill consumes its Slot: the defense and the card it
+/// replaced both leave the panel and the Slot refills.  "使った守備スキルは守備
+/// スキルに変更した元のスキルごとパネルから消え、次のターンには新しいスキルが
+/// パネルに追加される" (JA-wiki 守備スキル).
+#[test]
+fn defense_skill_rotates_its_slot() {
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&["11214"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    let (current, next, preview) = {
+        let entry = &state.units[0].dashboard[0];
+        (entry.current.clone(), entry.next.clone(), entry.preview.clone())
+    };
+    let actor = state.units[0].id.clone();
+    let target = state.units[1].id.clone();
+    // Guard: the identity's Skill 4 is its defense Skill.
+    sim.submit(
+        &mut state,
+        Action::Assign {
+            actor,
+            slot: 0,
+            skill: SkillId::new("1121404"),
+            target,
+        },
+    )
+    .unwrap();
+    assert!(state.units[0].dashboard[0].converted, "the card was replaced");
+    assert_eq!(
+        state.units[0].dashboard[0].replaced.as_ref(),
+        Some(&current),
+        "the replaced card is remembered"
+    );
+    sim.step_turn(&mut state).unwrap();
+    let entry = &state.units[0].dashboard[0];
+    assert!(!entry.converted, "the Slot rotated");
+    assert!(entry.replaced.is_none());
+    assert_eq!(entry.current, next, "the top card moved down");
+    assert_eq!(entry.next, preview, "the panel refilled");
+    assert_ne!(entry.current, SkillId::new("1121404"), "the Guard is gone");
+}
+
+/// A Clash compares both Skills' **attack (Offense) Levels**, not the
+/// opponent's Defense Level.  Source: JA-wiki 威力 ("お互いの攻撃スキルの攻撃レベルを
+/// 参照し、差がある場合は差3ごとに高い方にマッチ威力+1の補正がかかる").
+#[test]
+fn clash_level_bonus_uses_both_attack_levels() {
+    let sim = sim();
+    let state = sim
+        .new_encounter(&["10110"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    let enemy = state.units.iter().position(|u| !u.kind.is_sinner()).unwrap();
+    // Same Skill, all Coins Tails so only the level bonus differs.
+    let power = |state: &mut lcb_core::state::BattleState| -> i32 {
+        let mut a = battle::build_use(
+            state,
+            &sim.library,
+            &sim.mechanics,
+            0,
+            &SkillId::new("1011001"),
+        )
+        .unwrap();
+        let mut b = battle::build_use(
+            state,
+            &sim.library,
+            &sim.mechanics,
+            enemy,
+            &SkillId::new("956701"),
+        )
+        .unwrap();
+        state.preset_flips = vec![false; 32];
+        state.flip_cursor = 0;
+        battle::toss_all_for_test(state, 0, &mut a);
+        // 6 levels ahead of the opponent: +2 Match Power.
+        state.units[0].level = 60;
+        state.units[enemy].level = 54;
+        battle::match_power(state, 0, enemy, &mut a, &b)
+    };
+    let mut state = state;
+    let equal = power(&mut state);
+    // The opponent's Defense Level no longer matters.
+    state.units[enemy].defense_level_mod = -12;
+    let defense_changed = power(&mut state);
+    assert_eq!(
+        equal, defense_changed,
+        "lowering the opponent's Defense Level must not change Match Power"
+    );
+    // Their attack level does.
+    state.units[enemy].offense_level_mod = -12;
+    let attack_changed = power(&mut state);
+    assert_eq!(
+        attack_changed,
+        equal + 4,
+        "6 more levels of attack advantage = +2, 12 more = +4"
+    );
+}
+
+/// A status whose Count is consumed to 0 is removed, so it stops triggering.
+/// Source: wiki.gg `Status Effects` (Overview): "In single-value or double-value
+/// modes, if one or more of the values reach 0, the status effect is removed
+/// from the unit."
+#[test]
+fn sinking_stops_once_its_count_is_gone() {
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&[fixed::TEAM[0]], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    let target = state.units.iter().position(|u| !u.kind.is_sinner()).unwrap();
+    // The Imago has no SP, so Sinking deals Gloom damage.
+    state.units[target].statuses.remove("Sinking");
+    state.units[target].statuses.add_potency("Sinking", 10);
+    state.units[target].statuses.add_count("Sinking", 1);
+    let before = state.units[target].hp;
+    battle::apply_sinking(&mut state, target);
+    let first = before - state.units[target].hp;
+    assert!(first > 0, "the first trigger deals damage");
+    assert_eq!(
+        state.units[target].statuses.potency("Sinking"),
+        0,
+        "the status is gone once its Count is 0"
+    );
+    let after_first = state.units[target].hp;
+    battle::apply_sinking(&mut state, target);
+    assert_eq!(
+        state.units[target].hp, after_first,
+        "a second trigger does nothing"
+    );
 }
 
 /// A full turn keeps the battle in a consistent, serialisable state.

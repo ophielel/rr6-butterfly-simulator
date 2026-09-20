@@ -589,6 +589,32 @@ STACK_STATUS_NAMES = {
 COUNT_PRIMARY = {"Protection", "Fragile", "Haste", "Bind", "Charge"}
 
 
+def status_expiry(text: str, name: str, stack_based: bool, primary: str) -> str:
+    """When a status stops existing.
+
+    Source: wiki.gg `Status Effects` (Overview) - "In single-value or
+    double-value modes, if one or more of the values reach 0, the status effect
+    is removed from the unit", plus each status's own text for the exceptions
+    (Butterfly: "expires when both The Living and The Departed reach 0"; the
+    Unique Ammo statuses have no expiry rule).
+    """
+    lowered = text.lower()
+    if stack_based:
+        # Stack statuses are removed by their own rules ("Max Stack", "Turn End:
+        # Lose 1 Stack", "Expires at Turn End").
+        return "none"
+    if "expires when both" in lowered:
+        return "both_zero"
+    if "ammo" in lowered:
+        return "none"
+    if primary == "count":
+        # Protection / Fragile / Haste / Bind / Charge only ever use Count.
+        return "count_zero"
+    if "count" not in lowered:
+        return "potency_zero"
+    return "either_zero"
+
+
 def status_expires_at_turn_end(text: str) -> bool:
     """A status that only lasts the turn it was applied in ("... for one turn",
     "for this turn") is removed at Turn End."""
@@ -647,6 +673,12 @@ def build_extra_statuses(tables_en, tables_zh, existing: List[dict]) -> List[dic
             "key": key,
             "structure": "stack" if stack_based else "potency_count",
             "primary": "count" if (entry.get("name") or "") in COUNT_PRIMARY else "potency",
+            "expiry": status_expiry(
+                text,
+                entry.get("name") or "",
+                stack_based,
+                "count" if (entry.get("name") or "") in COUNT_PRIMARY else "potency",
+            ),
             "expires_at_turn_end": status_expires_at_turn_end(text),
             "name_en": entry.get("name"),
             "name_zh": zh.get("name"),
@@ -687,6 +719,12 @@ def build_statuses(kw_en, kw_zh, bufs_en, bufs_zh) -> List[dict]:
             "key": key,
             "structure": "stack" if stack_based else "potency_count",
             "primary": "count" if (entry.get("name") or "") in COUNT_PRIMARY else "potency",
+            "expiry": status_expiry(
+                text,
+                entry.get("name") or "",
+                stack_based,
+                "count" if (entry.get("name") or "") in COUNT_PRIMARY else "potency",
+            ),
             "expires_at_turn_end": status_expires_at_turn_end(text),
             "name_en": entry.get("name"),
             "name_zh": (zh or {}).get("name"),

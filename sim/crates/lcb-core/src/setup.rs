@@ -315,6 +315,7 @@ impl<'a> EncounterBuilder<'a> {
             warnings,
             winner: None,
             encounter_ended: false,
+            defense_slots_used: Vec::new(),
             preset_flips: Vec::new(),
             flip_cursor: 0,
             slot_target: if team.len() >= TEAM_SIZE_CAP { team.len() } else { TEAM_SIZE_CAP },

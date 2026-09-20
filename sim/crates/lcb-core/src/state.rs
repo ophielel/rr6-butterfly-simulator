@@ -228,6 +228,12 @@ pub struct DashboardSlot {
     /// Set when the player swapped the bottom skill for a defense skill or an
     /// E.G.O this turn (the original skill is consumed either way).
     pub converted: bool,
+    /// The bottom card a defense skill / E.G.O replaced this turn.  The panel
+    /// keeps it so the rotation can consume the right card: "使った守備スキルは
+    /// 守備スキルに変更した元のスキルごとパネルから消え、次のターンには新しい
+    /// スキルがパネルに追加される" (JA-wiki 守備スキル).
+    #[serde(default)]
+    pub replaced: Option<SkillId>,
 }
 
 impl DashboardSlot {
@@ -239,6 +245,7 @@ impl DashboardSlot {
             preview,
             target: None,
             converted: false,
+            replaced: None,
         }
     }
 }
@@ -752,6 +759,11 @@ pub struct BattleState {
     /// Defense skills active this turn (guards, evades, counters).
     #[serde(default)]
     pub defenses: Vec<crate::battle::ActiveDefense>,
+    /// Slots whose Skill was replaced by a defense Skill this turn (they rotate
+    /// like any other used Slot: the defense and the card it replaced both leave
+    /// the panel).
+    #[serde(default)]
+    pub defense_slots_used: Vec<(usize, u32)>,
     pub ego_resources: BTreeMap<String, i32>,
     /// Campaign bookkeeping shared by the stations (the Imago's Stacks of time
     /// are carried from stations 2-4 into Section 5).

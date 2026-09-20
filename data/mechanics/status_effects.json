@@ -13,6 +13,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Accumulated Past (E.G.O)",
    "name": "Accumulated Past (E.G.O)",
    "primary": "potency",
@@ -39,6 +40,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "potency_zero",
    "key": "TransparentWingScalesExplain",
    "name": "Acuate Scale Dust",
    "primary": "potency",
@@ -65,6 +67,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "none",
    "key": "Aggro",
    "name": "Aggro",
    "primary": "potency",
@@ -95,6 +98,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Ailing Heart (Ally)",
    "name": "Ailing Heart (Ally)",
    "primary": "potency",
@@ -121,6 +125,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Ammo",
    "name": "Ammo",
    "primary": "potency",
@@ -149,6 +154,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Ammo - Atelier Logic",
    "name": "Ammo - Atelier Logic",
    "primary": "potency",
@@ -176,6 +182,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "Switch_Vibration",
    "name": "Amplitude Conversion",
    "primary": "potency",
@@ -205,6 +212,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Amplitude Entanglement",
    "name": "Amplitude Entanglement",
    "primary": "potency",
@@ -231,6 +239,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Appetite",
    "name": "Appetite",
    "primary": "potency",
@@ -264,6 +273,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Armure Éveillée",
    "name": "Armure Éveillée",
    "primary": "potency",
@@ -292,6 +302,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Arrow - Shi",
    "name": "Arrow - Shi",
    "primary": "potency",
@@ -318,6 +329,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Art Medium",
    "name": "Art Medium",
    "primary": "potency",
@@ -348,6 +360,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Artwork - Fascia (Faust)",
    "name": "Artwork - Fascia (Faust)",
    "primary": "potency",
@@ -379,6 +392,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Artwork - Tibia (Hong Lu)",
    "name": "Artwork - Tibia (Hong Lu)",
    "primary": "potency",
@@ -406,6 +420,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Assist -援-",
    "name": "Assist -援-",
    "primary": "potency",
@@ -433,6 +448,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Assist Attack (Ishmael)",
    "name": "Assist Attack (Ishmael)",
    "primary": "potency",
@@ -467,6 +483,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Assist Defense",
    "name": "Assist Defense",
    "primary": "potency",
@@ -493,6 +510,7 @@
     ]
    },
    "expires_at_turn_end": true,
+   "expiry": "either_zero",
    "key": "Reduction",
    "name": "Attack Power Down",
    "primary": "potency",
@@ -519,6 +537,7 @@
     ]
    },
    "expires_at_turn_end": true,
+   "expiry": "either_zero",
    "key": "Enhancement",
    "name": "Attack Power Up",
    "primary": "potency",
@@ -546,6 +565,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Avenging My Family",
    "name": "Avenging My Family",
    "primary": "potency",
@@ -579,6 +599,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:B.M.",
    "name": "B.M.",
    "primary": "potency",
@@ -607,6 +628,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Backup Candy",
    "name": "Backup Candy",
    "primary": "potency",
@@ -633,6 +655,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Base Power Up",
    "name": "Base Power Up",
    "primary": "potency",
@@ -661,6 +684,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Battle Ready",
    "name": "Battle Ready",
    "primary": "potency",
@@ -689,6 +713,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Battleblood Instinct",
    "name": "Battleblood Instinct",
    "primary": "potency",
@@ -717,6 +742,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Battlefield Retreat",
    "name": "Battlefield Retreat",
    "primary": "potency",
@@ -745,6 +771,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Beauty of the Physique",
    "name": "Beauty of the Physique",
    "primary": "potency",
@@ -771,6 +798,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Before the King",
    "name": "Before the King",
    "primary": "potency",
@@ -797,6 +825,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Before the King in Binds",
    "name": "Before the King in Binds",
    "primary": "potency",
@@ -823,6 +852,7 @@
     ]
    },
    "expires_at_turn_end": true,
+   "expiry": "count_zero",
    "key": "Binding",
    "name": "Bind",
    "primary": "count",
@@ -850,6 +880,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Bladetrail -Afterimage-",
    "name": "Bladetrail -Afterimage-",
    "primary": "potency",
@@ -883,6 +914,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Blazing",
    "name": "Blazing",
    "primary": "potency",
@@ -910,6 +942,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "Laceration",
    "name": "Bleed",
    "primary": "potency",
@@ -966,6 +999,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Blessing",
    "name": "Blessing",
    "primary": "potency",
@@ -999,6 +1033,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Blessing (E.G.O Gift)",
    "name": "Blessing (E.G.O Gift)",
    "primary": "potency",
@@ -1032,6 +1067,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Blood-tinged Scissorblades (Ally)",
    "name": "Blood-tinged Scissorblades (Ally)",
    "primary": "potency",
@@ -1062,6 +1098,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Bloodfeast",
    "name": "Bloodfeast",
    "primary": "potency",
@@ -1088,6 +1125,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Bloodfeast Consumed (shared)",
    "name": "Bloodfeast Consumed (shared)",
    "primary": "potency",
@@ -1118,6 +1156,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Bloodflame -血炎-",
    "name": "Bloodflame -血炎-",
    "primary": "potency",
@@ -1150,6 +1189,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Bloodied Hand (Ally)",
    "name": "Bloodied Hand (Ally)",
    "primary": "potency",
@@ -1185,6 +1225,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Blooming Thorn (Ally)",
    "name": "Blooming Thorn (Ally)",
    "primary": "potency",
@@ -1215,6 +1256,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Blubberbubble",
    "name": "Blubberbubble",
    "primary": "potency",
@@ -1256,6 +1298,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "none",
    "key": "BlueSand",
    "name": "Blue Sand",
    "primary": "potency",
@@ -1282,6 +1325,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Blunt DMG Down",
    "name": "Blunt DMG Down",
    "primary": "potency",
@@ -1308,6 +1352,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Blunt DMG Up",
    "name": "Blunt DMG Up",
    "primary": "potency",
@@ -1334,6 +1379,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Blunt Fragility",
    "name": "Blunt Fragility",
    "primary": "potency",
@@ -1360,6 +1406,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Blunt Power Down",
    "name": "Blunt Power Down",
    "primary": "potency",
@@ -1386,6 +1433,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Blunt Power Up",
    "name": "Blunt Power Up",
    "primary": "potency",
@@ -1412,6 +1460,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Blunt Protection",
    "name": "Blunt Protection",
    "primary": "potency",
@@ -1439,6 +1488,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "potency_zero",
    "key": "HitResistDown",
    "name": "Blunt Resist Down",
    "primary": "potency",
@@ -1466,6 +1516,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Book of Vengeance -Heathcliff-",
    "name": "Book of Vengeance -Heathcliff-",
    "primary": "potency",
@@ -1497,6 +1548,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Book of Vengeance -Sinclair-",
    "name": "Book of Vengeance -Sinclair-",
    "primary": "potency",
@@ -1530,6 +1582,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Book of Vengeance -The House of Spiders-",
    "name": "Book of Vengeance -The House of Spiders-",
    "primary": "potency",
@@ -1560,6 +1613,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Borrowed Time",
    "name": "Borrowed Time",
    "primary": "potency",
@@ -1589,6 +1643,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Bright -光-",
    "name": "Bright -光-",
    "primary": "potency",
@@ -1618,6 +1673,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "none",
    "key": "BulletGodok",
    "name": "Bullet - Solitude",
    "primary": "potency",
@@ -1653,6 +1709,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Burgeoning of Horns -發角-",
    "name": "Burgeoning of Horns -發角-",
    "primary": "potency",
@@ -1680,6 +1737,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "Combustion",
    "name": "Burn",
    "primary": "potency",
@@ -1713,6 +1771,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "both_zero",
    "key": "SinkingWhite",
    "name": "Butterfly",
    "primary": "potency",
@@ -1742,6 +1801,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Centipede Venom",
    "name": "Centipede Venom",
    "primary": "potency",
@@ -1792,6 +1852,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Changing Room (Ishmael)",
    "name": "Changing Room (Ishmael)",
    "primary": "potency",
@@ -1818,6 +1879,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "count_zero",
    "key": "Charge",
    "name": "Charge",
    "primary": "count",
@@ -1847,6 +1909,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Charge Barrier",
    "name": "Charge Barrier",
    "primary": "potency",
@@ -1876,6 +1939,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Charged Sting",
    "name": "Charged Sting",
    "primary": "potency",
@@ -1904,6 +1968,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Charm of the Beastly",
    "name": "Charm of the Beastly",
    "primary": "potency",
@@ -1933,6 +1998,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Check This Out, Kiddo! (Outis)",
    "name": "Check This Out, Kiddo! (Outis)",
    "primary": "potency",
@@ -1959,6 +2025,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Clash Power Down",
    "name": "Clash Power Down",
    "primary": "potency",
@@ -1985,6 +2052,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Clash Power Up",
    "name": "Clash Power Up",
    "primary": "potency",
@@ -2013,6 +2081,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Clashable Guard",
    "name": "Clashable Guard",
    "primary": "potency",
@@ -2043,6 +2112,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Coffin",
    "name": "Coffin",
    "primary": "potency",
@@ -2074,6 +2144,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Commanding Cry",
    "name": "Commanding Cry",
    "primary": "potency",
@@ -2101,6 +2172,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Concentration-Sniper-",
    "name": "Concentration-Sniper-",
    "primary": "potency",
@@ -2129,6 +2201,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Concussion",
    "name": "Concussion",
    "primary": "potency",
@@ -2159,6 +2232,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Contempt (Ryoshu)",
    "name": "Contempt (Ryoshu)",
    "primary": "potency",
@@ -2189,6 +2263,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Contempt of the Gaze",
    "name": "Contempt of the Gaze",
    "primary": "potency",
@@ -2218,6 +2293,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Corpus Ingredient (Ally)",
    "name": "Corpus Ingredient (Ally)",
    "primary": "potency",
@@ -2248,6 +2324,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Corpus Theater (Hong Lu)",
    "name": "Corpus Theater (Hong Lu)",
    "primary": "potency",
@@ -2284,6 +2361,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Courier Trunk",
    "name": "Courier Trunk",
    "primary": "potency",
@@ -2310,6 +2388,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Crit DMG Up",
    "name": "Crit DMG Up",
    "primary": "potency",
@@ -2338,6 +2417,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Cumulus Wall",
    "name": "Cumulus Wall",
    "primary": "potency",
@@ -2364,6 +2444,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Curio",
    "name": "Curio",
    "primary": "potency",
@@ -2391,6 +2472,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Curse",
    "name": "Curse",
    "primary": "potency",
@@ -2417,6 +2499,7 @@
     ]
    },
    "expires_at_turn_end": true,
+   "expiry": "either_zero",
    "key": "AttackDmgDown",
    "name": "Damage Down",
    "primary": "potency",
@@ -2443,6 +2526,7 @@
     ]
    },
    "expires_at_turn_end": true,
+   "expiry": "either_zero",
    "key": "AttackDmgUp",
    "name": "Damage Up",
    "primary": "potency",
@@ -2472,6 +2556,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Dark Cloud",
    "name": "Dark Cloud",
    "primary": "potency",
@@ -2500,6 +2585,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Dark Cloud Blade",
    "name": "Dark Cloud Blade",
    "primary": "potency",
@@ -2529,6 +2615,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Dark Flame",
    "name": "Dark Flame",
    "primary": "potency",
@@ -2586,6 +2673,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "none",
    "key": "DelusionGregBigBird",
    "name": "Dazzle",
    "primary": "potency",
@@ -2616,6 +2704,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Deathrite -Fissure-",
    "name": "Deathrite -Fissure-",
    "primary": "potency",
@@ -2645,6 +2734,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Deathrite -Haste-",
    "name": "Deathrite -Haste-",
    "primary": "potency",
@@ -2676,6 +2766,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Deathrite -Venom-",
    "name": "Deathrite -Venom-",
    "primary": "potency",
@@ -2703,6 +2794,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Declared Duel",
    "name": "Declared Duel",
    "primary": "potency",
@@ -2730,6 +2822,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Deep Inhale",
    "name": "Deep Inhale",
    "primary": "potency",
@@ -2758,6 +2851,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Deep Tears",
    "name": "Deep Tears",
    "primary": "potency",
@@ -2788,6 +2882,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Deep Wound",
    "name": "Deep Wound",
    "primary": "potency",
@@ -2814,6 +2909,7 @@
     ]
    },
    "expires_at_turn_end": true,
+   "expiry": "potency_zero",
    "key": "DefenseDown",
    "name": "Defense Level Down",
    "primary": "potency",
@@ -2840,6 +2936,7 @@
     ]
    },
    "expires_at_turn_end": true,
+   "expiry": "potency_zero",
    "key": "DefenseUp",
    "name": "Defense Level Up",
    "primary": "potency",
@@ -2866,6 +2963,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Defense Power Down",
    "name": "Defense Power Down",
    "primary": "potency",
@@ -2892,6 +2990,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Defense Power Up",
    "name": "Defense Power Up",
    "primary": "potency",
@@ -2934,6 +3033,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Defensive Stance",
    "name": "Defensive Stance",
    "primary": "potency",
@@ -2961,6 +3061,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Delicateness",
    "name": "Delicateness",
    "primary": "potency",
@@ -2989,6 +3090,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Denial -不許-",
    "name": "Denial -不許-",
    "primary": "potency",
@@ -3016,6 +3118,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Desire for Acknowledgement Sated",
    "name": "Desire for Acknowledgement Sated",
    "primary": "potency",
@@ -3064,6 +3167,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Despair",
    "name": "Despair",
    "primary": "potency",
@@ -3097,6 +3201,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Desperado",
    "name": "Desperado",
    "primary": "potency",
@@ -3124,6 +3229,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Dhyāna",
    "name": "Dhyāna",
    "primary": "potency",
@@ -3154,6 +3260,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Dihui Star's Blade",
    "name": "Dihui Star's Blade",
    "primary": "potency",
@@ -3180,6 +3287,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Dimensional Rift",
    "name": "Dimensional Rift",
    "primary": "potency",
@@ -3207,6 +3315,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "Discard",
    "name": "Discard",
    "primary": "potency",
@@ -3235,6 +3344,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:District 12 Fuel",
    "name": "District 12 Fuel",
    "primary": "potency",
@@ -3266,6 +3376,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Dullahan",
    "name": "Dullahan",
    "primary": "potency",
@@ -3292,6 +3403,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:E.G.O Resource Amp",
    "name": "E.G.O Resource Amp",
    "primary": "potency",
@@ -3330,6 +3442,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Echoes of the Manor",
    "name": "Echoes of the Manor",
    "primary": "potency",
@@ -3363,6 +3476,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Embers",
    "name": "Embers",
    "primary": "potency",
@@ -3390,6 +3504,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Emergency Barrier Battery",
    "name": "Emergency Barrier Battery",
    "primary": "potency",
@@ -3419,6 +3534,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Entangled Life -羅生-",
    "name": "Entangled Life -羅生-",
    "primary": "potency",
@@ -3449,6 +3565,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Entanglement",
    "name": "Entanglement",
    "primary": "potency",
@@ -3475,6 +3592,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Envy DMG Down",
    "name": "Envy DMG Down",
    "primary": "potency",
@@ -3501,6 +3619,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Envy DMG Up",
    "name": "Envy DMG Up",
    "primary": "potency",
@@ -3527,6 +3646,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Envy Fragility",
    "name": "Envy Fragility",
    "primary": "potency",
@@ -3558,6 +3678,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Envy Power Down",
    "name": "Envy Power Down",
    "primary": "potency",
@@ -3584,6 +3705,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Envy Power Up",
    "name": "Envy Power Up",
    "primary": "potency",
@@ -3610,6 +3732,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Envy Protection",
    "name": "Envy Protection",
    "primary": "potency",
@@ -3643,6 +3766,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Envy Resist Down",
    "name": "Envy Resist Down",
    "primary": "potency",
@@ -3673,6 +3797,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Erudition",
    "name": "Erudition",
    "primary": "potency",
@@ -3701,6 +3826,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Exalted Command",
    "name": "Exalted Command",
    "primary": "potency",
@@ -3730,6 +3856,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Excision Coin",
    "name": "Excision Coin",
    "primary": "potency",
@@ -3758,6 +3885,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Exquisite Aesthetics",
    "name": "Exquisite Aesthetics",
    "primary": "potency",
@@ -3788,6 +3916,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "none",
    "key": "AlriuneEGOThey",
    "name": "Faint Aroma",
    "primary": "potency",
@@ -3827,6 +3956,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Fairy Lure",
    "name": "Fairy Lure",
    "primary": "potency",
@@ -3857,6 +3987,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Faith Beyond Question",
    "name": "Faith Beyond Question",
    "primary": "potency",
@@ -3883,6 +4014,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Fanatic",
    "name": "Fanatic",
    "primary": "potency",
@@ -3913,6 +4045,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Fatal Wound",
    "name": "Fatal Wound",
    "primary": "potency",
@@ -3947,6 +4080,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Fell Bullet",
    "name": "Fell Bullet",
    "primary": "potency",
@@ -3980,6 +4114,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Festive Fever (Ally)",
    "name": "Festive Fever (Ally)",
    "primary": "potency",
@@ -4006,6 +4141,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Final Augment",
    "name": "Final Augment",
    "primary": "potency",
@@ -4033,6 +4169,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Firepower",
    "name": "Firepower",
    "primary": "potency",
@@ -4061,6 +4198,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:First Seal Removed (Outis)",
    "name": "First Seal Removed (Outis)",
    "primary": "potency",
@@ -4087,6 +4225,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Fixed Panic",
    "name": "Fixed Panic",
    "primary": "potency",
@@ -4117,6 +4256,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Flower-burying Pin -埋花針-",
    "name": "Flower-burying Pin -埋花針-",
    "primary": "potency",
@@ -4152,6 +4292,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Flower-burying Wedge -埋花櫼-",
    "name": "Flower-burying Wedge -埋花櫼-",
    "primary": "potency",
@@ -4185,6 +4326,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Focused Attack (Allies)",
    "name": "Focused Attack (Allies)",
    "primary": "potency",
@@ -4217,6 +4359,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Focused Performance",
    "name": "Focused Performance",
    "primary": "potency",
@@ -4243,6 +4386,7 @@
     ]
    },
    "expires_at_turn_end": true,
+   "expiry": "count_zero",
    "key": "Vulnerable",
    "name": "Fragile",
    "primary": "count",
@@ -4273,6 +4417,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Full Makeover",
    "name": "Full Makeover",
    "primary": "potency",
@@ -4299,6 +4444,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Gaze",
    "name": "Gaze",
    "primary": "potency",
@@ -4328,6 +4474,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Gaze (Ryoshu)",
    "name": "Gaze (Ryoshu)",
    "primary": "potency",
@@ -4357,6 +4504,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Gaze of Contempt",
    "name": "Gaze of Contempt",
    "primary": "potency",
@@ -4394,6 +4542,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Gebura's Blade",
    "name": "Gebura's Blade",
    "primary": "potency",
@@ -4425,6 +4574,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Glimpse of Precognition",
    "name": "Glimpse of Precognition",
    "primary": "potency",
@@ -4451,6 +4601,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Gloom DMG Down",
    "name": "Gloom DMG Down",
    "primary": "potency",
@@ -4477,6 +4628,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Gloom DMG Up",
    "name": "Gloom DMG Up",
    "primary": "potency",
@@ -4503,6 +4655,7 @@
     ]
    },
    "expires_at_turn_end": true,
+   "expiry": "either_zero",
    "key": "AzureTakeDamageUp",
    "name": "Gloom Fragility",
    "primary": "potency",
@@ -4529,6 +4682,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Gloom Power Down",
    "name": "Gloom Power Down",
    "primary": "potency",
@@ -4555,6 +4709,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Gloom Power Up",
    "name": "Gloom Power Up",
    "primary": "potency",
@@ -4581,6 +4736,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Gloom Protection",
    "name": "Gloom Protection",
    "primary": "potency",
@@ -4608,6 +4764,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "potency_zero",
    "key": "AzureResistDown",
    "name": "Gloom Resist Down",
    "primary": "potency",
@@ -4636,6 +4793,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Gluttonous Thorn (貪食棘)",
    "name": "Gluttonous Thorn (貪食棘)",
    "primary": "potency",
@@ -4662,6 +4820,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Gluttony DMG Down",
    "name": "Gluttony DMG Down",
    "primary": "potency",
@@ -4688,6 +4847,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Gluttony DMG Up",
    "name": "Gluttony DMG Up",
    "primary": "potency",
@@ -4714,6 +4874,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Gluttony Fragility",
    "name": "Gluttony Fragility",
    "primary": "potency",
@@ -4740,6 +4901,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Gluttony Power Down",
    "name": "Gluttony Power Down",
    "primary": "potency",
@@ -4766,6 +4928,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Gluttony Power Up",
    "name": "Gluttony Power Up",
    "primary": "potency",
@@ -4792,6 +4955,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Gluttony Protection",
    "name": "Gluttony Protection",
    "primary": "potency",
@@ -4819,6 +4983,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Grace of the Prescript",
    "name": "Grace of the Prescript",
    "primary": "potency",
@@ -4848,6 +5013,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Guardians of the Forest",
    "name": "Guardians of the Forest",
    "primary": "potency",
@@ -4874,6 +5040,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:HP Healing Boost",
    "name": "HP Healing Boost",
    "primary": "potency",
@@ -4900,6 +5067,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "potency_zero",
    "key": "TakeHpHealReduce",
    "name": "HP Healing Down",
    "primary": "potency",
@@ -4927,6 +5095,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Hand - Blue Sakura Suit",
    "name": "Hand - Blue Sakura Suit",
    "primary": "potency",
@@ -4954,6 +5123,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Hand - Pine Crane Suit",
    "name": "Hand - Pine Crane Suit",
    "primary": "potency",
@@ -4981,6 +5151,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Hand - Susuki Grass Suit",
    "name": "Hand - Susuki Grass Suit",
    "primary": "potency",
@@ -5015,6 +5186,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Hardblood (Ally)",
    "name": "Hardblood (Ally)",
    "primary": "potency",
@@ -5044,6 +5216,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Hardblood Armor",
    "name": "Hardblood Armor",
    "primary": "potency",
@@ -5080,6 +5253,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Hardblood Cast",
    "name": "Hardblood Cast",
    "primary": "potency",
@@ -5109,6 +5283,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Hardened Shell-Barrier",
    "name": "Hardened Shell-Barrier",
    "primary": "potency",
@@ -5135,6 +5310,7 @@
     ]
    },
    "expires_at_turn_end": true,
+   "expiry": "count_zero",
    "key": "Agility",
    "name": "Haste",
    "primary": "count",
@@ -5161,6 +5337,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Heated Gas Harpoon",
    "name": "Heated Gas Harpoon",
    "primary": "potency",
@@ -5198,6 +5375,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Heishou Bolus Contamination -黑獸丸染-",
    "name": "Heishou Bolus Contamination -黑獸丸染-",
    "primary": "potency",
@@ -5225,6 +5403,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Here Comes Magical Girl!",
    "name": "Here Comes Magical Girl!",
    "primary": "potency",
@@ -5254,6 +5433,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:High-voltage Exoskeleton",
    "name": "High-voltage Exoskeleton",
    "primary": "potency",
@@ -5282,6 +5462,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Higher Thunderer",
    "name": "Higher Thunderer",
    "primary": "potency",
@@ -5308,6 +5489,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Hornet -Rifle-",
    "name": "Hornet -Rifle-",
    "primary": "potency",
@@ -5336,6 +5518,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Hornet -Shotgun-",
    "name": "Hornet -Shotgun-",
    "primary": "potency",
@@ -5364,6 +5547,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Hunger (Kkomi)",
    "name": "Hunger (Kkomi)",
    "primary": "potency",
@@ -5397,6 +5581,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Hyped-up",
    "name": "Hyped-up",
    "primary": "potency",
@@ -5427,6 +5612,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Hysteria",
    "name": "Hysteria",
    "primary": "potency",
@@ -5456,6 +5642,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:I Got Praised! (Ishmael)",
    "name": "I Got Praised! (Ishmael)",
    "primary": "potency",
@@ -5482,6 +5669,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Immobilized",
    "name": "Immobilized",
    "primary": "potency",
@@ -5520,6 +5708,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Impending Ruin",
    "name": "Impending Ruin",
    "primary": "potency",
@@ -5548,6 +5737,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Imperfections Addressed",
    "name": "Imperfections Addressed",
    "primary": "potency",
@@ -5579,6 +5769,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "none",
    "key": "StackFutureActivate",
    "name": "In the Future",
    "primary": "potency",
@@ -5606,6 +5797,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "none",
    "key": "StackFuture",
    "name": "In the Future (Deactivated)",
    "primary": "potency",
@@ -5637,6 +5829,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "none",
    "key": "StackPastActivate",
    "name": "In the Past",
    "primary": "potency",
@@ -5664,6 +5857,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "none",
    "key": "StackPast",
    "name": "In the Past (Deactivated)",
    "primary": "potency",
@@ -5695,6 +5889,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "none",
    "key": "StackPresentActivate",
    "name": "In the Present",
    "primary": "potency",
@@ -5722,6 +5917,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "none",
    "key": "StackPresent",
    "name": "In the Present (Deactivated)",
    "primary": "potency",
@@ -5749,6 +5945,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Incandescent Indulgence",
    "name": "Incandescent Indulgence",
    "primary": "potency",
@@ -5775,6 +5972,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "potency_zero",
    "key": "HeatedWingScalesExplain",
    "name": "Incandescent Scale Dust",
    "primary": "potency",
@@ -5810,6 +6008,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Indulgence in Prescripts",
    "name": "Indulgence in Prescripts",
    "primary": "potency",
@@ -5836,6 +6035,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Insight",
    "name": "Insight",
    "primary": "potency",
@@ -5864,6 +6064,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Iron Maiden",
    "name": "Iron Maiden",
    "primary": "potency",
@@ -5891,6 +6092,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:K Corp Ampule",
    "name": "K Corp Ampule",
    "primary": "potency",
@@ -5920,6 +6122,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Karmic Consequence",
    "name": "Karmic Consequence",
    "primary": "potency",
@@ -5948,6 +6151,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:L'Hommage",
    "name": "L'Hommage",
    "primary": "potency",
@@ -5977,6 +6181,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "none",
    "key": "LCA_Bullet",
    "name": "LCA Fracture Round",
    "primary": "potency",
@@ -6007,6 +6212,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:La Mancha Parade",
    "name": "La Mancha Parade",
    "primary": "potency",
@@ -6052,6 +6258,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "none",
    "key": "LanternGregBigBird",
    "name": "Lamp",
    "primary": "potency",
@@ -6080,6 +6287,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Lasso",
    "name": "Lasso",
    "primary": "potency",
@@ -6109,6 +6317,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Launcher -始-",
    "name": "Launcher -始-",
    "primary": "potency",
@@ -6137,6 +6346,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Le Fauvisme - Masque de Chien",
    "name": "Le Fauvisme - Masque de Chien",
    "primary": "potency",
@@ -6166,6 +6376,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Le Fauvisme - Masque de Loup",
    "name": "Le Fauvisme - Masque de Loup",
    "primary": "potency",
@@ -6203,6 +6414,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Le Noir Gabardine Overcoat",
    "name": "Le Noir Gabardine Overcoat",
    "primary": "potency",
@@ -6234,6 +6446,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Leash-holder of All Heishou",
    "name": "Leash-holder of All Heishou",
    "primary": "potency",
@@ -6264,6 +6477,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Life from Death -死中求活-",
    "name": "Life from Death -死中求活-",
    "primary": "potency",
@@ -6296,6 +6510,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Liferender",
    "name": "Liferender",
    "primary": "potency",
@@ -6325,6 +6540,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Linebreaker",
    "name": "Linebreaker",
    "primary": "potency",
@@ -6354,6 +6570,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Load",
    "name": "Load",
    "primary": "potency",
@@ -6384,6 +6601,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Lodged Arrow",
    "name": "Lodged Arrow",
    "primary": "potency",
@@ -6419,6 +6637,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Lordsguard",
    "name": "Lordsguard",
    "primary": "potency",
@@ -6448,6 +6667,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Love-Hate",
    "name": "Love-Hate",
    "primary": "potency",
@@ -6478,6 +6698,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Loyalty Pheromone",
    "name": "Loyalty Pheromone",
    "primary": "potency",
@@ -6504,6 +6725,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Lust DMG Down",
    "name": "Lust DMG Down",
    "primary": "potency",
@@ -6530,6 +6752,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Lust DMG Up",
    "name": "Lust DMG Up",
    "primary": "potency",
@@ -6556,6 +6779,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Lust Fragility",
    "name": "Lust Fragility",
    "primary": "potency",
@@ -6582,6 +6806,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Lust Power Down",
    "name": "Lust Power Down",
    "primary": "potency",
@@ -6608,6 +6833,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Lust Power Up",
    "name": "Lust Power Up",
    "primary": "potency",
@@ -6634,6 +6860,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Lust Protection",
    "name": "Lust Protection",
    "primary": "potency",
@@ -6663,6 +6890,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Lævateinn (Outis)",
    "name": "Lævateinn (Outis)",
    "primary": "potency",
@@ -6689,6 +6917,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Maggots",
    "name": "Maggots",
    "primary": "potency",
@@ -6717,6 +6946,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Magic Bullet",
    "name": "Magic Bullet",
    "primary": "potency",
@@ -6745,6 +6975,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Magical Arcana",
    "name": "Magical Arcana",
    "primary": "potency",
@@ -6781,6 +7012,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Magical Girl's Chant",
    "name": "Magical Girl's Chant",
    "primary": "potency",
@@ -6811,6 +7043,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Man in Scabbard",
    "name": "Man in Scabbard",
    "primary": "potency",
@@ -6840,6 +7073,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Mark of Decay",
    "name": "Mark of Decay",
    "primary": "potency",
@@ -6867,6 +7101,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Mark of Villainy",
    "name": "Mark of Villainy",
    "primary": "potency",
@@ -6893,6 +7128,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Mark of the Prescript",
    "name": "Mark of the Prescript",
    "primary": "potency",
@@ -6929,6 +7165,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Mauled Color -Bleu-",
    "name": "Mauled Color -Bleu-",
    "primary": "potency",
@@ -6979,6 +7216,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Mauled Color -Rouge-",
    "name": "Mauled Color -Rouge-",
    "primary": "potency",
@@ -7006,6 +7244,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Melee Support",
    "name": "Melee Support",
    "primary": "potency",
@@ -7042,6 +7281,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Microprecision Time Acceleration",
    "name": "Microprecision Time Acceleration",
    "primary": "potency",
@@ -7068,6 +7308,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Minus Coin Boost",
    "name": "Minus Coin Boost",
    "primary": "potency",
@@ -7094,6 +7335,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "MinusCoinValueDown",
    "name": "Minus Coin Drop",
    "primary": "potency",
@@ -7122,6 +7364,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Moonlit Azure Blade",
    "name": "Moonlit Azure Blade",
    "primary": "potency",
@@ -7150,6 +7393,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Nails",
    "name": "Nails",
    "primary": "potency",
@@ -7183,6 +7427,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Near-light Superbattery",
    "name": "Near-light Superbattery",
    "primary": "potency",
@@ -7211,6 +7456,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Nebulizer α",
    "name": "Nebulizer α",
    "primary": "potency",
@@ -7239,6 +7485,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Nebulizer β",
    "name": "Nebulizer β",
    "primary": "potency",
@@ -7267,6 +7514,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Needle",
    "name": "Needle",
    "primary": "potency",
@@ -7299,6 +7547,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Nerve Strike",
    "name": "Nerve Strike",
    "primary": "potency",
@@ -7325,6 +7574,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Offense Level Down",
    "name": "Offense Level Down",
    "primary": "potency",
@@ -7351,6 +7601,7 @@
     ]
    },
    "expires_at_turn_end": true,
+   "expiry": "potency_zero",
    "key": "AttackDown",
    "name": "Offense Level Down ",
    "primary": "potency",
@@ -7377,6 +7628,7 @@
     ]
    },
    "expires_at_turn_end": true,
+   "expiry": "potency_zero",
    "key": "AttackUp",
    "name": "Offense Level Up",
    "primary": "potency",
@@ -7406,6 +7658,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Only Ashes Remain",
    "name": "Only Ashes Remain",
    "primary": "potency",
@@ -7434,6 +7687,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Open Wound",
    "name": "Open Wound",
    "primary": "potency",
@@ -7467,6 +7721,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Overcharge",
    "name": "Overcharge",
    "primary": "potency",
@@ -7499,6 +7754,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Overheat",
    "name": "Overheat",
    "primary": "potency",
@@ -7528,6 +7784,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Overheated Fuel",
    "name": "Overheated Fuel",
    "primary": "potency",
@@ -7554,6 +7811,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Overheated Gas Harpoon",
    "name": "Overheated Gas Harpoon",
    "primary": "potency",
@@ -7584,6 +7842,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Palette Vibrante",
    "name": "Palette Vibrante",
    "primary": "potency",
@@ -7610,6 +7869,7 @@
     ]
    },
    "expires_at_turn_end": true,
+   "expiry": "either_zero",
    "key": "Paralysis",
    "name": "Paralyze",
    "primary": "potency",
@@ -7645,6 +7905,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Penitence",
    "name": "Penitence",
    "primary": "potency",
@@ -7673,6 +7934,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Petals",
    "name": "Petals",
    "primary": "potency",
@@ -7701,6 +7963,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Phantom Trace",
    "name": "Phantom Trace",
    "primary": "potency",
@@ -7728,6 +7991,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Pheromone",
    "name": "Pheromone",
    "primary": "potency",
@@ -7759,6 +8023,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Pheromone Mark",
    "name": "Pheromone Mark",
    "primary": "potency",
@@ -7788,6 +8053,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Photoelectricity",
    "name": "Photoelectricity",
    "primary": "potency",
@@ -7814,6 +8080,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Pierce DMG Down",
    "name": "Pierce DMG Down",
    "primary": "potency",
@@ -7840,6 +8107,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Pierce DMG Up",
    "name": "Pierce DMG Up",
    "primary": "potency",
@@ -7866,6 +8134,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Pierce Fragility",
    "name": "Pierce Fragility",
    "primary": "potency",
@@ -7892,6 +8161,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Pierce Power Down",
    "name": "Pierce Power Down",
    "primary": "potency",
@@ -7918,6 +8188,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Pierce Power Up",
    "name": "Pierce Power Up",
    "primary": "potency",
@@ -7944,6 +8215,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Pierce Protection",
    "name": "Pierce Protection",
    "primary": "potency",
@@ -7971,6 +8243,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "potency_zero",
    "key": "PenetrateResistDown",
    "name": "Pierce Resist Down",
    "primary": "potency",
@@ -8018,6 +8291,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Piercing Sword",
    "name": "Piercing Sword",
    "primary": "potency",
@@ -8055,6 +8329,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Pink Petals",
    "name": "Pink Petals",
    "primary": "potency",
@@ -8081,6 +8356,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Pink Ribbons",
    "name": "Pink Ribbons",
    "primary": "potency",
@@ -8107,6 +8383,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "PlusCoinValueUp",
    "name": "Plus Coin Boost",
    "primary": "potency",
@@ -8133,6 +8410,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Plus Coin Drop",
    "name": "Plus Coin Drop",
    "primary": "potency",
@@ -8159,6 +8437,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Poise",
    "name": "Poise",
    "primary": "potency",
@@ -8185,6 +8464,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Poison",
    "name": "Poison",
    "primary": "potency",
@@ -8213,6 +8493,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Polydipsic Rose",
    "name": "Polydipsic Rose",
    "primary": "potency",
@@ -8239,6 +8520,7 @@
     ]
    },
    "expires_at_turn_end": true,
+   "expiry": "either_zero",
    "key": "ResultReduction",
    "name": "Power Down",
    "primary": "potency",
@@ -8265,6 +8547,7 @@
     ]
    },
    "expires_at_turn_end": true,
+   "expiry": "either_zero",
    "key": "ResultEnhancement",
    "name": "Power Up",
    "primary": "potency",
@@ -8292,6 +8575,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Prescript",
    "name": "Prescript",
    "primary": "potency",
@@ -8319,6 +8603,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Prescript (Device)",
    "name": "Prescript (Device)",
    "primary": "potency",
@@ -8348,6 +8633,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Prescript: -Device- I",
    "name": "Prescript: -Device- I",
    "primary": "potency",
@@ -8377,6 +8663,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Prescript: -Device- II",
    "name": "Prescript: -Device- II",
    "primary": "potency",
@@ -8406,6 +8693,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Prescript: -Device- III",
    "name": "Prescript: -Device- III",
    "primary": "potency",
@@ -8435,6 +8723,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Prescript: -Device- III (Yi Sang)",
    "name": "Prescript: -Device- III (Yi Sang)",
    "primary": "potency",
@@ -8463,6 +8752,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Prescript: -Device- IV",
    "name": "Prescript: -Device- IV",
    "primary": "potency",
@@ -8492,6 +8782,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Prescript: -Paper Slip- I",
    "name": "Prescript: -Paper Slip- I",
    "primary": "potency",
@@ -8521,6 +8812,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Prescript: -Paper Slip- II",
    "name": "Prescript: -Paper Slip- II",
    "primary": "potency",
@@ -8550,6 +8842,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Prescript: -Paper Slip- III",
    "name": "Prescript: -Paper Slip- III",
    "primary": "potency",
@@ -8578,6 +8871,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Prescript: -Paper Slip- IV",
    "name": "Prescript: -Paper Slip- IV",
    "primary": "potency",
@@ -8608,6 +8902,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Preservation",
    "name": "Preservation",
    "primary": "potency",
@@ -8634,6 +8929,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Pride DMG Down",
    "name": "Pride DMG Down",
    "primary": "potency",
@@ -8660,6 +8956,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Pride DMG Up",
    "name": "Pride DMG Up",
    "primary": "potency",
@@ -8686,6 +8983,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Pride Fragility",
    "name": "Pride Fragility",
    "primary": "potency",
@@ -8712,6 +9010,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Pride Power Down",
    "name": "Pride Power Down",
    "primary": "potency",
@@ -8738,6 +9037,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Pride Power Up",
    "name": "Pride Power Up",
    "primary": "potency",
@@ -8764,6 +9064,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Pride Protection",
    "name": "Pride Protection",
    "primary": "potency",
@@ -8793,6 +9094,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Procuration -Hermes-",
    "name": "Procuration -Hermes-",
    "primary": "potency",
@@ -8853,6 +9155,7 @@
     "unmodeled": []
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Protecting Sword",
    "name": "Protecting Sword",
    "primary": "potency",
@@ -8879,6 +9182,7 @@
     ]
    },
    "expires_at_turn_end": true,
+   "expiry": "count_zero",
    "key": "Protection",
    "name": "Protection",
    "primary": "count",
@@ -8916,6 +9220,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Protector's Stance",
    "name": "Protector's Stance",
    "primary": "potency",
@@ -8945,6 +9250,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Pulsation",
    "name": "Pulsation",
    "primary": "potency",
@@ -8972,6 +9278,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Ready -待-",
    "name": "Ready -待-",
    "primary": "potency",
@@ -9002,6 +9309,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Ready to Loose",
    "name": "Ready to Loose",
    "primary": "potency",
@@ -9036,6 +9344,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Red Eyes",
    "name": "Red Eyes",
    "primary": "potency",
@@ -9066,6 +9375,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Red Plum Blossom",
    "name": "Red Plum Blossom",
    "primary": "potency",
@@ -9097,6 +9407,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Reflux",
    "name": "Reflux",
    "primary": "potency",
@@ -9123,6 +9434,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Regressive Transformation - Reversed",
    "name": "Regressive Transformation - Reversed",
    "primary": "potency",
@@ -9152,6 +9464,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "none",
    "key": "ReloadLament",
    "name": "Reload",
    "primary": "potency",
@@ -9181,6 +9494,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Reload (Solemn Lament)",
    "name": "Reload (Solemn Lament)",
    "primary": "potency",
@@ -9208,6 +9522,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Reload -Germination-",
    "name": "Reload -Germination-",
    "primary": "potency",
@@ -9235,6 +9550,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Remembrance",
    "name": "Remembrance",
    "primary": "potency",
@@ -9261,6 +9577,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Requested Target",
    "name": "Requested Target",
    "primary": "potency",
@@ -9297,6 +9614,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Resident Reg. Microchip",
    "name": "Resident Reg. Microchip",
    "primary": "potency",
@@ -9326,6 +9644,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Responsibility",
    "name": "Responsibility",
    "primary": "potency",
@@ -9374,6 +9693,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Rhythm",
    "name": "Rhythm",
    "primary": "potency",
@@ -9411,6 +9731,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Ridiculous Grit (Outis)",
    "name": "Ridiculous Grit (Outis)",
    "primary": "potency",
@@ -9440,6 +9761,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Rising Fever",
    "name": "Rising Fever",
    "primary": "potency",
@@ -9473,6 +9795,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Rose Wedge",
    "name": "Rose Wedge",
    "primary": "potency",
@@ -9500,6 +9823,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "Burst",
    "name": "Rupture",
    "primary": "potency",
@@ -9526,6 +9850,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Rupture Protection",
    "name": "Rupture Protection",
    "primary": "potency",
@@ -9552,6 +9877,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "potency_zero",
    "key": "RustedWingScalesExplain",
    "name": "Rusted Scale Dust",
    "primary": "potency",
@@ -9589,6 +9915,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Réflexion",
    "name": "Réflexion",
    "primary": "potency",
@@ -9616,6 +9943,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:SP Heal Efficiency",
    "name": "SP Heal Efficiency",
    "primary": "potency",
@@ -9643,6 +9971,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:SP Loss Efficiency",
    "name": "SP Loss Efficiency",
    "primary": "potency",
@@ -9673,6 +10002,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Savage Tigermark Round",
    "name": "Savage Tigermark Round",
    "primary": "potency",
@@ -9709,6 +10039,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Scarlet Moth",
    "name": "Scarlet Moth",
    "primary": "potency",
@@ -9738,6 +10069,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Scorch Propellant Ammo",
    "name": "Scorch Propellant Ammo",
    "primary": "potency",
@@ -9766,6 +10098,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Sealed Sword (Outis)",
    "name": "Sealed Sword (Outis)",
    "primary": "potency",
@@ -9796,6 +10129,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Searing Birdcage",
    "name": "Searing Birdcage",
    "primary": "potency",
@@ -9824,6 +10158,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Second Seal Removed (Outis)",
    "name": "Second Seal Removed (Outis)",
    "primary": "potency",
@@ -9853,6 +10188,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Self Resonance Circuitry",
    "name": "Self Resonance Circuitry",
    "primary": "potency",
@@ -9886,6 +10222,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Self-charge (Gregor)",
    "name": "Self-charge (Gregor)",
    "primary": "potency",
@@ -9915,6 +10252,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Serpent Arm",
    "name": "Serpent Arm",
    "primary": "potency",
@@ -9943,6 +10281,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Sewing Target (Ally)",
    "name": "Sewing Target (Ally)",
    "primary": "potency",
@@ -9975,6 +10314,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Shallow Exhale",
    "name": "Shallow Exhale",
    "primary": "potency",
@@ -10008,6 +10348,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Shattered World",
    "name": "Shattered World",
    "primary": "potency",
@@ -10042,6 +10383,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Shattermark",
    "name": "Shattermark",
    "primary": "potency",
@@ -10073,6 +10415,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Sheut Fracture",
    "name": "Sheut Fracture",
    "primary": "potency",
@@ -10106,6 +10449,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Shimmering -Bloodfiend- (Ally)",
    "name": "Shimmering -Bloodfiend- (Ally)",
    "primary": "potency",
@@ -10135,6 +10479,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Shin (心) - Dihui Star -地慧星-",
    "name": "Shin (心) - Dihui Star -地慧星-",
    "primary": "potency",
@@ -10163,6 +10508,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Shin (心) - Fate",
    "name": "Shin (心) - Fate",
    "primary": "potency",
@@ -10193,6 +10539,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Shin (心) - Procuration",
    "name": "Shin (心) - Procuration",
    "primary": "potency",
@@ -10225,6 +10572,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Sibling Vengeance Mark",
    "name": "Sibling Vengeance Mark",
    "primary": "potency",
@@ -10253,6 +10601,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "Sinking",
    "name": "Sinking",
    "primary": "potency",
@@ -10280,6 +10629,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Sinking Deluge",
    "name": "Sinking Deluge",
    "primary": "potency",
@@ -10309,6 +10659,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Sizzling Wound",
    "name": "Sizzling Wound",
    "primary": "potency",
@@ -10335,6 +10686,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Slash DMG Down",
    "name": "Slash DMG Down",
    "primary": "potency",
@@ -10361,6 +10713,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Slash DMG Up",
    "name": "Slash DMG Up",
    "primary": "potency",
@@ -10387,6 +10740,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Slash Fragility",
    "name": "Slash Fragility",
    "primary": "potency",
@@ -10413,6 +10767,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Slash Power Down",
    "name": "Slash Power Down",
    "primary": "potency",
@@ -10439,6 +10794,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Slash Power Up",
    "name": "Slash Power Up",
    "primary": "potency",
@@ -10465,6 +10821,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Slash Protection",
    "name": "Slash Protection",
    "primary": "potency",
@@ -10492,6 +10849,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "potency_zero",
    "key": "SlashResistDown",
    "name": "Slash Resist Down",
    "primary": "potency",
@@ -10518,6 +10876,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Sloth DMG Down",
    "name": "Sloth DMG Down",
    "primary": "potency",
@@ -10544,6 +10903,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Sloth DMG Up",
    "name": "Sloth DMG Up",
    "primary": "potency",
@@ -10570,6 +10930,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Sloth Fragility",
    "name": "Sloth Fragility",
    "primary": "potency",
@@ -10596,6 +10957,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Sloth Power Down",
    "name": "Sloth Power Down",
    "primary": "potency",
@@ -10622,6 +10984,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Sloth Power Up",
    "name": "Sloth Power Up",
    "primary": "potency",
@@ -10648,6 +11011,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Sloth Protection",
    "name": "Sloth Protection",
    "primary": "potency",
@@ -10689,6 +11053,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Solitude",
    "name": "Solitude",
    "primary": "potency",
@@ -10716,6 +11081,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Somatic Frisson-inspiring Melody",
    "name": "Somatic Frisson-inspiring Melody",
    "primary": "potency",
@@ -10742,6 +11108,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Spark Discharge",
    "name": "Spark Discharge",
    "primary": "potency",
@@ -10768,6 +11135,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Spark of Inspiration",
    "name": "Spark of Inspiration",
    "primary": "potency",
@@ -10796,6 +11164,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Spore",
    "name": "Spore",
    "primary": "potency",
@@ -10826,6 +11195,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Spore Round -Base-",
    "name": "Spore Round -Base-",
    "primary": "potency",
@@ -10856,6 +11226,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Spore Round -Buckshot-",
    "name": "Spore Round -Buckshot-",
    "primary": "potency",
@@ -10891,6 +11262,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Strider -Mao-",
    "name": "Strider -Mao-",
    "primary": "potency",
@@ -10920,6 +11292,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Strider -Wu-",
    "name": "Strider -Wu-",
    "primary": "potency",
@@ -10950,6 +11323,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:String Severance -絕緣-",
    "name": "String Severance -絕緣-",
    "primary": "potency",
@@ -10979,6 +11353,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Surgery",
    "name": "Surgery",
    "primary": "potency",
@@ -11005,6 +11380,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Sword of the Homeland - Penetrating",
    "name": "Sword of the Homeland - Penetrating",
    "primary": "potency",
@@ -11031,6 +11407,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Sword of the Homeland - Rending",
    "name": "Sword of the Homeland - Rending",
    "primary": "potency",
@@ -11058,6 +11435,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Swordplay of the Homeland",
    "name": "Swordplay of the Homeland",
    "primary": "potency",
@@ -11087,6 +11465,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Talisman",
    "name": "Talisman",
    "primary": "potency",
@@ -11114,6 +11493,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Target Aim",
    "name": "Target Aim",
    "primary": "potency",
@@ -11141,6 +11521,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Target Spotted",
    "name": "Target Spotted",
    "primary": "potency",
@@ -11170,6 +11551,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Tarnished Blood",
    "name": "Tarnished Blood",
    "primary": "potency",
@@ -11238,6 +11620,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Tear-sharpened",
    "name": "Tear-sharpened",
    "primary": "potency",
@@ -11267,6 +11650,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "none",
    "key": "TimeGap",
    "name": "Temporal Disjunction",
    "primary": "potency",
@@ -11297,6 +11681,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "none",
    "key": "BulletLament",
    "name": "The Living & The Departed",
    "primary": "potency",
@@ -11324,6 +11709,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:The Middle - Grudge (Outis)",
    "name": "The Middle - Grudge (Outis)",
    "primary": "potency",
@@ -11352,6 +11738,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:The Middle - Vengeance Tattoo -Great Sister-",
    "name": "The Middle - Vengeance Tattoo -Great Sister-",
    "primary": "potency",
@@ -11380,6 +11767,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:The Middle Styled Augmentation Tattoos",
    "name": "The Middle Styled Augmentation Tattoos",
    "primary": "potency",
@@ -11407,6 +11795,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:The Prescript's Target",
    "name": "The Prescript's Target",
    "primary": "potency",
@@ -11435,6 +11824,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:The Self Unbound - Flow State",
    "name": "The Self Unbound - Flow State",
    "primary": "potency",
@@ -11475,6 +11865,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:The Udjat -Vanguard-",
    "name": "The Udjat -Vanguard-",
    "primary": "potency",
@@ -11504,6 +11895,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:The Uninvited",
    "name": "The Uninvited",
    "primary": "potency",
@@ -11540,6 +11932,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Thermal Blades",
    "name": "Thermal Blades",
    "primary": "potency",
@@ -11568,6 +11961,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Thunderer",
    "name": "Thunderer",
    "primary": "potency",
@@ -11596,6 +11990,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Tianjiu Star's Blade",
    "name": "Tianjiu Star's Blade",
    "primary": "potency",
@@ -11625,6 +12020,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Tigermark Round",
    "name": "Tigermark Round",
    "primary": "potency",
@@ -11654,6 +12050,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Time Moratorium",
    "name": "Time Moratorium",
    "primary": "potency",
@@ -11681,6 +12078,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Torn Memory",
    "name": "Torn Memory",
    "primary": "potency",
@@ -11708,6 +12106,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Total Bloodfeast Consumed",
    "name": "Total Bloodfeast Consumed",
    "primary": "potency",
@@ -11743,6 +12142,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Touche Hardie",
    "name": "Touche Hardie",
    "primary": "potency",
@@ -11778,6 +12178,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Trauma Shield",
    "name": "Trauma Shield",
    "primary": "potency",
@@ -11805,6 +12206,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "Vibration",
    "name": "Tremor",
    "primary": "potency",
@@ -11840,6 +12242,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Tremor - Chain",
    "name": "Tremor - Chain",
    "primary": "potency",
@@ -11876,6 +12279,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Tremor - Clockwinding",
    "name": "Tremor - Clockwinding",
    "primary": "potency",
@@ -11911,6 +12315,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "VibrationCollapse",
    "name": "Tremor - Decay",
    "primary": "potency",
@@ -11946,6 +12351,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Tremor - Distribution",
    "name": "Tremor - Distribution",
    "primary": "potency",
@@ -11982,6 +12388,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Tremor - Everlasting",
    "name": "Tremor - Everlasting",
    "primary": "potency",
@@ -12018,6 +12425,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Tremor - Fracture",
    "name": "Tremor - Fracture",
    "primary": "potency",
@@ -12046,6 +12454,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Tremor - Hemorrhage",
    "name": "Tremor - Hemorrhage",
    "primary": "potency",
@@ -12081,6 +12490,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Tremor - Reverb",
    "name": "Tremor - Reverb",
    "primary": "potency",
@@ -12116,6 +12526,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Tremor - Scorch",
    "name": "Tremor - Scorch",
    "primary": "potency",
@@ -12143,6 +12554,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Tremor - Superposition",
    "name": "Tremor - Superposition",
    "primary": "potency",
@@ -12169,6 +12581,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "potency_zero",
    "key": "VibrationExplosion",
    "name": "Tremor Burst",
    "primary": "potency",
@@ -12203,6 +12616,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Twisted Curse Talisman",
    "name": "Twisted Curse Talisman",
    "primary": "potency",
@@ -12231,6 +12645,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "potency_zero",
    "key": "SuperCoin",
    "name": "Unbreakable Coin",
    "primary": "potency",
@@ -12259,6 +12674,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Unfocused Volley",
    "name": "Unfocused Volley",
    "primary": "potency",
@@ -12286,6 +12702,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Unjust Enrichment",
    "name": "Unjust Enrichment",
    "primary": "potency",
@@ -12314,6 +12731,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Unlock",
    "name": "Unlock",
    "primary": "potency",
@@ -12341,6 +12759,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Unlock - I",
    "name": "Unlock - I",
    "primary": "potency",
@@ -12368,6 +12787,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Unlock - II",
    "name": "Unlock - II",
    "primary": "potency",
@@ -12395,6 +12815,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Unlock - III",
    "name": "Unlock - III",
    "primary": "potency",
@@ -12424,6 +12845,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Unrelenting Spirit - Shin -剛氣-心-",
    "name": "Unrelenting Spirit - Shin -剛氣-心-",
    "primary": "potency",
@@ -12454,6 +12876,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Unrelenting Spirit -剛氣-",
    "name": "Unrelenting Spirit -剛氣-",
    "primary": "potency",
@@ -12482,6 +12905,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Unrelenting Storm",
    "name": "Unrelenting Storm",
    "primary": "potency",
@@ -12512,6 +12936,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Vendetta Mark",
    "name": "Vendetta Mark",
    "primary": "potency",
@@ -12538,6 +12963,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Vengeance Mark",
    "name": "Vengeance Mark",
    "primary": "potency",
@@ -12565,6 +12991,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Vengeance Tattoo",
    "name": "Vengeance Tattoo",
    "primary": "potency",
@@ -12599,6 +13026,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Viewing the Tableau (Hong Lu)",
    "name": "Viewing the Tableau (Hong Lu)",
    "primary": "potency",
@@ -12626,6 +13054,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Violent Collections",
    "name": "Violent Collections",
    "primary": "potency",
@@ -12661,6 +13090,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Volatile Passion",
    "name": "Volatile Passion",
    "primary": "potency",
@@ -12687,6 +13117,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Weak-resist DMG Boost",
    "name": "Weak-resist DMG Boost",
    "primary": "potency",
@@ -12713,6 +13144,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Weakness Analyzed",
    "name": "Weakness Analyzed",
    "primary": "potency",
@@ -12741,6 +13173,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:When boring a 20-inch hole with a lance... (Yi Sang)",
    "name": "When boring a 20-inch hole with a lance... (Yi Sang)",
    "primary": "potency",
@@ -12769,6 +13202,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:When caving in the back of the skull with a hammer... (Yi Sang)",
    "name": "When caving in the back of the skull with a hammer... (Yi Sang)",
    "primary": "potency",
@@ -12797,6 +13231,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:When cleaving through the shoulder and the skull with a bastard sword... (Yi Sang)",
    "name": "When cleaving through the shoulder and the skull with a bastard sword... (Yi Sang)",
    "primary": "potency",
@@ -12824,6 +13259,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:When hacking through the ribs with a hatchet... (Yi Sang)",
    "name": "When hacking through the ribs with a hatchet... (Yi Sang)",
    "primary": "potency",
@@ -12852,6 +13288,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:When lacerating through space itself with a scythe, like a certain someone... (Yi Sang)",
    "name": "When lacerating through space itself with a scythe, like a certain someone... (Yi Sang)",
    "primary": "potency",
@@ -12879,6 +13316,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:When penetrating the lungs with a stiletto... (Yi Sang)",
    "name": "When penetrating the lungs with a stiletto... (Yi Sang)",
    "primary": "potency",
@@ -12907,6 +13345,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:When punching 10 or more holes in the torso with a rapier... (Yi Sang)",
    "name": "When punching 10 or more holes in the torso with a rapier... (Yi Sang)",
    "primary": "potency",
@@ -12935,6 +13374,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:When rending the body with a great sword... (Yi Sang)",
    "name": "When rending the body with a great sword... (Yi Sang)",
    "primary": "potency",
@@ -12963,6 +13403,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:When ripping the flesh to ten thousand strips with a whip... (Yi Sang)",
    "name": "When ripping the flesh to ten thousand strips with a whip... (Yi Sang)",
    "primary": "potency",
@@ -12992,6 +13433,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Wild Hunt",
    "name": "Wild Hunt",
    "primary": "potency",
@@ -13019,6 +13461,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Wound-casing Mask",
    "name": "Wound-casing Mask",
    "primary": "potency",
@@ -13045,6 +13488,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Wrath DMG Down",
    "name": "Wrath DMG Down",
    "primary": "potency",
@@ -13071,6 +13515,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Wrath DMG Up",
    "name": "Wrath DMG Up",
    "primary": "potency",
@@ -13097,6 +13542,7 @@
     ]
    },
    "expires_at_turn_end": true,
+   "expiry": "either_zero",
    "key": "CrimsonTakeDamageUp",
    "name": "Wrath Fragility",
    "primary": "potency",
@@ -13123,6 +13569,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Wrath Power Down",
    "name": "Wrath Power Down",
    "primary": "potency",
@@ -13149,6 +13596,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Wrath Power Up",
    "name": "Wrath Power Up",
    "primary": "potency",
@@ -13175,6 +13623,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Wrath Protection",
    "name": "Wrath Protection",
    "primary": "potency",
@@ -13202,6 +13651,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Wrath Resist Down",
    "name": "Wrath Resist Down",
    "primary": "potency",
@@ -13229,6 +13679,7 @@
     ]
    },
    "expires_at_turn_end": false,
+   "expiry": "either_zero",
    "key": "wiki:Your Will Guides My Blade.",
    "name": "Your Will Guides My Blade.",
    "primary": "potency",

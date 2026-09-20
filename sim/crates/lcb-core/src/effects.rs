@@ -486,6 +486,11 @@ pub struct StatusBehaviour {
     /// The component a plain "Gain N [X]" fills (`potency` or `count`).
     #[serde(default)]
     pub primary: Option<String>,
+    /// When the status stops existing: `either_zero` (a double-value status is
+    /// removed once either value reaches 0, wiki.gg `Status Effects`),
+    /// `count_zero`, `potency_zero`, `both_zero` (Butterfly) or `none`.
+    #[serde(default)]
+    pub expiry: Option<String>,
     /// "for one turn" / "for this turn": removed at Turn End.
     #[serde(default)]
     pub expires_at_turn_end: bool,
