@@ -135,6 +135,9 @@ pub struct UseContext {
     /// "Deal -N% damage against sub-targets".
     #[serde(default)]
     pub sub_target_damage_percent: i32,
+    /// Indiscriminate (random Corrosion): sub-targets may include allies.
+    #[serde(default)]
+    pub indiscriminate: bool,
     /// "each Coin flips against a random enemy among its targets".
     #[serde(default)]
     pub random_coin_targets: bool,
@@ -338,11 +341,10 @@ pub fn legal_actions(state: &BattleState, library: &Library) -> Vec<Action> {
             // E.G.O skills the identity owns and the team can currently pay for.
             for ego_id in &unit.ego_slots {
                 let Some(ego) = library.ego(ego_id) else { continue };
-                for kind in [
-                    EgoSkillKind::Awakening,
-                    EgoSkillKind::Corrosion,
-                    EgoSkillKind::Overclock,
-                ] {
+                // The player never picks Corrosion directly (JA-wiki 戦闘システム
+                // 詳細: it fires randomly when SP is negative, or through
+                // Overclock, or is forced in the E.G.O Corrosion state).
+                for kind in [EgoSkillKind::Awakening, EgoSkillKind::Overclock] {
                     if !ego_kind_available(state, ego_id, kind) {
                         continue;
                     }
@@ -476,6 +478,37 @@ fn ego_affordable(state: &BattleState, unit: &Unit, ego: &crate::library::EgoRec
         }
     }
     true
+}
+
+/// Chance (percent) that an E.G.O use turns into a random Corrosion, based on
+/// the SP left after paying for it.  Source: JA-wiki 戦闘システム詳細.
+fn corrosion_chance(state: &BattleState, unit_index: usize) -> Option<i32> {
+    let sp = state.units[unit_index].sanity.sp();
+    if sp >= -24 {
+        return None;
+    }
+    Some(if sp >= -34 {
+        25
+    } else if sp >= -44 {
+        75
+    } else {
+        100
+    })
+}
+
+/// Give back the 0.5x surcharge an Overclock paid, so a random Corrosion costs
+/// the normal Corrosion price.
+fn refund_overclock_surcharge(
+    state: &mut BattleState,
+    ego: &crate::library::EgoRecord,
+) {
+    for (sin, amount) in ego.resource_cost.clone() {
+        let full = amount;
+        let surcharge = (amount as f64 * 1.5).ceil() as i32 - full;
+        if surcharge > 0 {
+            *state.ego_resources.entry(sin).or_insert(0) += surcharge;
+        }
+    }
 }
 
 /// Pay the E.G.O costs.  Returns a description for the log.
@@ -1072,8 +1105,17 @@ pub fn apply_effects(
                 }
                 let count_status = effect.status2.clone().unwrap_or_else(|| status.clone());
                 // A state of time makes the unit inflict or gain more of its
-                // status (Burn / Poise / Bleed).
+                // status (Burn / Poise / Bleed).  Butterfly is exempt: "No
+                // external effects can raise the amount of Butterfly inflicted"
+                // (in-game `BattleKeywords` / SinkingWhite).
                 let (mut potency, mut count) = (potency, count);
+                if status == "Butterfly" {
+                    let unit = &mut state.units[index];
+                    unit.statuses.add_potency(&status, potency);
+                    unit.statuses
+                        .add_count(&effect.status2.clone().unwrap_or_else(|| status.clone()), count);
+                    continue;
+                }
                 if let Some((boosted, bonus)) = time_state_bonus(state, ctx.actor_index) {
                     if status == boosted {
                         potency += bonus.potency;
@@ -2698,12 +2740,22 @@ fn splash_attack(
     if extra == 0 || hits.is_empty() {
         return;
     }
+    let indiscriminate = use_.ctx.indiscriminate;
+    let attacker_is_sinner = state.units[attacker_index].kind.is_sinner();
     let defenders: Vec<usize> = state
         .units
         .iter()
         .enumerate()
         .filter(|(index, unit)| {
-            unit.alive && unit.kind.is_sinner() && *index != main_target
+            if !unit.alive || *index == main_target || *index == attacker_index {
+                return false;
+            }
+            // Random Corrosion re-draws sub-targets indiscriminately; a normal
+            // Attack Weight splash only reaches the opposing side.
+            if indiscriminate {
+                return true;
+            }
+            unit.kind.is_sinner() != attacker_is_sinner
         })
         .map(|(index, _)| index)
         .collect();
@@ -3095,12 +3147,48 @@ fn apply_hit(
     // Sinking: when hit, SP damage by Potency then Count -1.
     apply_sinking(state, defender_index);
 
-    // Butterfly (unique Sinking): the attacker heals (The Living / 4) SP.
+    // Butterfly (unique Sinking).  Source: in-game `BattleKeywords` /
+    // `Bufs` (SinkingWhite) and wiki.gg `Status Effects`:
+    //   * "When hit, the attacker heals (The Living / 4) SP (min 1; rounded down)"
+    //   * "When hit, and if this unit's SP is at less than 0, take
+    //     ([Sinking] Potency / 5) Gloom damage for every value of The Departed
+    //     (max Gloom damage 30; rounded down; deals half damage to targets that
+    //     are Non-SP Units)."
     let butterfly_living = state.units[defender_index].statuses.potency("Butterfly");
+    let butterfly_departed = state.units[defender_index].statuses.count("Butterfly");
     if butterfly_living > 0 {
         let heal = (butterfly_living / 4).max(1);
         let sanity = state.units[attacker_index].sanity;
         state.units[attacker_index].sanity = sanity.add(heal);
+    }
+    if butterfly_departed > 0 {
+        let non_sp_unit = matches!(state.units[defender_index].sanity, Sanity::None);
+        // A Non-SP Unit has no SP to fall below zero; the game still lets the
+        // effect apply (it is listed as taking half damage).
+        let low_sp = non_sp_unit || state.units[defender_index].sanity.sp() < 0;
+        if low_sp {
+            let sinking = state.units[defender_index].statuses.potency("Sinking");
+            let per_value = sinking / 5;
+            let mut gloom = per_value * butterfly_departed;
+            if non_sp_unit {
+                gloom /= 2;
+            }
+            gloom = gloom.min(30);
+            if gloom > 0 {
+                let resist = state.units[defender_index].resist_sin(Sin::Gloom);
+                let damage = (gloom as f64
+                    * (1.0 + crate::damage::resistance_modifier(resist)))
+                .floor()
+                .max(1.0) as i32;
+                state.units[defender_index].take_damage(damage);
+                state.push_log(
+                    "butterfly",
+                    format!(
+                        "Butterfly dealt {damage} Gloom damage ({per_value} x {butterfly_departed} The Departed)"
+                    ),
+                );
+            }
+        }
     }
 
     // A Counter skill strikes back at whoever attacked the unit.
@@ -4195,10 +4283,15 @@ pub fn end_turn(state: &mut BattleState, mechanics: &MechanicsBook) {
         if state.units[index].statuses.count("Charge") > 0 {
             state.units[index].statuses.add_count("Charge", -1);
         }
-        // Butterfly: reset The Departed to 0, then The Living becomes The Departed.
-        let butterfly = state.units[index].statuses.potency("Butterfly");
-        if butterfly > 0 || state.units[index].statuses.count("Butterfly") > 0 {
-            let living = state.units[index].statuses.potency("Butterfly");
+        // Butterfly: "Turn End: Reset The Departed of this effect to 0; then,
+        // gain [Sinking] equal to The Living and convert The Living into The
+        // Departed."  Source: in-game `BattleKeywords` (SinkingWhite).
+        let living = state.units[index].statuses.potency("Butterfly");
+        let departed = state.units[index].statuses.count("Butterfly");
+        if living > 0 || departed > 0 {
+            if living > 0 {
+                state.units[index].statuses.add_potency("Sinking", living);
+            }
             state.units[index].statuses.set(
                 "Butterfly",
                 crate::state::StatusInstance {
@@ -4699,7 +4792,39 @@ fn build_action_use(
         let record = library.ego(&ego_id)?.clone();
         let mut use_ = build_ego_use(state, library, mechanics, unit_index, &ego_id, kind)?;
         use_.slot = action.slot;
-        let detail = pay_ego(state, unit_index, &record, kind);
+        let mut detail = pay_ego(state, unit_index, &record, kind);
+        // Random Corrosion: with negative SP an E.G.O may fire its Corrosion
+        // Skill instead of its Awakening one.  The chance depends on the SP left
+        // after paying: -24 or higher 0%, -25..-34 25%, -35..-44 75%, -45 100%
+        // (JA-wiki 戦闘システム詳細 / ランダム侵蝕の仕様).
+        if let Some(chance) = corrosion_chance(state, unit_index)
+        {
+            if state.flip(chance) {
+                if let Some(corrosion) = build_ego_use(
+                    state,
+                    library,
+                    mechanics,
+                    unit_index,
+                    &ego_id,
+                    EgoSkillKind::Corrosion,
+                ) {
+                    let mut corrosion = corrosion;
+                    corrosion.slot = action.slot;
+                    corrosion.ctx.indiscriminate = true;
+                    // "オーバークロックは…余計に払ったE.G.O資源が返却される":
+                    // a random Corrosion during an Overclock refunds the surcharge
+                    // and costs the normal Corrosion price.
+                    if kind == EgoSkillKind::Overclock {
+                        refund_overclock_surcharge(state, &record);
+                        use_ = corrosion;
+                        detail = format!("{detail} (random Corrosion; Overclock surcharge refunded)");
+                    } else {
+                        use_ = corrosion;
+                        detail = format!("{detail} (random Corrosion)");
+                    }
+                }
+            }
+        }
         state.push_log("ego", format!("{} -> {}", use_.name, detail));
         return Some(use_);
     }

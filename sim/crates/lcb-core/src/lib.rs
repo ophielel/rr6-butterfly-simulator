@@ -127,16 +127,15 @@ impl Simulator {
         Ok(state)
     }
 
-    /// Give every unit the passives it fights with: its own Combat Passives and
-    /// the team's Support Passives (wiki.gg `Passives`).
+    /// Give every unit its own **Combat** Passives.
+    ///
+    /// Support Passives are deliberately **not** applied: the extracted ones are
+    /// keyed by identity but the team's support slots are a deck-building choice
+    /// this project has no data for, and applying every support passive in the
+    /// book (the earlier behaviour) gave the team passives it does not own.  See
+    /// docs/STATUS.md.
     fn attach_passives(&self, state: &mut state::BattleState) {
         state.status_book = Some(std::sync::Arc::new(self.statuses.clone()));
-        let supports: Vec<crate::effects::SkillMechanics> = self
-            .passives
-            .supports()
-            .into_iter()
-            .map(|p| p.effects.clone())
-            .collect();
         let owner_ids: Vec<String> = state
             .units
             .iter()
@@ -146,17 +145,12 @@ impl Simulator {
             })
             .collect();
         for (index, unit) in state.units.iter_mut().enumerate() {
-            let owner = String::new();
-            let _ = owner;
-            let mut effects: Vec<crate::effects::SkillMechanics> = self
+            let effects: Vec<crate::effects::SkillMechanics> = self
                 .passives
                 .for_owner(&owner_ids[index])
                 .into_iter()
                 .map(|p| p.effects.clone())
                 .collect();
-            if unit.kind.is_sinner() {
-                effects.extend(supports.clone());
-            }
             unit.passives = effects;
             unit.corrosion_egos = unit
                 .ego_slots

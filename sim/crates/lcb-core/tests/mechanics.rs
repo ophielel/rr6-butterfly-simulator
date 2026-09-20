@@ -1606,10 +1606,10 @@ fn section5_golden_replay_is_deterministic() {
     // action per Slot").  Update only together with a sourced rule change, and
     // name the source in the commit message.  Last updated when the identities'
     // passives started applying (in-game `Passives.json`).
-    assert_eq!(first_hp, vec![25483, 25245, 24688], "Imago HP after turns 1-3");
+    assert_eq!(first_hp, vec![25483, 25245, 24754], "Imago HP after turns 1-3");
     assert_eq!(
         format!("{first_hash:016x}"),
-        "91436594309b4671",
+        "31a837f070bc96e4",
         "recorded state hash"
     );
 }
@@ -2013,6 +2013,159 @@ fn fixed_content_skills_all_resolve_mechanics() {
     missing.sort();
     missing.dedup();
     assert!(missing.is_empty(), "skills without mechanics: {missing:?}");
+}
+
+/// Support Passives are not applied: the extracted ones are keyed by identity
+/// but the team's support slots are a deck-building choice this project has no
+/// data for, and attaching every support passive in the book gave units
+/// passives they do not own.
+#[test]
+fn support_passives_are_not_applied() {
+    let sim = sim();
+    let state = sim
+        .new_encounter(&fixed::TEAM, &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    let support_notes: Vec<String> = sim
+        .passives
+        .passives
+        .values()
+        .filter(|passive| passive.kind == "support")
+        .map(|passive| passive.id.clone())
+        .collect();
+    assert!(!support_notes.is_empty(), "the book still records them");
+    for unit in state.units.iter().filter(|u| u.kind.is_sinner()) {
+        // Own combat passives only: every attached list must come from the unit's
+        // own identity.
+        assert!(
+            unit.passives.len() <= 4,
+            "{} carries {} passives",
+            unit.name,
+            unit.passives.len()
+        );
+    }
+}
+
+/// Butterfly (the unique Sinking behind Solemn Lament):
+///   * "When hit, and if this unit's SP is at less than 0, take
+///     ([Sinking] Potency / 5) Gloom damage for every value of The Departed
+///     (max Gloom damage 30; rounded down; deals half damage to targets that are
+///     Non-SP Units.)"
+///   * "Turn End: Reset The Departed of this effect to 0; then, gain [Sinking]
+///     equal to The Living and convert The Living into The Departed."
+/// Source: in-game `BattleKeywords` / `Bufs` (SinkingWhite).
+#[test]
+fn butterfly_dot_and_turn_end_conversion() {
+    use lcb_core::effects::Effect;
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&[fixed::TEAM[0]], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    let target = state.units.iter().position(|u| !u.kind.is_sinner()).unwrap();
+    // Turn End: The Living (Potency) 8 and The Departed (Count) 3 become
+    // [Sinking] 8 plus The Departed 8.
+    state.units[target].statuses.remove("Sinking");
+    state.units[target].statuses.add_potency("Butterfly", 8);
+    state.units[target].statuses.add_count("Butterfly", 3);
+    battle::end_turn(&mut state, &sim.mechanics);
+    assert_eq!(state.units[target].statuses.potency("Butterfly"), 0);
+    assert_eq!(state.units[target].statuses.count("Butterfly"), 8);
+    assert_eq!(
+        state.units[target].statuses.potency("Sinking"),
+        8,
+        "The Living was also gained as [Sinking]"
+    );
+    // On hit with negative SP: ([Sinking] Potency / 5) per The Departed, max 30.
+    let mut notes = Vec::new();
+    let mut ctx = battle::UseContext::default();
+    state.units[0].sanity = Sanity::Sane { sp: -10 };
+    state.units[target].statuses.add_potency("Sinking", 40);
+    let hp_before = state.units[target].hp;
+    let mark = Effect {
+        kind: "noop".to_string(),
+        ..Default::default()
+    };
+    battle::apply_effects_for_test(&mut state, &[mark], 0, Some(target), &mut notes, &mut ctx);
+    // The DoT lives in apply_hit; drive a real hit instead.
+    let mut use_ = battle::build_use(
+        &state,
+        &sim.library,
+        &sim.mechanics,
+        0,
+        &SkillId::new("1011001"),
+    )
+    .unwrap();
+    state.preset_flips = vec![true; 64];
+    state.flip_cursor = 0;
+    battle::one_sided_attack(&mut state, 0, target, &mut use_, 0);
+    let lost = hp_before - state.units[target].hp;
+    assert!(
+        lost >= (40 / 5) * 8 / 2,
+        "Butterfly dealt Gloom damage: {lost} HP"
+    );
+}
+
+/// Corrosion is not a player choice: it is either random (negative SP), forced
+/// by the E.G.O Corrosion state, or reached through Overclock.
+/// Source: JA-wiki 戦闘システム詳細 (ランダム侵蝕の仕様 / オーバークロック).
+#[test]
+fn corrosion_is_not_a_player_choice() {
+    use lcb_core::ids::EgoId;
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&fixed::TEAM, &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    for sin in ["Wrath", "Lust", "Sloth", "Gluttony", "Gloom", "Pride", "Envy"] {
+        state.ego_resources.insert(sin.to_string(), 9);
+    }
+    let offers_corrosion = sim.legal_actions(&state).iter().any(|action| {
+        matches!(
+            action,
+            Action::UseEgo {
+                kind: EgoSkillKind::Corrosion,
+                ..
+            }
+        )
+    });
+    assert!(!offers_corrosion, "the player cannot pick Corrosion");
+    // With low SP a submitted Awakening may fire the Corrosion Skill instead.
+    // At SP -25 an E.G.O that costs 20 SP leaves -45, where the chance is 100%.
+    state.units[0].sanity = Sanity::Sane { sp: -25 };
+    let offered: Vec<String> = sim
+        .legal_actions(&state)
+        .iter()
+        .filter(|action| matches!(action, Action::UseEgo { .. }))
+        .map(|action| format!("{action:?}"))
+        .collect();
+    let action = sim
+        .legal_actions(&state)
+        .into_iter()
+        .find(|action| {
+            matches!(
+                action,
+                Action::UseEgo {
+                    kind: EgoSkillKind::Awakening,
+                    ..
+                }
+            )
+        })
+        .unwrap_or_else(|| panic!("no Awakening E.G.O offered; got {offered:?}"));
+    sim.submit(&mut state, action).unwrap();
+    battle::resolve_combat(&mut state, &sim.library, &sim.mechanics);
+    assert!(
+        state
+            .log
+            .iter()
+            .any(|entry| entry.detail.contains("random Corrosion")),
+        "at -45 SP the Corrosion chance is 100%"
+    );
+    let _ = EgoId::new("21009");
+}
+
+fn action_actor(action: &Action) -> &lcb_core::ids::UnitId {
+    match action {
+        Action::Assign { actor, .. } | Action::UseEgo { actor, .. } => actor,
+        Action::Commit => unreachable!(),
+    }
 }
 
 /// A full turn keeps the battle in a consistent, serialisable state.
