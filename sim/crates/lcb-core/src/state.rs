@@ -162,6 +162,18 @@ impl StatusSet {
 pub struct StaggerState {
     /// Percent-of-max-HP thresholds, descending, as printed in game.
     pub thresholds_percent: Vec<i32>,
+    /// The same lines as absolute HP, which is what the simulation moves.
+    ///
+    /// "[Tremor Burst] raises the target's Stagger Threshold by [Tremor]
+    /// Potency" is an **HP** amount, not percentage points, so the runtime works
+    /// in HP (a 10 Potency burst moves the line by 10 HP, not by 10% of max HP).
+    #[serde(default)]
+    pub thresholds_hp: Vec<i32>,
+    /// How many of the lines are gone: "混乱区間はステージ中復活しない" - a line
+    /// the unit has crossed never comes back
+    /// (JA-wiki `戦闘システム詳細` / 混乱状態についての詳しい仕様).
+    #[serde(default)]
+    pub consumed: usize,
     /// How many thresholds have been crossed (0 = not staggered).
     pub level: u8,
     /// Turns of Stagger remaining; a staggered unit cannot act.
@@ -174,9 +186,60 @@ impl StaggerState {
     pub fn new(thresholds_percent: Vec<i32>) -> Self {
         Self {
             thresholds_percent,
+            thresholds_hp: Vec::new(),
+            consumed: 0,
             level: 0,
             turns_remaining: 0,
         }
+    }
+
+    /// Resolve the printed percentages into absolute HP lines.
+    pub fn bind_max_hp(&mut self, max_hp: i32) {
+        if self.thresholds_hp.is_empty() {
+            self.thresholds_hp = self
+                .thresholds_percent
+                .iter()
+                .map(|percent| max_hp * percent / 100)
+                .collect();
+        }
+    }
+
+    /// The absolute HP of a Stagger line, falling back to the printed percent
+    /// when the unit was never bound to a max HP.
+    pub fn threshold_hp(&self, index: usize) -> Option<i32> {
+        if let Some(value) = self.thresholds_hp.get(index) {
+            return Some(*value);
+        }
+        self.thresholds_percent.get(index).copied()
+    }
+
+    /// Move the first line that is still in play by `amount` HP (positive makes
+    /// the unit easier to Stagger, negative harder).
+    pub fn shift_first_threshold(&mut self, amount: i32) -> Option<i32> {
+        if self.thresholds_hp.is_empty() {
+            if let Some(first) = self.thresholds_percent.first_mut() {
+                *first = (*first + amount).max(0);
+                return Some(*first);
+            }
+            return None;
+        }
+        let index = self.consumed.min(self.thresholds_hp.len().saturating_sub(1));
+        let value = self.thresholds_hp.get_mut(index)?;
+        *value = (*value + amount).max(0);
+        Some(*value)
+    }
+
+    /// How many of the lines still in play the unit is currently below.
+    pub fn remaining_crossed(&self, hp: i32) -> u8 {
+        let mut crossed = 0u8;
+        for index in self.consumed..self.thresholds_hp.len() {
+            if hp <= self.thresholds_hp[index] {
+                crossed += 1;
+            } else {
+                break;
+            }
+        }
+        crossed
     }
 
     pub fn is_staggered(&self) -> bool {
@@ -193,6 +256,15 @@ impl StaggerState {
 
     /// Number of thresholds currently surpassed at `hp` / `max_hp`.
     pub fn crossed_thresholds(&self, hp: i32, max_hp: i32) -> u8 {
+        if !self.thresholds_hp.is_empty() {
+            let mut crossed = 0u8;
+            for (index, value) in self.thresholds_hp.iter().enumerate() {
+                if hp <= *value {
+                    crossed = (index as u8 + 1).min(Self::MAX_LEVEL);
+                }
+            }
+            return crossed;
+        }
         let mut crossed = 0u8;
         for (index, threshold) in self.thresholds_percent.iter().enumerate() {
             if *threshold < 0 {
@@ -362,8 +434,16 @@ impl UnitKind {
     }
 }
 
+fn one() -> usize {
+    1
+}
+
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Unit {
+    /// How many units this unit's current Skill use targets ("When attacking
+    /// just a single target" conditions read this).
+    #[serde(default = "one")]
+    pub planned_targets: usize,
     pub id: UnitId,
     pub kind: UnitKind,
     pub name: String,
@@ -539,6 +619,10 @@ pub struct PendingStatus {
     pub status: String,
     pub potency: i32,
     pub count: i32,
+    /// Stack-based statuses ("Inflict 3 [Blue Sand] next turn") keep their
+    /// Stack through the delay.
+    #[serde(default)]
+    pub stack: i32,
 }
 
 impl Unit {
@@ -564,7 +648,10 @@ impl Unit {
             crate::ids::DamageType::Blunt => ("blunt", "Blunt"),
         };
         let base = self.resist_physical.get(key).copied().unwrap_or(1.0);
-        let down = self.statuses.count(&format!("{name} Resist Down"));
+        // The status is measured by Count per the wiki text, but the localisation
+        // dump words some of them as Stack; read whichever component was filled.
+        let key = format!("{name} Resist Down");
+        let down = self.statuses.count(&key) + self.statuses.potency(&key) + self.statuses.stack(&key);
         (base + 0.1 * down as f64).max(0.0)
     }
 
@@ -581,7 +668,10 @@ impl Unit {
             Sin::Envy => ("envy", "Envy"),
         };
         let base = self.resist_sin.get(key).copied().unwrap_or(1.0);
-        let down = self.statuses.count(&format!("{name} Resist Down"));
+        // The status is measured by Count per the wiki text, but the localisation
+        // dump words some of them as Stack; read whichever component was filled.
+        let key = format!("{name} Resist Down");
+        let down = self.statuses.count(&key) + self.statuses.potency(&key) + self.statuses.stack(&key);
         (base + 0.1 * down as f64).max(0.0)
     }
 

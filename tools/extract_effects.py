@@ -36,7 +36,7 @@ TRIGGERS = {
     "on hit": "coin",
     "on succeed attack": "coin",
     "onhit": "coin",
-    "on hit without cracking": "coin",
+    "on hit without cracking": "without_cracking",
     "heads hit": "heads_hit",
     "on evade": "on_evade",
     "hit after clash lose": "coin_clash_lose",
@@ -278,9 +278,25 @@ PATTERNS = [
     (re.compile(rf"^Deal \({ST} on self / {N}\) (Wrath|Lust|Sloth|Gluttony|Gloom|Pride|Envy) damage on target and lose {N} {ST} Count(?: \(rounded down\))?$"),
      lambda m: {"kind": "damage_from_status_divisor", "status": m.group(1),
                 "value": int(m.group(2)), "sin": m.group(3).lower(), "count": int(m.group(4))}),
-    # "Target cannot be Staggered until this Skill's Attack End"
+    # "Target cannot be Staggered until this Skill's Attack End": a phase-scoped
+    # switch, so it must not leak into Skills that write it under [Clash Lose].
     (re.compile(r"^Target cannot be Staggered until this Skill's Attack End$"),
-     lambda m: {"kind": "tag", "tag": "no_stagger_target"}),
+     lambda m: {"kind": "flag", "flag": "no_stagger_target"}),
+    # "When attacking just a single target, Coin Power +2 and deal +100% damage"
+    # (the compound splitter feeds both halves here with the condition prefix).
+    (re.compile(r"^When attacking just a single target(?:\([^)]*\))?, Coin Power \+([+-]?\d+)$"),
+     lambda m: {"kind": "coin_power", "value": int(m.group(1)),
+                "condition": {"single_target": True}}),
+    (re.compile(r"^When attacking just a single target(?:\([^)]*\))?, deal \+([+-]?\d+)% damage$"),
+     lambda m: {"kind": "damage_percent", "value": int(m.group(1)),
+                "condition": {"single_target": True}}),
+    # "... for every N [X] on self (max A and B%, respectively)" - the two maxima
+    # belong to the two halves of the sentence.
+    (re.compile(rf"^Deal \+{N}% damage for every {N} {ST} on (self|target|the main target) \(max {N} and {N}%, respectively\)$"),
+     lambda m: {"kind": "damage_percent", "value": 0, "step": int(m.group(1)), "per": int(m.group(2)),
+                "max": int(m.group(6)),
+                "condition": {"source": "self" if m.group(4) == "self" else "target",
+                              "status": m.group(3), "component": "potency"}}),
     # "If target's Pierce Resist. is below Weak (1.5), treat is as Weak (1.5)"
     (re.compile(r"^If target's (Slash|Pierce|Blunt) Resist\. is below \"Weak\" \(1\.5\), treat is? as Weak \(1\.5\)(?: \(max \d+%\))?"),
      lambda m: {"kind": "resist_floor", "status": m.group(1).lower(), "value": 15}),
@@ -958,9 +974,15 @@ def apply_primary_component(effect: dict) -> dict:
         return effect
     for key in ("status", "status2"):
         name = effect.get(key)
-        if name and STATUS_PRIMARY.get(name) == "count" and "count" not in effect:
-            if "potency" in effect:
-                effect["count"] = effect.pop("potency")
+        if not name:
+            continue
+        primary = STATUS_PRIMARY.get(name)
+        if primary == "count" and "count" not in effect and "potency" in effect:
+            effect["count"] = effect.pop("potency")
+            break
+        if primary == "stack" and "stack" not in effect and "potency" in effect:
+            effect["stack"] = effect.pop("potency")
+            effect["component"] = "stack"
             break
     for sub in effect.get("sub_effects") or []:
         apply_primary_component(sub)
@@ -999,13 +1021,61 @@ def clean_line(line: str) -> str:
     return re.sub(r"\s+", " ", line).strip()
 
 
-def split_trigger(line: str) -> Tuple[str, str]:
+def split_trigger(line: str) -> Tuple[Optional[str], str]:
+    """The trigger of a line, or `None` when the line has none of its own."""
     match = TRIGGER_RE.match(line)
     if match:
         trigger = match.group("trigger").strip().lower()
         if trigger in TRIGGERS:
             return TRIGGERS[trigger], match.group("rest").strip()
-    return "on_use", line
+    return None, line
+
+
+def split_compound(text: str) -> List[str]:
+    """Split "X and Y" only at the top level (not inside `[...]` or `(...)`).
+
+    "Coin Power +1 and deal +10% damage for every 6 [Poise] ... (max 6 and 60%,
+    respectively)" is two effects; "(max 6 and 60%)" is not.
+    """
+    parts: List[str] = []
+    buf: List[str] = []
+    depth = 0
+    index = 0
+    while index < len(text):
+        char = text[index]
+        if char in "[(":
+            depth += 1
+        elif char in "])":
+            depth = max(0, depth - 1)
+        if depth == 0:
+            separator = re.match(r"^[,;]?\s+and\s+", text[index:])
+            if separator:
+                parts.append("".join(buf).strip())
+                buf = []
+                index += separator.end()
+                continue
+        buf.append(char)
+        index += 1
+    parts.append("".join(buf).strip())
+    return [part for part in parts if part]
+
+
+CONDITION_PREFIX_RE = re.compile(r"^(When|If|While|At|Unless)[^,]*,\s*")
+
+
+def bucket_for(trigger: str, effect: dict) -> Tuple[str, dict]:
+    """Which list an effect belongs to, plus the phase flags it needs.
+
+    `[On Hit without Cracking]` rides on the Coin (it is skipped when that Coin
+    was cracked) and `[Hit after Clash Lose]` only fires after a lost Clash.
+    """
+    if trigger == "without_cracking":
+        effect["only_without_cracking"] = True
+        return "coin", effect
+    if trigger == "coin_clash_lose":
+        effect["only_after_clash_lose"] = True
+        return "coin", effect
+    return trigger, effect
 
 
 def expand_coin_effects(effect: dict, coin_count: int) -> dict:
@@ -1058,9 +1128,18 @@ def parse_text_block(text: str, coin_count: int) -> Tuple[Dict[str, List[dict]],
         if stripped:
             line = stripped
         if re.fullmatch(r"\[[^\]]+\]", line):
-            # a bare trigger token with no clause carries no effect of its own
+            # A bare trigger token opens a block: the bullets below it belong to
+            # that phase ("[Clash Lose]" followed by "- Halve [In the Past]").
+            block = TRIGGERS.get(line.strip("[]").strip().lower())
+            if block:
+                pending_trigger = block
             continue
         trigger, rest = split_trigger(line)
+        if trigger is None:
+            trigger = pending_trigger
+            rest = line
+        else:
+            pending_trigger = trigger
         # "[BeforeAttack] Gain the following effects for every N highest Reson."
         # scales each of the bullets that follow it.
         header = re.match(r"^Gain the following effects for every (\d+) highest Reson\.$", rest)
@@ -1102,7 +1181,8 @@ def parse_text_block(text: str, coin_count: int) -> Tuple[Dict[str, List[dict]],
                     condition = {"any_of": conditions} if conditions else None
                     if condition:
                         effect["condition"] = condition
-                    buckets.setdefault(trigger if trigger != "coin" else "coin", []).append(effect)
+                    bucket, effect = bucket_for(trigger, effect)
+                    buckets.setdefault(bucket, []).append(effect)
                     break
                 else:
                     consumed_all = False
@@ -1131,7 +1211,8 @@ def parse_text_block(text: str, coin_count: int) -> Tuple[Dict[str, List[dict]],
                 if trigger == "coin_clash_lose":
                     effect["only_after_clash_lose"] = True
                     effect["trigger"] = "coin"
-                buckets.setdefault(trigger if trigger != "coin_clash_lose" else "coin", []).append(effect)
+                bucket, effect = bucket_for(trigger, effect)
+                buckets.setdefault(bucket, []).append(effect)
                 continue
             # Not an "At less than N% HP" clause after all (e.g. "convert all
             # Coins into Unbreakable Coins"): fall through to the normal patterns.
@@ -1152,7 +1233,8 @@ def parse_text_block(text: str, coin_count: int) -> Tuple[Dict[str, List[dict]],
                     effect.update(body_limits)
                 break
             if effect is not None:
-                buckets.setdefault(trigger if trigger != "coin" else "coin", []).append(effect)
+                bucket, effect = bucket_for(trigger, effect)
+                buckets.setdefault(bucket, []).append(effect)
                 continue
             unmodeled.append(line)
             continue
@@ -1175,7 +1257,8 @@ def parse_text_block(text: str, coin_count: int) -> Tuple[Dict[str, List[dict]],
                     effect.update(self_limits)
                 break
             if effect is not None:
-                buckets.setdefault(trigger if trigger != "coin" else "coin", []).append(effect)
+                bucket, effect = bucket_for(trigger, effect)
+                buckets.setdefault(bucket, []).append(effect)
                 continue
             unmodeled.append(line)
             continue
@@ -1194,7 +1277,8 @@ def parse_text_block(text: str, coin_count: int) -> Tuple[Dict[str, List[dict]],
                 effect["condition"] = condition
                 break
             if effect is not None:
-                buckets.setdefault(trigger if trigger != "coin" else "coin", []).append(effect)
+                bucket, effect = bucket_for(trigger, effect)
+                buckets.setdefault(bucket, []).append(effect)
                 continue
             unmodeled.append(line)
             continue
@@ -1213,8 +1297,6 @@ def parse_text_block(text: str, coin_count: int) -> Tuple[Dict[str, List[dict]],
         if lower in TAG_LINES:
             buckets.setdefault("tags", []).append({"kind": "tag", "tag": TAG_LINES[lower], "raw": line})
             continue
-        if trigger == "on_use" and not TRIGGER_RE.match(line):
-            rest = line
         effect = parse_triggered(trigger, rest, line)
         if effect is not None and pending_resonance:
             if effect.get("kind") == "damage_percent":
@@ -1231,24 +1313,75 @@ def parse_text_block(text: str, coin_count: int) -> Tuple[Dict[str, List[dict]],
                 effect["step"] = effect.pop("value", 1)
                 effect["from_resonance"] = True
         if effect is None:
-            # try splitting "X and Y" compounds
-            parts = re.split(r"\s+and\s+", rest)
+            # Try splitting "X and Y" compounds.  The second half often drops the
+            # verb ("Gain 2 [Damage Down] and 4 [Paralyze]"), and a compound can
+            # sit behind one shared condition ("When attacking just a single
+            # target, Coin Power +2 and deal +100% damage").
+            parts = split_compound(rest)
             parsed_any = False
+            unparsed: List[str] = []
             if len(parts) > 1:
-                for part in parts:
-                    sub = parse_triggered(trigger, part.strip(), line)
-                    if sub is not None:
-                        parsed_any = True
-                        bucket = trigger if trigger != "coin" else "coin"
-                        effect2 = expand_coin_effects(sub, coin_count) if bucket == "coin" else sub
-                        buckets.setdefault(bucket, []).append(effect2)
+                prefix = CONDITION_PREFIX_RE.match(parts[0])
+                prefix = prefix.group(0) if prefix else ""
+                verb = re.match(r"^([A-Za-z]+)\b", parts[0])
+                for index, part in enumerate(parts):
+                    candidates = [part]
+                    if index > 0 and prefix:
+                        candidates.append(prefix + part)
+                    if index > 0 and verb:
+                        candidates.append(f"{verb.group(1)} {part}")
+                        candidates.append(
+                            f"{verb.group(1)[:1].upper()}{verb.group(1)[1:]} {part}"
+                        )
+                    candidates.append(part[:1].upper() + part[1:])
+                    sub = None
+                    for candidate in candidates:
+                        sub = parse_triggered(trigger, candidate, line)
+                        if sub is not None:
+                            break
+                    if sub is None:
+                        unparsed.append(part)
+                        continue
+                    parsed_any = True
+                    bucket = trigger if trigger not in ("coin", "without_cracking") else "coin"
+                    effect2 = expand_coin_effects(sub, coin_count) if bucket == "coin" else sub
+                    if trigger == "without_cracking":
+                        effect2["only_without_cracking"] = True
+                    buckets.setdefault(bucket, []).append(effect2)
             if not parsed_any:
                 unmodeled.append(line)
+            else:
+                # Never drop a clause: an unparsed half blocks strict mode.
+                for part in unparsed:
+                    unmodeled.append(f"{line}  [unparsed: {part}]")
             continue
         effect = expand_coin_effects(effect, coin_count)
         bucket = trigger if trigger != "coin" else "coin"
         buckets.setdefault(bucket, []).append(effect)
     return buckets, unmodeled
+
+
+def merge_turn_end_subclauses(buckets: Dict[str, List[dict]]) -> None:
+    """Fold a "lose ([X] Stack x N) more SP" bullet into its parent clause.
+
+    The bullet sits under "[Turn End] At less than K [X], lose 15 SP and gain 1
+    [X]" and reads the Stack from before that gain, so it becomes the parent's
+    `step` (extra SP per Stack) instead of a separate effect.
+    """
+    for key, effects in buckets.items():
+        if key not in ("turn_end", "on_use"):
+            continue
+        parents = [e for e in effects if e.get("kind") == "turn_end_sp_and_gain"]
+        children = [
+            e for e in effects if e.get("kind") == "sp_damage_self_per_stack"
+        ]
+        for parent in parents:
+            for child in list(children):
+                if child.get("status") != parent.get("status"):
+                    continue
+                parent["step"] = child.get("step", 0)
+                effects.remove(child)
+                children.remove(child)
 
 
 def build_skill_entry(skill: dict, tier: dict, enemies: bool) -> dict:
@@ -1271,6 +1404,7 @@ def build_skill_entry(skill: dict, tier: dict, enemies: bool) -> dict:
         "unmodeled": [],
     }
     buckets, unmodeled = parse_text_block(tier.get("on_use_text") or "", coin_count)
+    merge_turn_end_subclauses(buckets)
     for key in (
         "on_use",
         "clash_win",
@@ -1290,8 +1424,14 @@ def build_skill_entry(skill: dict, tier: dict, enemies: bool) -> dict:
         merged: List[dict] = []
         for key in ("on_use", "coin", "clash_win", "clash_lose", "attack_end", "combat_start"):
             merged.extend(coin_buckets.get(key, []))
+        # `[On Hit without Cracking]` rides on the Coin too (flagged, so the
+        # engine skips it for a Coin the Clash destroyed).
+        merged.extend(coin_buckets.get("without_cracking", []))
         heads = coin_buckets.get("heads_hit", [])
         if heads:
+            # Heads Hit clauses belong to a Coin too ("Then, Reuse this Coin").
+            for effect in heads:
+                effect["coin_index"] = index
             entry["heads_hit"][str(index)] = [strip_trigger(e) for e in heads]
         for extra in coin_buckets.get("clash_win", []):
             entry["clash_win"].append(strip_trigger(extra))
@@ -1299,7 +1439,11 @@ def build_skill_entry(skill: dict, tier: dict, enemies: bool) -> dict:
             entry["clash_lose"].append(strip_trigger(extra))
         for extra in coin_buckets.get("attack_end", []):
             entry["attack_end"].append(strip_trigger(extra))
-        own = [e for e in merged if e.get("trigger") in (None, "coin", "on_use")]
+        own = [
+            e
+            for e in merged
+            if e.get("trigger") in (None, "coin", "on_use", "without_cracking")
+        ]
         for effect in own:
             # The Coin an effect belongs to, so "Reuse this Coin" knows which.
             effect["coin_index"] = index

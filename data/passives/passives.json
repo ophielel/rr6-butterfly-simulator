@@ -224,7 +224,7 @@
     "turn_end": [],
     "turn_start": [],
     "unmodeled": [
-     "When the ally with the fastest Speed hits an enemy using a Skill that inflicts [Sinking] Potency, Count, or 'Unique Sinking', inflict 2 [Vibration] and trigger [VibrationExplosion]; then, reduce target's [Vibration] Count by 1 (once per turn)"
+     "When the ally with the fastest Speed hits an enemy using a Skill that inflicts [Sinking] Potency, Count, or 'Unique Sinking', inflict 2 [Vibration] and trigger [VibrationExplosion]; then, reduce target's [Vibration] Count by 1 (once per turn)  [unparsed: When the ally with the fastest Speed hits an enemy using a Skill that inflicts [Sinking] Potency, Count, or 'Unique Sinking', inflict 2 [Vibration]]"
     ]
    },
    "hand_modelled": null,
@@ -830,7 +830,13 @@
      }
     ],
     "turn_end": [],
-    "turn_start": [],
+    "turn_start": [
+     {
+      "kind": "noop",
+      "note": "cap on Protection gains",
+      "raw": "[Protection] Stack gained from this unit's Base Skills and [TheUdjatOutis] effect is capped at 5 per turn"
+     }
+    ],
     "unmodeled": [
      "[Turn Start] If an enemy has any of the Panic type changing effects, gain 1 [TheUdjatOutis]"
     ]
@@ -1063,7 +1069,15 @@
     "attack_end": [],
     "combat_start": [],
     "passive": [],
-    "turn_end": [],
+    "turn_end": [
+     {
+      "kind": "gain",
+      "next_turn": true,
+      "potency": 1,
+      "raw": "Gain 1 [HitDamageUp] next turn",
+      "status": "HitDamageUp"
+     }
+    ],
     "turn_start": [],
     "unmodeled": [
      "Gain +4 [Aggro] to the leftmost Slot next turn",

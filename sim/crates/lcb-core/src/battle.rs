@@ -841,6 +841,11 @@ fn condition_holds(
             return false;
         }
     }
+    // "When attacking just a single target, Coin Power +2 and deal +100% damage"
+    // (the Skill use must hit one unit).
+    if condition.single_target && actor.planned_targets > 1 {
+        return false;
+    }
     if condition.target_has_amplitude {
         match target {
             Some(target) if has_amplitude(target) => {}
@@ -881,11 +886,18 @@ fn condition_holds(
 /// Scaled value helper for power kinds: `value + (measured / per) * step`,
 /// capped by `max`.  `value` is the base for `clash_power` / `coin_power` /
 /// `base_power` / `damage_percent`.
+///
+/// Without a `per` the effect is a flat conditional bonus: the status written in
+/// its condition is only a threshold ("with 4 [Sinking], Coin Power +1"), so the
+/// measured value must not be added to it.  Only `per` turns the measurement
+/// into a multiplier.
 fn scaled(effect: &Effect, measured: i32) -> i32 {
     let value = effect.value.unwrap_or(0);
-    let per = effect.per.unwrap_or(0).max(1);
-    let step = effect.step.unwrap_or(1);
     let max = effect.max.unwrap_or(i32::MAX);
+    let Some(per) = effect.per.filter(|per| *per > 0) else {
+        return value.min(max);
+    };
+    let step = effect.step.unwrap_or(1);
     (value + (measured / per) * step).min(max)
 }
 
@@ -1134,6 +1146,10 @@ pub fn apply_effects(
                     .count
                     .map(|base| amount(base, effect, measured))
                     .unwrap_or(0);
+                let stack_amount = effect
+                    .stack
+                    .map(|base| amount(base, effect, measured))
+                    .unwrap_or(0);
                 // "A random ally gains 1 ~ 2 [Rhythm]".
                 let (potency, count) = if let (Some(lo), Some(hi)) =
                     (effect.range_min, effect.range_max)
@@ -1165,12 +1181,13 @@ pub fn apply_effects(
                     potency
                 };
                 if effect.next_turn {
-                    // "Gain 2 Protection next turn" -> applied at the next
-                    // Turn Start.
+                    // "Gain 2 Protection next turn" / "Inflict 3 [Blue Sand] next
+                    // turn" -> applied at the next Turn Start, component included.
                     state.units[index].pending_next_turn.push(crate::state::PendingStatus {
                         status: status.clone(),
                         potency,
                         count,
+                        stack: stack_amount,
                     });
                     continue;
                 }
@@ -1178,7 +1195,13 @@ pub fn apply_effects(
                 // are written to Stack instead of Potency/Count.
                 if effect.component == Some(Component::Stack) {
                     let store = &mut state.units[index].statuses;
-                    let mut amount = if potency != 0 { potency } else { count };
+                    let mut amount = if potency != 0 {
+                        potency
+                    } else if stack_amount != 0 {
+                        stack_amount
+                    } else {
+                        count
+                    };
                     // "Gain [X] up to N Stack".
                     if let Some(cap) = effect.up_to {
                         amount = amount.min((cap - store.stack(&status)).max(0));
@@ -1335,15 +1358,13 @@ pub fn apply_effects(
                 let Some(index) = ctx.target_index else { continue };
                 let potency = state.units[index].statuses.potency("Tremor");
                 if potency > 0 {
-                    if let Some(first) = state.units[index]
-                        .stagger
-                        .thresholds_percent
-                        .first_mut()
-                    {
-                        *first += potency;
+                    state.units[index].stagger.shift_first_threshold(potency);
+                    // "Trigger [Tremor Burst]; then, reduce target's [Tremor]
+                    // Count by 1" - the reduction is its own clause, so a burst
+                    // without it consumes nothing.
+                    if let Some(consume) = effect.consume_count.filter(|value| *value > 0) {
+                        tick_status(state, index, "Tremor", 0, -consume);
                     }
-                    let consume = effect.consume_count.unwrap_or(1);
-                    state.units[index].statuses.add_count("Tremor", -consume);
                 }
             }
             "activate_status" => {
@@ -1354,11 +1375,14 @@ pub fn apply_effects(
                 let unit = &mut state.units[index];
                 let potency = unit.statuses.potency(&status);
                 if potency > 0 {
+                    // "Activate [Burn] on target 2 times" deals the Potency twice.
                     let total = potency * times;
                     unit.take_damage(total);
                 }
-                let unit = &mut state.units[index];
-                unit.statuses.add_count(&status, -consume * times);
+                // "Target loses 2 [Burn] Count" is the total, not per activation.
+                if consume > 0 {
+                    tick_status(state, index, &status, 0, -consume);
+                }
             }
             "lose_status_count" => {
                 let Some(status) = effect.status.clone() else { continue };
@@ -1532,14 +1556,20 @@ pub fn apply_effects(
                 state.units[ctx.actor_index].sanity = sanity.add(-(step * stack));
             }
             "turn_end_sp_and_gain" => {
+                // "At less than 3 [Tear-sharpened], lose 15 SP and gain 1
+                // [Tear-sharpened] / - If this unit has [Tear-sharpened], lose
+                // ([Tear-sharpened] Stack x 15) more SP": the sub-clause reads the
+                // Stack the unit had when the clause started, which is why the
+                // extra loss is folded in here (see the extractor).
                 let Some(status) = effect.status.clone() else { continue };
                 let threshold = effect.threshold.unwrap_or(0);
                 let unit = &state.units[ctx.actor_index];
                 let current = unit.statuses.stack(&status);
                 if current < threshold {
+                    let extra = effect.step.unwrap_or(0) * current;
                     let sanity = unit.sanity;
                     state.units[ctx.actor_index].sanity =
-                        sanity.add(-effect.value.unwrap_or(0));
+                        sanity.add(-(effect.value.unwrap_or(0) + extra));
                     let count = effect.count.unwrap_or(1);
                     state.units[ctx.actor_index].statuses.add_stack(&status, count);
                 }
@@ -1581,8 +1611,14 @@ pub fn apply_effects(
                 let unit = &state.units[ctx.actor_index];
                 let have = unit.statuses.potency(&status) + unit.statuses.count(&status);
                 if have >= threshold {
-                    let consumed = have.min(limit);
-                    state.units[ctx.actor_index].statuses.remove(&status);
+                    // "consume up to 20 [Deep Tears]" spends what is there, at
+                    // most 20 - the rest stays.
+                    let consumed = consume_status_amount(
+                        state,
+                        ctx.actor_index,
+                        &status,
+                        have.min(limit),
+                    );
                     use_ctx.consumed_status += consumed;
                     *use_ctx.consumed_by_status.entry(status).or_insert(0) += consumed;
                 }
@@ -1629,13 +1665,15 @@ pub fn apply_effects(
                 let threshold = effect.threshold.unwrap_or(0);
                 let consume = effect.value.unwrap_or(0);
                 let unit = &state.units[ctx.actor_index];
-                let have = unit.statuses.potency(&status) + unit.statuses.count(&status);
+                let have = unit.statuses.potency(&status)
+                    + unit.statuses.count(&status)
+                    + unit.statuses.stack(&status);
                 if have >= threshold {
-                    let unit = &mut state.units[ctx.actor_index];
-                    unit.statuses.remove(&status);
+                    // "consume 5 [Deep Tears]" removes 5, not the whole status.
+                    let taken = consume_status_amount(state, ctx.actor_index, &status, consume);
                     use_ctx.damage_bonus += effect.percent.unwrap_or(0) as f64 / 100.0;
-                    use_ctx.consumed_status += consume;
-                    *use_ctx.consumed_by_status.entry(status).or_insert(0) += consume;
+                    use_ctx.consumed_status += taken;
+                    *use_ctx.consumed_by_status.entry(status).or_insert(0) += taken;
                 }
             }
             "shield_percent_from_sp" => {
@@ -1992,6 +2030,16 @@ pub fn apply_effects(
                 // Tags are lifted to Skill tags by the extractor; a stray one
                 // carries no value of its own.
             }
+            "flag" => {
+                // A named switch a phase turns on for this Skill use, e.g.
+                // "[Clash Lose] Target cannot be Staggered until Attack End".
+                match effect.flag.as_deref() {
+                    Some("no_stagger_target") => use_ctx.no_stagger_target = true,
+                    other => ctx
+                        .mechanics_note
+                        .push(format!("unknown flag `{other:?}` ({:?})", effect.raw)),
+                }
+            }
             "bonus_damage_percent_of_coin" => {
                 // Resolved in `apply_hit`, where the Coin's final damage is known.
             }
@@ -2222,6 +2270,58 @@ fn toss_all(state: &mut BattleState, unit_index: usize, use_: &mut SkillUse) {
 
 /// Effective coin power of one coin, including `Coin Power +N` modifiers and
 /// Paralyze.  Paralyze is consumed once per tossed coin.
+/// Do a Coin clause's own gates allow it?  `[Hit after Clash Lose]` needs a lost
+/// Clash, `[On Hit without Cracking]` a Coin the Clash did not destroy, and any
+/// written condition is evaluated against the current units.
+fn coin_clause_applies(
+    state: &BattleState,
+    attacker_index: usize,
+    defender_index: usize,
+    use_: &SkillUse,
+    effect: &Effect,
+    coin_cracked: bool,
+    clash_count: i32,
+) -> bool {
+    if effect.only_after_clash_lose && !use_.ctx.lost_clash {
+        return false;
+    }
+    if effect.only_without_cracking && coin_cracked {
+        return false;
+    }
+    match &effect.condition {
+        Some(condition) => condition_holds(
+            condition,
+            &state.units[attacker_index],
+            Some(&state.units[defender_index]),
+            clash_count,
+            use_.slot,
+        ),
+        None => true,
+    }
+}
+
+/// Clauses that only raise the damage of the Coin they are written on.
+///
+/// They have to be resolved **before** that Coin's damage is computed; the rest
+/// of the Coin's clauses (status inflictions, activations) resolve after the hit
+/// (wiki.gg `Battles`: a Coin's damage is final before its On Hit effects).
+fn is_coin_damage_clause(effect: &Effect) -> bool {
+    matches!(
+        effect.kind.as_str(),
+        "damage_percent"
+            | "damage_percent_from_resist"
+            | "damage_percent_per_resonance"
+            | "damage_percent_per_ammo_spent"
+            | "damage_percent_per_consumed_status"
+            | "damage_percent_missing_hp"
+            | "damage_percent_from_negative_sp"
+            | "damage_percent_from_missing_sp"
+            | "damage_percent_by_missing_hp"
+            | "damage_percent_per_stack"
+            | "damage_percent_per_coin_heads"
+    )
+}
+
 fn effective_coin_power(
     _state: &mut BattleState,
     _unit_index: usize,
@@ -2260,6 +2360,25 @@ pub fn final_power(
     unit_index: usize,
     use_: &mut SkillUse,
 ) -> i32 {
+    let mut total = power_base(state, unit_index, use_);
+    for index in 0..use_.coins.len() {
+        if use_.coins[index].state != CoinState::Fresh {
+            continue;
+        }
+        if use_.coins[index].heads.unwrap_or(false) {
+            total += effective_coin_power(state, unit_index, use_, index);
+        }
+    }
+    total.max(0)
+}
+
+/// The part of a Skill's power that is not tied to individual Coins: Base Power,
+/// its bonuses, the time-state / signature passives and the generic
+/// `Power Up/Down` / `Attack Power Up/Down` statuses.
+///
+/// Both the Clash's Final Power and the accumulating attack power start here, so
+/// a modifier cannot show up in one and be missing from the other.
+fn power_base(state: &mut BattleState, unit_index: usize, use_: &SkillUse) -> i32 {
     let mut total = use_.base_power + use_.ctx.base_power_bonus;
     if let Some((_, bonus)) = time_state_bonus(state, unit_index) {
         total += bonus.final_power;
@@ -2277,15 +2396,7 @@ pub fn final_power(
         };
         total += all + attack;
     }
-    for index in 0..use_.coins.len() {
-        if use_.coins[index].state != CoinState::Fresh {
-            continue;
-        }
-        if use_.coins[index].heads.unwrap_or(false) {
-            total += effective_coin_power(state, unit_index, use_, index);
-        }
-    }
-    total.max(0)
+    total
 }
 
 /// The Past / Present / Future passives of the Imago.
@@ -2404,10 +2515,9 @@ pub mod time_passives {
             crate::scripts::TimeState::Present => {
                 // Smite the Wicked's final Coin: raise the Stagger Threshold.
                 let raise = stack / 2;
-                let thresholds = &mut state.units[target_index].stagger.thresholds_percent;
-                if let Some(first) = thresholds.first_mut() {
-                    *first += raise;
-                }
+                state.units[target_index]
+                    .stagger
+                    .shift_first_threshold(raise);
             }
             crate::scripts::TimeState::Future => {
                 // Bloodflower's final Coin: heal (Stack x 3) HP on self.
@@ -2470,6 +2580,9 @@ pub fn match_power(
     let their_level =
         state.units[opponent_index].offense_level() + opponent_use.offense_level_mod;
     let mut total = power + level_clash_bonus(my_level, their_level);
+    // "Clash Power +N" clauses of the Skill itself ("[On Use] At 10+ [X],
+    // Clash Power +1").
+    total += use_.ctx.clash_power_bonus;
     total += state.units[unit_index].statuses.count("Clash Power Up");
     if let Some((_, bonus)) = time_state_bonus(state, unit_index) {
         total += bonus.clash_power;
@@ -2535,6 +2648,19 @@ fn resolve_clash_inner(
         }
         toss_all(state, a_index, a);
         toss_all(state, b_index, b);
+        // "[コイン判定時] 出血" - Bleed triggers when a Coin is tossed, and unlike
+        // Poise it also triggers **during a Clash** (JA-wiki ダメージ/スキル等効果
+        // のタイミング一覧: "出血と呼吸で扱いが違う(マッチ中に発動する/しない)").
+        // A Skill's "While Clashing with this Skill, the main target's [Bleed]
+        // Count does not drop below 1" protects its opponent.
+        let floor_on_a = b.ctx.status_count_floor.iter().any(|status| status == "Bleed");
+        let floor_on_b = a.ctx.status_count_floor.iter().any(|status| status == "Bleed");
+        tick_bleed_with_floor(state, a_index, floor_on_a);
+        tick_bleed_with_floor(state, b_index, floor_on_b);
+        // A Clash whose participant died to Bleed ends there.
+        if !state.units[a_index].alive || !state.units[b_index].alive {
+            break;
+        }
         let a_power = match_power(state, a_index, b_index, a, b);
         let b_power = match_power(state, b_index, a_index, b, a);
         rounds += 1;
@@ -2631,13 +2757,19 @@ pub fn one_sided_attack(
         order.remove(0);
         let keep_bleed = use_.ctx.status_count_floor.iter().any(|s| s == "Bleed");
         tick_bleed_with_floor(state, attacker_index, keep_bleed);
+        // Bleed (or any other self damage) can kill the attacker mid-Skill: the
+        // remaining Coins are then not used.
+        if !state.units[attacker_index].alive {
+            break;
+        }
         if use_.coins[coin_index].heads.is_none() {
             toss_single(state, attacker_index, use_, coin_index);
         }
         let heads = use_.coins[coin_index].heads.unwrap_or(false);
         if use_.ctx.accumulated == 0 {
-            // The accumulator starts at Base Power for the first coin used.
-            use_.ctx.accumulated = use_.base_power + use_.ctx.base_power_bonus;
+            // The accumulator starts at the Skill's Base Power (with its
+            // modifiers) for the first coin used.
+            use_.ctx.accumulated = power_base(state, attacker_index, use_);
         }
         if heads {
             use_.ctx.accumulated += effective_coin_power(state, attacker_index, use_, coin_index);
@@ -2767,12 +2899,15 @@ pub fn one_sided_attack(
     // Coin keeps the result it was tossed with during the Clash.
     for coin_index in use_.cracked_coins() {
         tick_bleed(state, attacker_index);
+        if !state.units[attacker_index].alive {
+            break;
+        }
         if use_.coins[coin_index].heads.is_none() {
             toss_single(state, attacker_index, use_, coin_index);
         }
         let heads = use_.coins[coin_index].heads.unwrap_or(false);
         if use_.ctx.accumulated == 0 {
-            use_.ctx.accumulated = use_.base_power + use_.ctx.base_power_bonus;
+            use_.ctx.accumulated = power_base(state, attacker_index, use_);
         }
         if heads {
             use_.ctx.accumulated += effective_coin_power(state, attacker_index, use_, coin_index);
@@ -2938,6 +3073,26 @@ fn apply_hit(
     clash_count: i32,
 ) -> HitResult {
     let power_of_incoming = power;
+    // A dead attacker deals no more damage (the Coin may have been forfeited to
+    // self-inflicted damage such as Bleed).
+    if !state.units[attacker_index].alive || !state.units[defender_index].alive {
+        return HitResult {
+            coin_index,
+            heads,
+            power,
+            damage: 0,
+            critical: false,
+            staggered: false,
+            killed: false,
+        };
+    }
+    // A Coin destroyed by the Clash ("cracked") skips "[On Hit without
+    // Cracking]" clauses.
+    let coin_cracked = use_
+        .coins
+        .get(coin_index)
+        .map(|coin| matches!(coin.state, CoinState::Cracked | CoinState::Destroyed))
+        .unwrap_or(false);
     // Guard: on the first attack of the turn the Guard rolls its Coins and adds
     // Shield equal to its Final Power (wiki.gg `Battles` / Guard).
     if let Some(position) = state
@@ -3037,7 +3192,7 @@ fn apply_hit(
         && poise_potency > 0
         && !time_passives::keeps_poise_on_crit(state, attacker_index)
     {
-        state.units[attacker_index].statuses.add_count("Poise", -1);
+        tick_status(state, attacker_index, "Poise", 0, -1);
     }
     let defender_snapshot = state.units[defender_index].clone();
     let defender = &defender_snapshot;
@@ -3049,6 +3204,60 @@ fn apply_hit(
     let sin_resist = defender.resist_sin(use_.sin);
     let sin_name = sin_name(use_.sin);
     let mut type_resist = defender.resist(use_.damage_type);
+    // [On Hit] coin effects.  "[Reuse - ...]" clauses only resolve on a Coin
+    // that is being used again (wiki.gg `Clash`, trigger table).
+    let hits_so_far = use_.ctx.coin_hits.get(&(coin_index as u32 + 1)).copied().unwrap_or(0);
+    let reused = hits_so_far > 1;
+    let mut effects: Vec<Effect> = use_
+        .mechanics
+        .coin(coin_index as u32 + 1)
+        .iter()
+        .filter(|effect| !effect.reuse_only || reused)
+        // "[On Hit without Cracking]": a Coin that was destroyed by the Clash
+        // does not resolve these clauses (wiki.gg `Clash`, Unbreakable Coins).
+        .filter(|effect| !effect.only_without_cracking || !coin_cracked)
+        .cloned()
+        .collect();
+    if heads {
+        // "[Heads Hit]" clauses resolve on top of the Coin's On Hit effects.
+        effects.extend_from_slice(use_.mechanics.heads_hit(coin_index as u32 + 1));
+    }
+    // Passives that trigger on a Tails Hit ("On Tails Hit, heal 5 SP").
+    if !heads {
+        let tails: Vec<Vec<Effect>> = state.units[attacker_index]
+            .passives
+            .iter()
+            .map(|passive| passive.tails_hit.clone())
+            .collect();
+        for list in tails {
+            effects.extend(list);
+        }
+    }
+
+    // The Coin's own damage clauses are read before its damage is computed, and
+    // they stay with this Coin instead of leaking into the next one.
+    let coin_damage_bonus = {
+        let mut notes = Vec::new();
+        let mut ctx = EffectContext {
+            actor_index: attacker_index,
+            target_index: Some(defender_index),
+            clash_count,
+            clash_lost: use_.ctx.lost_clash,
+            slot: use_.slot,
+            mechanics_note: &mut notes,
+        };
+        let mut local = UseContext::default();
+        let clauses: Vec<Effect> = effects
+            .iter()
+            .filter(|effect| is_coin_damage_clause(effect))
+            .cloned()
+            .collect();
+        apply_effects(state, &clauses, &mut ctx, &mut local);
+        for note in notes {
+            state.warnings.push(note);
+        }
+        local.damage_bonus
+    };
     for (kind, floor) in use_.ctx.resist_floor.iter() {
         let matches = match kind.as_str() {
             "slash" => use_.damage_type == DamageType::Slash,
@@ -3110,7 +3319,7 @@ fn apply_hit(
             .unwrap_or_else(|| state.units[defender_index].defense_level()),
         critical: crit,
         clash_count,
-        dynamic_modifier: use_.ctx.damage_bonus + rider_bonus
+        dynamic_modifier: use_.ctx.damage_bonus + rider_bonus + coin_damage_bonus
             + state.units[attacker_index].outgoing_damage_modifier()
             + incoming_damage_modifier(defender, sin_name)
             + passive_modifiers(state, defender_index, Some(attacker_index)).1
@@ -3127,32 +3336,69 @@ fn apply_hit(
     let (_, hp_lost) = state.units[defender_index].take_damage(damage);
 
     *use_.ctx.coin_hits.entry(coin_index as u32 + 1).or_insert(0) += 1;
-    // [On Hit] coin effects.  "[Reuse - ...]" clauses only resolve on a Coin
-    // that is being used again (wiki.gg `Clash`, trigger table).
-    let hits_so_far = use_.ctx.coin_hits.get(&(coin_index as u32 + 1)).copied().unwrap_or(0);
-    let reused = hits_so_far > 1;
-    let mut effects: Vec<Effect> = use_
-        .mechanics
-        .coin(coin_index as u32 + 1)
-        .iter()
-        .filter(|effect| !effect.reuse_only || reused)
-        .cloned()
-        .collect();
-    if heads {
-        // "[Heads Hit]" clauses resolve on top of the Coin's On Hit effects.
-        effects.extend_from_slice(use_.mechanics.heads_hit(coin_index as u32 + 1));
+    // The order of a hit is fixed by the source: damage, then the **defender's**
+    // own effects (its buffs/debuffs oldest first, passives and the "when hit"
+    // triggers), then the attacker's "[On Hit]" clauses
+    // (JA-wiki ダメージ / 攻撃の流れ: "ダメージ、被弾者のバフ/デバフ効果(古い順)、
+    // パッシブやギフトの効果、的中時効果がこの順番通りに発動する").
+    // A freshly inflicted Sinking must therefore survive the hit that applied it.
+    // "[When hit]" clauses of the defender's statuses ("inflict 2 [Sinking] on
+    // the attacker").
+    apply_status_event(state, defender_index, "on_hit", Some(attacker_index));
+    // Rupture: "When hit by an attack, take fixed damage by the effect's
+    // Potency. Then, reduce its Count by 1." (wiki.gg `Status Effects`).
+    let rupture = state.units[defender_index].statuses.potency("Rupture");
+    if rupture > 0 {
+        state.units[defender_index].take_damage(rupture);
+        tick_status(state, defender_index, "Rupture", 0, -1);
     }
-    // Passives that trigger on a Tails Hit ("On Tails Hit, heal 5 SP").
-    if !heads {
-        let tails: Vec<Vec<Effect>> = state.units[attacker_index]
-            .passives
-            .iter()
-            .map(|passive| passive.tails_hit.clone())
-            .collect();
-        for list in tails {
-            effects.extend(list);
+    // Sinking: when hit, SP damage by Potency then Count -1.
+    apply_sinking(state, defender_index);
+
+    // Butterfly (unique Sinking).  Source: in-game `BattleKeywords` /
+    // `Bufs` (SinkingWhite) and wiki.gg `Status Effects`:
+    //   * "When hit, the attacker heals (The Living / 4) SP (min 1; rounded down)"
+    //   * "When hit, and if this unit's SP is at less than 0, take
+    //     ([Sinking] Potency / 5) Gloom damage for every value of The Departed
+    //     (max Gloom damage 30; rounded down; deals half damage to targets that
+    //     are Non-SP Units)."
+    let butterfly_living = state.units[defender_index].statuses.potency("Butterfly");
+    let butterfly_departed = state.units[defender_index].statuses.count("Butterfly");
+    if butterfly_living > 0 {
+        let heal = (butterfly_living / 4).max(1);
+        let sanity = state.units[attacker_index].sanity;
+        state.units[attacker_index].sanity = sanity.add(heal);
+    }
+    if butterfly_departed > 0 {
+        let non_sp_unit = matches!(state.units[defender_index].sanity, Sanity::None);
+        // A Non-SP Unit has no SP to fall below zero; the game still lets the
+        // effect apply (it is listed as taking half damage).
+        let low_sp = non_sp_unit || state.units[defender_index].sanity.sp() < 0;
+        if low_sp {
+            let sinking = state.units[defender_index].statuses.potency("Sinking");
+            let per_value = sinking / 5;
+            let mut gloom = per_value * butterfly_departed;
+            if non_sp_unit {
+                gloom /= 2;
+            }
+            if gloom > 0 {
+                let resist = state.units[defender_index].resist_sin(Sin::Gloom);
+                let dealt = (gloom as f64
+                    * (1.0 + crate::damage::resistance_modifier(resist)))
+                .floor() as i32;
+                // "max Gloom damage 30" bounds the damage actually taken.
+                let damage = dealt.clamp(1, 30);
+                state.units[defender_index].take_damage(damage);
+                state.push_log(
+                    "butterfly",
+                    format!(
+                        "Butterfly dealt {damage} Gloom damage ({per_value} x {butterfly_departed} The Departed)"
+                    ),
+                );
+            }
         }
     }
+
 
     let mut notes = Vec::new();
     {
@@ -3165,7 +3411,12 @@ fn apply_hit(
             mechanics_note: &mut notes,
         };
         let mut local = UseContext::default();
-        apply_effects(state, &effects, &mut ctx, &mut local);
+        let clauses: Vec<Effect> = effects
+            .iter()
+            .filter(|effect| !is_coin_damage_clause(effect))
+            .cloned()
+            .collect();
+        apply_effects(state, &clauses, &mut ctx, &mut local);
         use_.ctx.ammo_spent = local.ammo_spent.max(use_.ctx.ammo_spent);
         // Coin-level clauses may add Reuse budget, consume statuses or lose HP.
         for (coin, cap) in local.reuse_caps {
@@ -3177,22 +3428,47 @@ fn apply_hit(
         }
         use_.ctx.reuse_hp_used += local.reuse_hp_used;
         use_.ctx.self_damage_taken += local.self_damage_taken;
-        use_.ctx.damage_bonus += local.damage_bonus;
         use_.ctx.final_damage_percent += local.final_damage_percent;
         use_.ctx.consumed_status += local.consumed_status;
+        // "Lower user's Stagger Threshold by N% of damage dealt" is written by a
+        // hit clause, so it has to reach the Skill context that resolves it.
+        use_.ctx.lower_stagger_percent += local.lower_stagger_percent;
     }
     for note in notes {
         state.warnings.push(note);
     }
-
     // Attack adders: "deal N% of this Coin's final damage as bonus damage".
+    // Their conditions and their own damage type still apply ("At less than 33%
+    // HP, deal +(50% of this Coin's damage)% bonus Pierce damage").
     for effect in use_.mechanics.coin(coin_index as u32 + 1).to_vec() {
         if effect.kind != "bonus_damage_percent_of_coin" {
             continue;
         }
+        if !coin_clause_applies(
+            state,
+            attacker_index,
+            defender_index,
+            use_,
+            &effect,
+            coin_cracked,
+            clash_count,
+        ) {
+            continue;
+        }
         let percent = effect.percent.unwrap_or(0);
         if percent > 0 && damage > 0 {
-            let extra = (damage as f64 * percent as f64 / 100.0).floor() as i32;
+            let type_resist = match effect.status.as_deref() {
+                Some("slash") => state.units[defender_index].resist(DamageType::Slash),
+                Some("pierce") => state.units[defender_index].resist(DamageType::Pierce),
+                Some("blunt") => state.units[defender_index].resist(DamageType::Blunt),
+                _ => 1.0,
+            };
+            let raw = (damage as f64 * percent as f64 / 100.0).floor();
+            let extra = if effect.status.is_some() {
+                (raw * (1.0 + crate::damage::resistance_modifier(type_resist))).floor() as i32
+            } else {
+                raw as i32
+            };
             if extra > 0 {
                 state.units[defender_index].take_damage(extra);
             }
@@ -3207,6 +3483,17 @@ fn apply_hit(
             .coin(coin_index as u32 + 1)
             .iter()
             .filter(|e| e.kind == "extra_damage_percent_of_damage")
+            .filter(|e| {
+                coin_clause_applies(
+                    state,
+                    attacker_index,
+                    defender_index,
+                    use_,
+                    e,
+                    coin_cracked,
+                    clash_count,
+                )
+            })
             .map(|e| {
                 let base = e.final_damage_percent.unwrap_or(0);
                 if e.per_ammo {
@@ -3271,63 +3558,6 @@ fn apply_hit(
         use_.coins.len(),
         defender_index,
     );
-    // "[When hit]" clauses of the defender's statuses ("inflict 2 [Sinking] on
-    // the attacker").
-    apply_status_event(state, defender_index, "on_hit", Some(attacker_index));
-    // Rupture: "When hit by an attack, take fixed damage by the effect's
-    // Potency. Then, reduce its Count by 1." (wiki.gg `Status Effects`).
-    let rupture = state.units[defender_index].statuses.potency("Rupture");
-    if rupture > 0 {
-        state.units[defender_index].take_damage(rupture);
-        tick_status(state, defender_index, "Rupture", 0, -1);
-    }
-    // Sinking: when hit, SP damage by Potency then Count -1.
-    apply_sinking(state, defender_index);
-
-    // Butterfly (unique Sinking).  Source: in-game `BattleKeywords` /
-    // `Bufs` (SinkingWhite) and wiki.gg `Status Effects`:
-    //   * "When hit, the attacker heals (The Living / 4) SP (min 1; rounded down)"
-    //   * "When hit, and if this unit's SP is at less than 0, take
-    //     ([Sinking] Potency / 5) Gloom damage for every value of The Departed
-    //     (max Gloom damage 30; rounded down; deals half damage to targets that
-    //     are Non-SP Units)."
-    let butterfly_living = state.units[defender_index].statuses.potency("Butterfly");
-    let butterfly_departed = state.units[defender_index].statuses.count("Butterfly");
-    if butterfly_living > 0 {
-        let heal = (butterfly_living / 4).max(1);
-        let sanity = state.units[attacker_index].sanity;
-        state.units[attacker_index].sanity = sanity.add(heal);
-    }
-    if butterfly_departed > 0 {
-        let non_sp_unit = matches!(state.units[defender_index].sanity, Sanity::None);
-        // A Non-SP Unit has no SP to fall below zero; the game still lets the
-        // effect apply (it is listed as taking half damage).
-        let low_sp = non_sp_unit || state.units[defender_index].sanity.sp() < 0;
-        if low_sp {
-            let sinking = state.units[defender_index].statuses.potency("Sinking");
-            let per_value = sinking / 5;
-            let mut gloom = per_value * butterfly_departed;
-            if non_sp_unit {
-                gloom /= 2;
-            }
-            if gloom > 0 {
-                let resist = state.units[defender_index].resist_sin(Sin::Gloom);
-                let dealt = (gloom as f64
-                    * (1.0 + crate::damage::resistance_modifier(resist)))
-                .floor() as i32;
-                // "max Gloom damage 30" bounds the damage actually taken.
-                let damage = dealt.clamp(1, 30);
-                state.units[defender_index].take_damage(damage);
-                state.push_log(
-                    "butterfly",
-                    format!(
-                        "Butterfly dealt {damage} Gloom damage ({per_value} x {butterfly_departed} The Departed)"
-                    ),
-                );
-            }
-        }
-    }
-
     // A Counter skill strikes back at whoever attacked the unit.
     if state.units[defender_index].alive {
         if let Some(position) = state.defenses.iter().position(|d| {
@@ -3362,13 +3592,9 @@ fn apply_hit(
     // downside: the user becomes easier to Stagger).
     if use_.ctx.lower_stagger_percent > 0 && hp_lost > 0 {
         let reduction = (hp_lost * use_.ctx.lower_stagger_percent / 100).max(0);
-        if let Some(first) = state.units[attacker_index]
+        state.units[attacker_index]
             .stagger
-            .thresholds_percent
-            .first_mut()
-        {
-            *first = (*first - reduction).max(0);
-        }
+            .shift_first_threshold(-reduction);
     }
     let staggered = if use_.ctx.no_stagger_target {
         false
@@ -3469,18 +3695,25 @@ fn temporal_disjunction_bonus(defender: &Unit) -> f64 {
 /// Stagger check after damage (wiki.gg `Clash` / Stagger).
 pub fn check_stagger(state: &mut BattleState, unit_index: usize) -> bool {
     let unit = &state.units[unit_index];
-    if !unit.alive || unit.is_staggered() {
+    if !unit.alive {
         return false;
     }
-    let crossed = unit.stagger.crossed_thresholds(unit.hp, unit.max_hp);
+    // "一度混乱状態になってから立ち直ると、その混乱区間は消滅する" - a line that was
+    // crossed is gone for the rest of the stage, so only the lines still in play
+    // count.  Crossing a further line while already Staggered escalates the
+    // level ("混乱 / 混乱+ / 混乱++") without refreshing the duration
+    // ("混乱状態のターンは更新されない").
+    let crossed = unit.stagger.remaining_crossed(unit.hp);
     if crossed == 0 {
         return false;
     }
-    let level = crossed.min(crate::state::StaggerState::MAX_LEVEL);
     let unit = &mut state.units[unit_index];
-    unit.stagger.level = level;
-    // "unable to use their Skills for the current and subsequent Turn"
-    unit.stagger.turns_remaining = 2;
+    unit.stagger.consumed += crossed as usize;
+    unit.stagger.level = (unit.stagger.level + crossed).min(crate::state::StaggerState::MAX_LEVEL);
+    if unit.stagger.turns_remaining == 0 {
+        // "unable to use their Skills for the current and subsequent Turn"
+        unit.stagger.turns_remaining = 2;
+    }
     true
 }
 
@@ -3768,6 +4001,38 @@ fn apply_status_phase(
 /// from the unit."  Called at every tick that consumes a value, so a status a
 /// Skill merely inflicted with Count 0 (the game writes "Inflict N [X]" for
 /// Potency) is left alone until something actually consumes it.
+/// Consume `amount` of a status' total value, taking Potency first and then
+/// Count, and cleaning the status up through its own expiry policy.
+///
+/// "At 15+ [Deep Tears], consume 5" must leave 10 behind - removing the whole
+/// status is only correct when the clause says "consume all".
+fn consume_status_amount(
+    state: &mut BattleState,
+    unit_index: usize,
+    status: &str,
+    amount: i32,
+) -> i32 {
+    if amount <= 0 {
+        return 0;
+    }
+    let mut left = amount;
+    let potency = state.units[unit_index].statuses.potency(status);
+    let take_potency = left.min(potency);
+    if take_potency > 0 {
+        tick_status(state, unit_index, status, -take_potency, 0);
+        left -= take_potency;
+    }
+    if left > 0 {
+        let count = state.units[unit_index].statuses.count(status);
+        let take_count = left.min(count);
+        if take_count > 0 {
+            tick_status(state, unit_index, status, 0, -take_count);
+            left -= take_count;
+        }
+    }
+    amount - left
+}
+
 fn tick_status(
     state: &mut BattleState,
     unit_index: usize,
@@ -3784,10 +4049,14 @@ fn tick_status(
             unit.statuses.add_count(status, count_delta);
         }
     }
-    let policy = state
-        .status_book
-        .as_ref()
-        .and_then(|book| book.get(status))
+    let behaviour = state.status_book.as_ref().and_then(|book| book.get(status));
+    let structure = behaviour
+        .and_then(|behaviour| behaviour.structure.clone())
+        .unwrap_or_else(|| "potency_count".to_string());
+    let primary = behaviour
+        .and_then(|behaviour| behaviour.primary.clone())
+        .unwrap_or_else(|| "potency".to_string());
+    let policy = behaviour
         .and_then(|behaviour| behaviour.expiry.clone())
         .unwrap_or_else(|| "either_zero".to_string());
     let instance = state.units[unit_index].statuses.get(status);
@@ -3796,7 +4065,20 @@ fn tick_status(
         "both_zero" => instance.potency == 0 && instance.count == 0,
         "count_zero" => instance.count == 0,
         "potency_zero" => instance.potency == 0,
-        _ => instance.potency == 0 || instance.count == 0,
+        _ => {
+            if structure == "stack" {
+                // A Stack status ends by its own rules ("Turn End: Lose 1
+                // Stack"), never because a value it does not use is 0.
+                false
+            } else if structure == "potency_count" {
+                instance.potency == 0 || instance.count == 0
+            } else if primary == "count" {
+                // A status with a single value: only that value can end it.
+                instance.count == 0
+            } else {
+                instance.potency == 0
+            }
+        }
     };
     if gone {
         state.units[unit_index].statuses.remove(status);
@@ -4071,6 +4353,7 @@ pub fn begin_turn(
         for entry in queued {
             state.units[index].statuses.add_potency(&entry.status, entry.potency);
             state.units[index].statuses.add_count(&entry.status, entry.count);
+            state.units[index].statuses.add_stack(&entry.status, entry.stack);
         }
     }
     // Shield does not carry over between turns (wiki.gg `Clash` / Shield).
@@ -4558,6 +4841,20 @@ pub fn end_turn(state: &mut BattleState, mechanics: &MechanicsBook) {
     }
 }
 
+/// Can this unit still take the action it submitted this turn?  A unit that died,
+/// got Staggered or Panicked earlier in the same turn drops the rest of its
+/// action ("[T]he queue is checked again when the turn comes").
+fn can_act_now(state: &BattleState, index: usize) -> bool {
+    let unit = &state.units[index];
+    if !unit.alive || unit.panicked {
+        return false;
+    }
+    if unit.is_staggered() && !unit.acts_while_staggered {
+        return false;
+    }
+    true
+}
+
 /// Resolve the combat phase: pair up skills into clashes in speed order.
 pub fn resolve_combat(state: &mut BattleState, library: &Library, mechanics: &MechanicsBook) -> Vec<ClashResult> {
     let mut results = Vec::new();
@@ -4681,6 +4978,12 @@ pub fn resolve_combat(state: &mut BattleState, library: &Library, mechanics: &Me
             continue;
         }
         let (actor_i, action_i, target_i) = pending[i].clone();
+        // The unit may have been Staggered, killed or Panicked by an earlier
+        // action of this same turn, so its turn is re-validated here.
+        if !can_act_now(state, actor_i) {
+            done[i] = true;
+            continue;
+        }
         let mut opponent_slot = None;
         // An explicit chain to an enemy Skill Slot (focused encounters) pairs
         // with exactly that Slot.
@@ -4732,6 +5035,13 @@ pub fn resolve_combat(state: &mut BattleState, library: &Library, mechanics: &Me
                     continue;
                 }
                 let (actor_j, action_j, _) = pending[j].clone();
+                // A Clash needs both sides able to act ("A unit that was killed
+                // or Staggered earlier in the turn drops its action").
+                if !can_act_now(state, actor_j) {
+                    done[j] = true;
+                    opponent_slot = None;
+                    continue;
+                }
                 let mut use_a = build_action_use(state, library, mechanics, actor_i, &action_i);
                 let mut use_b = build_action_use(state, library, mechanics, actor_j, &action_j);
                 if let (Some(a), Some(b)) = (use_a.as_mut(), use_b.as_mut()) {
@@ -4793,7 +5103,7 @@ pub fn resolve_combat(state: &mut BattleState, library: &Library, mechanics: &Me
                 done[j] = true;
             }
             None => {
-                if !state.units[actor_i].alive {
+                if !can_act_now(state, actor_i) {
                     done[i] = true;
                     continue;
                 }
@@ -5193,6 +5503,18 @@ fn prepare_use(
     use_: &mut SkillUse,
 ) -> UseContext {
     let _ = (library, mechanics);
+    // "When attacking just a single target" clauses read how many units this
+    // Skill use reaches (its Atk Weight against the units still standing).
+    {
+        let actor_is_sinner = state.units[unit_index].kind.is_sinner();
+        let standing = state
+            .units
+            .iter()
+            .filter(|unit| unit.alive && unit.kind.is_sinner() != actor_is_sinner)
+            .count() as u32;
+        let weight = use_.attack_weight.max(1);
+        state.units[unit_index].planned_targets = weight.min(standing.max(1)) as usize;
+    }
     // "Base Power +1 for every [X] about to be spent by this Skill": the amount
     // this use will spend is known from its own effects.
     {

@@ -170,7 +170,7 @@
   {
     "key": "StackPast",
     "structure": "stack",
-    "primary": "potency",
+    "primary": "stack",
     "expiry": "none",
     "expires_at_turn_end": false,
     "name_en": "In the Past (Deactivated)",
@@ -191,7 +191,7 @@
   {
     "key": "StackPresent",
     "structure": "stack",
-    "primary": "potency",
+    "primary": "stack",
     "expiry": "none",
     "expires_at_turn_end": false,
     "name_en": "In the Present (Deactivated)",
@@ -212,7 +212,7 @@
   {
     "key": "StackFuture",
     "structure": "stack",
-    "primary": "potency",
+    "primary": "stack",
     "expiry": "none",
     "expires_at_turn_end": false,
     "name_en": "In the Future (Deactivated)",
@@ -233,7 +233,7 @@
   {
     "key": "StackPastActivate",
     "structure": "stack",
-    "primary": "potency",
+    "primary": "stack",
     "expiry": "none",
     "expires_at_turn_end": false,
     "name_en": "In the Past",
@@ -254,7 +254,7 @@
   {
     "key": "StackPresentActivate",
     "structure": "stack",
-    "primary": "potency",
+    "primary": "stack",
     "expiry": "none",
     "expires_at_turn_end": false,
     "name_en": "In the Present",
@@ -275,7 +275,7 @@
   {
     "key": "StackFutureActivate",
     "structure": "stack",
-    "primary": "potency",
+    "primary": "stack",
     "expiry": "none",
     "expires_at_turn_end": false,
     "name_en": "In the Future",
@@ -296,7 +296,7 @@
   {
     "key": "TimeGap",
     "structure": "stack",
-    "primary": "potency",
+    "primary": "stack",
     "expiry": "none",
     "expires_at_turn_end": false,
     "name_en": "Temporal Disjunction",
@@ -527,8 +527,8 @@
   {
     "key": "AttackDmgDown",
     "structure": "potency_count",
-    "primary": "potency",
-    "expiry": "either_zero",
+    "primary": "count",
+    "expiry": "count_zero",
     "expires_at_turn_end": true,
     "name_en": "Damage Down",
     "name_zh": "伤害弱化",
@@ -779,8 +779,8 @@
   {
     "key": "PlusCoinValueUp",
     "structure": "potency_count",
-    "primary": "potency",
-    "expiry": "either_zero",
+    "primary": "count",
+    "expiry": "count_zero",
     "expires_at_turn_end": false,
     "name_en": "Plus Coin Boost",
     "name_zh": "加算硬币强化",
@@ -800,8 +800,8 @@
   {
     "key": "MinusCoinValueDown",
     "structure": "potency_count",
-    "primary": "potency",
-    "expiry": "either_zero",
+    "primary": "count",
+    "expiry": "count_zero",
     "expires_at_turn_end": false,
     "name_en": "Minus Coin Drop",
     "name_zh": "减算硬币弱化",
@@ -884,8 +884,8 @@
   {
     "key": "AzureResistDown",
     "structure": "potency_count",
-    "primary": "potency",
-    "expiry": "potency_zero",
+    "primary": "stack",
+    "expiry": "count_zero",
     "expires_at_turn_end": false,
     "name_en": "Gloom Resist Down",
     "name_zh": "忧郁抗性弱化",
@@ -905,7 +905,7 @@
   {
     "key": "SlashResistDown",
     "structure": "potency_count",
-    "primary": "potency",
+    "primary": "stack",
     "expiry": "potency_zero",
     "expires_at_turn_end": false,
     "name_en": "Slash Resist Down",
@@ -926,7 +926,7 @@
   {
     "key": "PenetrateResistDown",
     "structure": "potency_count",
-    "primary": "potency",
+    "primary": "stack",
     "expiry": "potency_zero",
     "expires_at_turn_end": false,
     "name_en": "Pierce Resist Down",
@@ -947,7 +947,7 @@
   {
     "key": "HitResistDown",
     "structure": "potency_count",
-    "primary": "potency",
+    "primary": "stack",
     "expiry": "potency_zero",
     "expires_at_turn_end": false,
     "name_en": "Blunt Resist Down",
@@ -1010,7 +1010,7 @@
   {
     "key": "Aggro",
     "structure": "stack",
-    "primary": "potency",
+    "primary": "stack",
     "expiry": "none",
     "expires_at_turn_end": false,
     "name_en": "Aggro",
@@ -1031,7 +1031,7 @@
   {
     "key": "DelusionGregBigBird",
     "structure": "stack",
-    "primary": "potency",
+    "primary": "stack",
     "expiry": "none",
     "expires_at_turn_end": false,
     "name_en": "Dazzle",
@@ -1052,7 +1052,7 @@
   {
     "key": "AlriuneEGOThey",
     "structure": "stack",
-    "primary": "potency",
+    "primary": "stack",
     "expiry": "none",
     "expires_at_turn_end": false,
     "name_en": "Faint Aroma",
@@ -1073,7 +1073,7 @@
   {
     "key": "BlueSand",
     "structure": "stack",
-    "primary": "potency",
+    "primary": "stack",
     "expiry": "none",
     "expires_at_turn_end": false,
     "name_en": "Blue Sand",
@@ -1094,7 +1094,7 @@
   {
     "key": "LanternGregBigBird",
     "structure": "stack",
-    "primary": "potency",
+    "primary": "stack",
     "expiry": "none",
     "expires_at_turn_end": false,
     "name_en": "Lamp",
@@ -1178,7 +1178,7 @@
   {
     "key": "LCA_Bullet",
     "structure": "stack",
-    "primary": "potency",
+    "primary": "stack",
     "expiry": "none",
     "expires_at_turn_end": false,
     "name_en": "LCA Fracture Round",
@@ -1199,7 +1199,7 @@
   {
     "key": "BulletGodok",
     "structure": "stack",
-    "primary": "potency",
+    "primary": "stack",
     "expiry": "none",
     "expires_at_turn_end": false,
     "name_en": "Bullet - Solitude",

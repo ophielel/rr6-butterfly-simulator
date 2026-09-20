@@ -115,6 +115,10 @@ pub struct Condition {
     /// "If this Skill was equipped on this unit's leftmost Skill Slot".
     #[serde(default)]
     pub slot: Option<String>,
+    /// "When attacking just a single target" - the Skill use must target exactly
+    /// one unit.
+    #[serde(default)]
+    pub single_target: bool,
 }
 
 /// A single mechanical effect.  The struct is deliberately loose: every kind
@@ -136,6 +140,9 @@ pub struct Effect {
     pub potency: Option<i32>,
     #[serde(default)]
     pub count: Option<i32>,
+    /// Stack-based statuses (Blue Sand, In the Past, ...) fill Stack.
+    #[serde(default)]
+    pub stack: Option<i32>,
     #[serde(default)]
     pub value: Option<i32>,
     #[serde(default)]
@@ -175,6 +182,13 @@ pub struct Effect {
     /// ("[Hit after Clash Lose]").
     #[serde(default)]
     pub only_after_clash_lose: bool,
+    /// "[On Hit without Cracking]": the clause is skipped when its Coin was
+    /// destroyed (cracked) in the Clash.
+    #[serde(default)]
+    pub only_without_cracking: bool,
+    /// A named flag a phase turns on for this Skill use ("flag" kind).
+    #[serde(default)]
+    pub flag: Option<String>,
     /// `gain_from_resonance`: multiplier applied to the highest Resonance.
     #[serde(default)]
     pub multiplier: Option<i32>,
@@ -486,6 +500,10 @@ pub struct StatusBehaviour {
     /// The component a plain "Gain N [X]" fills (`potency` or `count`).
     #[serde(default)]
     pub primary: Option<String>,
+    /// `potency_count`, `stack` or `single` (a status with only one value, e.g.
+    /// the Charge-like resources).
+    #[serde(default)]
+    pub structure: Option<String>,
     /// When the status stops existing: `either_zero` (a double-value status is
     /// removed once either value reaches 0, wiki.gg `Status Effects`),
     /// `count_zero`, `potency_zero`, `both_zero` (Butterfly) or `none`.

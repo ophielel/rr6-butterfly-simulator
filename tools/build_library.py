@@ -586,7 +586,36 @@ STACK_STATUS_NAMES = {
 # the effect's Count for one turn").  Everything else fills Potency
 # (JA-wiki 戦闘システム詳細: 「火傷を１付与」= +1 Burn Potency; the in-game
 # `Bufs` templates fill {0} with Potency for the damaging statuses).
-COUNT_PRIMARY = {"Protection", "Fragile", "Haste", "Bind", "Charge"}
+COUNT_PRIMARY = {
+    "Protection",
+    "Fragile",
+    "Haste",
+    "Bind",
+    "Charge",
+    # Their own in-game text measures the effect by Count ("Deal less damage with
+    # skills based on the effect's Count", "Raise the Power of Plus Coins by the
+    # effect's Count"), so a bare "Gain N [X]" fills Count.
+    "Damage Down",
+    "Plus Coin Boost",
+    "Minus Coin Drop",
+    "Gloom Resist Down",
+}
+
+
+def status_primary(text: str, name: str, stack_based: bool) -> str:
+    """Which component a plain "Gain/Inflict N [X]" fills.
+
+    Read from the status's own text when it says how it is measured ("based on
+    Stack", "based on the effect's Count"), with the hand table above and
+    Potency as the fallback (JA-wiki 戦闘システム詳細: 「火傷を１付与」= +1 Burn
+    Potency).
+    """
+    lowered = text.lower()
+    if stack_based or "based on stack" in lowered or "per stack" in lowered:
+        return "stack"
+    if name in COUNT_PRIMARY or "the effect's count" in lowered:
+        return "count"
+    return "potency"
 
 
 def status_expiry(text: str, name: str, stack_based: bool, primary: str) -> str:
@@ -672,7 +701,7 @@ def build_extra_statuses(tables_en, tables_zh, existing: List[dict]) -> List[dic
         out.append({
             "key": key,
             "structure": "stack" if stack_based else "potency_count",
-            "primary": "count" if (entry.get("name") or "") in COUNT_PRIMARY else "potency",
+            "primary": status_primary(text, entry.get("name") or "", stack_based),
             "expiry": status_expiry(
                 text,
                 entry.get("name") or "",
@@ -718,7 +747,7 @@ def build_statuses(kw_en, kw_zh, bufs_en, bufs_zh) -> List[dict]:
         out.append({
             "key": key,
             "structure": "stack" if stack_based else "potency_count",
-            "primary": "count" if (entry.get("name") or "") in COUNT_PRIMARY else "potency",
+            "primary": status_primary(text, entry.get("name") or "", stack_based),
             "expiry": status_expiry(
                 text,
                 entry.get("name") or "",

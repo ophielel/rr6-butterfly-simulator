@@ -337,6 +337,19 @@
      "multiplier": 1,
      "raw": "[Attack End] Gain (highest Reson.) of [The Living & The Departed] (max 6)",
      "status": "The Living & The Departed"
+    },
+    {
+     "kind": "gain_from_resonance",
+     "max": 12,
+     "multiplier": 2,
+     "raw": "If the said Reson. was an A-Reson., gain (highest Reson. x 2) of [The Living & The Departed] (max 12)",
+     "requires_a_reson": true,
+     "status": "The Living & The Departed"
+    },
+    {
+     "a_reson_gte": 4,
+     "kind": "reload_ammo",
+     "raw": "If the said Reson. was at 4+ A-Reson., [Reload (Solemn Lament)] instead"
     }
    ],
    "before_attack": [],
@@ -403,19 +416,6 @@
      "kind": "coin_power",
      "raw": "If the sum of the target's [Sinking] and both [Butterfly] is 6 or higher, Coin Power +1",
      "value": 1
-    },
-    {
-     "kind": "gain_from_resonance",
-     "max": 12,
-     "multiplier": 2,
-     "raw": "If the said Reson. was an A-Reson., gain (highest Reson. x 2) of [The Living & The Departed] (max 12)",
-     "requires_a_reson": true,
-     "status": "The Living & The Departed"
-    },
-    {
-     "a_reson_gte": 4,
-     "kind": "reload_ammo",
-     "raw": "If the said Reson. was at 4+ A-Reson., [Reload (Solemn Lament)] instead"
     }
    ],
    "tags": [],
@@ -431,6 +431,19 @@
      "multiplier": 1,
      "raw": "[Attack End] Gain (highest Reson.) of [The Living & The Departed] (max 6)",
      "status": "The Living & The Departed"
+    },
+    {
+     "kind": "gain_from_resonance",
+     "max": 12,
+     "multiplier": 2,
+     "raw": "If the said Reson. was an A-Reson., gain (highest Reson. x 2) of [The Living & The Departed] (max 12)",
+     "requires_a_reson": true,
+     "status": "The Living & The Departed"
+    },
+    {
+     "a_reson_gte": 4,
+     "kind": "reload_ammo",
+     "raw": "If the said Reson. was at 4+ A-Reson., [Reload (Solemn Lament)] instead"
     }
    ],
    "before_attack": [],
@@ -497,19 +510,6 @@
      "kind": "coin_power",
      "raw": "If the sum of the target's [Sinking] and both [Butterfly] is 6 or higher, Coin Power +1",
      "value": 1
-    },
-    {
-     "kind": "gain_from_resonance",
-     "max": 12,
-     "multiplier": 2,
-     "raw": "If the said Reson. was an A-Reson., gain (highest Reson. x 2) of [The Living & The Departed] (max 12)",
-     "requires_a_reson": true,
-     "status": "The Living & The Departed"
-    },
-    {
-     "a_reson_gte": 4,
-     "kind": "reload_ammo",
-     "raw": "If the said Reson. was at 4+ A-Reson., [Reload (Solemn Lament)] instead"
     }
    ],
    "tags": [],
@@ -525,6 +525,19 @@
      "multiplier": 1,
      "raw": "[Attack End] Gain (highest Reson.) of [The Living & The Departed] (max 6)",
      "status": "The Living & The Departed"
+    },
+    {
+     "kind": "gain_from_resonance",
+     "max": 12,
+     "multiplier": 2,
+     "raw": "If the said Reson. was an A-Reson., gain (highest Reson. x 2) of [The Living & The Departed] (max 12)",
+     "requires_a_reson": true,
+     "status": "The Living & The Departed"
+    },
+    {
+     "a_reson_gte": 4,
+     "kind": "reload_ammo",
+     "raw": "If the said Reson. was at 4+ A-Reson., [Reload (Solemn Lament)] instead"
     }
    ],
    "before_attack": [],
@@ -602,19 +615,6 @@
      "per": 6,
      "raw": "Coin Power +1 for every 6 value of the sum of the target's [Sinking] and both [Butterfly] (max 2)",
      "value": 1
-    },
-    {
-     "kind": "gain_from_resonance",
-     "max": 12,
-     "multiplier": 2,
-     "raw": "If the said Reson. was an A-Reson., gain (highest Reson. x 2) of [The Living & The Departed] (max 12)",
-     "requires_a_reson": true,
-     "status": "The Living & The Departed"
-    },
-    {
-     "a_reson_gte": 4,
-     "kind": "reload_ammo",
-     "raw": "If the said Reson. was at 4+ A-Reson., [Reload (Solemn Lament)] instead"
     }
    ],
    "tags": [],
@@ -697,14 +697,14 @@
     "4": [
      {
       "coin_index": 4,
-      "kind": "noop",
-      "raw": "\"All\" = the sum of both The Living and The Departed on target"
-     },
-     {
-      "coin_index": 4,
       "kind": "gloom_damage_equal_target_status",
       "raw": "[On Hit] Inflict Gloom Damage equal to \"All\" [Butterfly] on target",
       "status": "Butterfly"
+     },
+     {
+      "coin_index": 4,
+      "kind": "noop",
+      "raw": "\"All\" = the sum of both The Living and The Departed on target"
      }
     ]
    },
@@ -808,14 +808,14 @@
     "4": [
      {
       "coin_index": 4,
-      "kind": "noop",
-      "raw": "\"All\" = the sum of both The Living and The Departed on target"
-     },
-     {
-      "coin_index": 4,
       "kind": "gloom_damage_equal_target_status",
       "raw": "[On Hit] Inflict Gloom Damage equal to \"All\" [Butterfly] on target",
       "status": "Butterfly"
+     },
+     {
+      "coin_index": 4,
+      "kind": "noop",
+      "raw": "\"All\" = the sum of both The Living and The Departed on target"
      }
     ]
    },
@@ -919,14 +919,14 @@
     "4": [
      {
       "coin_index": 4,
-      "kind": "noop",
-      "raw": "\"All\" = the sum of both The Living and The Departed on target"
-     },
-     {
-      "coin_index": 4,
       "kind": "gloom_damage_equal_target_status",
       "raw": "[On Hit] Inflict Gloom Damage equal to \"All\" [Butterfly] on target",
       "status": "Butterfly"
+     },
+     {
+      "coin_index": 4,
+      "kind": "noop",
+      "raw": "\"All\" = the sum of both The Living and The Departed on target"
      }
     ]
    },
@@ -1030,14 +1030,14 @@
     "4": [
      {
       "coin_index": 4,
-      "kind": "noop",
-      "raw": "\"All\" = the sum of both The Living and The Departed on target"
-     },
-     {
-      "coin_index": 4,
       "kind": "gloom_damage_equal_target_status",
       "raw": "[On Hit] Inflict Gloom Damage equal to \"All\" [Butterfly] on target",
       "status": "Butterfly"
+     },
+     {
+      "coin_index": 4,
+      "kind": "noop",
+      "raw": "\"All\" = the sum of both The Living and The Departed on target"
      }
     ]
    },
@@ -1461,8 +1461,8 @@
       "coin_index": 2,
       "component": "stack",
       "kind": "inflict",
-      "potency": 2,
       "raw": "[On Hit] Inflict 2 [Faint Aroma]",
+      "stack": 2,
       "status": "Faint Aroma"
      },
      {
@@ -1478,8 +1478,8 @@
       "coin_index": 3,
       "component": "stack",
       "kind": "inflict",
-      "potency": 2,
       "raw": "[On Hit] Inflict 2 [Faint Aroma]",
+      "stack": 2,
       "status": "Faint Aroma"
      },
      {
@@ -1529,8 +1529,8 @@
       "coin_index": 2,
       "component": "stack",
       "kind": "inflict",
-      "potency": 3,
       "raw": "[On Hit] Inflict 3 [Faint Aroma]",
+      "stack": 3,
       "status": "Faint Aroma"
      },
      {
@@ -1546,8 +1546,8 @@
       "coin_index": 3,
       "component": "stack",
       "kind": "inflict",
-      "potency": 3,
       "raw": "[On Hit] Inflict 3 [Faint Aroma]",
+      "stack": 3,
       "status": "Faint Aroma"
      },
      {
@@ -1612,8 +1612,8 @@
       "coin_index": 2,
       "component": "stack",
       "kind": "inflict",
-      "potency": 3,
       "raw": "[On Hit] Inflict 3 [Faint Aroma]",
+      "stack": 3,
       "status": "Faint Aroma"
      },
      {
@@ -1629,8 +1629,8 @@
       "coin_index": 3,
       "component": "stack",
       "kind": "inflict",
-      "potency": 3,
       "raw": "[On Hit] Inflict 3 [Faint Aroma]",
+      "stack": 3,
       "status": "Faint Aroma"
      },
      {
@@ -1695,8 +1695,8 @@
       "coin_index": 2,
       "component": "stack",
       "kind": "inflict",
-      "potency": 3,
       "raw": "[On Hit] Inflict 3 [Faint Aroma]",
+      "stack": 3,
       "status": "Faint Aroma"
      },
      {
@@ -1712,8 +1712,8 @@
       "coin_index": 3,
       "component": "stack",
       "kind": "inflict",
-      "potency": 3,
       "raw": "[On Hit] Inflict 3 [Faint Aroma]",
+      "stack": 3,
       "status": "Faint Aroma"
      },
      {
@@ -1776,8 +1776,8 @@
       "coin_index": 1,
       "component": "stack",
       "kind": "inflict",
-      "potency": 1,
       "raw": "[On Hit] Inflict 1 [Faint Aroma]",
+      "stack": 1,
       "status": "Faint Aroma"
      },
      {
@@ -1793,8 +1793,8 @@
       "coin_index": 2,
       "component": "stack",
       "kind": "inflict",
-      "potency": 1,
       "raw": "[On Hit] Inflict 1 [Faint Aroma]",
+      "stack": 1,
       "status": "Faint Aroma"
      },
      {
@@ -1810,8 +1810,8 @@
       "coin_index": 3,
       "component": "stack",
       "kind": "inflict",
-      "potency": 2,
       "raw": "[On Hit] Inflict 2 [Faint Aroma]",
+      "stack": 2,
       "status": "Faint Aroma"
      },
      {
@@ -1867,8 +1867,8 @@
       "coin_index": 1,
       "component": "stack",
       "kind": "inflict",
-      "potency": 1,
       "raw": "[On Hit] Inflict 1 [Faint Aroma]",
+      "stack": 1,
       "status": "Faint Aroma"
      },
      {
@@ -1884,8 +1884,8 @@
       "coin_index": 2,
       "component": "stack",
       "kind": "inflict",
-      "potency": 1,
       "raw": "[On Hit] Inflict 1 [Faint Aroma]",
+      "stack": 1,
       "status": "Faint Aroma"
      },
      {
@@ -1901,8 +1901,8 @@
       "coin_index": 3,
       "component": "stack",
       "kind": "inflict",
-      "potency": 2,
       "raw": "[On Hit] Inflict 2 [Faint Aroma]",
+      "stack": 2,
       "status": "Faint Aroma"
      },
      {
@@ -1958,8 +1958,8 @@
       "coin_index": 1,
       "component": "stack",
       "kind": "inflict",
-      "potency": 1,
       "raw": "[On Hit] Inflict 1 [Faint Aroma]",
+      "stack": 1,
       "status": "Faint Aroma"
      },
      {
@@ -1975,8 +1975,8 @@
       "coin_index": 2,
       "component": "stack",
       "kind": "inflict",
-      "potency": 1,
       "raw": "[On Hit] Inflict 1 [Faint Aroma]",
+      "stack": 1,
       "status": "Faint Aroma"
      },
      {
@@ -1992,8 +1992,8 @@
       "coin_index": 3,
       "component": "stack",
       "kind": "inflict",
-      "potency": 2,
       "raw": "[On Hit] Inflict 2 [Faint Aroma]",
+      "stack": 2,
       "status": "Faint Aroma"
      },
      {
@@ -2049,8 +2049,8 @@
       "coin_index": 1,
       "component": "stack",
       "kind": "inflict",
-      "potency": 1,
       "raw": "[On Hit] Inflict 1 [Faint Aroma]",
+      "stack": 1,
       "status": "Faint Aroma"
      },
      {
@@ -2066,8 +2066,8 @@
       "coin_index": 2,
       "component": "stack",
       "kind": "inflict",
-      "potency": 1,
       "raw": "[On Hit] Inflict 1 [Faint Aroma]",
+      "stack": 1,
       "status": "Faint Aroma"
      },
      {
@@ -2083,8 +2083,8 @@
       "coin_index": 3,
       "component": "stack",
       "kind": "inflict",
-      "potency": 2,
       "raw": "[On Hit] Inflict 2 [Faint Aroma]",
+      "stack": 2,
       "status": "Faint Aroma"
      },
      {
@@ -2176,6 +2176,14 @@
      "kind": "gain",
      "raw": "[Turn End] Gain 2 [Fragile] and 2 [Attack Power Up] next turn (once per turn)",
      "status": "Fragile"
+    },
+    {
+     "kind": "gain",
+     "next_turn": true,
+     "per_turn": 1,
+     "potency": 2,
+     "raw": "[Turn End] Gain 2 [Fragile] and 2 [Attack Power Up] next turn (once per turn)",
+     "status": "Attack Power Up"
     }
    ],
    "turn_start": [],
@@ -2207,6 +2215,14 @@
      "kind": "gain",
      "raw": "[Turn End] Gain 2 [Fragile] and 2 [Attack Power Up] next turn (once per turn)",
      "status": "Fragile"
+    },
+    {
+     "kind": "gain",
+     "next_turn": true,
+     "per_turn": 1,
+     "potency": 2,
+     "raw": "[Turn End] Gain 2 [Fragile] and 2 [Attack Power Up] next turn (once per turn)",
+     "status": "Attack Power Up"
     }
    ],
    "turn_start": [],
@@ -2238,6 +2254,14 @@
      "kind": "gain",
      "raw": "[Turn End] Gain 2 [Fragile] and 2 [Attack Power Up] next turn (once per turn)",
      "status": "Fragile"
+    },
+    {
+     "kind": "gain",
+     "next_turn": true,
+     "per_turn": 1,
+     "potency": 2,
+     "raw": "[Turn End] Gain 2 [Fragile] and 2 [Attack Power Up] next turn (once per turn)",
+     "status": "Attack Power Up"
     }
    ],
    "turn_start": [],
@@ -2269,6 +2293,14 @@
      "kind": "gain",
      "raw": "[Turn End] Gain 2 [Fragile] and 2 [Attack Power Up] next turn (once per turn)",
      "status": "Fragile"
+    },
+    {
+     "kind": "gain",
+     "next_turn": true,
+     "per_turn": 1,
+     "potency": 2,
+     "raw": "[Turn End] Gain 2 [Fragile] and 2 [Attack Power Up] next turn (once per turn)",
+     "status": "Attack Power Up"
     }
    ],
    "turn_start": [],
@@ -2344,6 +2376,7 @@
    "heads_hit": {
     "1": [
      {
+      "coin_index": 1,
       "count": 1,
       "kind": "inflict",
       "raw": "[Heads Hit] Inflict +1 [Sinking] Count",
@@ -2352,6 +2385,7 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "count": 1,
       "kind": "inflict",
       "raw": "[Heads Hit] Inflict +1 [Tremor] Count",
@@ -2416,6 +2450,7 @@
    "heads_hit": {
     "1": [
      {
+      "coin_index": 1,
       "count": 1,
       "kind": "inflict",
       "raw": "[Heads Hit] Inflict +1 [Sinking] Count",
@@ -2424,6 +2459,7 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "count": 1,
       "kind": "inflict",
       "raw": "[Heads Hit] Inflict +1 [Tremor] Count",
@@ -2488,6 +2524,7 @@
    "heads_hit": {
     "1": [
      {
+      "coin_index": 1,
       "count": 1,
       "kind": "inflict",
       "raw": "[Heads Hit] Inflict +1 [Sinking] Count",
@@ -2496,6 +2533,7 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "count": 1,
       "kind": "inflict",
       "raw": "[Heads Hit] Inflict +1 [Tremor] Count",
@@ -2603,6 +2641,7 @@
    "heads_hit": {
     "1": [
      {
+      "coin_index": 1,
       "kind": "inflict",
       "potency": 1,
       "raw": "[Heads Hit] Inflict 1 [Sinking]",
@@ -2611,6 +2650,7 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "kind": "inflict",
       "potency": 1,
       "raw": "[Heads Hit] Inflict 1 [Tremor]",
@@ -2675,6 +2715,7 @@
    "heads_hit": {
     "1": [
      {
+      "coin_index": 1,
       "kind": "inflict",
       "potency": 1,
       "raw": "[Heads Hit] Inflict 1 [Sinking]",
@@ -2683,6 +2724,7 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "kind": "inflict",
       "potency": 1,
       "raw": "[Heads Hit] Inflict 1 [Tremor]",
@@ -2755,6 +2797,7 @@
    "heads_hit": {
     "1": [
      {
+      "coin_index": 1,
       "kind": "inflict",
       "potency": 1,
       "raw": "[Heads Hit] Inflict 1 [Sinking]",
@@ -2763,6 +2806,7 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "kind": "inflict",
       "potency": 1,
       "raw": "[Heads Hit] Inflict 1 [Tremor]",
@@ -2857,6 +2901,7 @@
    "heads_hit": {
     "1": [
      {
+      "coin_index": 1,
       "count": 1,
       "kind": "inflict",
       "raw": "[Heads Hit] Inflict +1 [Sinking] Count",
@@ -2865,6 +2910,7 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "count": 1,
       "kind": "inflict",
       "raw": "[Heads Hit] Inflict +1 [Tremor] Count",
@@ -2969,6 +3015,7 @@
    "heads_hit": {
     "1": [
      {
+      "coin_index": 1,
       "count": 1,
       "kind": "inflict",
       "raw": "[Heads Hit] Inflict +1 [Sinking] Count",
@@ -2977,6 +3024,7 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "count": 1,
       "kind": "inflict",
       "raw": "[Heads Hit] Inflict +1 [Tremor] Count",
@@ -3081,6 +3129,7 @@
    "heads_hit": {
     "1": [
      {
+      "coin_index": 1,
       "count": 1,
       "kind": "inflict",
       "raw": "[Heads Hit] Inflict +1 [Sinking] Count",
@@ -3089,6 +3138,7 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "count": 1,
       "kind": "inflict",
       "raw": "[Heads Hit] Inflict +1 [Tremor] Count",
@@ -3202,6 +3252,7 @@
    "heads_hit": {
     "1": [
      {
+      "coin_index": 1,
       "count": 1,
       "kind": "inflict",
       "raw": "[Heads Hit] Inflict +1 [Sinking] Count",
@@ -3210,6 +3261,7 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "count": 1,
       "kind": "inflict",
       "raw": "[Heads Hit] Inflict +1 [Tremor] Count",
@@ -3634,6 +3686,20 @@
     "2": [
      {
       "coin_index": 2,
+      "kind": "inflict",
+      "potency": 1,
+      "raw": "[On Hit] Inflict 1 [Sinking]",
+      "status": "Sinking"
+     },
+     {
+      "coin_index": 2,
+      "kind": "gain",
+      "potency": 2,
+      "raw": "[On Hit] Gain 2 [Deep Tears]",
+      "status": "Deep Tears"
+     },
+     {
+      "coin_index": 2,
       "condition": {
        "component": "stack",
        "source": "self",
@@ -3647,20 +3713,6 @@
       "status": "Deep Tears",
       "step": 0,
       "value": 1
-     },
-     {
-      "coin_index": 2,
-      "kind": "inflict",
-      "potency": 1,
-      "raw": "[On Hit] Inflict 1 [Sinking]",
-      "status": "Sinking"
-     },
-     {
-      "coin_index": 2,
-      "kind": "gain",
-      "potency": 2,
-      "raw": "[On Hit] Gain 2 [Deep Tears]",
-      "status": "Deep Tears"
      }
     ]
    },
@@ -4134,17 +4186,6 @@
      "potency": 3,
      "raw": "[On Use] Gain 3 [Deep Tears] (2 times per turn)",
      "status": "Deep Tears"
-    },
-    {
-     "condition": {
-      "gte": 1,
-      "source": "self",
-      "status": "Tear-sharpened"
-     },
-     "kind": "sp_damage_self_per_stack",
-     "raw": "If this unit has [Tear-sharpened], lose ([Tear-sharpened] Stack x 15) more SP",
-     "status": "Tear-sharpened",
-     "step": 15
     }
    ],
    "tags": [],
@@ -4155,6 +4196,7 @@
      "per_turn": 1,
      "raw": "[Turn End] At less than 3 [Tear-sharpened], lose 15 SP and gain 1 [Tear-sharpened] (once per turn)",
      "status": "Tear-sharpened",
+     "step": 15,
      "threshold": 3,
      "value": 15
     }
@@ -4187,17 +4229,6 @@
      "potency": 3,
      "raw": "[On Use] Gain 3 [Deep Tears] (2 times per turn)",
      "status": "Deep Tears"
-    },
-    {
-     "condition": {
-      "gte": 1,
-      "source": "self",
-      "status": "Tear-sharpened"
-     },
-     "kind": "sp_damage_self_per_stack",
-     "raw": "If this unit has [Tear-sharpened], lose ([Tear-sharpened] Stack x 15) more SP",
-     "status": "Tear-sharpened",
-     "step": 15
     }
    ],
    "tags": [],
@@ -4208,6 +4239,7 @@
      "per_turn": 1,
      "raw": "[Turn End] At less than 3 [Tear-sharpened], lose 15 SP and gain 1 [Tear-sharpened] (once per turn)",
      "status": "Tear-sharpened",
+     "step": 15,
      "threshold": 3,
      "value": 15
     }
@@ -4240,17 +4272,6 @@
      "potency": 3,
      "raw": "[On Use] Gain 3 [Deep Tears] (2 times per turn)",
      "status": "Deep Tears"
-    },
-    {
-     "condition": {
-      "gte": 1,
-      "source": "self",
-      "status": "Tear-sharpened"
-     },
-     "kind": "sp_damage_self_per_stack",
-     "raw": "If this unit has [Tear-sharpened], lose ([Tear-sharpened] Stack x 15) more SP",
-     "status": "Tear-sharpened",
-     "step": 15
     }
    ],
    "tags": [],
@@ -4261,6 +4282,7 @@
      "per_turn": 1,
      "raw": "[Turn End] At less than 3 [Tear-sharpened], lose 15 SP and gain 1 [Tear-sharpened] (once per turn)",
      "status": "Tear-sharpened",
+     "step": 15,
      "threshold": 3,
      "value": 15
     }
@@ -4306,17 +4328,6 @@
      "potency": 5,
      "raw": "[On Use] Gain 5 [Deep Tears] (2 times per turn)",
      "status": "Deep Tears"
-    },
-    {
-     "condition": {
-      "gte": 1,
-      "source": "self",
-      "status": "Tear-sharpened"
-     },
-     "kind": "sp_damage_self_per_stack",
-     "raw": "If this unit has [Tear-sharpened], lose ([Tear-sharpened] Stack x 15) more SP",
-     "status": "Tear-sharpened",
-     "step": 15
     }
    ],
    "tags": [],
@@ -4327,6 +4338,7 @@
      "per_turn": 1,
      "raw": "[Turn End] At less than 3 [Tear-sharpened], lose 15 SP to gain 1 [Tear-sharpened] (once per turn)",
      "status": "Tear-sharpened",
+     "step": 15,
      "threshold": 3,
      "value": 15
     }
@@ -4344,6 +4356,7 @@
    "heads_hit": {
     "1": [
      {
+      "coin_index": 1,
       "kind": "inflict",
       "potency": 2,
       "raw": "[Heads Hit] Inflict 2 [Sinking]",
@@ -4370,6 +4383,7 @@
    "heads_hit": {
     "1": [
      {
+      "coin_index": 1,
       "kind": "inflict",
       "potency": 4,
       "raw": "[Heads Hit] Inflict 4 [Sinking]",
@@ -4396,6 +4410,7 @@
    "heads_hit": {
     "1": [
      {
+      "coin_index": 1,
       "kind": "inflict",
       "potency": 4,
       "raw": "[Heads Hit] Inflict 4 [Sinking]",
@@ -4534,6 +4549,7 @@
    "heads_hit": {
     "1": [
      {
+      "coin_index": 1,
       "count": 1,
       "kind": "gain",
       "raw": "[Heads Hit] Gain +1 [Poise] Count",
@@ -4542,6 +4558,7 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "count": 1,
       "kind": "inflict",
       "raw": "[Heads Hit] Inflict +1 [Sinking] Count",
@@ -4596,6 +4613,7 @@
    "heads_hit": {
     "1": [
      {
+      "coin_index": 1,
       "count": 1,
       "kind": "gain",
       "raw": "[Heads Hit] Gain +1 [Poise] Count",
@@ -4604,6 +4622,7 @@
     ],
     "2": [
      {
+      "coin_index": 2,
       "count": 1,
       "kind": "inflict",
       "raw": "[Heads Hit] Inflict +1 [Sinking] Count",
@@ -4701,6 +4720,7 @@
    "heads_hit": {
     "1": [
      {
+      "coin_index": 1,
       "kind": "lower_own_stagger_threshold",
       "percent": 50,
       "raw": "[Heads Hit] Lower user’s Stagger Threshold by 50% of damage dealt"
@@ -4734,6 +4754,7 @@
    "heads_hit": {
     "1": [
      {
+      "coin_index": 1,
       "kind": "lower_own_stagger_threshold",
       "percent": 50,
       "raw": "[Heads Hit] Lower user’s Stagger Threshold by 50% of damage dealt"
@@ -4767,6 +4788,7 @@
    "heads_hit": {
     "1": [
      {
+      "coin_index": 1,
       "kind": "lower_own_stagger_threshold",
       "percent": 50,
       "raw": "[Heads Hit] Lower user’s Stagger Threshold by 50% of damage dealt"
@@ -4945,8 +4967,8 @@
      "count": 3,
      "kind": "gain",
      "next_turn": true,
-     "potency": 3,
      "raw": "[On Use] Gain +3 [Aggro] to this Skill Slot next turn",
+     "stack": 3,
      "status": "Aggro"
     }
    ],
@@ -4990,8 +5012,8 @@
      "count": 3,
      "kind": "gain",
      "next_turn": true,
-     "potency": 3,
      "raw": "[On Use] Gain +3 [Aggro] to this Skill Slot next turn",
+     "stack": 3,
      "status": "Aggro"
     },
     {
@@ -5051,8 +5073,8 @@
      "count": 3,
      "kind": "gain",
      "next_turn": true,
-     "potency": 3,
      "raw": "[On Use] Gain +3 [Aggro] to this Skill Slot next turn",
+     "stack": 3,
      "status": "Aggro"
     },
     {
@@ -5130,8 +5152,8 @@
      "count": 3,
      "kind": "gain",
      "next_turn": true,
-     "potency": 3,
      "raw": "[On Use] Gain +3 [Aggro] to this Skill Slot next turn",
+     "stack": 3,
      "status": "Aggro"
     },
     {
@@ -5219,8 +5241,8 @@
      "count": 5,
      "kind": "gain",
      "next_turn": true,
-     "potency": 5,
      "raw": "[On Use] Gain +5 [Aggro] to this Skill Slot next turn",
+     "stack": 5,
      "status": "Aggro"
     }
    ],
@@ -5282,8 +5304,8 @@
      "count": 5,
      "kind": "gain",
      "next_turn": true,
-     "potency": 5,
      "raw": "[On Use] Gain +5 [Aggro] to this Skill Slot next turn",
+     "stack": 5,
      "status": "Aggro"
     },
     {
@@ -5361,8 +5383,8 @@
      "count": 5,
      "kind": "gain",
      "next_turn": true,
-     "potency": 5,
      "raw": "[On Use] Gain +5 [Aggro] to this Skill Slot next turn",
+     "stack": 5,
      "status": "Aggro"
     },
     {
@@ -5456,8 +5478,8 @@
      "count": 5,
      "kind": "gain",
      "next_turn": true,
-     "potency": 5,
      "raw": "[On Use] Gain +5 [Aggro] to this Skill Slot next turn",
+     "stack": 5,
      "status": "Aggro"
     },
     {
@@ -5562,16 +5584,17 @@
       "component": "stack",
       "kind": "inflict",
       "next_turn": true,
-      "potency": 3,
       "raw": "[On Hit] Inflict 3 [Blue Sand] next turn",
+      "stack": 3,
       "status": "Blue Sand"
      },
      {
       "coin_index": 2,
+      "component": "stack",
       "kind": "inflict",
       "per_turn": 1,
-      "potency": 1,
       "raw": "[On Hit] Inflict 1 [Gloom Resist Down] (once per turn)",
+      "stack": 1,
       "status": "Gloom Resist Down"
      }
     ],
@@ -5611,8 +5634,8 @@
      "count": 8,
      "kind": "gain",
      "next_turn": true,
-     "potency": 8,
      "raw": "[On Use] Gain +8 [Aggro] to this Skill Slot next turn",
+     "stack": 8,
      "status": "Aggro"
     },
     {
@@ -5688,16 +5711,17 @@
       "component": "stack",
       "kind": "inflict",
       "next_turn": true,
-      "potency": 3,
       "raw": "[On Hit] Inflict 3 [Blue Sand] next turn",
+      "stack": 3,
       "status": "Blue Sand"
      },
      {
       "coin_index": 2,
+      "component": "stack",
       "kind": "inflict",
       "per_turn": 1,
-      "potency": 1,
       "raw": "[On Hit] Inflict 1 [Gloom Resist Down] (once per turn)",
+      "stack": 1,
       "status": "Gloom Resist Down"
      }
     ],
@@ -5737,8 +5761,8 @@
      "count": 8,
      "kind": "gain",
      "next_turn": true,
-     "potency": 8,
      "raw": "[On Use] Gain +8 [Aggro] to this Skill Slot next turn",
+     "stack": 8,
      "status": "Aggro"
     },
     {
@@ -5814,16 +5838,17 @@
       "component": "stack",
       "kind": "inflict",
       "next_turn": true,
-      "potency": 3,
       "raw": "[On Hit] Inflict 3 [Blue Sand] next turn",
+      "stack": 3,
       "status": "Blue Sand"
      },
      {
       "coin_index": 2,
+      "component": "stack",
       "kind": "inflict",
       "per_turn": 1,
-      "potency": 1,
       "raw": "[On Hit] Inflict 1 [Gloom Resist Down] (once per turn)",
+      "stack": 1,
       "status": "Gloom Resist Down"
      }
     ],
@@ -5863,8 +5888,8 @@
      "count": 8,
      "kind": "gain",
      "next_turn": true,
-     "potency": 8,
      "raw": "[On Use] Gain +8 [Aggro] to this Skill Slot next turn",
+     "stack": 8,
      "status": "Aggro"
     },
     {
@@ -5947,16 +5972,17 @@
       "component": "stack",
       "kind": "inflict",
       "next_turn": true,
-      "potency": 3,
       "raw": "[On Hit] Inflict 3 [Blue Sand] next turn",
+      "stack": 3,
       "status": "Blue Sand"
      },
      {
       "coin_index": 2,
+      "component": "stack",
       "kind": "inflict",
       "per_turn": 1,
-      "potency": 1,
       "raw": "[On Hit] Inflict 1 [Gloom Resist Down] (once per turn)",
+      "stack": 1,
       "status": "Gloom Resist Down"
      }
     ],
@@ -5974,17 +6000,6 @@
       "raw": "Deal +([LCA Fracture Round] spent x 30)% damage",
       "status": "LCA Fracture Round",
       "step": 30
-     },
-     {
-      "coin_index": 3,
-      "condition": {
-       "target_sp_below": 0
-      },
-      "kind": "inflict",
-      "per_turn": 1,
-      "potency": 1,
-      "raw": "If target has less than 0 SP, inflict 1 [Gloom Fragility] (once per turn)",
-      "status": "Gloom Fragility"
      },
      {
       "coin_index": 3,
@@ -6009,6 +6024,17 @@
       "kind": "tremor_burst",
       "raw": "[On Hit] If target is a SP Unit, trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1",
       "status": "Tremor Burst"
+     },
+     {
+      "coin_index": 3,
+      "condition": {
+       "target_sp_below": 0
+      },
+      "kind": "inflict",
+      "per_turn": 1,
+      "potency": 1,
+      "raw": "If target has less than 0 SP, inflict 1 [Gloom Fragility] (once per turn)",
+      "status": "Gloom Fragility"
      }
     ]
    },
@@ -6034,8 +6060,8 @@
      "count": 8,
      "kind": "gain",
      "next_turn": true,
-     "potency": 8,
      "raw": "[On Use] Gain +8 [Aggro] to this Skill Slot next turn",
+     "stack": 8,
      "status": "Aggro"
     },
     {
@@ -7175,10 +7201,10 @@
        }
       ]
      },
+     "count": 1,
      "kind": "gain",
      "next_turn": true,
      "per_turn": 1,
-     "potency": 1,
      "raw": "[Attack End] If target is defeated, or if it has 3 [Dazzle], gain 1 [Plus Coin Boost] next turn (once per turn)",
      "status": "Plus Coin Boost"
     }
@@ -7836,6 +7862,15 @@
      "kind": "attack_weight",
      "raw": "[Before Attack] At 4+ highest Reson., gain +1 Atk Weight",
      "value": 1
+    },
+    {
+     "condition": {
+      "resonance_gte": 1,
+      "resonance_of": "Gloom"
+     },
+     "kind": "attack_weight",
+     "raw": "If the said Reson. was a Gloom Reson., gain +1 Atk Weight",
+     "value": 1
     }
    ],
    "clash_lose": [],
@@ -7881,17 +7916,7 @@
    "note": "Bygone Days",
    "on_evade": [],
    "on_kill": [],
-   "on_use": [
-    {
-     "condition": {
-      "resonance_gte": 1,
-      "resonance_of": "Gloom"
-     },
-     "kind": "attack_weight",
-     "raw": "If the said Reson. was a Gloom Reson., gain +1 Atk Weight",
-     "value": 1
-    }
-   ],
+   "on_use": [],
    "tags": [],
    "turn_end": [],
    "turn_start": [],
@@ -8072,16 +8097,16 @@
     "3": [
      {
       "coin_index": 3,
-      "kind": "noop",
-      "note": "single-target skills hit 3",
-      "raw": "When attacking just a single target, apply it to 3 targets instead"
-     },
-     {
-      "coin_index": 3,
       "kind": "inflict_on_random_other",
       "potency": 2,
       "raw": "[On Hit] If there are Staggered, Part broken, or killed units among the targets, inflict 2 [Sinking] against a random non-targeted enemy (once per turn; in Focused Encounters, each Part count as 1 target)",
       "status": "Sinking"
+     },
+     {
+      "coin_index": 3,
+      "kind": "noop",
+      "note": "single-target skills hit 3",
+      "raw": "When attacking just a single target, apply it to 3 targets instead"
      },
      {
       "coin_index": 3,
@@ -8098,6 +8123,14 @@
    "on_evade": [],
    "on_kill": [],
    "on_use": [
+    {
+     "condition": {
+      "single_target": true
+     },
+     "kind": "coin_power",
+     "raw": "When attacking just a single target(in Focused Encounters, a Core and its connected Parts count as a single target), Coin Power +2 and deal +100% damage",
+     "value": 2
+    },
     {
      "kind": "damage_percent",
      "raw": "When attacking just a single target(in Focused Encounters, a Core and its connected Parts count as a single target), Coin Power +2 and deal +100% damage",
@@ -8132,9 +8165,34 @@
      "potency": 1,
      "raw": "[Attack End] Apply 1 [Blunt DMG Up] next turn to (highest Reson.) random allies (including this unit; max 4 allies; once per turn)",
      "status": "Blunt DMG Up"
+    },
+    {
+     "condition": {
+      "resonance_gte": 1,
+      "resonance_of": "Gloom"
+     },
+     "kind": "gain",
+     "potency": 1,
+     "raw": "If the said Reson. was a Gloom Reson. or an A-Reson., apply 1 [Gloom DMG Up] as well",
+     "status": "Gloom DMG Up"
     }
    ],
-   "before_attack": [],
+   "before_attack": [
+    {
+     "from_resonance": true,
+     "kind": "attack_weight",
+     "per": 3,
+     "raw": "Gain +1 Atk Weight (max 2)",
+     "step": 1
+    },
+    {
+     "kind": "damage_percent_per_resonance",
+     "max": 30,
+     "per": 3,
+     "raw": "Deal +15% damage (max 30%)",
+     "step": 15
+    }
+   ],
    "clash_lose": [],
    "clash_win": [],
    "coins": {
@@ -8208,30 +8266,6 @@
      "raw": "[On Use] Clash Power +1 for every 5 [Sinking] on the main target (max 2)",
      "step": 1,
      "value": 0
-    },
-    {
-     "from_resonance": true,
-     "kind": "attack_weight",
-     "per": 3,
-     "raw": "Gain +1 Atk Weight (max 2)",
-     "step": 1
-    },
-    {
-     "kind": "damage_percent_per_resonance",
-     "max": 30,
-     "per": 3,
-     "raw": "Deal +15% damage (max 30%)",
-     "step": 15
-    },
-    {
-     "condition": {
-      "resonance_gte": 1,
-      "resonance_of": "Gloom"
-     },
-     "kind": "gain",
-     "potency": 1,
-     "raw": "If the said Reson. was a Gloom Reson. or an A-Reson., apply 1 [Gloom DMG Up] as well",
-     "status": "Gloom DMG Up"
     }
    ],
    "tags": [
@@ -8371,18 +8405,6 @@
     "3": [
      {
       "coin_index": 3,
-      "kind": "reuse_coin",
-      "raw": "Then, Reuse this Coin (4 times per Skill)",
-      "reuse_coin": 4
-     },
-     {
-      "coin_index": 3,
-      "kind": "noop",
-      "note": "hp floor 1",
-      "raw": "This damage does not Stagger or reduce this unit's HP below 1"
-     },
-     {
-      "coin_index": 3,
       "kind": "inflict",
       "potency": 1,
       "raw": "[On Hit] Inflict 1 [Burn]",
@@ -8413,6 +8435,7 @@
    "heads_hit": {
     "3": [
      {
+      "coin_index": 3,
       "condition": {
        "hp_above_percent": 10
       },
@@ -8421,6 +8444,18 @@
       "raw": "[Heads Hit] At 10%+ HP, take 4 ~ 8 HP damage (once per Coin)",
       "self_damage_max": 8,
       "self_damage_min": 4
+     },
+     {
+      "coin_index": 3,
+      "kind": "reuse_coin",
+      "raw": "Then, Reuse this Coin (4 times per Skill)",
+      "reuse_coin": 4
+     },
+     {
+      "coin_index": 3,
+      "kind": "noop",
+      "note": "hp floor 1",
+      "raw": "This damage does not Stagger or reduce this unit's HP below 1"
      }
     ]
    },
@@ -8522,6 +8557,11 @@
        "status": "Fragile"
       }
      ]
+    },
+    {
+     "kind": "noop",
+     "note": "repeat on kill",
+     "raw": "If target was killed, activate the effect above once more"
     }
    ],
    "before_attack": [
@@ -8559,6 +8599,17 @@
     "3": [
      {
       "coin_index": 3,
+      "condition": {
+       "hp_above_percent": 10
+      },
+      "kind": "self_damage",
+      "per_turn": 1,
+      "raw": "[On Hit] At 10%+ HP, take 10 ~ 20 HP damage (once per Coin)",
+      "self_damage_max": 20,
+      "self_damage_min": 10
+     },
+     {
+      "coin_index": 3,
       "kind": "reuse_coin",
       "raw": "Then, Reuse this Coin if the sum of HP lost due to this effect is less than 50 (4 times per Skill)",
       "reuse_coin": 4,
@@ -8569,17 +8620,6 @@
       "kind": "noop",
       "note": "hp floor 1",
       "raw": "This damage does not Stagger or reduce this unit's HP below 1"
-     },
-     {
-      "coin_index": 3,
-      "condition": {
-       "hp_above_percent": 10
-      },
-      "kind": "self_damage",
-      "per_turn": 1,
-      "raw": "[On Hit] At 10%+ HP, take 10 ~ 20 HP damage (once per Coin)",
-      "self_damage_max": 20,
-      "self_damage_min": 10
      },
      {
       "coin_index": 3,
@@ -8640,11 +8680,6 @@
      "kind": "sub_target_damage",
      "percent": -50,
      "raw": "Deal -50% damage against sub-targets"
-    },
-    {
-     "kind": "noop",
-     "note": "repeat on kill",
-     "raw": "If target was killed, activate the effect above once more"
     }
    ],
    "tags": [
@@ -8665,18 +8700,7 @@
      "kind": "sp_heal",
      "raw": "[Attack End] Heal 12 SP to self and 2 other allies with the least SP",
      "value": 12
-    }
-   ],
-   "before_attack": [],
-   "clash_lose": [],
-   "clash_win": [],
-   "coins": {},
-   "combat_start": [],
-   "heads_hit": {},
-   "note": "Bygone Days",
-   "on_evade": [],
-   "on_kill": [],
-   "on_use": [
+    },
     {
      "condition": {
       "target_survived": true
@@ -8723,6 +8747,16 @@
      ]
     }
    ],
+   "before_attack": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {},
+   "combat_start": [],
+   "heads_hit": {},
+   "note": "Bygone Days",
+   "on_evade": [],
+   "on_kill": [],
+   "on_use": [],
    "tags": [],
    "turn_end": [],
    "turn_start": [],
@@ -9509,6 +9543,12 @@
      "potency": 2,
      "raw": "[Clash Lose] Gain 2 [Power Down] and 2 [Damage Down]",
      "status": "Power Down"
+    },
+    {
+     "count": 2,
+     "kind": "gain",
+     "raw": "[Clash Lose] Gain 2 [Power Down] and 2 [Damage Down]",
+     "status": "Damage Down"
     }
    ],
    "clash_win": [],
@@ -9588,7 +9628,13 @@
   "956704@1": {
    "attack_end": [],
    "before_attack": [],
-   "clash_lose": [],
+   "clash_lose": [
+    {
+     "flag": "no_stagger_target",
+     "kind": "flag",
+     "raw": "[Clash Lose] Target cannot be Staggered until this Skill's Attack End"
+    }
+   ],
    "clash_win": [],
    "coins": {
     "1": [
@@ -9655,8 +9701,7 @@
     }
    ],
    "tags": [
-    "clash_any_speed",
-    "no_stagger_target"
+    "clash_any_speed"
    ],
    "turn_end": [],
    "turn_start": [],
@@ -9665,7 +9710,13 @@
   "956705@1": {
    "attack_end": [],
    "before_attack": [],
-   "clash_lose": [],
+   "clash_lose": [
+    {
+     "flag": "no_stagger_target",
+     "kind": "flag",
+     "raw": "[Clash Lose] Target cannot be Staggered until this Skill's Attack End"
+    }
+   ],
    "clash_win": [],
    "coins": {
     "1": [
@@ -9689,14 +9740,6 @@
     "3": [
      {
       "coin_index": 3,
-      "consume_count": 2,
-      "kind": "activate_status",
-      "raw": "[On Hit without Cracking] Activate [Burn] on target 2 times. Target loses 2 [Burn] Count",
-      "status": "Burn",
-      "times": 2
-     },
-     {
-      "coin_index": 3,
       "condition": {
        "hp_below_percent": 33
       },
@@ -9706,6 +9749,14 @@
       "raw": "[Hit after Clash Lose] At less than 33% HP, activate [Burn] on the main target once. Target loses 1 [Burn] Count",
       "status": "Burn",
       "times": 1
+     },
+     {
+      "coin_index": 3,
+      "consume_count": 2,
+      "kind": "activate_status",
+      "raw": "[On Hit without Cracking] Activate [Burn] on target 2 times. Target loses 2 [Burn] Count",
+      "status": "Burn",
+      "times": 2
      }
     ]
    },
@@ -9765,8 +9816,7 @@
     }
    ],
    "tags": [
-    "clash_any_speed",
-    "no_stagger_target"
+    "clash_any_speed"
    ],
    "turn_end": [],
    "turn_start": [],
@@ -9775,13 +9825,36 @@
   "956706@1": {
    "attack_end": [],
    "before_attack": [],
-   "clash_lose": [],
+   "clash_lose": [
+    {
+     "kind": "halve_status",
+     "raw": "Halve [In the Past] (rounded down)",
+     "status": "In the Past"
+    },
+    {
+     "count": 2,
+     "kind": "gain",
+     "raw": "Gain 2 [Damage Down] and 4 [Paralyze]",
+     "status": "Damage Down"
+    },
+    {
+     "kind": "gain",
+     "potency": 4,
+     "raw": "Gain 2 [Damage Down] and 4 [Paralyze]",
+     "status": "Paralyze"
+    },
+    {
+     "flag": "no_stagger_target",
+     "kind": "flag",
+     "raw": "Target cannot be Staggered until this Skill's Attack End"
+    }
+   ],
    "clash_win": [
     {
      "component": "stack",
      "kind": "gain",
-     "potency": 5,
      "raw": "[Clash Win] Gain 5 [In the Past]",
+     "stack": 5,
      "status": "In the Past"
     }
    ],
@@ -9821,14 +9894,6 @@
     "4": [
      {
       "coin_index": 4,
-      "consume_count": 2,
-      "kind": "activate_status",
-      "raw": "[On Hit without Cracking] Activate [Burn] on target 2 times. Target loses 2 [Burn] Count",
-      "status": "Burn",
-      "times": 2
-     },
-     {
-      "coin_index": 4,
       "condition": {
        "hp_below_percent": 33
       },
@@ -9838,6 +9903,14 @@
       "raw": "[Hit after Clash Lose] At less than 33% HP, activate [Burn] on the main target once. Target loses 1 [Burn] Count",
       "status": "Burn",
       "times": 1
+     },
+     {
+      "coin_index": 4,
+      "consume_count": 2,
+      "kind": "activate_status",
+      "raw": "[On Hit without Cracking] Activate [Burn] on target 2 times. Target loses 2 [Burn] Count",
+      "status": "Burn",
+      "times": 2
      }
     ]
    },
@@ -9872,22 +9945,10 @@
      "raw": "Deal +([In the Past] x 4)% damage (max 120%)",
      "step": 4,
      "value": 0
-    },
-    {
-     "kind": "halve_status",
-     "raw": "Halve [In the Past] (rounded down)",
-     "status": "In the Past"
-    },
-    {
-     "kind": "gain",
-     "potency": 2,
-     "raw": "Gain 2 [Damage Down] and 4 [Paralyze]",
-     "status": "Damage Down"
     }
    ],
    "tags": [
-    "clash_any_speed",
-    "no_stagger_target"
+    "clash_any_speed"
    ],
    "turn_end": [],
    "turn_start": [],
@@ -9904,7 +9965,13 @@
      "status": "Poise"
     }
    ],
-   "clash_lose": [],
+   "clash_lose": [
+    {
+     "flag": "no_stagger_target",
+     "kind": "flag",
+     "raw": "[Clash Lose] Target cannot be Staggered until this Skill's Attack End"
+    }
+   ],
    "clash_win": [],
    "coins": {
     "1": [
@@ -9941,6 +10008,19 @@
      "value": 1
     },
     {
+     "condition": {
+      "component": "potency",
+      "source": "self",
+      "status": "Poise"
+     },
+     "kind": "damage_percent",
+     "max": 60,
+     "per": 6,
+     "raw": "Clash Power +1 and deal +10% damage for every 6 [Poise] on self (max 6 and 60%, respectively)",
+     "step": 10,
+     "value": 0
+    },
+    {
      "coins": [
       2
      ],
@@ -9963,8 +10043,7 @@
     }
    ],
    "tags": [
-    "clash_any_speed",
-    "no_stagger_target"
+    "clash_any_speed"
    ],
    "turn_end": [],
    "turn_start": [],
@@ -9981,7 +10060,13 @@
      "status": "Poise"
     }
    ],
-   "clash_lose": [],
+   "clash_lose": [
+    {
+     "flag": "no_stagger_target",
+     "kind": "flag",
+     "raw": "[Clash Lose] Target cannot be Staggered until this Skill's Attack End"
+    }
+   ],
    "clash_win": [],
    "coins": {
     "1": [
@@ -10006,6 +10091,19 @@
      {
       "coin_index": 3,
       "condition": {
+       "hp_below_percent": 33
+      },
+      "kind": "damage_percent",
+      "max": 30,
+      "only_after_clash_lose": true,
+      "per": 1,
+      "raw": "[Hit after Clash Lose] At less than 33% HP, deal +([Poise] Count on self)% damage (max 30%)",
+      "step": 1,
+      "value": 0
+     },
+     {
+      "coin_index": 3,
+      "condition": {
        "component": "potency",
        "source": "self",
        "status": "Poise"
@@ -10016,22 +10114,22 @@
       "raw": "[On Hit without Cracking] Deal +([Poise] on self)% damage (max 50%)",
       "step": 1,
       "value": 0
-     },
+     }
+    ],
+    "4": [
      {
-      "coin_index": 3,
+      "coin_index": 4,
       "condition": {
        "hp_below_percent": 33
       },
       "kind": "damage_percent",
-      "max": 30,
+      "max": 50,
       "only_after_clash_lose": true,
       "per": 1,
-      "raw": "[Hit after Clash Lose] At less than 33% HP, deal +([Poise] Count on self)% damage (max 30%)",
+      "raw": "[Hit after Clash Lose] At less than 33% HP, deal +([Poise] Count on self)% damage (max 50%)",
       "step": 1,
       "value": 0
-     }
-    ],
-    "4": [
+     },
      {
       "coin_index": 4,
       "condition": {
@@ -10044,19 +10142,6 @@
       "per": 1,
       "raw": "[On Hit without Cracking] Deal +([Poise] on self x 2)% damage (max 100%)",
       "step": 2,
-      "value": 0
-     },
-     {
-      "coin_index": 4,
-      "condition": {
-       "hp_below_percent": 33
-      },
-      "kind": "damage_percent",
-      "max": 50,
-      "only_after_clash_lose": true,
-      "per": 1,
-      "raw": "[Hit after Clash Lose] At less than 33% HP, deal +([Poise] Count on self)% damage (max 50%)",
-      "step": 1,
       "value": 0
      }
     ]
@@ -10071,6 +10156,19 @@
      "kind": "clash_power",
      "raw": "Clash Power +1 and deal +10% damage for every 6 [Poise] on self (max 6 and 60%, respectively)",
      "value": 1
+    },
+    {
+     "condition": {
+      "component": "potency",
+      "source": "self",
+      "status": "Poise"
+     },
+     "kind": "damage_percent",
+     "max": 60,
+     "per": 6,
+     "raw": "Clash Power +1 and deal +10% damage for every 6 [Poise] on self (max 6 and 60%, respectively)",
+     "step": 10,
+     "value": 0
     },
     {
      "condition": {
@@ -10110,8 +10208,7 @@
     }
    ],
    "tags": [
-    "clash_any_speed",
-    "no_stagger_target"
+    "clash_any_speed"
    ],
    "turn_end": [],
    "turn_start": [],
@@ -10123,6 +10220,11 @@
      "kind": "reuse_on_kill",
      "per_turn": 1,
      "raw": "[Attack End] If target is killed, Reuse this Skill on the target that has the highest HP (once per turn)"
+    },
+    {
+     "kind": "noop",
+     "note": "clash-lose gate",
+     "raw": "On Clash Lose, this effect does not activate"
     }
    ],
    "before_attack": [
@@ -10134,15 +10236,43 @@
      "step": 5,
      "threshold": 20,
      "value": 20
+    },
+    {
+     "kind": "noop",
+     "note": "clash-lose gate",
+     "raw": "On Clash Lose, this effect does not activate"
     }
    ],
-   "clash_lose": [],
+   "clash_lose": [
+    {
+     "kind": "halve_status",
+     "raw": "Halve [In the Present] (rounded down)",
+     "status": "In the Present"
+    },
+    {
+     "count": 2,
+     "kind": "gain",
+     "raw": "Gain 2 [Damage Down] and 1 [Paralyze]",
+     "status": "Damage Down"
+    },
+    {
+     "kind": "gain",
+     "potency": 1,
+     "raw": "Gain 2 [Damage Down] and 1 [Paralyze]",
+     "status": "Paralyze"
+    },
+    {
+     "flag": "no_stagger_target",
+     "kind": "flag",
+     "raw": "Target cannot be Staggered until this Skill's Attack End"
+    }
+   ],
    "clash_win": [
     {
      "component": "stack",
      "kind": "gain",
-     "potency": 5,
      "raw": "[Clash Win] Gain 5 [In the Present]",
+     "stack": 5,
      "status": "In the Present"
     }
    ],
@@ -10185,6 +10315,19 @@
      "value": 1
     },
     {
+     "condition": {
+      "component": "potency",
+      "source": "self",
+      "status": "Poise"
+     },
+     "kind": "damage_percent",
+     "max": 120,
+     "per": 6,
+     "raw": "Final Power +1 and deal +20% damage for every 6 [Poise] on self (max 6 and 120%, respectively)",
+     "step": 20,
+     "value": 0
+    },
+    {
      "count": 4,
      "kind": "gain",
      "potency": 4,
@@ -10204,32 +10347,10 @@
      "raw": "Deal +([In the Present] x 4)% damage (max 120%)",
      "step": 4,
      "value": 0
-    },
-    {
-     "kind": "noop",
-     "note": "clash-lose gate",
-     "raw": "On Clash Lose, this effect does not activate"
-    },
-    {
-     "kind": "halve_status",
-     "raw": "Halve [In the Present] (rounded down)",
-     "status": "In the Present"
-    },
-    {
-     "kind": "gain",
-     "potency": 2,
-     "raw": "Gain 2 [Damage Down] and 1 [Paralyze]",
-     "status": "Damage Down"
-    },
-    {
-     "kind": "noop",
-     "note": "clash-lose gate",
-     "raw": "On Clash Lose, this effect does not activate"
     }
    ],
    "tags": [
-    "clash_any_speed",
-    "no_stagger_target"
+    "clash_any_speed"
    ],
    "turn_end": [],
    "turn_start": [],
@@ -10238,7 +10359,13 @@
   "956710@1": {
    "attack_end": [],
    "before_attack": [],
-   "clash_lose": [],
+   "clash_lose": [
+    {
+     "flag": "no_stagger_target",
+     "kind": "flag",
+     "raw": "[Clash Lose] Target cannot be Staggered until this Skill's Attack End"
+    }
+   ],
    "clash_win": [],
    "coins": {
     "1": [
@@ -10305,8 +10432,7 @@
     }
    ],
    "tags": [
-    "clash_any_speed",
-    "no_stagger_target"
+    "clash_any_speed"
    ],
    "turn_end": [],
    "turn_start": [],
@@ -10315,7 +10441,13 @@
   "956711@1": {
    "attack_end": [],
    "before_attack": [],
-   "clash_lose": [],
+   "clash_lose": [
+    {
+     "flag": "no_stagger_target",
+     "kind": "flag",
+     "raw": "[Clash Lose] Target cannot be Staggered until this Skill's Attack End"
+    }
+   ],
    "clash_win": [],
    "coins": {
     "1": [
@@ -10332,14 +10464,6 @@
     "2": [
      {
       "coin_index": 2,
-      "consume_count": 2,
-      "kind": "activate_status",
-      "raw": "[On Hit without Cracking] Activate [Bleed] on target 2 times. Target loses 2 [Bleed] Count",
-      "status": "Bleed",
-      "times": 2
-     },
-     {
-      "coin_index": 2,
       "condition": {
        "hp_below_percent": 33
       },
@@ -10349,6 +10473,14 @@
       "raw": "[Hit after Clash Lose] At less than 33% HP, activate [Bleed] on the main target once. Target loses 1 [Bleed] Count",
       "status": "Bleed",
       "times": 1
+     },
+     {
+      "coin_index": 2,
+      "consume_count": 2,
+      "kind": "activate_status",
+      "raw": "[On Hit without Cracking] Activate [Bleed] on target 2 times. Target loses 2 [Bleed] Count",
+      "status": "Bleed",
+      "times": 2
      }
     ]
    },
@@ -10408,7 +10540,6 @@
    ],
    "tags": [
     "clash_any_speed",
-    "no_stagger_target",
     "status_count_floor:Bleed"
    ],
    "turn_end": [],
@@ -10418,13 +10549,36 @@
   "956712@1": {
    "attack_end": [],
    "before_attack": [],
-   "clash_lose": [],
+   "clash_lose": [
+    {
+     "kind": "halve_status",
+     "raw": "Halve [In the Future] (rounded down)",
+     "status": "In the Future"
+    },
+    {
+     "count": 2,
+     "kind": "gain",
+     "raw": "Gain 2 [Damage Down] and 2 [Paralyze]",
+     "status": "Damage Down"
+    },
+    {
+     "kind": "gain",
+     "potency": 2,
+     "raw": "Gain 2 [Damage Down] and 2 [Paralyze]",
+     "status": "Paralyze"
+    },
+    {
+     "flag": "no_stagger_target",
+     "kind": "flag",
+     "raw": "Target cannot be Staggered until this Skill's Attack End"
+    }
+   ],
    "clash_win": [
     {
      "component": "stack",
      "kind": "gain",
-     "potency": 5,
      "raw": "[Clash Win] Gain 5 [In the Future]",
+     "stack": 5,
      "status": "In the Future"
     }
    ],
@@ -10452,14 +10606,6 @@
      },
      {
       "coin_index": 2,
-      "consume_count": 2,
-      "kind": "activate_status",
-      "raw": "[On Hit without Cracking] Activate [Bleed] on target 2 times. Target loses 2 [Bleed] Count",
-      "status": "Bleed",
-      "times": 2
-     },
-     {
-      "coin_index": 2,
       "condition": {
        "hp_below_percent": 33
       },
@@ -10469,6 +10615,14 @@
       "raw": "[Hit after Clash Lose] At less than 33% HP, activate [Bleed] on target once. Target loses 1 [Bleed] Count",
       "status": "Bleed",
       "times": 1
+     },
+     {
+      "coin_index": 2,
+      "consume_count": 2,
+      "kind": "activate_status",
+      "raw": "[On Hit without Cracking] Activate [Bleed] on target 2 times. Target loses 2 [Bleed] Count",
+      "status": "Bleed",
+      "times": 2
      }
     ]
    },
@@ -10503,22 +10657,10 @@
      "raw": "Deal +([In the Future] x 4)% damage (max 120%)",
      "step": 4,
      "value": 0
-    },
-    {
-     "kind": "halve_status",
-     "raw": "Halve [In the Future] (rounded down)",
-     "status": "In the Future"
-    },
-    {
-     "kind": "gain",
-     "potency": 2,
-     "raw": "Gain 2 [Damage Down] and 2 [Paralyze]",
-     "status": "Damage Down"
     }
    ],
    "tags": [
     "clash_any_speed",
-    "no_stagger_target",
     "status_count_floor:Bleed"
    ],
    "turn_end": [],

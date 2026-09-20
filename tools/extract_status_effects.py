@@ -297,6 +297,21 @@ def used_statuses() -> set:
     return names
 
 
+def infer_structure(text: str, primary: str) -> str:
+    """Which values a status carries, for statuses the localisation dump lacks.
+
+    A wiki-only status such as Poise mentions both halves ("Critical hit chance
+    +Potency%; critical hits consume 1 Count"), so it is a Potency/Count status
+    and is removed once either reaches 0 (wiki.gg `Status Effects`).
+    """
+    lowered = text.lower()
+    if primary == "stack" or "stack" in lowered:
+        return "stack"
+    if "count" in lowered and "potency" in lowered:
+        return "potency_count"
+    return "single"
+
+
 def load(path: str):
     with open(path, encoding="utf-8") as fh:
         return json.load(fh)
@@ -307,11 +322,19 @@ def main() -> int:
     primary: Dict[str, str] = {}
     expires: Dict[str, bool] = {}
     expiry: Dict[str, str] = {}
+    structure: Dict[str, str] = {}
     for record in statuses:
         name = record.get("name_en") or record.get("wiki_name")
         if name:
             primary.setdefault(name, record.get("primary") or "potency")
             expiry.setdefault(name, record.get("expiry") or "either_zero")
+            value = record.get("structure") or "single"
+            if (record.get("primary") or "") == "stack":
+                # The status' own text measures it by Stack ("0.1 per Stack"),
+                # so it carries a single Stack value even when the table calls it
+                # Potency/Count.
+                value = "stack"
+            structure.setdefault(name, value)
             if record.get("expires_at_turn_end"):
                 expires[name] = True
     wiki = load(os.path.join(DATA, "_raw", "wiki_status_text.json"))
@@ -347,6 +370,10 @@ def main() -> int:
             "key": key,
             "used_by_fixed_content": name in used,
             "primary": primary.get(name, "potency"),
+            # `single` statuses (Charge-like resources, "Potency Fixed") have no
+            # second value, so "either reaches 0" must not fire on the value they
+            # never use.
+            "structure": structure.get(name) or infer_structure(text, primary.get(name, "potency")),
             "expiry": expiry.get(name, "either_zero"),
             "expires_at_turn_end": bool(expires.get(name, False)),
             "name": name,

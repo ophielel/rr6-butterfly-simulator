@@ -636,7 +636,10 @@ fn tremor_burst_raises_stagger_threshold() {
         .unwrap();
     state.units[1].statuses.add_potency("Tremor", 15);
     state.units[1].statuses.add_count("Tremor", 2);
-    let before = state.units[1].stagger.thresholds_percent[0];
+    // Stagger lines are HP amounts: "[Tremor Burst] raises the target's Stagger
+    // Threshold by [Tremor] Potency" moves the line by 15 **HP**, not 15% of max
+    // HP (JA-wiki 戦闘システム詳細 / 振動爆発).
+    let before = state.units[1].stagger.threshold_hp(0).unwrap();
     let effects = vec![lcb_core::effects::Effect {
         kind: "tremor_burst".to_string(),
         consume_count: Some(1),
@@ -645,7 +648,7 @@ fn tremor_burst_raises_stagger_threshold() {
     let mut notes = Vec::new();
     let mut use_ctx = battle::UseContext::default();
     battle::apply_effects_for_test(&mut state, &effects, 0, Some(1), &mut notes, &mut use_ctx);
-    assert_eq!(state.units[1].stagger.thresholds_percent[0], before + 15);
+    assert_eq!(state.units[1].stagger.threshold_hp(0).unwrap(), before + 15);
     assert_eq!(state.units[1].statuses.count("Tremor"), 1);
 }
 
@@ -912,8 +915,10 @@ fn consume_status_for_damage() {
     let mut ctx = battle::UseContext::default();
     battle::apply_effects_for_test(&mut state, &[effect.clone()], 0, Some(1), &mut notes, &mut ctx);
     assert!((ctx.damage_bonus - 0.15).abs() < 1e-9);
-    assert_eq!(state.units[0].statuses.potency("Deep Tears"), 0);
+    // "consume 5 [Deep Tears]" spends 5 and leaves the rest behind.
+    assert_eq!(state.units[0].statuses.potency("Deep Tears"), 15);
     // Below the threshold nothing happens.
+    state.units[0].statuses.remove("Deep Tears");
     state.units[0].statuses.add_potency("Deep Tears", 5);
     let mut ctx = battle::UseContext::default();
     battle::apply_effects_for_test(&mut state, &[effect], 0, Some(1), &mut notes, &mut ctx);
@@ -1693,10 +1698,10 @@ fn section5_golden_replay_is_deterministic() {
     // action per Slot").  Update only together with a sourced rule change, and
     // name the source in the commit message.  Last updated when the identities'
     // passives started applying (in-game `Passives.json`).
-    assert_eq!(first_hp, vec![25502, 25359, 25211], "Imago HP after turns 1-3");
+    assert_eq!(first_hp, vec![25489, 25379, 25235], "Imago HP after turns 1-3");
     assert_eq!(
         format!("{first_hash:016x}"),
-        "86bb192ab6bc28f7",
+        "f6049451b65db55a",
         "recorded state hash"
     );
 }
@@ -2651,6 +2656,7 @@ fn protection_lands_on_count_and_one_turn_statuses_expire() {
     state.units[0].statuses.remove("Protection");
     // A real Skill grants it: 1111403's Attack End queues it for the next turn.
     state.units[0].pending_next_turn.push(lcb_core::state::PendingStatus {
+        stack: 0,
         status: "Protection".to_string(),
         potency: 0,
         count: 2,
@@ -2704,6 +2710,7 @@ fn next_turn_speed_status_arrives_before_speed_is_rolled() {
     assert_eq!(state.units[0].speed, 5, "no Bind yet");
     // The Skill queued "[On Use] Gain 1 [Bind] next turn".
     state.units[0].pending_next_turn.push(lcb_core::state::PendingStatus {
+        stack: 0,
         status: "Bind".to_string(),
         potency: 0,
         count: 1,

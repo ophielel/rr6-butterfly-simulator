@@ -371,6 +371,7 @@ impl<'a> EncounterBuilder<'a> {
         let resist_sin: BTreeMap<String, f64> =
             Sin::ALL.iter().map(|s| (sin_key(*s).to_string(), 1.0)).collect();
         Ok(Unit {
+            planned_targets: 1,
             id: UnitId::new(format!("sinner-{index}-{}", record.id)),
             kind: UnitKind::Sinner {
                 identity: IdentityId::new(record.id.clone()),
@@ -391,7 +392,11 @@ impl<'a> EncounterBuilder<'a> {
             defense_level_mod: record.stats.defense_level_mod.unwrap_or(0),
             resist_physical,
             resist_sin,
-            stagger: StaggerState::new(record.stats.stagger_thresholds.clone()),
+            stagger: {
+                let mut stagger = StaggerState::new(record.stats.stagger_thresholds.clone());
+                stagger.bind_max_hp(max_hp);
+                stagger
+            },
             statuses: StatusSet::default(),
             identity_skills: record.skills.iter().map(|s| SkillId::new(s.id.clone())).collect(),
             passives: Vec::new(),
@@ -461,6 +466,7 @@ impl<'a> EncounterBuilder<'a> {
             })
             .unwrap_or((1, 3));
         Ok(Unit {
+            planned_targets: 1,
             id: UnitId::new(format!("enemy-{index}-{}", record.id)),
             kind: UnitKind::Abnormality {
                 enemy: EnemyId::new(record.id.clone()),
@@ -485,7 +491,11 @@ impl<'a> EncounterBuilder<'a> {
                 .unwrap_or(0),
             resist_physical,
             resist_sin,
-            stagger: StaggerState::new(thresholds),
+            stagger: {
+                let mut stagger = StaggerState::new(thresholds);
+                stagger.bind_max_hp(max_hp);
+                stagger
+            },
             statuses: StatusSet::default(),
             identity_skills: Vec::new(),
             passives: Vec::new(),
