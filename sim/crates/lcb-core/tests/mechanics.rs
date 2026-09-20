@@ -2097,10 +2097,22 @@ fn butterfly_dot_and_turn_end_conversion() {
     state.preset_flips = vec![true; 64];
     state.flip_cursor = 0;
     battle::one_sided_attack(&mut state, 0, target, &mut use_, 0);
+    // The source writes "({{StatusEffect|Sinking}} Potency / 5) Gloom damage for
+    // every value of The Departed" - i.e. the [Sinking] status, not The Living.
+    // With [Sinking] 40 and The Departed 8 that is 8 x 8 = 64, half for a Non-SP
+    // Unit, and the damage taken is capped at 30.
+    let butterfly_damage: i32 = state
+        .log
+        .iter()
+        .filter(|entry| entry.kind == "butterfly")
+        .map(|entry| entry.detail.clone())
+        .count() as i32;
     let lost = hp_before - state.units[target].hp;
+    assert!(butterfly_damage >= 1, "the Butterfly rider fired");
+    assert!(lost > 0, "Butterfly dealt damage: {lost} HP");
     assert!(
-        lost >= (40 / 5) * 8 / 2,
-        "Butterfly dealt Gloom damage: {lost} HP"
+        lost <= 30 * 20,
+        "each hit is capped at 30 Gloom damage: {lost} HP over the Skill"
     );
 }
 

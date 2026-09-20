@@ -3173,13 +3173,13 @@ fn apply_hit(
             if non_sp_unit {
                 gloom /= 2;
             }
-            gloom = gloom.min(30);
             if gloom > 0 {
                 let resist = state.units[defender_index].resist_sin(Sin::Gloom);
-                let damage = (gloom as f64
+                let dealt = (gloom as f64
                     * (1.0 + crate::damage::resistance_modifier(resist)))
-                .floor()
-                .max(1.0) as i32;
+                .floor() as i32;
+                // "max Gloom damage 30" bounds the damage actually taken.
+                let damage = dealt.clamp(1, 30);
                 state.units[defender_index].take_damage(damage);
                 state.push_log(
                     "butterfly",
