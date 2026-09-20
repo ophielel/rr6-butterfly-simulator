@@ -833,6 +833,7 @@ def parse_triggered(trigger: str, text: str, raw: str) -> Optional[dict]:
         if trigger == "coin_reuse":
             effect["reuse_only"] = True
             effect["trigger"] = "coin"
+        effect = apply_primary_component(effect)
         effect = apply_stack_component(effect)
         if limits:
             if effect.get("kind") == "reuse_coin":
@@ -923,6 +924,44 @@ TAG_LINES = {
 
 def format_status_count_floor(status: str) -> str:
     return f"status_count_floor:{status}"
+
+
+def load_status_primary() -> dict:
+    """Status display name -> the component its plain "Gain N [X]" form fills."""
+    path = os.path.join(DATA, "statuses", "statuses.json")
+    if not os.path.exists(path):
+        return {}
+    with open(path, encoding="utf-8") as fh:
+        records = json.load(fh)
+    out = {}
+    for record in records:
+        name = record.get("name_en") or record.get("wiki_name")
+        if name:
+            out.setdefault(name, record.get("primary") or "potency")
+    return out
+
+
+STATUS_PRIMARY = load_status_primary()
+
+
+def apply_primary_component(effect: dict) -> dict:
+    """Move `potency` to `count` for Count-measured statuses.
+
+    "Gain 2 [Protection]" means 2 Protection **Count** (the status text reads
+    "Take less damage based on the effect's Count"), while "Inflict 2 [Burn]"
+    means 2 Burn Potency.  Which one a bare clause fills depends on the status.
+    """
+    if effect.get("kind") not in ("inflict", "gain"):
+        return effect
+    for key in ("status", "status2"):
+        name = effect.get(key)
+        if name and STATUS_PRIMARY.get(name) == "count" and "count" not in effect:
+            if "potency" in effect:
+                effect["count"] = effect.pop("potency")
+            break
+    for sub in effect.get("sub_effects") or []:
+        apply_primary_component(sub)
+    return effect
 
 
 def load_stack_statuses() -> set:

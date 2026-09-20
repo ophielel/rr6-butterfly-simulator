@@ -448,6 +448,17 @@ impl Library {
         self.identities.get(id.as_str())
     }
 
+    /// E.G.O resource costs, keyed by the same lowercase sin key the battle
+    /// state uses.  The wiki/game data spells them capitalised, so a raw lookup
+    /// never matched the resources a team actually accumulated.
+    pub fn ego_cost<'a>(record: &'a EgoRecord) -> Vec<(String, i32)> {
+        record
+            .resource_cost
+            .iter()
+            .map(|(sin, amount)| (sin.to_lowercase(), *amount))
+            .collect()
+    }
+
     pub fn ego(&self, id: &EgoId) -> Option<&EgoRecord> {
         self.egos.get(id.as_str())
     }

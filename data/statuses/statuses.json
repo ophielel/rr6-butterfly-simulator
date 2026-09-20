@@ -2,6 +2,8 @@
   {
     "key": "Burn",
     "structure": "potency_count",
+    "primary": "potency",
+    "expires_at_turn_end": false,
     "name_en": "Burn",
     "name_zh": "烧伤",
     "wiki_name": "Burn",
@@ -20,6 +22,8 @@
   {
     "key": "Combustion",
     "structure": "potency_count",
+    "primary": "potency",
+    "expires_at_turn_end": false,
     "name_en": "Burn",
     "name_zh": "烧伤",
     "wiki_name": "Burn",
@@ -38,6 +42,8 @@
   {
     "key": "Laceration",
     "structure": "potency_count",
+    "primary": "potency",
+    "expires_at_turn_end": false,
     "name_en": "Bleed",
     "name_zh": "流血",
     "wiki_name": "Bleed",
@@ -56,6 +62,8 @@
   {
     "key": "Sinking",
     "structure": "potency_count",
+    "primary": "potency",
+    "expires_at_turn_end": false,
     "name_en": "Sinking",
     "name_zh": "沉沦",
     "wiki_name": "Sinking",
@@ -74,6 +82,8 @@
   {
     "key": "SinkingWhite",
     "structure": "potency_count",
+    "primary": "potency",
+    "expires_at_turn_end": false,
     "name_en": "Butterfly",
     "name_zh": "蝶",
     "wiki_name": "Butterfly",
@@ -92,6 +102,8 @@
   {
     "key": "BulletLament",
     "structure": "potency_count",
+    "primary": "potency",
+    "expires_at_turn_end": false,
     "name_en": "The Living & The Departed",
     "name_zh": "生蝶·亡蝶",
     "wiki_name": "The Living & The Departed",
@@ -110,6 +122,8 @@
   {
     "key": "ReloadLament",
     "structure": "potency_count",
+    "primary": "potency",
+    "expires_at_turn_end": false,
     "name_en": "Reload",
     "name_zh": "再次装填",
     "wiki_name": "Reload (Solemn Lament)",
@@ -128,6 +142,8 @@
   {
     "key": "Vulnerable",
     "structure": "potency_count",
+    "primary": "count",
+    "expires_at_turn_end": true,
     "name_en": "Fragile",
     "name_zh": "易损",
     "wiki_name": "Fragile",
@@ -146,6 +162,8 @@
   {
     "key": "StackPast",
     "structure": "stack",
+    "primary": "potency",
+    "expires_at_turn_end": false,
     "name_en": "In the Past (Deactivated)",
     "name_zh": "过去状态（已禁用）",
     "wiki_name": "In the Past (Deactivated)",
@@ -164,6 +182,8 @@
   {
     "key": "StackPresent",
     "structure": "stack",
+    "primary": "potency",
+    "expires_at_turn_end": false,
     "name_en": "In the Present (Deactivated)",
     "name_zh": "现在状态（已禁用）",
     "wiki_name": "In the Present (Deactivated)",
@@ -182,6 +202,8 @@
   {
     "key": "StackFuture",
     "structure": "stack",
+    "primary": "potency",
+    "expires_at_turn_end": false,
     "name_en": "In the Future (Deactivated)",
     "name_zh": "未来状态（已禁用）",
     "wiki_name": "In the Future (Deactivated)",
@@ -200,6 +222,8 @@
   {
     "key": "StackPastActivate",
     "structure": "stack",
+    "primary": "potency",
+    "expires_at_turn_end": false,
     "name_en": "In the Past",
     "name_zh": "过去状态",
     "wiki_name": "In the Past",
@@ -218,6 +242,8 @@
   {
     "key": "StackPresentActivate",
     "structure": "stack",
+    "primary": "potency",
+    "expires_at_turn_end": false,
     "name_en": "In the Present",
     "name_zh": "现在状态",
     "wiki_name": "In the Present",
@@ -236,6 +262,8 @@
   {
     "key": "StackFutureActivate",
     "structure": "stack",
+    "primary": "potency",
+    "expires_at_turn_end": false,
     "name_en": "In the Future",
     "name_zh": "未来状态",
     "wiki_name": "In the Future",
@@ -254,6 +282,8 @@
   {
     "key": "TimeGap",
     "structure": "stack",
+    "primary": "potency",
+    "expires_at_turn_end": false,
     "name_en": "Temporal Disjunction",
     "name_zh": "时间背离",
     "wiki_name": "Temporal Disjunction",
@@ -272,6 +302,8 @@
   {
     "key": "HeatedWingScales",
     "structure": "potency_count",
+    "primary": "potency",
+    "expires_at_turn_end": false,
     "name_en": "Incandescent Scale Dust",
     "name_zh": "灼热的鳞粉",
     "wiki_name": "Incandescent Scale Dust",
@@ -290,6 +322,8 @@
   {
     "key": "TransparentWingScales",
     "structure": "potency_count",
+    "primary": "potency",
+    "expires_at_turn_end": false,
     "name_en": "Acuate Scale Dust",
     "name_zh": "锐利的鳞粉",
     "wiki_name": "Acuate Scale Dust",
@@ -308,6 +342,8 @@
   {
     "key": "RustedWingScales",
     "structure": "potency_count",
+    "primary": "potency",
+    "expires_at_turn_end": false,
     "name_en": "Rusted Scale Dust",
     "name_zh": "锈蚀的鳞粉",
     "wiki_name": "Rusted Scale Dust",
@@ -326,6 +362,8 @@
   {
     "key": "Vibration",
     "structure": "potency_count",
+    "primary": "potency",
+    "expires_at_turn_end": false,
     "name_en": "Tremor",
     "name_zh": "震颤",
     "wiki_name": "Tremor",
@@ -344,6 +382,8 @@
   {
     "key": "VibrationExplosion",
     "structure": "potency_count",
+    "primary": "potency",
+    "expires_at_turn_end": false,
     "name_en": "Tremor Burst",
     "name_zh": "震颤引爆",
     "wiki_name": "Tremor Burst",
@@ -362,6 +402,8 @@
   {
     "key": "Switch_Vibration",
     "structure": "potency_count",
+    "primary": "potency",
+    "expires_at_turn_end": false,
     "name_en": "Amplitude Conversion",
     "name_zh": "振幅转换",
     "wiki_name": "Amplitude Conversion",
@@ -380,6 +422,8 @@
   {
     "key": "Charge",
     "structure": "potency_count",
+    "primary": "count",
+    "expires_at_turn_end": false,
     "name_en": "Charge",
     "name_zh": "充能",
     "wiki_name": "Charge",
@@ -398,6 +442,8 @@
   {
     "key": "Burst",
     "structure": "potency_count",
+    "primary": "potency",
+    "expires_at_turn_end": false,
     "name_en": "Rupture",
     "name_zh": "破裂",
     "wiki_name": "Rupture",
@@ -416,6 +462,8 @@
   {
     "key": "Protection",
     "structure": "potency_count",
+    "primary": "count",
+    "expires_at_turn_end": true,
     "name_en": "Protection",
     "name_zh": "守护",
     "wiki_name": "Protection",
@@ -434,6 +482,8 @@
   {
     "key": "AttackDmgUp",
     "structure": "potency_count",
+    "primary": "potency",
+    "expires_at_turn_end": true,
     "name_en": "Damage Up",
     "name_zh": "伤害强化",
     "wiki_name": "Damage Up",
@@ -452,6 +502,8 @@
   {
     "key": "AttackDmgDown",
     "structure": "potency_count",
+    "primary": "potency",
+    "expires_at_turn_end": true,
     "name_en": "Damage Down",
     "name_zh": "伤害弱化",
     "wiki_name": "Damage Down",
@@ -470,6 +522,8 @@
   {
     "key": "ResultEnhancement",
     "structure": "potency_count",
+    "primary": "potency",
+    "expires_at_turn_end": true,
     "name_en": "Power Up",
     "name_zh": "威力提升",
     "wiki_name": "Power Up",
@@ -488,6 +542,8 @@
   {
     "key": "ResultReduction",
     "structure": "potency_count",
+    "primary": "potency",
+    "expires_at_turn_end": true,
     "name_en": "Power Down",
     "name_zh": "威力降低",
     "wiki_name": "Power Down",
@@ -506,6 +562,8 @@
   {
     "key": "Enhancement",
     "structure": "potency_count",
+    "primary": "potency",
+    "expires_at_turn_end": true,
     "name_en": "Attack Power Up",
     "name_zh": "强壮",
     "wiki_name": "Attack Power Up",
@@ -524,6 +582,8 @@
   {
     "key": "Reduction",
     "structure": "potency_count",
+    "primary": "potency",
+    "expires_at_turn_end": true,
     "name_en": "Attack Power Down",
     "name_zh": "虚弱",
     "wiki_name": "Attack Power Down",
@@ -542,6 +602,8 @@
   {
     "key": "AttackUp",
     "structure": "potency_count",
+    "primary": "potency",
+    "expires_at_turn_end": true,
     "name_en": "Offense Level Up",
     "name_zh": "攻击等级提升",
     "wiki_name": "Offense Level Up",
@@ -560,6 +622,8 @@
   {
     "key": "AttackDown",
     "structure": "potency_count",
+    "primary": "potency",
+    "expires_at_turn_end": true,
     "name_en": "Offense Level Down ",
     "name_zh": "攻击等级降低",
     "wiki_name": "Offense Level Down",
@@ -578,6 +642,8 @@
   {
     "key": "DefenseUp",
     "structure": "potency_count",
+    "primary": "potency",
+    "expires_at_turn_end": true,
     "name_en": "Defense Level Up",
     "name_zh": "防御等级提升",
     "wiki_name": "Defense Level Up",
@@ -596,6 +662,8 @@
   {
     "key": "DefenseDown",
     "structure": "potency_count",
+    "primary": "potency",
+    "expires_at_turn_end": true,
     "name_en": "Defense Level Down",
     "name_zh": "防御等级降低",
     "wiki_name": "Defense Level Down",
@@ -614,6 +682,8 @@
   {
     "key": "Binding",
     "structure": "potency_count",
+    "primary": "count",
+    "expires_at_turn_end": true,
     "name_en": "Bind",
     "name_zh": "束缚",
     "wiki_name": "Bind",
@@ -632,6 +702,8 @@
   {
     "key": "Agility",
     "structure": "potency_count",
+    "primary": "count",
+    "expires_at_turn_end": true,
     "name_en": "Haste",
     "name_zh": "迅捷",
     "wiki_name": "Haste",
@@ -650,6 +722,8 @@
   {
     "key": "Paralysis",
     "structure": "potency_count",
+    "primary": "potency",
+    "expires_at_turn_end": true,
     "name_en": "Paralyze",
     "name_zh": "麻痹",
     "wiki_name": "Paralyze",
@@ -668,6 +742,8 @@
   {
     "key": "PlusCoinValueUp",
     "structure": "potency_count",
+    "primary": "potency",
+    "expires_at_turn_end": false,
     "name_en": "Plus Coin Boost",
     "name_zh": "加算硬币强化",
     "wiki_name": "Plus Coin Boost",
@@ -686,6 +762,8 @@
   {
     "key": "MinusCoinValueDown",
     "structure": "potency_count",
+    "primary": "potency",
+    "expires_at_turn_end": false,
     "name_en": "Minus Coin Drop",
     "name_zh": "减算硬币弱化",
     "wiki_name": "Minus Coin Drop",
@@ -704,6 +782,8 @@
   {
     "key": "TakeHpHealReduce",
     "structure": "potency_count",
+    "primary": "potency",
+    "expires_at_turn_end": false,
     "name_en": "HP Healing Down",
     "name_zh": "体力恢复降低",
     "wiki_name": "HP Healing Down",
@@ -722,6 +802,8 @@
   {
     "key": "CrimsonTakeDamageUp",
     "structure": "potency_count",
+    "primary": "potency",
+    "expires_at_turn_end": true,
     "name_en": "Wrath Fragility",
     "name_zh": "暴怒易损",
     "wiki_name": "Wrath Fragility",
@@ -740,6 +822,8 @@
   {
     "key": "AzureTakeDamageUp",
     "structure": "potency_count",
+    "primary": "potency",
+    "expires_at_turn_end": true,
     "name_en": "Gloom Fragility",
     "name_zh": "忧郁易损",
     "wiki_name": "Gloom Fragility",
@@ -758,6 +842,8 @@
   {
     "key": "AzureResistDown",
     "structure": "potency_count",
+    "primary": "potency",
+    "expires_at_turn_end": false,
     "name_en": "Gloom Resist Down",
     "name_zh": "忧郁抗性弱化",
     "wiki_name": "Gloom Resist Down",
@@ -776,6 +862,8 @@
   {
     "key": "SlashResistDown",
     "structure": "potency_count",
+    "primary": "potency",
+    "expires_at_turn_end": false,
     "name_en": "Slash Resist Down",
     "name_zh": "斩击抗性弱化",
     "wiki_name": "Slash Resist Down",
@@ -794,6 +882,8 @@
   {
     "key": "PenetrateResistDown",
     "structure": "potency_count",
+    "primary": "potency",
+    "expires_at_turn_end": false,
     "name_en": "Pierce Resist Down",
     "name_zh": "突刺抗性弱化",
     "wiki_name": "Pierce Resist Down",
@@ -812,6 +902,8 @@
   {
     "key": "HitResistDown",
     "structure": "potency_count",
+    "primary": "potency",
+    "expires_at_turn_end": false,
     "name_en": "Blunt Resist Down",
     "name_zh": "打击抗性弱化",
     "wiki_name": "Blunt Resist Down",
@@ -830,6 +922,8 @@
   {
     "key": "SuperCoin",
     "structure": "potency_count",
+    "primary": "potency",
+    "expires_at_turn_end": false,
     "name_en": "Unbreakable Coin",
     "name_zh": "不可摧毁的硬币",
     "wiki_name": "Unbreakable Coin",
@@ -848,6 +942,8 @@
   {
     "key": "Discard",
     "structure": "potency_count",
+    "primary": "potency",
+    "expires_at_turn_end": false,
     "name_en": "Discard",
     "name_zh": "丢弃",
     "wiki_name": "Discard",
@@ -866,6 +962,8 @@
   {
     "key": "Aggro",
     "structure": "stack",
+    "primary": "potency",
+    "expires_at_turn_end": false,
     "name_en": "Aggro",
     "name_zh": "挑衅值",
     "wiki_name": "Aggro",
@@ -884,6 +982,8 @@
   {
     "key": "DelusionGregBigBird",
     "structure": "stack",
+    "primary": "potency",
+    "expires_at_turn_end": false,
     "name_en": "Dazzle",
     "name_zh": "眩惑",
     "wiki_name": "Dazzle",
@@ -902,6 +1002,8 @@
   {
     "key": "AlriuneEGOThey",
     "structure": "stack",
+    "primary": "potency",
+    "expires_at_turn_end": false,
     "name_en": "Faint Aroma",
     "name_zh": "余香",
     "wiki_name": "Faint Aroma",
@@ -920,6 +1022,8 @@
   {
     "key": "BlueSand",
     "structure": "stack",
+    "primary": "potency",
+    "expires_at_turn_end": false,
     "name_en": "Blue Sand",
     "name_zh": "青沙",
     "wiki_name": "Blue Sand",
@@ -938,6 +1042,8 @@
   {
     "key": "LanternGregBigBird",
     "structure": "stack",
+    "primary": "potency",
+    "expires_at_turn_end": false,
     "name_en": "Lamp",
     "name_zh": "目灯",
     "wiki_name": "Lamp",
@@ -956,6 +1062,8 @@
   {
     "key": "HeatedWingScalesExplain",
     "structure": "potency_count",
+    "primary": "potency",
+    "expires_at_turn_end": false,
     "name_en": "Incandescent Scale Dust",
     "name_zh": "灼热的鳞粉",
     "wiki_name": "Incandescent Scale Dust",
@@ -974,6 +1082,8 @@
   {
     "key": "TransparentWingScalesExplain",
     "structure": "potency_count",
+    "primary": "potency",
+    "expires_at_turn_end": false,
     "name_en": "Acuate Scale Dust",
     "name_zh": "锐利的鳞粉",
     "wiki_name": "Acuate Scale Dust",
@@ -992,6 +1102,8 @@
   {
     "key": "RustedWingScalesExplain",
     "structure": "potency_count",
+    "primary": "potency",
+    "expires_at_turn_end": false,
     "name_en": "Rusted Scale Dust",
     "name_zh": "锈蚀的鳞粉",
     "wiki_name": "Rusted Scale Dust",
@@ -1010,6 +1122,8 @@
   {
     "key": "LCA_Bullet",
     "structure": "stack",
+    "primary": "potency",
+    "expires_at_turn_end": false,
     "name_en": "LCA Fracture Round",
     "name_zh": "LCA龟裂弹",
     "wiki_name": "LCA Fracture Round",
@@ -1028,6 +1142,8 @@
   {
     "key": "BulletGodok",
     "structure": "stack",
+    "primary": "potency",
+    "expires_at_turn_end": false,
     "name_en": "Bullet - Solitude",
     "name_zh": "弹药-孤独",
     "wiki_name": "Bullet - Solitude",
@@ -1046,6 +1162,8 @@
   {
     "key": "VibrationCollapse",
     "structure": "potency_count",
+    "primary": "potency",
+    "expires_at_turn_end": false,
     "name_en": "Tremor - Decay",
     "name_zh": "震颤-崩坏",
     "wiki_name": "Tremor - Decay",

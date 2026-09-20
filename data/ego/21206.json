@@ -9,8 +9,8 @@
   "awakening_sp": 20,
   "corrosion_sp": 20,
   "resource_cost": {
-    "Lust": 2,
-    "Gloom": 4
+    "lust": 2,
+    "gloom": 4
   },
   "awakening": {
     "name": "Bygone Days",

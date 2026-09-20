@@ -9,10 +9,10 @@
   "awakening_sp": 25,
   "corrosion_sp": 30,
   "resource_cost": {
-    "Lust": 1,
-    "Sloth": 2,
-    "Gloom": 2,
-    "Envy": 2
+    "lust": 1,
+    "sloth": 2,
+    "gloom": 2,
+    "envy": 2
   },
   "awakening": {
     "name": "Solemn Lament",

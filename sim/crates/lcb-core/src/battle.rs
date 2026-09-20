@@ -385,12 +385,16 @@ pub fn submit(state: &mut BattleState, action: Action) -> Result<(), String> {
             let Some(entry) = unit.dashboard.iter_mut().find(|s| s.slot == slot) else {
                 return Err(format!("{actor} has no slot {slot}"));
             };
+            // Both cards drawn on the Slot are legal actions.  Submitting does
+            // **not** rewrite the panel: the chosen card is consumed when the
+            // turn resolves, and the other one stays where it is (a defense
+            // skill or an E.G.O replaces the bottom card instead).
+            let used_top = entry.next == skill && entry.current != skill;
             entry.target = Some(target.clone());
-            // Defense skills and E.G.O replace the bottom skill of the slot.
-            if entry.current != skill {
+            if entry.current != skill && !used_top {
                 entry.converted = true;
+                entry.current = skill.clone();
             }
-            entry.current = skill.clone();
             state.actions.retain(|a| !(a.actor == actor && a.slot == slot));
             state.actions.push(SubmittedAction {
                 actor,
@@ -400,6 +404,7 @@ pub fn submit(state: &mut BattleState, action: Action) -> Result<(), String> {
                 is_ego: false,
                 ego: None,
                 ego_kind: None,
+                used_top,
             });
             Ok(())
         }
@@ -428,6 +433,7 @@ pub fn submit(state: &mut BattleState, action: Action) -> Result<(), String> {
                 is_ego: true,
                 ego: Some(ego),
                 ego_kind: Some(kind),
+                used_top: false,
             });
             Ok(())
         }
@@ -466,13 +472,13 @@ fn ego_affordable(state: &BattleState, unit: &Unit, ego: &crate::library::EgoRec
             }
         }
     }
-    for (sin, amount) in &ego.resource_cost {
+    for (sin, amount) in crate::library::Library::ego_cost(ego) {
         let needed = if multiplier == 1.0 {
-            *amount
+            amount
         } else {
-            (*amount as f64 * multiplier).ceil() as i32
+            (amount as f64 * multiplier).ceil() as i32
         };
-        let have = state.ego_resources.get(sin).copied().unwrap_or(0);
+        let have = state.ego_resources.get(&sin).copied().unwrap_or(0);
         if have < needed {
             return false;
         }
@@ -502,9 +508,8 @@ fn refund_overclock_surcharge(
     state: &mut BattleState,
     ego: &crate::library::EgoRecord,
 ) {
-    for (sin, amount) in ego.resource_cost.clone() {
-        let full = amount;
-        let surcharge = (amount as f64 * 1.5).ceil() as i32 - full;
+    for (sin, amount) in crate::library::Library::ego_cost(ego) {
+        let surcharge = (amount as f64 * 1.5).ceil() as i32 - amount;
         if surcharge > 0 {
             *state.ego_resources.entry(sin).or_insert(0) += surcharge;
         }
@@ -526,7 +531,7 @@ fn pay_ego(state: &mut BattleState, unit_index: usize, ego: &crate::library::Ego
     let sanity = state.units[unit_index].sanity;
     state.units[unit_index].sanity = sanity.add(-sp);
     let mut spent = Vec::new();
-    for (sin, amount) in ego.resource_cost.clone() {
+    for (sin, amount) in crate::library::Library::ego_cost(ego) {
         let needed = if multiplier == 1.0 {
             amount
         } else {
@@ -3522,6 +3527,20 @@ fn apply_status_phase(
     book: &crate::effects::StatusBook,
     start: bool,
 ) {
+    // The statuses a unit already holds before this Turn End pass: a one-turn
+    // status granted *by* a Turn End clause must survive into the next turn, so
+    // only the ones present beforehand expire.
+    let before: Vec<Vec<String>> = state
+        .units
+        .iter()
+        .map(|unit| {
+            unit.statuses
+                .iter()
+                .filter(|(_, instance)| instance.potency + instance.count + instance.stack > 0)
+                .map(|(name, _)| name.clone())
+                .collect()
+        })
+        .collect();
     for index in 0..state.units.len() {
         if !state.units[index].alive {
             continue;
@@ -3576,6 +3595,33 @@ fn apply_status_phase(
             }
             for note in notes {
                 state.warnings.push(note);
+            }
+        }
+    }
+    if !start {
+        // "for one turn" statuses that were already on the unit expire now.
+        for index in 0..state.units.len() {
+            if !state.units[index].alive {
+                continue;
+            }
+            let expiring: Vec<String> = state.units[index]
+                .statuses
+                .iter()
+                .filter(|(name, instance)| {
+                    instance.potency + instance.count + instance.stack > 0
+                        && before
+                            .get(index)
+                            .map(|held| held.iter().any(|held| held == *name))
+                            .unwrap_or(false)
+                        && book
+                            .get(name)
+                            .map(|behaviour| behaviour.expires_at_turn_end)
+                            .unwrap_or(false)
+                })
+                .map(|(name, _)| name.clone())
+                .collect();
+            for name in expiring {
+                state.units[index].statuses.remove(&name);
             }
         }
     }
@@ -3853,9 +3899,11 @@ pub fn begin_turn(
         } else {
             lo
         };
+        // `Haste`: "Speed increases by the effect's Count for one turn."
+        // `Bind`: "Speed decreases by the effect's Count for one turn."
+        // (in-game `Bufs`: Agility / Binding)
         let haste = state.units[index].statuses.count("Haste");
-        // `Bind`: "Speed decreases by the effect's Potency for one turn."
-        let bind = state.units[index].statuses.potency("Bind");
+        let bind = state.units[index].statuses.count("Bind");
         state.units[index].speed = (speed + haste - bind).max(1);
         // Bleed/other turn-start ticks handled by mechanics entries below.
 
@@ -4022,6 +4070,7 @@ pub fn begin_turn(
                 is_ego: false,
                 ego: None,
                 ego_kind: None,
+                used_top: false,
             });
         }
     }
@@ -4471,6 +4520,11 @@ pub fn resolve_combat(state: &mut BattleState, library: &Library, mechanics: &Me
                             let clash_count = outcome.rounds;
                             let hits = one_sided_attack(state, actor_i, target, a, clash_count);
                             splash_attack(state, actor_i, target, a, &hits, clash_count);
+                            // The winner's attack ends like any other attack: its
+                            // "[Attack End]" clauses must resolve here too, or a
+                            // Skill behaves differently depending on whether it
+                            // Clashed (wiki.gg `Clash` / Skill use phases).
+                            apply_attack_end(state, actor_i, Some(target), action_i.slot, a);
                         }
                     } else if outcome.winner.as_ref() == Some(&state.units[actor_j].id) {
                         apply_clash_result(state, actor_j, Some(actor_i), b, true);
@@ -4478,6 +4532,7 @@ pub fn resolve_combat(state: &mut BattleState, library: &Library, mechanics: &Me
                         let clash_count = outcome.rounds;
                         let hits = one_sided_attack(state, actor_j, actor_i, b, clash_count);
                         splash_attack(state, actor_j, actor_i, b, &hits, clash_count);
+                        apply_attack_end(state, actor_j, Some(actor_i), action_j.slot, b);
                     } else {
                         apply_clash_result(state, actor_i, Some(actor_j), a, false);
                         apply_clash_result(state, actor_j, Some(actor_i), b, false);
@@ -4566,9 +4621,24 @@ fn rotate_used_slots(state: &mut BattleState, executed: &[(usize, u32)]) {
         else {
             continue;
         };
-        // The skill that occupied the slot is consumed (also when it was
-        // replaced by a defense skill or E.G.O).
-        state.units[*unit_index].deck.consume(&entry.current);
+        // Which card did the unit actually use?  The panel was left untouched
+        // when the action was submitted, so the answer is in the action.
+        let actor = state.units[*unit_index].id.clone();
+        let used_top = state
+            .actions
+            .iter()
+            .find(|a| a.actor == actor && a.slot == *slot)
+            .map(|a| a.used_top)
+            .unwrap_or(false);
+        if used_top {
+            // The top card is consumed; the bottom card stays available and the
+            // panel refills from the top.
+            state.units[*unit_index].deck.consume(&entry.next);
+        } else {
+            // The bottom card is consumed (also when it was replaced by a
+            // defense skill or E.G.O): the top card rotates down.
+            state.units[*unit_index].deck.consume(&entry.current);
+        }
         let drawn = crate::setup::draw_for_unit(state, *unit_index)
             .unwrap_or_else(crate::setup::empty_skill);
         if let Some(target) = state.units[*unit_index]
@@ -4576,9 +4646,14 @@ fn rotate_used_slots(state: &mut BattleState, executed: &[(usize, u32)]) {
             .iter_mut()
             .find(|s| s.slot == *slot)
         {
-            target.current = entry.next.clone();
-            target.next = entry.preview.clone();
-            target.preview = drawn;
+            if used_top {
+                target.next = entry.preview.clone();
+                target.preview = drawn;
+            } else {
+                target.current = entry.next.clone();
+                target.next = entry.preview.clone();
+                target.preview = drawn;
+            }
             target.converted = false;
             target.target = None;
         }
@@ -4951,8 +5026,9 @@ fn prepare_use(
         use_.ctx.coin_power_drop = statuses.count("Minus Coin Drop");
     }
     // "On Use, an Attack Skill will generate 1 E.G.O Resource of a
-    // corresponding Affinity" (wiki.gg `Clash` / Attack Skills).
-    if !use_.is_defense && !use_.is_ego {
+    // corresponding Affinity" (wiki.gg `Clash` / Attack Skills).  E.G.O
+    // Resources are the Sinners' team pool, so enemy Skills generate nothing.
+    if !use_.is_defense && !use_.is_ego && state.units[unit_index].kind.is_sinner() {
         let key = crate::setup::sin_key(use_.sin).to_string();
         *state.ego_resources.entry(key).or_insert(0) += 1;
     }

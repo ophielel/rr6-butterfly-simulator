@@ -9,11 +9,11 @@
   "awakening_sp": 10,
   "corrosion_sp": 30,
   "resource_cost": {
-    "Wrath": 3,
-    "Lust": 2,
-    "Sloth": 1,
-    "Pride": 1,
-    "Envy": 1
+    "wrath": 3,
+    "lust": 2,
+    "sloth": 1,
+    "pride": 1,
+    "envy": 1
   },
   "awakening": {
     "name": "Harmony",

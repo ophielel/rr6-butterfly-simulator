@@ -12,8 +12,10 @@
      "Turn Start: gain 1 [Clash Power Up] and 1 [Offense Level Up] for every 3 Stack"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Accumulated Past (E.G.O)",
    "name": "Accumulated Past (E.G.O)",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -36,8 +38,10 @@
      "+0.25 to Resistances against Attack Types and Affinities of Skills that Clashed against \"Entangled Life - Manifestation\" Skill of \"Butterfly of Entangled Lives::The Pupa\""
     ]
    },
+   "expires_at_turn_end": false,
    "key": "TransparentWingScalesExplain",
    "name": "Acuate Scale Dust",
+   "primary": "potency",
    "sources": [
     {
      "kind": "game_text",
@@ -60,8 +64,10 @@
      "In focused encounters, slots with higher Aggro values are more likely to be targeted by enemies."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "Aggro",
    "name": "Aggro",
+   "primary": "potency",
    "sources": [
     {
      "kind": "game_text",
@@ -88,8 +94,10 @@
      "Turn Start: gain 1 [Defense Level Up] for every 3 Stack"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Ailing Heart (Ally)",
    "name": "Ailing Heart (Ally)",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -112,8 +120,10 @@
      "Spent by certain skills. Some attacks cancel if lacking Ammo."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Ammo",
    "name": "Ammo",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -138,8 +148,10 @@
      "Unique [Ammo]"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Ammo - Atelier Logic",
    "name": "Ammo - Atelier Logic",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -163,8 +175,10 @@
      "Potency and Count values do not change over the conversion."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "Switch_Vibration",
    "name": "Amplitude Conversion",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -190,8 +204,10 @@
      "When triggering [Amplitude Conversion] on [Tremor - Superposition], it activates as [Amplitude Entanglement] instead."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Amplitude Entanglement",
    "name": "Amplitude Entanglement",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -214,8 +230,10 @@
      "Increases the healing provided by the Passive [Rustle Up]. Spent when the Passive activates."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Appetite",
    "name": "Appetite",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -245,8 +263,10 @@
      "Turn Start: Heal 8 SP"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Armure Éveillée",
    "name": "Armure Éveillée",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -271,8 +291,10 @@
      "Min Capacity: 0"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Arrow - Shi",
    "name": "Arrow - Shi",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -295,8 +317,10 @@
      "If this unit has [Bleed] (in Focused Encounters, count [Bleed] on each Part separately), take +10% damage from LustLust Skills"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Art Medium",
    "name": "Art Medium",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -323,8 +347,10 @@
      "Apply the following effects to this unit's Base Attack Skills and Clashable Counter Skill based on [Corpus Ingredient] Potency:"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Artwork - Fascia (Faust)",
    "name": "Artwork - Fascia (Faust)",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -352,8 +378,10 @@
      "Apply the following effects to this unit's Base Attack Skills and Clashable Counter Skill based on [Corpus Ingredient] Potency:"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Artwork - Tibia (Hong Lu)",
    "name": "Artwork - Tibia (Hong Lu)",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -377,8 +405,10 @@
      "If target has 5+ negative effects, Clash Power +1, deal +10% damage"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Assist -援-",
    "name": "Assist -援-",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -402,8 +432,10 @@
      "The Skill used as an Assist Attack does not affect Unit B's upcoming Skills list."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Assist Attack (Ishmael)",
    "name": "Assist Attack (Ishmael)",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -434,8 +466,10 @@
      "When there are multiple allies that have Assist Defense Stacks, the ally that has the highest Stack has the highest activation priority"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Assist Defense",
    "name": "Assist Defense",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -458,8 +492,10 @@
      "Attack skills lose Final Power by the effect’s Potency for one turn."
     ]
    },
+   "expires_at_turn_end": true,
    "key": "Reduction",
    "name": "Attack Power Down",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -482,8 +518,10 @@
      "Attack skills gain final Power by the effect’s Count for one turn."
     ]
    },
+   "expires_at_turn_end": true,
    "key": "Enhancement",
    "name": "Attack Power Up",
+   "primary": "potency",
    "sources": [
     {
      "kind": "game_text",
@@ -507,8 +545,10 @@
      "EnvyEnvy Base Skills deal +20% damage"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Avenging My Family",
    "name": "Avenging My Family",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -538,8 +578,10 @@
      "Enhances Edgar Family Chief Butler Ryōshū Skills against targets with this effect"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:B.M.",
    "name": "B.M.",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -564,8 +606,10 @@
      "Turn End: at less than 60% HP..."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Backup Candy",
    "name": "Backup Candy",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -588,8 +632,10 @@
      "Raise the Base Power of Skills by the effect's Count."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Base Power Up",
    "name": "Base Power Up",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -614,8 +660,10 @@
      "[Bleed] Potency and Count inflicted using this unit's Skill or Coin effects: +1"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Battle Ready",
    "name": "Battle Ready",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -640,8 +688,10 @@
      "For every Stack, deal +0.75% damage"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Battleblood Instinct",
    "name": "Battleblood Instinct",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -666,8 +716,10 @@
      "When returning to battle, return with the same amount of HP and SP this unit had when it retreated, and eliminate all effects on self save for a select few (if this unit had less than 0 SP when retreating, reset SP to 0 instead)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Battlefield Retreat",
    "name": "Battlefield Retreat",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -692,8 +744,10 @@
      "Turn End: This effect expires"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Beauty of the Physique",
    "name": "Beauty of the Physique",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -716,8 +770,10 @@
      "When this unit's attack with 1 Atk Weight hits, inflict 50% of the resulting Coin value on hit as (Affinity/Attack type of the Attack Skill used to hit) damage against 2 other attackable enemies with the least HP."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Before the King",
    "name": "Before the King",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -740,8 +796,10 @@
      "When this unit's attack with 1 Atk Weight hits, inflict 100% of the resulting Coin value on hit as (Affinity/Attack type of the Attack Skill used to hit) damage against 2 other attackable enemies with the least HP."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Before the King in Binds",
    "name": "Before the King in Binds",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -764,8 +822,10 @@
      "Speed decreases by the effect’s Potency for one turn."
     ]
    },
+   "expires_at_turn_end": true,
    "key": "Binding",
    "name": "Bind",
+   "primary": "count",
    "sources": [
     {
      "kind": "wiki",
@@ -789,8 +849,10 @@
      "Take +1% damage from Slash Skills for every 10 Stack"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Bladetrail -Afterimage-",
    "name": "Bladetrail -Afterimage-",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -820,8 +882,10 @@
      "This turn's first-used Base Attack Skill gains Final Power +2"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Blazing",
    "name": "Blazing",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -845,8 +909,10 @@
      "When tossing an attack Coin, take fixed damage by the effect’s Potency."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "Laceration",
    "name": "Bleed",
+   "primary": "potency",
    "sources": [
     {
      "kind": "game_text",
@@ -899,8 +965,10 @@
      "Replace this unit's Base Skills with Plus Coin Skills"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Blessing",
    "name": "Blessing",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -930,8 +998,10 @@
      "Adjust any Attack Type Resistances exceeding 1 to 1 (unless Staggered)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Blessing (E.G.O Gift)",
    "name": "Blessing (E.G.O Gift)",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -961,8 +1031,10 @@
      "Stage 1 Blood-tinged Scissorblades"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Blood-tinged Scissorblades (Ally)",
    "name": "Blood-tinged Scissorblades (Ally)",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -989,8 +1061,10 @@
      "This value is shared by all characters"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Bloodfeast",
    "name": "Bloodfeast",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -1013,8 +1087,10 @@
      "Total [Bloodfeast] consumed in this Encounter"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Bloodfeast Consumed (shared)",
    "name": "Bloodfeast Consumed (shared)",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -1041,8 +1117,10 @@
      "While this unit has this effect, heal 3 SP upon Staggering or killing an enemy (3 times per turn)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Bloodflame -血炎-",
    "name": "Bloodflame -血炎-",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -1071,8 +1149,10 @@
      "Stage 1 Bloodied Hand"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Bloodied Hand (Ally)",
    "name": "Bloodied Hand (Ally)",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -1104,8 +1184,10 @@
      "[The Princess of La Manchaland Rodion Only]"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Blooming Thorn (Ally)",
    "name": "Blooming Thorn (Ally)",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -1132,8 +1214,10 @@
      "Turn End: Reduce Count by 1"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Blubberbubble",
    "name": "Blubberbubble",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -1171,8 +1255,10 @@
      "※ Blue Sand PanicBlue Sand Panic Effects"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "BlueSand",
    "name": "Blue Sand",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -1195,8 +1281,10 @@
      "Deal 10% less damage with BluntBlunt skills per Count for one turn. (Max 10)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Blunt DMG Down",
    "name": "Blunt DMG Down",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -1219,8 +1307,10 @@
      "Deal 10% more damage with BluntBlunt skills based on the effect's Count for one turn. (Max 10)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Blunt DMG Up",
    "name": "Blunt DMG Up",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -1243,8 +1333,10 @@
      "Take 10% more damage from BluntBlunt skills per Count for one turn. (Max 10)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Blunt Fragility",
    "name": "Blunt Fragility",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -1267,8 +1359,10 @@
      "BluntBlunt skills lose final Power by the effect's Count for one turn."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Blunt Power Down",
    "name": "Blunt Power Down",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -1291,8 +1385,10 @@
      "BluntBlunt skills gain final Power by the effect's Count for one turn."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Blunt Power Up",
    "name": "Blunt Power Up",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -1315,8 +1411,10 @@
      "Take 10% less damage from BluntBlunt skills per Count for one turn. (Max 10)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Blunt Protection",
    "name": "Blunt Protection",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -1340,8 +1438,10 @@
      "Increase BluntPierce Resistance based on Count"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "HitResistDown",
    "name": "Blunt Resist Down",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -1365,8 +1465,10 @@
      "Offense Level +1, Defense Level +1 for every 5 Stack"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Book of Vengeance -Heathcliff-",
    "name": "Book of Vengeance -Heathcliff-",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -1394,8 +1496,10 @@
      "Gain the following effects next turn based on Stack:"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Book of Vengeance -Sinclair-",
    "name": "Book of Vengeance -Sinclair-",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -1425,8 +1529,10 @@
      "On Hit using a Skill against The House of Spiders: The Middle Nursefather Outis, gain 1 additional Stack of [The Middle - Grudge (Outis)] (once per Skill, 2 times per turn for each Identity)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Book of Vengeance -The House of Spiders-",
    "name": "Book of Vengeance -The House of Spiders-",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -1453,8 +1559,10 @@
      "Turn End: Gain 1 Stack, lose 1 Count"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Borrowed Time",
    "name": "Borrowed Time",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -1480,8 +1588,10 @@
      "Turn Start: lose 1 Count"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Bright -光-",
    "name": "Bright -光-",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -1507,8 +1617,10 @@
      "Unique Ammo"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "BulletGodok",
    "name": "Bullet - Solitude",
+   "primary": "potency",
    "sources": [
     {
      "kind": "game_text",
@@ -1540,8 +1652,10 @@
      "This unit's Base Skills inflict +1 more of [Rupture] and [Sinking] Potency"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Burgeoning of Horns -發角-",
    "name": "Burgeoning of Horns -發角-",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -1565,8 +1679,10 @@
      "Then, reduce its Count by 1."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "Combustion",
    "name": "Burn",
+   "primary": "potency",
    "sources": [
     {
      "kind": "game_text",
@@ -1596,8 +1712,10 @@
      "When hit, the attacker heals (The Living/4) SP. (min 1; rounded down)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "SinkingWhite",
    "name": "Butterfly",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -1623,8 +1741,10 @@
      "Upon death, transfers to this unit's ally (for Focused Encounters, a different Part) that has none or the least Centipede Venom Stacks."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Centipede Venom",
    "name": "Centipede Venom",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -1671,8 +1791,10 @@
      "While in this state, aside from its exclusive Skill \"As the Voice Says, I Gladly Withdraw into Myself\", cannot equip Defense Skills or E.G.O Skills"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Changing Room (Ishmael)",
    "name": "Changing Room (Ishmael)",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -1695,8 +1817,10 @@
      "Resource used by certain skills for additional effects. Its Count can go up to 20. Count lowers by 1 at the end of each turn."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "Charge",
    "name": "Charge",
+   "primary": "count",
    "sources": [
     {
      "kind": "game_text",
@@ -1722,8 +1846,10 @@
      "Turn end: Gain a [Charge] Count for each Charge Barrier #, and Charge Barrier and Shield gained from Charge Barrier expire completely next turn"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Charge Barrier",
    "name": "Charge Barrier",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -1749,8 +1875,10 @@
      "Lose 1 Stack at Attack End or Turn End after being hit by Skills that fulfill the effect-triggering conditions above (excluding Base Attack Skills that inflict [Charged Sting])"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Charged Sting",
    "name": "Charged Sting",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -1775,8 +1903,10 @@
      "Turn End: This effect expires"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Charm of the Beastly",
    "name": "Charm of the Beastly",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -1802,8 +1932,10 @@
      "Reduced by 1 when this unit is hit by 2 Skills"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Check This Out, Kiddo! (Outis)",
    "name": "Check This Out, Kiddo! (Outis)",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -1826,8 +1958,10 @@
      "Lose Clash Power by the effect's Potency for one turn."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Clash Power Down",
    "name": "Clash Power Down",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -1850,8 +1984,10 @@
      "Gain Clash Power by the effect's Count for one turn."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Clash Power Up",
    "name": "Clash Power Up",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -1876,8 +2012,10 @@
      "On Clash Win: raise the target's Stagger Threshold by this unit's final Clash Power."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Clashable Guard",
    "name": "Clashable Guard",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -1904,8 +2042,10 @@
      "Raise minimum Speed by 1 next turn for every 4 Value (max 2)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Coffin",
    "name": "Coffin",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -1933,8 +2073,10 @@
      "Gain 1 Clash Power and 2 Defense Level"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Commanding Cry",
    "name": "Commanding Cry",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -1958,8 +2100,10 @@
      "Turn End: gain 1 Stack"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Concentration-Sniper-",
    "name": "Concentration-Sniper-",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -1984,8 +2128,10 @@
      "Multiply the amount of Stagger Threshold raised and [Rupture] damage dealt against this unit by 1.2 (rounded down)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Concussion",
    "name": "Concussion",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -2012,8 +2158,10 @@
      "Turn End: Expires; then, this unit gains 7 [Gaze (Ryoshu)] next turn"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Contempt (Ryoshu)",
    "name": "Contempt (Ryoshu)",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -2040,8 +2188,10 @@
      "Turn End: this effect expires"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Contempt of the Gaze",
    "name": "Contempt of the Gaze",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -2067,8 +2217,10 @@
      "Unique [Charge]"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Corpus Ingredient (Ally)",
    "name": "Corpus Ingredient (Ally)",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -2095,8 +2247,10 @@
      "When this unit gains [Bleed] from enemy Attack Skills, randomly gain 1 of the following effects next turn and lose 1 Stack of this effect (once per Skill)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Corpus Theater (Hong Lu)",
    "name": "Corpus Theater (Hong Lu)",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -2129,8 +2283,10 @@
      "Turn Start: gain 3 Stack"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Courier Trunk",
    "name": "Courier Trunk",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -2153,8 +2309,10 @@
      "For this turn: Deal +10% damage on Critical Hit for every Stack"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Crit DMG Up",
    "name": "Crit DMG Up",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -2179,8 +2337,10 @@
      "This effect expires at Turn End or Attack End of the following: 'Rules of the Backstreets'"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Cumulus Wall",
    "name": "Cumulus Wall",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -2203,8 +2363,10 @@
      "When certain conditions are fulfilled, replace this effect with '[Art Medium]'"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Curio",
    "name": "Curio",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -2228,8 +2390,10 @@
      "Turn End: next turn, randomly gain one of the following, then reduce this effect's Count by 1."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Curse",
    "name": "Curse",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -2252,8 +2416,10 @@
      "Deal less damage with skills based on the effect’s Count for one turn. (Max 10)"
     ]
    },
+   "expires_at_turn_end": true,
    "key": "AttackDmgDown",
    "name": "Damage Down",
+   "primary": "potency",
    "sources": [
     {
      "kind": "game_text",
@@ -2276,8 +2442,10 @@
      "Deal 10% more damage with skills based on the effect's Count for one turn. (Max 10)"
     ]
    },
+   "expires_at_turn_end": true,
    "key": "AttackDmgUp",
    "name": "Damage Up",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -2303,8 +2471,10 @@
      "Turn End: this effect expires"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Dark Cloud",
    "name": "Dark Cloud",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -2329,8 +2499,10 @@
      "Inflict 1 [Bleed] On Hit with SlashSlash Skills"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Dark Cloud Blade",
    "name": "Dark Cloud Blade",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -2356,8 +2528,10 @@
      "Unique [Burn]"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Dark Flame",
    "name": "Dark Flame",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -2411,8 +2585,10 @@
      "※ \"Dazzle PanicDazzle\" Panic-type effects:"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "DelusionGregBigBird",
    "name": "Dazzle",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -2439,8 +2615,10 @@
      "※ Cannot gain additional Stacks of this effect while it is already active."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Deathrite -Fissure-",
    "name": "Deathrite -Fissure-",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -2466,8 +2644,10 @@
      "※ Cannot gain additional Stacks of this effect while it is already active"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Deathrite -Haste-",
    "name": "Deathrite -Haste-",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -2495,8 +2675,10 @@
      "※ Cannot gain additional Stacks of this effect while it is already active"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Deathrite -Venom-",
    "name": "Deathrite -Venom-",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -2520,8 +2702,10 @@
      "In a Clash between the unit that inflicted Declared Duel and the unit that has the status, the declarer has +1 Clash Power. On Hit, the declarer gains 1 Haste next turn. (4 times per turn)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Declared Duel",
    "name": "Declared Duel",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -2545,8 +2729,10 @@
      "On Crit: at 20+ [Poise] Potency and 5+ [Poise] Count, consume ([Poise] Potency on self / 5) [Poise] Potency to deal +([Poise] Potency consumed x 4)% more Damage on Critical Hit and lose 1 Stack"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Deep Inhale",
    "name": "Deep Inhale",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -2571,8 +2757,10 @@
      "Unique [Charge] (Potency Fixed)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Deep Tears",
    "name": "Deep Tears",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -2599,8 +2787,10 @@
      "When [Tremor Burst] is triggered on this unit, gain +1 [Bleed] Count (2 times per turn)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Deep Wound",
    "name": "Deep Wound",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -2623,8 +2813,10 @@
      "Defense Level decreases based on the effect's Potency for one turn."
     ]
    },
+   "expires_at_turn_end": true,
    "key": "DefenseDown",
    "name": "Defense Level Down",
+   "primary": "potency",
    "sources": [
     {
      "kind": "game_text",
@@ -2647,8 +2839,10 @@
      "Defense Level increases based on the effect's Potency for one turn."
     ]
    },
+   "expires_at_turn_end": true,
    "key": "DefenseUp",
    "name": "Defense Level Up",
+   "primary": "potency",
    "sources": [
     {
      "kind": "game_text",
@@ -2671,8 +2865,10 @@
      "Defense skills lose Final Power by the effect’s Potency for one turn."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Defense Power Down",
    "name": "Defense Power Down",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -2695,8 +2891,10 @@
      "Defense skills gain Final Power by the effect's Count for one turn."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Defense Power Up",
    "name": "Defense Power Up",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -2735,8 +2933,10 @@
      "When chaining Skills, this unit can draw enemies' attack toward this unit regardless of Speed (Focused Encounters only)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Defensive Stance",
    "name": "Defensive Stance",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -2760,8 +2960,10 @@
      "Take +10% damage for every Stack"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Delicateness",
    "name": "Delicateness",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -2786,8 +2988,10 @@
      "When this unit takes damage that brings their HP down to 0: this unit's HP does not drop below 1; recover from Stagger due to damage."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Denial -不許-",
    "name": "Denial -不許-",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -2811,8 +3015,10 @@
      "Deal +7.5% damage with Skills marked with the [Mark of the Prescript]"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Desire for Acknowledgement Sated",
    "name": "Desire for Acknowledgement Sated",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -2857,8 +3063,10 @@
      "Replace this unit's Base Skills with Minus Coin Skills"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Despair",
    "name": "Despair",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -2888,8 +3096,10 @@
      "For every Stack, Base Attack Skill Clash Power +1, Base Power +1"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Desperado",
    "name": "Desperado",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -2913,8 +3123,10 @@
      "Deal +1% more damage for every Stack"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Dhyāna",
    "name": "Dhyāna",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -2941,8 +3153,10 @@
      "Total sum of [Bladetrail -Afterimage-] Stacks inflicted by this unit"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Dihui Star's Blade",
    "name": "Dihui Star's Blade",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -2965,8 +3179,10 @@
      "At the end of the turn, gain [Rupture] Count by this effect's amount. Then, remove this effect."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Dimensional Rift",
    "name": "Dimensional Rift",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -2990,8 +3206,10 @@
      "Discarded Skills will not activate Skill effects or Coin effects other than effects from Discard, and will not give E.G.O resources."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "Discard",
    "name": "Discard",
+   "primary": "potency",
    "sources": [
     {
      "kind": "game_text",
@@ -3016,8 +3234,10 @@
      "Consumed by certain Skills."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:District 12 Fuel",
    "name": "District 12 Fuel",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -3045,8 +3265,10 @@
      "Turn End: If this unit has Dullahan, lose (15 - ([Coffin]/2)) SP. (min 10)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Dullahan",
    "name": "Dullahan",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -3069,8 +3291,10 @@
      "Increases the amount of E.G.O resources earned from skills by the effect's Count for one turn."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:E.G.O Resource Amp",
    "name": "E.G.O Resource Amp",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -3105,8 +3329,10 @@
      "※ Apply the \"Non-SP Units\" conditional to certain enemies that have SP but can't change their Panic Types."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Echoes of the Manor",
    "name": "Echoes of the Manor",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -3136,8 +3362,10 @@
      "Max Potency: 3"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Embers",
    "name": "Embers",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -3161,8 +3389,10 @@
      "When Staggered, consume all Emergency Barrier Battery Stack and gain [Charge Barrier] by the Stack consumed"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Emergency Barrier Battery",
    "name": "Emergency Barrier Battery",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -3188,8 +3418,10 @@
      "Gain 1 Stack for every HP damage dealt by 's Skills"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Entangled Life -羅生-",
    "name": "Entangled Life -羅生-",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -3216,8 +3448,10 @@
      "The time that has already been shared cannot be undone."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Entanglement",
    "name": "Entanglement",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -3240,8 +3474,10 @@
      "Deal 10% less damage with EnvyEnvy skills per Count for one turn. (Max 10)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Envy DMG Down",
    "name": "Envy DMG Down",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -3264,8 +3500,10 @@
      "Deal 10% more damage with EnvyEnvy skills per Count for one turn. (Max 10)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Envy DMG Up",
    "name": "Envy DMG Up",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -3288,8 +3526,10 @@
      "Take 10% more damage from EnvyEnvy skills per Count for one turn. (Max 10)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Envy Fragility",
    "name": "Envy Fragility",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -3317,8 +3557,10 @@
      "|}"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Envy Power Down",
    "name": "Envy Power Down",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -3341,8 +3583,10 @@
      "EnvyEnvy skills gain final Power by the effect's Count for one turn."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Envy Power Up",
    "name": "Envy Power Up",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -3365,8 +3609,10 @@
      "Take 10% less damage from EnvyEnvy skills per Count for one turn. (Max 10)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Envy Protection",
    "name": "Envy Protection",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -3396,8 +3642,10 @@
      "|}"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Envy Resist Down",
    "name": "Envy Resist Down",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -3424,8 +3672,10 @@
      "When [Discard]ing a Skill, gain (Erudition x 1.5)% of this unit's max HP as Shield (once per turn)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Erudition",
    "name": "Erudition",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -3450,8 +3700,10 @@
      "The Skill used as an Assist Attack does not affect Unit B's upcoming Skills list."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Exalted Command",
    "name": "Exalted Command",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -3477,8 +3729,10 @@
      "This Coin does not break upon Clash Lose."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Excision Coin",
    "name": "Excision Coin",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -3503,8 +3757,10 @@
      "Plus Coin Skills gain Coin Power +1"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Exquisite Aesthetics",
    "name": "Exquisite Aesthetics",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -3531,8 +3787,10 @@
      "Upon [Tremor Burst], apply 1~2 Faint Aroma on 3 other random allies (for Abnormalities, the Part)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "AlriuneEGOThey",
    "name": "Faint Aroma",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -3568,8 +3826,10 @@
      "When hit, inflict 1 [Rupture] against the attacker (3 times per target's Skill)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Fairy Lure",
    "name": "Fairy Lure",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -3596,8 +3856,10 @@
      "This unit's SP does not drop below -15 from SP loss effects on this unit's Base Attack Skills"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Faith Beyond Question",
    "name": "Faith Beyond Question",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -3620,8 +3882,10 @@
      "Raise Skill Final Power by the effect's Count against targets that have [Nails] for the turn. (Applies to clashes as well)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Fanatic",
    "name": "Fanatic",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -3648,8 +3912,10 @@
      "When [Tremor Burst] is triggered on this unit, gain +3 [Bleed] Count (2 times per turn)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Fatal Wound",
    "name": "Fatal Wound",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -3680,8 +3946,10 @@
      "On Kill, gain 3 [Poise] and +2 [Poise] Count (2 times per turn)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Fell Bullet",
    "name": "Fell Bullet",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -3711,8 +3979,10 @@
      "Skills that consume or gain [Bloodfeast] deal +3% more damage for every Stack instead"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Festive Fever (Ally)",
    "name": "Festive Fever (Ally)",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -3735,8 +4005,10 @@
      "Turn Start: Gain 3 [Attack Power Up], [Defense Power Up], and [Haste]; die when count reaches zero."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Final Augment",
    "name": "Final Augment",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -3760,8 +4032,10 @@
      "Deal +10% damage for every Stack"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Firepower",
    "name": "Firepower",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -3786,8 +4060,10 @@
      "Turn End: Gain 1 [Haste] next turn"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:First Seal Removed (Outis)",
    "name": "First Seal Removed (Outis)",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -3810,8 +4086,10 @@
      "This unit's Panic Type does not change when inflicted with an effect that changes Panic Types. Instead, this unit is inflicted with an effect that is inflicted against targets without SP."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Fixed Panic",
    "name": "Fixed Panic",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -3838,8 +4116,10 @@
      "If the unit that has this effect dies, inflict GluttonyGluttony damage equal to Stack and inflict 5 [Rupture]"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Flower-burying Pin -埋花針-",
    "name": "Flower-burying Pin -埋花針-",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -3871,8 +4151,10 @@
      "※ Cannot raise the effect's Stack by any other means than the ones above"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Flower-burying Wedge -埋花櫼-",
    "name": "Flower-burying Wedge -埋花櫼-",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -3902,8 +4184,10 @@
      "The unit that inflicted this Focused Attack gains the following effects based on the target Slot's Focused Attack Stack."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Focused Attack (Allies)",
    "name": "Focused Attack (Allies)",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -3932,8 +4216,10 @@
      "Skill 3 gains Final Power +2; deals +10% damage for every Stack (max 30%)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Focused Performance",
    "name": "Focused Performance",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -3956,8 +4242,10 @@
      "Take more damage from skills based on the effect’s Count for one turn. (Max 10)"
     ]
    },
+   "expires_at_turn_end": true,
    "key": "Vulnerable",
    "name": "Fragile",
+   "primary": "count",
    "sources": [
     {
      "kind": "game_text",
@@ -3984,8 +4272,10 @@
      "Though she has emerged from the cocoon, she has failed to truly metamorphose—as that process involves the disintegration of the self. Still, the process has managed to boost her physical abilities."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Full Makeover",
    "name": "Full Makeover",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -4008,8 +4298,10 @@
      "Affected unit takes more damage from PiercePierce and BluntBlunt skills for one turn. The ally that defeats the marked unit heals sanity; if the ally is an 'N Corp. Fanatic', they also gain [Fanatic] next turn."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Gaze",
    "name": "Gaze",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -4035,8 +4327,10 @@
      "Turn End: At 7 Stacks, convert this effect into [Contempt (Ryoshu)] next turn"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Gaze (Ryoshu)",
    "name": "Gaze (Ryoshu)",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -4062,8 +4356,10 @@
      "Turn End: this effect expires"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Gaze of Contempt",
    "name": "Gaze of Contempt",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -4097,8 +4393,10 @@
      "Plus Coin Skills gain Coin Power +1; Minus Coin Skills gain Final Power +1"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Gebura's Blade",
    "name": "Gebura's Blade",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -4126,8 +4424,10 @@
      "Plus Coin Skills gain Coin Power +1"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Glimpse of Precognition",
    "name": "Glimpse of Precognition",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -4150,8 +4450,10 @@
      "Deal 10% less damage with GloomGloom skills per Count for one turn. (Max 10)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Gloom DMG Down",
    "name": "Gloom DMG Down",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -4174,8 +4476,10 @@
      "Deal 10% more damage with GloomGloom skills per Count for one turn. (Max 10)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Gloom DMG Up",
    "name": "Gloom DMG Up",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -4198,8 +4502,10 @@
      "Take more damage from Gloom skills based on the effect’s Count for one turn. (Max 10)"
     ]
    },
+   "expires_at_turn_end": true,
    "key": "AzureTakeDamageUp",
    "name": "Gloom Fragility",
+   "primary": "potency",
    "sources": [
     {
      "kind": "game_text",
@@ -4222,8 +4528,10 @@
      "GloomGloom skills lose final Power by the effect's Count for one turn."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Gloom Power Down",
    "name": "Gloom Power Down",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -4246,8 +4554,10 @@
      "GloomGloom skills gain final Power by the effect's Count for one turn."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Gloom Power Up",
    "name": "Gloom Power Up",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -4270,8 +4580,10 @@
      "Take 10% less damage from GloomGloom skills per Count for one turn. (Max 10)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Gloom Protection",
    "name": "Gloom Protection",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -4295,8 +4607,10 @@
      "Increase GloomGloom Resistance based on Count"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "AzureResistDown",
    "name": "Gloom Resist Down",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -4321,8 +4635,10 @@
      "While this unit has this effect, if it gains [Bleed] Potency beyond 99, increase [Bloodfeast] equal to the excess [Bleed] Potency; then, gain [Defense Level Down] next turn equal to [Bloodfeast] increased (max [Defense Level Down] gain: 5)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Gluttonous Thorn (貪食棘)",
    "name": "Gluttonous Thorn (貪食棘)",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -4345,8 +4661,10 @@
      "Deal 10% less damage with GluttonyGluttony skills per Count for one turn. (Max 10)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Gluttony DMG Down",
    "name": "Gluttony DMG Down",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -4369,8 +4687,10 @@
      "Deal 10% more damage with GluttonyGluttony skills per Count for one turn. (Max 10)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Gluttony DMG Up",
    "name": "Gluttony DMG Up",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -4393,8 +4713,10 @@
      "Take 10% more damage from GluttonyGluttony skills per Count for one turn. (Max 10)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Gluttony Fragility",
    "name": "Gluttony Fragility",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -4417,8 +4739,10 @@
      "GluttonyGluttony skills lose final Power by the effect's Count for one turn."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Gluttony Power Down",
    "name": "Gluttony Power Down",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -4441,8 +4765,10 @@
      "GluttonyGluttony skills gain final Power by the effect's Count for one turn."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Gluttony Power Up",
    "name": "Gluttony Power Up",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -4465,8 +4791,10 @@
      "Take 10% less damage from GluttonyGluttony skills per Count for one turn. (Max 10)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Gluttony Protection",
    "name": "Gluttony Protection",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -4490,8 +4818,10 @@
      "Offense Level +1 for every 3 Stacks"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Grace of the Prescript",
    "name": "Grace of the Prescript",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -4517,8 +4847,10 @@
      "Plus Coin Skills heal 4 SP (if already at max SP, gain 2 [Offense Level Up] next turn)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Guardians of the Forest",
    "name": "Guardians of the Forest",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -4541,8 +4873,10 @@
      "Increases HP healing provided by Passive abilities, Skills, and Coin effects by 10% per Count. (Max 5)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:HP Healing Boost",
    "name": "HP Healing Boost",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -4565,8 +4899,10 @@
      "HP healed by Passives, Skill effects, or Coin effects decreases proportionally to the value of this effect. (Max 5)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "TakeHpHealReduce",
    "name": "HP Healing Down",
+   "primary": "potency",
    "sources": [
     {
      "kind": "game_text",
@@ -4590,8 +4926,10 @@
      "When this unit equips and uses a GloomGloom Base Attack Skill or E.G.O Skill on its leftmost Skill Slot, activate the \"forming a Hand\" effects on the \"Koi-Koi\" Passive"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Hand - Blue Sakura Suit",
    "name": "Hand - Blue Sakura Suit",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -4615,8 +4953,10 @@
      "When this unit equips and uses a WrathWrath Base Attack Skill or E.G.O Skill on its leftmost Skill Slot, activate the \"forming a Hand\" effects on the \"Koi-Koi\" Passive"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Hand - Pine Crane Suit",
    "name": "Hand - Pine Crane Suit",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -4640,8 +4980,10 @@
      "When this unit equips and uses a SlothSloth Base Attack Skill or E.G.O Skill on its leftmost Skill Slot, activate the \"forming a Hand\" effects on the \"Koi-Koi\" Passive"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Hand - Susuki Grass Suit",
    "name": "Hand - Susuki Grass Suit",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -4672,8 +5014,10 @@
      "Stage 1 Hardblood"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Hardblood (Ally)",
    "name": "Hardblood (Ally)",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -4699,8 +5043,10 @@
      "If this unit isn't at max HP: after its Skill attack, heal 10% of HP damage dealt (once per turn; max 40 healing)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Hardblood Armor",
    "name": "Hardblood Armor",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -4733,8 +5079,10 @@
      "When consuming [Bloodfeast] with an Attack Skill, if there isn't enough [Bloodfeast], consume 1 HP for every 1 missing [Bloodfeast] to generate it before consuming it (the damage from this effect does not Stagger or reduce this unit's HP below 1"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Hardblood Cast",
    "name": "Hardblood Cast",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -4760,8 +5108,10 @@
      "Turn Start: gain (Stack / 3) [Defense Level Up] (max 3; rounded down)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Hardened Shell-Barrier",
    "name": "Hardened Shell-Barrier",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -4784,8 +5134,10 @@
      "Speed increases by the effect’s Count for one turn."
     ]
    },
+   "expires_at_turn_end": true,
    "key": "Agility",
    "name": "Haste",
+   "primary": "count",
    "sources": [
     {
      "kind": "game_text",
@@ -4808,8 +5160,10 @@
      "For 1 turn, inflict 1 [Burn] with Heads Hit"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Heated Gas Harpoon",
    "name": "Heated Gas Harpoon",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -4843,8 +5197,10 @@
      "The Heishou Bolus Contamination effects can stack with each other:"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Heishou Bolus Contamination -黑獸丸染-",
    "name": "Heishou Bolus Contamination -黑獸丸染-",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -4868,8 +5224,10 @@
      "For this turn, this unit uses Plus Coin Attack Skills"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Here Comes Magical Girl!",
    "name": "Here Comes Magical Girl!",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -4895,8 +5253,10 @@
      "Turn End: Gain [Charge] Count equal to [High-voltage Exoskeleton]; both [High-voltage Exoskeleton] and Shield gained from its effect expire"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:High-voltage Exoskeleton",
    "name": "High-voltage Exoskeleton",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -4921,8 +5281,10 @@
      "Turn Start: gain 2 [Offense Level Up] and 2 [Defense Level Up]"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Higher Thunderer",
    "name": "Higher Thunderer",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -4945,8 +5307,10 @@
      "Current Mode: Hornet [Rifle]"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Hornet -Rifle-",
    "name": "Hornet -Rifle-",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -4971,8 +5335,10 @@
      "epoché"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Hornet -Shotgun-",
    "name": "Hornet -Shotgun-",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -4997,8 +5363,10 @@
      "Turn End: gain 2 [Offense Level Up] and 1 [Damage Up] next turn for every Stack"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Hunger (Kkomi)",
    "name": "Hunger (Kkomi)",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -5028,8 +5396,10 @@
      "When hit, raise this unit's Stagger Threshold by (5 x Stack)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Hyped-up",
    "name": "Hyped-up",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -5056,8 +5426,10 @@
      "Base Stack: 0"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Hysteria",
    "name": "Hysteria",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -5083,8 +5455,10 @@
      "Reduced by 1 when this unit is hit by 2 Skills"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:I Got Praised! (Ishmael)",
    "name": "I Got Praised! (Ishmael)",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -5107,8 +5481,10 @@
      "Does not act for this turn."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Immobilized",
    "name": "Immobilized",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -5143,8 +5519,10 @@
      "※ Apply the \"Non-SP Units\" conditional to certain enemies that have SP but can't change their Panic Types."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Impending Ruin",
    "name": "Impending Ruin",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -5169,8 +5547,10 @@
      "Turn Start: If The Ring Fauvist Docent Rodion does not have [Réflexion], this effect expires"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Imperfections Addressed",
    "name": "Imperfections Addressed",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -5198,8 +5578,10 @@
      "Passive \"Future [未來]\" activated"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "StackFutureActivate",
    "name": "In the Future",
+   "primary": "potency",
    "sources": [
     {
      "kind": "game_text",
@@ -5223,8 +5605,10 @@
      "Passive \"Future [未來]\" Deactivated"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "StackFuture",
    "name": "In the Future (Deactivated)",
+   "primary": "potency",
    "sources": [
     {
      "kind": "game_text",
@@ -5252,8 +5636,10 @@
      "Passive \"Past [過去]\" activated"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "StackPastActivate",
    "name": "In the Past",
+   "primary": "potency",
    "sources": [
     {
      "kind": "game_text",
@@ -5277,8 +5663,10 @@
      "Passive \"Past [過去]\" Deactivated"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "StackPast",
    "name": "In the Past (Deactivated)",
+   "primary": "potency",
    "sources": [
     {
      "kind": "game_text",
@@ -5306,8 +5694,10 @@
      "Passive \"Present [現在]\" activated"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "StackPresentActivate",
    "name": "In the Present",
+   "primary": "potency",
    "sources": [
     {
      "kind": "game_text",
@@ -5331,8 +5721,10 @@
      "Passive \"Present [現在]\" Deactivated"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "StackPresent",
    "name": "In the Present (Deactivated)",
+   "primary": "potency",
    "sources": [
     {
      "kind": "game_text",
@@ -5356,8 +5748,10 @@
      "Turn Start: fully heal HP and SP (once per Encounter)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Incandescent Indulgence",
    "name": "Incandescent Indulgence",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -5380,8 +5774,10 @@
      "+0.25 to Resistances against Attack Types and Affinities of Skills that Clashed against \"Entangled Life - Regression\" Skill of \"Butterfly of Entangled Lives::The Pupa\""
     ]
    },
+   "expires_at_turn_end": false,
    "key": "HeatedWingScalesExplain",
    "name": "Incandescent Scale Dust",
+   "primary": "potency",
    "sources": [
     {
      "kind": "game_text",
@@ -5413,8 +5809,10 @@
      "On Hit, inflict +3 [Sinking] Count (once per target)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Indulgence in Prescripts",
    "name": "Indulgence in Prescripts",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -5437,8 +5835,10 @@
      "The rank of the last Skill [Discard]ed by the unit with this effect (Base Value:1)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Insight",
    "name": "Insight",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -5463,8 +5863,10 @@
      "When hit by the last Coin of an attacker, deal PiercePierce damage equal to 20% of the said Coin's damage and inflict +2 [Bleed] Count (max once per Skill, 3 times per turn. Max damage per turn: 60)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Iron Maiden",
    "name": "Iron Maiden",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -5488,8 +5890,10 @@
      "Turn Start: At less than 4 Count, heal by (Count * 5)% of Max HP"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:K Corp Ampule",
    "name": "K Corp Ampule",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -5515,8 +5919,10 @@
      "Turn Start:"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Karmic Consequence",
    "name": "Karmic Consequence",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -5541,8 +5947,10 @@
      "Turn Start: Randomly gain 1 [Offense Level Up] or 1 [Defense Level Up] for every Stack (max 3 times)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:L'Hommage",
    "name": "L'Hommage",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -5568,8 +5976,10 @@
      "Unique [Ammo]"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "LCA_Bullet",
    "name": "LCA Fracture Round",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -5596,8 +6006,10 @@
      "Take +10% damage from LustLust Skills"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:La Mancha Parade",
    "name": "La Mancha Parade",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -5639,8 +6051,10 @@
      "Turn End: At max Stack, if there are enemies on the field, consume all Stack to activate the following effects next turn:"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "LanternGregBigBird",
    "name": "Lamp",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -5665,8 +6079,10 @@
      "Turn End: reduced by 1"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Lasso",
    "name": "Lasso",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -5692,8 +6108,10 @@
      "Number of turns this unit spent active in the Encounter"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Launcher -始-",
    "name": "Launcher -始-",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -5718,8 +6136,10 @@
      "Inflict +1 more [Bleed] and [Sinking] Potency with Base Skills"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Le Fauvisme - Masque de Chien",
    "name": "Le Fauvisme - Masque de Chien",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -5745,8 +6165,10 @@
      "On Hit, if target has 3+ [Mauled Color -Rouge-], inflict +1 [Bleed] Count (once per turn)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Le Fauvisme - Masque de Loup",
    "name": "Le Fauvisme - Masque de Loup",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -5780,8 +6202,10 @@
      "When hit while this unit has Shield, gain 5 Stack (10 per turn)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Le Noir Gabardine Overcoat",
    "name": "Le Noir Gabardine Overcoat",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -5809,8 +6233,10 @@
      "Gain the following effects based on Stack:"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Leash-holder of All Heishou",
    "name": "Leash-holder of All Heishou",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -5837,8 +6263,10 @@
      "Turn Start: activate the following"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Life from Death -死中求活-",
    "name": "Life from Death -死中求活-",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -5867,8 +6295,10 @@
      "Offense Level +2"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Liferender",
    "name": "Liferender",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -5894,8 +6324,10 @@
      "When hit: if this unit took 100+ damage from a single Skill, gain [Protection] after Skill End (2 times per turn; includes damage against Shield HP; does not count damage from Keywords)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Linebreaker",
    "name": "Linebreaker",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -5921,8 +6353,10 @@
      "Turn End: this effect expires"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Load",
    "name": "Load",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -5949,8 +6383,10 @@
      "Turn Start: gain [Bleed] Potency by Stack"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Lodged Arrow",
    "name": "Lodged Arrow",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -5982,8 +6418,10 @@
      "When there are multiple allies that have [Assist Defense] Stacks, the ally that has the highest Stack has the highest activation priority"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Lordsguard",
    "name": "Lordsguard",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -6009,8 +6447,10 @@
      "Unique [Charge]"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Love-Hate",
    "name": "Love-Hate",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -6037,8 +6477,10 @@
      "Gain the following effects next turn based on Stack at Turn End:"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Loyalty Pheromone",
    "name": "Loyalty Pheromone",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -6061,8 +6503,10 @@
      "Deal 10% less damage with LustLust skills per Count for one turn. (Max 10)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Lust DMG Down",
    "name": "Lust DMG Down",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -6085,8 +6529,10 @@
      "Deal 10% more damage with LustLust skills per Count for one turn. (Max 10)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Lust DMG Up",
    "name": "Lust DMG Up",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -6109,8 +6555,10 @@
      "Take 10% more damage from LustLust skills per Count for one turn. (Max 10)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Lust Fragility",
    "name": "Lust Fragility",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -6133,8 +6581,10 @@
      "LustLust skills lose final Power by the effect's Count for one turn."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Lust Power Down",
    "name": "Lust Power Down",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -6157,8 +6607,10 @@
      "LustLust skills gain final Power by the effect's Count for one turn."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Lust Power Up",
    "name": "Lust Power Up",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -6181,8 +6633,10 @@
      "Take 10% less damage from LustLust skills per Count for one turn. (Max 10)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Lust Protection",
    "name": "Lust Protection",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -6208,8 +6662,10 @@
      "Turn Start: Inflict 3 [Burn] on all units on the field"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Lævateinn (Outis)",
    "name": "Lævateinn (Outis)",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -6232,8 +6688,10 @@
      "At the end of the turn, take GluttonyGluttony damage by the Count, increase [Bleed] Count by 1, then reduce this effect’s Count by 1."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Maggots",
    "name": "Maggots",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -6258,8 +6716,10 @@
      "Value changes depending on certain Skill effects."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Magic Bullet",
    "name": "Magic Bullet",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -6284,8 +6744,10 @@
      "Turn End: At 3 Stack and with -25 or higher SP, change SP to -25"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Magical Arcana",
    "name": "Magical Arcana",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -6318,8 +6780,10 @@
      "When this unit gains this effect, gain 1 [Attack Power Up] and 1 [Damage Up]"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Magical Girl's Chant",
    "name": "Magical Girl's Chant",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -6346,8 +6810,10 @@
      "※ Can gain up to 20 per turn"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Man in Scabbard",
    "name": "Man in Scabbard",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -6373,8 +6839,10 @@
      "Take +10% damage from GluttonyGluttony Affinity Skills"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Mark of Decay",
    "name": "Mark of Decay",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -6398,8 +6866,10 @@
      "Take +10% damage from Don Quixote"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Mark of Villainy",
    "name": "Mark of Villainy",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -6422,8 +6892,10 @@
      "Apply Mark of the Prescript to a Base Attack Skill on this unit's Dashboard"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Mark of the Prescript",
    "name": "Mark of the Prescript",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -6456,8 +6928,10 @@
      "When hit, gain 1 [Sinking] Potency for every 3 Stack (once per turn)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Mauled Color -Bleu-",
    "name": "Mauled Color -Bleu-",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -6504,8 +6978,10 @@
      "When hit, gain 1 [Bleed] Potency for every 3 Stack (once per turn)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Mauled Color -Rouge-",
    "name": "Mauled Color -Rouge-",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -6529,8 +7005,10 @@
      "The Skill used due to the 'Melee Support' effect does not affect Unit B's upcoming Skills list."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Melee Support",
    "name": "Melee Support",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -6563,8 +7041,10 @@
      "This unit gains base Min and Max Speed by Stack"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Microprecision Time Acceleration",
    "name": "Microprecision Time Acceleration",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -6587,8 +7067,10 @@
      "Raise the Power of Minus Coins by the effect's Count for one turn."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Minus Coin Boost",
    "name": "Minus Coin Boost",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -6611,8 +7093,10 @@
      "Reduce the Power of Minus Coins by the effect's Count for one turn."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "MinusCoinValueDown",
    "name": "Minus Coin Drop",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -6637,8 +7121,10 @@
      "Turn Start: Gain 2 Shield for every Stack"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Moonlit Azure Blade",
    "name": "Moonlit Azure Blade",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -6663,8 +7149,10 @@
      "Unique [Bleed]"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Nails",
    "name": "Nails",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -6694,8 +7182,10 @@
      "When this unit consumes [Charge] Count with its Skills, consume the same amount of [Charge] Count 1 more time (when there isn't enough [Charge] Count, consume as much as available)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Near-light Superbattery",
    "name": "Near-light Superbattery",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -6720,8 +7210,10 @@
      "This effect persists throughout the Encounter"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Nebulizer α",
    "name": "Nebulizer α",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -6746,8 +7238,10 @@
      "When activating PridePride A-Reson.: on Combat Start, apply 3 [Poise] and +3 [Poise] Count on self and (Stack) allies (prioritizes allies that gain or use [Poise] or [Poise] Count; among them, prioritize allies with the least [Poise] Potency)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Nebulizer β",
    "name": "Nebulizer β",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -6772,8 +7266,10 @@
      "When taking EnvyEnvy damage, gain +1 [Bleed] Count and reduce this effect's Stack by 1"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Needle",
    "name": "Needle",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -6802,8 +7298,10 @@
      "The unit that inflicted this Nerve Strike gains the following effects based on the target's (or targeted Part's) Nerve Strike Stack"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Nerve Strike",
    "name": "Nerve Strike",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -6826,8 +7324,10 @@
      "Offense level decreases based on the effect's Potency for one turn."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Offense Level Down",
    "name": "Offense Level Down",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -6850,8 +7350,10 @@
      "Offense level decreases based on the effect's Potency for one turn."
     ]
    },
+   "expires_at_turn_end": true,
    "key": "AttackDown",
    "name": "Offense Level Down ",
+   "primary": "potency",
    "sources": [
     {
      "kind": "game_text",
@@ -6874,8 +7376,10 @@
      "Offense level increases based on the effect's Potency for one turn."
     ]
    },
+   "expires_at_turn_end": true,
    "key": "AttackUp",
    "name": "Offense Level Up",
+   "primary": "potency",
    "sources": [
     {
      "kind": "game_text",
@@ -6901,8 +7405,10 @@
      "When gaining [Red Eyes] with Base Skill effects, heal self and 1 ally with the lowest HP percentage by ([Red Eyes] gained)% of this unit's max HP (2 times per turn)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Only Ashes Remain",
    "name": "Only Ashes Remain",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -6927,8 +7433,10 @@
      "Turn End: Gain 1 [Bind] next turn"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Open Wound",
    "name": "Open Wound",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -6958,8 +7466,10 @@
      "When hit, gain +1 [Charge] Count and 1 [Load] next turn (max 5 per turn)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Overcharge",
    "name": "Overcharge",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -6988,8 +7498,10 @@
      "Min & Max Speed +2"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Overheat",
    "name": "Overheat",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -7015,8 +7527,10 @@
      "Consuming [District 12 Fuel] in Overheated Fuel State consumes Overheated Fuel instead"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Overheated Fuel",
    "name": "Overheated Fuel",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -7039,8 +7553,10 @@
      "For 1 turn, inflict 1 [Burn] On Hit"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Overheated Gas Harpoon",
    "name": "Overheated Gas Harpoon",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -7067,8 +7583,10 @@
      "Take +(Stack x 2.5)% damage from The Ring-faction Identities"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Palette Vibrante",
    "name": "Palette Vibrante",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -7091,8 +7609,10 @@
      "Fix the Power of Coins to 0 for one turn, with one Coin per the effect’s Count."
     ]
    },
+   "expires_at_turn_end": true,
    "key": "Paralysis",
    "name": "Paralyze",
+   "primary": "potency",
    "sources": [
     {
      "kind": "game_text",
@@ -7124,8 +7644,10 @@
      "Unique [Charge] (fixed Potency)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Penitence",
    "name": "Penitence",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -7150,8 +7672,10 @@
      "Offense Level +1 for every 10 Stack"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Petals",
    "name": "Petals",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -7176,8 +7700,10 @@
      "Take +5% damage from Blade of the House of Spiders Ryōshū's Base Attack Skills"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Phantom Trace",
    "name": "Phantom Trace",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -7201,8 +7727,10 @@
      "When hit, inflict 3 [Burn] on target"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Pheromone",
    "name": "Pheromone",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -7230,8 +7758,10 @@
      "For every 3 [Burn] on self, take +1% damage when hit (max 20%)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Pheromone Mark",
    "name": "Pheromone Mark",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -7257,8 +7787,10 @@
      "When this unit is hit, the Attacker gains [Charge] Count equal to the value (once per Skill)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Photoelectricity",
    "name": "Photoelectricity",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -7281,8 +7813,10 @@
      "Deal 10% less damage with PiercePierce skills per Count for one turn. (Max 10)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Pierce DMG Down",
    "name": "Pierce DMG Down",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -7305,8 +7839,10 @@
      "Deal 10% more damage with PiercePierce skills per Count for one turn. (Max 10)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Pierce DMG Up",
    "name": "Pierce DMG Up",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -7329,8 +7865,10 @@
      "Take 10% more damage from PiercePierce skills per Count for one turn. (Max 10)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Pierce Fragility",
    "name": "Pierce Fragility",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -7353,8 +7891,10 @@
      "PiercePierce skills lose final Power by the effect's Count for one turn"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Pierce Power Down",
    "name": "Pierce Power Down",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -7377,8 +7917,10 @@
      "PiercePierce skills gain final Power by the effect's Count for one turn"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Pierce Power Up",
    "name": "Pierce Power Up",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -7401,8 +7943,10 @@
      "Take 10% less damage from PiercePierce skills per Count for one turn. (Max 10)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Pierce Protection",
    "name": "Pierce Protection",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -7426,8 +7970,10 @@
      "Increase PiercePierce Resistance based on Count"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "PenetrateResistDown",
    "name": "Pierce Resist Down",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -7471,8 +8017,10 @@
      "Turn Start: -(Stack x 0.15) [Aggro] to this unit's Skill Slots on the Dashboard (max 0.75)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Piercing Sword",
    "name": "Piercing Sword",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -7506,8 +8054,10 @@
      "When [Tremor Burst] is triggered on this unit, take (([Sinking] Potency + Pink Petals) / 5) GloomGloom damage"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Pink Petals",
    "name": "Pink Petals",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -7530,8 +8080,10 @@
      "Count increases by 1 whenever the affected unit tosses an attack skill Coin. At the end of the turn, inflict [Bind] by the effect's Count, then remove the effect."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Pink Ribbons",
    "name": "Pink Ribbons",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -7554,8 +8106,10 @@
      "Raise the Power of Plus Coins by the effect's Count for one turn."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "PlusCoinValueUp",
    "name": "Plus Coin Boost",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -7578,8 +8132,10 @@
      "Reduce the Power of Plus Coins by the effect's Count for one turn."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Plus Coin Drop",
    "name": "Plus Coin Drop",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -7602,8 +8158,10 @@
      "On hit, gain a Potency-based chance to deal critical damage, reducing the Count by 1 if successful. At the end of the turn, reduce the Count by 1. Critical hits deal 1.2x damage."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Poise",
    "name": "Poise",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -7626,8 +8184,10 @@
      "At the end of the turn, take fixed damage by the Count, then halve the Count."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Poison",
    "name": "Poison",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -7652,8 +8212,10 @@
      "Turn End: reduced by 1"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Polydipsic Rose",
    "name": "Polydipsic Rose",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -7676,8 +8238,10 @@
      "All skills lose Final Power by the effect's Potency for one turn."
     ]
    },
+   "expires_at_turn_end": true,
    "key": "ResultReduction",
    "name": "Power Down",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -7700,8 +8264,10 @@
      "All skills gain Final Power by the effect's Count for one turn."
     ]
    },
+   "expires_at_turn_end": true,
    "key": "ResultEnhancement",
    "name": "Power Up",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -7725,8 +8291,10 @@
      "The Prescripts are delivered by many means, their medium determined with finality akin to divine prophecy. Those who receive them hold no power over how they arrive."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Prescript",
    "name": "Prescript",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -7750,8 +8318,10 @@
      "The Prescripts are delivered by many means, their medium determined with finality akin to divine prophecy. Those who receive them hold no power over how they arrive."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Prescript (Device)",
    "name": "Prescript (Device)",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -7777,8 +8347,10 @@
      "Use a Skill marked with [Mark of the Prescript] or hit a target with a marked Skill."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Prescript: -Device- I",
    "name": "Prescript: -Device- I",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -7804,8 +8376,10 @@
      "Turn Start: Gain this effect when this unit has [Unlock - I]"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Prescript: -Device- II",
    "name": "Prescript: -Device- II",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -7831,8 +8405,10 @@
      "Turn Start: Gain this effect when this unit has [Unlock - II]"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Prescript: -Device- III",
    "name": "Prescript: -Device- III",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -7858,8 +8434,10 @@
      "Turn Start: Gain this effect when this unit has [Unlock - II]"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Prescript: -Device- III (Yi Sang)",
    "name": "Prescript: -Device- III (Yi Sang)",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -7884,8 +8462,10 @@
      "Turn Start: Gain this effect when this unit has [Unlock - III]"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Prescript: -Device- IV",
    "name": "Prescript: -Device- IV",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -7911,8 +8491,10 @@
      "Use a Skill marked with [Mark of the Prescript] or hit a target with a marked Skill."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Prescript: -Paper Slip- I",
    "name": "Prescript: -Paper Slip- I",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -7938,8 +8520,10 @@
      "Turn Start: At 3~5 [Grace of the Prescript], gain this effect"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Prescript: -Paper Slip- II",
    "name": "Prescript: -Paper Slip- II",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -7965,8 +8549,10 @@
      "Turn Start: At 6~8 [Grace of the Prescript], gain this effect"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Prescript: -Paper Slip- III",
    "name": "Prescript: -Paper Slip- III",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -7991,8 +8577,10 @@
      "Turn Start: At 9 [Grace of the Prescript], gain this effect"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Prescript: -Paper Slip- IV",
    "name": "Prescript: -Paper Slip- IV",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -8019,8 +8607,10 @@
      "Unique [Charge]"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Preservation",
    "name": "Preservation",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -8043,8 +8633,10 @@
      "Deal 10% less damage with PridePride skills per Count for one turn. (Max 10)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Pride DMG Down",
    "name": "Pride DMG Down",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -8067,8 +8659,10 @@
      "Deal 10% more damage with PridePride skills per Count for one turn. (Max 10)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Pride DMG Up",
    "name": "Pride DMG Up",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -8091,8 +8685,10 @@
      "Take 10% more damage from PridePride skills per Count for one turn. (Max 10)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Pride Fragility",
    "name": "Pride Fragility",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -8115,8 +8711,10 @@
      "PridePride skills lose final Power by the effect's Count for one turn."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Pride Power Down",
    "name": "Pride Power Down",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -8139,8 +8737,10 @@
      "PridePride skills gain final Power by the effect's Count for one turn."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Pride Power Up",
    "name": "Pride Power Up",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -8163,8 +8763,10 @@
      "Take 10% less damage from PridePride skills per Count for one turn. (Max 10)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Pride Protection",
    "name": "Pride Protection",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -8190,8 +8792,10 @@
      "Turn Start: at 9 Stack, a powerful Skill becomes available"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Procuration -Hermes-",
    "name": "Procuration -Hermes-",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -8248,8 +8852,10 @@
     ],
     "unmodeled": []
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Protecting Sword",
    "name": "Protecting Sword",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -8272,8 +8878,10 @@
      "Take less damage from skills based on the effect’s Count for one turn. (Max 10)"
     ]
    },
+   "expires_at_turn_end": true,
    "key": "Protection",
    "name": "Protection",
+   "primary": "count",
    "sources": [
     {
      "kind": "game_text",
@@ -8307,8 +8915,10 @@
      "Turn Start: Gain Shield by [Poise] on self (max 20)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Protector's Stance",
    "name": "Protector's Stance",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -8334,8 +8944,10 @@
      "Unique [Charge]"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Pulsation",
    "name": "Pulsation",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -8359,8 +8971,10 @@
      "Number of turns this unit spent in Retreat or as a Backup unit"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Ready -待-",
    "name": "Ready -待-",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -8387,8 +9001,10 @@
      "When this unit has this effect, activate the following effects:"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Ready to Loose",
    "name": "Ready to Loose",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -8419,8 +9035,10 @@
      "Unique [Charge] (fixed Potency)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Red Eyes",
    "name": "Red Eyes",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -8447,8 +9065,10 @@
      "When struck by a Critical Hit, gain [Bleed] equal to half of the value and take +(value x 3)% damage on Critical Hit"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Red Plum Blossom",
    "name": "Red Plum Blossom",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -8476,8 +9096,10 @@
      "When hit, gain [Sinking] Potency equal to Stack"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Reflux",
    "name": "Reflux",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -8500,8 +9122,10 @@
      "For this turn, this unit uses Minus Coin Attack Skills"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Regressive Transformation - Reversed",
    "name": "Regressive Transformation - Reversed",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -8527,8 +9151,10 @@
      "Reset both The Living and The Departed values on self to 0, and gain the max value of their sum based on the probabilities listed in the Passive 'ISeeTheDyingButterfly.'"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "ReloadLament",
    "name": "Reload",
+   "primary": "potency",
    "sources": [
     {
      "kind": "game_text",
@@ -8554,8 +9180,10 @@
      "Reset both The Living and The Departed values on self to 0, and gain the max value of their sum based on the probabilities listed in the Passive 'ISeeTheDyingButterfly.'"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Reload (Solemn Lament)",
    "name": "Reload (Solemn Lament)",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -8579,8 +9207,10 @@
      "Effect applied to Spore Round (Unique Ammo)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Reload -Germination-",
    "name": "Reload -Germination-",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -8604,8 +9234,10 @@
      "When at 7+ [Poise], upon Skill use, Skill 3 deals +(30/# of Coins)% more damage and deals +(50/# of Coins)% damage on Critical Hit"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Remembrance",
    "name": "Remembrance",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -8628,8 +9260,10 @@
      "+0.2 Resistance to Attack Types with 1.5 or less Resistance. If the target with this effect is defeated, gain 1 E.G.O resource for all Affinities, and the unit that defeated the target heals 10 SP"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Requested Target",
    "name": "Requested Target",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -8662,8 +9296,10 @@
      "Take +10% damage from WrathWrath and EnvyEnvy Skills"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Resident Reg. Microchip",
    "name": "Resident Reg. Microchip",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -8689,8 +9325,10 @@
      "Take +20% more damage"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Responsibility",
    "name": "Responsibility",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -8735,8 +9373,10 @@
      "Turn End: This effect expires"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Rhythm",
    "name": "Rhythm",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -8770,8 +9410,10 @@
      "Turn End: If this unit lost SP this turn due to its Skill effects, deal +10% damage next turn using Base Skills (once per turn)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Ridiculous Grit (Outis)",
    "name": "Ridiculous Grit (Outis)",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -8797,8 +9439,10 @@
      "Using the \"Stamp of Vengeance\" Skill (including activation via Counter)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Rising Fever",
    "name": "Rising Fever",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -8828,8 +9472,10 @@
      "When gaining [Bleed] or 'Unique Bleed' from getting hit, gain 2 [Bleed] and inflict 1 [Bleed] against the Attacker (5 times per turn)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Rose Wedge",
    "name": "Rose Wedge",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -8853,8 +9499,10 @@
      "When hit by an attack, take fixed damage by the effect’s Potency."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "Burst",
    "name": "Rupture",
+   "primary": "potency",
    "sources": [
     {
      "kind": "game_text",
@@ -8877,8 +9525,10 @@
      "Take -1 damage per Count from [Rupture] effects for one turn."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Rupture Protection",
    "name": "Rupture Protection",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -8901,8 +9551,10 @@
      "+0.25 to Resistances against Attack Types and Affinities of Skills that Clashed against \"Entangled Life - Advent\" Skill of \"Butterfly of Entangled Lives::The Pupa\""
     ]
    },
+   "expires_at_turn_end": false,
    "key": "RustedWingScalesExplain",
    "name": "Rusted Scale Dust",
+   "primary": "potency",
    "sources": [
     {
      "kind": "game_text",
@@ -8936,8 +9588,10 @@
      "When this effect expires, gain [L'Hommage] next turn equal to the number of The Ring Student Identities on the field"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Réflexion",
    "name": "Réflexion",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -8961,8 +9615,10 @@
      "Amount of SP healed due to the Identity's 'Base factors increasing Sanity(SP)'"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:SP Heal Efficiency",
    "name": "SP Heal Efficiency",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -8986,8 +9642,10 @@
      "Amount of SP lost due to the Identity's 'Base factors decreasing Sanity(SP)'"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:SP Loss Efficiency",
    "name": "SP Loss Efficiency",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -9014,8 +9672,10 @@
      "Unique [Ammo]"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Savage Tigermark Round",
    "name": "Savage Tigermark Round",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -9048,8 +9708,10 @@
      "Turn End: Heal SP equal to Stack"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Scarlet Moth",
    "name": "Scarlet Moth",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -9075,8 +9737,10 @@
      "Unique [Ammo]"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Scorch Propellant Ammo",
    "name": "Scorch Propellant Ammo",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -9101,8 +9765,10 @@
      "Turn End: Gain 2 [Haste] next turn"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Sealed Sword (Outis)",
    "name": "Sealed Sword (Outis)",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -9129,8 +9795,10 @@
      "※ Cannot gain additional Stacks of this effect while it is already active"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Searing Birdcage",
    "name": "Searing Birdcage",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -9155,8 +9823,10 @@
      "Turn End: Gain 1 [Haste] next turn"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Second Seal Removed (Outis)",
    "name": "Second Seal Removed (Outis)",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -9182,8 +9852,10 @@
      "Total sum of [Charge] Count currently owned by all allies"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Self Resonance Circuitry",
    "name": "Self Resonance Circuitry",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -9213,8 +9885,10 @@
      "Turn End (lose 5 Stack)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Self-charge (Gregor)",
    "name": "Self-charge (Gregor)",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -9240,8 +9914,10 @@
      "Turn End: lose 1 Stack"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Serpent Arm",
    "name": "Serpent Arm",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -9266,8 +9942,10 @@
      "Turn End: reduced by 1"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Sewing Target (Ally)",
    "name": "Sewing Target (Ally)",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -9296,8 +9974,10 @@
      "Max Value: 1"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Shallow Exhale",
    "name": "Shallow Exhale",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -9327,8 +10007,10 @@
      "Take x1.2 damage from [Burn] (rounded down; except Unique [Burn])"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Shattered World",
    "name": "Shattered World",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -9359,8 +10041,10 @@
      "※ Shattermark PanicShattermark Panic-type Effects"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Shattermark",
    "name": "Shattermark",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -9388,8 +10072,10 @@
      "Unique [Sinking]"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Sheut Fracture",
    "name": "Sheut Fracture",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -9419,8 +10105,10 @@
      "Gain Shield HP equal to the Stack at the moment of its application"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Shimmering -Bloodfiend- (Ally)",
    "name": "Shimmering -Bloodfiend- (Ally)",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -9446,8 +10134,10 @@
      "Upon using a Base Attack Skill, gain 2 [Poise] Potency and +1 [Poise] Count"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Shin (心) - Dihui Star -地慧星-",
    "name": "Shin (心) - Dihui Star -地慧星-",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -9472,8 +10162,10 @@
      "Min & Max Speed +1"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Shin (心) - Fate",
    "name": "Shin (心) - Fate",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -9500,8 +10192,10 @@
      "Offense Level +1, Defense Level +1"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Shin (心) - Procuration",
    "name": "Shin (心) - Procuration",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -9530,8 +10224,10 @@
      "Every Identity treats this unit as having their [Vengeance Mark]"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Sibling Vengeance Mark",
    "name": "Sibling Vengeance Mark",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -9556,8 +10252,10 @@
      "When hit by an attack, take fixed SP damage by the effect’s Potency."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "Sinking",
    "name": "Sinking",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -9581,8 +10279,10 @@
      "If target's SP is -45 or lower, the excess SP damage is dealt as GloomGloom-affinity HP damage (Non-SP Units take all of it as GloomGloom HP damage)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Sinking Deluge",
    "name": "Sinking Deluge",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -9608,8 +10308,10 @@
      "Turn Start: Gain 1 [Burn] and 1 [Bleed]"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Sizzling Wound",
    "name": "Sizzling Wound",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -9632,8 +10334,10 @@
      "Deal 10% less damage with SlashSlash skills per Count for one turn. (Max 10)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Slash DMG Down",
    "name": "Slash DMG Down",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -9656,8 +10360,10 @@
      "Deal 10% more damage with SlashSlash skills per Count for one turn. (Max 10)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Slash DMG Up",
    "name": "Slash DMG Up",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -9680,8 +10386,10 @@
      "Take 10% more damage from SlashSlash skills per Count for one turn. (Max 10)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Slash Fragility",
    "name": "Slash Fragility",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -9704,8 +10412,10 @@
      "SlashSlash skills lose final Power by the effect's Count for one turn"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Slash Power Down",
    "name": "Slash Power Down",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -9728,8 +10438,10 @@
      "SlashSlash skills gain final Power by the effect's Count for one turn"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Slash Power Up",
    "name": "Slash Power Up",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -9752,8 +10464,10 @@
      "Take 10% less damage from SlashSlash skills per Count for one turn. (Max 10)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Slash Protection",
    "name": "Slash Protection",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -9777,8 +10491,10 @@
      "Increase SlashSlash Resistance based on Count"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "SlashResistDown",
    "name": "Slash Resist Down",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -9801,8 +10517,10 @@
      "Deal 10% less damage with SlothSloth skills per Count for one turn. (Max 10)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Sloth DMG Down",
    "name": "Sloth DMG Down",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -9825,8 +10543,10 @@
      "Deal 10% more damage with SlothSloth skills per Count for one turn. (Max 10)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Sloth DMG Up",
    "name": "Sloth DMG Up",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -9849,8 +10569,10 @@
      "Take 10% more damage from SlothSloth skills per Count for one turn. (Max 10)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Sloth Fragility",
    "name": "Sloth Fragility",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -9873,8 +10595,10 @@
      "SlothSloth skills lose final Power by the effect's Count for one turn."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Sloth Power Down",
    "name": "Sloth Power Down",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -9897,8 +10621,10 @@
      "SlothSloth skills gain final Power by the effect's Count for one turn."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Sloth Power Up",
    "name": "Sloth Power Up",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -9921,8 +10647,10 @@
      "Take 10% less damage from SlothSloth skills per Count for one turn. (Max 10)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Sloth Protection",
    "name": "Sloth Protection",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -9960,8 +10688,10 @@
      "※ Solitude PanicSolitude Panic Effect:"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Solitude",
    "name": "Solitude",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -9985,8 +10715,10 @@
      "Min & Max Speed +1"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Somatic Frisson-inspiring Melody",
    "name": "Somatic Frisson-inspiring Melody",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -10009,8 +10741,10 @@
      "When hit, the attacker gains +1 [Charge] Count; when hit with a GloomGloom attack, gain +1 [Rupture] Count, then reduce Count by 1"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Spark Discharge",
    "name": "Spark Discharge",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -10033,8 +10767,10 @@
      "Deal +10% damage against targets with [Art Medium]"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Spark of Inspiration",
    "name": "Spark of Inspiration",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -10059,8 +10795,10 @@
      "Turn End: Gain +1 [Burn] Count for every 5 Stack"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Spore",
    "name": "Spore",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -10087,8 +10825,10 @@
      "When spent, inflict 2 [Spore] on target On Hit"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Spore Round -Base-",
    "name": "Spore Round -Base-",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -10115,8 +10855,10 @@
      "When spent, inflict 3 [Spore] on target On Hit"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Spore Round -Buckshot-",
    "name": "Spore Round -Buckshot-",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -10148,8 +10890,10 @@
      "Turn End: gain 5 [Haste] next turn"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Strider -Mao-",
    "name": "Strider -Mao-",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -10175,8 +10919,10 @@
      "Turn End: gain 2 [Haste] and (Stack x 2) [Aggro] next turn"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Strider -Wu-",
    "name": "Strider -Wu-",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -10203,8 +10949,10 @@
      "Take -7.5% damage for every Stack"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:String Severance -絕緣-",
    "name": "String Severance -絕緣-",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -10230,8 +10978,10 @@
      "Reduce Max HP by 20% (per Count)."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Surgery",
    "name": "Surgery",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -10254,8 +11004,10 @@
      "Skill 2 gains Final Power by the effect's Count for this turn"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Sword of the Homeland - Penetrating",
    "name": "Sword of the Homeland - Penetrating",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -10278,8 +11030,10 @@
      "Skill 1 gains Final Power by the effect's Count for this turn"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Sword of the Homeland - Rending",
    "name": "Sword of the Homeland - Rending",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -10303,8 +11057,10 @@
      "When at 7+ [Poise], upon Skill use, Skill 3 deals +(30/# of Coins)% more damage and deals +(50/# of Coins)% damage on Critical Hit"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Swordplay of the Homeland",
    "name": "Swordplay of the Homeland",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -10330,8 +11086,10 @@
      "When hit, gain (Stack / 2) [Rupture] and lose 1 Stack (gain at least 1; rounded down)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Talisman",
    "name": "Talisman",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -10355,8 +11113,10 @@
      "Expires if this unit does not have [Ready to Loose]"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Target Aim",
    "name": "Target Aim",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -10380,8 +11140,10 @@
      "The Skill used due to this effect does not affect Unit B's upcoming Skills list."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Target Spotted",
    "name": "Target Spotted",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -10407,8 +11169,10 @@
      "Turn End: take 20% HP damage per Stack (cannot be Staggered by this effect)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Tarnished Blood",
    "name": "Tarnished Blood",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -10473,8 +11237,10 @@
      "If this unit has [Despair], gain [Pierce Power Up] by the effect's Stack at Turn Start"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Tear-sharpened",
    "name": "Tear-sharpened",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -10500,8 +11266,10 @@
      "Turn Start: At 10 Stack, gain 5 Fragile"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "TimeGap",
    "name": "Temporal Disjunction",
+   "primary": "potency",
    "sources": [
     {
      "kind": "game_text",
@@ -10528,8 +11296,10 @@
      "Whether The Living(Potency) or The Departed(Count) will be consumed for each shot is randomly determined"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "BulletLament",
    "name": "The Living & The Departed",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -10553,8 +11323,10 @@
      "If target has [Vengeance Mark], deal +20% damage"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:The Middle - Grudge (Outis)",
    "name": "The Middle - Grudge (Outis)",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -10579,8 +11351,10 @@
      "Final Power +1 for Base Skills for every 5 Stack (max 2)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:The Middle - Vengeance Tattoo -Great Sister-",
    "name": "The Middle - Vengeance Tattoo -Great Sister-",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -10605,8 +11379,10 @@
      "Final Power +1 for Base Skills for every 5 Stack (max 2)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:The Middle Styled Augmentation Tattoos",
    "name": "The Middle Styled Augmentation Tattoos",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -10630,8 +11406,10 @@
      "This effect is applied to a single target every turn regardless of the number of The Index units deployed"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:The Prescript's Target",
    "name": "The Prescript's Target",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -10656,8 +11434,10 @@
      "Min & Max Speed +2"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:The Self Unbound - Flow State",
    "name": "The Self Unbound - Flow State",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -10694,8 +11474,10 @@
      "When this unit is the main target of an Unopposed Attack Skill, halve the chance for the Skill's first Coin to flip Heads"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:The Udjat -Vanguard-",
    "name": "The Udjat -Vanguard-",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -10721,8 +11503,10 @@
      "Upon death, the last attacker heals 3 SP; then, a random ally without this effect gains 2 Stacks of this effect."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:The Uninvited",
    "name": "The Uninvited",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -10755,8 +11539,10 @@
      "if target hit by Base Skills has [Burn], heal 3 SP (2 times per turn )"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Thermal Blades",
    "name": "Thermal Blades",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -10781,8 +11567,10 @@
      "Turn Start: gain 1 [Offense Level Up] and 1 [Defense Level Up]"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Thunderer",
    "name": "Thunderer",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -10807,8 +11595,10 @@
      "Used for certain Skills"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Tianjiu Star's Blade",
    "name": "Tianjiu Star's Blade",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -10834,8 +11624,10 @@
      "Unique [Ammo]"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Tigermark Round",
    "name": "Tigermark Round",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -10861,8 +11653,10 @@
      "Turn End: Gain 1 Stack and lose 1 Count"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Time Moratorium",
    "name": "Time Moratorium",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -10886,8 +11680,10 @@
      "Used for certain Skills"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Torn Memory",
    "name": "Torn Memory",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -10911,8 +11707,10 @@
      "Max Value: 999"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Total Bloodfeast Consumed",
    "name": "Total Bloodfeast Consumed",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -10944,8 +11742,10 @@
      "Take +10% HP and SP damage from [Bleed] and [Sinking] effects for every Stack (max 20%, rounded down)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Touche Hardie",
    "name": "Touche Hardie",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -10977,8 +11777,10 @@
      "Reduce [Sinking] damage taken by 80%"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Trauma Shield",
    "name": "Trauma Shield",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -11002,8 +11804,10 @@
      "When attacked by skills that trigger Tremor Burst, raise the Stagger Threshold by the effect’s Potency."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "Vibration",
    "name": "Tremor",
+   "primary": "potency",
    "sources": [
     {
      "kind": "game_text",
@@ -11035,8 +11839,10 @@
      "When Hit by Skills that trigger [Tremor Burst], raise the Stagger Threshold by the effect's Potency"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Tremor - Chain",
    "name": "Tremor - Chain",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -11069,8 +11875,10 @@
      "When Hit by Skills that trigger [Tremor Burst], raise the Stagger Threshold by the effect's Potency"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Tremor - Clockwinding",
    "name": "Tremor - Clockwinding",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -11102,8 +11910,10 @@
      "When Hit by Skills that trigger [Tremor Burst], raise the Stagger Threshold by the effect's Potency"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "VibrationCollapse",
    "name": "Tremor - Decay",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -11135,8 +11945,10 @@
      "When Hit by Skills that trigger [Tremor Burst], raise the Stagger Threshold by the effect's Potency"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Tremor - Distribution",
    "name": "Tremor - Distribution",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -11169,8 +11981,10 @@
      "When hit by Skills or Coin effects that trigger [Tremor Burst], ([Tremor] Potency on self)% chance to trigger an additional [Tremor Burst]. (max 50%)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Tremor - Everlasting",
    "name": "Tremor - Everlasting",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -11203,8 +12017,10 @@
      "When Staggered, and when the sum of [Tremor] Potency and Count adds up to 20 or higher, raise Stagger Level by 1"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Tremor - Fracture",
    "name": "Tremor - Fracture",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -11229,8 +12045,10 @@
      "When hit by Skills that trigger [Tremor Burst], raise this unit's Stagger Threshold by the effect's Potency"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Tremor - Hemorrhage",
    "name": "Tremor - Hemorrhage",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -11262,8 +12080,10 @@
      "When Hit by Skills that trigger [Tremor Burst], raise the Stagger Threshold by the effect's Potency"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Tremor - Reverb",
    "name": "Tremor - Reverb",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -11295,8 +12115,10 @@
      "When hit by Skills that trigger [Tremor Burst], raise this unit's Stagger Threshold equal by the effect's Potency"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Tremor - Scorch",
    "name": "Tremor - Scorch",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -11320,8 +12142,10 @@
      "When triggering [Amplitude Conversion], add the effects of the resulting [Tremor] type to the list of active [Tremor] effects under [Tremor - Superposition]."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Tremor - Superposition",
    "name": "Tremor - Superposition",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -11344,8 +12168,10 @@
      "Raise target's Stagger Threshold by [Tremor] Potency on target"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "VibrationExplosion",
    "name": "Tremor Burst",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -11376,8 +12202,10 @@
      "※ Cannot gain additional Stacks of this effect while it is already active"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Twisted Curse Talisman",
    "name": "Twisted Curse Talisman",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -11402,8 +12230,10 @@
      "Upon Clash Lose, fix the Coin Power of the unbroken Coin to 1"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "SuperCoin",
    "name": "Unbreakable Coin",
+   "primary": "potency",
    "sources": [
     {
      "kind": "game_text",
@@ -11428,8 +12258,10 @@
      "When this Skill flips Coins, each Coin flips against a random enemy among its targets"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Unfocused Volley",
    "name": "Unfocused Volley",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -11453,8 +12285,10 @@
      "When 'Bullets are Pricey' Passive activates, consume all Unjust Enrichment stack to deal bonus damage"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Unjust Enrichment",
    "name": "Unjust Enrichment",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -11479,8 +12313,10 @@
      "Max: Stage 3"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Unlock",
    "name": "Unlock",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -11504,8 +12340,10 @@
      "Defense Level +1"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Unlock - I",
    "name": "Unlock - I",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -11529,8 +12367,10 @@
      "Defense Level +2"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Unlock - II",
    "name": "Unlock - II",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -11554,8 +12394,10 @@
      "Defense Level +3"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Unlock - III",
    "name": "Unlock - III",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -11581,8 +12423,10 @@
      "Min & Max Speed +3"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Unrelenting Spirit - Shin -剛氣-心-",
    "name": "Unrelenting Spirit - Shin -剛氣-心-",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -11609,8 +12453,10 @@
      "Min & Max Speed +1"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Unrelenting Spirit -剛氣-",
    "name": "Unrelenting Spirit -剛氣-",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -11635,8 +12481,10 @@
      "Turn Start: gain 1 [Offense Level Up] and 1 [Defense Level Up] for every Stack"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Unrelenting Storm",
    "name": "Unrelenting Storm",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -11663,8 +12511,10 @@
      "Turn End: The unit with the highest Stack of this effect gains 1 [Sibling Vengeance Mark] next turn"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Vendetta Mark",
    "name": "Vendetta Mark",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -11687,8 +12537,10 @@
      "Applies to the enemy that inflicted the most skill damage to allies."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Vengeance Mark",
    "name": "Vengeance Mark",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -11712,8 +12564,10 @@
      "Base Skills deal +1% damage for every Stack"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Vengeance Tattoo",
    "name": "Vengeance Tattoo",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -11744,8 +12598,10 @@
      "If The House of Spiders: The Ring Apprentice Faust is on the field, gain 2 [Protection] at Turn Start"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Viewing the Tableau (Hong Lu)",
    "name": "Viewing the Tableau (Hong Lu)",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -11769,8 +12625,10 @@
      "When this unit has [Haste], gain +1 more [Tremor] Count from its Base Skills"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Violent Collections",
    "name": "Violent Collections",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -11802,8 +12660,10 @@
      "When hit, if this unit had a Defense Skill chained at Combat Start, inflict 1 [Burn] per hit against the attacker for the turn"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Volatile Passion",
    "name": "Volatile Passion",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -11826,8 +12686,10 @@
      "Boost the damage of attacks against Weak resistances by 1% per Count for one turn."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Weak-resist DMG Boost",
    "name": "Weak-resist DMG Boost",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -11850,8 +12712,10 @@
      "A random \"Endure\" or \"Normal\" attack type resistance is weakened [+0.2 to damage multiplier] for one turn."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Weakness Analyzed",
    "name": "Weakness Analyzed",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -11876,8 +12740,10 @@
      "This coin deals PiercePierce damage"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:When boring a 20-inch hole with a lance... (Yi Sang)",
    "name": "When boring a 20-inch hole with a lance... (Yi Sang)",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -11902,8 +12768,10 @@
      "This coin deals BluntBlunt damage"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:When caving in the back of the skull with a hammer... (Yi Sang)",
    "name": "When caving in the back of the skull with a hammer... (Yi Sang)",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -11928,8 +12796,10 @@
      "This coin deals SlashSlash damage"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:When cleaving through the shoulder and the skull with a bastard sword... (Yi Sang)",
    "name": "When cleaving through the shoulder and the skull with a bastard sword... (Yi Sang)",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -11953,8 +12823,10 @@
      "This coin deals BluntBlunt damage"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:When hacking through the ribs with a hatchet... (Yi Sang)",
    "name": "When hacking through the ribs with a hatchet... (Yi Sang)",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -11979,8 +12851,10 @@
      "This coin deals SlashSlash damage"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:When lacerating through space itself with a scythe, like a certain someone... (Yi Sang)",
    "name": "When lacerating through space itself with a scythe, like a certain someone... (Yi Sang)",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -12004,8 +12878,10 @@
      "This coin deals PiercePierce damage"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:When penetrating the lungs with a stiletto... (Yi Sang)",
    "name": "When penetrating the lungs with a stiletto... (Yi Sang)",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -12030,8 +12906,10 @@
      "This coin deals PiercePierce damage"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:When punching 10 or more holes in the torso with a rapier... (Yi Sang)",
    "name": "When punching 10 or more holes in the torso with a rapier... (Yi Sang)",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -12056,8 +12934,10 @@
      "This coin deals SlashSlash damage"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:When rending the body with a great sword... (Yi Sang)",
    "name": "When rending the body with a great sword... (Yi Sang)",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -12082,8 +12962,10 @@
      "This coin deals BluntBlunt damage"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:When ripping the flesh to ten thousand strips with a whip... (Yi Sang)",
    "name": "When ripping the flesh to ten thousand strips with a whip... (Yi Sang)",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -12109,8 +12991,10 @@
      "In the same turn this unit gained Wild Hunt for the first time, always have 1 remaining HP; \"revive\" (heal 50% HP and reset SP to 0) this unit at Turn End."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Wild Hunt",
    "name": "Wild Hunt",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -12134,8 +13018,10 @@
      "Take -10% damage from Unopposed Attacks"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Wound-casing Mask",
    "name": "Wound-casing Mask",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -12158,8 +13044,10 @@
      "Deal 10% less damage with WrathWrath skills per Count for one turn. (Max 10)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Wrath DMG Down",
    "name": "Wrath DMG Down",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -12182,8 +13070,10 @@
      "Deal 10% more damage with WrathWrath skills per Count for one turn. (Max 10)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Wrath DMG Up",
    "name": "Wrath DMG Up",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -12206,8 +13096,10 @@
      "Take more damage from Wrath skills based on the effect’s Count for one turn. (Max 10)"
     ]
    },
+   "expires_at_turn_end": true,
    "key": "CrimsonTakeDamageUp",
    "name": "Wrath Fragility",
+   "primary": "potency",
    "sources": [
     {
      "kind": "game_text",
@@ -12230,8 +13122,10 @@
      "WrathWrath skills lose final Power by the effect's Count for one turn."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Wrath Power Down",
    "name": "Wrath Power Down",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -12254,8 +13148,10 @@
      "WrathWrath skills gain final Power by the effect's Count for one turn."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Wrath Power Up",
    "name": "Wrath Power Up",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -12278,8 +13174,10 @@
      "Take 10% less damage from WrathWrath skills per Count for one turn. (Max 10)"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Wrath Protection",
    "name": "Wrath Protection",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -12303,8 +13201,10 @@
      "Increase WrathWrath Resistance based on Count"
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Wrath Resist Down",
    "name": "Wrath Resist Down",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",
@@ -12328,8 +13228,10 @@
      "The Skill used as an Assist Attack does not affect Unit B's upcoming Skills list."
     ]
    },
+   "expires_at_turn_end": false,
    "key": "wiki:Your Will Guides My Blade.",
    "name": "Your Will Guides My Blade.",
+   "primary": "potency",
    "sources": [
     {
      "kind": "wiki",

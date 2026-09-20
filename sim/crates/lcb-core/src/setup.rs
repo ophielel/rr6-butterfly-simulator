@@ -75,6 +75,62 @@ fn enemy_resist_map(record: &EnemyRecord) -> (BTreeMap<String, f64>, BTreeMap<St
     (physical, sin)
 }
 
+/// Attach the rules books to the units: each unit's own **Combat** Passives,
+/// its Panic Type with the clauses resolved, and the E.G.O that own a Corrosion
+/// Skill.
+///
+/// Support Passives are deliberately **not** applied: the extracted ones are
+/// keyed by identity, but the team's support slots are a deck-building choice
+/// this project has no data for (see docs/STATUS.md).
+pub fn attach_unit_books(
+    state: &mut BattleState,
+    passives: &crate::effects::PassiveBook,
+    panics: Option<&crate::effects::PanicBook>,
+    library: &Library,
+) {
+    let owner_ids: Vec<String> = state
+        .units
+        .iter()
+        .map(|unit| match &unit.kind {
+            crate::state::UnitKind::Sinner { identity } => identity.0.clone(),
+            crate::state::UnitKind::Abnormality { enemy, .. } => enemy.0.clone(),
+        })
+        .collect();
+    for (index, unit) in state.units.iter_mut().enumerate() {
+        unit.passives = passives
+            .for_owner(&owner_ids[index])
+            .into_iter()
+            .map(|passive| passive.effects.clone())
+            .collect();
+        unit.corrosion_egos = unit
+            .ego_slots
+            .iter()
+            .filter(|ego| {
+                library
+                    .ego(ego)
+                    .map(|record| record.corrosion.is_some())
+                    .unwrap_or(false)
+            })
+            .cloned()
+            .collect();
+        if let crate::state::UnitKind::Sinner { identity } = &unit.kind {
+            if let Some(panics) = panics {
+                let panic = panics.for_identity(&identity.0).cloned();
+                unit.panic_type = Some(
+                    panic
+                        .as_ref()
+                        .map(|p| p.r#type.clone())
+                        .unwrap_or_else(|| "Panic".to_string()),
+                );
+                if let Some(panic) = panic {
+                    unit.panic_low_morale = panic.low_morale.clone();
+                    unit.panic_actions = panic.panic.clone();
+                }
+            }
+        }
+    }
+}
+
 pub fn sin_key(sin: Sin) -> &'static str {
     match sin {
         Sin::Wrath => "wrath",
@@ -113,6 +169,13 @@ pub struct EncounterBuilder<'a> {
     pub scripts: &'a crate::scripts::ScriptsBook,
     pub config: BattleConfig,
     pub seed: u64,
+    /// Passives / Panic Types / status behaviour.  They are attached to the
+    /// units **before** Turn 1 starts, otherwise the first Turn Start runs
+    /// without them (the units' passives and status upkeep only exist from
+    /// Turn 2 on).
+    pub passives: Option<&'a crate::effects::PassiveBook>,
+    pub panics: Option<&'a crate::effects::PanicBook>,
+    pub statuses: Option<&'a crate::effects::StatusBook>,
 }
 
 impl<'a> EncounterBuilder<'a> {
@@ -124,7 +187,24 @@ impl<'a> EncounterBuilder<'a> {
             scripts: EMPTY.get_or_init(crate::scripts::ScriptsBook::default),
             config: BattleConfig::default(),
             seed: 0,
+            passives: None,
+            panics: None,
+            statuses: None,
         }
+    }
+
+    /// Give every unit its own Combat Passives, its Panic Type and the status
+    /// behaviour book, exactly as `Simulator` does for later encounters.
+    pub fn books(
+        mut self,
+        passives: &'a crate::effects::PassiveBook,
+        panics: &'a crate::effects::PanicBook,
+        statuses: &'a crate::effects::StatusBook,
+    ) -> Self {
+        self.passives = Some(passives);
+        self.panics = Some(panics);
+        self.statuses = Some(statuses);
+        self
     }
 
     pub fn scripts(mut self, scripts: &'a crate::scripts::ScriptsBook) -> Self {
@@ -240,6 +320,13 @@ impl<'a> EncounterBuilder<'a> {
             slot_target: if team.len() >= TEAM_SIZE_CAP { team.len() } else { TEAM_SIZE_CAP },
         };
 
+        // Attach the rules books before Turn 1 starts.
+        if let Some(statuses) = self.statuses {
+            state.status_book = Some(std::sync::Arc::new(statuses.clone()));
+        }
+        if let Some(passives) = self.passives {
+            attach_unit_books(&mut state, passives, self.panics, self.library);
+        }
         // Turn 1: one slot per Sinner, each showing the usable skill (bottom)
         // plus the already drawn follow-up (top).  Extra slots are handed out
         // from turn 2 on (wiki.gg `Battles` / Deployment Order).

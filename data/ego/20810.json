@@ -9,8 +9,8 @@
   "awakening_sp": 20,
   "corrosion_sp": 25,
   "resource_cost": {
-    "Gloom": 4,
-    "Pride": 2
+    "gloom": 4,
+    "pride": 2
   },
   "awakening": {
     "name": "Tidal Elegy",

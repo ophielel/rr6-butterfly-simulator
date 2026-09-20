@@ -2172,8 +2172,8 @@
      "status": "Petals"
     },
     {
+     "count": 2,
      "kind": "gain",
-     "potency": 2,
      "raw": "[Turn End] Gain 2 [Fragile] and 2 [Attack Power Up] next turn (once per turn)",
      "status": "Fragile"
     }
@@ -2203,8 +2203,8 @@
      "status": "Petals"
     },
     {
+     "count": 2,
      "kind": "gain",
-     "potency": 2,
      "raw": "[Turn End] Gain 2 [Fragile] and 2 [Attack Power Up] next turn (once per turn)",
      "status": "Fragile"
     }
@@ -2234,8 +2234,8 @@
      "status": "Petals"
     },
     {
+     "count": 2,
      "kind": "gain",
-     "potency": 2,
      "raw": "[Turn End] Gain 2 [Fragile] and 2 [Attack Power Up] next turn (once per turn)",
      "status": "Fragile"
     }
@@ -2265,8 +2265,8 @@
      "status": "Petals"
     },
     {
+     "count": 2,
      "kind": "gain",
-     "potency": 2,
      "raw": "[Turn End] Gain 2 [Fragile] and 2 [Attack Power Up] next turn (once per turn)",
      "status": "Fragile"
     }
@@ -5109,10 +5109,10 @@
     "2": [
      {
       "coin_index": 2,
+      "count": 1,
       "kind": "gain",
       "next_turn": true,
       "per_turn": 1,
-      "potency": 1,
       "raw": "[On Hit] Gain 1 [Protection] next turn (once per turn)",
       "status": "Protection"
      }
@@ -5435,10 +5435,10 @@
      },
      {
       "coin_index": 3,
+      "count": 1,
       "kind": "gain",
       "next_turn": true,
       "per_turn": 1,
-      "potency": 1,
       "raw": "[On Hit] Gain 1 [Protection] next turn (once per turn)",
       "status": "Protection"
      }
@@ -5504,10 +5504,10 @@
   "1111403@1": {
    "attack_end": [
     {
+     "count": 2,
      "kind": "gain",
      "next_turn": true,
      "per_turn": 1,
-     "potency": 2,
      "raw": "[Attack End] Gain 2 [Protection] next turn (once per turn)",
      "status": "Protection"
     },
@@ -5630,10 +5630,10 @@
   "1111403@2": {
    "attack_end": [
     {
+     "count": 2,
      "kind": "gain",
      "next_turn": true,
      "per_turn": 1,
-     "potency": 2,
      "raw": "[Attack End] Gain 2 [Protection] next turn (once per turn)",
      "status": "Protection"
     },
@@ -5756,10 +5756,10 @@
   "1111403@3": {
    "attack_end": [
     {
+     "count": 2,
      "kind": "gain",
      "next_turn": true,
      "per_turn": 1,
-     "potency": 2,
      "raw": "[Attack End] Gain 2 [Protection] next turn (once per turn)",
      "status": "Protection"
     },
@@ -5882,10 +5882,10 @@
   "1111403@4": {
    "attack_end": [
     {
+     "count": 2,
      "kind": "gain",
      "next_turn": true,
      "per_turn": 1,
-     "potency": 2,
      "raw": "[Attack End] Gain 2 [Protection] next turn (once per turn)",
      "status": "Protection"
     },
@@ -6259,9 +6259,9 @@
    "on_kill": [],
    "on_use": [
     {
+     "count": 1,
      "kind": "gain",
      "next_turn": true,
-     "potency": 1,
      "raw": "[On Use] Gain 1 [Bind] next turn",
      "status": "Bind"
     }
@@ -6320,9 +6320,9 @@
      "value": 1
     },
     {
+     "count": 1,
      "kind": "gain",
      "next_turn": true,
-     "potency": 1,
      "raw": "[On Use] Gain 1 [Bind] next turn",
      "status": "Bind"
     }
@@ -6381,9 +6381,9 @@
      "value": 1
     },
     {
+     "count": 1,
      "kind": "gain",
      "next_turn": true,
-     "potency": 1,
      "raw": "[On Use] Gain 1 [Bind] next turn",
      "status": "Bind"
     }
@@ -6459,9 +6459,9 @@
      "value": 1
     },
     {
+     "count": 1,
      "kind": "gain",
      "next_turn": true,
-     "potency": 1,
      "raw": "[On Use] Gain 1 [Bind] next turn",
      "status": "Bind"
     }
@@ -7356,10 +7356,10 @@
      "ally": "slowest",
      "ally_from_divisor": 3,
      "ally_from_status": "Bind",
+     "count": 1,
      "include_self": false,
      "kind": "gain",
      "next_turn": true,
-     "potency": 1,
      "raw": "[Turn End] Apply 1 [Haste] next turn to ([Bind] on self / 3) other allies with the slowest Speed (once per turn; rounded down)",
      "status": "Haste"
     }
@@ -7394,10 +7394,10 @@
      "ally": "slowest",
      "ally_from_divisor": 3,
      "ally_from_status": "Bind",
+     "count": 1,
      "include_self": false,
      "kind": "gain",
      "next_turn": true,
-     "potency": 1,
      "raw": "[Turn End] Apply 1 [Haste] next turn to ([Bind] on self / 3) other allies with the slowest Speed (once per turn; rounded down)",
      "status": "Haste"
     }
@@ -7432,10 +7432,10 @@
      "ally": "slowest",
      "ally_from_divisor": 3,
      "ally_from_status": "Bind",
+     "count": 1,
      "include_self": false,
      "kind": "gain",
      "next_turn": true,
-     "potency": 1,
      "raw": "[Turn End] Apply 1 [Haste] next turn to ([Bind] on self / 3) other allies with the slowest Speed (once per turn; rounded down)",
      "status": "Haste"
     }
@@ -7470,10 +7470,10 @@
      "ally": "slowest",
      "ally_from_divisor": 2,
      "ally_from_status": "Bind",
+     "count": 1,
      "include_self": false,
      "kind": "gain",
      "next_turn": true,
-     "potency": 1,
      "raw": "[Turn End] Apply 1 [Haste] next turn to ([Bind] on self / 2) other allies with the slowest Speed (once per turn; rounded down)",
      "status": "Haste"
     }
@@ -7504,9 +7504,9 @@
        "source": "target",
        "status": "Sinking"
       },
+      "count": 2,
       "kind": "inflict",
       "next_turn": true,
-      "potency": 2,
       "raw": "[On Hit] If target has 6+ [Sinking], inflict 2 [Bind] next turn",
       "status": "Bind"
      }
@@ -7565,9 +7565,9 @@
        "source": "target",
        "status": "Sinking"
       },
+      "count": 1,
       "kind": "inflict",
       "next_turn": true,
-      "potency": 1,
       "raw": "[On Hit] If target has 6+ [Sinking], inflict 1 [Bind] next turn",
       "status": "Bind"
      }
@@ -8062,9 +8062,9 @@
     "2": [
      {
       "coin_index": 2,
+      "count": 1,
       "kind": "inflict",
       "next_turn": true,
-      "potency": 1,
       "raw": "[On Hit without Cracking] Inflict 1 [Bind] next turn",
       "status": "Bind"
      }

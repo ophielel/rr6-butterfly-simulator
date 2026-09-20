@@ -9,8 +9,8 @@
   "awakening_sp": 20,
   "corrosion_sp": 20,
   "resource_cost": {
-    "Gloom": 5,
-    "Envy": 3
+    "gloom": 5,
+    "envy": 3
   },
   "awakening": {
     "name": "Rime Shank",

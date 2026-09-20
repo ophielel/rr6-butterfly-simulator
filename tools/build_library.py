@@ -345,7 +345,9 @@ def build_ego(game_id: str, meta, en_egos, zh_egos) -> dict:
     for sin in SIN_COLORS:
         value = num(page.get(f"{sin.lower()}cost"))
         if value:
-            costs[sin] = value
+            # The battle state tracks resources by the lowercase sin key
+            # (`setup::sin_key`), so E.G.O costs use the same spelling.
+            costs[sin.lower()] = value
     def pick_skill(prefix: str) -> Optional[wt.Template]:
         """Highest threadspin variant of an E.G.O skill (`askill4` > `askill3` > ...)."""
         for suffix in ("4", "3", "2", ""):
@@ -579,6 +581,26 @@ STACK_STATUS_NAMES = {
 }
 
 
+# Statuses whose plain "Gain/Inflict N [X]" form fills **Count**, because their
+# own text measures the effect by Count ("Take less damage from skills based on
+# the effect's Count for one turn").  Everything else fills Potency
+# (JA-wiki 戦闘システム詳細: 「火傷を１付与」= +1 Burn Potency; the in-game
+# `Bufs` templates fill {0} with Potency for the damaging statuses).
+COUNT_PRIMARY = {"Protection", "Fragile", "Haste", "Bind", "Charge"}
+
+
+def status_expires_at_turn_end(text: str) -> bool:
+    """A status that only lasts the turn it was applied in ("... for one turn",
+    "for this turn") is removed at Turn End."""
+    lowered = text.lower()
+    if "expires at turn end" in lowered or "reduced by 1 at turn end" in lowered:
+        return True
+    return any(
+        marker in lowered
+        for marker in ("for one turn", "for this turn", "this turn)", "for the turn")
+    )
+
+
 def status_is_stack(text: str, name: str = "") -> bool:
     """A status is Stack-based when its text is about Stack and not about
     Potency/Count (the engine applies the two differently)."""
@@ -624,6 +646,8 @@ def build_extra_statuses(tables_en, tables_zh, existing: List[dict]) -> List[dic
         out.append({
             "key": key,
             "structure": "stack" if stack_based else "potency_count",
+            "primary": "count" if (entry.get("name") or "") in COUNT_PRIMARY else "potency",
+            "expires_at_turn_end": status_expires_at_turn_end(text),
             "name_en": entry.get("name"),
             "name_zh": zh.get("name"),
             "wiki_name": name,
@@ -662,6 +686,8 @@ def build_statuses(kw_en, kw_zh, bufs_en, bufs_zh) -> List[dict]:
         out.append({
             "key": key,
             "structure": "stack" if stack_based else "potency_count",
+            "primary": "count" if (entry.get("name") or "") in COUNT_PRIMARY else "potency",
+            "expires_at_turn_end": status_expires_at_turn_end(text),
             "name_en": entry.get("name"),
             "name_zh": (zh or {}).get("name"),
             "wiki_name": wiki_name,

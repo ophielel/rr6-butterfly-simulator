@@ -827,6 +827,11 @@ pub struct SubmittedAction {
     pub skill: SkillId,
     pub target: Option<UnitId>,
     pub is_ego: bool,
+    /// True when the action used the **top** card of the Slot (its `next`
+    /// skill).  The panel is not modified on submit; the used card is consumed
+    /// when the turn resolves, and the other card stays available.
+    #[serde(default)]
+    pub used_top: bool,
     #[serde(default)]
     pub ego: Option<EgoId>,
     #[serde(default)]

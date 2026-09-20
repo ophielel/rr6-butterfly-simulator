@@ -483,6 +483,12 @@ pub struct StatusBehaviour {
     pub effects: SkillMechanics,
     #[serde(default)]
     pub max_stack: Option<i32>,
+    /// The component a plain "Gain N [X]" fills (`potency` or `count`).
+    #[serde(default)]
+    pub primary: Option<String>,
+    /// "for one turn" / "for this turn": removed at Turn End.
+    #[serde(default)]
+    pub expires_at_turn_end: bool,
     /// True when one of the fixed content's Skills references this status.
     #[serde(default)]
     pub used_by_fixed_content: bool,

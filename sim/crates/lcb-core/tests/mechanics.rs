@@ -243,16 +243,79 @@ fn ego_costs_and_overclock_round_up() {
         .new_encounter(&["10110"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
         .unwrap();
     let ego = sim.library.ego(&lcb_core::ids::EgoId::new("20106")).unwrap().clone();
-    assert_eq!(ego.resource_cost.get("Gloom"), Some(&3));
-    state.ego_resources.insert("Gloom".into(), 9);
-    state.ego_resources.insert("Sloth".into(), 9);
+    // The data and the battle state use the same lowercase sin keys.
+    assert_eq!(ego.resource_cost.get("gloom"), Some(&3));
+    assert!(ego.resource_cost.get("Gloom").is_none());
+    state.ego_resources.insert("gloom".into(), 9);
+    state.ego_resources.insert("sloth".into(), 9);
     state.units[0].sanity = Sanity::Sane { sp: 45 };
     // Overclock the (awakening-only) record: cost = ceil(3 * 1.5) = 5 per sin.
     let kind = EgoSkillKind::Overclock;
     let affordable = battle::ego_affordable_for_test(&state, 0, &ego, kind);
     assert!(affordable, "9 resources are enough for ceil(4.5)=5");
     battle::pay_ego_for_test(&mut state, 0, &ego, kind);
-    assert_eq!(state.ego_resources.get("Gloom"), Some(&4));
+    assert_eq!(state.ego_resources.get("gloom"), Some(&4));
+}
+
+/// Resources that normal attacks generate must be spendable on E.G.O: the
+/// attack adds one resource of its sin, the E.G.O becomes affordable, and the
+/// cost is deducted from the same keys.
+/// Sources: JA-wiki 戦闘システム詳細 (E.G.O資源), wiki.gg `Clash`.
+#[test]
+fn generated_resources_pay_for_ego() {
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&["10110"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    // A normal attack of the identity's Skill 1 generates its sin's resource.
+    let mut use_ = battle::build_use(
+        &state,
+        &sim.library,
+        &sim.mechanics,
+        0,
+        &SkillId::new("1011001"),
+    )
+    .unwrap();
+    let sin_key = lcb_core::setup::sin_key(use_.sin).to_string();
+    let before = state.ego_resources.get(&sin_key).copied().unwrap_or(0);
+    battle::prepare_use_for_test(&mut state, &sim.library, &sim.mechanics, 0, None, &mut use_);
+    assert_eq!(
+        state.ego_resources.get(&sin_key).copied().unwrap_or(0),
+        before + 1,
+        "an attack generated 1 {sin_key} resource"
+    );
+    // Nothing is affordable with one resource; grant a full set and check that
+    // the E.G.O now appears and is paid for with the same keys.
+    assert!(
+        !sim.legal_actions(&state).iter().any(|action| matches!(action, Action::UseEgo { .. })),
+        "an E.G.O is not affordable yet"
+    );
+    for sin in lcb_core::ids::Sin::ALL {
+        state
+            .ego_resources
+            .insert(lcb_core::setup::sin_key(sin).to_string(), 10);
+    }
+    state.units[0].sanity = Sanity::Sane { sp: 40 };
+    let ego_action = sim
+        .legal_actions(&state)
+        .into_iter()
+        .find(|action| matches!(action, Action::UseEgo { .. }))
+        .expect("an E.G.O is affordable");
+    let ego_id = match &ego_action {
+        Action::UseEgo { ego, .. } => ego.clone(),
+        _ => unreachable!(),
+    };
+    let record = sim.library.ego(&ego_id).unwrap().clone();
+    let costs = lcb_core::library::Library::ego_cost(&record);
+    sim.submit(&mut state, ego_action).unwrap();
+    battle::resolve_combat(&mut state, &sim.library, &sim.mechanics);
+    for (sin, amount) in costs {
+        assert_eq!(
+            state.ego_resources.get(&sin).copied().unwrap_or(0),
+            10 - amount,
+            "{sin} was paid"
+        );
+    }
 }
 
 /// The panel draws randomly from the composition and resets the counts once
@@ -390,6 +453,7 @@ fn guard_gains_shield_when_attacked() {
         is_ego: false,
         ego: None,
         ego_kind: None,
+        used_top: false,
     });
     state.preset_flips = vec![true; 32];
     state.flip_cursor = 0;
@@ -940,6 +1004,7 @@ fn sin_resonance_is_counted_from_the_dashboard() {
             continue;
         };
         state.actions.push(lcb_core::state::SubmittedAction {
+            used_top: false,
             actor: unit.id.clone(),
             slot: 0,
             skill: SkillId::new(skill.id.clone()),
@@ -1446,6 +1511,9 @@ fn lamp_stacks_stop_at_eight_and_cost_hp() {
     };
     let mut notes = Vec::new();
     let mut ctx = battle::UseContext::default();
+    // Turn 1's Combat Start already granted 1 Stack; start from 0 so the
+    // assertion measures this use only.
+    state.units[0].statuses.remove("Lamp");
     let hp_before = state.units[0].hp;
     battle::apply_effects_for_test(&mut state, std::slice::from_ref(&lamp), 0, None, &mut notes, &mut ctx);
     assert_eq!(state.units[0].statuses.stack("Lamp"), 8);
@@ -1606,10 +1674,10 @@ fn section5_golden_replay_is_deterministic() {
     // action per Slot").  Update only together with a sourced rule change, and
     // name the source in the commit message.  Last updated when the identities'
     // passives started applying (in-game `Passives.json`).
-    assert_eq!(first_hp, vec![25483, 25245, 24754], "Imago HP after turns 1-3");
+    assert_eq!(first_hp, vec![25364, 24648, 24152], "Imago HP after turns 1-3");
     assert_eq!(
         format!("{first_hash:016x}"),
-        "31a837f070bc96e4",
+        "5f126275e2e22056",
         "recorded state hash"
     );
 }
@@ -1627,17 +1695,12 @@ fn passives_grant_and_modify() {
         .unwrap();
     // Every unit carries its own Combat Passives.
     assert!(!state.units[0].passives.is_empty(), "Gregor has passives");
-    // Combat Start: "Gain 1 [LanternGregBigBird]".
-    lcb_core::battle::begin_turn(
-        &mut state,
-        &sim.library,
-        &sim.mechanics,
-        &sim.scripts,
-    );
+    // Turn 1 already ran its Combat Start clauses when the encounter was built,
+    // so the Lamp grant is there immediately (no need to advance a turn).
     assert_eq!(
         state.units[0].statuses.stack("Lamp"),
         1,
-        "Gregor gained 1 [Lamp] at Combat Start"
+        "Gregor gained 1 [Lamp] at Turn 1's Combat Start"
     );
     // Outis: +5% damage per [Protection] Count, capped at 15%.
     state.units[1].statuses.remove("Protection");
@@ -2015,6 +2078,38 @@ fn fixed_content_skills_all_resolve_mechanics() {
     assert!(missing.is_empty(), "skills without mechanics: {missing:?}");
 }
 
+/// Turn 1 must already have run the units' Combat Start passives: the rules
+/// books are attached before the first `begin_turn`, otherwise the first Turn
+/// Start happens without passives and they only appear from Turn 2 on.
+/// Source: the units' own Passives (in-game `Passives.json`).
+#[test]
+fn first_turn_already_applies_passives() {
+    let sim = sim();
+    let state = sim
+        .new_encounter(&fixed::TEAM, &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    let jeong = state
+        .units
+        .iter()
+        .position(|u| u.name.contains("Jeong"))
+        .expect("Jeong is in the team");
+    let outis = state
+        .units
+        .iter()
+        .position(|u| u.name.contains("Udjat"))
+        .expect("Outis is in the team");
+    // Koi-Koi draws a Suit at Turn Start; Vanguard Team grants 2 [The Udjat].
+    assert!(
+        state.units[jeong].suit.is_some(),
+        "the Hanafuda Suit is in hand on Turn 1"
+    );
+    assert_eq!(
+        state.units[outis].statuses.stack("The Udjat -Vanguard-"),
+        2,
+        "Outis gained her Combat Start Stacks on Turn 1"
+    );
+}
+
 /// Support Passives are not applied: the extracted ones are keyed by identity
 /// but the team's support slots are a deck-building choice this project has no
 /// data for, and attaching every support passive in the book gave units
@@ -2126,7 +2221,7 @@ fn corrosion_is_not_a_player_choice() {
     let mut state = sim
         .new_encounter(&fixed::TEAM, &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
         .unwrap();
-    for sin in ["Wrath", "Lust", "Sloth", "Gluttony", "Gloom", "Pride", "Envy"] {
+    for sin in ["wrath", "lust", "sloth", "gluttony", "gloom", "pride", "envy"] {
         state.ego_resources.insert(sin.to_string(), 9);
     }
     let offers_corrosion = sim.legal_actions(&state).iter().any(|action| {
@@ -2178,6 +2273,141 @@ fn action_actor(action: &Action) -> &lcb_core::ids::UnitId {
         Action::Assign { actor, .. } | Action::UseEgo { actor, .. } => actor,
         Action::Commit => unreachable!(),
     }
+}
+
+/// A Skill's `[Attack End]` clauses run after an attack that a Clash won, not
+/// only after a one-sided attack.  "Attack End: Activates only once after an
+/// Attack Skill has used all of its Coins" (wiki.gg `Clash`, trigger table).
+#[test]
+fn attack_end_runs_after_a_clash_win() {
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&["11114"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    let enemy = state.units.iter().position(|u| !u.kind.is_sinner()).unwrap();
+    // A large level gap makes the Clash a guaranteed win, and every Coin Heads.
+    state.units[0].level = 60;
+    state.units[enemy].level = 1;
+    state.preset_flips = vec![true; 64];
+    state.flip_cursor = 0;
+    // Put the Skill on the panel (the draw is random) and use it.
+    let skill = SkillId::new("1111403");
+    state.units[0].dashboard[0].current = skill.clone();
+    let actor = state.units[0].id.clone();
+    let target = state.units[enemy].id.clone();
+    let action = Action::Assign {
+        actor,
+        slot: 0,
+        skill,
+        target,
+    };
+    sim.submit(&mut state, action).unwrap();
+    battle::resolve_combat(&mut state, &sim.library, &sim.mechanics);
+    // "[Attack End] Gain 2 [Protection] next turn": the grant is queued.
+    let queued = state.units[0]
+        .pending_next_turn
+        .iter()
+        .filter(|pending| pending.status == "Protection")
+        .map(|pending| pending.count)
+        .max();
+    assert_eq!(
+        queued,
+        Some(2),
+        "the Clash-winning attack ended and queued 2 Protection Count"
+    );
+}
+
+/// Submitting the **top** card of a Slot must not overwrite the bottom card:
+/// the panel is untouched until the turn resolves, which consumes the card that
+/// was actually used and keeps the other one.
+/// Source: JA-wiki 戦闘システム詳細 ("スキル構成", "パネル上に空きが出るとその分だけ
+/// スキル構成から継ぎ足される").
+#[test]
+fn using_the_top_card_keeps_the_bottom_card() {
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&["10110"], &[fixed::BOSS_IMAGO], 1, BattleConfig::default())
+        .unwrap();
+    let (current, next, preview) = {
+        let entry = &state.units[0].dashboard[0];
+        (entry.current.clone(), entry.next.clone(), entry.preview.clone())
+    };
+    assert_ne!(current, next, "the panel has two different cards");
+    let enemy = state.units[1].id.clone();
+    let actor = state.units[0].id.clone();
+    // Use the top card.
+    sim.submit(
+        &mut state,
+        Action::Assign {
+            actor,
+            slot: 0,
+            skill: next.clone(),
+            target: enemy,
+        },
+    )
+    .unwrap();
+    {
+        let entry = &state.units[0].dashboard[0];
+        assert_eq!(
+            (entry.current.clone(), entry.next.clone(), entry.preview.clone()),
+            (current.clone(), next.clone(), preview.clone()),
+            "submitting leaves the panel untouched"
+        );
+    }
+    sim.step_turn(&mut state).unwrap();
+    let entry = &state.units[0].dashboard[0];
+    assert_eq!(entry.current, current, "the unused bottom card stayed");
+    assert_eq!(entry.next, preview, "the panel refilled from the top");
+    assert_ne!(entry.next, next, "the used top card is gone");
+}
+
+/// "Gain 2 [Protection]" grants 2 Protection **Count** (the status measures its
+/// effect by Count), and one-turn statuses are removed at Turn End.
+/// Sources: in-game `Bufs` / `BattleKeywords` (Protection, Fragile, Haste, Bind)
+/// and wiki.gg `Status Effects`.
+#[test]
+fn protection_lands_on_count_and_one_turn_statuses_expire() {
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&["11114"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    state.units[0].statuses.remove("Protection");
+    // A real Skill grants it: 1111403's Attack End queues it for the next turn.
+    state.units[0].pending_next_turn.push(lcb_core::state::PendingStatus {
+        status: "Protection".to_string(),
+        potency: 0,
+        count: 2,
+    });
+    let enemy = state.units.iter().position(|u| !u.kind.is_sinner()).unwrap();
+    lcb_core::battle::begin_turn(&mut state, &sim.library, &sim.mechanics, &sim.scripts);
+    assert_eq!(
+        state.units[0].statuses.count("Protection"),
+        2,
+        "the queued grant arrives as Count 2"
+    );
+    // It reduces incoming damage (10% per Count).
+    let reduced = battle::incoming_damage_modifier_for_test(&state.units[0], "Wrath");
+    assert!(reduced < 0.0, "Protection reduces incoming damage: {reduced}");
+    // Haste and Bind move Speed by their Count, and both last one turn.
+    state.units[0].statuses.remove("Haste");
+    state.units[0].statuses.remove("Bind");
+    state.units[0].statuses.add_count("Haste", 3);
+    state.units[0].statuses.add_count("Bind", 1);
+    state.units[0].speed_range = (5, 5);
+    lcb_core::battle::begin_turn(&mut state, &sim.library, &sim.mechanics, &sim.scripts);
+    assert_eq!(
+        state.units[0].speed, 7,
+        "5 + Haste 3 - Bind 1: the Count is what moves Speed"
+    );
+    // ... and they are gone at the end of that turn.
+    state.actions.clear();
+    lcb_core::battle::end_turn(&mut state, &sim.mechanics);
+    assert_eq!(
+        state.units[0].statuses.count("Protection"),
+        0,
+        "Protection lasts one turn"
+    );
+    let _ = enemy;
 }
 
 /// A full turn keeps the battle in a consistent, serialisable state.

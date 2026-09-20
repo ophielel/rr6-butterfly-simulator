@@ -118,73 +118,22 @@ impl Simulator {
         seed: u64,
         config: BattleConfig,
     ) -> Result<BattleState, SimError> {
-        let mut state = EncounterBuilder::new(&self.library, &self.mechanics)
+        let state = EncounterBuilder::new(&self.library, &self.mechanics)
+            .books(&self.passives, &self.panics, &self.statuses)
             .scripts(&self.scripts)
             .seed(seed)
             .config(config)
             .build(team, enemies)?;
-        self.attach_passives(&mut state);
         Ok(state)
     }
 
-    /// Give every unit its own **Combat** Passives.
-    ///
-    /// Support Passives are deliberately **not** applied: the extracted ones are
-    /// keyed by identity but the team's support slots are a deck-building choice
-    /// this project has no data for, and applying every support passive in the
-    /// book (the earlier behaviour) gave the team passives it does not own.  See
-    /// docs/STATUS.md.
+    /// Attach the rules books to a freshly built encounter (Turn 2 onwards this
+    /// is already done by the builder, but `section5` and re-loads need it).
     fn attach_passives(&self, state: &mut state::BattleState) {
         state.status_book = Some(std::sync::Arc::new(self.statuses.clone()));
-        let owner_ids: Vec<String> = state
-            .units
-            .iter()
-            .map(|unit| match &unit.kind {
-                crate::state::UnitKind::Sinner { identity } => identity.0.clone(),
-                crate::state::UnitKind::Abnormality { enemy, .. } => enemy.0.clone(),
-            })
-            .collect();
-        for (index, unit) in state.units.iter_mut().enumerate() {
-            let effects: Vec<crate::effects::SkillMechanics> = self
-                .passives
-                .for_owner(&owner_ids[index])
-                .into_iter()
-                .map(|p| p.effects.clone())
-                .collect();
-            unit.passives = effects;
-            unit.corrosion_egos = unit
-                .ego_slots
-                .iter()
-                .filter(|ego| {
-                    self.library
-                        .ego(ego)
-                        .map(|record| record.corrosion.is_some())
-                        .unwrap_or(false)
-                })
-                .cloned()
-                .collect();
-            if let crate::state::UnitKind::Sinner { identity } = &unit.kind {
-                let panic = self.panics.for_identity(&identity.0).cloned();
-                unit.panic_type = Some(
-                    panic
-                        .as_ref()
-                        .map(|p| p.r#type.clone())
-                        .unwrap_or_else(|| "Panic".to_string()),
-                );
-                if let Some(panic) = panic {
-                    unit.panic_low_morale = panic.low_morale.clone();
-                    unit.panic_actions = panic.panic.clone();
-                }
-            }
-        }
+        setup::attach_unit_books(state, &self.passives, Some(&self.panics), &self.library);
     }
 
-    /// Section 5: the Imago, carrying what the earlier stations left behind.
-    ///
-    /// The JA wiki's station-5 notes: the fight starts with the HP the Pupa had
-    /// in station 1 (excluding its Shield) and with 10 Stacks of each state of
-    /// time; the choice events of stations 2-4 disable components of the
-    /// Past/Present/Future passives.
     pub fn section5(
         &self,
         campaign: &state::CampaignState,
@@ -271,6 +220,8 @@ impl Simulator {
     }
 
     /// The rules this build knows it does not implement, for reporting.
+
+    /// Passive clauses this project has not modelled, per passive id.
     pub fn unknown_rules(&self) -> Vec<&'static str> {
         vec![
             state::UnknownRule::SanityGainOnClash.text(),
@@ -312,6 +263,8 @@ impl Simulator {
     }
 
     /// Passive clauses this project has not modelled, per passive id.
+
+
     pub fn passive_gaps(&self) -> Vec<String> {
         let mut out = Vec::new();
         for passive in self.passives.passives.values() {
