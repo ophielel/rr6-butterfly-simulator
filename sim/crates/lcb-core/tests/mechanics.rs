@@ -1674,10 +1674,10 @@ fn section5_golden_replay_is_deterministic() {
     // action per Slot").  Update only together with a sourced rule change, and
     // name the source in the commit message.  Last updated when the identities'
     // passives started applying (in-game `Passives.json`).
-    assert_eq!(first_hp, vec![25392, 24631, 23650], "Imago HP after turns 1-3");
+    assert_eq!(first_hp, vec![25364, 24648, 24152], "Imago HP after turns 1-3");
     assert_eq!(
         format!("{first_hash:016x}"),
-        "278e54598fd51784",
+        "5f126275e2e22056",
         "recorded state hash"
     );
 }
@@ -2315,6 +2315,86 @@ fn attack_end_runs_after_a_clash_win() {
         Some(2),
         "the Clash-winning attack ended and queued 2 Protection Count"
     );
+}
+
+/// The Imago's "At less than N% HP, convert ... into [Unbreakable Coin]" clauses
+/// are conditional: its Coins only become Unbreakable below the threshold.
+/// Source: the Imago's own Skill text (956701 Fluttering Havoc).
+#[test]
+fn imago_coins_only_become_unbreakable_below_the_threshold() {
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&fixed::TEAM, &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    let enemy = state.units.iter().position(|u| !u.kind.is_sinner()).unwrap();
+    let target = 0usize;
+    let count = |state: &mut lcb_core::state::BattleState, percent: i32| -> usize {
+        state.units[enemy].hp = state.units[enemy].max_hp * percent / 100;
+        let mut use_ = battle::build_use(
+            state,
+            &sim.library,
+            &sim.mechanics,
+            enemy,
+            &SkillId::new("956701"),
+        )
+        .unwrap();
+        battle::prepare_use_for_test(
+            state,
+            &sim.library,
+            &sim.mechanics,
+            enemy,
+            Some(target),
+            &mut use_,
+        );
+        use_.coins.iter().filter(|coin| coin.unbreakable).count()
+    };
+    assert_eq!(count(&mut state, 90), 0, "no Unbreakable Coins above 66% HP");
+    assert_eq!(count(&mut state, 60), 1, "the final Coin below 66% HP");
+    assert_eq!(count(&mut state, 30), 2, "every Coin below 33% HP");
+}
+
+/// Only Gregor's **Skill 3** turns its Coins into Unbreakable Coins, and only
+/// while the target has [Dazzle].  Source: the identity's own Skill text
+/// ("[On Use] If target has [Dazzle], convert all Coins on this Skill to
+/// [Unbreakable Coin]s and gain Clash Power +3").
+#[test]
+fn only_gregors_third_skill_converts_to_unbreakable_coins() {
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&["11214"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    let enemy = state.units.iter().position(|u| !u.kind.is_sinner()).unwrap();
+    fn build(
+        sim: &Simulator,
+        state: &mut lcb_core::state::BattleState,
+        enemy: usize,
+        skill: &str,
+    ) -> usize {
+        let mut use_ = battle::build_use(
+            state,
+            &sim.library,
+            &sim.mechanics,
+            0,
+            &SkillId::new(skill),
+        )
+        .unwrap();
+        battle::prepare_use_for_test(state, &sim.library, &sim.mechanics, 0, Some(enemy), &mut use_);
+        use_.coins.iter().filter(|coin| coin.unbreakable).count()
+    }
+    // Without [Dazzle] even Skill 3 stays breakable.
+    state.units[enemy].statuses.remove("Dazzle");
+    for skill in ["1121401", "1121402", "1121403", "1121404"] {
+        assert_eq!(build(&sim, &mut state, enemy, skill), 0, "{skill} without [Dazzle]");
+    }
+    // With 3 [Dazzle] on the target only Skill 3 converts (all of its Coins).
+    state.units[enemy].statuses.add_count("Dazzle", 3);
+    assert_eq!(build(&sim, &mut state, enemy, "1121401"), 0, "Skill 1 never converts");
+    assert_eq!(build(&sim, &mut state, enemy, "1121402"), 0, "Skill 2 never converts");
+    let third = build(&sim, &mut state, enemy, "1121403");
+    assert!(third > 0, "Skill 3 converts every Coin");
+    // The guard (Skill 4) has one natively Unbreakable Coin, not all of them.
+    let guard = build(&sim, &mut state, enemy, "1121404");
+    assert!(guard < 2, "the guard has a single Unbreakable Coin: {guard}");
 }
 
 /// A Skill that **loses** a Clash: its Unbreakable Coins survive as "cracked"

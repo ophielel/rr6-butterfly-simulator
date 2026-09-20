@@ -119,7 +119,10 @@ PATTERNS = [
                 "max": int(m.group(5)),
                 "condition": {"source": m.group(4), "status": m.group(3), "component": "potency"}}),
     (re.compile(r"^At less than (\d+)% HP, convert (the final Coin|the second Coin|all Coins) into \[Unbreakable Coin\]s?$"),
-     lambda m: {"kind": "unbreakable_coin", "which": m.group(2), "hp_below_percent": int(m.group(1))}),
+     # "At less than N% HP" is a condition, so it is evaluated by the engine
+     # instead of converting the Coins unconditionally.
+     lambda m: {"kind": "unbreakable_coin", "which": m.group(2),
+                "condition": {"hp_below_percent": int(m.group(1))}}),
     (re.compile(r"^Reuse this Coin once for every (\d+)% missing HP \(max (\d+) times\)$"),
      lambda m: {"kind": "reuse_percent_missing_hp", "per": int(m.group(1)), "max": int(m.group(2))}),
     (re.compile(r"^convert all Coins on this Skill to \[Unbreakable Coin\]s and gain Clash Power \+(\d+)$"),

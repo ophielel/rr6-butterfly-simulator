@@ -5068,8 +5068,13 @@ fn prepare_use(
     for note in notes {
         state.warnings.push(note);
     }
-    for coin in use_.coins.iter_mut() {
-        if use_.ctx.unbreakable_coins.contains(&1) || use_.ctx.unbreakable_all {
+    // "convert the final Coin" / "convert all Coins" into [Unbreakable Coin]s:
+    // the listed Coins are 1-based indexes, so each Coin is checked by its own
+    // position (checking coin 1 only marked the first Coin for every clause).
+    for (index, coin) in use_.coins.iter_mut().enumerate() {
+        if use_.ctx.unbreakable_all
+            || use_.ctx.unbreakable_coins.contains(&(index as u32 + 1))
+        {
             coin.unbreakable = true;
         }
     }
