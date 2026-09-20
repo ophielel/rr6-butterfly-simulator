@@ -1929,6 +1929,38 @@ fn reuse_from_missing_hp_scales_with_hp() {
     );
 }
 
+/// Runtime guard: playing several turns of the fixed encounter must not produce
+/// "unhandled effect kind" warnings - every clause that reaches the evaluator
+/// has an implementation.
+/// Source: project plan ("unknown -> UNKNOWN, never silently dropped").
+#[test]
+fn fixed_content_playthrough_has_no_unhandled_kinds() {
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&fixed::TEAM, &[fixed::BOSS_IMAGO], 23, BattleConfig::default())
+        .unwrap();
+    for _ in 0..4 {
+        let mut used: Vec<(lcb_core::ids::UnitId, u32)> = Vec::new();
+        for action in sim.legal_actions(&state) {
+            if let Action::Assign { actor, slot, skill, target } = action {
+                if used.contains(&(actor.clone(), slot)) {
+                    continue;
+                }
+                used.push((actor.clone(), slot));
+                sim.submit(&mut state, Action::Assign { actor, slot, skill, target })
+                    .unwrap();
+            }
+        }
+        sim.step_turn(&mut state).unwrap();
+    }
+    let unhandled: Vec<&String> = state
+        .warnings
+        .iter()
+        .filter(|warning| warning.contains("unhandled effect kind"))
+        .collect();
+    assert!(unhandled.is_empty(), "unhandled kinds: {unhandled:?}");
+}
+
 /// Data guard: every Skill the fixed content can use - identity Skills, their
 /// defense Skill, every E.G.O Skill of the loadout and the Imago's six Slots -
 /// must have a mechanics entry.  A keyed lookup that silently misses turns the
