@@ -9882,6 +9882,12 @@
      "raw": "[Before Attack] Gain +(highest Reson. / 2) Atk Weight (max 2, rounded down)",
      "step": 1,
      "value": 0
+    },
+    {
+     "kind": "base_power_per_cracked_coin",
+     "max": 6,
+     "raw": "[Before Attack] Base Power -2 for every Cracked Coin (max -6)",
+     "step": 2
     }
    ],
    "clash_lose": [],
@@ -9948,9 +9954,7 @@
    ],
    "turn_end": [],
    "turn_start": [],
-   "unmodeled": [
-    "[Before Attack] Base Power -2 for every Cracked Coin (max -6)"
-   ]
+   "unmodeled": []
   },
   "20807.awakening@1": {
    "attack_end": [
@@ -10692,6 +10696,12 @@
      "raw": "[Before Attack] Gain Atk Weight equal to (highest Reson. / 2) (max 2; rounded down)",
      "step": 1,
      "value": 0
+    },
+    {
+     "kind": "base_power_per_cracked_coin",
+     "max": 6,
+     "raw": "[Before Attack] Base Power -2 for every Cracked Coin (max -6)",
+     "step": 2
     }
    ],
    "clash_lose": [],
@@ -10806,9 +10816,7 @@
    ],
    "turn_end": [],
    "turn_start": [],
-   "unmodeled": [
-    "[Before Attack] Base Power -2 for every Cracked Coin (max -6)"
-   ]
+   "unmodeled": []
   },
   "21206.awakening@1": {
    "attack_end": [

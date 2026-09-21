@@ -415,12 +415,14 @@ fn uptie_resolution_matches_wiki_convention() {
 fn unimplemented_effects_are_reported_not_ignored() {
     let sim = sim();
     let blockers = sim.strict_blockers();
-    // "Base Power -2 for every Cracked Coin" is the remaining known gap: the
-    // wiki/game data cached for this project never defines what cracks a Coin,
-    // so it stays UNKNOWN and strict mode must refuse it.
+    // The choice events of the earlier stations are outside the simulator's
+    // scope, so a Skill that depends on one must still be refused rather than
+    // silently approximated.
     assert!(
-        blockers.iter().any(|b| b.contains("Cracked Coin")),
-        "unknown Cracked Coin rules must be listed: {blockers:?}"
+        blockers
+            .iter()
+            .any(|b| b.contains("Choice Event") || b.contains("Incandescent Scale Dust")),
+        "unmodelled Skill text must be listed: {blockers:?}"
     );
 }
 
@@ -4156,4 +4158,55 @@ fn despair_swaps_in_the_minus_coin_skills() {
         minus.base_power > plus.base_power,
         "the Minus Coin Skill trades Coin Power for Base Power"
     );
+}
+
+/// A "Cracked Coin" is an [Unbreakable Coin] the Clash destroyed: it still acts,
+/// its clauses still resolve (only "[On Hit without Cracking]" is skipped) and
+/// its Coin Power is fixed at 1.  "[Before Attack] Base Power -2 for every
+/// Cracked Coin (max -6)" counts the Coins of that very Skill use.
+/// Source: JA-wiki 破壊不能コイン + in-game E.G.O text.
+#[test]
+fn cracked_coins_act_and_lower_base_power() {
+    use lcb_core::ids::EgoId;
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&["11004"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    for value in state.ego_resources.values_mut() {
+        *value = 20;
+    }
+    let mut use_ = battle::build_ego_use(
+        &state,
+        &sim.library,
+        &sim.mechanics,
+        0,
+        &EgoId::new("21009"),
+        EgoSkillKind::Corrosion,
+    )
+    .expect("the Corrosion E.G.O builds");
+    let enemy = state.units.iter().position(|unit| !unit.kind.is_sinner()).unwrap();
+    battle::prepare_use_for_test(
+        &mut state,
+        &sim.library,
+        &sim.mechanics,
+        0,
+        Some(enemy),
+        &mut use_,
+    );
+    let clean = use_.ctx.base_power_bonus;
+    // Two Coins were destroyed by a Clash.
+    use_.coins[0].state = battle::CoinState::Cracked;
+    use_.coins[1].state = battle::CoinState::Cracked;
+    use_.ctx.cracked_coins = vec![0, 1];
+    for coin in use_.coins.iter_mut() {
+        coin.heads = Some(true);
+    }
+    state.preset_flips = vec![true; 512];
+    let hits = battle::one_sided_attack(&mut state, 0, enemy, &mut use_, 1);
+    assert_eq!(
+        use_.ctx.base_power_bonus,
+        clean - 4,
+        "two Cracked Coins cost 2 Base Power each"
+    );
+    assert!(!hits.is_empty(), "a cracked Coin still attacks");
 }

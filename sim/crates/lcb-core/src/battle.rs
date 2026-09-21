@@ -123,6 +123,15 @@ pub struct UseContext {
     /// no attack at all.
     #[serde(default)]
     pub cancelled: bool,
+    /// The `[Before Attack]` phase resolves once, at the first Coin toss (after
+    /// the Clash).
+    #[serde(default)]
+    pub before_attack_done: bool,
+    /// The Coins of this Skill use that the Clash destroyed ("Cracked Coins").
+    /// They still act and their clauses still resolve; only their Coin Power is
+    /// fixed at 1.
+    #[serde(default)]
+    pub cracked_coins: Vec<usize>,
     /// "Reuse this Skill on the target that has the highest HP" when it kills.
     #[serde(default)]
     pub reuse_on_kill: bool,
@@ -1867,6 +1876,19 @@ pub fn apply_effects(
                     unit.statuses.add_count(&status, -count);
                 }
             }
+            "base_power_per_cracked_coin" => {
+                // "Base Power -2 for every Cracked Coin (max -6)": the Coins of
+                // this Skill use that the Clash destroyed ("破壊不能コインはマッチで
+                // 破壊されるとコイン威力が1になる" - they still act, so a Skill can
+                // read how many of its own Coins are cracked).
+                let cracked = use_ctx
+                    .cracked_coins
+                    .len()
+                    .max(0) as i32;
+                let step = effect.step.unwrap_or(0);
+                let capped = (step * cracked).min(effect.max.unwrap_or(i32::MAX));
+                use_ctx.base_power_bonus -= capped;
+            }
             "base_power_per_ammo_planned" => {
                 // "Base Power +1 for every [LCA Fracture Round] about to be spent
                 // by this Skill": capped by the ammo the unit actually holds.
@@ -3116,6 +3138,22 @@ fn resolve_clash_inner(
         } else if b_power > a_power {
             destroy_first_coin(&mut a.coins, a_index);
         }
+        // The context knows which Coins the Clash cracked ("Base Power -2 for
+        // every Cracked Coin" is read at [Before Attack], i.e. after this).
+        b.ctx.cracked_coins = b
+            .coins
+            .iter()
+            .enumerate()
+            .filter(|(_, coin)| coin.state == CoinState::Cracked)
+            .map(|(index, _)| index)
+            .collect();
+        a.ctx.cracked_coins = a
+            .coins
+            .iter()
+            .enumerate()
+            .filter(|(_, coin)| coin.state == CoinState::Cracked)
+            .map(|(index, _)| index)
+            .collect();
         // Tie: nothing is destroyed, the clash continues with fresh tosses.
         if rounds > 128 {
             break;
@@ -3195,10 +3233,34 @@ pub fn one_sided_attack(
         // "cancel the Skill": no Coin is used at all.
         return Vec::new();
     }
-    // An E.G.O's SP cost belongs to the "[Before Attack]" timing: it is paid once
-    // the Clash is over and just before the first Coin is tossed.
-    if let Some(sp) = use_.ctx.ego_sp_pending.take() {
-        pay_ego_sp(state, attacker_index, sp);
+    // The "[Before Attack]" timing: after the Clash is decided and just before
+    // the first Coin is tossed (JA-wiki ダメージ / 攻撃の流れ).  An E.G.O's SP cost
+    // and the "for every Cracked Coin" clauses read this moment.
+    if !use_.ctx.before_attack_done {
+        use_.ctx.before_attack_done = true;
+        if let Some(sp) = use_.ctx.ego_sp_pending.take() {
+            pay_ego_sp(state, attacker_index, sp);
+        }
+        let before_attack = use_.mechanics.before_attack.clone();
+        if !before_attack.is_empty() {
+            let mut notes = Vec::new();
+            let mut ctx = EffectContext {
+                actor_index: attacker_index,
+                target_index: Some(defender_index),
+                clash_count,
+                clash_lost: use_.ctx.lost_clash,
+                slot: use_.slot,
+                mechanics_note: &mut notes,
+            };
+            apply_effects(state, &before_attack, &mut ctx, &mut use_.ctx);
+            for note in notes {
+                state.warnings.push(note);
+            }
+        }
+        // "Gain Atk Weight equal to ..." is read when the attack chooses its
+        // extra targets, so it is folded in here rather than at prepare time.
+        use_.attack_weight =
+            (use_.attack_weight as i32 + use_.ctx.attack_weight_bonus).max(1) as u32;
     }
     let mut hits = Vec::new();
     let mut order: Vec<usize> = (0..use_.coins.len())
@@ -6458,18 +6520,10 @@ fn prepare_use(
         }
     }
     // "[Before Attack]" clauses resolve after On Use and before the first toss.
-    let before_attack = use_.mechanics.before_attack.clone();
-    if !before_attack.is_empty() {
-        let mut ctx = EffectContext {
-            actor_index: unit_index,
-            target_index,
-            clash_count: 0,
-            clash_lost: false,
-            slot,
-            mechanics_note: &mut notes,
-        };
-        apply_effects(state, &before_attack, &mut ctx, &mut use_.ctx);
-    }
+    // "[Before Attack]" is not applied here: it belongs to the attack itself and
+    // resolves **after** the Clash (JA-wiki ダメージ / 攻撃の流れ puts 「攻撃前」 inside
+    // the attack flow, between the match and the first Coin toss), which is what
+    // lets a clause read the Coins the Clash cracked.  See `one_sided_attack`.
     // "Hand - Pine Crane Suit: Skill 1 Base Power +2" and friends: the Suit in
     // this unit's Hand boosts the Base Power of the matching Skill.
     {
@@ -6494,7 +6548,6 @@ fn prepare_use(
         };
         use_.ctx.base_power_bonus += bonus;
     }
-    use_.attack_weight = (use_.attack_weight as i32 + use_.ctx.attack_weight_bonus).max(1) as u32;
     // Continuous passive modifiers: "Deal +5% damage for every [Protection] on
     // self (max 15%)", "Deal +(-SP/2)% damage with Base Skills (max 20%)".
     {

@@ -210,6 +210,12 @@ PATTERNS = [
     (re.compile(rf"^Deal \+\({ST} spent x {N}\)% damage$"),
      lambda m: {"kind": "damage_percent_per_ammo_spent", "status": m.group(1),
                 "step": int(m.group(2))}),
+    # "[Before Attack] Base Power -2 for every Cracked Coin (max -6)": a Coin the
+    # Clash destroyed keeps its effects but its Coin Power is fixed at 1, and this
+    # clause counts the Coins of the very Skill use that are already cracked.
+    (re.compile(rf"^Base Power -{N} for every Cracked Coin \(max -{N}\)$"),
+     lambda m: {"kind": "base_power_per_cracked_coin", "step": int(m.group(1)),
+                "max": int(m.group(2))}),
     # "Final Power +1 for every 2 [Piercing Sword] (max 2)".
     (re.compile(rf"^Final Power \+{N} for every {N} {ST} \(max {N}\)$"),
      lambda m: {"kind": "base_power", "value": 0, "step": int(m.group(1)),

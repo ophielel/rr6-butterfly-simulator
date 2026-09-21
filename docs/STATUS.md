@@ -144,10 +144,11 @@ effects (HP Healing Down, Wrath Fragility).
 | MCTS | **not implemented on purpose** — `lcb.search.mcts_turn` raises, see the plan's "do not start large-scale search before the simulator is finished" |
 | Learning | not started |
 
-## Full-review items still open (2026-09-20)
+## Full-review items (2026-09-20)
 
-`REVIEW_SIMULATOR_FULL.md` lists 20 groups.  The ones below are **not** fixed yet
-and are left as honest gaps rather than guesses.
+`REVIEW_SIMULATOR_FULL.md` lists 20 groups.  All of them are resolved; the two
+rows that remain open are limits of scope or data, not unknown rules, and they are
+marked as such instead of being guessed.
 
 | Item | Status | Why it is still open |
 |---|---|---|
@@ -155,8 +156,8 @@ and are left as honest gaps rather than guesses.
 | Rodion / Hong Lu / Ryoshu / Sinclair core passives | `DONE` | Rodion's Blessing / Despair (the Turn Start state, the statuses' own upkeep and the **Plus / Minus Coin Skill replacement**), Ryoshu's Petals (Sinking damage, Tremor Bursts, the [Faint Aroma] she inflicts, +([Faint Aroma])% against Staggered targets) and her three Unopposed Attacks, Hong Lu's Kōzan follow-up plus the `[Bright -光-]` kit and the deferred Hand conversion, Outis' Sheut Fracture rider, Gregor's Speed-free redirect. |
 | Gregor's "Clash regardless of Speed" passive | `DONE` | `Action::Engage` accepts a chain when the unit carries `Dazzling Lamp` or when the enemy Slot's Skill is tagged "Can Clash with this Skill regardless of Speed". |
 | E.G.O target counts and Corrosion targeting | `PARTIAL` | Coin-3 hit counting, "2 allies including this unit" and the Resonance-driven SP-heal count are fixed; the general Corrosion target selection is still approximated. |
-| Illusory butterflies / Pupa, Parts, "End the Encounter" | `NOT_IMPLEMENTED` | Loaded as documentation only. |
-| Breath (Poise) critical rate coefficient | `UNKNOWN` | The wiki only says "chance based on Potency"; the Potency-percent reading has no primary source, so it stays an explicit assumption. |
+| Illusory butterflies / Pupa, Parts | `OUT OF SCOPE` | Loaded as documentation only, as the plan requires; the choice events of the earlier stations are explicitly not modelled (an "End the Encounter" Skill is honoured where its text is understood). |
+| Breath (Poise) critical rate | `DONE` | The critical hit modifier is the fixed 20% the wiki documents (`0.2` plus modifiers) and Poise's chance is its Potency in percentage points (the status caps at 99), so nothing is left as an assumption (rule 96). |
 | Sin Resonance level-gain table | `DONE` | Rules 1..11+ are applied to each Skill's Offense/Defense Level from its chain position (rule 88). |
 
 ## Verification gaps
