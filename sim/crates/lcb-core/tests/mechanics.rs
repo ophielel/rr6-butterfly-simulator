@@ -227,6 +227,10 @@ fn butterfly_heals_attacker_sp() {
     state.units[1].statuses.add_potency("Butterfly", 12);
     state.units[1].statuses.add_count("Butterfly", 4);
     state.units[0].sanity = Sanity::Sane { sp: 0 };
+    // The Skill spends Unique Ammo; a unit that runs dry mid-Skill cancels the
+    // remaining Coins and pays for a Reload, which this test is not about.
+    state.units[0].statuses.add_potency("The Living & The Departed", 10);
+    state.units[0].statuses.add_count("The Living & The Departed", 10);
     let mut a = battle::build_use(&state, &sim.library, &sim.mechanics, 0, &SkillId::new("1011001"))
         .unwrap();
     a.coins = vec![battle::CoinRuntime::fresh(false)];
@@ -1187,6 +1191,9 @@ fn illusory_butterfly_shield_and_segmentation() {
         .unwrap();
     use_.coins = vec![battle::CoinRuntime::fresh(false)];
     state.units[0].sanity = Sanity::Sane { sp: 0 };
+    // The Skill spends Unique Ammo (see `butterfly_heals_attacker_sp`).
+    state.units[0].statuses.add_potency("The Living & The Departed", 10);
+    state.units[0].statuses.add_count("The Living & The Departed", 10);
     state.preset_flips = vec![false; 16];
     state.flip_cursor = 0;
     battle::one_sided_attack(&mut state, 0, butterfly, &mut use_, 0);
@@ -1711,10 +1718,10 @@ fn section5_golden_replay_is_deterministic() {
     // action per Slot").  Update only together with a sourced rule change, and
     // name the source in the commit message.  Last updated when the identities'
     // passives started applying (in-game `Passives.json`).
-    assert_eq!(first_hp, vec![25489, 25383, 25280], "Imago HP after turns 1-3");
+    assert_eq!(first_hp, vec![25489, 25326, 25187], "Imago HP after turns 1-3");
     assert_eq!(
         format!("{first_hash:016x}"),
-        "e2684ebc90e9942f",
+        "3a42838721369112",
         "recorded state hash"
     );
 }
@@ -3723,5 +3730,219 @@ fn time_state_is_decided_before_its_turn_start_passive() {
         state.units[enemy].statuses.potency("Poise"),
         0,
         "the Future passive must run, not the Present one"
+    );
+}
+
+// ------------------------------------------------------------------------- //
+// Unique Ammo and the identities' core passives
+// ------------------------------------------------------------------------- //
+
+/// The two-part Unique Ammo opens at 10 of each and its spent units mirror onto
+/// the unique [Sinking].  Source: passive `ISeeTheDyingButterfly.` /
+/// wiki.gg `Status Effects` (The Living & The Departed, Butterfly).
+#[test]
+fn unique_ammo_opens_and_mirrors_its_split() {
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&["10110"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    state.actions.clear();
+    battle::resolve_combat(&mut state, &sim.library, &sim.mechanics);
+    assert_eq!(
+        state.units[0].statuses.potency("The Living & The Departed"),
+        10,
+        "Begin encounters with 10 of each of [BulletLament]"
+    );
+    assert_eq!(state.units[0].statuses.count("The Living & The Departed"), 10);
+
+    // Spend from a pool that only holds The Living: both units must come from it
+    // and the target's Butterfly must repeat the split.
+    let mut state = sim
+        .new_encounter(&["10110"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    state.units[0].statuses = lcb_core::state::StatusSet::default();
+    state.units[0].statuses.add_potency("The Living & The Departed", 2);
+    state.units[1].statuses = lcb_core::state::StatusSet::default();
+    let mut use_ = battle::build_use(
+        &state,
+        &sim.library,
+        &sim.mechanics,
+        0,
+        &SkillId::new("1011001"),
+    )
+    .unwrap();
+    battle::prepare_use_for_test(
+        &mut state,
+        &sim.library,
+        &sim.mechanics,
+        0,
+        Some(1),
+        &mut use_,
+    );
+    for coin in use_.coins.iter_mut() {
+        coin.heads = Some(true);
+    }
+    state.preset_flips = vec![true; 256];
+    battle::one_sided_attack(&mut state, 0, 1, &mut use_, 0);
+    assert_eq!(state.units[0].statuses.total("The Living & The Departed"), 0);
+    assert_eq!(
+        state.units[1].statuses.potency("Butterfly"),
+        2,
+        "the consumed The Living is inflicted as Butterfly"
+    );
+    assert_eq!(state.units[1].statuses.count("Butterfly"), 0);
+}
+
+/// Running dry midway cancels the remaining Coins and pays for a Reload.
+/// Source: passive `ISeeTheDyingButterfly.`, wiki.gg `Status Effects` / Reload.
+#[test]
+fn running_dry_cancels_the_coins_and_reloads() {
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&["10110"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    state.units[0].statuses = lcb_core::state::StatusSet::default();
+    state.units[0].statuses.add_potency("The Living & The Departed", 1);
+    state.units[0].sanity = Sanity::Sane { sp: 10 };
+    let mut use_ = battle::build_use(
+        &state,
+        &sim.library,
+        &sim.mechanics,
+        0,
+        &SkillId::new("1011002"),
+    )
+    .unwrap();
+    battle::prepare_use_for_test(
+        &mut state,
+        &sim.library,
+        &sim.mechanics,
+        0,
+        Some(1),
+        &mut use_,
+    );
+    for coin in use_.coins.iter_mut() {
+        coin.heads = Some(true);
+    }
+    state.preset_flips = vec![true; 256];
+    let hits = battle::one_sided_attack(&mut state, 0, 1, &mut use_, 0);
+    assert_eq!(hits.len(), 1, "the Skill is cancelled once the ammo runs out");
+    assert!(use_.ctx.ammo_exhausted);
+    assert_eq!(
+        state.units[0].statuses.total("The Living & The Departed"),
+        20,
+        "the Reload refilled the pool"
+    );
+}
+
+/// Outis' LCA Fracture Round is spent by the Skill that names it, powers that
+/// Skill up and reloads at 2 or fewer.  Source: in-game Skill text + the
+/// `LCA Fracture Round` status ("Max Capacity: 16").
+#[test]
+fn lca_fracture_rounds_are_spent_and_reloaded() {
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&["11114"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    state.units[0].statuses = lcb_core::state::StatusSet::default();
+    state.units[0].statuses.set_stack("LCA Fracture Round", 4);
+    let mut use_ = battle::build_use(
+        &state,
+        &sim.library,
+        &sim.mechanics,
+        0,
+        &SkillId::new("1111403"),
+    )
+    .unwrap();
+    battle::prepare_use_for_test(
+        &mut state,
+        &sim.library,
+        &sim.mechanics,
+        0,
+        Some(1),
+        &mut use_,
+    );
+    // "Base Power +1 for every [LCA Fracture Round] about to be spent (4)".
+    assert_eq!(use_.ctx.base_power_bonus, 4);
+    for coin in use_.coins.iter_mut() {
+        coin.heads = Some(true);
+    }
+    state.preset_flips = vec![true; 256];
+    battle::one_sided_attack(&mut state, 0, 1, &mut use_, 0);
+    assert_eq!(use_.ctx.ammo_spent_by_status.get("LCA Fracture Round"), Some(&4));
+    battle::apply_attack_end_for_test(&mut state, 0, Some(1), 0, &mut use_);
+    assert_eq!(
+        state.units[0].statuses.stack("LCA Fracture Round"),
+        16,
+        "At 2 or fewer, [Reload] refills the Unique Ammo"
+    );
+}
+
+/// Gregor redirects an enemy Skill onto himself regardless of Speed (focused
+/// encounters).  Source: passive `Dazzling Lamp`.
+#[test]
+fn gregor_redirects_without_outspeeding() {
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&["11214", "11004"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    state.units[0].speed = 1;
+    state.units[2].speed = 3;
+    for action in state.actions.iter_mut() {
+        if !state.units[2].kind.is_sinner() {
+            continue;
+        }
+    }
+    let enemy = state.units.iter().position(|u| !u.kind.is_sinner()).unwrap();
+    for action in state.actions.iter_mut() {
+        if action.actor == state.units[enemy].id {
+            action.target = Some(state.units[1].id.clone());
+        }
+    }
+    let action = Action::Engage {
+        actor: state.units[0].id.clone(),
+        slot: 0,
+        skill: state.units[0].dashboard[0].current.clone(),
+        enemy_slot: 0,
+    };
+    assert!(
+        sim.submit(&mut state, action).is_ok(),
+        "Dazzling Lamp lifts the Speed requirement"
+    );
+}
+
+/// Rodion's Blessing / Despair state is decided at Turn Start.
+/// Source: passive `The Sword Sharpened with Tears`.
+#[test]
+fn rodion_state_follows_her_sp() {
+    let sim = sim();
+    for (sp, expected) in [(0i32, "Blessing"), (-10, "Despair")] {
+        let mut state = sim
+            .new_encounter(&["10913"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+            .unwrap();
+        state.units[0].sanity = Sanity::Sane { sp };
+        state.units[0].statuses.remove("Blessing");
+        state.units[0].statuses.remove("Despair");
+        battle::begin_turn(&mut state, &sim.library, &sim.mechanics, &sim.scripts);
+        assert!(
+            state.units[0].statuses.stack(expected) > 0,
+            "SP {sp} must give {expected}"
+        );
+    }
+}
+
+/// Ryoshu's Unwithering Flower feeds Petals from Sinking damage.
+/// Source: passive `Unwithering Flower` (wiki.gg `Status Effects` / Petals).
+#[test]
+fn petals_grow_from_sinking_damage() {
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&["10414"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    state.units[1].statuses.add_potency("Sinking", 5);
+    state.units[1].statuses.add_count("Sinking", 5);
+    battle::apply_sinking_for_test(&mut state, 1);
+    assert!(
+        state.units[0].statuses.stack("Petals") > 0,
+        "the enemy taking Sinking damage feeds her Petals"
     );
 }

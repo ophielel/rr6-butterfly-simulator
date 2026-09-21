@@ -89,9 +89,12 @@ impl StatusSet {
     }
 
     /// Potency + Count, used by several skill conditions ("both [Butterfly]").
+    /// Every value the status carries.  A single-value status may store its
+    /// amount in Stack ("LCA Fracture Round", "Bullet - Solitude"), so a plain
+    /// "how much does this unit have" must include it.
     pub fn total(&self, key: &str) -> i32 {
         let s = self.get(key);
-        s.potency + s.count
+        s.potency + s.count + s.stack
     }
 
     pub fn add_potency(&mut self, key: &str, delta: i32) {
@@ -502,6 +505,17 @@ pub struct Unit {
     /// passives), evaluated for continuous modifiers and phase triggers.
     #[serde(default)]
     pub passives: Vec<crate::effects::SkillMechanics>,
+    /// The ids of the passives above, so engine code can look for a specific
+    /// rule ("this unit may redirect attacks to itself regardless of Speed").
+    #[serde(default)]
+    pub passive_ids: Vec<String>,
+    /// `Petals` gained this turn ("can be gained up to 15 Stacks per turn").
+    #[serde(default)]
+    pub petals_gained: i32,
+    /// Skill Slots whose Skill says "Can Clash with this Skill regardless of
+    /// Speed": a Sinner may chain to them even when slower.
+    #[serde(default)]
+    pub clash_any_speed_slots: Vec<u32>,
     /// Every Skill of this unit's identity kit, including the defense Skill
     /// (their "[Turn Start] / [Turn End]" clauses resolve for the unit).
     #[serde(default)]

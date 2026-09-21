@@ -33,23 +33,29 @@
    "desc_zh": "Begin encounters with 10 of each of [BulletLament]\n\nWhen spending [BulletLament], select randomly between The Living(Potency) and The Departed(Count) for each [BulletLament] value\n\nWhen inflicting [SinkingWhite], inflict the same amount of The Living and The Departed as they were consumed. Example below:\n- If this unit spent X Living, inflict X Living\n- If this unit spent Y Departed, inflict Y Departed\n\nIf this unit runs out of [BulletLament] midway through Skill use, cancel all subsequent Coins and [ReloadLament]\n\nWhen [ReloadLament]ing, or when gaining [BulletLament], gain either The Living or The Departed based on this unit's current SP\n- At 0 or higher SP: 30% chance to gain The Living; 70% chance to gain The Departed\n- At less than 0 SP: 70% chance to gain The Living; 30% chance to gain The Departed\n- The probabilities are calculated separately for each ammo spent",
    "effects": {
     "attack_end": [],
-    "combat_start": [],
+    "combat_start": [
+     {
+      "count": 10,
+      "kind": "gain",
+      "potency": 10,
+      "status": "The Living & The Departed"
+     }
+    ],
+    "hand_modelled": "extract_passives.HAND_EFFECTS",
     "passive": [],
     "turn_end": [],
     "turn_start": [],
     "unmodeled": [
      "At 0 or higher SP: 30% chance to gain The Living; 70% chance to gain The Departed",
      "At less than 0 SP: 70% chance to gain The Living; 30% chance to gain The Departed",
-     "If this unit runs out of [BulletLament] midway through Skill use, cancel all subsequent Coins and [ReloadLament]",
      "If this unit spent X Living, inflict X Living",
      "If this unit spent Y Departed, inflict Y Departed",
      "The probabilities are calculated separately for each ammo spent",
      "When [ReloadLament]ing, or when gaining [BulletLament], gain either The Living or The Departed based on this unit's current SP",
-     "When inflicting [SinkingWhite], inflict the same amount of The Living and The Departed as they were consumed. Example below:",
-     "When spending [BulletLament], select randomly between The Living(Potency) and The Departed(Count) for each [BulletLament] value"
+     "When inflicting [SinkingWhite], inflict the same amount of The Living and The Departed as they were consumed. Example below:"
     ]
    },
-   "hand_modelled": null,
+   "hand_modelled": "extract_passives.HAND_EFFECTS",
    "id": "1011002",
    "kind": "combat",
    "name": "ISeeTheDyingButterfly.",
@@ -156,7 +162,15 @@
    "desc_zh": "Always Active: Begin Encounters with 6 [BulletGodok]\n\nAt 1+ [BulletGodok], if the enemy has less than -40 SP or is Staggered at this unit or an ally's Attack End, use 'Bang. Bang.' as an Unopposed Attack (once per turn)\n\nAttack End: At 0 [BulletGodok], use 'Stories that Never Cease' as an Unopposed Attack against the target and consume 10 SP to [FullReload]",
    "effects": {
     "attack_end": [],
-    "combat_start": [],
+    "combat_start": [
+     {
+      "component": "stack",
+      "kind": "gain",
+      "potency": 6,
+      "status": "Bullet - Solitude"
+     }
+    ],
+    "hand_modelled": "extract_passives.HAND_EFFECTS",
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -166,7 +180,7 @@
      "[Attack End] At 0 [BulletGodok], use 'Stories that Never Cease' as an Unopposed Attack against the target and consume 10 SP to [FullReload]"
     ]
    },
-   "hand_modelled": null,
+   "hand_modelled": "extract_passives.HAND_EFFECTS",
    "id": "1041402",
    "kind": "combat",
    "name": "A Void that Cannot be Filled",
@@ -187,19 +201,18 @@
    "effects": {
     "attack_end": [],
     "combat_start": [],
+    "hand_modelled": "extract_passives.HAND_EFFECTS",
     "passive": [],
     "turn_end": [],
     "turn_start": [],
     "unmodeled": [
      "Deal +([AlriuneEGOThey] on the target)% damage against Staggered targets",
-     "Gain 1 [AlriuneEGOWe] if the enemy takes [Sinking] damage",
-     "Gain 2 [AlriuneEGOWe] every time Tremor Burst is triggered regardless of the unit",
      "Gain [AlriuneEGOWe] equal to [AlriuneEGOThey] inflicted every time enemies gain [AlriuneEGOThey]",
      "If this unit lost 10%+ HP this turn, heal 3% HP and 10 SP (once per turn)",
      "[Attack Skill End] At 30+ [AlriuneEGOWe], use 'Magnificent End' against the target that has the highest [AlriuneEGOThey] Stack"
     ]
    },
-   "hand_modelled": null,
+   "hand_modelled": "extract_passives.HAND_EFFECTS",
    "id": "1041411",
    "kind": "combat",
    "name": "Unwithering Flower",
@@ -270,7 +283,7 @@
     "turn_start": [],
     "unmodeled": []
    },
-   "hand_modelled": null,
+   "hand_modelled": "extract_passives.HAND_EFFECTS",
    "id": "1081301",
    "kind": "combat",
    "name": "Stacking the Deck",
@@ -334,7 +347,7 @@
      "[Turn Start] if this unit does not have a Suit in Hand, gain a random Suit([HanafudaOne], [HanafudaTwo], or [HanafudaThree]) that corresponds to a Base Attack Skill on this unit's leftmost Skill Slot"
     ]
    },
-   "hand_modelled": null,
+   "hand_modelled": "extract_passives.HAND_EFFECTS",
    "id": "1081302",
    "kind": "combat",
    "name": "Koi-Koi [こいこい]",
@@ -383,15 +396,35 @@
    "effects": {
     "attack_end": [],
     "combat_start": [],
+    "hand_modelled": "extract_passives.HAND_EFFECTS",
     "passive": [],
     "turn_end": [],
-    "turn_start": [],
+    "turn_start": [
+     {
+      "component": "stack",
+      "condition": {
+       "self_sp_at_least": 0
+      },
+      "kind": "gain",
+      "potency": 1,
+      "status": "Blessing"
+     },
+     {
+      "component": "stack",
+      "condition": {
+       "self_sp_below": 0
+      },
+      "kind": "gain",
+      "potency": 1,
+      "status": "Despair"
+     }
+    ],
     "unmodeled": [
      "When in [BlessingAlly] state...",
      "When in [DespairAlly] state..."
     ]
    },
-   "hand_modelled": null,
+   "hand_modelled": "extract_passives.HAND_EFFECTS",
    "id": "1091301",
    "kind": "combat",
    "name": "Magical Girl of Justice / Knight of Despair",
@@ -442,7 +475,7 @@
      "[Turn Start] at less than 0 SP, gain [DespairAlly]"
     ]
    },
-   "hand_modelled": null,
+   "hand_modelled": "extract_passives.HAND_EFFECTS",
    "id": "1091302",
    "kind": "combat",
    "name": "The Sword Sharpened with Tears - !ALERT: E.G.O GEAR SYNC THRESHOLD EXCEEDED!",
@@ -575,7 +608,26 @@
      }
     ],
     "turn_end": [],
-    "turn_start": [],
+    "turn_start": [
+     {
+      "component": "stack",
+      "condition": {
+       "self_sp_at_least": 0
+      },
+      "kind": "gain",
+      "potency": 1,
+      "status": "Blessing"
+     },
+     {
+      "component": "stack",
+      "condition": {
+       "self_sp_below": 0
+      },
+      "kind": "gain",
+      "potency": 1,
+      "status": "Despair"
+     }
+    ],
     "unmodeled": [
      "Combat Start: at 5 [PenetratingSword], gain 2 [AttackDmgUp] and 1 [ResultEnhancement] instead",
      "Combat Start: at 5 [ProtectiveSword], gain 2 [Protection] and 1 [ParryingResultUp] instead",
@@ -583,7 +635,7 @@
      "When in [DespairAlly] state..."
     ]
    },
-   "hand_modelled": null,
+   "hand_modelled": "extract_passives.HAND_EFFECTS",
    "id": "1091311",
    "kind": "combat",
    "name": "Magical Girl of Justice / Knight of Despair",
@@ -744,7 +796,7 @@
     "turn_start": [],
     "unmodeled": []
    },
-   "hand_modelled": null,
+   "hand_modelled": "extract_passives.HAND_EFFECTS",
    "id": "1111401",
    "kind": "combat",
    "name": "Vanguard Team",
@@ -793,7 +845,7 @@
      "[Turn Start] If an enemy has any of the Panic type changing effects, gain 1 [TheUdjatOutis]"
     ]
    },
-   "hand_modelled": null,
+   "hand_modelled": "extract_passives.HAND_EFFECTS",
    "id": "1111402",
    "kind": "combat",
    "name": "The Scepter of Horus - Replica",
@@ -817,12 +869,13 @@
     "hand_modelled": "extract_passives.HAND_EFFECTS",
     "passive": [
      {
+      "ammo": "LCA Fracture Round",
       "condition": {
        "gte": 1,
        "source": "self",
        "status": "The Udjat -Vanguard-"
       },
-      "kind": "inflict",
+      "kind": "inflict_per_ammo",
       "on_base_attack_hit": true,
       "per_turn": 15,
       "potency": 1,
@@ -841,7 +894,7 @@
      "[Turn Start] If an enemy has any of the Panic type changing effects, gain 1 [TheUdjatOutis]"
     ]
    },
-   "hand_modelled": null,
+   "hand_modelled": "extract_passives.HAND_EFFECTS",
    "id": "1111412",
    "kind": "combat",
    "name": "The Scepter of Horus - Replica",
@@ -879,7 +932,7 @@
      "[Combat Start] apply 1 [Protection] next turn to 1 ally with the lowest HP percentage"
     ]
    },
-   "hand_modelled": null,
+   "hand_modelled": "extract_passives.HAND_EFFECTS",
    "id": "1111421",
    "kind": "support",
    "name": "Eagle Eye",
@@ -927,7 +980,7 @@
      "[Turn End] Apply [ObedienceGregBigBird] next turn to the ally with the earliest Deployment order among those that do not fit the following conditions:"
     ]
    },
-   "hand_modelled": null,
+   "hand_modelled": "extract_passives.HAND_EFFECTS",
    "id": "1121401",
    "kind": "combat",
    "name": "Eyes Bright Like Lamps",
@@ -965,7 +1018,7 @@
      "When gaining [Agility], gain 1 [ParryingResultUp] instead (once per turn)"
     ]
    },
-   "hand_modelled": null,
+   "hand_modelled": "extract_passives.HAND_EFFECTS",
    "id": "1121402",
    "kind": "combat",
    "name": "Dazzling Lamp",
@@ -1047,7 +1100,7 @@
      "[Turn End] Apply [ObedienceGregBigBird] next turn to the ally with the earliest Deployment order among those that do not fit the following conditions:"
     ]
    },
-   "hand_modelled": null,
+   "hand_modelled": "extract_passives.HAND_EFFECTS",
    "id": "1121411",
    "kind": "combat",
    "name": "Eyes Bright Like Lamps",

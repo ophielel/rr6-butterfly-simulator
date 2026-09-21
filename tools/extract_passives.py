@@ -160,6 +160,59 @@ HAND_MODELLED = {
 # records the exact clause it covers, so the tool can subtract it from the
 # unmodelled list instead of quietly dropping it.
 HAND_EFFECTS: Dict[str, dict] = {
+    # Yi Sang - ISeeTheDyingButterfly: the opening ammo of the Unique Ammo pool.
+    # The rest of the passive (the random Living/Departed split of every unit
+    # spent and gained, "cancel the remaining Coins and Reload on empty") lives in
+    # `battle::{spend_ammo, roll_living, reload_solitude}`.
+    "1011002": {
+        "covered": [
+            "Begin encounters with 10 of each of [BulletLament]",
+            "When spending [BulletLament], select randomly between The Living(Potency) and The Departed(Count) for each [BulletLament] value",
+            "When inflicting [SinkingWhite], inflict the same amount of The Living and The Departed as they were consumed",
+            "If this unit runs out of [BulletLament] midway through Skill use, cancel all subsequent Coins and [ReloadLament]",
+        ],
+        "combat_start": [
+            {"kind": "gain", "status": "The Living & The Departed",
+             "potency": 10, "count": 10},
+        ],
+    },
+    # Ryoshu - A Void that Cannot be Filled: the opening ammo of Bullet - Solitude.
+    "1041402": {
+        "covered": ["Always Active: Begin Encounters with 6 [BulletGodok]"],
+        "combat_start": [
+            {"kind": "gain", "status": "Bullet - Solitude", "potency": 6,
+             "component": "stack"},
+        ],
+    },
+    # Rodion - Knight of Despair: the Turn Start state that decides which half of
+    # her kit is live ("Turn Start: at 0 or higher SP, gain [BlessingAlly] - Uses
+    # Plus Coin Skills as Base Skills; at less than 0 SP, gain [DespairAlly] -
+    # Uses Minus Coin Skills as Base Skills").  The statuses themselves carry the
+    # Protecting Sword / Piercing Sword upkeep, the clash-end Sinking and the
+    # Plus / Minus Coin replacement.
+    "1091301": {
+        "covered": [
+            "Turn Start: at 0 or higher SP, gain [BlessingAlly]",
+            "Turn Start: at less than 0 SP, gain [DespairAlly]",
+        ],
+        "turn_start": [
+            {"kind": "gain", "status": "Blessing", "potency": 1,
+             "component": "stack", "condition": {"self_sp_at_least": 0}},
+            {"kind": "gain", "status": "Despair", "potency": 1,
+             "component": "stack", "condition": {"self_sp_below": 0}},
+        ],
+    },
+    # Ryoshu - Unwithering Flower: Petals are gained when an enemy takes Sinking
+    # damage or a Tremor Burst fires (the engine hooks live in
+    # `battle::{apply_sinking, tremor_burst}`); "gain [AlriuneEGOWe] equal to
+    # [AlriuneEGOThey] inflicted" is not wired yet.
+    "1041411": {
+        "covered": [
+            "Gain 1 [AlriuneEGOWe] if the enemy takes [Sinking] damage",
+            "Gain 2 [AlriuneEGOWe] every time Tremor Burst is triggered regardless of the unit",
+        ],
+        "passive": [],
+    },
     # Outis - Vanguard Team
     "1111401": {
         "covered": [
@@ -193,9 +246,11 @@ HAND_EFFECTS: Dict[str, dict] = {
     "1111412": {
         "covered": [
             "If this unit has [TheUdjatOutis], inflict 1 [SheutFracture] On Hit with a Base Attack Skill (15 per turn)",
+            "If [LCA_Bullet] was spent, inflict additional [SheutFracture] per [LCA_Bullet] spent",
         ],
         "passive": [
-            {"kind": "inflict", "status": "Sheut Fracture", "potency": 1, "per_turn": 15,
+            {"kind": "inflict_per_ammo", "status": "Sheut Fracture", "potency": 1,
+             "ammo": "LCA Fracture Round", "per_turn": 15,
              "on_base_attack_hit": True,
              "condition": {"source": "self", "status": "The Udjat -Vanguard-", "gte": 1}},
         ],
@@ -286,12 +341,20 @@ HAND_EFFECTS: Dict[str, dict] = {
             "Deal +(-SP/2)% damage with Base Skills (max 20%)",
             "Combat Start: at 3+ [ProtectiveSword], gain 1 [Protection]",
             "Combat Start: at 3+ [PenetratingSword] gain 1 [AttackDmgUp]",
+            "Turn Start: at 0 or higher SP, gain [BlessingAlly]",
+            "Turn Start: at less than 0 SP, gain [DespairAlly]",
         ],
         "passive": [
             {"kind": "damage_taken_percent", "per": 2, "step": 1, "max": 20,
              "condition": {"source": "self", "status": "Blessing", "gte": 1}},
             {"kind": "damage_percent_from_negative_sp", "per": 2, "step": 1, "max": 20,
              "condition": {"source": "self", "status": "Despair", "gte": 1}},
+        ],
+        "turn_start": [
+            {"kind": "gain", "status": "Blessing", "potency": 1,
+             "component": "stack", "condition": {"self_sp_at_least": 0}},
+            {"kind": "gain", "status": "Despair", "potency": 1,
+             "component": "stack", "condition": {"self_sp_below": 0}},
         ],
         "combat_start": [
             {"kind": "gain", "status": "Protection", "count": 1,
@@ -370,7 +433,7 @@ def main() -> int:
             parsed["hand_modelled"] = "extract_passives.HAND_EFFECTS"
         out["passives"][pid] = {
             "id": pid,
-            "hand_modelled": hand,
+            "hand_modelled": parsed.get("hand_modelled") or hand,
             "owner": owner,
             "kind": kind,
             "name": item.get("name"),

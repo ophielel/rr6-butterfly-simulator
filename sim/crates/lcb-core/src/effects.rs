@@ -200,6 +200,9 @@ pub struct Effect {
     /// A gain scaled by the actor's SP ("for every 8 SP (max 5)").
     #[serde(default)]
     pub per_sp: Option<i32>,
+    /// The ammo pool an `inflict_equal_ammo_spent` clause reads.
+    #[serde(default)]
+    pub ammo: Option<String>,
     /// A `[min ~ max]` random amount (HP damage taken, status gained).
     #[serde(default)]
     pub range_min: Option<i32>,

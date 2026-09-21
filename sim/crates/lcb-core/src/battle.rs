@@ -60,6 +60,20 @@ pub struct UseContext {
     pub damage_bonus: f64,
     pub shield_gain: i32,
     pub ammo_spent: i32,
+    /// "The Living & The Departed" is a **two-part** pool: each unit spent is
+    /// randomly The Living (Potency) or The Departed (Count), and a Skill that
+    /// inflicts the unique [Sinking] mirrors the split it consumed.
+    #[serde(default)]
+    pub ammo_living: i32,
+    #[serde(default)]
+    pub ammo_departed: i32,
+    /// Ammo spent per pool, for "for every [X] spent by this Skill" clauses.
+    #[serde(default)]
+    pub ammo_spent_by_status: BTreeMap<String, i32>,
+    /// "If this unit runs out of ammo midway through Skill use, cancel all
+    /// subsequent Coins and [Reload]".
+    #[serde(default)]
+    pub ammo_exhausted: bool,
     pub unbreakable_coins: Vec<u32>,
     /// "This Attack Skill deals 0 damage" (The Quickening).
     #[serde(default)]
@@ -486,7 +500,15 @@ pub fn submit(state: &mut BattleState, action: Action) -> Result<(), String> {
             let aimed_at_me = state.actions.iter().any(|a| {
                 a.actor == enemy.id && a.slot == enemy_slot && a.target.as_ref() == Some(&actor)
             });
-            let faster = unit.speed > state.units[enemy_index].speed;
+            // "When chaining Skills, this unit can redirect the Attack Skills'
+            // targeting to itself regardless of Speed (Focused Encounters only)"
+            // (Gregor's `Dazzling Lamp`) and an enemy Skill marked "Can Clash
+            // with this Skill regardless of Speed" can always be chained to.
+            let ignores_speed = unit.passive_ids.iter().any(|id| id == "1121402")
+                || state.units[enemy_index]
+                    .clash_any_speed_slots
+                    .contains(&enemy_slot);
+            let faster = unit.speed > state.units[enemy_index].speed || ignores_speed;
             if !(aimed_at_me || (state.config.focused_encounter && faster)) {
                 return Err(format!(
                     "{actor} cannot chain to enemy Slot {enemy_slot} (Speed {} vs {})",
@@ -604,9 +626,120 @@ fn ego_affordable(state: &BattleState, unit: &Unit, ego: &crate::library::EgoRec
 
 /// Chance (percent) that an E.G.O use turns into a random Corrosion, based on
 /// the SP left after paying for it.  Source: JA-wiki 戦闘システム詳細.
-fn corrosion_chance(state: &BattleState, unit_index: usize) -> Option<i32> {
-    let sp = state.units[unit_index].sanity.sp();
-    corrosion_chance_for_sp(sp)
+/// "The Living & The Departed" (in-game `BulletLament`).
+pub const AMMO_SOLEMN_LAMENT: &str = "The Living & The Departed";
+/// "Bullet - Solitude" (in-game `BulletGodok`).
+pub const AMMO_SOLITUDE: &str = "Bullet - Solitude";
+/// "LCA Fracture Round" (in-game `LCA_Bullet`).
+pub const AMMO_FRACTURE: &str = "LCA Fracture Round";
+
+/// Which half of a two-part ammo pool a single unit is drawn from.
+///
+/// "When [ReloadLament]ing, or when gaining [BulletLament], gain either The
+/// Living or The Departed based on this unit's current SP - At 0 or higher SP:
+/// 30% chance to gain The Living; 70% chance to gain The Departed.  At less than
+/// 0 SP: 70% / 30%.  The probabilities are calculated separately for each ammo"
+/// (passive `ISeeTheDyingButterfly.`).  Spending uses the same split ("Whether
+/// The Living(Potency) or The Departed(Count) will be consumed for each shot is
+/// randomly determined", wiki.gg `Status Effects`).
+fn roll_living(state: &mut BattleState, unit_index: usize) -> bool {
+    let living_chance = if state.units[unit_index].sanity.sp() >= 0 {
+        30
+    } else {
+        70
+    };
+    state.flip(living_chance)
+}
+
+/// Spend `amount` from one ammo pool.  Returns how much was actually spent.
+fn spend_ammo(
+    state: &mut BattleState,
+    unit_index: usize,
+    status: &str,
+    amount: i32,
+) -> i32 {
+    if amount <= 0 {
+        return 0;
+    }
+    if status != AMMO_SOLEMN_LAMENT {
+        // Single-value ammo (Bullet - Solitude, LCA Fracture Round): Stack.
+        let mut spent = 0;
+        for _ in 0..amount {
+            if state.units[unit_index].statuses.stack(status) <= 0 {
+                break;
+            }
+            state.units[unit_index].statuses.add_stack(status, -1);
+            spent += 1;
+        }
+        return spent;
+    }
+    let mut spent = 0;
+    let mut living = 0;
+    for _ in 0..amount {
+        let wants_living = roll_living(state, unit_index);
+        let unit = &mut state.units[unit_index];
+        let has_living = unit.statuses.potency(AMMO_SOLEMN_LAMENT) > 0;
+        let has_departed = unit.statuses.count(AMMO_SOLEMN_LAMENT) > 0;
+        let take_living = if wants_living { has_living } else { !has_departed && has_living };
+        if take_living {
+            unit.statuses.add_potency(AMMO_SOLEMN_LAMENT, -1);
+            living += 1;
+        } else if has_departed {
+            unit.statuses.add_count(AMMO_SOLEMN_LAMENT, -1);
+        } else {
+            break;
+        }
+        spent += 1;
+    }
+    // The split travels back to the caller through the (already applied) pool.
+    LAST_AMMO_SPLIT.with(|split| *split.borrow_mut() = Some(living));
+    spent
+}
+
+thread_local! {
+    /// The Living half of the most recent `spend_ammo` call.
+    static LAST_AMMO_SPLIT: std::cell::RefCell<Option<i32>> = const { std::cell::RefCell::new(None) };
+}
+
+fn take_ammo_split() -> Option<i32> {
+    LAST_AMMO_SPLIT.with(|split| split.borrow_mut().take())
+}
+
+/// Pay for and perform a `[Reload]` of The Living & The Departed.
+///
+/// "Consume (30 - (The Living + The Departed))/2 SP.  Reset both values on self
+/// to 0, and gain the max value of their sum based on the probabilities listed
+/// in the Passive `ISeeTheDyingButterfly.` - On Reload, gain at least 1 of The
+/// Living and The Departed." (wiki.gg `Status Effects` / Reload)
+pub fn reload_solitude(state: &mut BattleState, unit_index: usize) -> String {
+    let sum = state.units[unit_index].statuses.total(AMMO_SOLEMN_LAMENT);
+    let sp_cost = ((30 - sum) / 2).max(0);
+    let sanity = state.units[unit_index].sanity;
+    state.units[unit_index].sanity = sanity.add(-sp_cost);
+    state.units[unit_index].statuses.remove(AMMO_SOLEMN_LAMENT);
+    let mut living = 0;
+    // The pool's maximum sum is 20.
+    for _ in 0..20 {
+        if roll_living(state, unit_index) {
+            living += 1;
+        }
+    }
+    let living = living.clamp(1, 19);
+    let unit = &mut state.units[unit_index];
+    unit.statuses.add_potency(AMMO_SOLEMN_LAMENT, living);
+    unit.statuses
+        .add_count(AMMO_SOLEMN_LAMENT, 20 - living);
+    unit.statuses.add_potency("Reload (Solemn Lament)", 1);
+    format!("Reloaded [The Living & The Departed] (SP -{sp_cost})")
+}
+
+/// `Petals` "can be gained up to 15 Stacks per turn" (wiki.gg `Status Effects`).
+fn petals_gain_cap(state: &BattleState, unit_index: usize) -> i32 {
+    (15 - state.units[unit_index].petals_gained).max(0)
+}
+
+pub fn corrosion_chance(state: &BattleState, unit_index: usize) -> Option<i32> {
+    corrosion_chance_for_sp(state.units[unit_index].sanity.sp())
 }
 
 /// The same table for an SP value the unit does not have yet (the E.G.O cost is
@@ -1357,57 +1490,64 @@ pub fn apply_effects(
                 unit.statuses.add_count(&count_status, count);
             }
             "spend_ammo" => {
-                let amount = effect.value.unwrap_or(1);
-                // Randomly The Living (Potency) or The Departed (Count); the
-                // game only states that the pick is random, so a 50/50 split is
-                // a simulator assumption - see docs/MECHANICS.md.
-                let picks: Vec<bool> = (0..amount).map(|_| state.rng.below(2) == 0).collect();
-                let mut spent = 0;
-                for from_potency in picks {
-                    let unit = &mut state.units[ctx.actor_index];
-                    let has_potency = unit.statuses.potency("The Living & The Departed") > 0;
-                    let has_count = unit.statuses.count("The Living & The Departed") > 0;
-                    if from_potency && has_potency {
-                        unit.statuses.add_potency("The Living & The Departed", -1);
-                        spent += 1;
-                    } else if has_count {
-                        unit.statuses.add_count("The Living & The Departed", -1);
-                        spent += 1;
-                    } else if has_potency {
-                        unit.statuses.add_potency("The Living & The Departed", -1);
-                        spent += 1;
-                    }
+                let status = effect
+                    .status
+                    .clone()
+                    .unwrap_or_else(|| AMMO_SOLEMN_LAMENT.to_string());
+                let amount = effect.value.unwrap_or(1).max(0);
+                let spent = spend_ammo(state, ctx.actor_index, &status, amount);
+                if let Some(living) = take_ammo_split() {
+                    use_ctx.ammo_living += living;
+                    use_ctx.ammo_departed += spent - living;
+                }
+                if spent < amount {
+                    // "Some attacks cancel if this unit runs out of ammo" - the
+                    // remaining Coins are forfeited (and Reload kicks in).
+                    use_ctx.ammo_exhausted = true;
                 }
                 use_ctx.ammo_spent += spent;
+                *use_ctx.ammo_spent_by_status.entry(status).or_insert(0) += spent;
             }
             "spend_ammo_all" => {
-                let picks: Vec<bool> = (0..40).map(|_| state.rng.below(2) == 0).collect();
-                let mut spent = 0;
-                for from_potency in picks {
-                    let unit = &mut state.units[ctx.actor_index];
-                    let has_potency = unit.statuses.potency("The Living & The Departed") > 0;
-                    let has_count = unit.statuses.count("The Living & The Departed") > 0;
-                    if !has_potency && !has_count {
-                        break;
-                    }
-                    if from_potency && has_potency {
-                        unit.statuses.add_potency("The Living & The Departed", -1);
-                        spent += 1;
-                    } else if has_count {
-                        unit.statuses.add_count("The Living & The Departed", -1);
-                        spent += 1;
-                    } else {
-                        unit.statuses.add_potency("The Living & The Departed", -1);
-                        spent += 1;
-                    }
-                }
+                // "Spend all of [The Living & The Departed] on self".
+                let status = effect
+                    .status
+                    .clone()
+                    .unwrap_or_else(|| AMMO_SOLEMN_LAMENT.to_string());
+                let have = state.units[ctx.actor_index].statuses.total(&status);
+                let spent = spend_ammo(state, ctx.actor_index, &status, have);
                 use_ctx.ammo_spent += spent;
+                *use_ctx.ammo_spent_by_status.entry(status).or_insert(0) += spent;
             }
             "inflict_equal_ammo_spent" => {
                 let Some(status) = effect.status.clone() else { continue };
-                let spent = use_ctx.ammo_spent;
                 let Some(index) = ctx.target_index else { continue };
-                state.units[index].statuses.add_potency(&status, spent);
+                // "Inflict [Butterfly] equal to [The Living & The Departed]
+                // spent": the unique Sinking keeps the split the Skill consumed
+                // ("inflict the same amount of The Living and The Departed as
+                // they were consumed").
+                let ammo = effect
+                    .ammo
+                    .clone()
+                    .unwrap_or_else(|| AMMO_SOLEMN_LAMENT.to_string());
+                if ammo == AMMO_SOLEMN_LAMENT {
+                    let living = use_ctx.ammo_living;
+                    let departed = use_ctx.ammo_departed;
+                    let unit = &mut state.units[index];
+                    if living != 0 {
+                        unit.statuses.add_potency(&status, living);
+                    }
+                    if departed != 0 {
+                        unit.statuses.add_count(&status, departed);
+                    }
+                } else {
+                    let spent = use_ctx
+                        .ammo_spent_by_status
+                        .get(&ammo)
+                        .copied()
+                        .unwrap_or(use_ctx.ammo_spent);
+                    state.units[index].statuses.add_potency(&status, spent);
+                }
             }
             "clash_power" => {
                 let measured = measured_from_condition(effect, &state.units[ctx.actor_index], ctx.target_index.map(|i| &state.units[i]));
@@ -1449,6 +1589,19 @@ pub fn apply_effects(
                 let Some(index) = ctx.target_index else { continue };
                 let potency = state.units[index].statuses.potency("Tremor");
                 if potency > 0 {
+                    // "Gain 2 [AlriuneEGOWe] every time Tremor Burst is triggered
+                    // regardless of the unit" (Unwithering Flower).
+                    for other in 0..state.units.len() {
+                        if state.units[other]
+                            .passive_ids
+                            .iter()
+                            .any(|id| id == "1041411")
+                            && petals_gain_cap(state, other) >= 2
+                        {
+                            state.units[other].statuses.add_stack("Petals", 2);
+                            state.units[other].petals_gained += 2;
+                        }
+                    }
                     state.units[index].stagger.shift_first_threshold(potency);
                     // "Trigger [Tremor Burst]; then, reduce target's [Tremor]
                     // Count by 1" - the reduction is its own clause, so a burst
@@ -1491,17 +1644,45 @@ pub fn apply_effects(
                         continue;
                     }
                 }
-                // Reload (Solemn Lament): spend SP, reset ammo, refill to the cap.
-                let unit = &mut state.units[ctx.actor_index];
-                let sum = unit.statuses.total("The Living & The Departed");
-                let sp_cost = ((30 - sum) / 2).max(0);
-                unit.sanity = unit.sanity.add(-sp_cost);
-                unit.statuses.remove("The Living & The Departed");
-                unit.statuses.add_potency("Reload (Solemn Lament)", 1);
+                match effect.ammo.as_deref() {
+                    Some(AMMO_FRACTURE) => {
+                        // "At 2 or fewer [LCA Fracture Round], [Reload]": the
+                        // Unique Ammo refills to its capacity.
+                        state.units[ctx.actor_index]
+                            .statuses
+                            .set_stack(AMMO_FRACTURE, 16);
+                        state.push_log("reload", "Reloaded [LCA Fracture Round]".to_string());
+                    }
+                    Some(AMMO_SOLITUDE) => {
+                        state.units[ctx.actor_index]
+                            .statuses
+                            .set_stack(AMMO_SOLITUDE, 6);
+                        state.push_log("reload", "Reloaded [Bullet - Solitude]".to_string());
+                    }
+                    _ => {
+                        // Reload (Solemn Lament): spend the SP, reset both values
+                        // and refill the pool.
+                        let detail = reload_solitude(state, ctx.actor_index);
+                        state.push_log("reload", detail);
+                    }
+                }
             }
             "reuse_percent_missing_hp" => {
                 // "Reuse this Coin once for every N% missing HP (max K times)".
                 use_ctx.reuse_hp = Some((effect.per.unwrap_or(33).max(1), effect.max.unwrap_or(1)));
+            }
+            "inflict_per_ammo" => {
+                // "If [LCA_Bullet] was spent, inflict additional [SheutFracture]
+                // per [LCA_Bullet] spent" (Outis's Scepter of Horus - Replica).
+                let Some(status) = effect.status.clone() else { continue };
+                let Some(index) = ctx.target_index else { continue };
+                let ammo = effect
+                    .ammo
+                    .clone()
+                    .unwrap_or_else(|| AMMO_FRACTURE.to_string());
+                let spent = use_ctx.ammo_spent_by_status.get(&ammo).copied().unwrap_or(0);
+                let amount = effect.potency.unwrap_or(1) + spent;
+                state.units[index].statuses.add_potency(&status, amount);
             }
             "inflict_on_attacker" => {
                 // Stored on the defender and applied when it is hit with Shield.
@@ -1623,8 +1804,16 @@ pub fn apply_effects(
                 }
             }
             "base_power_per_ammo_planned" => {
-                let step = effect.step.unwrap_or(0);
-                use_ctx.base_power_bonus += step * use_ctx.ammo_planned;
+                // "Base Power +1 for every [LCA Fracture Round] about to be spent
+                // by this Skill": capped by the ammo the unit actually holds.
+                let status = effect
+                    .status
+                    .clone()
+                    .unwrap_or_else(|| AMMO_SOLEMN_LAMENT.to_string());
+                let available = state.units[ctx.actor_index].statuses.total(&status);
+                let planned = use_ctx.ammo_planned.min(available);
+                let step = effect.step.unwrap_or(1);
+                use_ctx.base_power_bonus += step * planned;
             }
             "crit_chance_from_target_sp" => {
                 // "boost crit chance proportional to target's SP" (a negative SP
@@ -1723,10 +1912,18 @@ pub fn apply_effects(
                 use_ctx.lower_stagger_percent = effect.percent.unwrap_or(0);
             }
             "damage_percent_per_ammo_spent" => {
-                // "Deal +2% damage for every value of [X] spent by this Skill"
+                // "Deal +2% damage for every value of [X] spent by this Skill":
+                // the pool the clause names, not every pool the Skill spent.
                 let step = effect.step.unwrap_or(0);
-                use_ctx.damage_bonus +=
-                    (step * use_ctx.ammo_spent) as f64 / 100.0;
+                let spent = match effect.status.as_deref().filter(|name| !name.contains(" spent")) {
+                    Some(status) => use_ctx
+                        .ammo_spent_by_status
+                        .get(status)
+                        .copied()
+                        .unwrap_or(0),
+                    None => use_ctx.ammo_spent,
+                };
+                use_ctx.damage_bonus += (step * spent) as f64 / 100.0;
             }
             "gloom_damage_equal_target_status" => {
                 // "[On Hit] Inflict Gloom Damage equal to "All" [Butterfly] on
@@ -2948,6 +3145,20 @@ pub fn one_sided_attack(
             clash_count,
         );
         hits.push(hit);
+        // "If this unit runs out of [BulletLament] midway through Skill use,
+        // cancel all subsequent Coins and [ReloadLament]" (passive
+        // `ISeeTheDyingButterfly.`).
+        if use_.ctx.ammo_exhausted {
+            if use_
+                .ctx
+                .ammo_spent_by_status
+                .contains_key(AMMO_SOLEMN_LAMENT)
+            {
+                let detail = reload_solitude(state, attacker_index);
+                state.push_log("reload", detail);
+            }
+            break;
+        }
         // "Then, Reuse this Coin (N times per Skill)": the Coin may be used again
         // while it is under its cap, which is granted while the Coin resolves.
         let used_times = *use_.ctx.coin_hits.get(&(coin_index as u32 + 1)).unwrap_or(&1);
@@ -3595,6 +3806,15 @@ fn apply_hit_inner(
             .collect();
         apply_effects(state, &clauses, &mut ctx, &mut local);
         use_.ctx.ammo_spent = local.ammo_spent.max(use_.ctx.ammo_spent);
+        // The ammo bookkeeping of this Coin travels back to the Skill use: the
+        // split of the two-part pool, what each pool spent and whether the unit
+        // ran dry (which cancels the remaining Coins).
+        use_.ctx.ammo_living += local.ammo_living;
+        use_.ctx.ammo_departed += local.ammo_departed;
+        use_.ctx.ammo_exhausted |= local.ammo_exhausted;
+        for (pool, spent) in local.ammo_spent_by_status {
+            *use_.ctx.ammo_spent_by_status.entry(pool).or_insert(0) += spent;
+        }
         // Coin-level clauses may add Reuse budget, consume statuses or lose HP.
         for (coin, cap) in local.reuse_caps {
             let entry = use_.ctx.reuse_caps.entry(coin).or_insert(0);
@@ -3826,6 +4046,19 @@ pub fn apply_sinking(state: &mut BattleState, unit_index: usize) {
     let sinking = state.units[unit_index].statuses.potency("Sinking");
     if sinking <= 0 {
         return;
+    }
+    // "Gain 1 [AlriuneEGOWe] if the enemy takes [Sinking] damage" (Ryoshu's
+    // Unwithering Flower).
+    for other in 0..state.units.len() {
+        if state.units[other].passive_ids.iter().any(|id| id == "1041411") {
+            if state.units[other].kind.is_sinner() != state.units[unit_index].kind.is_sinner() {
+                let cap = petals_gain_cap(state, other);
+                if cap > 0 {
+                    state.units[other].statuses.add_stack("Petals", 1);
+                    state.units[other].petals_gained += 1;
+                }
+            }
+        }
     }
     match state.units[unit_index].sanity {
         Sanity::None => {
@@ -4676,6 +4909,7 @@ pub fn begin_turn(
             .turn_effect_usage
             .retain(|key, _| key.starts_with("encounter:"));
         state.units[index].hits_taken = 0;
+        state.units[index].petals_gained = 0;
         state.units[index].segmentation_healed.clear();
     }
     // The state of time for this turn is decided **before** the passives of that
@@ -4718,6 +4952,31 @@ pub fn begin_turn(
             .iter()
             .position(|u| u.alive && u.kind.is_sinner() != state.units[index].kind.is_sinner());
         apply_passive_phase(state, index, target, |m| &m.turn_start);
+    }
+    // Enemy Skill Slots whose Skill says "Can Clash with this Skill regardless of
+    // Speed": a Sinner may chain to them even when slower.
+    for unit in state.units.iter_mut() {
+        unit.clash_any_speed_slots.clear();
+    }
+    let enemy_slots: Vec<(usize, u32, SkillId)> = state
+        .actions
+        .iter()
+        .filter_map(|action| {
+            let index = state.index_of(&action.actor)?;
+            if state.units[index].kind.is_sinner() {
+                return None;
+            }
+            Some((index, action.slot, action.skill.clone()))
+        })
+        .collect();
+    for (index, slot, skill) in enemy_slots {
+        if mechanics
+            .get_for(&skill, Uptie(4))
+            .map(|list| list.tags.iter().any(|tag| tag == "clash_any_speed"))
+            .unwrap_or(false)
+        {
+            state.units[index].clash_any_speed_slots.push(slot);
+        }
     }
     // Enemy Skill Slots.  A unit with a documented action pattern (the Imago)
     // uses one action per listed slot for the current turn of its cycle.
@@ -5072,6 +5331,15 @@ fn next_reuse_target(state: &BattleState, defender_index: usize, attacker_index:
 /// Can this unit still take the action it submitted this turn?  A unit that died,
 /// got Staggered or Panicked earlier in the same turn drops the rest of its
 /// action ("[T]he queue is checked again when the turn comes").
+/// "[Unclashable]" - the Skill cannot be matched against anything; the unit
+/// attacks or is attacked on its own.
+fn is_unclashable(mechanics: &MechanicsBook, action: &SubmittedAction) -> bool {
+    mechanics
+        .get_for(&action.skill, Uptie(4))
+        .map(|list| list.tags.iter().any(|tag| tag == "unclashable"))
+        .unwrap_or(false)
+}
+
 fn can_act_now(state: &BattleState, index: usize) -> bool {
     let unit = &state.units[index];
     if !unit.alive || unit.panicked {
@@ -5214,9 +5482,13 @@ pub fn resolve_combat(state: &mut BattleState, library: &Library, mechanics: &Me
             continue;
         }
         let mut opponent_slot = None;
+        let actor_unclashable = is_unclashable(mechanics, &action_i);
         // An explicit chain to an enemy Skill Slot (focused encounters) pairs
         // with exactly that Slot.
-        if let Some(wanted) = action_i.enemy_slot.filter(|slot| {
+        if let Some(wanted) = action_i
+            .enemy_slot
+            .filter(|_| !actor_unclashable)
+            .filter(|slot| {
             pull_owner
                 .get(slot)
                 .map(|owner| *owner == state.units[actor_i].id)
@@ -5236,13 +5508,17 @@ pub fn resolve_combat(state: &mut BattleState, library: &Library, mechanics: &Me
         // Otherwise: does the target also act against the actor with an attack
         // skill?  A Slot that someone else chained to is spoken for, so it can
         // no longer be picked up through its old target.
-        if opponent_slot.is_none() {
+        if opponent_slot.is_none() && !actor_unclashable {
             if let Some(target) = target_i {
                 for (j, (actor_j, action_j, target_j)) in pending.iter().enumerate() {
                     if done[j] || *actor_j != target {
                         continue;
                     }
                     if *target_j != Some(actor_i) {
+                        continue;
+                    }
+                    // "[Unclashable]" Skills are never matched.
+                    if is_unclashable(mechanics, action_j) {
                         continue;
                     }
                     let taken_by_other = pull_owner
@@ -5267,8 +5543,9 @@ pub fn resolve_combat(state: &mut BattleState, library: &Library, mechanics: &Me
                 // A Clash needs both sides able to act ("A unit that was killed
                 // or Staggered earlier in the turn drops its action").
                 if !can_act_now(state, actor_j) {
+                    // The partner dropped out, so this Skill falls back to a
+                    // one-sided attack below.
                     done[j] = true;
-                    opponent_slot = None;
                     continue;
                 }
                 let mut use_a = build_action_use(state, library, mechanics, actor_i, &action_i);
@@ -5303,6 +5580,10 @@ pub fn resolve_combat(state: &mut BattleState, library: &Library, mechanics: &Me
                         let hits = one_sided_attack(state, actor_j, actor_i, b, clash_count);
                         splash_attack(state, actor_j, actor_i, b, &hits, clash_count);
                         apply_attack_end(state, actor_j, Some(actor_i), action_j.slot, b);
+                        if ends_encounter(state, actor_j, &b.skill) {
+                            state.encounter_ended = true;
+                            state.push_log("end", format!("{} ended the encounter", b.name));
+                        }
                         clash_loser_follow_up(state, actor_i, actor_j, action_i.slot, a, clash_count);
                     } else {
                         apply_clash_result(state, actor_i, Some(actor_j), a, false);
@@ -6163,6 +6444,17 @@ pub fn ego_affordable_for_test(
     kind: EgoSkillKind,
 ) -> bool {
     ego_affordable(state, &state.units[unit_index], ego, kind)
+}
+
+#[doc(hidden)]
+pub fn apply_attack_end_for_test(
+    state: &mut BattleState,
+    unit_index: usize,
+    target_index: Option<usize>,
+    slot: u32,
+    use_: &mut SkillUse,
+) {
+    apply_attack_end(state, unit_index, target_index, slot, use_)
 }
 
 #[doc(hidden)]

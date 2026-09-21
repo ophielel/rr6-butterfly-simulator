@@ -5550,6 +5550,7 @@
      "status": "Protection"
     },
     {
+     "ammo": "LCA Fracture Round",
      "condition": {
       "lte": 2,
       "source": "self",
@@ -5677,6 +5678,7 @@
      "status": "Protection"
     },
     {
+     "ammo": "LCA Fracture Round",
      "condition": {
       "lte": 2,
       "source": "self",
@@ -5804,6 +5806,7 @@
      "status": "Protection"
     },
     {
+     "ammo": "LCA Fracture Round",
      "condition": {
       "lte": 2,
       "source": "self",
@@ -5931,6 +5934,7 @@
      "status": "Protection"
     },
     {
+     "ammo": "LCA Fracture Round",
      "condition": {
       "lte": 2,
       "source": "self",

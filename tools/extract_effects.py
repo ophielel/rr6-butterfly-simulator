@@ -199,7 +199,7 @@ PATTERNS = [
                 "assumption": "slot_scoped"}),
     # "At 2 or fewer [LCA Fracture Round], [Reload]"
     (re.compile(rf"^At {N} or fewer {ST}, \[Reload\]$"),
-     lambda m: {"kind": "reload_ammo",
+     lambda m: {"kind": "reload_ammo", "ammo": m.group(2),
                 "condition": {"source": "self", "status": m.group(2), "lte": int(m.group(1))}}),
     # "Base Power +1 for every [X] about to be spent by this Skill"
     (re.compile(rf"^Base Power \+{N} for every {ST} about to be spent by this Skill$"),

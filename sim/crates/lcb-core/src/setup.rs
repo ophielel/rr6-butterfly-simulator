@@ -97,8 +97,9 @@ pub fn attach_unit_books(
         })
         .collect();
     for (index, unit) in state.units.iter_mut().enumerate() {
-        unit.passives = passives
-            .for_owner(&owner_ids[index])
+        let owned = passives.for_owner(&owner_ids[index]);
+        unit.passive_ids = owned.iter().map(|passive| passive.id.clone()).collect();
+        unit.passives = owned
             .into_iter()
             .map(|passive| passive.effects.clone())
             .collect();
@@ -372,6 +373,9 @@ impl<'a> EncounterBuilder<'a> {
             Sin::ALL.iter().map(|s| (sin_key(*s).to_string(), 1.0)).collect();
         Ok(Unit {
             planned_targets: 1,
+            passive_ids: Vec::new(),
+            petals_gained: 0,
+            clash_any_speed_slots: Vec::new(),
             id: UnitId::new(format!("sinner-{index}-{}", record.id)),
             kind: UnitKind::Sinner {
                 identity: IdentityId::new(record.id.clone()),
@@ -467,6 +471,9 @@ impl<'a> EncounterBuilder<'a> {
             .unwrap_or((1, 3));
         Ok(Unit {
             planned_targets: 1,
+            passive_ids: Vec::new(),
+            petals_gained: 0,
+            clash_any_speed_slots: Vec::new(),
             id: UnitId::new(format!("enemy-{index}-{}", record.id)),
             kind: UnitKind::Abnormality {
                 enemy: EnemyId::new(record.id.clone()),
