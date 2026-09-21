@@ -16,6 +16,7 @@ this file.
 | Sanity as an enum (`None` / `Sane{sp}`) | `state::Sanity` | `mechanics::sanity_changes_coin_flip_odds` |
 | Speed ranges, per-turn roll | `setup`, `battle::begin_turn` | `mechanics::turn_advances_phase_and_logs` |
 | Deterministic RNG | `rng::Rng` | `rng::tests::*` |
+| Starting SP (45 by default, configurable) | `state::BattleConfig::starting_sp` | `mechanics::sinners_start_with_the_configured_sanity` |
 | Statuses (Potency/Count/Stack) | `state::StatusSet` | `mechanics::burn_ticks_at_turn_end` |
 | Clone / hash / serialisation | `replay`, `hash` | `engineering::*` |
 
@@ -146,7 +147,7 @@ effects (HP Healing Down, Wrath Fragility).
 
 ## Full-review items (2026-09-20)
 
-`REVIEW_SIMULATOR_FULL.md` lists 20 groups.  All of them are resolved; the two
+`docs/archive/REVIEW_SIMULATOR_FULL.md` lists 20 groups.  All of them are resolved; the two
 rows that remain open are limits of scope or data, not unknown rules, and they are
 marked as such instead of being guessed.
 

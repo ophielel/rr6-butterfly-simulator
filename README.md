@@ -1,7 +1,8 @@
 # RR6 Butterfly of Entangled Lives — simulator
 
 A small, source-driven combat simulator for the fixed content in
-`rr6_butterfly_simulator_plan_v2.md`: seven identities, seven E.G.O, and the
+[`docs/archive/rr6_butterfly_simulator_plan_v2.md`](docs/archive/rr6_butterfly_simulator_plan_v2.md):
+seven identities, seven E.G.O, and the
 **Refraction Railway Line 6, Section 5 boss** *Butterfly of Entangled Lives
 [羅生蝶]* (`9567`, the Imago).
 
@@ -10,6 +11,10 @@ Section 5 Imago encounter.  The Pupa (`9563`) and the illusory butterflies
 (`9564`-`9566`) are loaded because their data documents the Imago's mechanics,
 and `Simulator::section5` can carry a campaign state between stations, but they
 are not part of the required deliverable.
+
+The plan document and the five code-review documents it attracted are archived in
+[`docs/archive/`](docs/archive/) - every review item they list is resolved; see
+[`docs/archive/README.md`](docs/archive/README.md) for the per-document status.
 
 Two rules shape the whole project:
 

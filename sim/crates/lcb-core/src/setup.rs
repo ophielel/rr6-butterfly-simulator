@@ -393,7 +393,9 @@ impl<'a> EncounterBuilder<'a> {
             hp: max_hp,
             max_hp,
             shield: 0,
-            sanity: Sanity::Sane { sp: 0 },
+            sanity: Sanity::Sane {
+                sp: self.config.starting_sp,
+            },
             speed: 0,
             speed_range: speed,
             offense_level_mod: 0,

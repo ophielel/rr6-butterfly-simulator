@@ -805,6 +805,11 @@ pub struct BattleConfig {
     pub sp_on_clash_lose: Option<i32>,
     /// Refuse to run skills whose effect text is not fully modelled.
     pub strict_mechanics: bool,
+    /// Sanity a Sinner starts the encounter with.  The in-game value for the
+    /// fixed content is 0, but a campaign carries SP between stations, so it is
+    /// configurable (45 == the upper clamp).
+    #[serde(default = "default_starting_sp")]
+    pub starting_sp: i32,
     pub max_turns: u32,
     /// Focused encounter (an Abnormality fight).  Only there can a Sinner whose
     /// Speed is higher than an enemy Slot's redirect that enemy Skill onto
@@ -820,6 +825,10 @@ pub struct BattleConfig {
     pub initial_time_state: crate::scripts::TimeState,
 }
 
+pub fn default_starting_sp() -> i32 {
+    45
+}
+
 fn default_initial_time_state() -> crate::scripts::TimeState {
     crate::scripts::TimeState::Past
 }
@@ -832,6 +841,7 @@ impl Default for BattleConfig {
             sp_on_clash_win: None,
             sp_on_clash_lose: None,
             strict_mechanics: true,
+            starting_sp: default_starting_sp(),
             focused_encounter: true,
             max_turns: 30,
             initial_time_state: crate::scripts::TimeState::Past,

@@ -1723,7 +1723,7 @@ fn section5_golden_replay_is_deterministic() {
     assert_eq!(first_hp, vec![25406, 25200, 25057], "Imago HP after turns 1-3");
     assert_eq!(
         format!("{first_hash:016x}"),
-        "433225513bb5144e",
+        "d3544e0524c206af",
         "recorded state hash"
     );
 }
@@ -3228,7 +3228,7 @@ fn turn_advances_phase_and_logs() {
 }
 
 // ------------------------------------------------------------------------- //
-// Full-review regressions (REVIEW_SIMULATOR_FULL.md)
+// Full-review regressions (docs/archive/REVIEW_SIMULATOR_FULL.md)
 // ------------------------------------------------------------------------- //
 
 /// A flat conditional bonus is not scaled by the value in its condition.
@@ -4209,4 +4209,40 @@ fn cracked_coins_act_and_lower_base_power() {
         "two Cracked Coins cost 2 Base Power each"
     );
     assert!(!hits.is_empty(), "a cracked Coin still attacks");
+}
+
+/// Sinners start the encounter with `BattleConfig::starting_sp` Sanity (45 by
+/// default, i.e. the upper clamp), while an Abnormality has no SP at all.
+/// Source: wiki.gg `Sanity` (SP lives in [-45, 45]).
+#[test]
+fn sinners_start_with_the_configured_sanity() {
+    let sim = sim();
+    let state = sim
+        .new_encounter(&fixed::TEAM, &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    for unit in state.units.iter().filter(|unit| unit.kind.is_sinner()) {
+        assert_eq!(unit.sanity.sp(), 45, "{} starts at 45 SP", unit.name);
+    }
+    let enemy = state
+        .units
+        .iter()
+        .find(|unit| !unit.kind.is_sinner())
+        .expect("the Imago");
+    assert_eq!(enemy.sanity.sp(), 0, "an Abnormality has no SP pool");
+
+    // The value is configurable, and the configured SP survives Turn Start.
+    let mut state = sim
+        .new_encounter(
+            &fixed::TEAM,
+            &[fixed::BOSS_IMAGO],
+            3,
+            BattleConfig {
+                starting_sp: 10,
+                ..Default::default()
+            },
+        )
+        .unwrap();
+    assert_eq!(state.units[0].sanity.sp(), 10);
+    battle::begin_turn(&mut state, &sim.library, &sim.mechanics, &sim.scripts);
+    assert_eq!(state.units[0].sanity.sp(), 10);
 }
