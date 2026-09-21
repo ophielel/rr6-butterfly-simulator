@@ -49,7 +49,7 @@ Behaviour parsed from each status's own text (`data/mechanics/status_effects.jso
 | Bind | 0 | 0 | 0 | 1 |
 | Bleed | 0 | 0 | 0 | 2 |
 | Blue Sand | 0 | 1 | 0 | 8 |
-| Bright -光- | 0 | 0 | 0 | 4 |
+| Bright -光- | 2 | 0 | 0 | 0 |
 | Bullet - Solitude | 0 | 0 | 0 | 4 |
 | Burn | 0 | 0 | 0 | 2 |
 | Butterfly | 0 | 0 | 0 | 8 |

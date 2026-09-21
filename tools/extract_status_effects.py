@@ -37,6 +37,17 @@ NUM = r"(\d+(?:\.\d+)?)"  # an integer or decimal percentage
 # left in `statuses.json` as documentation.
 STATUS_PATTERNS = [
     # Gains scaled by the unit's own stacks / SP.
+    (re.compile(rf"^Turn Start: gain {N} {ST} for every Potency$"),
+     lambda m: {"kind": "gain", "status": m.group(2), "potency": int(m.group(1)),
+                "per": 1, "step": int(m.group(1)),
+                "condition": {"source": "self", "status": "self", "component": "potency"}}),
+    (re.compile(rf"^Turn Start: lose {N} Count$"),
+     lambda m: {"kind": "lose_status_count", "status": "self", "count": int(m.group(1))}),
+    # "Potency: Base 0, Max 5" / "Count: Base 3, Max 3" - the caps of the status.
+    (re.compile(rf"^Potency: Base {N}, Max {N}$"),
+     lambda m: {"kind": "cap_potency", "value": int(m.group(2))}),
+    (re.compile(rf"^Count: Base {N}, Max {N}$"),
+     lambda m: {"kind": "cap_count", "value": int(m.group(2))}),
     (re.compile(rf"^Turn Start: gain {N} {ST} for every Stack \(max {N}\)$"),
      lambda m: {"kind": "gain", "status": m.group(2), "potency": int(m.group(1)),
                 "per": 1, "step": int(m.group(1)), "max": int(m.group(3)),
@@ -234,6 +245,12 @@ def parse_status(text: str) -> Dict[str, object]:
         if effect.get("kind") == "max_stack":
             out["max_stack"] = int(effect.get("value") or 0)
             continue
+        if effect.get("kind") == "cap_potency":
+            out["max_potency"] = int(effect.get("value") or 0)
+            continue
+        if effect.get("kind") == "cap_count":
+            out["max_count"] = int(effect.get("value") or 0)
+            continue
         effect["raw"] = clause
         if limits:
             effect.update(limits)
@@ -306,6 +323,13 @@ def used_statuses() -> set:
 STATUS_CLAUSES_OWNED_BY_A_SKILL = {
     "Tear-sharpened": {"sp_damage_self_per_stack"},
 }
+
+
+# Statuses whose own text defines their lifecycle, so the general "a value
+# reached 0, remove it" rule must not apply.  `Bright -光-` (HanafudaCombo) is
+# read at "0 Count" by Koi-Koi's Kozan trigger, so its Count running out is a
+# state the Skill has to see, not a deletion.
+NO_VALUE_EXPIRY = {"Bright -光-"}
 
 
 def infer_structure(text: str, primary: str) -> str:
@@ -391,11 +415,13 @@ def main() -> int:
             "key": key,
             "used_by_fixed_content": name in used,
             "primary": primary.get(name, "potency"),
+            "max_potency": parsed.get("max_potency"),
+            "max_count": parsed.get("max_count"),
             # `single` statuses (Charge-like resources, "Potency Fixed") have no
             # second value, so "either reaches 0" must not fire on the value they
             # never use.
             "structure": structure.get(name) or infer_structure(text, primary.get(name, "potency")),
-            "expiry": expiry.get(name, "either_zero"),
+            "expiry": "none" if name in NO_VALUE_EXPIRY else expiry.get(name, "either_zero"),
             "expires_at_turn_end": bool(expires.get(name, False)),
             "name": name,
             "text": text,

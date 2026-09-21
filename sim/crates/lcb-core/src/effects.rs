@@ -526,6 +526,11 @@ pub struct StatusBehaviour {
     /// "for one turn" / "for this turn": removed at Turn End.
     #[serde(default)]
     pub expires_at_turn_end: bool,
+    /// "Potency: Base 0, Max 5" / "Count: Base 3, Max 3" caps.
+    #[serde(default)]
+    pub max_potency: Option<i32>,
+    #[serde(default)]
+    pub max_count: Option<i32>,
     /// True when one of the fixed content's Skills references this status.
     #[serde(default)]
     pub used_by_fixed_content: bool,

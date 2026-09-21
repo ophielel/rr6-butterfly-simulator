@@ -105,6 +105,23 @@ impl StatusSet {
         }
     }
 
+    /// Cap a status at its documented maximum ("Potency: Base 0, Max 5").
+    pub fn clamp_potency(&mut self, key: &str, max: i32) {
+        let entry = self.map.entry(key.to_string()).or_default();
+        entry.potency = entry.potency.min(max);
+        if entry.is_empty() {
+            self.map.remove(key);
+        }
+    }
+
+    pub fn clamp_count(&mut self, key: &str, max: i32) {
+        let entry = self.map.entry(key.to_string()).or_default();
+        entry.count = entry.count.min(max);
+        if entry.is_empty() {
+            self.map.remove(key);
+        }
+    }
+
     pub fn add_count(&mut self, key: &str, delta: i32) {
         let entry = self.map.entry(key.to_string()).or_default();
         entry.count = (entry.count + delta).max(0);
@@ -509,6 +526,11 @@ pub struct Unit {
     /// rule ("this unit may redirect attacks to itself regardless of Speed").
     #[serde(default)]
     pub passive_ids: Vec<String>,
+    /// Statuses whose own upkeep emptied them this turn ("Turn Start: lose 1
+    /// Count" - a status that expires that way can still be read by a clause
+    /// that names it, e.g. Koi-Koi's "at 0 [HanafudaCombo] Count").
+    #[serde(default)]
+    pub expired_statuses: Vec<String>,
     /// Status amounts as they were at Combat Start, for "for every 2 [Piercing
     /// Sword] this unit had at Combat Start" clauses.
     #[serde(default)]

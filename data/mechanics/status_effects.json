@@ -15,6 +15,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Accumulated Past (E.G.O)",
+   "max_count": null,
+   "max_potency": null,
    "name": "Accumulated Past (E.G.O)",
    "primary": "potency",
    "sources": [
@@ -43,6 +45,8 @@
    "expires_at_turn_end": false,
    "expiry": "potency_zero",
    "key": "TransparentWingScalesExplain",
+   "max_count": null,
+   "max_potency": null,
    "name": "Acuate Scale Dust",
    "primary": "potency",
    "sources": [
@@ -71,6 +75,8 @@
    "expires_at_turn_end": false,
    "expiry": "none",
    "key": "Aggro",
+   "max_count": null,
+   "max_potency": null,
    "name": "Aggro",
    "primary": "stack",
    "sources": [
@@ -103,6 +109,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Ailing Heart (Ally)",
+   "max_count": null,
+   "max_potency": null,
    "name": "Ailing Heart (Ally)",
    "primary": "potency",
    "sources": [
@@ -131,6 +139,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Ammo",
+   "max_count": null,
+   "max_potency": null,
    "name": "Ammo",
    "primary": "potency",
    "sources": [
@@ -161,6 +171,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Ammo - Atelier Logic",
+   "max_count": null,
+   "max_potency": null,
    "name": "Ammo - Atelier Logic",
    "primary": "potency",
    "sources": [
@@ -190,6 +202,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "Switch_Vibration",
+   "max_count": null,
+   "max_potency": null,
    "name": "Amplitude Conversion",
    "primary": "potency",
    "sources": [
@@ -221,6 +235,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Amplitude Entanglement",
+   "max_count": null,
+   "max_potency": null,
    "name": "Amplitude Entanglement",
    "primary": "potency",
    "sources": [
@@ -249,6 +265,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Appetite",
+   "max_count": null,
+   "max_potency": null,
    "name": "Appetite",
    "primary": "potency",
    "sources": [
@@ -284,6 +302,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Armure Éveillée",
+   "max_count": null,
+   "max_potency": null,
    "name": "Armure Éveillée",
    "primary": "potency",
    "sources": [
@@ -314,6 +334,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Arrow - Shi",
+   "max_count": null,
+   "max_potency": null,
    "name": "Arrow - Shi",
    "primary": "potency",
    "sources": [
@@ -342,6 +364,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Art Medium",
+   "max_count": null,
+   "max_potency": null,
    "name": "Art Medium",
    "primary": "potency",
    "sources": [
@@ -374,6 +398,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Artwork - Fascia (Faust)",
+   "max_count": null,
+   "max_potency": null,
    "name": "Artwork - Fascia (Faust)",
    "primary": "potency",
    "sources": [
@@ -407,6 +433,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Artwork - Tibia (Hong Lu)",
+   "max_count": null,
+   "max_potency": null,
    "name": "Artwork - Tibia (Hong Lu)",
    "primary": "potency",
    "sources": [
@@ -436,6 +464,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Assist -援-",
+   "max_count": null,
+   "max_potency": null,
    "name": "Assist -援-",
    "primary": "potency",
    "sources": [
@@ -465,6 +495,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Assist Attack (Ishmael)",
+   "max_count": null,
+   "max_potency": null,
    "name": "Assist Attack (Ishmael)",
    "primary": "potency",
    "sources": [
@@ -501,6 +533,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Assist Defense",
+   "max_count": null,
+   "max_potency": null,
    "name": "Assist Defense",
    "primary": "potency",
    "sources": [
@@ -529,6 +563,8 @@
    "expires_at_turn_end": true,
    "expiry": "either_zero",
    "key": "Reduction",
+   "max_count": null,
+   "max_potency": null,
    "name": "Attack Power Down",
    "primary": "potency",
    "sources": [
@@ -557,6 +593,8 @@
    "expires_at_turn_end": true,
    "expiry": "either_zero",
    "key": "Enhancement",
+   "max_count": null,
+   "max_potency": null,
    "name": "Attack Power Up",
    "primary": "potency",
    "sources": [
@@ -586,6 +624,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Avenging My Family",
+   "max_count": null,
+   "max_potency": null,
    "name": "Avenging My Family",
    "primary": "potency",
    "sources": [
@@ -621,6 +661,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:B.M.",
+   "max_count": null,
+   "max_potency": null,
    "name": "B.M.",
    "primary": "potency",
    "sources": [
@@ -651,6 +693,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Backup Candy",
+   "max_count": null,
+   "max_potency": null,
    "name": "Backup Candy",
    "primary": "potency",
    "sources": [
@@ -679,6 +723,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Base Power Up",
+   "max_count": null,
+   "max_potency": null,
    "name": "Base Power Up",
    "primary": "potency",
    "sources": [
@@ -709,6 +755,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Battle Ready",
+   "max_count": null,
+   "max_potency": null,
    "name": "Battle Ready",
    "primary": "potency",
    "sources": [
@@ -739,6 +787,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Battleblood Instinct",
+   "max_count": null,
+   "max_potency": null,
    "name": "Battleblood Instinct",
    "primary": "potency",
    "sources": [
@@ -769,6 +819,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Battlefield Retreat",
+   "max_count": null,
+   "max_potency": null,
    "name": "Battlefield Retreat",
    "primary": "potency",
    "sources": [
@@ -799,6 +851,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Beauty of the Physique",
+   "max_count": null,
+   "max_potency": null,
    "name": "Beauty of the Physique",
    "primary": "potency",
    "sources": [
@@ -827,6 +881,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Before the King",
+   "max_count": null,
+   "max_potency": null,
    "name": "Before the King",
    "primary": "potency",
    "sources": [
@@ -855,6 +911,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Before the King in Binds",
+   "max_count": null,
+   "max_potency": null,
    "name": "Before the King in Binds",
    "primary": "potency",
    "sources": [
@@ -883,6 +941,8 @@
    "expires_at_turn_end": true,
    "expiry": "count_zero",
    "key": "Binding",
+   "max_count": null,
+   "max_potency": null,
    "name": "Bind",
    "primary": "count",
    "sources": [
@@ -912,6 +972,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Bladetrail -Afterimage-",
+   "max_count": null,
+   "max_potency": null,
    "name": "Bladetrail -Afterimage-",
    "primary": "potency",
    "sources": [
@@ -947,6 +1009,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Blazing",
+   "max_count": null,
+   "max_potency": null,
    "name": "Blazing",
    "primary": "potency",
    "sources": [
@@ -976,6 +1040,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "Laceration",
+   "max_count": null,
+   "max_potency": null,
    "name": "Bleed",
    "primary": "potency",
    "sources": [
@@ -1034,6 +1100,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Blessing",
+   "max_count": null,
+   "max_potency": null,
    "name": "Blessing",
    "primary": "potency",
    "sources": [
@@ -1069,6 +1137,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Blessing (E.G.O Gift)",
+   "max_count": null,
+   "max_potency": null,
    "name": "Blessing (E.G.O Gift)",
    "primary": "potency",
    "sources": [
@@ -1104,6 +1174,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Blood-tinged Scissorblades (Ally)",
+   "max_count": null,
+   "max_potency": null,
    "name": "Blood-tinged Scissorblades (Ally)",
    "primary": "potency",
    "sources": [
@@ -1136,6 +1208,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Bloodfeast",
+   "max_count": null,
+   "max_potency": null,
    "name": "Bloodfeast",
    "primary": "potency",
    "sources": [
@@ -1164,6 +1238,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Bloodfeast Consumed (shared)",
+   "max_count": null,
+   "max_potency": null,
    "name": "Bloodfeast Consumed (shared)",
    "primary": "potency",
    "sources": [
@@ -1196,6 +1272,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Bloodflame -血炎-",
+   "max_count": null,
+   "max_potency": null,
    "name": "Bloodflame -血炎-",
    "primary": "potency",
    "sources": [
@@ -1230,6 +1308,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Bloodied Hand (Ally)",
+   "max_count": null,
+   "max_potency": null,
    "name": "Bloodied Hand (Ally)",
    "primary": "potency",
    "sources": [
@@ -1267,6 +1347,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Blooming Thorn (Ally)",
+   "max_count": null,
+   "max_potency": null,
    "name": "Blooming Thorn (Ally)",
    "primary": "potency",
    "sources": [
@@ -1299,6 +1381,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Blubberbubble",
+   "max_count": null,
+   "max_potency": null,
    "name": "Blubberbubble",
    "primary": "potency",
    "sources": [
@@ -1342,6 +1426,8 @@
    "expires_at_turn_end": false,
    "expiry": "none",
    "key": "BlueSand",
+   "max_count": null,
+   "max_potency": null,
    "name": "Blue Sand",
    "primary": "stack",
    "sources": [
@@ -1370,6 +1456,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Blunt DMG Down",
+   "max_count": null,
+   "max_potency": null,
    "name": "Blunt DMG Down",
    "primary": "potency",
    "sources": [
@@ -1398,6 +1486,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Blunt DMG Up",
+   "max_count": null,
+   "max_potency": null,
    "name": "Blunt DMG Up",
    "primary": "potency",
    "sources": [
@@ -1426,6 +1516,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Blunt Fragility",
+   "max_count": null,
+   "max_potency": null,
    "name": "Blunt Fragility",
    "primary": "potency",
    "sources": [
@@ -1454,6 +1546,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Blunt Power Down",
+   "max_count": null,
+   "max_potency": null,
    "name": "Blunt Power Down",
    "primary": "potency",
    "sources": [
@@ -1482,6 +1576,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Blunt Power Up",
+   "max_count": null,
+   "max_potency": null,
    "name": "Blunt Power Up",
    "primary": "potency",
    "sources": [
@@ -1510,6 +1606,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Blunt Protection",
+   "max_count": null,
+   "max_potency": null,
    "name": "Blunt Protection",
    "primary": "potency",
    "sources": [
@@ -1539,6 +1637,8 @@
    "expires_at_turn_end": false,
    "expiry": "potency_zero",
    "key": "HitResistDown",
+   "max_count": null,
+   "max_potency": null,
    "name": "Blunt Resist Down",
    "primary": "stack",
    "sources": [
@@ -1568,6 +1668,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Book of Vengeance -Heathcliff-",
+   "max_count": null,
+   "max_potency": null,
    "name": "Book of Vengeance -Heathcliff-",
    "primary": "potency",
    "sources": [
@@ -1601,6 +1703,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Book of Vengeance -Sinclair-",
+   "max_count": null,
+   "max_potency": null,
    "name": "Book of Vengeance -Sinclair-",
    "primary": "potency",
    "sources": [
@@ -1636,6 +1740,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Book of Vengeance -The House of Spiders-",
+   "max_count": null,
+   "max_potency": null,
    "name": "Book of Vengeance -The House of Spiders-",
    "primary": "potency",
    "sources": [
@@ -1668,6 +1774,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Borrowed Time",
+   "max_count": null,
+   "max_potency": null,
    "name": "Borrowed Time",
    "primary": "potency",
    "sources": [
@@ -1685,20 +1793,39 @@
   "Bright -光-": {
    "effects": {
     "clash_end": [],
+    "max_count": 3,
+    "max_potency": 5,
     "on_hit": [],
     "passive": [],
     "turn_end": [],
-    "turn_start": [],
-    "unmodeled": [
-     "Count: Base 3, Max 3",
-     "Potency: Base 0, Max 5",
-     "Turn Start: gain 1 [Offense Level Up] for every Potency",
-     "Turn Start: lose 1 Count"
-    ]
+    "turn_start": [
+     {
+      "condition": {
+       "component": "potency",
+       "source": "self",
+       "status": "self"
+      },
+      "kind": "gain",
+      "per": 1,
+      "potency": 1,
+      "raw": "Turn Start: gain 1 [Offense Level Up] for every Potency",
+      "status": "Offense Level Up",
+      "step": 1
+     },
+     {
+      "count": 1,
+      "kind": "lose_status_count",
+      "raw": "Turn Start: lose 1 Count",
+      "status": "self"
+     }
+    ],
+    "unmodeled": []
    },
    "expires_at_turn_end": false,
-   "expiry": "either_zero",
+   "expiry": "none",
    "key": "wiki:Bright -光-",
+   "max_count": 3,
+   "max_potency": 5,
    "name": "Bright -光-",
    "primary": "potency",
    "sources": [
@@ -1730,6 +1857,8 @@
    "expires_at_turn_end": false,
    "expiry": "none",
    "key": "BulletGodok",
+   "max_count": null,
+   "max_potency": null,
    "name": "Bullet - Solitude",
    "primary": "stack",
    "sources": [
@@ -1767,6 +1896,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Burgeoning of Horns -發角-",
+   "max_count": null,
+   "max_potency": null,
    "name": "Burgeoning of Horns -發角-",
    "primary": "potency",
    "sources": [
@@ -1796,6 +1927,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "Combustion",
+   "max_count": null,
+   "max_potency": null,
    "name": "Burn",
    "primary": "potency",
    "sources": [
@@ -1831,6 +1964,8 @@
    "expires_at_turn_end": false,
    "expiry": "both_zero",
    "key": "SinkingWhite",
+   "max_count": null,
+   "max_potency": null,
    "name": "Butterfly",
    "primary": "potency",
    "sources": [
@@ -1862,6 +1997,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Centipede Venom",
+   "max_count": null,
+   "max_potency": null,
    "name": "Centipede Venom",
    "primary": "potency",
    "sources": [
@@ -1914,6 +2051,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Changing Room (Ishmael)",
+   "max_count": null,
+   "max_potency": null,
    "name": "Changing Room (Ishmael)",
    "primary": "potency",
    "sources": [
@@ -1942,6 +2081,8 @@
    "expires_at_turn_end": false,
    "expiry": "count_zero",
    "key": "Charge",
+   "max_count": null,
+   "max_potency": null,
    "name": "Charge",
    "primary": "count",
    "sources": [
@@ -1973,6 +2114,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Charge Barrier",
+   "max_count": null,
+   "max_potency": null,
    "name": "Charge Barrier",
    "primary": "potency",
    "sources": [
@@ -2004,6 +2147,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Charged Sting",
+   "max_count": null,
+   "max_potency": null,
    "name": "Charged Sting",
    "primary": "potency",
    "sources": [
@@ -2034,6 +2179,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Charm of the Beastly",
+   "max_count": null,
+   "max_potency": null,
    "name": "Charm of the Beastly",
    "primary": "potency",
    "sources": [
@@ -2065,6 +2212,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Check This Out, Kiddo! (Outis)",
+   "max_count": null,
+   "max_potency": null,
    "name": "Check This Out, Kiddo! (Outis)",
    "primary": "potency",
    "sources": [
@@ -2093,6 +2242,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Clash Power Down",
+   "max_count": null,
+   "max_potency": null,
    "name": "Clash Power Down",
    "primary": "potency",
    "sources": [
@@ -2121,6 +2272,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Clash Power Up",
+   "max_count": null,
+   "max_potency": null,
    "name": "Clash Power Up",
    "primary": "potency",
    "sources": [
@@ -2151,6 +2304,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Clashable Guard",
+   "max_count": null,
+   "max_potency": null,
    "name": "Clashable Guard",
    "primary": "potency",
    "sources": [
@@ -2183,6 +2338,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Coffin",
+   "max_count": null,
+   "max_potency": null,
    "name": "Coffin",
    "primary": "potency",
    "sources": [
@@ -2216,6 +2373,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Commanding Cry",
+   "max_count": null,
+   "max_potency": null,
    "name": "Commanding Cry",
    "primary": "potency",
    "sources": [
@@ -2245,6 +2404,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Concentration-Sniper-",
+   "max_count": null,
+   "max_potency": null,
    "name": "Concentration-Sniper-",
    "primary": "potency",
    "sources": [
@@ -2275,6 +2436,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Concussion",
+   "max_count": null,
+   "max_potency": null,
    "name": "Concussion",
    "primary": "potency",
    "sources": [
@@ -2307,6 +2470,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Contempt (Ryoshu)",
+   "max_count": null,
+   "max_potency": null,
    "name": "Contempt (Ryoshu)",
    "primary": "potency",
    "sources": [
@@ -2339,6 +2504,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Contempt of the Gaze",
+   "max_count": null,
+   "max_potency": null,
    "name": "Contempt of the Gaze",
    "primary": "potency",
    "sources": [
@@ -2370,6 +2537,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Corpus Ingredient (Ally)",
+   "max_count": null,
+   "max_potency": null,
    "name": "Corpus Ingredient (Ally)",
    "primary": "potency",
    "sources": [
@@ -2402,6 +2571,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Corpus Theater (Hong Lu)",
+   "max_count": null,
+   "max_potency": null,
    "name": "Corpus Theater (Hong Lu)",
    "primary": "potency",
    "sources": [
@@ -2440,6 +2611,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Courier Trunk",
+   "max_count": null,
+   "max_potency": null,
    "name": "Courier Trunk",
    "primary": "potency",
    "sources": [
@@ -2468,6 +2641,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Crit DMG Up",
+   "max_count": null,
+   "max_potency": null,
    "name": "Crit DMG Up",
    "primary": "potency",
    "sources": [
@@ -2498,6 +2673,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Cumulus Wall",
+   "max_count": null,
+   "max_potency": null,
    "name": "Cumulus Wall",
    "primary": "potency",
    "sources": [
@@ -2526,6 +2703,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Curio",
+   "max_count": null,
+   "max_potency": null,
    "name": "Curio",
    "primary": "potency",
    "sources": [
@@ -2555,6 +2734,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Curse",
+   "max_count": null,
+   "max_potency": null,
    "name": "Curse",
    "primary": "potency",
    "sources": [
@@ -2583,6 +2764,8 @@
    "expires_at_turn_end": true,
    "expiry": "count_zero",
    "key": "AttackDmgDown",
+   "max_count": null,
+   "max_potency": null,
    "name": "Damage Down",
    "primary": "count",
    "sources": [
@@ -2611,6 +2794,8 @@
    "expires_at_turn_end": true,
    "expiry": "either_zero",
    "key": "AttackDmgUp",
+   "max_count": null,
+   "max_potency": null,
    "name": "Damage Up",
    "primary": "potency",
    "sources": [
@@ -2642,6 +2827,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Dark Cloud",
+   "max_count": null,
+   "max_potency": null,
    "name": "Dark Cloud",
    "primary": "potency",
    "sources": [
@@ -2672,6 +2859,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Dark Cloud Blade",
+   "max_count": null,
+   "max_potency": null,
    "name": "Dark Cloud Blade",
    "primary": "potency",
    "sources": [
@@ -2703,6 +2892,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Dark Flame",
+   "max_count": null,
+   "max_potency": null,
    "name": "Dark Flame",
    "primary": "potency",
    "sources": [
@@ -2762,6 +2953,8 @@
    "expires_at_turn_end": false,
    "expiry": "none",
    "key": "DelusionGregBigBird",
+   "max_count": null,
+   "max_potency": null,
    "name": "Dazzle",
    "primary": "stack",
    "sources": [
@@ -2794,6 +2987,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Deathrite -Fissure-",
+   "max_count": null,
+   "max_potency": null,
    "name": "Deathrite -Fissure-",
    "primary": "potency",
    "sources": [
@@ -2825,6 +3020,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Deathrite -Haste-",
+   "max_count": null,
+   "max_potency": null,
    "name": "Deathrite -Haste-",
    "primary": "potency",
    "sources": [
@@ -2858,6 +3055,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Deathrite -Venom-",
+   "max_count": null,
+   "max_potency": null,
    "name": "Deathrite -Venom-",
    "primary": "potency",
    "sources": [
@@ -2887,6 +3086,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Declared Duel",
+   "max_count": null,
+   "max_potency": null,
    "name": "Declared Duel",
    "primary": "potency",
    "sources": [
@@ -2916,6 +3117,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Deep Inhale",
+   "max_count": null,
+   "max_potency": null,
    "name": "Deep Inhale",
    "primary": "potency",
    "sources": [
@@ -2946,6 +3149,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Deep Tears",
+   "max_count": null,
+   "max_potency": null,
    "name": "Deep Tears",
    "primary": "potency",
    "sources": [
@@ -2978,6 +3183,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Deep Wound",
+   "max_count": null,
+   "max_potency": null,
    "name": "Deep Wound",
    "primary": "potency",
    "sources": [
@@ -3006,6 +3213,8 @@
    "expires_at_turn_end": true,
    "expiry": "potency_zero",
    "key": "DefenseDown",
+   "max_count": null,
+   "max_potency": null,
    "name": "Defense Level Down",
    "primary": "potency",
    "sources": [
@@ -3034,6 +3243,8 @@
    "expires_at_turn_end": true,
    "expiry": "potency_zero",
    "key": "DefenseUp",
+   "max_count": null,
+   "max_potency": null,
    "name": "Defense Level Up",
    "primary": "potency",
    "sources": [
@@ -3062,6 +3273,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Defense Power Down",
+   "max_count": null,
+   "max_potency": null,
    "name": "Defense Power Down",
    "primary": "potency",
    "sources": [
@@ -3090,6 +3303,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Defense Power Up",
+   "max_count": null,
+   "max_potency": null,
    "name": "Defense Power Up",
    "primary": "potency",
    "sources": [
@@ -3134,6 +3349,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Defensive Stance",
+   "max_count": null,
+   "max_potency": null,
    "name": "Defensive Stance",
    "primary": "potency",
    "sources": [
@@ -3163,6 +3380,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Delicateness",
+   "max_count": null,
+   "max_potency": null,
    "name": "Delicateness",
    "primary": "potency",
    "sources": [
@@ -3193,6 +3412,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Denial -不許-",
+   "max_count": null,
+   "max_potency": null,
    "name": "Denial -不許-",
    "primary": "potency",
    "sources": [
@@ -3222,6 +3443,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Desire for Acknowledgement Sated",
+   "max_count": null,
+   "max_potency": null,
    "name": "Desire for Acknowledgement Sated",
    "primary": "potency",
    "sources": [
@@ -3272,6 +3495,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Despair",
+   "max_count": null,
+   "max_potency": null,
    "name": "Despair",
    "primary": "potency",
    "sources": [
@@ -3307,6 +3532,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Desperado",
+   "max_count": null,
+   "max_potency": null,
    "name": "Desperado",
    "primary": "potency",
    "sources": [
@@ -3336,6 +3563,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Dhyāna",
+   "max_count": null,
+   "max_potency": null,
    "name": "Dhyāna",
    "primary": "potency",
    "sources": [
@@ -3368,6 +3597,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Dihui Star's Blade",
+   "max_count": null,
+   "max_potency": null,
    "name": "Dihui Star's Blade",
    "primary": "potency",
    "sources": [
@@ -3396,6 +3627,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Dimensional Rift",
+   "max_count": null,
+   "max_potency": null,
    "name": "Dimensional Rift",
    "primary": "potency",
    "sources": [
@@ -3425,6 +3658,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "Discard",
+   "max_count": null,
+   "max_potency": null,
    "name": "Discard",
    "primary": "potency",
    "sources": [
@@ -3455,6 +3690,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:District 12 Fuel",
+   "max_count": null,
+   "max_potency": null,
    "name": "District 12 Fuel",
    "primary": "potency",
    "sources": [
@@ -3488,6 +3725,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Dullahan",
+   "max_count": null,
+   "max_potency": null,
    "name": "Dullahan",
    "primary": "potency",
    "sources": [
@@ -3516,6 +3755,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:E.G.O Resource Amp",
+   "max_count": null,
+   "max_potency": null,
    "name": "E.G.O Resource Amp",
    "primary": "potency",
    "sources": [
@@ -3556,6 +3797,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Echoes of the Manor",
+   "max_count": null,
+   "max_potency": null,
    "name": "Echoes of the Manor",
    "primary": "potency",
    "sources": [
@@ -3591,6 +3834,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Embers",
+   "max_count": null,
+   "max_potency": null,
    "name": "Embers",
    "primary": "potency",
    "sources": [
@@ -3620,6 +3865,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Emergency Barrier Battery",
+   "max_count": null,
+   "max_potency": null,
    "name": "Emergency Barrier Battery",
    "primary": "potency",
    "sources": [
@@ -3651,6 +3898,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Entangled Life -羅生-",
+   "max_count": null,
+   "max_potency": null,
    "name": "Entangled Life -羅生-",
    "primary": "potency",
    "sources": [
@@ -3683,6 +3932,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Entanglement",
+   "max_count": null,
+   "max_potency": null,
    "name": "Entanglement",
    "primary": "potency",
    "sources": [
@@ -3711,6 +3962,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Envy DMG Down",
+   "max_count": null,
+   "max_potency": null,
    "name": "Envy DMG Down",
    "primary": "potency",
    "sources": [
@@ -3739,6 +3992,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Envy DMG Up",
+   "max_count": null,
+   "max_potency": null,
    "name": "Envy DMG Up",
    "primary": "potency",
    "sources": [
@@ -3767,6 +4022,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Envy Fragility",
+   "max_count": null,
+   "max_potency": null,
    "name": "Envy Fragility",
    "primary": "potency",
    "sources": [
@@ -3800,6 +4057,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Envy Power Down",
+   "max_count": null,
+   "max_potency": null,
    "name": "Envy Power Down",
    "primary": "potency",
    "sources": [
@@ -3828,6 +4087,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Envy Power Up",
+   "max_count": null,
+   "max_potency": null,
    "name": "Envy Power Up",
    "primary": "potency",
    "sources": [
@@ -3856,6 +4117,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Envy Protection",
+   "max_count": null,
+   "max_potency": null,
    "name": "Envy Protection",
    "primary": "potency",
    "sources": [
@@ -3891,6 +4154,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Envy Resist Down",
+   "max_count": null,
+   "max_potency": null,
    "name": "Envy Resist Down",
    "primary": "potency",
    "sources": [
@@ -3923,6 +4188,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Erudition",
+   "max_count": null,
+   "max_potency": null,
    "name": "Erudition",
    "primary": "potency",
    "sources": [
@@ -3953,6 +4220,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Exalted Command",
+   "max_count": null,
+   "max_potency": null,
    "name": "Exalted Command",
    "primary": "potency",
    "sources": [
@@ -3984,6 +4253,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Excision Coin",
+   "max_count": null,
+   "max_potency": null,
    "name": "Excision Coin",
    "primary": "potency",
    "sources": [
@@ -4014,6 +4285,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Exquisite Aesthetics",
+   "max_count": null,
+   "max_potency": null,
    "name": "Exquisite Aesthetics",
    "primary": "potency",
    "sources": [
@@ -4046,6 +4319,8 @@
    "expires_at_turn_end": false,
    "expiry": "none",
    "key": "AlriuneEGOThey",
+   "max_count": null,
+   "max_potency": null,
    "name": "Faint Aroma",
    "primary": "stack",
    "sources": [
@@ -4087,6 +4362,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Fairy Lure",
+   "max_count": null,
+   "max_potency": null,
    "name": "Fairy Lure",
    "primary": "potency",
    "sources": [
@@ -4119,6 +4396,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Faith Beyond Question",
+   "max_count": null,
+   "max_potency": null,
    "name": "Faith Beyond Question",
    "primary": "potency",
    "sources": [
@@ -4147,6 +4426,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Fanatic",
+   "max_count": null,
+   "max_potency": null,
    "name": "Fanatic",
    "primary": "potency",
    "sources": [
@@ -4179,6 +4460,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Fatal Wound",
+   "max_count": null,
+   "max_potency": null,
    "name": "Fatal Wound",
    "primary": "potency",
    "sources": [
@@ -4215,6 +4498,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Fell Bullet",
+   "max_count": null,
+   "max_potency": null,
    "name": "Fell Bullet",
    "primary": "potency",
    "sources": [
@@ -4250,6 +4535,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Festive Fever (Ally)",
+   "max_count": null,
+   "max_potency": null,
    "name": "Festive Fever (Ally)",
    "primary": "potency",
    "sources": [
@@ -4278,6 +4565,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Final Augment",
+   "max_count": null,
+   "max_potency": null,
    "name": "Final Augment",
    "primary": "potency",
    "sources": [
@@ -4307,6 +4596,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Firepower",
+   "max_count": null,
+   "max_potency": null,
    "name": "Firepower",
    "primary": "potency",
    "sources": [
@@ -4337,6 +4628,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:First Seal Removed (Outis)",
+   "max_count": null,
+   "max_potency": null,
    "name": "First Seal Removed (Outis)",
    "primary": "potency",
    "sources": [
@@ -4365,6 +4658,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Fixed Panic",
+   "max_count": null,
+   "max_potency": null,
    "name": "Fixed Panic",
    "primary": "potency",
    "sources": [
@@ -4397,6 +4692,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Flower-burying Pin -埋花針-",
+   "max_count": null,
+   "max_potency": null,
    "name": "Flower-burying Pin -埋花針-",
    "primary": "potency",
    "sources": [
@@ -4434,6 +4731,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Flower-burying Wedge -埋花櫼-",
+   "max_count": null,
+   "max_potency": null,
    "name": "Flower-burying Wedge -埋花櫼-",
    "primary": "potency",
    "sources": [
@@ -4469,6 +4768,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Focused Attack (Allies)",
+   "max_count": null,
+   "max_potency": null,
    "name": "Focused Attack (Allies)",
    "primary": "potency",
    "sources": [
@@ -4503,6 +4804,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Focused Performance",
+   "max_count": null,
+   "max_potency": null,
    "name": "Focused Performance",
    "primary": "potency",
    "sources": [
@@ -4531,6 +4834,8 @@
    "expires_at_turn_end": true,
    "expiry": "count_zero",
    "key": "Vulnerable",
+   "max_count": null,
+   "max_potency": null,
    "name": "Fragile",
    "primary": "count",
    "sources": [
@@ -4563,6 +4868,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Full Makeover",
+   "max_count": null,
+   "max_potency": null,
    "name": "Full Makeover",
    "primary": "potency",
    "sources": [
@@ -4591,6 +4898,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Gaze",
+   "max_count": null,
+   "max_potency": null,
    "name": "Gaze",
    "primary": "potency",
    "sources": [
@@ -4622,6 +4931,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Gaze (Ryoshu)",
+   "max_count": null,
+   "max_potency": null,
    "name": "Gaze (Ryoshu)",
    "primary": "potency",
    "sources": [
@@ -4653,6 +4964,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Gaze of Contempt",
+   "max_count": null,
+   "max_potency": null,
    "name": "Gaze of Contempt",
    "primary": "potency",
    "sources": [
@@ -4692,6 +5005,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Gebura's Blade",
+   "max_count": null,
+   "max_potency": null,
    "name": "Gebura's Blade",
    "primary": "potency",
    "sources": [
@@ -4725,6 +5040,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Glimpse of Precognition",
+   "max_count": null,
+   "max_potency": null,
    "name": "Glimpse of Precognition",
    "primary": "potency",
    "sources": [
@@ -4753,6 +5070,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Gloom DMG Down",
+   "max_count": null,
+   "max_potency": null,
    "name": "Gloom DMG Down",
    "primary": "potency",
    "sources": [
@@ -4781,6 +5100,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Gloom DMG Up",
+   "max_count": null,
+   "max_potency": null,
    "name": "Gloom DMG Up",
    "primary": "potency",
    "sources": [
@@ -4809,6 +5130,8 @@
    "expires_at_turn_end": true,
    "expiry": "either_zero",
    "key": "AzureTakeDamageUp",
+   "max_count": null,
+   "max_potency": null,
    "name": "Gloom Fragility",
    "primary": "potency",
    "sources": [
@@ -4837,6 +5160,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Gloom Power Down",
+   "max_count": null,
+   "max_potency": null,
    "name": "Gloom Power Down",
    "primary": "potency",
    "sources": [
@@ -4865,6 +5190,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Gloom Power Up",
+   "max_count": null,
+   "max_potency": null,
    "name": "Gloom Power Up",
    "primary": "potency",
    "sources": [
@@ -4893,6 +5220,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Gloom Protection",
+   "max_count": null,
+   "max_potency": null,
    "name": "Gloom Protection",
    "primary": "potency",
    "sources": [
@@ -4922,6 +5251,8 @@
    "expires_at_turn_end": false,
    "expiry": "count_zero",
    "key": "AzureResistDown",
+   "max_count": null,
+   "max_potency": null,
    "name": "Gloom Resist Down",
    "primary": "stack",
    "sources": [
@@ -4952,6 +5283,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Gluttonous Thorn (貪食棘)",
+   "max_count": null,
+   "max_potency": null,
    "name": "Gluttonous Thorn (貪食棘)",
    "primary": "potency",
    "sources": [
@@ -4980,6 +5313,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Gluttony DMG Down",
+   "max_count": null,
+   "max_potency": null,
    "name": "Gluttony DMG Down",
    "primary": "potency",
    "sources": [
@@ -5008,6 +5343,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Gluttony DMG Up",
+   "max_count": null,
+   "max_potency": null,
    "name": "Gluttony DMG Up",
    "primary": "potency",
    "sources": [
@@ -5036,6 +5373,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Gluttony Fragility",
+   "max_count": null,
+   "max_potency": null,
    "name": "Gluttony Fragility",
    "primary": "potency",
    "sources": [
@@ -5064,6 +5403,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Gluttony Power Down",
+   "max_count": null,
+   "max_potency": null,
    "name": "Gluttony Power Down",
    "primary": "potency",
    "sources": [
@@ -5092,6 +5433,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Gluttony Power Up",
+   "max_count": null,
+   "max_potency": null,
    "name": "Gluttony Power Up",
    "primary": "potency",
    "sources": [
@@ -5120,6 +5463,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Gluttony Protection",
+   "max_count": null,
+   "max_potency": null,
    "name": "Gluttony Protection",
    "primary": "potency",
    "sources": [
@@ -5149,6 +5494,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Grace of the Prescript",
+   "max_count": null,
+   "max_potency": null,
    "name": "Grace of the Prescript",
    "primary": "potency",
    "sources": [
@@ -5180,6 +5527,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Guardians of the Forest",
+   "max_count": null,
+   "max_potency": null,
    "name": "Guardians of the Forest",
    "primary": "potency",
    "sources": [
@@ -5208,6 +5557,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:HP Healing Boost",
+   "max_count": null,
+   "max_potency": null,
    "name": "HP Healing Boost",
    "primary": "potency",
    "sources": [
@@ -5236,6 +5587,8 @@
    "expires_at_turn_end": false,
    "expiry": "potency_zero",
    "key": "TakeHpHealReduce",
+   "max_count": null,
+   "max_potency": null,
    "name": "HP Healing Down",
    "primary": "potency",
    "sources": [
@@ -5265,6 +5618,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Hand - Blue Sakura Suit",
+   "max_count": null,
+   "max_potency": null,
    "name": "Hand - Blue Sakura Suit",
    "primary": "potency",
    "sources": [
@@ -5294,6 +5649,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Hand - Pine Crane Suit",
+   "max_count": null,
+   "max_potency": null,
    "name": "Hand - Pine Crane Suit",
    "primary": "potency",
    "sources": [
@@ -5323,6 +5680,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Hand - Susuki Grass Suit",
+   "max_count": null,
+   "max_potency": null,
    "name": "Hand - Susuki Grass Suit",
    "primary": "potency",
    "sources": [
@@ -5359,6 +5718,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Hardblood (Ally)",
+   "max_count": null,
+   "max_potency": null,
    "name": "Hardblood (Ally)",
    "primary": "potency",
    "sources": [
@@ -5390,6 +5751,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Hardblood Armor",
+   "max_count": null,
+   "max_potency": null,
    "name": "Hardblood Armor",
    "primary": "potency",
    "sources": [
@@ -5428,6 +5791,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Hardblood Cast",
+   "max_count": null,
+   "max_potency": null,
    "name": "Hardblood Cast",
    "primary": "potency",
    "sources": [
@@ -5459,6 +5824,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Hardened Shell-Barrier",
+   "max_count": null,
+   "max_potency": null,
    "name": "Hardened Shell-Barrier",
    "primary": "potency",
    "sources": [
@@ -5487,6 +5854,8 @@
    "expires_at_turn_end": true,
    "expiry": "count_zero",
    "key": "Agility",
+   "max_count": null,
+   "max_potency": null,
    "name": "Haste",
    "primary": "count",
    "sources": [
@@ -5515,6 +5884,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Heated Gas Harpoon",
+   "max_count": null,
+   "max_potency": null,
    "name": "Heated Gas Harpoon",
    "primary": "potency",
    "sources": [
@@ -5554,6 +5925,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Heishou Bolus Contamination -黑獸丸染-",
+   "max_count": null,
+   "max_potency": null,
    "name": "Heishou Bolus Contamination -黑獸丸染-",
    "primary": "potency",
    "sources": [
@@ -5583,6 +5956,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Here Comes Magical Girl!",
+   "max_count": null,
+   "max_potency": null,
    "name": "Here Comes Magical Girl!",
    "primary": "potency",
    "sources": [
@@ -5614,6 +5989,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:High-voltage Exoskeleton",
+   "max_count": null,
+   "max_potency": null,
    "name": "High-voltage Exoskeleton",
    "primary": "potency",
    "sources": [
@@ -5644,6 +6021,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Higher Thunderer",
+   "max_count": null,
+   "max_potency": null,
    "name": "Higher Thunderer",
    "primary": "potency",
    "sources": [
@@ -5672,6 +6051,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Hornet -Rifle-",
+   "max_count": null,
+   "max_potency": null,
    "name": "Hornet -Rifle-",
    "primary": "potency",
    "sources": [
@@ -5702,6 +6083,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Hornet -Shotgun-",
+   "max_count": null,
+   "max_potency": null,
    "name": "Hornet -Shotgun-",
    "primary": "potency",
    "sources": [
@@ -5732,6 +6115,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Hunger (Kkomi)",
+   "max_count": null,
+   "max_potency": null,
    "name": "Hunger (Kkomi)",
    "primary": "potency",
    "sources": [
@@ -5767,6 +6152,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Hyped-up",
+   "max_count": null,
+   "max_potency": null,
    "name": "Hyped-up",
    "primary": "potency",
    "sources": [
@@ -5799,6 +6186,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Hysteria",
+   "max_count": null,
+   "max_potency": null,
    "name": "Hysteria",
    "primary": "potency",
    "sources": [
@@ -5830,6 +6219,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:I Got Praised! (Ishmael)",
+   "max_count": null,
+   "max_potency": null,
    "name": "I Got Praised! (Ishmael)",
    "primary": "potency",
    "sources": [
@@ -5858,6 +6249,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Immobilized",
+   "max_count": null,
+   "max_potency": null,
    "name": "Immobilized",
    "primary": "potency",
    "sources": [
@@ -5898,6 +6291,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Impending Ruin",
+   "max_count": null,
+   "max_potency": null,
    "name": "Impending Ruin",
    "primary": "potency",
    "sources": [
@@ -5928,6 +6323,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Imperfections Addressed",
+   "max_count": null,
+   "max_potency": null,
    "name": "Imperfections Addressed",
    "primary": "potency",
    "sources": [
@@ -5961,6 +6358,8 @@
    "expires_at_turn_end": false,
    "expiry": "none",
    "key": "StackFutureActivate",
+   "max_count": null,
+   "max_potency": null,
    "name": "In the Future",
    "primary": "stack",
    "sources": [
@@ -5990,6 +6389,8 @@
    "expires_at_turn_end": false,
    "expiry": "none",
    "key": "StackFuture",
+   "max_count": null,
+   "max_potency": null,
    "name": "In the Future (Deactivated)",
    "primary": "stack",
    "sources": [
@@ -6023,6 +6424,8 @@
    "expires_at_turn_end": false,
    "expiry": "none",
    "key": "StackPastActivate",
+   "max_count": null,
+   "max_potency": null,
    "name": "In the Past",
    "primary": "stack",
    "sources": [
@@ -6052,6 +6455,8 @@
    "expires_at_turn_end": false,
    "expiry": "none",
    "key": "StackPast",
+   "max_count": null,
+   "max_potency": null,
    "name": "In the Past (Deactivated)",
    "primary": "stack",
    "sources": [
@@ -6085,6 +6490,8 @@
    "expires_at_turn_end": false,
    "expiry": "none",
    "key": "StackPresentActivate",
+   "max_count": null,
+   "max_potency": null,
    "name": "In the Present",
    "primary": "stack",
    "sources": [
@@ -6114,6 +6521,8 @@
    "expires_at_turn_end": false,
    "expiry": "none",
    "key": "StackPresent",
+   "max_count": null,
+   "max_potency": null,
    "name": "In the Present (Deactivated)",
    "primary": "stack",
    "sources": [
@@ -6143,6 +6552,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Incandescent Indulgence",
+   "max_count": null,
+   "max_potency": null,
    "name": "Incandescent Indulgence",
    "primary": "potency",
    "sources": [
@@ -6171,6 +6582,8 @@
    "expires_at_turn_end": false,
    "expiry": "potency_zero",
    "key": "HeatedWingScalesExplain",
+   "max_count": null,
+   "max_potency": null,
    "name": "Incandescent Scale Dust",
    "primary": "potency",
    "sources": [
@@ -6208,6 +6621,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Indulgence in Prescripts",
+   "max_count": null,
+   "max_potency": null,
    "name": "Indulgence in Prescripts",
    "primary": "potency",
    "sources": [
@@ -6236,6 +6651,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Insight",
+   "max_count": null,
+   "max_potency": null,
    "name": "Insight",
    "primary": "potency",
    "sources": [
@@ -6266,6 +6683,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Iron Maiden",
+   "max_count": null,
+   "max_potency": null,
    "name": "Iron Maiden",
    "primary": "potency",
    "sources": [
@@ -6295,6 +6714,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:K Corp Ampule",
+   "max_count": null,
+   "max_potency": null,
    "name": "K Corp Ampule",
    "primary": "potency",
    "sources": [
@@ -6326,6 +6747,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Karmic Consequence",
+   "max_count": null,
+   "max_potency": null,
    "name": "Karmic Consequence",
    "primary": "potency",
    "sources": [
@@ -6356,6 +6779,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:L'Hommage",
+   "max_count": null,
+   "max_potency": null,
    "name": "L'Hommage",
    "primary": "potency",
    "sources": [
@@ -6387,6 +6812,8 @@
    "expires_at_turn_end": false,
    "expiry": "none",
    "key": "LCA_Bullet",
+   "max_count": null,
+   "max_potency": null,
    "name": "LCA Fracture Round",
    "primary": "stack",
    "sources": [
@@ -6419,6 +6846,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:La Mancha Parade",
+   "max_count": null,
+   "max_potency": null,
    "name": "La Mancha Parade",
    "primary": "potency",
    "sources": [
@@ -6466,6 +6895,8 @@
    "expires_at_turn_end": false,
    "expiry": "none",
    "key": "LanternGregBigBird",
+   "max_count": null,
+   "max_potency": null,
    "name": "Lamp",
    "primary": "stack",
    "sources": [
@@ -6496,6 +6927,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Lasso",
+   "max_count": null,
+   "max_potency": null,
    "name": "Lasso",
    "primary": "potency",
    "sources": [
@@ -6527,6 +6960,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Launcher -始-",
+   "max_count": null,
+   "max_potency": null,
    "name": "Launcher -始-",
    "primary": "potency",
    "sources": [
@@ -6557,6 +6992,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Le Fauvisme - Masque de Chien",
+   "max_count": null,
+   "max_potency": null,
    "name": "Le Fauvisme - Masque de Chien",
    "primary": "potency",
    "sources": [
@@ -6588,6 +7025,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Le Fauvisme - Masque de Loup",
+   "max_count": null,
+   "max_potency": null,
    "name": "Le Fauvisme - Masque de Loup",
    "primary": "potency",
    "sources": [
@@ -6627,6 +7066,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Le Noir Gabardine Overcoat",
+   "max_count": null,
+   "max_potency": null,
    "name": "Le Noir Gabardine Overcoat",
    "primary": "potency",
    "sources": [
@@ -6660,6 +7101,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Leash-holder of All Heishou",
+   "max_count": null,
+   "max_potency": null,
    "name": "Leash-holder of All Heishou",
    "primary": "potency",
    "sources": [
@@ -6692,6 +7135,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Life from Death -死中求活-",
+   "max_count": null,
+   "max_potency": null,
    "name": "Life from Death -死中求活-",
    "primary": "potency",
    "sources": [
@@ -6726,6 +7171,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Liferender",
+   "max_count": null,
+   "max_potency": null,
    "name": "Liferender",
    "primary": "potency",
    "sources": [
@@ -6757,6 +7204,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Linebreaker",
+   "max_count": null,
+   "max_potency": null,
    "name": "Linebreaker",
    "primary": "potency",
    "sources": [
@@ -6788,6 +7237,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Load",
+   "max_count": null,
+   "max_potency": null,
    "name": "Load",
    "primary": "potency",
    "sources": [
@@ -6820,6 +7271,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Lodged Arrow",
+   "max_count": null,
+   "max_potency": null,
    "name": "Lodged Arrow",
    "primary": "potency",
    "sources": [
@@ -6857,6 +7310,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Lordsguard",
+   "max_count": null,
+   "max_potency": null,
    "name": "Lordsguard",
    "primary": "potency",
    "sources": [
@@ -6888,6 +7343,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Love-Hate",
+   "max_count": null,
+   "max_potency": null,
    "name": "Love-Hate",
    "primary": "potency",
    "sources": [
@@ -6920,6 +7377,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Loyalty Pheromone",
+   "max_count": null,
+   "max_potency": null,
    "name": "Loyalty Pheromone",
    "primary": "potency",
    "sources": [
@@ -6948,6 +7407,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Lust DMG Down",
+   "max_count": null,
+   "max_potency": null,
    "name": "Lust DMG Down",
    "primary": "potency",
    "sources": [
@@ -6976,6 +7437,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Lust DMG Up",
+   "max_count": null,
+   "max_potency": null,
    "name": "Lust DMG Up",
    "primary": "potency",
    "sources": [
@@ -7004,6 +7467,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Lust Fragility",
+   "max_count": null,
+   "max_potency": null,
    "name": "Lust Fragility",
    "primary": "potency",
    "sources": [
@@ -7032,6 +7497,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Lust Power Down",
+   "max_count": null,
+   "max_potency": null,
    "name": "Lust Power Down",
    "primary": "potency",
    "sources": [
@@ -7060,6 +7527,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Lust Power Up",
+   "max_count": null,
+   "max_potency": null,
    "name": "Lust Power Up",
    "primary": "potency",
    "sources": [
@@ -7088,6 +7557,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Lust Protection",
+   "max_count": null,
+   "max_potency": null,
    "name": "Lust Protection",
    "primary": "potency",
    "sources": [
@@ -7119,6 +7590,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Lævateinn (Outis)",
+   "max_count": null,
+   "max_potency": null,
    "name": "Lævateinn (Outis)",
    "primary": "potency",
    "sources": [
@@ -7147,6 +7620,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Maggots",
+   "max_count": null,
+   "max_potency": null,
    "name": "Maggots",
    "primary": "potency",
    "sources": [
@@ -7177,6 +7652,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Magic Bullet",
+   "max_count": null,
+   "max_potency": null,
    "name": "Magic Bullet",
    "primary": "potency",
    "sources": [
@@ -7207,6 +7684,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Magical Arcana",
+   "max_count": null,
+   "max_potency": null,
    "name": "Magical Arcana",
    "primary": "potency",
    "sources": [
@@ -7245,6 +7724,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Magical Girl's Chant",
+   "max_count": null,
+   "max_potency": null,
    "name": "Magical Girl's Chant",
    "primary": "potency",
    "sources": [
@@ -7277,6 +7758,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Man in Scabbard",
+   "max_count": null,
+   "max_potency": null,
    "name": "Man in Scabbard",
    "primary": "potency",
    "sources": [
@@ -7308,6 +7791,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Mark of Decay",
+   "max_count": null,
+   "max_potency": null,
    "name": "Mark of Decay",
    "primary": "potency",
    "sources": [
@@ -7337,6 +7822,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Mark of Villainy",
+   "max_count": null,
+   "max_potency": null,
    "name": "Mark of Villainy",
    "primary": "potency",
    "sources": [
@@ -7365,6 +7852,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Mark of the Prescript",
+   "max_count": null,
+   "max_potency": null,
    "name": "Mark of the Prescript",
    "primary": "potency",
    "sources": [
@@ -7403,6 +7892,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Mauled Color -Bleu-",
+   "max_count": null,
+   "max_potency": null,
    "name": "Mauled Color -Bleu-",
    "primary": "potency",
    "sources": [
@@ -7455,6 +7946,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Mauled Color -Rouge-",
+   "max_count": null,
+   "max_potency": null,
    "name": "Mauled Color -Rouge-",
    "primary": "potency",
    "sources": [
@@ -7484,6 +7977,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Melee Support",
+   "max_count": null,
+   "max_potency": null,
    "name": "Melee Support",
    "primary": "potency",
    "sources": [
@@ -7522,6 +8017,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Microprecision Time Acceleration",
+   "max_count": null,
+   "max_potency": null,
    "name": "Microprecision Time Acceleration",
    "primary": "potency",
    "sources": [
@@ -7550,6 +8047,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Minus Coin Boost",
+   "max_count": null,
+   "max_potency": null,
    "name": "Minus Coin Boost",
    "primary": "potency",
    "sources": [
@@ -7578,6 +8077,8 @@
    "expires_at_turn_end": false,
    "expiry": "count_zero",
    "key": "MinusCoinValueDown",
+   "max_count": null,
+   "max_potency": null,
    "name": "Minus Coin Drop",
    "primary": "count",
    "sources": [
@@ -7608,6 +8109,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Moonlit Azure Blade",
+   "max_count": null,
+   "max_potency": null,
    "name": "Moonlit Azure Blade",
    "primary": "potency",
    "sources": [
@@ -7638,6 +8141,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Nails",
+   "max_count": null,
+   "max_potency": null,
    "name": "Nails",
    "primary": "potency",
    "sources": [
@@ -7673,6 +8178,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Near-light Superbattery",
+   "max_count": null,
+   "max_potency": null,
    "name": "Near-light Superbattery",
    "primary": "potency",
    "sources": [
@@ -7703,6 +8210,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Nebulizer α",
+   "max_count": null,
+   "max_potency": null,
    "name": "Nebulizer α",
    "primary": "potency",
    "sources": [
@@ -7733,6 +8242,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Nebulizer β",
+   "max_count": null,
+   "max_potency": null,
    "name": "Nebulizer β",
    "primary": "potency",
    "sources": [
@@ -7763,6 +8274,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Needle",
+   "max_count": null,
+   "max_potency": null,
    "name": "Needle",
    "primary": "potency",
    "sources": [
@@ -7797,6 +8310,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Nerve Strike",
+   "max_count": null,
+   "max_potency": null,
    "name": "Nerve Strike",
    "primary": "potency",
    "sources": [
@@ -7825,6 +8340,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Offense Level Down",
+   "max_count": null,
+   "max_potency": null,
    "name": "Offense Level Down",
    "primary": "potency",
    "sources": [
@@ -7853,6 +8370,8 @@
    "expires_at_turn_end": true,
    "expiry": "potency_zero",
    "key": "AttackDown",
+   "max_count": null,
+   "max_potency": null,
    "name": "Offense Level Down ",
    "primary": "potency",
    "sources": [
@@ -7881,6 +8400,8 @@
    "expires_at_turn_end": true,
    "expiry": "potency_zero",
    "key": "AttackUp",
+   "max_count": null,
+   "max_potency": null,
    "name": "Offense Level Up",
    "primary": "potency",
    "sources": [
@@ -7912,6 +8433,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Only Ashes Remain",
+   "max_count": null,
+   "max_potency": null,
    "name": "Only Ashes Remain",
    "primary": "potency",
    "sources": [
@@ -7942,6 +8465,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Open Wound",
+   "max_count": null,
+   "max_potency": null,
    "name": "Open Wound",
    "primary": "potency",
    "sources": [
@@ -7977,6 +8502,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Overcharge",
+   "max_count": null,
+   "max_potency": null,
    "name": "Overcharge",
    "primary": "potency",
    "sources": [
@@ -8011,6 +8538,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Overheat",
+   "max_count": null,
+   "max_potency": null,
    "name": "Overheat",
    "primary": "potency",
    "sources": [
@@ -8042,6 +8571,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Overheated Fuel",
+   "max_count": null,
+   "max_potency": null,
    "name": "Overheated Fuel",
    "primary": "potency",
    "sources": [
@@ -8070,6 +8601,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Overheated Gas Harpoon",
+   "max_count": null,
+   "max_potency": null,
    "name": "Overheated Gas Harpoon",
    "primary": "potency",
    "sources": [
@@ -8102,6 +8635,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Palette Vibrante",
+   "max_count": null,
+   "max_potency": null,
    "name": "Palette Vibrante",
    "primary": "potency",
    "sources": [
@@ -8130,6 +8665,8 @@
    "expires_at_turn_end": true,
    "expiry": "either_zero",
    "key": "Paralysis",
+   "max_count": null,
+   "max_potency": null,
    "name": "Paralyze",
    "primary": "potency",
    "sources": [
@@ -8167,6 +8704,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Penitence",
+   "max_count": null,
+   "max_potency": null,
    "name": "Penitence",
    "primary": "potency",
    "sources": [
@@ -8197,6 +8736,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Petals",
+   "max_count": null,
+   "max_potency": null,
    "name": "Petals",
    "primary": "potency",
    "sources": [
@@ -8227,6 +8768,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Phantom Trace",
+   "max_count": null,
+   "max_potency": null,
    "name": "Phantom Trace",
    "primary": "potency",
    "sources": [
@@ -8256,6 +8799,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Pheromone",
+   "max_count": null,
+   "max_potency": null,
    "name": "Pheromone",
    "primary": "potency",
    "sources": [
@@ -8289,6 +8834,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Pheromone Mark",
+   "max_count": null,
+   "max_potency": null,
    "name": "Pheromone Mark",
    "primary": "potency",
    "sources": [
@@ -8320,6 +8867,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Photoelectricity",
+   "max_count": null,
+   "max_potency": null,
    "name": "Photoelectricity",
    "primary": "potency",
    "sources": [
@@ -8348,6 +8897,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Pierce DMG Down",
+   "max_count": null,
+   "max_potency": null,
    "name": "Pierce DMG Down",
    "primary": "potency",
    "sources": [
@@ -8376,6 +8927,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Pierce DMG Up",
+   "max_count": null,
+   "max_potency": null,
    "name": "Pierce DMG Up",
    "primary": "potency",
    "sources": [
@@ -8404,6 +8957,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Pierce Fragility",
+   "max_count": null,
+   "max_potency": null,
    "name": "Pierce Fragility",
    "primary": "potency",
    "sources": [
@@ -8432,6 +8987,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Pierce Power Down",
+   "max_count": null,
+   "max_potency": null,
    "name": "Pierce Power Down",
    "primary": "potency",
    "sources": [
@@ -8460,6 +9017,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Pierce Power Up",
+   "max_count": null,
+   "max_potency": null,
    "name": "Pierce Power Up",
    "primary": "potency",
    "sources": [
@@ -8488,6 +9047,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Pierce Protection",
+   "max_count": null,
+   "max_potency": null,
    "name": "Pierce Protection",
    "primary": "potency",
    "sources": [
@@ -8517,6 +9078,8 @@
    "expires_at_turn_end": false,
    "expiry": "potency_zero",
    "key": "PenetrateResistDown",
+   "max_count": null,
+   "max_potency": null,
    "name": "Pierce Resist Down",
    "primary": "stack",
    "sources": [
@@ -8566,6 +9129,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Piercing Sword",
+   "max_count": null,
+   "max_potency": null,
    "name": "Piercing Sword",
    "primary": "potency",
    "sources": [
@@ -8605,6 +9170,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Pink Petals",
+   "max_count": null,
+   "max_potency": null,
    "name": "Pink Petals",
    "primary": "potency",
    "sources": [
@@ -8633,6 +9200,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Pink Ribbons",
+   "max_count": null,
+   "max_potency": null,
    "name": "Pink Ribbons",
    "primary": "potency",
    "sources": [
@@ -8661,6 +9230,8 @@
    "expires_at_turn_end": false,
    "expiry": "count_zero",
    "key": "PlusCoinValueUp",
+   "max_count": null,
+   "max_potency": null,
    "name": "Plus Coin Boost",
    "primary": "count",
    "sources": [
@@ -8689,6 +9260,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Plus Coin Drop",
+   "max_count": null,
+   "max_potency": null,
    "name": "Plus Coin Drop",
    "primary": "potency",
    "sources": [
@@ -8717,6 +9290,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Poise",
+   "max_count": null,
+   "max_potency": null,
    "name": "Poise",
    "primary": "potency",
    "sources": [
@@ -8745,6 +9320,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Poison",
+   "max_count": null,
+   "max_potency": null,
    "name": "Poison",
    "primary": "potency",
    "sources": [
@@ -8775,6 +9352,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Polydipsic Rose",
+   "max_count": null,
+   "max_potency": null,
    "name": "Polydipsic Rose",
    "primary": "potency",
    "sources": [
@@ -8803,6 +9382,8 @@
    "expires_at_turn_end": true,
    "expiry": "either_zero",
    "key": "ResultReduction",
+   "max_count": null,
+   "max_potency": null,
    "name": "Power Down",
    "primary": "potency",
    "sources": [
@@ -8831,6 +9412,8 @@
    "expires_at_turn_end": true,
    "expiry": "either_zero",
    "key": "ResultEnhancement",
+   "max_count": null,
+   "max_potency": null,
    "name": "Power Up",
    "primary": "potency",
    "sources": [
@@ -8860,6 +9443,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Prescript",
+   "max_count": null,
+   "max_potency": null,
    "name": "Prescript",
    "primary": "potency",
    "sources": [
@@ -8889,6 +9474,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Prescript (Device)",
+   "max_count": null,
+   "max_potency": null,
    "name": "Prescript (Device)",
    "primary": "potency",
    "sources": [
@@ -8920,6 +9507,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Prescript: -Device- I",
+   "max_count": null,
+   "max_potency": null,
    "name": "Prescript: -Device- I",
    "primary": "potency",
    "sources": [
@@ -8951,6 +9540,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Prescript: -Device- II",
+   "max_count": null,
+   "max_potency": null,
    "name": "Prescript: -Device- II",
    "primary": "potency",
    "sources": [
@@ -8982,6 +9573,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Prescript: -Device- III",
+   "max_count": null,
+   "max_potency": null,
    "name": "Prescript: -Device- III",
    "primary": "potency",
    "sources": [
@@ -9013,6 +9606,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Prescript: -Device- III (Yi Sang)",
+   "max_count": null,
+   "max_potency": null,
    "name": "Prescript: -Device- III (Yi Sang)",
    "primary": "potency",
    "sources": [
@@ -9043,6 +9638,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Prescript: -Device- IV",
+   "max_count": null,
+   "max_potency": null,
    "name": "Prescript: -Device- IV",
    "primary": "potency",
    "sources": [
@@ -9074,6 +9671,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Prescript: -Paper Slip- I",
+   "max_count": null,
+   "max_potency": null,
    "name": "Prescript: -Paper Slip- I",
    "primary": "potency",
    "sources": [
@@ -9105,6 +9704,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Prescript: -Paper Slip- II",
+   "max_count": null,
+   "max_potency": null,
    "name": "Prescript: -Paper Slip- II",
    "primary": "potency",
    "sources": [
@@ -9136,6 +9737,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Prescript: -Paper Slip- III",
+   "max_count": null,
+   "max_potency": null,
    "name": "Prescript: -Paper Slip- III",
    "primary": "potency",
    "sources": [
@@ -9166,6 +9769,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Prescript: -Paper Slip- IV",
+   "max_count": null,
+   "max_potency": null,
    "name": "Prescript: -Paper Slip- IV",
    "primary": "potency",
    "sources": [
@@ -9198,6 +9803,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Preservation",
+   "max_count": null,
+   "max_potency": null,
    "name": "Preservation",
    "primary": "potency",
    "sources": [
@@ -9226,6 +9833,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Pride DMG Down",
+   "max_count": null,
+   "max_potency": null,
    "name": "Pride DMG Down",
    "primary": "potency",
    "sources": [
@@ -9254,6 +9863,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Pride DMG Up",
+   "max_count": null,
+   "max_potency": null,
    "name": "Pride DMG Up",
    "primary": "potency",
    "sources": [
@@ -9282,6 +9893,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Pride Fragility",
+   "max_count": null,
+   "max_potency": null,
    "name": "Pride Fragility",
    "primary": "potency",
    "sources": [
@@ -9310,6 +9923,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Pride Power Down",
+   "max_count": null,
+   "max_potency": null,
    "name": "Pride Power Down",
    "primary": "potency",
    "sources": [
@@ -9338,6 +9953,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Pride Power Up",
+   "max_count": null,
+   "max_potency": null,
    "name": "Pride Power Up",
    "primary": "potency",
    "sources": [
@@ -9366,6 +9983,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Pride Protection",
+   "max_count": null,
+   "max_potency": null,
    "name": "Pride Protection",
    "primary": "potency",
    "sources": [
@@ -9397,6 +10016,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Procuration -Hermes-",
+   "max_count": null,
+   "max_potency": null,
    "name": "Procuration -Hermes-",
    "primary": "potency",
    "sources": [
@@ -9459,6 +10080,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Protecting Sword",
+   "max_count": null,
+   "max_potency": null,
    "name": "Protecting Sword",
    "primary": "potency",
    "sources": [
@@ -9487,6 +10110,8 @@
    "expires_at_turn_end": true,
    "expiry": "count_zero",
    "key": "Protection",
+   "max_count": null,
+   "max_potency": null,
    "name": "Protection",
    "primary": "count",
    "sources": [
@@ -9526,6 +10151,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Protector's Stance",
+   "max_count": null,
+   "max_potency": null,
    "name": "Protector's Stance",
    "primary": "potency",
    "sources": [
@@ -9557,6 +10184,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Pulsation",
+   "max_count": null,
+   "max_potency": null,
    "name": "Pulsation",
    "primary": "potency",
    "sources": [
@@ -9586,6 +10215,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Ready -待-",
+   "max_count": null,
+   "max_potency": null,
    "name": "Ready -待-",
    "primary": "potency",
    "sources": [
@@ -9618,6 +10249,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Ready to Loose",
+   "max_count": null,
+   "max_potency": null,
    "name": "Ready to Loose",
    "primary": "potency",
    "sources": [
@@ -9654,6 +10287,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Red Eyes",
+   "max_count": null,
+   "max_potency": null,
    "name": "Red Eyes",
    "primary": "potency",
    "sources": [
@@ -9686,6 +10321,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Red Plum Blossom",
+   "max_count": null,
+   "max_potency": null,
    "name": "Red Plum Blossom",
    "primary": "potency",
    "sources": [
@@ -9719,6 +10356,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Reflux",
+   "max_count": null,
+   "max_potency": null,
    "name": "Reflux",
    "primary": "potency",
    "sources": [
@@ -9747,6 +10386,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Regressive Transformation - Reversed",
+   "max_count": null,
+   "max_potency": null,
    "name": "Regressive Transformation - Reversed",
    "primary": "potency",
    "sources": [
@@ -9778,6 +10419,8 @@
    "expires_at_turn_end": false,
    "expiry": "none",
    "key": "ReloadLament",
+   "max_count": null,
+   "max_potency": null,
    "name": "Reload",
    "primary": "potency",
    "sources": [
@@ -9809,6 +10452,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Reload (Solemn Lament)",
+   "max_count": null,
+   "max_potency": null,
    "name": "Reload (Solemn Lament)",
    "primary": "potency",
    "sources": [
@@ -9838,6 +10483,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Reload -Germination-",
+   "max_count": null,
+   "max_potency": null,
    "name": "Reload -Germination-",
    "primary": "potency",
    "sources": [
@@ -9867,6 +10514,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Remembrance",
+   "max_count": null,
+   "max_potency": null,
    "name": "Remembrance",
    "primary": "potency",
    "sources": [
@@ -9895,6 +10544,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Requested Target",
+   "max_count": null,
+   "max_potency": null,
    "name": "Requested Target",
    "primary": "potency",
    "sources": [
@@ -9933,6 +10584,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Resident Reg. Microchip",
+   "max_count": null,
+   "max_potency": null,
    "name": "Resident Reg. Microchip",
    "primary": "potency",
    "sources": [
@@ -9964,6 +10617,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Responsibility",
+   "max_count": null,
+   "max_potency": null,
    "name": "Responsibility",
    "primary": "potency",
    "sources": [
@@ -10014,6 +10669,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Rhythm",
+   "max_count": null,
+   "max_potency": null,
    "name": "Rhythm",
    "primary": "potency",
    "sources": [
@@ -10053,6 +10710,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Ridiculous Grit (Outis)",
+   "max_count": null,
+   "max_potency": null,
    "name": "Ridiculous Grit (Outis)",
    "primary": "potency",
    "sources": [
@@ -10084,6 +10743,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Rising Fever",
+   "max_count": null,
+   "max_potency": null,
    "name": "Rising Fever",
    "primary": "potency",
    "sources": [
@@ -10119,6 +10780,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Rose Wedge",
+   "max_count": null,
+   "max_potency": null,
    "name": "Rose Wedge",
    "primary": "potency",
    "sources": [
@@ -10148,6 +10811,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "Burst",
+   "max_count": null,
+   "max_potency": null,
    "name": "Rupture",
    "primary": "potency",
    "sources": [
@@ -10176,6 +10841,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Rupture Protection",
+   "max_count": null,
+   "max_potency": null,
    "name": "Rupture Protection",
    "primary": "potency",
    "sources": [
@@ -10204,6 +10871,8 @@
    "expires_at_turn_end": false,
    "expiry": "potency_zero",
    "key": "RustedWingScalesExplain",
+   "max_count": null,
+   "max_potency": null,
    "name": "Rusted Scale Dust",
    "primary": "potency",
    "sources": [
@@ -10243,6 +10912,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Réflexion",
+   "max_count": null,
+   "max_potency": null,
    "name": "Réflexion",
    "primary": "potency",
    "sources": [
@@ -10272,6 +10943,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:SP Heal Efficiency",
+   "max_count": null,
+   "max_potency": null,
    "name": "SP Heal Efficiency",
    "primary": "potency",
    "sources": [
@@ -10301,6 +10974,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:SP Loss Efficiency",
+   "max_count": null,
+   "max_potency": null,
    "name": "SP Loss Efficiency",
    "primary": "potency",
    "sources": [
@@ -10333,6 +11008,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Savage Tigermark Round",
+   "max_count": null,
+   "max_potency": null,
    "name": "Savage Tigermark Round",
    "primary": "potency",
    "sources": [
@@ -10371,6 +11048,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Scarlet Moth",
+   "max_count": null,
+   "max_potency": null,
    "name": "Scarlet Moth",
    "primary": "potency",
    "sources": [
@@ -10402,6 +11081,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Scorch Propellant Ammo",
+   "max_count": null,
+   "max_potency": null,
    "name": "Scorch Propellant Ammo",
    "primary": "potency",
    "sources": [
@@ -10432,6 +11113,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Sealed Sword (Outis)",
+   "max_count": null,
+   "max_potency": null,
    "name": "Sealed Sword (Outis)",
    "primary": "potency",
    "sources": [
@@ -10464,6 +11147,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Searing Birdcage",
+   "max_count": null,
+   "max_potency": null,
    "name": "Searing Birdcage",
    "primary": "potency",
    "sources": [
@@ -10494,6 +11179,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Second Seal Removed (Outis)",
+   "max_count": null,
+   "max_potency": null,
    "name": "Second Seal Removed (Outis)",
    "primary": "potency",
    "sources": [
@@ -10525,6 +11212,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Self Resonance Circuitry",
+   "max_count": null,
+   "max_potency": null,
    "name": "Self Resonance Circuitry",
    "primary": "potency",
    "sources": [
@@ -10560,6 +11249,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Self-charge (Gregor)",
+   "max_count": null,
+   "max_potency": null,
    "name": "Self-charge (Gregor)",
    "primary": "potency",
    "sources": [
@@ -10591,6 +11282,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Serpent Arm",
+   "max_count": null,
+   "max_potency": null,
    "name": "Serpent Arm",
    "primary": "potency",
    "sources": [
@@ -10621,6 +11314,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Sewing Target (Ally)",
+   "max_count": null,
+   "max_potency": null,
    "name": "Sewing Target (Ally)",
    "primary": "potency",
    "sources": [
@@ -10655,6 +11350,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Shallow Exhale",
+   "max_count": null,
+   "max_potency": null,
    "name": "Shallow Exhale",
    "primary": "potency",
    "sources": [
@@ -10690,6 +11387,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Shattered World",
+   "max_count": null,
+   "max_potency": null,
    "name": "Shattered World",
    "primary": "potency",
    "sources": [
@@ -10726,6 +11425,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Shattermark",
+   "max_count": null,
+   "max_potency": null,
    "name": "Shattermark",
    "primary": "potency",
    "sources": [
@@ -10759,6 +11460,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Sheut Fracture",
+   "max_count": null,
+   "max_potency": null,
    "name": "Sheut Fracture",
    "primary": "potency",
    "sources": [
@@ -10794,6 +11497,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Shimmering -Bloodfiend- (Ally)",
+   "max_count": null,
+   "max_potency": null,
    "name": "Shimmering -Bloodfiend- (Ally)",
    "primary": "potency",
    "sources": [
@@ -10825,6 +11530,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Shin (心) - Dihui Star -地慧星-",
+   "max_count": null,
+   "max_potency": null,
    "name": "Shin (心) - Dihui Star -地慧星-",
    "primary": "potency",
    "sources": [
@@ -10855,6 +11562,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Shin (心) - Fate",
+   "max_count": null,
+   "max_potency": null,
    "name": "Shin (心) - Fate",
    "primary": "potency",
    "sources": [
@@ -10887,6 +11596,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Shin (心) - Procuration",
+   "max_count": null,
+   "max_potency": null,
    "name": "Shin (心) - Procuration",
    "primary": "potency",
    "sources": [
@@ -10921,6 +11632,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Sibling Vengeance Mark",
+   "max_count": null,
+   "max_potency": null,
    "name": "Sibling Vengeance Mark",
    "primary": "potency",
    "sources": [
@@ -10951,6 +11664,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "Sinking",
+   "max_count": null,
+   "max_potency": null,
    "name": "Sinking",
    "primary": "potency",
    "sources": [
@@ -10980,6 +11695,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Sinking Deluge",
+   "max_count": null,
+   "max_potency": null,
    "name": "Sinking Deluge",
    "primary": "potency",
    "sources": [
@@ -11011,6 +11728,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Sizzling Wound",
+   "max_count": null,
+   "max_potency": null,
    "name": "Sizzling Wound",
    "primary": "potency",
    "sources": [
@@ -11039,6 +11758,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Slash DMG Down",
+   "max_count": null,
+   "max_potency": null,
    "name": "Slash DMG Down",
    "primary": "potency",
    "sources": [
@@ -11067,6 +11788,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Slash DMG Up",
+   "max_count": null,
+   "max_potency": null,
    "name": "Slash DMG Up",
    "primary": "potency",
    "sources": [
@@ -11095,6 +11818,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Slash Fragility",
+   "max_count": null,
+   "max_potency": null,
    "name": "Slash Fragility",
    "primary": "potency",
    "sources": [
@@ -11123,6 +11848,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Slash Power Down",
+   "max_count": null,
+   "max_potency": null,
    "name": "Slash Power Down",
    "primary": "potency",
    "sources": [
@@ -11151,6 +11878,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Slash Power Up",
+   "max_count": null,
+   "max_potency": null,
    "name": "Slash Power Up",
    "primary": "potency",
    "sources": [
@@ -11179,6 +11908,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Slash Protection",
+   "max_count": null,
+   "max_potency": null,
    "name": "Slash Protection",
    "primary": "potency",
    "sources": [
@@ -11208,6 +11939,8 @@
    "expires_at_turn_end": false,
    "expiry": "potency_zero",
    "key": "SlashResistDown",
+   "max_count": null,
+   "max_potency": null,
    "name": "Slash Resist Down",
    "primary": "stack",
    "sources": [
@@ -11236,6 +11969,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Sloth DMG Down",
+   "max_count": null,
+   "max_potency": null,
    "name": "Sloth DMG Down",
    "primary": "potency",
    "sources": [
@@ -11264,6 +11999,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Sloth DMG Up",
+   "max_count": null,
+   "max_potency": null,
    "name": "Sloth DMG Up",
    "primary": "potency",
    "sources": [
@@ -11292,6 +12029,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Sloth Fragility",
+   "max_count": null,
+   "max_potency": null,
    "name": "Sloth Fragility",
    "primary": "potency",
    "sources": [
@@ -11320,6 +12059,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Sloth Power Down",
+   "max_count": null,
+   "max_potency": null,
    "name": "Sloth Power Down",
    "primary": "potency",
    "sources": [
@@ -11348,6 +12089,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Sloth Power Up",
+   "max_count": null,
+   "max_potency": null,
    "name": "Sloth Power Up",
    "primary": "potency",
    "sources": [
@@ -11376,6 +12119,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Sloth Protection",
+   "max_count": null,
+   "max_potency": null,
    "name": "Sloth Protection",
    "primary": "potency",
    "sources": [
@@ -11419,6 +12164,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Solitude",
+   "max_count": null,
+   "max_potency": null,
    "name": "Solitude",
    "primary": "potency",
    "sources": [
@@ -11448,6 +12195,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Somatic Frisson-inspiring Melody",
+   "max_count": null,
+   "max_potency": null,
    "name": "Somatic Frisson-inspiring Melody",
    "primary": "potency",
    "sources": [
@@ -11476,6 +12225,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Spark Discharge",
+   "max_count": null,
+   "max_potency": null,
    "name": "Spark Discharge",
    "primary": "potency",
    "sources": [
@@ -11504,6 +12255,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Spark of Inspiration",
+   "max_count": null,
+   "max_potency": null,
    "name": "Spark of Inspiration",
    "primary": "potency",
    "sources": [
@@ -11534,6 +12287,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Spore",
+   "max_count": null,
+   "max_potency": null,
    "name": "Spore",
    "primary": "potency",
    "sources": [
@@ -11566,6 +12321,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Spore Round -Base-",
+   "max_count": null,
+   "max_potency": null,
    "name": "Spore Round -Base-",
    "primary": "potency",
    "sources": [
@@ -11598,6 +12355,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Spore Round -Buckshot-",
+   "max_count": null,
+   "max_potency": null,
    "name": "Spore Round -Buckshot-",
    "primary": "potency",
    "sources": [
@@ -11635,6 +12394,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Strider -Mao-",
+   "max_count": null,
+   "max_potency": null,
    "name": "Strider -Mao-",
    "primary": "potency",
    "sources": [
@@ -11666,6 +12427,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Strider -Wu-",
+   "max_count": null,
+   "max_potency": null,
    "name": "Strider -Wu-",
    "primary": "potency",
    "sources": [
@@ -11698,6 +12461,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:String Severance -絕緣-",
+   "max_count": null,
+   "max_potency": null,
    "name": "String Severance -絕緣-",
    "primary": "potency",
    "sources": [
@@ -11729,6 +12494,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Surgery",
+   "max_count": null,
+   "max_potency": null,
    "name": "Surgery",
    "primary": "potency",
    "sources": [
@@ -11757,6 +12524,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Sword of the Homeland - Penetrating",
+   "max_count": null,
+   "max_potency": null,
    "name": "Sword of the Homeland - Penetrating",
    "primary": "potency",
    "sources": [
@@ -11785,6 +12554,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Sword of the Homeland - Rending",
+   "max_count": null,
+   "max_potency": null,
    "name": "Sword of the Homeland - Rending",
    "primary": "potency",
    "sources": [
@@ -11814,6 +12585,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Swordplay of the Homeland",
+   "max_count": null,
+   "max_potency": null,
    "name": "Swordplay of the Homeland",
    "primary": "potency",
    "sources": [
@@ -11845,6 +12618,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Talisman",
+   "max_count": null,
+   "max_potency": null,
    "name": "Talisman",
    "primary": "potency",
    "sources": [
@@ -11874,6 +12649,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Target Aim",
+   "max_count": null,
+   "max_potency": null,
    "name": "Target Aim",
    "primary": "potency",
    "sources": [
@@ -11903,6 +12680,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Target Spotted",
+   "max_count": null,
+   "max_potency": null,
    "name": "Target Spotted",
    "primary": "potency",
    "sources": [
@@ -11934,6 +12713,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Tarnished Blood",
+   "max_count": null,
+   "max_potency": null,
    "name": "Tarnished Blood",
    "primary": "potency",
    "sources": [
@@ -11997,6 +12778,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Tear-sharpened",
+   "max_count": null,
+   "max_potency": null,
    "name": "Tear-sharpened",
    "primary": "potency",
    "sources": [
@@ -12028,6 +12811,8 @@
    "expires_at_turn_end": false,
    "expiry": "none",
    "key": "TimeGap",
+   "max_count": null,
+   "max_potency": null,
    "name": "Temporal Disjunction",
    "primary": "stack",
    "sources": [
@@ -12060,6 +12845,8 @@
    "expires_at_turn_end": false,
    "expiry": "none",
    "key": "BulletLament",
+   "max_count": null,
+   "max_potency": null,
    "name": "The Living & The Departed",
    "primary": "potency",
    "sources": [
@@ -12089,6 +12876,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:The Middle - Grudge (Outis)",
+   "max_count": null,
+   "max_potency": null,
    "name": "The Middle - Grudge (Outis)",
    "primary": "potency",
    "sources": [
@@ -12119,6 +12908,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:The Middle - Vengeance Tattoo -Great Sister-",
+   "max_count": null,
+   "max_potency": null,
    "name": "The Middle - Vengeance Tattoo -Great Sister-",
    "primary": "potency",
    "sources": [
@@ -12149,6 +12940,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:The Middle Styled Augmentation Tattoos",
+   "max_count": null,
+   "max_potency": null,
    "name": "The Middle Styled Augmentation Tattoos",
    "primary": "potency",
    "sources": [
@@ -12178,6 +12971,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:The Prescript's Target",
+   "max_count": null,
+   "max_potency": null,
    "name": "The Prescript's Target",
    "primary": "potency",
    "sources": [
@@ -12208,6 +13003,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:The Self Unbound - Flow State",
+   "max_count": null,
+   "max_potency": null,
    "name": "The Self Unbound - Flow State",
    "primary": "potency",
    "sources": [
@@ -12250,6 +13047,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:The Udjat -Vanguard-",
+   "max_count": null,
+   "max_potency": null,
    "name": "The Udjat -Vanguard-",
    "primary": "potency",
    "sources": [
@@ -12281,6 +13080,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:The Uninvited",
+   "max_count": null,
+   "max_potency": null,
    "name": "The Uninvited",
    "primary": "potency",
    "sources": [
@@ -12319,6 +13120,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Thermal Blades",
+   "max_count": null,
+   "max_potency": null,
    "name": "Thermal Blades",
    "primary": "potency",
    "sources": [
@@ -12349,6 +13152,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Thunderer",
+   "max_count": null,
+   "max_potency": null,
    "name": "Thunderer",
    "primary": "potency",
    "sources": [
@@ -12379,6 +13184,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Tianjiu Star's Blade",
+   "max_count": null,
+   "max_potency": null,
    "name": "Tianjiu Star's Blade",
    "primary": "potency",
    "sources": [
@@ -12410,6 +13217,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Tigermark Round",
+   "max_count": null,
+   "max_potency": null,
    "name": "Tigermark Round",
    "primary": "potency",
    "sources": [
@@ -12441,6 +13250,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Time Moratorium",
+   "max_count": null,
+   "max_potency": null,
    "name": "Time Moratorium",
    "primary": "potency",
    "sources": [
@@ -12470,6 +13281,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Torn Memory",
+   "max_count": null,
+   "max_potency": null,
    "name": "Torn Memory",
    "primary": "potency",
    "sources": [
@@ -12499,6 +13312,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Total Bloodfeast Consumed",
+   "max_count": null,
+   "max_potency": null,
    "name": "Total Bloodfeast Consumed",
    "primary": "potency",
    "sources": [
@@ -12536,6 +13351,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Touche Hardie",
+   "max_count": null,
+   "max_potency": null,
    "name": "Touche Hardie",
    "primary": "potency",
    "sources": [
@@ -12573,6 +13390,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Trauma Shield",
+   "max_count": null,
+   "max_potency": null,
    "name": "Trauma Shield",
    "primary": "potency",
    "sources": [
@@ -12602,6 +13421,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "Vibration",
+   "max_count": null,
+   "max_potency": null,
    "name": "Tremor",
    "primary": "potency",
    "sources": [
@@ -12639,6 +13460,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Tremor - Chain",
+   "max_count": null,
+   "max_potency": null,
    "name": "Tremor - Chain",
    "primary": "potency",
    "sources": [
@@ -12677,6 +13500,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Tremor - Clockwinding",
+   "max_count": null,
+   "max_potency": null,
    "name": "Tremor - Clockwinding",
    "primary": "potency",
    "sources": [
@@ -12714,6 +13539,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "VibrationCollapse",
+   "max_count": null,
+   "max_potency": null,
    "name": "Tremor - Decay",
    "primary": "potency",
    "sources": [
@@ -12751,6 +13578,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Tremor - Distribution",
+   "max_count": null,
+   "max_potency": null,
    "name": "Tremor - Distribution",
    "primary": "potency",
    "sources": [
@@ -12789,6 +13618,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Tremor - Everlasting",
+   "max_count": null,
+   "max_potency": null,
    "name": "Tremor - Everlasting",
    "primary": "potency",
    "sources": [
@@ -12827,6 +13658,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Tremor - Fracture",
+   "max_count": null,
+   "max_potency": null,
    "name": "Tremor - Fracture",
    "primary": "potency",
    "sources": [
@@ -12857,6 +13690,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Tremor - Hemorrhage",
+   "max_count": null,
+   "max_potency": null,
    "name": "Tremor - Hemorrhage",
    "primary": "potency",
    "sources": [
@@ -12894,6 +13729,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Tremor - Reverb",
+   "max_count": null,
+   "max_potency": null,
    "name": "Tremor - Reverb",
    "primary": "potency",
    "sources": [
@@ -12931,6 +13768,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Tremor - Scorch",
+   "max_count": null,
+   "max_potency": null,
    "name": "Tremor - Scorch",
    "primary": "potency",
    "sources": [
@@ -12960,6 +13799,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Tremor - Superposition",
+   "max_count": null,
+   "max_potency": null,
    "name": "Tremor - Superposition",
    "primary": "potency",
    "sources": [
@@ -12988,6 +13829,8 @@
    "expires_at_turn_end": false,
    "expiry": "potency_zero",
    "key": "VibrationExplosion",
+   "max_count": null,
+   "max_potency": null,
    "name": "Tremor Burst",
    "primary": "potency",
    "sources": [
@@ -13024,6 +13867,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Twisted Curse Talisman",
+   "max_count": null,
+   "max_potency": null,
    "name": "Twisted Curse Talisman",
    "primary": "potency",
    "sources": [
@@ -13054,6 +13899,8 @@
    "expires_at_turn_end": false,
    "expiry": "potency_zero",
    "key": "SuperCoin",
+   "max_count": null,
+   "max_potency": null,
    "name": "Unbreakable Coin",
    "primary": "potency",
    "sources": [
@@ -13084,6 +13931,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Unfocused Volley",
+   "max_count": null,
+   "max_potency": null,
    "name": "Unfocused Volley",
    "primary": "potency",
    "sources": [
@@ -13113,6 +13962,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Unjust Enrichment",
+   "max_count": null,
+   "max_potency": null,
    "name": "Unjust Enrichment",
    "primary": "potency",
    "sources": [
@@ -13143,6 +13994,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Unlock",
+   "max_count": null,
+   "max_potency": null,
    "name": "Unlock",
    "primary": "potency",
    "sources": [
@@ -13172,6 +14025,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Unlock - I",
+   "max_count": null,
+   "max_potency": null,
    "name": "Unlock - I",
    "primary": "potency",
    "sources": [
@@ -13201,6 +14056,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Unlock - II",
+   "max_count": null,
+   "max_potency": null,
    "name": "Unlock - II",
    "primary": "potency",
    "sources": [
@@ -13230,6 +14087,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Unlock - III",
+   "max_count": null,
+   "max_potency": null,
    "name": "Unlock - III",
    "primary": "potency",
    "sources": [
@@ -13261,6 +14120,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Unrelenting Spirit - Shin -剛氣-心-",
+   "max_count": null,
+   "max_potency": null,
    "name": "Unrelenting Spirit - Shin -剛氣-心-",
    "primary": "potency",
    "sources": [
@@ -13293,6 +14154,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Unrelenting Spirit -剛氣-",
+   "max_count": null,
+   "max_potency": null,
    "name": "Unrelenting Spirit -剛氣-",
    "primary": "potency",
    "sources": [
@@ -13323,6 +14186,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Unrelenting Storm",
+   "max_count": null,
+   "max_potency": null,
    "name": "Unrelenting Storm",
    "primary": "potency",
    "sources": [
@@ -13355,6 +14220,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Vendetta Mark",
+   "max_count": null,
+   "max_potency": null,
    "name": "Vendetta Mark",
    "primary": "potency",
    "sources": [
@@ -13383,6 +14250,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Vengeance Mark",
+   "max_count": null,
+   "max_potency": null,
    "name": "Vengeance Mark",
    "primary": "potency",
    "sources": [
@@ -13412,6 +14281,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Vengeance Tattoo",
+   "max_count": null,
+   "max_potency": null,
    "name": "Vengeance Tattoo",
    "primary": "potency",
    "sources": [
@@ -13448,6 +14319,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Viewing the Tableau (Hong Lu)",
+   "max_count": null,
+   "max_potency": null,
    "name": "Viewing the Tableau (Hong Lu)",
    "primary": "potency",
    "sources": [
@@ -13477,6 +14350,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Violent Collections",
+   "max_count": null,
+   "max_potency": null,
    "name": "Violent Collections",
    "primary": "potency",
    "sources": [
@@ -13514,6 +14389,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Volatile Passion",
+   "max_count": null,
+   "max_potency": null,
    "name": "Volatile Passion",
    "primary": "potency",
    "sources": [
@@ -13542,6 +14419,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Weak-resist DMG Boost",
+   "max_count": null,
+   "max_potency": null,
    "name": "Weak-resist DMG Boost",
    "primary": "potency",
    "sources": [
@@ -13570,6 +14449,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Weakness Analyzed",
+   "max_count": null,
+   "max_potency": null,
    "name": "Weakness Analyzed",
    "primary": "potency",
    "sources": [
@@ -13600,6 +14481,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:When boring a 20-inch hole with a lance... (Yi Sang)",
+   "max_count": null,
+   "max_potency": null,
    "name": "When boring a 20-inch hole with a lance... (Yi Sang)",
    "primary": "potency",
    "sources": [
@@ -13630,6 +14513,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:When caving in the back of the skull with a hammer... (Yi Sang)",
+   "max_count": null,
+   "max_potency": null,
    "name": "When caving in the back of the skull with a hammer... (Yi Sang)",
    "primary": "potency",
    "sources": [
@@ -13660,6 +14545,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:When cleaving through the shoulder and the skull with a bastard sword... (Yi Sang)",
+   "max_count": null,
+   "max_potency": null,
    "name": "When cleaving through the shoulder and the skull with a bastard sword... (Yi Sang)",
    "primary": "potency",
    "sources": [
@@ -13689,6 +14576,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:When hacking through the ribs with a hatchet... (Yi Sang)",
+   "max_count": null,
+   "max_potency": null,
    "name": "When hacking through the ribs with a hatchet... (Yi Sang)",
    "primary": "potency",
    "sources": [
@@ -13719,6 +14608,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:When lacerating through space itself with a scythe, like a certain someone... (Yi Sang)",
+   "max_count": null,
+   "max_potency": null,
    "name": "When lacerating through space itself with a scythe, like a certain someone... (Yi Sang)",
    "primary": "potency",
    "sources": [
@@ -13748,6 +14639,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:When penetrating the lungs with a stiletto... (Yi Sang)",
+   "max_count": null,
+   "max_potency": null,
    "name": "When penetrating the lungs with a stiletto... (Yi Sang)",
    "primary": "potency",
    "sources": [
@@ -13778,6 +14671,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:When punching 10 or more holes in the torso with a rapier... (Yi Sang)",
+   "max_count": null,
+   "max_potency": null,
    "name": "When punching 10 or more holes in the torso with a rapier... (Yi Sang)",
    "primary": "potency",
    "sources": [
@@ -13808,6 +14703,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:When rending the body with a great sword... (Yi Sang)",
+   "max_count": null,
+   "max_potency": null,
    "name": "When rending the body with a great sword... (Yi Sang)",
    "primary": "potency",
    "sources": [
@@ -13838,6 +14735,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:When ripping the flesh to ten thousand strips with a whip... (Yi Sang)",
+   "max_count": null,
+   "max_potency": null,
    "name": "When ripping the flesh to ten thousand strips with a whip... (Yi Sang)",
    "primary": "potency",
    "sources": [
@@ -13869,6 +14768,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Wild Hunt",
+   "max_count": null,
+   "max_potency": null,
    "name": "Wild Hunt",
    "primary": "potency",
    "sources": [
@@ -13898,6 +14799,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Wound-casing Mask",
+   "max_count": null,
+   "max_potency": null,
    "name": "Wound-casing Mask",
    "primary": "potency",
    "sources": [
@@ -13926,6 +14829,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Wrath DMG Down",
+   "max_count": null,
+   "max_potency": null,
    "name": "Wrath DMG Down",
    "primary": "potency",
    "sources": [
@@ -13954,6 +14859,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Wrath DMG Up",
+   "max_count": null,
+   "max_potency": null,
    "name": "Wrath DMG Up",
    "primary": "potency",
    "sources": [
@@ -13982,6 +14889,8 @@
    "expires_at_turn_end": true,
    "expiry": "either_zero",
    "key": "CrimsonTakeDamageUp",
+   "max_count": null,
+   "max_potency": null,
    "name": "Wrath Fragility",
    "primary": "potency",
    "sources": [
@@ -14010,6 +14919,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Wrath Power Down",
+   "max_count": null,
+   "max_potency": null,
    "name": "Wrath Power Down",
    "primary": "potency",
    "sources": [
@@ -14038,6 +14949,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Wrath Power Up",
+   "max_count": null,
+   "max_potency": null,
    "name": "Wrath Power Up",
    "primary": "potency",
    "sources": [
@@ -14066,6 +14979,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Wrath Protection",
+   "max_count": null,
+   "max_potency": null,
    "name": "Wrath Protection",
    "primary": "potency",
    "sources": [
@@ -14095,6 +15010,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Wrath Resist Down",
+   "max_count": null,
+   "max_potency": null,
    "name": "Wrath Resist Down",
    "primary": "potency",
    "sources": [
@@ -14124,6 +15041,8 @@
    "expires_at_turn_end": false,
    "expiry": "either_zero",
    "key": "wiki:Your Will Guides My Blade.",
+   "max_count": null,
+   "max_potency": null,
    "name": "Your Will Guides My Blade.",
    "primary": "potency",
    "sources": [

@@ -320,7 +320,6 @@
     "turn_end": [],
     "turn_start": [
      {
-      "component": "stack",
       "condition": {
        "lacks_status": [
         "Bright -光-"

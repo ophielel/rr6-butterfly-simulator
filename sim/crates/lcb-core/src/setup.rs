@@ -375,6 +375,7 @@ impl<'a> EncounterBuilder<'a> {
         Ok(Unit {
             planned_targets: 1,
             passive_ids: Vec::new(),
+            expired_statuses: Vec::new(),
             combat_start_statuses: Default::default(),
             follow_up_active: false,
             pending_suit_conversion: false,
@@ -478,6 +479,7 @@ impl<'a> EncounterBuilder<'a> {
         Ok(Unit {
             planned_targets: 1,
             passive_ids: Vec::new(),
+            expired_statuses: Vec::new(),
             combat_start_statuses: Default::default(),
             follow_up_active: false,
             pending_suit_conversion: false,

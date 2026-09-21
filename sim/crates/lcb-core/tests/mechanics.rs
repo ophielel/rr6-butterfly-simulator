@@ -1720,10 +1720,10 @@ fn section5_golden_replay_is_deterministic() {
     // action per Slot").  Update only together with a sourced rule change, and
     // name the source in the commit message.  Last updated when the identities'
     // passives started applying (in-game `Passives.json`).
-    assert_eq!(first_hp, vec![25406, 25200, 25057], "Imago HP after turns 1-3");
+    assert_eq!(first_hp, vec![25403, 25196, 25051], "Imago HP after turns 1-3");
     assert_eq!(
         format!("{first_hash:016x}"),
-        "d3544e0524c206af",
+        "9caba3ff85ad8d2c",
         "recorded state hash"
     );
 }
@@ -4245,4 +4245,74 @@ fn sinners_start_with_the_configured_sanity() {
     assert_eq!(state.units[0].sanity.sp(), 10);
     battle::begin_turn(&mut state, &sim.library, &sim.mechanics, &sim.scripts);
     assert_eq!(state.units[0].sanity.sp(), 10);
+}
+
+/// Ishmael's Koi-Koi: the `[HanafudaCombo]` state is granted at Turn Start with
+/// 3 Count and loses one Count per Turn Start, and "Kōzan" only comes out when
+/// the combo reaches 5 Potency or 0 Count - never on the opening turns.
+/// Source: passive `Koi-Koi`, wiki.gg `Status Effects` / HanafudaCombo.
+#[test]
+fn koi_koi_combo_gates_the_kozan_follow_up() {
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&["10813"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    let enemy = state.units.iter().position(|unit| !unit.kind.is_sinner()).unwrap();
+    // `new_encounter` already ran the first Turn Start.
+    assert_eq!(state.units[0].statuses.count("Bright -光-"), 3);
+    assert_eq!(state.units[0].statuses.potency("Bright -光-"), 0);
+
+    // Her Attack End on turn 1 must not fire Kozan.
+    let attack_end = |state: &mut lcb_core::state::BattleState| {
+        let mut use_ = battle::build_use(
+            state,
+            &sim.library,
+            &sim.mechanics,
+            0,
+            &SkillId::new("1081302"),
+        )
+        .unwrap();
+        battle::prepare_use_for_test(state, &sim.library, &sim.mechanics, 0, Some(enemy), &mut use_);
+        battle::apply_attack_end_for_test(
+            state,
+            &sim.library,
+            &sim.mechanics,
+            0,
+            Some(enemy),
+            0,
+            &mut use_,
+        );
+    };
+    attack_end(&mut state);
+    assert_eq!(
+        state.log.iter().filter(|entry| entry.kind == "unopposed").count(),
+        0,
+        "no Kozan on turn 1: {:?}",
+        state
+            .log
+            .iter()
+            .map(|entry| format!("[{}] {}", entry.kind, entry.detail))
+            .collect::<Vec<_>>()
+    );
+
+    // Turn Start 1 grants the combo with 3 Count; each further Turn Start spends
+    // one, so the window closes on the fourth.
+    for expected in [2, 1] {
+        battle::begin_turn(&mut state, &sim.library, &sim.mechanics, &sim.scripts);
+        assert_eq!(state.units[0].statuses.count("Bright -光-"), expected);
+    }
+    battle::begin_turn(&mut state, &sim.library, &sim.mechanics, &sim.scripts);
+    assert!(
+        state.units[0]
+            .expired_statuses
+            .iter()
+            .any(|status| status == "Bright -光-"),
+        "the combo runs out on the fourth Turn Start"
+    );
+    attack_end(&mut state);
+    assert_eq!(
+        state.log.iter().filter(|entry| entry.kind == "unopposed").count(),
+        1,
+        "the combo running out calls Kozan"
+    );
 }

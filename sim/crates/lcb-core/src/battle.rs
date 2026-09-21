@@ -1536,6 +1536,21 @@ pub fn apply_effects(
                 let unit = &mut state.units[index];
                 unit.statuses.add_potency(&status, potency);
                 unit.statuses.add_count(&count_status, count);
+                // "Potency: Base 0, Max 5" / "Count: Base 3, Max 3" caps.
+                if let Some(behaviour) = state
+                    .status_book
+                    .as_ref()
+                    .and_then(|book| book.get(&status))
+                    .cloned()
+                {
+                    let unit = &mut state.units[index];
+                    if let Some(cap) = behaviour.max_potency {
+                        unit.statuses.clamp_potency(&status, cap);
+                    }
+                    if let Some(cap) = behaviour.max_count {
+                        unit.statuses.clamp_count(&status, cap);
+                    }
+                }
             }
             "spend_ammo" => {
                 let status = effect
@@ -1697,15 +1712,25 @@ pub fn apply_effects(
             "cancel_skill" => {
                 use_ctx.cancelled = true;
             }
+            "cap_potency" | "cap_count" => {
+                // The caps are carried on the status record, not as effects.
+            }
             "lose_status_all" => {
                 let Some(status) = effect.status.clone() else { continue };
                 state.units[ctx.actor_index].statuses.remove(&status);
             }
             "lose_status_count" => {
                 let Some(status) = effect.status.clone() else { continue };
-                let Some(index) = ctx.target_index else { continue };
+                // A status' own upkeep ("Turn Start: lose 1 Count") has no target.
+                let index = ctx.target_index.unwrap_or(ctx.actor_index);
                 let amount = effect.count.or(effect.value).unwrap_or(1);
+                let before = state.units[index].statuses.count(&status);
                 tick_status(state, index, &status, 0, -amount);
+                // The clause that reads "at 0 Count" must still see that the
+                // status ran out this turn.
+                if before > 0 && state.units[index].statuses.count(&status) == 0 {
+                    state.units[index].expired_statuses.push(status);
+                }
             }
             "reload_ammo" => {
                 let unit = &state.units[ctx.actor_index];
@@ -5133,6 +5158,7 @@ pub fn begin_turn(
             .retain(|key, _| key.starts_with("encounter:"));
         state.units[index].hits_taken = 0;
         state.units[index].petals_gained = 0;
+        state.units[index].expired_statuses.clear();
         state.units[index].segmentation_healed.clear();
     }
     // The state of time for this turn is decided **before** the passives of that
@@ -6474,6 +6500,32 @@ fn prepare_use(
         use_.ctx.ammo_planned = planned;
     }
     use_.ctx.coins_total = use_.coins.len();
+    // Koi-Koi: "If the Skill was either 'Sakura-sen' or an E.G.O Skill, gain 1
+    // [HanafudaCombo] Potency" (once per turn, leftmost Skill Slot).
+    if state.units[unit_index]
+        .passive_ids
+        .iter()
+        .any(|id| id == "1081302")
+        // "[leftmost Skill Slot]" is Slot 0 (the Dashboard is 0-indexed).
+        && slot == 0
+        && (use_.skill.as_str() == "1081303" || use_.is_ego)
+    {
+        // "(once per turn)".
+        let key = "koi_koi_combo".to_string();
+        let used = state.units[unit_index]
+            .turn_effect_usage
+            .get(&key)
+            .copied()
+            .unwrap_or(0);
+        if used < 1 {
+            state.units[unit_index]
+                .turn_effect_usage
+                .insert(key, 1);
+            state.units[unit_index]
+                .statuses
+                .add_potency("Bright -光-", 1);
+        }
+    }
     // Sin Resonance grants this Skill's Offense/Defense Level (wiki.gg
     // `Sin Resonance` / Offense-Defense Level Gain).
     use_.ctx.resonance_level_bonus = state
@@ -6712,8 +6764,15 @@ fn passive_follow_ups(
     // or at 0 [HanafudaCombo] Count, use 'Kozan'".
     if passives.iter().any(|id| id == "1081302") {
         let combo_potency = state.units[unit_index].statuses.potency("Bright -光-");
-        let combo_count = state.units[unit_index].statuses.count("Bright -光-");
-        if combo_potency >= 5 || combo_count == 0 {
+        // "At 5 [HanafudaCombo] Potency, or at 0 [HanafudaCombo] Count, use
+        // 'Kozan'": the combo is granted at Turn Start with 3 Count and loses one
+        // Count per Turn Start, so the first Kozan normally comes out when the
+        // Count runs dry (three Turn Starts in) - never on the opening Attack End.
+        let combo_expired = state.units[unit_index]
+            .expired_statuses
+            .iter()
+            .any(|status| status == "Bright -光-");
+        if combo_potency >= 5 || combo_expired {
             let key = "encounter:unopposed:Kozan".to_string();
             let used = state.units[unit_index]
                 .turn_effect_usage

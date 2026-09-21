@@ -328,8 +328,9 @@ HAND_EFFECTS: Dict[str, dict] = {
             "Turn Start: if this unit does not have a Suit in Hand, gain a random Suit([HanafudaOne], [HanafudaTwo], or [HanafudaThree]) that corresponds to a Base Attack Skill on this unit's leftmost Skill Slot",
         ],
         "turn_start": [
+            # "gain 0 [HanafudaCombo] Potency and 3 [HanafudaCombo] Count": the
+            # status carries both components, so neither goes to Stack.
             {"kind": "gain", "status": "Bright -\u5149-", "potency": 0, "count": 3,
-             "component": "stack",
              "condition": {"source": "self", "lacks_status": ["Bright -\u5149-"]}},
             {"kind": "suit_convert",
              "condition": {"source": "self", "lacks_status": ["HanafudaOne", "HanafudaTwo", "HanafudaThree"]}},
