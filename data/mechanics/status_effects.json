@@ -8578,7 +8578,7 @@
    ],
    "structure": "stack",
    "text": "- Turn Start: gain 1 [Offense Level Up] for every Stack (max 5)\n- Turn Start: -(Stack x 0.15) [Aggro] to this unit's Skill Slots on the Dashboard (max 0.75)\n- Max Stack: 5\n- Expires at Turn End",
-   "used_by_fixed_content": false
+   "used_by_fixed_content": true
   },
   "Pink Petals": {
    "effects": {
@@ -14165,6 +14165,7 @@
   "Lamp",
   "Paralyze",
   "Petals",
+  "Piercing Sword",
   "Plus Coin Boost",
   "Poise",
   "Power Down",

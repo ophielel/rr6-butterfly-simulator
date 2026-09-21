@@ -2369,15 +2369,24 @@
    "note": "Stories that Never Cease",
    "on_evade": [],
    "on_kill": [],
-   "on_use": [],
+   "on_use": [
+    {
+     "condition": {
+      "gte": 1,
+      "source": "target",
+      "status": "Solitude"
+     },
+     "consume_count": 1,
+     "kind": "tremor_burst",
+     "raw": "When this Skill inflicts [Solitude], if the target has [Solitude] this turn, or will be inflicted with [Solitude] next turn, trigger [Tremor Burst] instead; then, reduce target's [Tremor] Count by 1"
+    }
+   ],
    "tags": [
     "unclashable"
    ],
    "turn_end": [],
    "turn_start": [],
-   "unmodeled": [
-    "When this Skill inflicts [Solitude], if the target has [Solitude] this turn, or will be inflicted with [Solitude] next turn, trigger [Tremor Burst] instead; then, reduce target's [Tremor] Count by 1"
-   ]
+   "unmodeled": []
   },
   "1041405@2": {
    "attack_end": [],
@@ -2442,15 +2451,24 @@
    "note": "Stories that Never Cease",
    "on_evade": [],
    "on_kill": [],
-   "on_use": [],
+   "on_use": [
+    {
+     "condition": {
+      "gte": 1,
+      "source": "target",
+      "status": "Solitude"
+     },
+     "consume_count": 1,
+     "kind": "tremor_burst",
+     "raw": "When this Skill inflicts [Solitude], if the target has [Solitude] this turn, or will be inflicted with [Solitude] next turn, trigger [Tremor Burst] instead; then, reduce target's [Tremor] Count by 1"
+    }
+   ],
    "tags": [
     "unclashable"
    ],
    "turn_end": [],
    "turn_start": [],
-   "unmodeled": [
-    "When this Skill inflicts [Solitude], if the target has [Solitude] this turn, or will be inflicted with [Solitude] next turn, trigger [Tremor Burst] instead; then, reduce target's [Tremor] Count by 1"
-   ]
+   "unmodeled": []
   },
   "1041405@3": {
    "attack_end": [],
@@ -2515,15 +2533,24 @@
    "note": "Stories that Never Cease",
    "on_evade": [],
    "on_kill": [],
-   "on_use": [],
+   "on_use": [
+    {
+     "condition": {
+      "gte": 1,
+      "source": "target",
+      "status": "Solitude"
+     },
+     "consume_count": 1,
+     "kind": "tremor_burst",
+     "raw": "When this Skill inflicts [Solitude], if the target has [Solitude] this turn, or will be inflicted with [Solitude] next turn, trigger [Tremor Burst] instead; then, reduce target's [Tremor] Count by 1"
+    }
+   ],
    "tags": [
     "unclashable"
    ],
    "turn_end": [],
    "turn_start": [],
-   "unmodeled": [
-    "When this Skill inflicts [Solitude], if the target has [Solitude] this turn, or will be inflicted with [Solitude] next turn, trigger [Tremor Burst] instead; then, reduce target's [Tremor] Count by 1"
-   ]
+   "unmodeled": []
   },
   "1041405@4": {
    "attack_end": [],
@@ -2588,15 +2615,24 @@
    "note": "Stories that Never Cease",
    "on_evade": [],
    "on_kill": [],
-   "on_use": [],
+   "on_use": [
+    {
+     "condition": {
+      "gte": 1,
+      "source": "target",
+      "status": "Solitude"
+     },
+     "consume_count": 1,
+     "kind": "tremor_burst",
+     "raw": "When this Skill inflicts [Solitude], if the target has [Solitude] this turn, or will be inflicted with [Solitude] next turn, trigger [Tremor Burst] instead; then, reduce target's [Tremor] Count by 1"
+    }
+   ],
    "tags": [
     "unclashable"
    ],
    "turn_end": [],
    "turn_start": [],
-   "unmodeled": [
-    "When this Skill inflicts [Solitude], if the target has [Solitude] this turn, or will be inflicted with [Solitude] next turn, trigger [Tremor Burst] instead; then, reduce target's [Tremor] Count by 1"
-   ]
+   "unmodeled": []
   },
   "1041406@1": {
    "attack_end": [
@@ -2656,6 +2692,16 @@
    "on_kill": [],
    "on_use": [
     {
+     "kind": "noop",
+     "note": "no external Reuse",
+     "raw": "External effects cannot trigger this Skill to be Reused"
+    },
+    {
+     "kind": "damage_percent_per_excess_weight",
+     "raw": "Deal +30% damage for every excess Atk Weight beyond the number of actual targets (in Focused Encounters, the Part)",
+     "step": 30
+    },
+    {
      "condition": {
       "all_targets": true,
       "component": "stack",
@@ -2675,10 +2721,7 @@
    ],
    "turn_end": [],
    "turn_start": [],
-   "unmodeled": [
-    "Deal +30% damage for every excess Atk Weight beyond the number of actual targets (in Focused Encounters, the Part)",
-    "External effects cannot trigger this Skill to be Reused"
-   ]
+   "unmodeled": []
   },
   "1041406@2": {
    "attack_end": [
@@ -2738,6 +2781,16 @@
    "on_kill": [],
    "on_use": [
     {
+     "kind": "noop",
+     "note": "no external Reuse",
+     "raw": "External effects cannot trigger this Skill to be Reused"
+    },
+    {
+     "kind": "damage_percent_per_excess_weight",
+     "raw": "Deal +30% damage for every excess Atk Weight beyond the number of actual targets (in Focused Encounters, the Part)",
+     "step": 30
+    },
+    {
      "condition": {
       "all_targets": true,
       "component": "stack",
@@ -2757,10 +2810,7 @@
    ],
    "turn_end": [],
    "turn_start": [],
-   "unmodeled": [
-    "Deal +30% damage for every excess Atk Weight beyond the number of actual targets (in Focused Encounters, the Part)",
-    "External effects cannot trigger this Skill to be Reused"
-   ]
+   "unmodeled": []
   },
   "1041406@3": {
    "attack_end": [
@@ -2820,6 +2870,16 @@
    "on_kill": [],
    "on_use": [
     {
+     "kind": "noop",
+     "note": "no external Reuse",
+     "raw": "External effects cannot trigger this Skill to be Reused"
+    },
+    {
+     "kind": "damage_percent_per_excess_weight",
+     "raw": "Deal +30% damage for every excess Atk Weight beyond the number of actual targets (in Focused Encounters, the Part)",
+     "step": 30
+    },
+    {
      "condition": {
       "all_targets": true,
       "component": "stack",
@@ -2839,10 +2899,7 @@
    ],
    "turn_end": [],
    "turn_start": [],
-   "unmodeled": [
-    "Deal +30% damage for every excess Atk Weight beyond the number of actual targets (in Focused Encounters, the Part)",
-    "External effects cannot trigger this Skill to be Reused"
-   ]
+   "unmodeled": []
   },
   "1041406@4": {
    "attack_end": [
@@ -2902,6 +2959,16 @@
    "on_kill": [],
    "on_use": [
     {
+     "kind": "noop",
+     "note": "no external Reuse",
+     "raw": "External effects cannot trigger this Skill to be Reused"
+    },
+    {
+     "kind": "damage_percent_per_excess_weight",
+     "raw": "Deal +30% damage for every excess Atk Weight beyond the number of actual targets (in Focused Encounters, the Part)",
+     "step": 30
+    },
+    {
      "condition": {
       "all_targets": true,
       "component": "stack",
@@ -2921,10 +2988,7 @@
    ],
    "turn_end": [],
    "turn_start": [],
-   "unmodeled": [
-    "Deal +30% damage for every excess Atk Weight beyond the number of actual targets (in Focused Encounters, the Part)",
-    "External effects cannot trigger this Skill to be Reused"
-   ]
+   "unmodeled": []
   },
   "1081301@1": {
    "attack_end": [],
@@ -5546,13 +5610,17 @@
    "note": "Faded Faith",
    "on_evade": [],
    "on_kill": [],
-   "on_use": [],
+   "on_use": [
+    {
+     "kind": "sp_damage_self",
+     "raw": "[On Use] Lose 7 SP",
+     "value": 7
+    }
+   ],
    "tags": [],
    "turn_end": [],
    "turn_start": [],
-   "unmodeled": [
-    "[On Use] Lose 7 SP"
-   ]
+   "unmodeled": []
   },
   "1091305@2": {
    "attack_end": [],
@@ -5597,14 +5665,17 @@
      "raw": "Final Power +1 for every 3 [Sinking] on target (max 2)",
      "step": 1,
      "value": 0
+    },
+    {
+     "kind": "sp_damage_self",
+     "raw": "[On Use] Lose 7 SP",
+     "value": 7
     }
    ],
    "tags": [],
    "turn_end": [],
    "turn_start": [],
-   "unmodeled": [
-    "[On Use] Lose 7 SP"
-   ]
+   "unmodeled": []
   },
   "1091305@3": {
    "attack_end": [],
@@ -5649,14 +5720,17 @@
      "raw": "Final Power +1 for every 3 [Sinking] on target (max 2)",
      "step": 1,
      "value": 0
+    },
+    {
+     "kind": "sp_damage_self",
+     "raw": "[On Use] Lose 7 SP",
+     "value": 7
     }
    ],
    "tags": [],
    "turn_end": [],
    "turn_start": [],
-   "unmodeled": [
-    "[On Use] Lose 7 SP"
-   ]
+   "unmodeled": []
   },
   "1091305@4": {
    "attack_end": [],
@@ -5687,6 +5761,22 @@
       "potency": 2,
       "raw": "[On Hit] Gain 2 [Deep Tears]",
       "status": "Deep Tears"
+     },
+     {
+      "coin_index": 2,
+      "condition": {
+       "component": "combat_start",
+       "gte": 2,
+       "source": "self",
+       "status": "Piercing Sword"
+      },
+      "kind": "gain",
+      "max": 2,
+      "per": 2,
+      "potency": 1,
+      "raw": "Gain 1 additional [Deep Tears] for every 2 [Piercing Sword] this unit had at Combat Start (max 2)",
+      "status": "Deep Tears",
+      "step": 1
      }
     ]
    },
@@ -5708,15 +5798,17 @@
      "raw": "Final Power +1 for every 3 [Sinking] on target (max 3)",
      "step": 1,
      "value": 0
+    },
+    {
+     "kind": "sp_damage_self",
+     "raw": "[On Use] Lose 7 SP",
+     "value": 7
     }
    ],
    "tags": [],
    "turn_end": [],
    "turn_start": [],
-   "unmodeled": [
-    "Gain 1 additional [Deep Tears] for every 2 [Piercing Sword] this unit had at Combat Start (max 2)",
-    "[On Use] Lose 7 SP"
-   ]
+   "unmodeled": []
   },
   "1091306@1": {
    "attack_end": [],
@@ -5731,6 +5823,11 @@
    "on_kill": [],
    "on_use": [
     {
+     "kind": "sp_damage_self",
+     "raw": "[On Use] Lose 10 SP",
+     "value": 10
+    },
+    {
      "kind": "consume_status_for_damage",
      "percent": 20,
      "raw": "[On Use] At 15+ [Deep Tears], consume 5 [Deep Tears] to deal +20% damage",
@@ -5742,9 +5839,7 @@
    "tags": [],
    "turn_end": [],
    "turn_start": [],
-   "unmodeled": [
-    "[On Use] Lose 10 SP"
-   ]
+   "unmodeled": []
   },
   "1091306@2": {
    "attack_end": [],
@@ -5772,6 +5867,11 @@
      "value": 0
     },
     {
+     "kind": "sp_damage_self",
+     "raw": "[On Use] Lose 10 SP",
+     "value": 10
+    },
+    {
      "kind": "consume_status_for_damage",
      "percent": 20,
      "raw": "[On Use] At 15+ [Deep Tears], consume 5 [Deep Tears] to deal +20% damage",
@@ -5783,9 +5883,7 @@
    "tags": [],
    "turn_end": [],
    "turn_start": [],
-   "unmodeled": [
-    "[On Use] Lose 10 SP"
-   ]
+   "unmodeled": []
   },
   "1091306@3": {
    "attack_end": [],
@@ -5813,6 +5911,11 @@
      "value": 0
     },
     {
+     "kind": "sp_damage_self",
+     "raw": "[On Use] Lose 10 SP",
+     "value": 10
+    },
+    {
      "kind": "consume_status_for_damage",
      "percent": 20,
      "raw": "[On Use] At 15+ [Deep Tears], consume 5 [Deep Tears] to deal +20% damage",
@@ -5824,9 +5927,7 @@
    "tags": [],
    "turn_end": [],
    "turn_start": [],
-   "unmodeled": [
-    "[On Use] Lose 10 SP"
-   ]
+   "unmodeled": []
   },
   "1091306@4": {
    "attack_end": [],
@@ -5854,6 +5955,11 @@
      "value": 0
     },
     {
+     "kind": "sp_damage_self",
+     "raw": "[On Use] Lose 10 SP",
+     "value": 10
+    },
+    {
      "kind": "consume_status_for_damage",
      "percent": 20,
      "raw": "[On Use] At 15+ [Deep Tears], consume 5 [Deep Tears] to deal +20% damage",
@@ -5865,9 +5971,7 @@
    "tags": [],
    "turn_end": [],
    "turn_start": [],
-   "unmodeled": [
-    "[On Use] Lose 10 SP"
-   ]
+   "unmodeled": []
   },
   "1091307@1": {
    "attack_end": [
@@ -5905,6 +6009,11 @@
      "value": 0
     },
     {
+     "kind": "sp_damage_self",
+     "raw": "[On Use] Lose 15 SP",
+     "value": 15
+    },
+    {
      "kind": "consume_status_up_to",
      "raw": "[On Use] At 10+ [Deep Tears], consume up to 20 [Deep Tears]",
      "status": "Deep Tears",
@@ -5920,9 +6029,7 @@
    "tags": [],
    "turn_end": [],
    "turn_start": [],
-   "unmodeled": [
-    "[On Use] Lose 15 SP"
-   ]
+   "unmodeled": []
   },
   "1091307@2": {
    "attack_end": [
@@ -5960,6 +6067,11 @@
      "value": 0
     },
     {
+     "kind": "sp_damage_self",
+     "raw": "[On Use] Lose 15 SP",
+     "value": 15
+    },
+    {
      "kind": "consume_status_up_to",
      "raw": "[On Use] At 10+ [Deep Tears], consume up to 20 [Deep Tears]",
      "status": "Deep Tears",
@@ -5975,9 +6087,7 @@
    "tags": [],
    "turn_end": [],
    "turn_start": [],
-   "unmodeled": [
-    "[On Use] Lose 15 SP"
-   ]
+   "unmodeled": []
   },
   "1091307@3": {
    "attack_end": [
@@ -6015,6 +6125,11 @@
      "value": 0
     },
     {
+     "kind": "sp_damage_self",
+     "raw": "[On Use] Lose 15 SP",
+     "value": 15
+    },
+    {
      "kind": "consume_status_up_to",
      "raw": "[On Use] At 10+ [Deep Tears], consume up to 20 [Deep Tears]",
      "status": "Deep Tears",
@@ -6030,9 +6145,7 @@
    "tags": [],
    "turn_end": [],
    "turn_start": [],
-   "unmodeled": [
-    "[On Use] Lose 15 SP"
-   ]
+   "unmodeled": []
   },
   "1091307@4": {
    "attack_end": [
@@ -6070,6 +6183,11 @@
      "value": 0
     },
     {
+     "kind": "sp_damage_self",
+     "raw": "[On Use] Lose 15 SP",
+     "value": 15
+    },
+    {
      "kind": "consume_status_up_to",
      "raw": "[On Use] At 10+ [Deep Tears], consume up to 20 [Deep Tears]",
      "status": "Deep Tears",
@@ -6091,9 +6209,7 @@
    "tags": [],
    "turn_end": [],
    "turn_start": [],
-   "unmodeled": [
-    "[On Use] Lose 15 SP"
-   ]
+   "unmodeled": []
   },
   "1100401@1": {
    "attack_end": [],

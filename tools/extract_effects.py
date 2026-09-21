@@ -291,6 +291,23 @@ PATTERNS = [
     # "[Skill End] Next turn, convert the Suit in this unit's Hand ...".
     (re.compile(r"^Next turn, convert the Suit in this unit's Hand to a random Suit that corresponds to one of this unit's Base Attack Skills$"),
      lambda m: {"kind": "suit_convert", "next_turn": True}),
+    # "Gain 1 additional [Deep Tears] for every 2 [Piercing Sword] this unit had
+    # at Combat Start (max 2)".
+    (re.compile(rf"^Gain {N} additional {ST} for every {N} {ST} this unit had at Combat Start \(max {N}\)$"),
+     lambda m: {"kind": "gain", "status": m.group(2), "potency": int(m.group(1)),
+                "per": int(m.group(3)), "step": int(m.group(1)), "max": int(m.group(5)),
+                "condition": {"source": "self", "status": m.group(4),
+                              "component": "combat_start", "gte": int(m.group(3))}}),
+    # "[On Use] Lose 7 SP".
+    (re.compile(rf"^Lose {N} SP$"),
+     lambda m: {"kind": "sp_damage_self", "value": int(m.group(1))}),
+    (re.compile(r"^Deal \+{N}% damage for every excess Atk Weight beyond the number of actual targets.*$".replace("{N}", r"([+-]?\d+)")),
+     lambda m: {"kind": "damage_percent_per_excess_weight", "step": int(m.group(1))}),
+    (re.compile(r"^External effects cannot trigger this Skill to be Reused$"),
+     lambda m: {"kind": "noop", "note": "no external Reuse"}),
+    (re.compile(rf"^When this Skill inflicts {ST}, if the target has {ST} this turn, or will be inflicted with {ST} next turn, trigger {ST}(?: instead)?(?:; then, reduce target's {ST} Count by {N})?$"),
+     lambda m: {"kind": "tremor_burst", "consume_count": 1,
+                "condition": {"source": "target", "status": m.group(1), "gte": 1}}),
     # "[Skill End] Lose [X] on self" / "Lose all [X] on self".
     (re.compile(rf"^Lose {ST} on self$"),
      lambda m: {"kind": "lose_status_all", "status": m.group(1)}),

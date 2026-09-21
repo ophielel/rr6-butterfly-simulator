@@ -509,6 +509,10 @@ pub struct Unit {
     /// rule ("this unit may redirect attacks to itself regardless of Speed").
     #[serde(default)]
     pub passive_ids: Vec<String>,
+    /// Status amounts as they were at Combat Start, for "for every 2 [Piercing
+    /// Sword] this unit had at Combat Start" clauses.
+    #[serde(default)]
+    pub combat_start_statuses: std::collections::BTreeMap<String, i32>,
     /// True while a passive's Unopposed Attack is resolving, so that attack's own
     /// Attack End cannot start another one.
     #[serde(default)]

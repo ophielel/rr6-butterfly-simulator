@@ -835,6 +835,9 @@ fn unit_status_value(unit: &Unit, key: &str, component: Option<Component>) -> i3
         Some(Component::Potency) => unit.statuses.potency(key),
         Some(Component::Count) => unit.statuses.count(key),
         Some(Component::Stack) => unit.statuses.stack(key),
+        Some(Component::CombatStart) => {
+            unit.combat_start_statuses.get(key).copied().unwrap_or(0)
+        }
         // No component: "has [X]" covers Potency + Count and Stack, so that
         // stack-only statuses (Dazzle, Charge, ...) are detected too.
         None => {
@@ -1995,6 +1998,11 @@ pub fn apply_effects(
                     Some(Component::Potency) => state.units[index].statuses.potency(&status),
                     Some(Component::Count) => state.units[index].statuses.count(&status),
                     Some(Component::Stack) => state.units[index].statuses.stack(&status),
+                    Some(Component::CombatStart) => state.units[index]
+                        .combat_start_statuses
+                        .get(&status)
+                        .copied()
+                        .unwrap_or(0),
                     None => {
                         state.units[index].statuses.potency(&status)
                             + state.units[index].statuses.count(&status)
@@ -5562,6 +5570,20 @@ pub fn resolve_combat(state: &mut BattleState, library: &Library, mechanics: &Me
         (std::cmp::Reverse(speed), order)
     });
 
+    // "…this unit had at Combat Start": snapshot the status amounts before any
+    // Skill of the turn resolves.
+    for unit in state.units.iter_mut() {
+        unit.combat_start_statuses = unit
+            .statuses
+            .iter()
+            .map(|(key, instance)| {
+                (
+                    key.clone(),
+                    instance.potency + instance.count + instance.stack,
+                )
+            })
+            .collect();
+    }
     compute_resonance(state, library);
     // Passives' "[Combat Start]" clauses: they belong to the turn's Skill
     // selection, so they run here - after the panel is submitted and the Sin

@@ -19,6 +19,10 @@ pub enum Component {
     Potency,
     Count,
     Stack,
+    /// "…this unit had at Combat Start": the amount the status held when the
+    /// turn's Combat Start snapshot was taken.
+    #[serde(rename = "combat_start")]
+    CombatStart,
 }
 
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
