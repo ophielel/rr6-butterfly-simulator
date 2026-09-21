@@ -3528,540 +3528,6 @@
    "turn_start": [],
    "unmodeled": []
   },
-  "10813032@1": {
-   "attack_end": [
-    {
-     "kind": "lose_status_all",
-     "raw": "[Skill End] Lose [Bright -光-] on self",
-     "status": "Bright -光-"
-    },
-    {
-     "kind": "suit_convert",
-     "next_turn": true,
-     "per_turn": 1,
-     "raw": "[Skill End] Next turn, convert the Suit in this unit's Hand to a random Suit that corresponds to one of this unit's Base Attack Skills (once per turn)"
-    },
-    {
-     "kind": "gain_unused_coins",
-     "next_turn": true,
-     "raw": "[Skill End] Gain [Bright -光-] Potency next turn equal to the # of Coins that weren't used",
-     "status": "Bright -光-"
-    }
-   ],
-   "before_attack": [],
-   "clash_lose": [],
-   "clash_win": [],
-   "coins": {
-    "1": [
-     {
-      "coin_index": 1,
-      "kind": "reuse_coin",
-      "raw": "Reuse this Coin ([Bright -光-] Potency - 1) times (4 times max)",
-      "reuse_coin": 4,
-      "reuse_from_status": "Bright -光-",
-      "reuse_minus": 1
-     },
-     {
-      "coin_index": 1,
-      "count": 1,
-      "kind": "inflict",
-      "raw": "[On Hit] Inflict +1 [Tremor] Count",
-      "status": "Tremor"
-     },
-     {
-      "coin_index": 1,
-      "count": 1,
-      "kind": "inflict",
-      "raw": "[On Hit] Inflict +1 [Sinking] Count",
-      "status": "Sinking"
-     }
-    ]
-   },
-   "combat_start": [],
-   "heads_hit": {},
-   "note": "Kōzan ['''光斬''']",
-   "on_evade": [],
-   "on_kill": [],
-   "on_use": [
-    {
-     "kind": "noop",
-     "note": "no Defense Skills, no external Reuse",
-     "raw": "This Skill does not trigger Defense Skills, and external effects cannot trigger this Skill to be Reused"
-    },
-    {
-     "condition": {
-      "component": "potency",
-      "lte": 2,
-      "source": "self",
-      "status": "Bright -光-"
-     },
-     "kind": "cancel_skill",
-     "raw": "[On Use] At less than 3 [Bright -光-] Potency, cancel the Skill and gain 2 [Attack Power Up] next turn"
-    },
-    {
-     "kind": "gain",
-     "next_turn": true,
-     "potency": 2,
-     "raw": "[On Use] At less than 3 [Bright -光-] Potency, cancel the Skill and gain 2 [Attack Power Up] next turn",
-     "status": "Attack Power Up"
-    },
-    {
-     "kind": "noop",
-     "note": "header for the bullets below",
-     "raw": "[On Use] At 3+ [Bright -光-] Potency, gain the following effects based on Potency:"
-    },
-    {
-     "condition": {
-      "component": "potency",
-      "gte": 3,
-      "source": "self",
-      "status": "Bright -光-"
-     },
-     "kind": "damage_percent",
-     "per": 1,
-     "raw": "Per 1 Potency: this Skill deals +10% damage",
-     "step": 10,
-     "value": 0
-    },
-    {
-     "condition": {
-      "component": "potency",
-      "gte": 4,
-      "source": "self",
-      "status": "Bright -光-"
-     },
-     "kind": "base_power",
-     "raw": "At 4+ Potency: Base Power +1",
-     "value": 1
-    },
-    {
-     "kind": "compound",
-     "raw": "At 5 Potency: On Hit with the final Reuse Coin, trigger [Tremor Burst] 2 times; then, reduce target's [Tremor] Count by 1",
-     "sub_effects": [
-      {
-       "condition": {
-        "component": "potency",
-        "gte": 5,
-        "source": "self",
-        "status": "Bright -光-"
-       },
-       "consume_count": 1,
-       "kind": "tremor_burst",
-       "times": 2
-      }
-     ]
-    }
-   ],
-   "tags": [
-    "unclashable"
-   ],
-   "turn_end": [],
-   "turn_start": [],
-   "unmodeled": []
-  },
-  "10813032@2": {
-   "attack_end": [
-    {
-     "kind": "lose_status_all",
-     "raw": "[Skill End] Lose [Bright -光-] on self",
-     "status": "Bright -光-"
-    },
-    {
-     "kind": "suit_convert",
-     "next_turn": true,
-     "per_turn": 1,
-     "raw": "[Skill End] Next turn, convert the Suit in this unit's Hand to a random Suit that corresponds to one of this unit's Base Attack Skills (once per turn)"
-    },
-    {
-     "kind": "gain_unused_coins",
-     "next_turn": true,
-     "raw": "[Skill End] Gain [Bright -光-] Potency next turn equal to the # of Coins that weren't used",
-     "status": "Bright -光-"
-    }
-   ],
-   "before_attack": [],
-   "clash_lose": [],
-   "clash_win": [],
-   "coins": {
-    "1": [
-     {
-      "coin_index": 1,
-      "kind": "reuse_coin",
-      "raw": "Reuse this Coin ([Bright -光-] Potency - 1) times (4 times max)",
-      "reuse_coin": 4,
-      "reuse_from_status": "Bright -光-",
-      "reuse_minus": 1
-     },
-     {
-      "coin_index": 1,
-      "count": 1,
-      "kind": "inflict",
-      "raw": "[On Hit] Inflict +1 [Tremor] Count",
-      "status": "Tremor"
-     },
-     {
-      "coin_index": 1,
-      "count": 1,
-      "kind": "inflict",
-      "raw": "[On Hit] Inflict +1 [Sinking] Count",
-      "status": "Sinking"
-     }
-    ]
-   },
-   "combat_start": [],
-   "heads_hit": {},
-   "note": "Kōzan ['''光斬''']",
-   "on_evade": [],
-   "on_kill": [],
-   "on_use": [
-    {
-     "kind": "noop",
-     "note": "no Defense Skills, no external Reuse",
-     "raw": "This Skill does not trigger Defense Skills, and external effects cannot trigger this Skill to be Reused"
-    },
-    {
-     "condition": {
-      "component": "potency",
-      "lte": 2,
-      "source": "self",
-      "status": "Bright -光-"
-     },
-     "kind": "cancel_skill",
-     "raw": "[On Use] At less than 3 [Bright -光-] Potency, cancel the Skill and gain 2 [Attack Power Up] next turn"
-    },
-    {
-     "kind": "gain",
-     "next_turn": true,
-     "potency": 2,
-     "raw": "[On Use] At less than 3 [Bright -光-] Potency, cancel the Skill and gain 2 [Attack Power Up] next turn",
-     "status": "Attack Power Up"
-    },
-    {
-     "kind": "noop",
-     "note": "header for the bullets below",
-     "raw": "[On Use] At 3+ [Bright -光-] Potency, gain the following effects based on Potency:"
-    },
-    {
-     "condition": {
-      "component": "potency",
-      "gte": 3,
-      "source": "self",
-      "status": "Bright -光-"
-     },
-     "kind": "damage_percent",
-     "per": 1,
-     "raw": "Per 1 Potency: this Skill deals +10% damage",
-     "step": 10,
-     "value": 0
-    },
-    {
-     "condition": {
-      "component": "potency",
-      "gte": 4,
-      "source": "self",
-      "status": "Bright -光-"
-     },
-     "kind": "base_power",
-     "raw": "At 4+ Potency: Base Power +1",
-     "value": 1
-    },
-    {
-     "kind": "compound",
-     "raw": "At 5 Potency: On Hit with the final Reuse Coin, trigger [Tremor Burst] 2 times; then, reduce target's [Tremor] Count by 1",
-     "sub_effects": [
-      {
-       "condition": {
-        "component": "potency",
-        "gte": 5,
-        "source": "self",
-        "status": "Bright -光-"
-       },
-       "consume_count": 1,
-       "kind": "tremor_burst",
-       "times": 2
-      }
-     ]
-    }
-   ],
-   "tags": [
-    "unclashable"
-   ],
-   "turn_end": [],
-   "turn_start": [],
-   "unmodeled": []
-  },
-  "10813032@3": {
-   "attack_end": [
-    {
-     "kind": "lose_status_all",
-     "raw": "[Skill End] Lose [Bright -光-] on self",
-     "status": "Bright -光-"
-    },
-    {
-     "kind": "suit_convert",
-     "next_turn": true,
-     "per_turn": 1,
-     "raw": "[Skill End] Next turn, convert the Suit in this unit's Hand to a random Suit that corresponds to one of this unit's Base Attack Skills (once per turn)"
-    },
-    {
-     "kind": "gain_unused_coins",
-     "next_turn": true,
-     "raw": "[Skill End] Gain [Bright -光-] Potency next turn equal to the # of Coins that weren't used",
-     "status": "Bright -光-"
-    }
-   ],
-   "before_attack": [],
-   "clash_lose": [],
-   "clash_win": [],
-   "coins": {
-    "1": [
-     {
-      "coin_index": 1,
-      "kind": "reuse_coin",
-      "raw": "Reuse this Coin ([Bright -光-] Potency - 1) times (4 times max)",
-      "reuse_coin": 4,
-      "reuse_from_status": "Bright -光-",
-      "reuse_minus": 1
-     },
-     {
-      "coin_index": 1,
-      "count": 1,
-      "kind": "inflict",
-      "raw": "[On Hit] Inflict +1 [Tremor] Count",
-      "status": "Tremor"
-     },
-     {
-      "coin_index": 1,
-      "count": 1,
-      "kind": "inflict",
-      "raw": "[On Hit] Inflict +1 [Sinking] Count",
-      "status": "Sinking"
-     }
-    ]
-   },
-   "combat_start": [],
-   "heads_hit": {},
-   "note": "Kōzan ['''光斬''']",
-   "on_evade": [],
-   "on_kill": [],
-   "on_use": [
-    {
-     "kind": "noop",
-     "note": "no Defense Skills, no external Reuse",
-     "raw": "This Skill does not trigger Defense Skills, and external effects cannot trigger this Skill to be Reused"
-    },
-    {
-     "condition": {
-      "component": "potency",
-      "lte": 2,
-      "source": "self",
-      "status": "Bright -光-"
-     },
-     "kind": "cancel_skill",
-     "raw": "[On Use] At less than 3 [Bright -光-] Potency, cancel the Skill and gain 2 [Attack Power Up] next turn"
-    },
-    {
-     "kind": "gain",
-     "next_turn": true,
-     "potency": 2,
-     "raw": "[On Use] At less than 3 [Bright -光-] Potency, cancel the Skill and gain 2 [Attack Power Up] next turn",
-     "status": "Attack Power Up"
-    },
-    {
-     "kind": "noop",
-     "note": "header for the bullets below",
-     "raw": "[On Use] At 3+ [Bright -光-] Potency, gain the following effects based on Potency:"
-    },
-    {
-     "condition": {
-      "component": "potency",
-      "gte": 3,
-      "source": "self",
-      "status": "Bright -光-"
-     },
-     "kind": "damage_percent",
-     "per": 1,
-     "raw": "Per 1 Potency: this Skill deals +10% damage",
-     "step": 10,
-     "value": 0
-    },
-    {
-     "condition": {
-      "component": "potency",
-      "gte": 4,
-      "source": "self",
-      "status": "Bright -光-"
-     },
-     "kind": "base_power",
-     "raw": "At 4+ Potency: Base Power +1",
-     "value": 1
-    },
-    {
-     "kind": "compound",
-     "raw": "At 5 Potency: On Hit with the final Reuse Coin, trigger [Tremor Burst] 2 times; then, reduce target's [Tremor] Count by 1",
-     "sub_effects": [
-      {
-       "condition": {
-        "component": "potency",
-        "gte": 5,
-        "source": "self",
-        "status": "Bright -光-"
-       },
-       "consume_count": 1,
-       "kind": "tremor_burst",
-       "times": 2
-      }
-     ]
-    }
-   ],
-   "tags": [
-    "unclashable"
-   ],
-   "turn_end": [],
-   "turn_start": [],
-   "unmodeled": []
-  },
-  "10813032@4": {
-   "attack_end": [
-    {
-     "kind": "lose_status_all",
-     "raw": "[Skill End] Lose [Bright -光-] on self",
-     "status": "Bright -光-"
-    },
-    {
-     "kind": "suit_convert",
-     "next_turn": true,
-     "per_turn": 1,
-     "raw": "[Skill End] Next turn, convert the Suit in this unit's Hand to a random Suit that corresponds to one of this unit's Base Attack Skills (once per turn)"
-    },
-    {
-     "kind": "gain_unused_coins",
-     "next_turn": true,
-     "raw": "[Skill End] Gain [Bright -光-] Potency next turn equal to the # of Coins that weren't used",
-     "status": "Bright -光-"
-    }
-   ],
-   "before_attack": [],
-   "clash_lose": [],
-   "clash_win": [],
-   "coins": {
-    "1": [
-     {
-      "coin_index": 1,
-      "kind": "reuse_coin",
-      "raw": "Reuse this Coin ([Bright -光-] Potency - 1) times (4 times max)",
-      "reuse_coin": 4,
-      "reuse_from_status": "Bright -光-",
-      "reuse_minus": 1
-     },
-     {
-      "coin_index": 1,
-      "count": 1,
-      "kind": "inflict",
-      "raw": "[On Hit] Inflict +1 [Tremor] Count",
-      "status": "Tremor"
-     },
-     {
-      "coin_index": 1,
-      "count": 1,
-      "kind": "inflict",
-      "raw": "[On Hit] Inflict +1 [Sinking] Count",
-      "status": "Sinking"
-     }
-    ]
-   },
-   "combat_start": [],
-   "heads_hit": {
-    "1": [
-     {
-      "coin_index": 1,
-      "kind": "inflict",
-      "potency": 1,
-      "raw": "[Heads Hit] Inflict 1 [Defense Level Down]",
-      "status": "Defense Level Down"
-     }
-    ]
-   },
-   "note": "Kōzan ['''光斬''']",
-   "on_evade": [],
-   "on_kill": [],
-   "on_use": [
-    {
-     "kind": "noop",
-     "note": "no Defense Skills, no external Reuse",
-     "raw": "This Skill does not trigger Defense Skills, and external effects cannot trigger this Skill to be Reused"
-    },
-    {
-     "condition": {
-      "component": "potency",
-      "lte": 2,
-      "source": "self",
-      "status": "Bright -光-"
-     },
-     "kind": "cancel_skill",
-     "raw": "[On Use] At less than 3 [Bright -光-] Potency, cancel the Skill and gain 2 [Attack Power Up] next turn"
-    },
-    {
-     "kind": "gain",
-     "next_turn": true,
-     "potency": 2,
-     "raw": "[On Use] At less than 3 [Bright -光-] Potency, cancel the Skill and gain 2 [Attack Power Up] next turn",
-     "status": "Attack Power Up"
-    },
-    {
-     "kind": "noop",
-     "note": "header for the bullets below",
-     "raw": "[On Use] At 3+ [Bright -光-] Potency, gain the following effects based on Potency:"
-    },
-    {
-     "condition": {
-      "component": "potency",
-      "gte": 3,
-      "source": "self",
-      "status": "Bright -光-"
-     },
-     "kind": "damage_percent",
-     "per": 1,
-     "raw": "Per 1 Potency: this Skill deals +10% damage",
-     "step": 10,
-     "value": 0
-    },
-    {
-     "condition": {
-      "component": "potency",
-      "gte": 4,
-      "source": "self",
-      "status": "Bright -光-"
-     },
-     "kind": "base_power",
-     "raw": "At 4+ Potency: Base Power +1",
-     "value": 1
-    },
-    {
-     "kind": "compound",
-     "raw": "At 5 Potency: On Hit with the final Reuse Coin, trigger [Tremor Burst] 2 times; then, reduce target's [Tremor] Count by 1",
-     "sub_effects": [
-      {
-       "condition": {
-        "component": "potency",
-        "gte": 5,
-        "source": "self",
-        "status": "Bright -光-"
-       },
-       "consume_count": 1,
-       "kind": "tremor_burst",
-       "times": 2
-      }
-     ]
-    }
-   ],
-   "tags": [
-    "unclashable"
-   ],
-   "turn_end": [],
-   "turn_start": [],
-   "unmodeled": []
-  },
   "1081303@1": {
    "attack_end": [],
    "before_attack": [],
@@ -4757,6 +4223,540 @@
    ],
    "tags": [
     "clashable_defense"
+   ],
+   "turn_end": [],
+   "turn_start": [],
+   "unmodeled": []
+  },
+  "1081305@1": {
+   "attack_end": [
+    {
+     "kind": "lose_status_all",
+     "raw": "[Skill End] Lose [Bright -光-] on self",
+     "status": "Bright -光-"
+    },
+    {
+     "kind": "suit_convert",
+     "next_turn": true,
+     "per_turn": 1,
+     "raw": "[Skill End] Next turn, convert the Suit in this unit's Hand to a random Suit that corresponds to one of this unit's Base Attack Skills (once per turn)"
+    },
+    {
+     "kind": "gain_unused_coins",
+     "next_turn": true,
+     "raw": "[Skill End] Gain [Bright -光-] Potency next turn equal to the # of Coins that weren't used",
+     "status": "Bright -光-"
+    }
+   ],
+   "before_attack": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "coin_index": 1,
+      "kind": "reuse_coin",
+      "raw": "Reuse this Coin ([Bright -光-] Potency - 1) times (4 times max)",
+      "reuse_coin": 4,
+      "reuse_from_status": "Bright -光-",
+      "reuse_minus": 1
+     },
+     {
+      "coin_index": 1,
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +1 [Tremor] Count",
+      "status": "Tremor"
+     },
+     {
+      "coin_index": 1,
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +1 [Sinking] Count",
+      "status": "Sinking"
+     }
+    ]
+   },
+   "combat_start": [],
+   "heads_hit": {},
+   "note": "Kōzan [光斬]",
+   "on_evade": [],
+   "on_kill": [],
+   "on_use": [
+    {
+     "kind": "noop",
+     "note": "no Defense Skills, no external Reuse",
+     "raw": "This Skill does not trigger Defense Skills, and external effects cannot trigger this Skill to be Reused"
+    },
+    {
+     "condition": {
+      "component": "potency",
+      "lte": 2,
+      "source": "self",
+      "status": "Bright -光-"
+     },
+     "kind": "cancel_skill",
+     "raw": "[On Use] At less than 3 [Bright -光-] Potency, cancel the Skill and gain 2 [Attack Power Up] next turn"
+    },
+    {
+     "kind": "gain",
+     "next_turn": true,
+     "potency": 2,
+     "raw": "[On Use] At less than 3 [Bright -光-] Potency, cancel the Skill and gain 2 [Attack Power Up] next turn",
+     "status": "Attack Power Up"
+    },
+    {
+     "kind": "noop",
+     "note": "header for the bullets below",
+     "raw": "[On Use] At 3+ [Bright -光-] Potency, gain the following effects based on Potency:"
+    },
+    {
+     "condition": {
+      "component": "potency",
+      "gte": 3,
+      "source": "self",
+      "status": "Bright -光-"
+     },
+     "kind": "damage_percent",
+     "per": 1,
+     "raw": "Per 1 Potency: this Skill deals +10% damage",
+     "step": 10,
+     "value": 0
+    },
+    {
+     "condition": {
+      "component": "potency",
+      "gte": 4,
+      "source": "self",
+      "status": "Bright -光-"
+     },
+     "kind": "base_power",
+     "raw": "At 4+ Potency: Base Power +1",
+     "value": 1
+    },
+    {
+     "kind": "compound",
+     "raw": "At 5 Potency: On Hit with the final Reuse Coin, trigger [Tremor Burst] 2 times; then, reduce target's [Tremor] Count by 1",
+     "sub_effects": [
+      {
+       "condition": {
+        "component": "potency",
+        "gte": 5,
+        "source": "self",
+        "status": "Bright -光-"
+       },
+       "consume_count": 1,
+       "kind": "tremor_burst",
+       "times": 2
+      }
+     ]
+    }
+   ],
+   "tags": [
+    "unclashable"
+   ],
+   "turn_end": [],
+   "turn_start": [],
+   "unmodeled": []
+  },
+  "1081305@2": {
+   "attack_end": [
+    {
+     "kind": "lose_status_all",
+     "raw": "[Skill End] Lose [Bright -光-] on self",
+     "status": "Bright -光-"
+    },
+    {
+     "kind": "suit_convert",
+     "next_turn": true,
+     "per_turn": 1,
+     "raw": "[Skill End] Next turn, convert the Suit in this unit's Hand to a random Suit that corresponds to one of this unit's Base Attack Skills (once per turn)"
+    },
+    {
+     "kind": "gain_unused_coins",
+     "next_turn": true,
+     "raw": "[Skill End] Gain [Bright -光-] Potency next turn equal to the # of Coins that weren't used",
+     "status": "Bright -光-"
+    }
+   ],
+   "before_attack": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "coin_index": 1,
+      "kind": "reuse_coin",
+      "raw": "Reuse this Coin ([Bright -光-] Potency - 1) times (4 times max)",
+      "reuse_coin": 4,
+      "reuse_from_status": "Bright -光-",
+      "reuse_minus": 1
+     },
+     {
+      "coin_index": 1,
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +1 [Tremor] Count",
+      "status": "Tremor"
+     },
+     {
+      "coin_index": 1,
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +1 [Sinking] Count",
+      "status": "Sinking"
+     }
+    ]
+   },
+   "combat_start": [],
+   "heads_hit": {},
+   "note": "Kōzan [光斬]",
+   "on_evade": [],
+   "on_kill": [],
+   "on_use": [
+    {
+     "kind": "noop",
+     "note": "no Defense Skills, no external Reuse",
+     "raw": "This Skill does not trigger Defense Skills, and external effects cannot trigger this Skill to be Reused"
+    },
+    {
+     "condition": {
+      "component": "potency",
+      "lte": 2,
+      "source": "self",
+      "status": "Bright -光-"
+     },
+     "kind": "cancel_skill",
+     "raw": "[On Use] At less than 3 [Bright -光-] Potency, cancel the Skill and gain 2 [Attack Power Up] next turn"
+    },
+    {
+     "kind": "gain",
+     "next_turn": true,
+     "potency": 2,
+     "raw": "[On Use] At less than 3 [Bright -光-] Potency, cancel the Skill and gain 2 [Attack Power Up] next turn",
+     "status": "Attack Power Up"
+    },
+    {
+     "kind": "noop",
+     "note": "header for the bullets below",
+     "raw": "[On Use] At 3+ [Bright -光-] Potency, gain the following effects based on Potency:"
+    },
+    {
+     "condition": {
+      "component": "potency",
+      "gte": 3,
+      "source": "self",
+      "status": "Bright -光-"
+     },
+     "kind": "damage_percent",
+     "per": 1,
+     "raw": "Per 1 Potency: this Skill deals +10% damage",
+     "step": 10,
+     "value": 0
+    },
+    {
+     "condition": {
+      "component": "potency",
+      "gte": 4,
+      "source": "self",
+      "status": "Bright -光-"
+     },
+     "kind": "base_power",
+     "raw": "At 4+ Potency: Base Power +1",
+     "value": 1
+    },
+    {
+     "kind": "compound",
+     "raw": "At 5 Potency: On Hit with the final Reuse Coin, trigger [Tremor Burst] 2 times; then, reduce target's [Tremor] Count by 1",
+     "sub_effects": [
+      {
+       "condition": {
+        "component": "potency",
+        "gte": 5,
+        "source": "self",
+        "status": "Bright -光-"
+       },
+       "consume_count": 1,
+       "kind": "tremor_burst",
+       "times": 2
+      }
+     ]
+    }
+   ],
+   "tags": [
+    "unclashable"
+   ],
+   "turn_end": [],
+   "turn_start": [],
+   "unmodeled": []
+  },
+  "1081305@3": {
+   "attack_end": [
+    {
+     "kind": "lose_status_all",
+     "raw": "[Skill End] Lose [Bright -光-] on self",
+     "status": "Bright -光-"
+    },
+    {
+     "kind": "suit_convert",
+     "next_turn": true,
+     "per_turn": 1,
+     "raw": "[Skill End] Next turn, convert the Suit in this unit's Hand to a random Suit that corresponds to one of this unit's Base Attack Skills (once per turn)"
+    },
+    {
+     "kind": "gain_unused_coins",
+     "next_turn": true,
+     "raw": "[Skill End] Gain [Bright -光-] Potency next turn equal to the # of Coins that weren't used",
+     "status": "Bright -光-"
+    }
+   ],
+   "before_attack": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "coin_index": 1,
+      "kind": "reuse_coin",
+      "raw": "Reuse this Coin ([Bright -光-] Potency - 1) times (4 times max)",
+      "reuse_coin": 4,
+      "reuse_from_status": "Bright -光-",
+      "reuse_minus": 1
+     },
+     {
+      "coin_index": 1,
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +1 [Tremor] Count",
+      "status": "Tremor"
+     },
+     {
+      "coin_index": 1,
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +1 [Sinking] Count",
+      "status": "Sinking"
+     }
+    ]
+   },
+   "combat_start": [],
+   "heads_hit": {},
+   "note": "Kōzan [光斬]",
+   "on_evade": [],
+   "on_kill": [],
+   "on_use": [
+    {
+     "kind": "noop",
+     "note": "no Defense Skills, no external Reuse",
+     "raw": "This Skill does not trigger Defense Skills, and external effects cannot trigger this Skill to be Reused"
+    },
+    {
+     "condition": {
+      "component": "potency",
+      "lte": 2,
+      "source": "self",
+      "status": "Bright -光-"
+     },
+     "kind": "cancel_skill",
+     "raw": "[On Use] At less than 3 [Bright -光-] Potency, cancel the Skill and gain 2 [Attack Power Up] next turn"
+    },
+    {
+     "kind": "gain",
+     "next_turn": true,
+     "potency": 2,
+     "raw": "[On Use] At less than 3 [Bright -光-] Potency, cancel the Skill and gain 2 [Attack Power Up] next turn",
+     "status": "Attack Power Up"
+    },
+    {
+     "kind": "noop",
+     "note": "header for the bullets below",
+     "raw": "[On Use] At 3+ [Bright -光-] Potency, gain the following effects based on Potency:"
+    },
+    {
+     "condition": {
+      "component": "potency",
+      "gte": 3,
+      "source": "self",
+      "status": "Bright -光-"
+     },
+     "kind": "damage_percent",
+     "per": 1,
+     "raw": "Per 1 Potency: this Skill deals +10% damage",
+     "step": 10,
+     "value": 0
+    },
+    {
+     "condition": {
+      "component": "potency",
+      "gte": 4,
+      "source": "self",
+      "status": "Bright -光-"
+     },
+     "kind": "base_power",
+     "raw": "At 4+ Potency: Base Power +1",
+     "value": 1
+    },
+    {
+     "kind": "compound",
+     "raw": "At 5 Potency: On Hit with the final Reuse Coin, trigger [Tremor Burst] 2 times; then, reduce target's [Tremor] Count by 1",
+     "sub_effects": [
+      {
+       "condition": {
+        "component": "potency",
+        "gte": 5,
+        "source": "self",
+        "status": "Bright -光-"
+       },
+       "consume_count": 1,
+       "kind": "tremor_burst",
+       "times": 2
+      }
+     ]
+    }
+   ],
+   "tags": [
+    "unclashable"
+   ],
+   "turn_end": [],
+   "turn_start": [],
+   "unmodeled": []
+  },
+  "1081305@4": {
+   "attack_end": [
+    {
+     "kind": "lose_status_all",
+     "raw": "[Skill End] Lose [Bright -光-] on self",
+     "status": "Bright -光-"
+    },
+    {
+     "kind": "suit_convert",
+     "next_turn": true,
+     "per_turn": 1,
+     "raw": "[Skill End] Next turn, convert the Suit in this unit's Hand to a random Suit that corresponds to one of this unit's Base Attack Skills (once per turn)"
+    },
+    {
+     "kind": "gain_unused_coins",
+     "next_turn": true,
+     "raw": "[Skill End] Gain [Bright -光-] Potency next turn equal to the # of Coins that weren't used",
+     "status": "Bright -光-"
+    }
+   ],
+   "before_attack": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "coin_index": 1,
+      "kind": "reuse_coin",
+      "raw": "Reuse this Coin ([Bright -光-] Potency - 1) times (4 times max)",
+      "reuse_coin": 4,
+      "reuse_from_status": "Bright -光-",
+      "reuse_minus": 1
+     },
+     {
+      "coin_index": 1,
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +1 [Tremor] Count",
+      "status": "Tremor"
+     },
+     {
+      "coin_index": 1,
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +1 [Sinking] Count",
+      "status": "Sinking"
+     }
+    ]
+   },
+   "combat_start": [],
+   "heads_hit": {
+    "1": [
+     {
+      "coin_index": 1,
+      "kind": "inflict",
+      "potency": 1,
+      "raw": "[Heads Hit] Inflict 1 [Defense Level Down]",
+      "status": "Defense Level Down"
+     }
+    ]
+   },
+   "note": "Kōzan [光斬]",
+   "on_evade": [],
+   "on_kill": [],
+   "on_use": [
+    {
+     "kind": "noop",
+     "note": "no Defense Skills, no external Reuse",
+     "raw": "This Skill does not trigger Defense Skills, and external effects cannot trigger this Skill to be Reused"
+    },
+    {
+     "condition": {
+      "component": "potency",
+      "lte": 2,
+      "source": "self",
+      "status": "Bright -光-"
+     },
+     "kind": "cancel_skill",
+     "raw": "[On Use] At less than 3 [Bright -光-] Potency, cancel the Skill and gain 2 [Attack Power Up] next turn"
+    },
+    {
+     "kind": "gain",
+     "next_turn": true,
+     "potency": 2,
+     "raw": "[On Use] At less than 3 [Bright -光-] Potency, cancel the Skill and gain 2 [Attack Power Up] next turn",
+     "status": "Attack Power Up"
+    },
+    {
+     "kind": "noop",
+     "note": "header for the bullets below",
+     "raw": "[On Use] At 3+ [Bright -光-] Potency, gain the following effects based on Potency:"
+    },
+    {
+     "condition": {
+      "component": "potency",
+      "gte": 3,
+      "source": "self",
+      "status": "Bright -光-"
+     },
+     "kind": "damage_percent",
+     "per": 1,
+     "raw": "Per 1 Potency: this Skill deals +10% damage",
+     "step": 10,
+     "value": 0
+    },
+    {
+     "condition": {
+      "component": "potency",
+      "gte": 4,
+      "source": "self",
+      "status": "Bright -光-"
+     },
+     "kind": "base_power",
+     "raw": "At 4+ Potency: Base Power +1",
+     "value": 1
+    },
+    {
+     "kind": "compound",
+     "raw": "At 5 Potency: On Hit with the final Reuse Coin, trigger [Tremor Burst] 2 times; then, reduce target's [Tremor] Count by 1",
+     "sub_effects": [
+      {
+       "condition": {
+        "component": "potency",
+        "gte": 5,
+        "source": "self",
+        "status": "Bright -光-"
+       },
+       "consume_count": 1,
+       "kind": "tremor_burst",
+       "times": 2
+      }
+     ]
+    }
+   ],
+   "tags": [
+    "unclashable"
    ],
    "turn_end": [],
    "turn_start": [],
@@ -6208,6 +6208,248 @@
    ],
    "tags": [],
    "turn_end": [],
+   "turn_start": [],
+   "unmodeled": []
+  },
+  "1091308@1": {
+   "attack_end": [],
+   "before_attack": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "coin_index": 1,
+      "kind": "inflict",
+      "potency": 1,
+      "raw": "[On Hit] Inflict 1 [Sinking]",
+      "status": "Sinking"
+     }
+    ],
+    "2": [
+     {
+      "coin_index": 2,
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Sinking]",
+      "status": "Sinking"
+     }
+    ]
+   },
+   "combat_start": [],
+   "heads_hit": {},
+   "note": "Weathered Pride",
+   "on_evade": [],
+   "on_kill": [],
+   "on_use": [
+    {
+     "kind": "gain",
+     "per_turn": 2,
+     "potency": 3,
+     "raw": "[On Use] Gain 3 [Deep Tears] (2 times per turn)",
+     "status": "Deep Tears"
+    }
+   ],
+   "tags": [
+    "clashable_defense"
+   ],
+   "turn_end": [
+    {
+     "count": 1,
+     "kind": "turn_end_sp_and_gain",
+     "per_turn": 1,
+     "raw": "[Turn End] At less than 3 [Tear-sharpened], lose 15 SP and gain 1 [Tear-sharpened] (once per turn)",
+     "status": "Tear-sharpened",
+     "step": 15,
+     "threshold": 3,
+     "value": 15
+    }
+   ],
+   "turn_start": [],
+   "unmodeled": []
+  },
+  "1091308@2": {
+   "attack_end": [],
+   "before_attack": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "coin_index": 1,
+      "kind": "inflict",
+      "potency": 1,
+      "raw": "[On Hit] Inflict 1 [Sinking]",
+      "status": "Sinking"
+     }
+    ],
+    "2": [
+     {
+      "coin_index": 2,
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Sinking]",
+      "status": "Sinking"
+     }
+    ]
+   },
+   "combat_start": [],
+   "heads_hit": {},
+   "note": "Weathered Pride",
+   "on_evade": [],
+   "on_kill": [],
+   "on_use": [
+    {
+     "kind": "gain",
+     "per_turn": 2,
+     "potency": 3,
+     "raw": "[On Use] Gain 3 [Deep Tears] (2 times per turn)",
+     "status": "Deep Tears"
+    }
+   ],
+   "tags": [
+    "clashable_defense"
+   ],
+   "turn_end": [
+    {
+     "count": 1,
+     "kind": "turn_end_sp_and_gain",
+     "per_turn": 1,
+     "raw": "[Turn End] At less than 3 [Tear-sharpened], lose 15 SP and gain 1 [Tear-sharpened] (once per turn)",
+     "status": "Tear-sharpened",
+     "step": 15,
+     "threshold": 3,
+     "value": 15
+    }
+   ],
+   "turn_start": [],
+   "unmodeled": []
+  },
+  "1091308@3": {
+   "attack_end": [],
+   "before_attack": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "coin_index": 1,
+      "kind": "inflict",
+      "potency": 1,
+      "raw": "[On Hit] Inflict 1 [Sinking]",
+      "status": "Sinking"
+     }
+    ],
+    "2": [
+     {
+      "coin_index": 2,
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Sinking]",
+      "status": "Sinking"
+     }
+    ]
+   },
+   "combat_start": [],
+   "heads_hit": {},
+   "note": "Weathered Pride",
+   "on_evade": [],
+   "on_kill": [],
+   "on_use": [
+    {
+     "kind": "gain",
+     "per_turn": 2,
+     "potency": 3,
+     "raw": "[On Use] Gain 3 [Deep Tears] (2 times per turn)",
+     "status": "Deep Tears"
+    }
+   ],
+   "tags": [
+    "clashable_defense"
+   ],
+   "turn_end": [
+    {
+     "count": 1,
+     "kind": "turn_end_sp_and_gain",
+     "per_turn": 1,
+     "raw": "[Turn End] At less than 3 [Tear-sharpened], lose 15 SP and gain 1 [Tear-sharpened] (once per turn)",
+     "status": "Tear-sharpened",
+     "step": 15,
+     "threshold": 3,
+     "value": 15
+    }
+   ],
+   "turn_start": [],
+   "unmodeled": []
+  },
+  "1091308@4": {
+   "attack_end": [],
+   "before_attack": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "coin_index": 1,
+      "kind": "inflict",
+      "potency": 1,
+      "raw": "[On Hit] Inflict 1 [Sinking]",
+      "status": "Sinking"
+     }
+    ],
+    "2": [
+     {
+      "coin_index": 2,
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Sinking]",
+      "status": "Sinking"
+     }
+    ]
+   },
+   "combat_start": [
+    {
+     "condition": {
+      "component": "stack",
+      "source": "self",
+      "status": "Piercing Sword"
+     },
+     "kind": "base_power",
+     "max": 2,
+     "per": 2,
+     "raw": "[Combat Start] Final Power +1 for every 2 [Piercing Sword] (max 2)",
+     "step": 1,
+     "value": 0
+    }
+   ],
+   "heads_hit": {},
+   "note": "Weathered Pride",
+   "on_evade": [],
+   "on_kill": [],
+   "on_use": [
+    {
+     "kind": "gain",
+     "per_turn": 2,
+     "potency": 5,
+     "raw": "[On Use] Gain 5 [Deep Tears] (2 times per turn)",
+     "status": "Deep Tears"
+    }
+   ],
+   "tags": [
+    "clashable_defense"
+   ],
+   "turn_end": [
+    {
+     "count": 1,
+     "kind": "turn_end_sp_and_gain",
+     "per_turn": 1,
+     "raw": "[Turn End] At less than 3 [Tear-sharpened], lose 15 SP and gain 1 [Tear-sharpened] (once per turn)",
+     "status": "Tear-sharpened",
+     "step": 15,
+     "threshold": 3,
+     "value": 15
+    }
+   ],
    "turn_start": [],
    "unmodeled": []
   },

@@ -202,6 +202,8 @@ def parse_skills_from_page(page: wt.Template, page_id: str, extra_slots: bool = 
         variants = [slot]
         if extra_slots:
             variants += [f"{slot}-{n}" for n in (2, 3)]
+            if slot == "defense":
+                variants += ["defense2", "defense3"]
         for name in variants:
             raw = page.named.get(name)
             if not raw:
@@ -210,7 +212,8 @@ def parse_skills_from_page(page: wt.Template, page_id: str, extra_slots: bool = 
             if tpl is None:
                 continue
             suffix = {"skill1": "01", "skill2": "02", "skill3": "03", "defense": "04", "skill4": "05"}[slot]
-            index = name.split("-")[1] if "-" in name else ""
+            # `skill1-2` and `defense2` both carry their index after the slot name.
+            index = name[len(slot):].lstrip("-")
             skill = parse_skill(
                 tpl,
                 page_id + suffix + index,
@@ -291,15 +294,20 @@ def build_identity(game_id: str, meta, en_pers, zh_pers, en_skills, zh_skills) -
     skills = parse_skills_from_page(page, game_id, extra_slots=True)
     # An alternate Skill (`skill1-2`) has no id of its own on the page; match it to
     # the game record by name.
+    def canonical(name: Optional[str]) -> str:
+        """The game appends a marker to some Skill names ("Weathered Pride
+        [DuelCounter]"); the wiki does not."""
+        return re.sub(r"\s*\[[^\]]*\]\s*$", "", name or "").strip()
+
     by_name = {}
     for gid, record in en_skills_idx.items():
         levels = record.get("levelList") or []
         if levels:
-            by_name.setdefault(levels[-1].get("name"), int(gid))
+            by_name.setdefault(canonical(levels[-1].get("name")), int(gid))
     for skill in skills:
         gid = skill["id"]
         if skill.get("variant") and gid not in en_skills_idx:
-            match = by_name.get(skill.get("name"))
+            match = by_name.get(canonical(skill.get("name")))
             if match is not None:
                 skill["id"] = str(match)
                 skill["variant_of"] = gid
@@ -316,6 +324,28 @@ def build_identity(game_id: str, meta, en_pers, zh_pers, en_skills, zh_skills) -
                 skill["name_zh"] = levels[-1].get("name")
         if not en:
             unparsed.append(f"game_text:{gid}")
+
+    # Rodion's Knight of Despair uses the Minus Coin Skill of a slot while her
+    # Despair state is active ("Uses Minus Coin Skills as Base Skills"): link each
+    # Skill to the variant of its Slot whose Coin Power is negative.
+    for skill in skills:
+        if skill.get("variant"):
+            continue
+        base_tier = (skill.get("upties") or {}).get("4") or {}
+        base_power = base_tier.get("coin_power")
+        for other in skills:
+            if not other.get("variant"):
+                continue
+            if other.get("slot") != skill.get("slot"):
+                continue
+            tier = (other.get("upties") or {}).get("4") or {}
+            coin = tier.get("coin_power")
+            if coin is None or base_power is None:
+                continue
+            if coin < 0 <= base_power:
+                skill["minus_variant"] = other["id"]
+                other["variant_of"] = skill["id"]
+                break
 
     en_p = en_pers.get(game_id, {})
     zh_p = zh_pers.get(game_id, {})

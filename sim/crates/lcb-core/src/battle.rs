@@ -1892,6 +1892,14 @@ pub fn apply_effects(
             "crit_damage_bonus" => {
                 use_ctx.crit_damage_bonus += effect.percent.unwrap_or(0) as f64 / 100.0;
             }
+            "sp_damage_self" => {
+                // "[On Use] Lose 7 SP" - an absolute SP cost on the user.
+                let sp = effect.value.or(effect.self_sp_damage).unwrap_or(0);
+                if sp != 0 {
+                    let sanity = state.units[ctx.actor_index].sanity;
+                    state.units[ctx.actor_index].sanity = sanity.add(-sp);
+                }
+            }
             "sp_damage_self_per_stack" => {
                 let Some(status) = effect.status.clone() else { continue };
                 let step = effect.step.unwrap_or(0);
@@ -2571,8 +2579,21 @@ pub fn build_use(
     };
     let record = library.identity(identity)?;
     let skill_record = record.skills.iter().find(|s| s.id == skill.0)?;
+    // "Uses Plus Coin Skills as Base Skills" (Blessing) / "Uses Minus Coin Skills
+    // as Base Skills" (Despair): the Despair state swaps a Base Skill for the
+    // Minus Coin Skill of its Slot (Rodion's `Faded Faith`, `Weathered Pride`, ...).
+    let in_despair = unit.statuses.stack("Despair") + unit.statuses.potency("Despair") > 0;
+    let resolved = match skill_record.minus_variant.as_deref() {
+        Some(variant) if in_despair => SkillId::new(variant),
+        _ => skill.clone(),
+    };
+    let skill_record = record
+        .skills
+        .iter()
+        .find(|s| s.id == resolved.0)
+        .unwrap_or(skill_record);
     let tier = skill_record.tier(state.config.uptie)?;
-    let mech = mechanics.get_or_default_for(skill, state.config.uptie);
+    let mech = mechanics.get_or_default_for(&resolved, state.config.uptie);
     let coins = (0..tier.coins.unwrap_or(1))
         .map(|index| CoinRuntime::fresh(mech.coin(index + 1).iter().any(|e| e.kind == "unbreakable_coin")))
         .collect();
@@ -2580,7 +2601,7 @@ pub fn build_use(
         actor: unit.id.clone(),
         target: None,
         slot: 0,
-        skill: skill.clone(),
+        skill: resolved.clone(),
         name: skill_record.display_name(),
         sin: skill_record.sin(state.config.uptie).unwrap_or(Sin::Wrath),
         damage_type: skill_record.damage_type(state.config.uptie).unwrap_or(DamageType::Blunt),
@@ -6655,7 +6676,7 @@ fn passive_follow_ups(
                     library,
                     mechanics,
                     unit_index,
-                    &SkillId::new("10813032"),
+                    &SkillId::new("1081305"),
                     target_index,
                 );
             }

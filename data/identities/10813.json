@@ -277,7 +277,7 @@
       "name_zh": "樱闪"
     },
     {
-      "id": "10813032",
+      "id": "1081305",
       "slot": "skill3",
       "name": "Kōzan ['''光斬''']",
       "type": "Slash",
@@ -344,7 +344,10 @@
           "tags": []
         }
       },
-      "variant": true
+      "variant": true,
+      "variant_of": "10813032",
+      "name_en": "Kōzan [光斬]",
+      "name_zh": "光斩"
     },
     {
       "id": "1081304",
@@ -443,9 +446,7 @@
       "raw_key": "passive2"
     }
   ],
-  "unparsed": [
-    "game_text:10813032"
-  ],
+  "unparsed": [],
   "sources": [
     {
       "kind": "wiki",

@@ -210,6 +210,12 @@ PATTERNS = [
     (re.compile(rf"^Deal \+\({ST} spent x {N}\)% damage$"),
      lambda m: {"kind": "damage_percent_per_ammo_spent", "status": m.group(1),
                 "step": int(m.group(2))}),
+    # "Final Power +1 for every 2 [Piercing Sword] (max 2)".
+    (re.compile(rf"^Final Power \+{N} for every {N} {ST} \(max {N}\)$"),
+     lambda m: {"kind": "base_power", "value": 0, "step": int(m.group(1)),
+                "per": int(m.group(2)), "max": int(m.group(4)),
+                "condition": {"source": "self", "status": m.group(3),
+                              "component": "stack"}}),
     # "Coin Power +1 for every 2 [Protecting Sword] (max 2)"
     (re.compile(rf"^Coin Power \+{N} for every {N} {ST} \(max {N}\)$"),
      lambda m: {"kind": "coin_power", "value": 0, "step": int(m.group(1)), "per": int(m.group(2)),

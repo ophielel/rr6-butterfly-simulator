@@ -1721,7 +1721,7 @@ fn section5_golden_replay_is_deterministic() {
     assert_eq!(first_hp, vec![25406, 25200, 25057], "Imago HP after turns 1-3");
     assert_eq!(
         format!("{first_hash:016x}"),
-        "c05ea92fb1fcb348",
+        "433225513bb5144e",
         "recorded state hash"
     );
 }
@@ -4131,4 +4131,29 @@ fn resonance_grants_offense_level_by_chain_position() {
             .unwrap_or(0);
         assert_eq!(bonus, 5, "the third Skill of a Gloom A-Reson gains +5");
     }
+}
+
+/// Rodion's Despair state swaps her Base Skills for the Minus Coin Skill of the
+/// same Slot ("Turn Start: at less than 0 SP, gain [DespairAlly] - Uses Minus
+/// Coin Skills as Base Skills").  Source: passive `The Sword Sharpened with
+/// Tears`, identity page `skill1-2` / `defense2`.
+#[test]
+fn despair_swaps_in_the_minus_coin_skills() {
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&["10913"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    let base = SkillId::new("1091301");
+    let plus = battle::build_use(&state, &sim.library, &sim.mechanics, 0, &base).unwrap();
+    assert!(plus.coin_power > 0, "the Blessed Skill uses Plus Coins");
+    assert_eq!(plus.skill.as_str(), "1091301");
+
+    state.units[0].statuses.add_stack("Despair", 1);
+    let minus = battle::build_use(&state, &sim.library, &sim.mechanics, 0, &base).unwrap();
+    assert_eq!(minus.skill.as_str(), "1091305", "Despair uses Faded Faith");
+    assert!(minus.coin_power < 0, "the Despair Skill uses Minus Coins");
+    assert!(
+        minus.base_power > plus.base_power,
+        "the Minus Coin Skill trades Coin Power for Base Power"
+    );
 }

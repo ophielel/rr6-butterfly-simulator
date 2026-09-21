@@ -62,6 +62,10 @@ pub struct SkillTier {
 pub struct SkillRecord {
     pub id: String,
     pub slot: String,
+    /// The Minus Coin Skill of the same Slot, used while the unit is in its
+    /// "Uses Minus Coin Skills as Base Skills" state (Rodion's Despair).
+    #[serde(default)]
+    pub minus_variant: Option<String>,
     #[serde(default)]
     pub name: Option<String>,
     #[serde(default)]

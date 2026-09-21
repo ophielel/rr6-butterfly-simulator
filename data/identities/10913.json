@@ -116,7 +116,8 @@
       },
       "variant": false,
       "name_en": "The Knight's Sanctuary",
-      "name_zh": "骑士的护佑"
+      "name_zh": "骑士的护佑",
+      "minus_variant": "1091305"
     },
     {
       "id": "1091305",
@@ -191,7 +192,7 @@
         }
       },
       "variant": true,
-      "variant_of": "10913012",
+      "variant_of": "1091301",
       "name_en": "Faded Faith",
       "name_zh": "褪色的信条"
     },
@@ -257,7 +258,8 @@
       },
       "variant": false,
       "name_en": "With the Power of Justice",
-      "name_zh": "以正义之力"
+      "name_zh": "以正义之力",
+      "minus_variant": "1091306"
     },
     {
       "id": "1091306",
@@ -320,7 +322,7 @@
         }
       },
       "variant": true,
-      "variant_of": "10913022",
+      "variant_of": "1091302",
       "name_en": "With the Tear-sharpened Sword",
       "name_zh": "以泪锋之剑"
     },
@@ -386,7 +388,8 @@
       },
       "variant": false,
       "name_en": "Arcana Pierce",
-      "name_zh": "阿卡纳穿刺"
+      "name_zh": "阿卡纳穿刺",
+      "minus_variant": "1091307"
     },
     {
       "id": "1091307",
@@ -449,7 +452,7 @@
         }
       },
       "variant": true,
-      "variant_of": "10913032",
+      "variant_of": "1091303",
       "name_en": "Arcana: Tear and Pierce",
       "name_zh": "阿卡纳裂泪穿刺"
     },
@@ -523,7 +526,85 @@
       },
       "variant": false,
       "name_en": "The Knight's Faith",
-      "name_zh": "骑士的信条"
+      "name_zh": "骑士的信条",
+      "minus_variant": "1091308"
+    },
+    {
+      "id": "1091308",
+      "slot": "defense",
+      "name": "Weathered Pride",
+      "type": "Pierce",
+      "rank": 1,
+      "upties": {
+        "1": {
+          "base_power": 10,
+          "coin_power": -4,
+          "coins": 2,
+          "offense_level_mod": 2,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Gloom",
+          "skill_amount": null,
+          "on_use_text": "[Clashable Counter]\n[On Use] Gain 3 [Deep Tears] (2 times per turn)\n[Turn End] At less than 3 [Tear-sharpened], lose 15 SP and gain 1 [Tear-sharpened] (once per turn)\n- If this unit has [Tear-sharpened], lose ([Tear-sharpened] Stack x 15) more SP",
+          "coin_texts": [
+            "[Unbreakable Coin]\n[On Hit] Inflict 1 [Sinking]",
+            "[Unbreakable Coin]\n[On Hit] Inflict 2 [Sinking]"
+          ],
+          "tags": []
+        },
+        "2": {
+          "base_power": 10,
+          "coin_power": -4,
+          "coins": 2,
+          "offense_level_mod": 2,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Gloom",
+          "skill_amount": null,
+          "on_use_text": "[Clashable Counter]\n[On Use] Gain 3 [Deep Tears] (2 times per turn)\n[Turn End] At less than 3 [Tear-sharpened], lose 15 SP and gain 1 [Tear-sharpened] (once per turn)\n- If this unit has [Tear-sharpened], lose ([Tear-sharpened] Stack x 15) more SP",
+          "coin_texts": [
+            "[Unbreakable Coin]\n[On Hit] Inflict 1 [Sinking]",
+            "[Unbreakable Coin]\n[On Hit] Inflict 2 [Sinking]"
+          ],
+          "tags": []
+        },
+        "3": {
+          "base_power": 10,
+          "coin_power": -4,
+          "coins": 2,
+          "offense_level_mod": 2,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Gloom",
+          "skill_amount": null,
+          "on_use_text": "[Clashable Counter]\n[On Use] Gain 3 [Deep Tears] (2 times per turn)\n[Turn End] At less than 3 [Tear-sharpened], lose 15 SP and gain 1 [Tear-sharpened] (once per turn)\n- If this unit has [Tear-sharpened], lose ([Tear-sharpened] Stack x 15) more SP",
+          "coin_texts": [
+            "[Unbreakable Coin]\n[On Hit] Inflict 1 [Sinking]",
+            "[Unbreakable Coin]\n[On Hit] Inflict 2 [Sinking]"
+          ],
+          "tags": []
+        },
+        "4": {
+          "base_power": 12,
+          "coin_power": -4,
+          "coins": 2,
+          "offense_level_mod": 2,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Gloom",
+          "skill_amount": null,
+          "on_use_text": "[Clashable Counter]\n[Combat Start] Final Power +1 for every 2 [Piercing Sword] (max 2)\n[On Use] Gain 5 [Deep Tears] (2 times per turn)\n[Turn End] At less than 3 [Tear-sharpened], lose 15 SP and gain 1 [Tear-sharpened] (once per turn)\n- If this unit has [Tear-sharpened], lose ([Tear-sharpened] Stack x 15) more SP",
+          "coin_texts": [
+            "[Unbreakable Coin]\n[On Hit] Inflict 1 [Sinking]",
+            "[Unbreakable Coin]\n[On Hit] Inflict 2 [Sinking]"
+          ],
+          "tags": []
+        }
+      },
+      "variant": true,
+      "variant_of": "1091304",
+      "name_en": "Weathered Pride",
+      "name_zh": "磨灭的自尊"
     }
   ],
   "passives": [
