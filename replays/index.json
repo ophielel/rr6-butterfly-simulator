@@ -1,0 +1,91 @@
+{
+ "count": 5,
+ "entries": [
+  {
+   "file": "burst_AI_seed9006.json",
+   "policy": "AI",
+   "scenario": "burst",
+   "seed": 9006,
+   "won": true,
+   "kill_turn": 3,
+   "turns": 3,
+   "transition_hashes": [
+    "2175faa775a8088e",
+    "f1e22c1a5907f6a9",
+    "3aa16af8a01a0f87"
+   ],
+   "state_hash_before": "de328e4051896232",
+   "state_hash_after": "57e8963b2bc84d1f",
+   "replayable": true
+  },
+  {
+   "file": "burst_FirstLegal_seed9010.json",
+   "policy": "FirstLegal",
+   "scenario": "burst",
+   "seed": 9010,
+   "won": true,
+   "kill_turn": 4,
+   "turns": 4,
+   "transition_hashes": [
+    "d7265c0b3ccc3010",
+    "46b7b4e9a1d40087",
+    "bb5af4aed8614b63",
+    "594386aca1f58206"
+   ],
+   "state_hash_before": "273d0254c630a042",
+   "state_hash_after": "3fe73b54527dd8da",
+   "replayable": true
+  },
+  {
+   "file": "burst_Greedy_seed9003.json",
+   "policy": "Greedy",
+   "scenario": "burst",
+   "seed": 9003,
+   "won": true,
+   "kill_turn": 3,
+   "turns": 3,
+   "transition_hashes": [
+    "07758b031b4d18e2",
+    "c593bb3854fc4cac",
+    "c8081ace001e9012"
+   ],
+   "state_hash_before": "41f8eb26f6bf269d",
+   "state_hash_after": "b5f860e55e0a4d8c",
+   "replayable": true
+  },
+  {
+   "file": "burst_Random_seed9071.json",
+   "policy": "Random",
+   "scenario": "burst",
+   "seed": 9071,
+   "won": true,
+   "kill_turn": 3,
+   "turns": 3,
+   "transition_hashes": [
+    "9f5bd39860c15511",
+    "3ab3682553f64896",
+    "7dbb93ada9783d30"
+   ],
+   "state_hash_before": "74bd041b1667b754",
+   "state_hash_after": "8e2695a95554fe98",
+   "replayable": true
+  },
+  {
+   "file": "burst_Teacher_seed9009.json",
+   "policy": "Teacher",
+   "scenario": "burst",
+   "seed": 9009,
+   "won": true,
+   "kill_turn": 3,
+   "turns": 3,
+   "transition_hashes": [
+    "af5f6c1b143a6855",
+    "3bfaca940c7fa25c",
+    "8db3c0aeaf2b1dd8"
+   ],
+   "state_hash_before": "195fa51f158245a5",
+   "state_hash_after": "8d92d23844bd3eae",
+   "replayable": true
+  }
+ ]
+}

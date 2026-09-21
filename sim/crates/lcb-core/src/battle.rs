@@ -3971,7 +3971,7 @@ fn apply_hit_inner(
         let transfer = damage * origination.damage_transfer_percent / 100;
         if transfer > 0 {
             if let Some(owner) = owner_unit(state, defender_index, origination.owner.as_deref()) {
-                state.units[owner].take_damage(transfer);
+                state.damage_unit(owner, transfer, crate::state::DamageSource::Attack);
             }
         }
         // The illusion's own share is floored by `Unit::take_damage` ("this
@@ -3982,7 +3982,7 @@ fn apply_hit_inner(
         // "Deal -50% damage against sub-targets".
         damage = damage * (100 + use_.ctx.sub_target_damage_percent) / 100;
     }
-    let (_, hp_lost) = state.units[defender_index].take_damage(damage);
+    let hp_lost = state.damage_unit(defender_index, damage, crate::state::DamageSource::Attack);
 
     *use_.ctx.coin_hits.entry(coin_index as u32 + 1).or_insert(0) += 1;
     // The order of a hit is fixed by the source: damage, then the **defender's**
@@ -3998,7 +3998,7 @@ fn apply_hit_inner(
     // Potency. Then, reduce its Count by 1." (wiki.gg `Status Effects`).
     let rupture = state.units[defender_index].statuses.potency("Rupture");
     if rupture > 0 {
-        state.units[defender_index].take_damage(rupture);
+        state.damage_unit(defender_index, rupture, crate::state::DamageSource::Status);
         tick_status(state, defender_index, "Rupture", 0, -1);
     }
     // Sinking: when hit, SP damage by Potency then Count -1.
@@ -4037,7 +4037,11 @@ fn apply_hit_inner(
                 .floor() as i32;
                 // "max Gloom damage 30" bounds the damage actually taken.
                 let damage = dealt.clamp(1, 30);
-                state.units[defender_index].take_damage(damage);
+                state.damage_unit(
+                    defender_index,
+                    damage,
+                    crate::state::DamageSource::Sinking,
+                );
                 state.push_log(
                     "butterfly",
                     format!(
@@ -4327,17 +4331,19 @@ pub fn apply_sinking(state: &mut BattleState, unit_index: usize) {
             }
         }
     }
+    state.turn_stats.sinking_triggers += 1;
     match state.units[unit_index].sanity {
         Sanity::None => {
             let gloom = state.units[unit_index].resist_sin(Sin::Gloom);
             let dmg = (sinking as f64 * (1.0 + crate::damage::resistance_modifier(gloom)))
                 .floor()
                 .max(1.0) as i32;
-            state.units[unit_index].take_damage(dmg);
+            state.damage_unit(unit_index, dmg, crate::state::DamageSource::Sinking);
         }
         Sanity::Sane { .. } => {
             let sanity = state.units[unit_index].sanity;
             state.units[unit_index].sanity = sanity.add(-sinking);
+            state.turn_stats.sinking_sp_damage += sinking;
         }
     }
     // "Then, reduce its Count by 1": a status whose Count reaches 0 is gone.
@@ -5582,10 +5588,24 @@ pub fn end_turn(state: &mut BattleState, mechanics: &MechanicsBook) {
             }
         }
     }
-    // Victory check.
+    // Victory check.  An encounter's main enemy (`encounter_boss`) decides the
+    // fight: when it is defeated the wave is over, even if an attached ally is
+    // still on the field.  The Section 5 Illusory Butterflies can never die
+    // (their `Origination` floors their HP at 1), so "all enemies defeated"
+    // alone would make that encounter unwinnable.
     let sinners_alive = state.living_sinners().len();
     let enemies_alive = state.living_enemies().len();
-    if enemies_alive == 0 && sinners_alive > 0 {
+    let bosses_total = state.units.iter().filter(|u| u.encounter_boss).count();
+    let bosses_alive = state
+        .units
+        .iter()
+        .filter(|u| u.encounter_boss && u.alive)
+        .count();
+    let main_defeated = bosses_total > 0 && bosses_alive == 0;
+    if (enemies_alive == 0 || main_defeated) && sinners_alive > 0 {
+        if main_defeated && enemies_alive > 0 {
+            state.push_log("end", "the encounter's main enemy was defeated".to_string());
+        }
         state.winner = Some(Winner::Sinners);
         state.phase = Phase::Finished;
     } else if sinners_alive == 0 && enemies_alive > 0 {
@@ -6542,6 +6562,12 @@ fn prepare_use(
         use_.ctx.ammo_planned = planned;
     }
     use_.ctx.coins_total = use_.coins.len();
+    // Bookkeeping for the training layer: this Skill actually resolves (it may
+    // still lose its Clash - a Skill that lost was used too).
+    state.record_use(unit_index, &use_.skill, slot);
+    if let Some(ego) = use_.ego.clone() {
+        state.record_ego(unit_index, &ego);
+    }
     // Koi-Koi: "If the Skill was either 'Sakura-sen' or an E.G.O Skill, gain 1
     // [HanafudaCombo] Potency" (once per turn, leftmost Skill Slot).
     if state.units[unit_index]

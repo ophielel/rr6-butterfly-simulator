@@ -251,3 +251,109 @@ fn hash_chain_is_hex_encoded() {
     let value = hash::fnv1a64(b"abc");
     assert_eq!(hash::hex(value).len(), 16);
 }
+
+// ---------------------------------------------------------------------------
+// The training interface: one complete plan per turn (`Simulator::submit_plan`)
+// ---------------------------------------------------------------------------
+
+/// A full plan is accepted, resolves the turn and reports the turn's real
+/// statistics; an incomplete plan and an illegal plan are both rejected without
+/// changing the state.
+#[test]
+fn submit_plan_is_validated_atomically() {
+    let sim = simulator();
+    let mut state = sim
+        .new_encounter(&team(), &fixed::SECTION5_WAVE, 3, BattleConfig::default())
+        .expect("encounter builds");
+    let before = sim.state_hash(&state);
+    let plan = assign_all(&state, &sim);
+    assert_eq!(plan.len(), team().len(), "one action per Sinner");
+
+    // An incomplete plan is refused and nothing is committed.
+    let partial = plan[..plan.len() - 1].to_vec();
+    let err = sim.submit_plan(&mut state, partial).unwrap_err();
+    assert!(format!("{err}").contains("incomplete plan"), "{err}");
+    assert_eq!(sim.state_hash(&state), before, "state is untouched");
+
+    // An illegal action is refused too.
+    let mut illegal = plan.clone();
+    if let Action::Assign { skill, .. } = &mut illegal[0] {
+        *skill = lcb_core::ids::SkillId::new("9999999");
+    }
+    let err = sim.submit_plan(&mut state, illegal).unwrap_err();
+    assert!(format!("{err}").contains("illegal action"), "{err}");
+    assert_eq!(sim.state_hash(&state), before, "state is untouched");
+
+    // A duplicate actor is refused as well.
+    let mut duplicated = plan.clone();
+    duplicated.push(plan[0].clone());
+    let err = sim.submit_plan(&mut state, duplicated).unwrap_err();
+    assert!(format!("{err}").contains("duplicate action"), "{err}");
+    assert_eq!(sim.state_hash(&state), before);
+
+    // The complete plan resolves the turn and reports the turn's signals.
+    sim.submit_plan(&mut state, plan.clone()).expect("plan resolves");
+    assert!(state.turn_stats.damage_to_enemies > 0);
+    // Every Sinner used a Skill (the enemies' Skills are recorded too, so the
+    // list is longer than the team).
+    for action in plan.iter() {
+        let actor = match action {
+            Action::Assign { actor, .. }
+            | Action::Engage { actor, .. }
+            | Action::UseEgo { actor, .. } => actor.clone(),
+            Action::Commit => continue,
+        };
+        assert!(
+            state
+                .turn_stats
+                .skill_uses
+                .iter()
+                .any(|entry| entry.starts_with(&format!("{actor}|"))),
+            "{actor} used no Skill"
+        );
+    }
+    assert!(state.turn_stats.deaths.is_empty());
+}
+
+/// The atomic plan API and the incremental one produce the very same fight.
+#[test]
+fn submit_plan_matches_incremental_submission() {
+    let sim = simulator();
+    let mut planned = sim
+        .new_encounter(&team(), &fixed::SECTION5_WAVE, 11, BattleConfig::default())
+        .expect("encounter builds");
+    let mut incremental = planned.clone();
+    let plan = assign_all(&planned, &sim);
+    sim.submit_plan(&mut planned, plan.clone()).expect("plan");
+    for action in plan.iter() {
+        sim.submit(&mut incremental, action.clone()).expect("submit");
+    }
+    sim.step_turn(&mut incremental).expect("turn");
+    assert_eq!(sim.state_hash(&planned), sim.state_hash(&incremental));
+    let transition = sim.transition_hash(&planned.clone(), &plan, &planned);
+    assert_ne!(transition, 0);
+}
+
+#[test]
+fn probe_ego_legality() {
+    let sim = simulator();
+    let mut state = sim
+        .new_encounter(&team(), &fixed::SECTION5_WAVE, 1, BattleConfig::default())
+        .unwrap();
+    for sin in ["wrath", "lust", "sloth", "gluttony", "gloom", "pride", "envy"] {
+        state.ego_resources.insert(sin.to_string(), 9);
+    }
+    let legal = sim.legal_actions(&state);
+    let egos: Vec<_> = legal
+        .iter()
+        .filter(|a| matches!(a, Action::UseEgo { .. }))
+        .collect();
+    eprintln!("ego actions: {}", egos.len());
+    for ego in egos.iter().take(5) {
+        eprintln!("{ego:?}");
+    }
+    eprintln!("slots: {:?}", state.units[0].ego_slots);
+    for (key, value) in state.ego_resources.iter() {
+        eprintln!("{key} {value}");
+    }
+}

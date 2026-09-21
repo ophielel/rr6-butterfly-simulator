@@ -1,0 +1,434 @@
+{
+  "provenance": {
+    "generated_at": "2026-09-21T22:14:29+0800",
+    "python": "3.14.3",
+    "numpy": "2.4.6",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "git": {
+      "commit": "960338d38675dde4538f5fb5425169972ed312c7",
+      "dirty": true,
+      "branch": "main"
+    },
+    "data_fingerprint": "18d46cf607d47b2d",
+    "scenario": {
+      "name": "real",
+      "enemies": [
+        "9567",
+        "9572",
+        "9573",
+        "9574"
+      ],
+      "max_turns": 30,
+      "enemy_hp_scale": 1.0,
+      "strict": true,
+      "description": "Line 6 Section 5 wave exactly as the data describes it (Imago 25616 HP)"
+    },
+    "seeds": {
+      "first": 9001,
+      "last": 9020,
+      "count": 20
+    },
+    "team": [
+      "10110",
+      "10414",
+      "10813",
+      "10913",
+      "11004",
+      "11114",
+      "11214"
+    ],
+    "assembled_by": "eval/summarise_reports.py",
+    "policies": [
+      "AI",
+      "FirstLegal",
+      "Greedy",
+      "Random"
+    ],
+    "note": "Each policy is an independent run over the same test seeds; the AI checkpoint is models/ai.npz unless stated otherwise."
+  },
+  "short_turn_threshold": 12,
+  "policies": {
+    "AI": {
+      "summary": {
+        "episodes": 20,
+        "wins": 0,
+        "win_rate": 0.0,
+        "kill_turn_mean": null,
+        "kill_turn_median": null,
+        "kill_turn_p10": null,
+        "kill_turn_p25": null,
+        "fastest_kill_turn": null,
+        "short_turn_threshold": 12,
+        "short_win_rate": 0.0,
+        "damage_to_enemies_mean": 2077.3,
+        "boss_hp_left_median": 24506.0,
+        "survivors_mean": 0.6,
+        "sinking_damage_mean": 258.7,
+        "axis_ok_rate": 0.25,
+        "axis_ok_rate_among_wins": 0.0,
+        "long_tail_failure_rate": 1.0,
+        "ego_use_turns": [
+          6,
+          6,
+          7,
+          7,
+          7,
+          8,
+          8,
+          8,
+          8,
+          9,
+          9,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          12,
+          12,
+          12,
+          13,
+          13,
+          13,
+          13,
+          14,
+          14,
+          14,
+          17,
+          17,
+          17
+        ],
+        "errors": 0
+      },
+      "best_of_n": {
+        "n1": {
+          "windows": 20,
+          "window_win_rate": 0.0,
+          "best_kill_turn_min": null,
+          "best_kill_turn_median": null
+        },
+        "n10": {
+          "windows": 11,
+          "window_win_rate": 0.0,
+          "best_kill_turn_min": null,
+          "best_kill_turn_median": null
+        }
+      },
+      "fastest_kill_turn": null,
+      "ego_uses": [
+        "sinner-0-10110|20106",
+        "sinner-0-10110|20109",
+        "sinner-2-10813|20810",
+        "sinner-3-10913|20903"
+      ],
+      "files": 1
+    },
+    "FirstLegal": {
+      "summary": {
+        "episodes": 20,
+        "wins": 0,
+        "win_rate": 0.0,
+        "kill_turn_mean": null,
+        "kill_turn_median": null,
+        "kill_turn_p10": null,
+        "kill_turn_p25": null,
+        "fastest_kill_turn": null,
+        "short_turn_threshold": 12,
+        "short_win_rate": 0.0,
+        "damage_to_enemies_mean": 794.85,
+        "boss_hp_left_median": 24826.0,
+        "survivors_mean": 0.35,
+        "sinking_damage_mean": 126.95,
+        "axis_ok_rate": 0.0,
+        "axis_ok_rate_among_wins": 0.0,
+        "long_tail_failure_rate": 1.0,
+        "ego_use_turns": [],
+        "errors": 0
+      },
+      "best_of_n": {
+        "n1": {
+          "windows": 20,
+          "window_win_rate": 0.0,
+          "best_kill_turn_min": null,
+          "best_kill_turn_median": null
+        },
+        "n10": {
+          "windows": 11,
+          "window_win_rate": 0.0,
+          "best_kill_turn_min": null,
+          "best_kill_turn_median": null
+        }
+      },
+      "fastest_kill_turn": null,
+      "ego_uses": [],
+      "files": 1
+    },
+    "Greedy": {
+      "summary": {
+        "episodes": 20,
+        "wins": 0,
+        "win_rate": 0.0,
+        "kill_turn_mean": null,
+        "kill_turn_median": null,
+        "kill_turn_p10": null,
+        "kill_turn_p25": null,
+        "fastest_kill_turn": null,
+        "short_turn_threshold": 12,
+        "short_win_rate": 0.0,
+        "damage_to_enemies_mean": 3171.8,
+        "boss_hp_left_median": 22714.5,
+        "survivors_mean": 0.7,
+        "sinking_damage_mean": 633.3,
+        "axis_ok_rate": 0.45,
+        "axis_ok_rate_among_wins": 0.0,
+        "long_tail_failure_rate": 1.0,
+        "ego_use_turns": [
+          8,
+          8,
+          8,
+          9,
+          9,
+          10,
+          10,
+          10,
+          10,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          12,
+          12,
+          12,
+          12,
+          12,
+          12,
+          12,
+          12,
+          12,
+          13,
+          13,
+          13,
+          13,
+          13,
+          13,
+          13,
+          13,
+          13,
+          13,
+          13,
+          14,
+          14,
+          14,
+          14,
+          14,
+          14,
+          14,
+          14,
+          14,
+          14,
+          14,
+          14,
+          14,
+          14,
+          14,
+          17,
+          17,
+          17
+        ],
+        "errors": 0
+      },
+      "best_of_n": {
+        "n1": {
+          "windows": 20,
+          "window_win_rate": 0.0,
+          "best_kill_turn_min": null,
+          "best_kill_turn_median": null
+        },
+        "n10": {
+          "windows": 11,
+          "window_win_rate": 0.0,
+          "best_kill_turn_min": null,
+          "best_kill_turn_median": null
+        }
+      },
+      "fastest_kill_turn": null,
+      "ego_uses": [
+        "sinner-0-10110|20106",
+        "sinner-0-10110|20109",
+        "sinner-2-10813|20810",
+        "sinner-3-10913|20903"
+      ],
+      "files": 1
+    },
+    "Random": {
+      "summary": {
+        "episodes": 20,
+        "wins": 0,
+        "win_rate": 0.0,
+        "kill_turn_mean": null,
+        "kill_turn_median": null,
+        "kill_turn_p10": null,
+        "kill_turn_p25": null,
+        "fastest_kill_turn": null,
+        "short_turn_threshold": 12,
+        "short_win_rate": 0.0,
+        "damage_to_enemies_mean": 634.6,
+        "boss_hp_left_median": 25107.0,
+        "survivors_mean": 0.7,
+        "sinking_damage_mean": 62.9,
+        "axis_ok_rate": 0.0,
+        "axis_ok_rate_among_wins": 0.0,
+        "long_tail_failure_rate": 1.0,
+        "ego_use_turns": [
+          6,
+          7,
+          7,
+          10
+        ],
+        "errors": 0
+      },
+      "best_of_n": {
+        "n1": {
+          "windows": 20,
+          "window_win_rate": 0.0,
+          "best_kill_turn_min": null,
+          "best_kill_turn_median": null
+        },
+        "n10": {
+          "windows": 11,
+          "window_win_rate": 0.0,
+          "best_kill_turn_min": null,
+          "best_kill_turn_median": null
+        }
+      },
+      "fastest_kill_turn": null,
+      "ego_uses": [
+        "sinner-2-10813|20810",
+        "sinner-3-10913|20903"
+      ],
+      "files": 1
+    }
+  },
+  "acceptance": {
+    "AI": {
+      "win_rate_baseline": 0.0,
+      "win_rate_candidate": 0.0,
+      "win_rate_gap_points": 0.0,
+      "win_rate_ok": true,
+      "kill_turn_median_baseline": null,
+      "kill_turn_median_candidate": null,
+      "kill_turn_improvement": null,
+      "kill_turn_ok": false,
+      "short_win_rate_baseline": 0.0,
+      "short_win_rate_candidate": 0.0,
+      "short_win_ok": false,
+      "axis_rate_among_wins_baseline": 0.0,
+      "axis_rate_among_wins_candidate": 0.0,
+      "short_turn_threshold": 12
+    }
+  },
+  "replays": {
+    "count": 5,
+    "entries": [
+      {
+        "file": "burst_AI_seed9006.json",
+        "policy": "AI",
+        "scenario": "burst",
+        "seed": 9006,
+        "won": true,
+        "kill_turn": 3,
+        "turns": 3,
+        "transition_hashes": [
+          "2175faa775a8088e",
+          "f1e22c1a5907f6a9",
+          "3aa16af8a01a0f87"
+        ],
+        "state_hash_before": "de328e4051896232",
+        "state_hash_after": "57e8963b2bc84d1f",
+        "replayable": true
+      },
+      {
+        "file": "burst_FirstLegal_seed9010.json",
+        "policy": "FirstLegal",
+        "scenario": "burst",
+        "seed": 9010,
+        "won": true,
+        "kill_turn": 4,
+        "turns": 4,
+        "transition_hashes": [
+          "d7265c0b3ccc3010",
+          "46b7b4e9a1d40087",
+          "bb5af4aed8614b63",
+          "594386aca1f58206"
+        ],
+        "state_hash_before": "273d0254c630a042",
+        "state_hash_after": "3fe73b54527dd8da",
+        "replayable": true
+      },
+      {
+        "file": "burst_Greedy_seed9003.json",
+        "policy": "Greedy",
+        "scenario": "burst",
+        "seed": 9003,
+        "won": true,
+        "kill_turn": 3,
+        "turns": 3,
+        "transition_hashes": [
+          "07758b031b4d18e2",
+          "c593bb3854fc4cac",
+          "c8081ace001e9012"
+        ],
+        "state_hash_before": "41f8eb26f6bf269d",
+        "state_hash_after": "b5f860e55e0a4d8c",
+        "replayable": true
+      },
+      {
+        "file": "burst_Random_seed9071.json",
+        "policy": "Random",
+        "scenario": "burst",
+        "seed": 9071,
+        "won": true,
+        "kill_turn": 3,
+        "turns": 3,
+        "transition_hashes": [
+          "9f5bd39860c15511",
+          "3ab3682553f64896",
+          "7dbb93ada9783d30"
+        ],
+        "state_hash_before": "74bd041b1667b754",
+        "state_hash_after": "8e2695a95554fe98",
+        "replayable": true
+      },
+      {
+        "file": "burst_Teacher_seed9009.json",
+        "policy": "Teacher",
+        "scenario": "burst",
+        "seed": 9009,
+        "won": true,
+        "kill_turn": 3,
+        "turns": 3,
+        "transition_hashes": [
+          "af5f6c1b143a6855",
+          "3bfaca940c7fa25c",
+          "8db3c0aeaf2b1dd8"
+        ],
+        "state_hash_before": "195fa51f158245a5",
+        "state_hash_after": "8d92d23844bd3eae",
+        "replayable": true
+      }
+    ]
+  }
+}

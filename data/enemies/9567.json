@@ -3,6 +3,7 @@
   "kind": "enemy",
   "segmentation": null,
   "origination": null,
+  "encounter_boss": true,
   "name_en": "Refracted Butterfly of Entangled Lives::Imago",
   "wiki_title": "Butterfly of Entangled Lives::Imago",
   "abno_code": "O-03-14-03",

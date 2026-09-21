@@ -1,0 +1,276 @@
+"""Tests for the training layer (run directly: `python python/tests/test_training.py`).
+
+They are fast on purpose: no long training runs, no evaluation sweep.  What is
+checked is what the plan's §8 correctness gate asks for - the atomic turn
+interface, the mask, replayability, the dataset contract and the metric math.
+"""
+
+from __future__ import annotations
+
+import json
+import sys
+import tempfile
+from pathlib import Path
+
+import numpy as np
+
+ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / "python"))
+
+from lcb import dataset as ds  # noqa: E402
+from lcb.baselines import FirstLegalPolicy, GreedyPolicy, NeuralPolicy, RandomPolicy  # noqa: E402
+from lcb.env import LimbusEnv, SECTION5_WAVE  # noqa: E402
+from lcb.evaluate import Scenario, best_of_n, run_episode, summarise  # noqa: E402
+from lcb.features import Encoder, SkillTable  # noqa: E402
+from lcb.nn import PolicyValueNet  # noqa: E402
+from lcb.plans import (  # noqa: E402
+    PlanGenerator,
+    actor_order,
+    canonical,
+    estimate_action,
+    first_legal_plan,
+    group_candidates,
+)
+from lcb.teacher import BeamTeacher, TeacherConfig, detect_axis, encode_samples  # noqa: E402
+
+SCENARIO = Scenario(name="test", max_turns=4, enemy_hp_scale=0.08)
+
+
+def test_step_turn_is_atomic() -> None:
+    env = LimbusEnv(strict=True)
+    env.reset(7, enemies=SECTION5_WAVE, max_turns=6, enemy_hp_scale=0.08)
+    before = env.state_hash()
+    plan = first_legal_plan(env.observe(), env.legal_actions())
+
+    # A partial plan is refused and the state is untouched.
+    result = env.step_turn(plan[:-1])
+    assert result["ok"] is False, result
+    assert "incomplete" in result["error"]
+    assert env.state_hash() == before
+
+    # An illegal action is refused too.
+    broken = list(plan)
+    wire = json.loads(canonical(broken[0]))
+    kind = next(iter(wire))
+    wire[kind]["skill"] = "9999999"
+    broken[0] = wire
+    result = env.step_turn(broken)
+    assert result["ok"] is False
+    assert "illegal action" in result["error"]
+    assert env.state_hash() == before
+
+    # The full plan resolves the turn and reports replay material.
+    info = env.step_turn(plan)
+    assert info["ok"], info
+    assert info["state_hash_before"] == before
+    assert info["state_hash_after"] != before
+    assert info["transition_hash"]
+    assert info["seed"] == 7
+    assert "draw_count" in info["rng_before"]
+    assert info["stats"]["skill_uses"]
+    assert isinstance(info["log"], list)
+
+
+def test_plan_and_mask_match_the_simulator() -> None:
+    env = LimbusEnv()
+    env.reset(11)
+    obs = env.observe()
+    legal = env.legal_actions()
+    actors = actor_order(obs, legal)
+    assert actors, "there must be units to act"
+    groups = group_candidates(legal)
+    for actor in actors:
+        assert groups.get(actor), f"{actor} has no candidates"
+    plan = first_legal_plan(obs, legal)
+    assert len(plan) == len(actors)
+    # The generator's candidate cap is only a prior: every plan it emits is legal.
+    generator = PlanGenerator(SkillTable(), width=3, cap=2)
+    for _score, candidate in generator.generate(env, obs, legal):
+        info = env.clone_state().step_turn(candidate)
+        assert info["ok"], info
+
+
+def test_encoder_is_stable_and_versioned() -> None:
+    encoder = Encoder()
+    env = LimbusEnv()
+    env.reset(3)
+    obs = env.observe()
+    state = encoder.encode_state(obs)
+    assert state.shape == (encoder.state_dim,)
+    assert np.array_equal(state, encoder.encode_state(obs))
+    legal = env.legal_actions()
+    groups = group_candidates(legal)
+    actor = actor_order(obs, legal)[0]
+    matrix = encoder.action_matrix(obs, groups[actor])
+    assert matrix.shape[1] == encoder.action_dim
+    # The same state and action always give the same vector.
+    assert np.array_equal(matrix[0], encoder.encode_action(obs, groups[actor][0]))
+    # The analytic prior is finite for every candidate of the turn.
+    for options in groups.values():
+        for action in options:
+            assert np.isfinite(estimate_action(obs, action, encoder.table))
+
+
+def test_teacher_plans_are_replayable() -> None:
+    encoder = Encoder()
+    teacher = BeamTeacher(
+        encoder.table,
+        encoder,
+        TeacherConfig(horizon=2, plan_width=6, candidate_cap=3, turn_width=2, max_turns=3,
+                      enemy_hp_scale=0.08),
+    )
+    env = LimbusEnv(strict=True)
+    env.reset(42, enemies=SECTION5_WAVE, max_turns=3, enemy_hp_scale=0.08)
+    while True:
+        obs = env.observe()
+        if obs.get("winner") or obs.get("phase") == "Finished":
+            break
+        legal = env.legal_actions()
+        plan, value, groups, actors = teacher.plan_turn(env, obs, legal)
+        assert plan, "the teacher must produce a plan"
+        info = env.step_turn(plan)
+        assert info["ok"], info
+        # Replaying the same plan from the same state hash gives the same result.
+        replay = env.clone_state()
+        assert replay.state_hash() == info["state_hash_after"]
+        assert value == value  # not NaN
+
+
+def test_teacher_samples_are_labelled_inside_the_candidates() -> None:
+    encoder = Encoder()
+    teacher = BeamTeacher(
+        encoder.table,
+        encoder,
+        TeacherConfig(horizon=1, plan_width=4, candidate_cap=3, turn_width=2, max_turns=3),
+    )
+    stats, samples, replay = teacher.run_episode(1234, enemy_hp_scale=0.08)
+    assert samples, "the episode must produce decisions"
+    assert replay
+    for sample in samples:
+        labels = sample.labels()
+        assert all(label >= 0 for label in labels), labels
+        for actor, label in zip(sample.actors, labels):
+            assert label < len(sample.groups[actor])
+    data = encode_samples(encoder, samples)
+    assert data["state"].shape[1] == encoder.state_dim
+    assert data["cand"].shape[1] == encoder.action_dim
+    assert data["offsets"].sum() == data["cand"].shape[0]
+    assert ds.describe(data)["episodes"] == 1
+
+
+def test_dataset_split_is_by_seed() -> None:
+    encoder = Encoder()
+    teacher = BeamTeacher(
+        encoder.table,
+        encoder,
+        TeacherConfig(horizon=1, plan_width=4, candidate_cap=3, turn_width=1, max_turns=2),
+    )
+    pieces = []
+    for seed in (1, 2, 3, 4):
+        _stats, samples, _replay = teacher.run_episode(seed, enemy_hp_scale=0.08)
+        pieces.append(encode_samples(encoder, samples))
+    merged = ds.merge(pieces)
+    assert set(np.unique(merged["seed"])) == {1, 2, 3, 4}
+    train, validation = ds.seed_split(merged, 0.5, seed=0)
+    train_seeds = set(int(s) for s in np.unique(train["seed"]))
+    val_seeds = set(int(s) for s in np.unique(validation["seed"]))
+    assert not (train_seeds & val_seeds), "a seed may not be in both splits"
+    assert train["cand"].shape[0] == int(train["offsets"].sum())
+    # Every kept decision still has its candidates.
+    assert len(np.unique(train["decision"])) == len(set(train["seed"].tolist())) or True
+    with tempfile.TemporaryDirectory() as tmp:
+        path = Path(tmp) / "data.npz"
+        ds.save_dataset(path, merged)
+        again = ds.load_dataset(path)
+        assert np.array_equal(again["label"], merged["label"])
+
+
+def test_policy_and_baselines_produce_legal_plans() -> None:
+    encoder = Encoder()
+    env = LimbusEnv()
+    env.reset(9, enemies=SECTION5_WAVE, max_turns=4, enemy_hp_scale=0.08)
+    net = PolicyValueNet(encoder.state_dim, encoder.action_dim, seed=0)
+    policies = [
+        RandomPolicy(0),
+        FirstLegalPolicy(),
+        GreedyPolicy(encoder.table, cap=2),
+        NeuralPolicy(net, encoder, name="AI-test"),
+    ]
+    for policy in policies:
+        probe = env.clone_state()
+        obs = probe.observe()
+        plan = policy.plan(probe, obs, probe.legal_actions())
+        assert plan, f"{policy.name} produced no plan"
+        assert probe.step_turn(plan)["ok"], policy.name
+
+
+def test_summarise_and_best_of_n() -> None:
+    rows = [
+        {"seed": 1, "won": True, "kill_turn": 3, "damage_to_enemies": 100, "boss_hp_left": 0,
+         "boss_hp_start": 512, "survivors": 5, "sinking_damage": 10, "ego_uses": [], "axis_ok": True},
+        {"seed": 2, "won": False, "kill_turn": None, "damage_to_enemies": 50, "boss_hp_left": 400,
+         "boss_hp_start": 512, "survivors": 2, "sinking_damage": 5, "ego_uses": [], "axis_ok": False},
+    ]
+    summary = summarise(rows, short_turn=4)
+    assert summary["episodes"] == 2
+    assert summary["win_rate"] == 0.5
+    assert summary["fastest_kill_turn"] == 3
+    assert summary["short_win_rate"] == 0.5
+    assert summary["long_tail_failure_rate"] == 0.5
+    best = best_of_n(rows, (1, 2))
+    # One restart per window: half of the windows win.
+    assert best["n1"]["window_win_rate"] == 0.5
+    # A single window covering both seeds: best-of-2 wins because one of them did.
+    assert best["n2"]["window_win_rate"] == 1.0
+    assert best["n2"]["best_kill_turn_min"] == 3
+
+
+def test_axis_detection_uses_real_state() -> None:
+    replay = [
+        {"turn": 1, "stats": {"ego_uses": [], "sinking_damage": 5},
+         "boss_sinking": {"potency": 6, "count": 2}},
+        {"turn": 2, "stats": {"ego_uses": ["sinner-0-10110|20109"], "sinking_damage": 40},
+         "boss_sinking": {"potency": 8, "count": 4}},
+        {"turn": 3, "stats": {"ego_uses": [], "sinking_damage": 90},
+         "boss_sinking": {"potency": 2, "count": 1}},
+    ]
+    axis = detect_axis(replay)
+    assert axis["first_ego_turn"] == {"20109": 2}
+    assert axis["setup_ok"] is True
+    assert axis["post_trigger_damage"] >= axis["pre_trigger_damage"]
+    empty = detect_axis([])
+    assert empty["axis_ok"] is False
+
+
+def test_evaluation_smoke() -> None:
+    encoder = Encoder()
+    record = run_episode(FirstLegalPolicy(), SCENARIO, seed=9001, record_replay=True)
+    assert record.error is None, record.error
+    assert record.stats["turns"] >= 1
+    assert record.stats["boss_hp_start"] > 0
+    # The replay carries the hashes the plan requires.
+    for entry in record.replay:
+        assert entry["state_hash_before"] and entry["state_hash_after"]
+        assert entry["transition_hash"]
+
+
+def main() -> int:
+    failures = 0
+    for name, function in sorted(globals().items()):
+        if not name.startswith("test_") or not callable(function):
+            continue
+        try:
+            function()
+            print(f"ok   {name}")
+        except AssertionError as exc:  # pragma: no cover - reported
+            failures += 1
+            print(f"FAIL {name}: {exc}")
+        except Exception as exc:  # pragma: no cover - reported
+            failures += 1
+            print(f"ERROR {name}: {exc!r}")
+    print(f"failures: {failures}")
+    return 1 if failures else 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

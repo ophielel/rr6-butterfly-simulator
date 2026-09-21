@@ -78,6 +78,12 @@ impl From<SetupError> for SimError {
     }
 }
 
+/// Canonical JSON encoding of an action, used to compare a submitted action with
+/// the simulator's own legal-action list.
+fn serialize_action(action: &Action) -> String {
+    serde_json::to_string(action).unwrap_or_default()
+}
+
 impl Simulator {
     /// Load `data/` (identities, ego, enemies, statuses) and
     /// `data/mechanics/effects.json`.
@@ -168,6 +174,65 @@ impl Simulator {
         battle::submit(state, action).map_err(SimError::Rule)
     }
 
+    /// Submit a **complete** turn plan and resolve it.
+    ///
+    /// Every action is validated against the simulator's own legal-action list
+    /// (the same list the search and the policy use as their mask), the plan has
+    /// to cover every unit that can still act, and nothing is committed if any
+    /// of that fails: the state is left exactly as it was.  This is the atomic
+    /// `reset -> choose a full plan -> one resolution` step the plan requires.
+    pub fn submit_plan(&self, state: &mut BattleState, plan: Vec<Action>) -> Result<(), SimError> {
+        if state.winner.is_some() || state.phase == state::Phase::Finished {
+            return Err(SimError::Rule("the encounter is over".to_string()));
+        }
+        let snapshot = state.clone();
+        let outcome = self.submit_plan_inner(state, plan);
+        if outcome.is_err() {
+            *state = snapshot;
+        }
+        outcome
+    }
+
+    fn submit_plan_inner(&self, state: &mut BattleState, plan: Vec<Action>) -> Result<(), SimError> {
+        let mut submitted: Vec<UnitId> = Vec::new();
+        for action in plan.iter() {
+            if matches!(action, Action::Commit) {
+                return Err(SimError::Rule(
+                    "a plan must not contain Commit; the plan itself resolves the turn".to_string(),
+                ));
+            }
+            let actor = match action {
+                Action::Assign { actor, .. }
+                | Action::Engage { actor, .. }
+                | Action::UseEgo { actor, .. } => actor.clone(),
+                Action::Commit => unreachable!(),
+            };
+            if submitted.contains(&actor) {
+                return Err(SimError::Rule(format!("duplicate action for {actor}")));
+            }
+            let legal = self.legal_actions(state);
+            let key = serialize_action(action);
+            if !legal.iter().any(|a| serialize_action(a) == key) {
+                return Err(SimError::Rule(format!("illegal action in plan: {key}")));
+            }
+            self.submit(state, action.clone())?;
+            submitted.push(actor);
+        }
+        // Every unit that can still act must have acted, or the plan is partial.
+        for action in self.legal_actions(state) {
+            let actor = match &action {
+                Action::Assign { actor, .. }
+                | Action::Engage { actor, .. }
+                | Action::UseEgo { actor, .. } => actor.clone(),
+                Action::Commit => continue,
+            };
+            if !submitted.contains(&actor) {
+                return Err(SimError::Rule(format!("incomplete plan: {actor} has no action")));
+            }
+        }
+        self.step_turn(state)
+    }
+
     /// Commit the actions assigned for this turn: resolves clashes and attacks,
     /// runs turn end, then starts the next turn (so the state is again in
     /// `AwaitingActions`, which is what the Python `step()` API expects).
@@ -175,6 +240,8 @@ impl Simulator {
         if state.winner.is_some() || state.phase == state::Phase::Finished {
             return Ok(());
         }
+        // Per-turn statistics describe the turn that is about to resolve.
+        state.turn_stats = state::TurnStats::default();
         state.phase = state::Phase::Combat;
         battle::resolve_combat(state, &self.library, &self.mechanics);
         battle::end_turn(state, &self.mechanics);
@@ -192,6 +259,12 @@ impl Simulator {
 
     pub fn state_hash(&self, state: &BattleState) -> u64 {
         hash::state_hash(state)
+    }
+
+    /// Hash for search / transposition (ignores the log, warnings and the
+    /// per-turn statistics, which cannot affect the future).
+    pub fn search_key(&self, state: &BattleState) -> u64 {
+        hash::search_key(state)
     }
 
     /// Hash covering the previous state, every action submitted this turn and

@@ -314,6 +314,7 @@ impl<'a> EncounterBuilder<'a> {
                 .map(|s| (sin_key(*s).to_string(), 0i32))
                 .collect(),
             log: Vec::new(),
+            turn_stats: Default::default(),
             warnings,
             winner: None,
             encounter_ended: false,
@@ -443,6 +444,7 @@ impl<'a> EncounterBuilder<'a> {
             retaliate_on_hit: Vec::new(),
             segmentation: None,
             origination: None,
+            encounter_boss: false,
             hits_taken: 0,
             segmentation_healed: Vec::new(),
             resonance_max: 0,
@@ -455,10 +457,17 @@ impl<'a> EncounterBuilder<'a> {
 
     fn enemy_unit(&self, record: &EnemyRecord, index: usize) -> Result<Unit, SetupError> {
         let level = record.level.unwrap_or(60);
-        let max_hp = match (record.hp, record.hp_growth) {
+        let base_hp = match (record.hp, record.hp_growth) {
             (Some(base), Some(mult)) => (base as f64 + mult * level as f64).floor() as i32,
             (Some(base), None) => base,
             _ => return Err(SetupError::MissingField(format!("enemy {} hp", record.id))),
+        };
+        // Scenario knob (`BattleConfig::enemy_hp_scale`); 1.0 keeps the data's HP.
+        let scale = self.config.enemy_hp_scale;
+        let max_hp = if (scale - 1.0).abs() < f64::EPSILON {
+            base_hp
+        } else {
+            ((base_hp as f64) * scale).floor().max(1.0) as i32
         };
         let (resist_physical, resist_sin) = enemy_resist_map(record);
         let thresholds = record
@@ -571,6 +580,7 @@ impl<'a> EncounterBuilder<'a> {
             // unit's own passives (the Section 5 illusion wave).
             segmentation: record.segmentation.clone(),
             origination: record.origination.clone(),
+            encounter_boss: record.encounter_boss,
             hits_taken: 0,
             segmentation_healed: Vec::new(),
             resonance_max: 0,

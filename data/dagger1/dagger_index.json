@@ -1,0 +1,3054 @@
+{
+  "provenance": {
+    "generated_at": "2026-09-21T21:09:20+0800",
+    "python": "3.14.3",
+    "numpy": "2.4.6",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "git": {
+      "commit": "960338d38675dde4538f5fb5425169972ed312c7",
+      "dirty": true,
+      "branch": "main"
+    },
+    "data_fingerprint": "9c3ad04cf7798ab0",
+    "scenario": {
+      "name": "burst",
+      "enemies": [
+        "9567",
+        "9572",
+        "9573",
+        "9574"
+      ],
+      "max_turns": 12,
+      "enemy_hp_scale": 0.08,
+      "strict": true,
+      "description": "the same wave with the scenario knob enemy_hp_scale=0.08 (Imago 2049 HP)"
+    },
+    "seeds": {
+      "first": 2001,
+      "last": 2096,
+      "count": 96
+    },
+    "team": [
+      "10110",
+      "10414",
+      "10813",
+      "10913",
+      "11004",
+      "11114",
+      "11214"
+    ],
+    "dagger": {
+      "checkpoint": "models/bc_tree.npz",
+      "scenario": "burst",
+      "policy_prob": 0.5,
+      "horizon": 3,
+      "plan_width": 32,
+      "candidate_cap": 6,
+      "turn_width": 4,
+      "max_turns": 12,
+      "enemy_hp_scale": 0.08,
+      "out": "data\\dagger1"
+    }
+  },
+  "elapsed_seconds": 41.1,
+  "summary": {
+    "episodes": 96,
+    "wins": 56,
+    "win_rate": 0.5833333333333334,
+    "kill_turn_mean": 3.767857142857143,
+    "kill_turn_median": 4.0,
+    "kill_turn_p10": 3.0,
+    "kill_turn_p25": 3.0,
+    "fastest_kill_turn": 3.0,
+    "short_turn_threshold": 12,
+    "short_win_rate": 0.5833333333333334,
+    "damage_to_enemies_mean": 1743.65625,
+    "boss_hp_left_median": 0.0,
+    "survivors_mean": 4.239583333333333,
+    "sinking_damage_mean": 174.59375,
+    "axis_ok_rate": 0.10416666666666667,
+    "axis_ok_rate_among_wins": 0.17857142857142858,
+    "long_tail_failure_rate": 0.03125,
+    "ego_use_turns": [
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8
+    ],
+    "errors": 0
+  },
+  "best_of_n": {
+    "n1": {
+      "windows": 96,
+      "window_win_rate": 0.5833333333333334,
+      "best_kill_turn_min": 3,
+      "best_kill_turn_median": 4.0
+    },
+    "n10": {
+      "windows": 87,
+      "window_win_rate": 1.0,
+      "best_kill_turn_min": 3,
+      "best_kill_turn_median": 3.0
+    },
+    "n50": {
+      "windows": 47,
+      "window_win_rate": 1.0,
+      "best_kill_turn_min": 3,
+      "best_kill_turn_median": 3.0
+    }
+  },
+  "episodes": [
+    {
+      "seed": 2001,
+      "won": false,
+      "winner": "Enemies",
+      "kill_turn": null,
+      "turns": 5,
+      "boss_hp_left": 870.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1006.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 134.0,
+      "sinking_triggers": 26,
+      "deaths": 0,
+      "survivors": 0,
+      "ego_uses": [],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {},
+        "setup_ok": false,
+        "pair_ok": false,
+        "post_trigger_damage": 0.0,
+        "pre_trigger_damage": 0.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2002,
+      "won": true,
+      "winner": "Sinners",
+      "kill_turn": 4,
+      "turns": 4,
+      "boss_hp_left": 0.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1747.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 275.0,
+      "sinking_triggers": 42,
+      "deaths": 0,
+      "survivors": 7,
+      "ego_uses": [
+        "sinner-0-10110|20106"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {},
+        "setup_ok": false,
+        "pair_ok": false,
+        "post_trigger_damage": 0.0,
+        "pre_trigger_damage": 0.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2003,
+      "won": true,
+      "winner": "Sinners",
+      "kill_turn": 3,
+      "turns": 3,
+      "boss_hp_left": 0.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1848.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 170.0,
+      "sinking_triggers": 36,
+      "deaths": 0,
+      "survivors": 7,
+      "ego_uses": [
+        "sinner-2-10813|20810",
+        "sinner-0-10110|20109"
+      ],
+      "axis_ok": true,
+      "axis": {
+        "first_ego_turn": {
+          "20109": 3
+        },
+        "setup_ok": true,
+        "pair_ok": false,
+        "post_trigger_damage": 50.0,
+        "pre_trigger_damage": 44.0,
+        "burst_ok": true,
+        "axis_ok": true
+      }
+    },
+    {
+      "seed": 2004,
+      "won": false,
+      "winner": "Enemies",
+      "kill_turn": null,
+      "turns": 8,
+      "boss_hp_left": 871.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1610.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 164.0,
+      "sinking_triggers": 44,
+      "deaths": 0,
+      "survivors": 0,
+      "ego_uses": [
+        "sinner-0-10110|20109",
+        "sinner-2-10813|20810"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {
+          "20109": 6
+        },
+        "setup_ok": true,
+        "pair_ok": false,
+        "post_trigger_damage": 17.0,
+        "pre_trigger_damage": 138.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2005,
+      "won": false,
+      "winner": "Enemies",
+      "kill_turn": null,
+      "turns": 5,
+      "boss_hp_left": 231.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1608.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 170.0,
+      "sinking_triggers": 34,
+      "deaths": 0,
+      "survivors": 0,
+      "ego_uses": [
+        "sinner-0-10110|20106"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {},
+        "setup_ok": false,
+        "pair_ok": false,
+        "post_trigger_damage": 0.0,
+        "pre_trigger_damage": 0.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2006,
+      "won": true,
+      "winner": "Sinners",
+      "kill_turn": 3,
+      "turns": 3,
+      "boss_hp_left": 0.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1838.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 204.0,
+      "sinking_triggers": 31,
+      "deaths": 0,
+      "survivors": 7,
+      "ego_uses": [
+        "sinner-2-10813|20810",
+        "sinner-0-10110|20109"
+      ],
+      "axis_ok": true,
+      "axis": {
+        "first_ego_turn": {
+          "20109": 3
+        },
+        "setup_ok": true,
+        "pair_ok": false,
+        "post_trigger_damage": 118.0,
+        "pre_trigger_damage": 13.0,
+        "burst_ok": true,
+        "axis_ok": true
+      }
+    },
+    {
+      "seed": 2007,
+      "won": false,
+      "winner": null,
+      "kill_turn": null,
+      "turns": 7,
+      "boss_hp_left": 1041.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1870.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 178.0,
+      "sinking_triggers": 43,
+      "deaths": 0,
+      "survivors": 1,
+      "ego_uses": [
+        "sinner-2-10813|20810",
+        "sinner-3-10913|20903"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {},
+        "setup_ok": false,
+        "pair_ok": false,
+        "post_trigger_damage": 0.0,
+        "pre_trigger_damage": 0.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2008,
+      "won": true,
+      "winner": "Sinners",
+      "kill_turn": 5,
+      "turns": 5,
+      "boss_hp_left": 0.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1823.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 245.0,
+      "sinking_triggers": 45,
+      "deaths": 0,
+      "survivors": 7,
+      "ego_uses": [
+        "sinner-0-10110|20106",
+        "sinner-2-10813|20810"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {},
+        "setup_ok": false,
+        "pair_ok": false,
+        "post_trigger_damage": 0.0,
+        "pre_trigger_damage": 0.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2009,
+      "won": false,
+      "winner": null,
+      "kill_turn": null,
+      "turns": 7,
+      "boss_hp_left": 954.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1670.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 134.0,
+      "sinking_triggers": 37,
+      "deaths": 0,
+      "survivors": 1,
+      "ego_uses": [
+        "sinner-2-10813|20810"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {},
+        "setup_ok": false,
+        "pair_ok": false,
+        "post_trigger_damage": 0.0,
+        "pre_trigger_damage": 0.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2010,
+      "won": true,
+      "winner": "Sinners",
+      "kill_turn": 3,
+      "turns": 3,
+      "boss_hp_left": 0.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1678.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 353.0,
+      "sinking_triggers": 26,
+      "deaths": 0,
+      "survivors": 7,
+      "ego_uses": [],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {},
+        "setup_ok": false,
+        "pair_ok": false,
+        "post_trigger_damage": 0.0,
+        "pre_trigger_damage": 0.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2011,
+      "won": true,
+      "winner": "Sinners",
+      "kill_turn": 3,
+      "turns": 3,
+      "boss_hp_left": 0.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1982.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 65.0,
+      "sinking_triggers": 31,
+      "deaths": 0,
+      "survivors": 7,
+      "ego_uses": [
+        "sinner-2-10813|20810",
+        "sinner-0-10110|20109"
+      ],
+      "axis_ok": true,
+      "axis": {
+        "first_ego_turn": {
+          "20109": 3
+        },
+        "setup_ok": true,
+        "pair_ok": false,
+        "post_trigger_damage": 20.0,
+        "pre_trigger_damage": 18.0,
+        "burst_ok": true,
+        "axis_ok": true
+      }
+    },
+    {
+      "seed": 2012,
+      "won": false,
+      "winner": null,
+      "kill_turn": null,
+      "turns": 4,
+      "boss_hp_left": 882.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1006.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 84.0,
+      "sinking_triggers": 24,
+      "deaths": 0,
+      "survivors": 1,
+      "ego_uses": [
+        "sinner-0-10110|20109"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {
+          "20109": 4
+        },
+        "setup_ok": true,
+        "pair_ok": false,
+        "post_trigger_damage": 6.0,
+        "pre_trigger_damage": 78.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2013,
+      "won": false,
+      "winner": "Enemies",
+      "kill_turn": null,
+      "turns": 3,
+      "boss_hp_left": 868.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1045.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 115.0,
+      "sinking_triggers": 23,
+      "deaths": 0,
+      "survivors": 0,
+      "ego_uses": [
+        "sinner-3-10913|20903"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {},
+        "setup_ok": false,
+        "pair_ok": false,
+        "post_trigger_damage": 0.0,
+        "pre_trigger_damage": 0.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2014,
+      "won": false,
+      "winner": "Enemies",
+      "kill_turn": null,
+      "turns": 6,
+      "boss_hp_left": 519.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 2275.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 146.0,
+      "sinking_triggers": 47,
+      "deaths": 0,
+      "survivors": 0,
+      "ego_uses": [
+        "sinner-2-10813|20810",
+        "sinner-0-10110|20109"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {
+          "20109": 4
+        },
+        "setup_ok": true,
+        "pair_ok": false,
+        "post_trigger_damage": 52.0,
+        "pre_trigger_damage": 79.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2015,
+      "won": false,
+      "winner": "Enemies",
+      "kill_turn": null,
+      "turns": 6,
+      "boss_hp_left": 818.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 2106.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 255.0,
+      "sinking_triggers": 38,
+      "deaths": 0,
+      "survivors": 0,
+      "ego_uses": [
+        "sinner-0-10110|20106"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {},
+        "setup_ok": false,
+        "pair_ok": false,
+        "post_trigger_damage": 0.0,
+        "pre_trigger_damage": 0.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2016,
+      "won": false,
+      "winner": "Enemies",
+      "kill_turn": null,
+      "turns": 5,
+      "boss_hp_left": 184.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1620.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 202.0,
+      "sinking_triggers": 34,
+      "deaths": 0,
+      "survivors": 0,
+      "ego_uses": [
+        "sinner-2-10813|20810",
+        "sinner-3-10913|20903"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {},
+        "setup_ok": false,
+        "pair_ok": false,
+        "post_trigger_damage": 0.0,
+        "pre_trigger_damage": 0.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2017,
+      "won": true,
+      "winner": "Sinners",
+      "kill_turn": 3,
+      "turns": 3,
+      "boss_hp_left": 0.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1851.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 159.0,
+      "sinking_triggers": 39,
+      "deaths": 0,
+      "survivors": 7,
+      "ego_uses": [
+        "sinner-0-10110|20109",
+        "sinner-2-10813|20810"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {
+          "20109": 3
+        },
+        "setup_ok": true,
+        "pair_ok": false,
+        "post_trigger_damage": 23.0,
+        "pre_trigger_damage": 65.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2018,
+      "won": false,
+      "winner": null,
+      "kill_turn": null,
+      "turns": 4,
+      "boss_hp_left": 1060.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 897.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 69.0,
+      "sinking_triggers": 23,
+      "deaths": 0,
+      "survivors": 3,
+      "ego_uses": [
+        "sinner-2-10813|20810"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {},
+        "setup_ok": false,
+        "pair_ok": false,
+        "post_trigger_damage": 0.0,
+        "pre_trigger_damage": 0.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2019,
+      "won": true,
+      "winner": "Sinners",
+      "kill_turn": 4,
+      "turns": 4,
+      "boss_hp_left": 0.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1946.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 113.0,
+      "sinking_triggers": 38,
+      "deaths": 0,
+      "survivors": 7,
+      "ego_uses": [
+        "sinner-0-10110|20106"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {},
+        "setup_ok": false,
+        "pair_ok": false,
+        "post_trigger_damage": 0.0,
+        "pre_trigger_damage": 0.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2020,
+      "won": true,
+      "winner": "Sinners",
+      "kill_turn": 4,
+      "turns": 4,
+      "boss_hp_left": 0.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1935.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 85.0,
+      "sinking_triggers": 37,
+      "deaths": 0,
+      "survivors": 6,
+      "ego_uses": [
+        "sinner-2-10813|20810"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {},
+        "setup_ok": false,
+        "pair_ok": false,
+        "post_trigger_damage": 0.0,
+        "pre_trigger_damage": 0.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2021,
+      "won": true,
+      "winner": "Sinners",
+      "kill_turn": 4,
+      "turns": 4,
+      "boss_hp_left": 0.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1836.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 225.0,
+      "sinking_triggers": 34,
+      "deaths": 0,
+      "survivors": 7,
+      "ego_uses": [
+        "sinner-0-10110|20106"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {},
+        "setup_ok": false,
+        "pair_ok": false,
+        "post_trigger_damage": 0.0,
+        "pre_trigger_damage": 0.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2022,
+      "won": false,
+      "winner": null,
+      "kill_turn": null,
+      "turns": 7,
+      "boss_hp_left": 1300.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1279.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 139.0,
+      "sinking_triggers": 33,
+      "deaths": 0,
+      "survivors": 1,
+      "ego_uses": [
+        "sinner-2-10813|20810"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {},
+        "setup_ok": false,
+        "pair_ok": false,
+        "post_trigger_damage": 0.0,
+        "pre_trigger_damage": 0.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2023,
+      "won": false,
+      "winner": "Enemies",
+      "kill_turn": null,
+      "turns": 6,
+      "boss_hp_left": 1342.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1152.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 156.0,
+      "sinking_triggers": 27,
+      "deaths": 0,
+      "survivors": 0,
+      "ego_uses": [
+        "sinner-0-10110|20109"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {
+          "20109": 4
+        },
+        "setup_ok": true,
+        "pair_ok": false,
+        "post_trigger_damage": 26.0,
+        "pre_trigger_damage": 130.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2024,
+      "won": true,
+      "winner": "Sinners",
+      "kill_turn": 5,
+      "turns": 5,
+      "boss_hp_left": 0.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1857.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 105.0,
+      "sinking_triggers": 36,
+      "deaths": 0,
+      "survivors": 3,
+      "ego_uses": [
+        "sinner-2-10813|20810",
+        "sinner-0-10110|20109"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {
+          "20109": 4
+        },
+        "setup_ok": true,
+        "pair_ok": false,
+        "post_trigger_damage": 32.0,
+        "pre_trigger_damage": 56.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2025,
+      "won": true,
+      "winner": "Sinners",
+      "kill_turn": 4,
+      "turns": 4,
+      "boss_hp_left": 0.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1806.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 274.0,
+      "sinking_triggers": 33,
+      "deaths": 0,
+      "survivors": 7,
+      "ego_uses": [
+        "sinner-0-10110|20109",
+        "sinner-2-10813|20810"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {
+          "20109": 4
+        },
+        "setup_ok": true,
+        "pair_ok": false,
+        "post_trigger_damage": 17.0,
+        "pre_trigger_damage": 231.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2026,
+      "won": false,
+      "winner": "Enemies",
+      "kill_turn": null,
+      "turns": 7,
+      "boss_hp_left": 1662.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1275.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 235.0,
+      "sinking_triggers": 44,
+      "deaths": 0,
+      "survivors": 0,
+      "ego_uses": [
+        "sinner-3-10913|20903",
+        "sinner-2-10813|20810"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {},
+        "setup_ok": false,
+        "pair_ok": false,
+        "post_trigger_damage": 0.0,
+        "pre_trigger_damage": 0.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2027,
+      "won": false,
+      "winner": null,
+      "kill_turn": null,
+      "turns": 6,
+      "boss_hp_left": 340.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1931.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 209.0,
+      "sinking_triggers": 40,
+      "deaths": 0,
+      "survivors": 1,
+      "ego_uses": [
+        "sinner-0-10110|20109",
+        "sinner-2-10813|20810"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {
+          "20109": 4
+        },
+        "setup_ok": true,
+        "pair_ok": false,
+        "post_trigger_damage": 41.0,
+        "pre_trigger_damage": 168.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2028,
+      "won": true,
+      "winner": "Sinners",
+      "kill_turn": 4,
+      "turns": 4,
+      "boss_hp_left": 0.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1931.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 111.0,
+      "sinking_triggers": 43,
+      "deaths": 0,
+      "survivors": 7,
+      "ego_uses": [
+        "sinner-3-10913|20903",
+        "sinner-2-10813|20810",
+        "sinner-0-10110|20109"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {
+          "20109": 4
+        },
+        "setup_ok": true,
+        "pair_ok": false,
+        "post_trigger_damage": 19.0,
+        "pre_trigger_damage": 56.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2029,
+      "won": true,
+      "winner": "Sinners",
+      "kill_turn": 4,
+      "turns": 4,
+      "boss_hp_left": 0.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1879.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 165.0,
+      "sinking_triggers": 31,
+      "deaths": 0,
+      "survivors": 7,
+      "ego_uses": [
+        "sinner-0-10110|20106"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {},
+        "setup_ok": false,
+        "pair_ok": false,
+        "post_trigger_damage": 0.0,
+        "pre_trigger_damage": 0.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2030,
+      "won": true,
+      "winner": "Sinners",
+      "kill_turn": 3,
+      "turns": 3,
+      "boss_hp_left": 0.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1883.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 137.0,
+      "sinking_triggers": 33,
+      "deaths": 0,
+      "survivors": 7,
+      "ego_uses": [
+        "sinner-2-10813|20810"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {},
+        "setup_ok": false,
+        "pair_ok": false,
+        "post_trigger_damage": 0.0,
+        "pre_trigger_damage": 0.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2031,
+      "won": true,
+      "winner": "Sinners",
+      "kill_turn": 3,
+      "turns": 3,
+      "boss_hp_left": 0.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1861.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 120.0,
+      "sinking_triggers": 25,
+      "deaths": 0,
+      "survivors": 7,
+      "ego_uses": [
+        "sinner-2-10813|20810",
+        "sinner-0-10110|20109"
+      ],
+      "axis_ok": true,
+      "axis": {
+        "first_ego_turn": {
+          "20109": 3
+        },
+        "setup_ok": true,
+        "pair_ok": false,
+        "post_trigger_damage": 42.0,
+        "pre_trigger_damage": 17.0,
+        "burst_ok": true,
+        "axis_ok": true
+      }
+    },
+    {
+      "seed": 2032,
+      "won": false,
+      "winner": null,
+      "kill_turn": null,
+      "turns": 7,
+      "boss_hp_left": 1230.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1772.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 201.0,
+      "sinking_triggers": 42,
+      "deaths": 0,
+      "survivors": 1,
+      "ego_uses": [
+        "sinner-0-10110|20106"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {},
+        "setup_ok": false,
+        "pair_ok": false,
+        "post_trigger_damage": 0.0,
+        "pre_trigger_damage": 0.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2033,
+      "won": true,
+      "winner": "Sinners",
+      "kill_turn": 5,
+      "turns": 5,
+      "boss_hp_left": 0.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 2312.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 387.0,
+      "sinking_triggers": 39,
+      "deaths": 0,
+      "survivors": 5,
+      "ego_uses": [
+        "sinner-0-10110|20106"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {},
+        "setup_ok": false,
+        "pair_ok": false,
+        "post_trigger_damage": 0.0,
+        "pre_trigger_damage": 0.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2034,
+      "won": false,
+      "winner": null,
+      "kill_turn": null,
+      "turns": 8,
+      "boss_hp_left": 278.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 2273.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 317.0,
+      "sinking_triggers": 46,
+      "deaths": 0,
+      "survivors": 1,
+      "ego_uses": [
+        "sinner-0-10110|20106",
+        "sinner-0-10110|20109"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {
+          "20109": 5
+        },
+        "setup_ok": true,
+        "pair_ok": false,
+        "post_trigger_damage": 70.0,
+        "pre_trigger_damage": 240.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2035,
+      "won": true,
+      "winner": "Sinners",
+      "kill_turn": 4,
+      "turns": 4,
+      "boss_hp_left": 0.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1804.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 201.0,
+      "sinking_triggers": 40,
+      "deaths": 0,
+      "survivors": 7,
+      "ego_uses": [
+        "sinner-2-10813|20810",
+        "sinner-0-10110|20109"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {
+          "20109": 4
+        },
+        "setup_ok": true,
+        "pair_ok": false,
+        "post_trigger_damage": 16.0,
+        "pre_trigger_damage": 144.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2036,
+      "won": true,
+      "winner": "Sinners",
+      "kill_turn": 4,
+      "turns": 4,
+      "boss_hp_left": 0.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1890.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 127.0,
+      "sinking_triggers": 40,
+      "deaths": 0,
+      "survivors": 7,
+      "ego_uses": [
+        "sinner-0-10110|20109",
+        "sinner-2-10813|20810"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {
+          "20109": 4
+        },
+        "setup_ok": true,
+        "pair_ok": false,
+        "post_trigger_damage": 17.0,
+        "pre_trigger_damage": 84.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2037,
+      "won": false,
+      "winner": null,
+      "kill_turn": null,
+      "turns": 8,
+      "boss_hp_left": 1237.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 2242.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 184.0,
+      "sinking_triggers": 48,
+      "deaths": 0,
+      "survivors": 1,
+      "ego_uses": [
+        "sinner-2-10813|20810",
+        "sinner-0-10110|20109"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {
+          "20109": 6
+        },
+        "setup_ok": true,
+        "pair_ok": false,
+        "post_trigger_damage": 53.0,
+        "pre_trigger_damage": 131.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2038,
+      "won": true,
+      "winner": "Sinners",
+      "kill_turn": 3,
+      "turns": 3,
+      "boss_hp_left": 0.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1789.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 186.0,
+      "sinking_triggers": 35,
+      "deaths": 0,
+      "survivors": 7,
+      "ego_uses": [
+        "sinner-0-10110|20109",
+        "sinner-2-10813|20810"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {
+          "20109": 3
+        },
+        "setup_ok": true,
+        "pair_ok": false,
+        "post_trigger_damage": 25.0,
+        "pre_trigger_damage": 34.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2039,
+      "won": true,
+      "winner": "Sinners",
+      "kill_turn": 4,
+      "turns": 4,
+      "boss_hp_left": 0.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1893.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 164.0,
+      "sinking_triggers": 33,
+      "deaths": 0,
+      "survivors": 7,
+      "ego_uses": [
+        "sinner-2-10813|20810",
+        "sinner-0-10110|20109"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {
+          "20109": 4
+        },
+        "setup_ok": true,
+        "pair_ok": false,
+        "post_trigger_damage": 16.0,
+        "pre_trigger_damage": 94.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2040,
+      "won": true,
+      "winner": "Sinners",
+      "kill_turn": 4,
+      "turns": 4,
+      "boss_hp_left": 0.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1869.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 143.0,
+      "sinking_triggers": 43,
+      "deaths": 0,
+      "survivors": 7,
+      "ego_uses": [
+        "sinner-0-10110|20109",
+        "sinner-3-10913|20903",
+        "sinner-2-10813|20810"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {
+          "20109": 4
+        },
+        "setup_ok": true,
+        "pair_ok": false,
+        "post_trigger_damage": 27.0,
+        "pre_trigger_damage": 35.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2041,
+      "won": false,
+      "winner": null,
+      "kill_turn": null,
+      "turns": 4,
+      "boss_hp_left": 568.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1238.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 231.0,
+      "sinking_triggers": 30,
+      "deaths": 0,
+      "survivors": 2,
+      "ego_uses": [
+        "sinner-2-10813|20810"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {},
+        "setup_ok": false,
+        "pair_ok": false,
+        "post_trigger_damage": 0.0,
+        "pre_trigger_damage": 0.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2042,
+      "won": true,
+      "winner": "Sinners",
+      "kill_turn": 4,
+      "turns": 4,
+      "boss_hp_left": 0.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1916.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 124.0,
+      "sinking_triggers": 43,
+      "deaths": 0,
+      "survivors": 7,
+      "ego_uses": [
+        "sinner-0-10110|20106"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {},
+        "setup_ok": false,
+        "pair_ok": false,
+        "post_trigger_damage": 0.0,
+        "pre_trigger_damage": 0.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2043,
+      "won": false,
+      "winner": "Enemies",
+      "kill_turn": null,
+      "turns": 8,
+      "boss_hp_left": 1341.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1247.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 90.0,
+      "sinking_triggers": 32,
+      "deaths": 0,
+      "survivors": 0,
+      "ego_uses": [
+        "sinner-2-10813|20810",
+        "sinner-3-10913|20903"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {},
+        "setup_ok": false,
+        "pair_ok": false,
+        "post_trigger_damage": 0.0,
+        "pre_trigger_damage": 0.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2044,
+      "won": true,
+      "winner": "Sinners",
+      "kill_turn": 4,
+      "turns": 4,
+      "boss_hp_left": 0.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1846.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 212.0,
+      "sinking_triggers": 33,
+      "deaths": 0,
+      "survivors": 7,
+      "ego_uses": [
+        "sinner-0-10110|20106"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {},
+        "setup_ok": false,
+        "pair_ok": false,
+        "post_trigger_damage": 0.0,
+        "pre_trigger_damage": 0.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2045,
+      "won": false,
+      "winner": "Enemies",
+      "kill_turn": null,
+      "turns": 6,
+      "boss_hp_left": 1308.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1396.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 134.0,
+      "sinking_triggers": 34,
+      "deaths": 0,
+      "survivors": 0,
+      "ego_uses": [
+        "sinner-3-10913|20903"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {},
+        "setup_ok": false,
+        "pair_ok": false,
+        "post_trigger_damage": 0.0,
+        "pre_trigger_damage": 0.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2046,
+      "won": true,
+      "winner": "Sinners",
+      "kill_turn": 4,
+      "turns": 4,
+      "boss_hp_left": 0.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1902.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 88.0,
+      "sinking_triggers": 30,
+      "deaths": 0,
+      "survivors": 6,
+      "ego_uses": [
+        "sinner-2-10813|20810",
+        "sinner-0-10110|20109"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {
+          "20109": 4
+        },
+        "setup_ok": true,
+        "pair_ok": false,
+        "post_trigger_damage": 18.0,
+        "pre_trigger_damage": 47.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2047,
+      "won": true,
+      "winner": "Sinners",
+      "kill_turn": 4,
+      "turns": 4,
+      "boss_hp_left": 0.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1870.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 153.0,
+      "sinking_triggers": 37,
+      "deaths": 0,
+      "survivors": 7,
+      "ego_uses": [
+        "sinner-2-10813|20810",
+        "sinner-0-10110|20109"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {
+          "20109": 4
+        },
+        "setup_ok": true,
+        "pair_ok": false,
+        "post_trigger_damage": 25.0,
+        "pre_trigger_damage": 54.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2048,
+      "won": true,
+      "winner": "Sinners",
+      "kill_turn": 5,
+      "turns": 5,
+      "boss_hp_left": 0.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1899.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 146.0,
+      "sinking_triggers": 41,
+      "deaths": 0,
+      "survivors": 7,
+      "ego_uses": [
+        "sinner-0-10110|20106",
+        "sinner-2-10813|20810"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {},
+        "setup_ok": false,
+        "pair_ok": false,
+        "post_trigger_damage": 0.0,
+        "pre_trigger_damage": 0.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2049,
+      "won": true,
+      "winner": "Sinners",
+      "kill_turn": 4,
+      "turns": 4,
+      "boss_hp_left": 0.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1686.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 277.0,
+      "sinking_triggers": 40,
+      "deaths": 0,
+      "survivors": 7,
+      "ego_uses": [
+        "sinner-2-10813|20810",
+        "sinner-0-10110|20109"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {
+          "20109": 4
+        },
+        "setup_ok": true,
+        "pair_ok": false,
+        "post_trigger_damage": 24.0,
+        "pre_trigger_damage": 205.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2050,
+      "won": false,
+      "winner": "Enemies",
+      "kill_turn": null,
+      "turns": 7,
+      "boss_hp_left": 751.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 2351.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 315.0,
+      "sinking_triggers": 53,
+      "deaths": 0,
+      "survivors": 0,
+      "ego_uses": [
+        "sinner-0-10110|20109",
+        "sinner-2-10813|20810"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {
+          "20109": 4
+        },
+        "setup_ok": true,
+        "pair_ok": false,
+        "post_trigger_damage": 90.0,
+        "pre_trigger_damage": 101.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2051,
+      "won": true,
+      "winner": "Sinners",
+      "kill_turn": 4,
+      "turns": 4,
+      "boss_hp_left": 0.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1837.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 181.0,
+      "sinking_triggers": 39,
+      "deaths": 0,
+      "survivors": 7,
+      "ego_uses": [
+        "sinner-0-10110|20109",
+        "sinner-2-10813|20810"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {
+          "20109": 4
+        },
+        "setup_ok": true,
+        "pair_ok": false,
+        "post_trigger_damage": 51.0,
+        "pre_trigger_damage": 116.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2052,
+      "won": true,
+      "winner": "Sinners",
+      "kill_turn": 4,
+      "turns": 4,
+      "boss_hp_left": 0.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1800.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 176.0,
+      "sinking_triggers": 39,
+      "deaths": 0,
+      "survivors": 6,
+      "ego_uses": [
+        "sinner-0-10110|20109",
+        "sinner-2-10813|20810"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {
+          "20109": 4
+        },
+        "setup_ok": true,
+        "pair_ok": false,
+        "post_trigger_damage": 18.0,
+        "pre_trigger_damage": 122.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2053,
+      "won": true,
+      "winner": "Sinners",
+      "kill_turn": 4,
+      "turns": 4,
+      "boss_hp_left": 0.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1950.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 124.0,
+      "sinking_triggers": 34,
+      "deaths": 0,
+      "survivors": 7,
+      "ego_uses": [],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {},
+        "setup_ok": false,
+        "pair_ok": false,
+        "post_trigger_damage": 0.0,
+        "pre_trigger_damage": 0.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2054,
+      "won": true,
+      "winner": "Sinners",
+      "kill_turn": 4,
+      "turns": 4,
+      "boss_hp_left": 0.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1861.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 191.0,
+      "sinking_triggers": 34,
+      "deaths": 0,
+      "survivors": 7,
+      "ego_uses": [
+        "sinner-2-10813|20810"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {},
+        "setup_ok": false,
+        "pair_ok": false,
+        "post_trigger_damage": 0.0,
+        "pre_trigger_damage": 0.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2055,
+      "won": true,
+      "winner": "Sinners",
+      "kill_turn": 3,
+      "turns": 3,
+      "boss_hp_left": 0.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1775.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 255.0,
+      "sinking_triggers": 31,
+      "deaths": 0,
+      "survivors": 7,
+      "ego_uses": [
+        "sinner-2-10813|20810",
+        "sinner-0-10110|20109"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {
+          "20109": 3
+        },
+        "setup_ok": true,
+        "pair_ok": false,
+        "post_trigger_damage": 10.0,
+        "pre_trigger_damage": 60.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2056,
+      "won": false,
+      "winner": "Enemies",
+      "kill_turn": null,
+      "turns": 5,
+      "boss_hp_left": 473.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1368.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 189.0,
+      "sinking_triggers": 31,
+      "deaths": 0,
+      "survivors": 0,
+      "ego_uses": [
+        "sinner-0-10110|20109"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {
+          "20109": 4
+        },
+        "setup_ok": true,
+        "pair_ok": false,
+        "post_trigger_damage": 29.0,
+        "pre_trigger_damage": 156.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2057,
+      "won": true,
+      "winner": "Sinners",
+      "kill_turn": 4,
+      "turns": 4,
+      "boss_hp_left": 0.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1833.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 115.0,
+      "sinking_triggers": 41,
+      "deaths": 0,
+      "survivors": 7,
+      "ego_uses": [
+        "sinner-0-10110|20109",
+        "sinner-3-10913|20903"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {
+          "20109": 4
+        },
+        "setup_ok": true,
+        "pair_ok": false,
+        "post_trigger_damage": 26.0,
+        "pre_trigger_damage": 56.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2058,
+      "won": false,
+      "winner": null,
+      "kill_turn": null,
+      "turns": 7,
+      "boss_hp_left": 404.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 2177.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 236.0,
+      "sinking_triggers": 39,
+      "deaths": 0,
+      "survivors": 1,
+      "ego_uses": [
+        "sinner-0-10110|20109"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {
+          "20109": 5
+        },
+        "setup_ok": true,
+        "pair_ok": false,
+        "post_trigger_damage": 32.0,
+        "pre_trigger_damage": 204.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2059,
+      "won": false,
+      "winner": "Enemies",
+      "kill_turn": null,
+      "turns": 6,
+      "boss_hp_left": 835.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1876.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 117.0,
+      "sinking_triggers": 38,
+      "deaths": 0,
+      "survivors": 0,
+      "ego_uses": [
+        "sinner-2-10813|20810"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {},
+        "setup_ok": false,
+        "pair_ok": false,
+        "post_trigger_damage": 0.0,
+        "pre_trigger_damage": 0.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2060,
+      "won": true,
+      "winner": "Sinners",
+      "kill_turn": 4,
+      "turns": 4,
+      "boss_hp_left": 0.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1816.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 211.0,
+      "sinking_triggers": 38,
+      "deaths": 0,
+      "survivors": 7,
+      "ego_uses": [
+        "sinner-2-10813|20810"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {},
+        "setup_ok": false,
+        "pair_ok": false,
+        "post_trigger_damage": 0.0,
+        "pre_trigger_damage": 0.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2061,
+      "won": true,
+      "winner": "Sinners",
+      "kill_turn": 4,
+      "turns": 4,
+      "boss_hp_left": 0.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1891.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 178.0,
+      "sinking_triggers": 42,
+      "deaths": 0,
+      "survivors": 7,
+      "ego_uses": [
+        "sinner-2-10813|20810"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {},
+        "setup_ok": false,
+        "pair_ok": false,
+        "post_trigger_damage": 0.0,
+        "pre_trigger_damage": 0.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2062,
+      "won": false,
+      "winner": "Enemies",
+      "kill_turn": null,
+      "turns": 7,
+      "boss_hp_left": 663.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1721.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 218.0,
+      "sinking_triggers": 50,
+      "deaths": 0,
+      "survivors": 0,
+      "ego_uses": [
+        "sinner-2-10813|20810"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {},
+        "setup_ok": false,
+        "pair_ok": false,
+        "post_trigger_damage": 0.0,
+        "pre_trigger_damage": 0.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2063,
+      "won": true,
+      "winner": "Sinners",
+      "kill_turn": 3,
+      "turns": 3,
+      "boss_hp_left": 0.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1790.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 172.0,
+      "sinking_triggers": 31,
+      "deaths": 0,
+      "survivors": 7,
+      "ego_uses": [
+        "sinner-0-10110|20109",
+        "sinner-2-10813|20810"
+      ],
+      "axis_ok": true,
+      "axis": {
+        "first_ego_turn": {
+          "20109": 3
+        },
+        "setup_ok": true,
+        "pair_ok": false,
+        "post_trigger_damage": 26.0,
+        "pre_trigger_damage": 15.0,
+        "burst_ok": true,
+        "axis_ok": true
+      }
+    },
+    {
+      "seed": 2064,
+      "won": true,
+      "winner": "Sinners",
+      "kill_turn": 4,
+      "turns": 4,
+      "boss_hp_left": 0.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1855.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 175.0,
+      "sinking_triggers": 40,
+      "deaths": 0,
+      "survivors": 7,
+      "ego_uses": [
+        "sinner-0-10110|20106"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {},
+        "setup_ok": false,
+        "pair_ok": false,
+        "post_trigger_damage": 0.0,
+        "pre_trigger_damage": 0.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2065,
+      "won": true,
+      "winner": "Sinners",
+      "kill_turn": 3,
+      "turns": 3,
+      "boss_hp_left": 0.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1921.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 99.0,
+      "sinking_triggers": 27,
+      "deaths": 0,
+      "survivors": 7,
+      "ego_uses": [
+        "sinner-2-10813|20810",
+        "sinner-0-10110|20109"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {
+          "20109": 3
+        },
+        "setup_ok": true,
+        "pair_ok": false,
+        "post_trigger_damage": 13.0,
+        "pre_trigger_damage": 24.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2066,
+      "won": true,
+      "winner": "Sinners",
+      "kill_turn": 3,
+      "turns": 3,
+      "boss_hp_left": 0.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1838.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 112.0,
+      "sinking_triggers": 36,
+      "deaths": 0,
+      "survivors": 7,
+      "ego_uses": [
+        "sinner-2-10813|20810",
+        "sinner-0-10110|20109"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {
+          "20109": 3
+        },
+        "setup_ok": true,
+        "pair_ok": false,
+        "post_trigger_damage": 20.0,
+        "pre_trigger_damage": 23.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2067,
+      "won": false,
+      "winner": "Enemies",
+      "kill_turn": null,
+      "turns": 8,
+      "boss_hp_left": 284.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 2238.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 287.0,
+      "sinking_triggers": 50,
+      "deaths": 0,
+      "survivors": 0,
+      "ego_uses": [
+        "sinner-0-10110|20109",
+        "sinner-2-10813|20810"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {
+          "20109": 4
+        },
+        "setup_ok": true,
+        "pair_ok": false,
+        "post_trigger_damage": 62.0,
+        "pre_trigger_damage": 213.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2068,
+      "won": true,
+      "winner": "Sinners",
+      "kill_turn": 3,
+      "turns": 3,
+      "boss_hp_left": 0.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1940.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 94.0,
+      "sinking_triggers": 30,
+      "deaths": 0,
+      "survivors": 7,
+      "ego_uses": [
+        "sinner-2-10813|20810",
+        "sinner-0-10110|20109"
+      ],
+      "axis_ok": true,
+      "axis": {
+        "first_ego_turn": {
+          "20109": 3
+        },
+        "setup_ok": true,
+        "pair_ok": false,
+        "post_trigger_damage": 25.0,
+        "pre_trigger_damage": 19.0,
+        "burst_ok": true,
+        "axis_ok": true
+      }
+    },
+    {
+      "seed": 2069,
+      "won": true,
+      "winner": "Sinners",
+      "kill_turn": 4,
+      "turns": 4,
+      "boss_hp_left": 0.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1813.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 233.0,
+      "sinking_triggers": 35,
+      "deaths": 0,
+      "survivors": 7,
+      "ego_uses": [
+        "sinner-0-10110|20109",
+        "sinner-2-10813|20810"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {
+          "20109": 4
+        },
+        "setup_ok": true,
+        "pair_ok": false,
+        "post_trigger_damage": 13.0,
+        "pre_trigger_damage": 116.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2070,
+      "won": true,
+      "winner": "Sinners",
+      "kill_turn": 4,
+      "turns": 4,
+      "boss_hp_left": 0.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1836.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 121.0,
+      "sinking_triggers": 32,
+      "deaths": 0,
+      "survivors": 7,
+      "ego_uses": [
+        "sinner-0-10110|20109",
+        "sinner-2-10813|20810"
+      ],
+      "axis_ok": true,
+      "axis": {
+        "first_ego_turn": {
+          "20109": 4
+        },
+        "setup_ok": true,
+        "pair_ok": false,
+        "post_trigger_damage": 76.0,
+        "pre_trigger_damage": 36.0,
+        "burst_ok": true,
+        "axis_ok": true
+      }
+    },
+    {
+      "seed": 2071,
+      "won": true,
+      "winner": "Sinners",
+      "kill_turn": 4,
+      "turns": 4,
+      "boss_hp_left": 0.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1856.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 122.0,
+      "sinking_triggers": 39,
+      "deaths": 0,
+      "survivors": 7,
+      "ego_uses": [
+        "sinner-2-10813|20810",
+        "sinner-0-10110|20109"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {
+          "20109": 4
+        },
+        "setup_ok": true,
+        "pair_ok": false,
+        "post_trigger_damage": 15.0,
+        "pre_trigger_damage": 75.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2072,
+      "won": true,
+      "winner": "Sinners",
+      "kill_turn": 3,
+      "turns": 3,
+      "boss_hp_left": 0.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1894.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 151.0,
+      "sinking_triggers": 25,
+      "deaths": 0,
+      "survivors": 7,
+      "ego_uses": [],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {},
+        "setup_ok": false,
+        "pair_ok": false,
+        "post_trigger_damage": 0.0,
+        "pre_trigger_damage": 0.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2073,
+      "won": true,
+      "winner": "Sinners",
+      "kill_turn": 4,
+      "turns": 4,
+      "boss_hp_left": 0.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1949.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 140.0,
+      "sinking_triggers": 46,
+      "deaths": 0,
+      "survivors": 7,
+      "ego_uses": [
+        "sinner-2-10813|20810"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {},
+        "setup_ok": false,
+        "pair_ok": false,
+        "post_trigger_damage": 0.0,
+        "pre_trigger_damage": 0.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2074,
+      "won": false,
+      "winner": null,
+      "kill_turn": null,
+      "turns": 5,
+      "boss_hp_left": 1394.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 588.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 54.0,
+      "sinking_triggers": 19,
+      "deaths": 0,
+      "survivors": 3,
+      "ego_uses": [],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {},
+        "setup_ok": false,
+        "pair_ok": false,
+        "post_trigger_damage": 0.0,
+        "pre_trigger_damage": 0.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2075,
+      "won": false,
+      "winner": "Enemies",
+      "kill_turn": null,
+      "turns": 6,
+      "boss_hp_left": 1922.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1404.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 295.0,
+      "sinking_triggers": 34,
+      "deaths": 0,
+      "survivors": 0,
+      "ego_uses": [],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {},
+        "setup_ok": false,
+        "pair_ok": false,
+        "post_trigger_damage": 0.0,
+        "pre_trigger_damage": 0.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2076,
+      "won": true,
+      "winner": "Sinners",
+      "kill_turn": 3,
+      "turns": 3,
+      "boss_hp_left": 0.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1948.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 88.0,
+      "sinking_triggers": 34,
+      "deaths": 0,
+      "survivors": 7,
+      "ego_uses": [
+        "sinner-2-10813|20810",
+        "sinner-0-10110|20109"
+      ],
+      "axis_ok": true,
+      "axis": {
+        "first_ego_turn": {
+          "20109": 3
+        },
+        "setup_ok": true,
+        "pair_ok": false,
+        "post_trigger_damage": 22.0,
+        "pre_trigger_damage": 14.0,
+        "burst_ok": true,
+        "axis_ok": true
+      }
+    },
+    {
+      "seed": 2077,
+      "won": false,
+      "winner": "Enemies",
+      "kill_turn": null,
+      "turns": 6,
+      "boss_hp_left": 524.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1698.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 177.0,
+      "sinking_triggers": 46,
+      "deaths": 0,
+      "survivors": 0,
+      "ego_uses": [
+        "sinner-2-10813|20810"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {},
+        "setup_ok": false,
+        "pair_ok": false,
+        "post_trigger_damage": 0.0,
+        "pre_trigger_damage": 0.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2078,
+      "won": true,
+      "winner": "Sinners",
+      "kill_turn": 4,
+      "turns": 4,
+      "boss_hp_left": 0.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1957.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 159.0,
+      "sinking_triggers": 35,
+      "deaths": 0,
+      "survivors": 7,
+      "ego_uses": [
+        "sinner-0-10110|20109",
+        "sinner-2-10813|20810"
+      ],
+      "axis_ok": true,
+      "axis": {
+        "first_ego_turn": {
+          "20109": 4
+        },
+        "setup_ok": true,
+        "pair_ok": false,
+        "post_trigger_damage": 60.0,
+        "pre_trigger_damage": 35.0,
+        "burst_ok": true,
+        "axis_ok": true
+      }
+    },
+    {
+      "seed": 2079,
+      "won": false,
+      "winner": null,
+      "kill_turn": null,
+      "turns": 7,
+      "boss_hp_left": 1466.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1653.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 158.0,
+      "sinking_triggers": 45,
+      "deaths": 0,
+      "survivors": 1,
+      "ego_uses": [
+        "sinner-3-10913|20903"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {},
+        "setup_ok": false,
+        "pair_ok": false,
+        "post_trigger_damage": 0.0,
+        "pre_trigger_damage": 0.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2080,
+      "won": true,
+      "winner": "Sinners",
+      "kill_turn": 4,
+      "turns": 4,
+      "boss_hp_left": 0.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1880.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 170.0,
+      "sinking_triggers": 33,
+      "deaths": 0,
+      "survivors": 7,
+      "ego_uses": [
+        "sinner-2-10813|20810",
+        "sinner-0-10110|20109"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {
+          "20109": 4
+        },
+        "setup_ok": true,
+        "pair_ok": false,
+        "post_trigger_damage": 17.0,
+        "pre_trigger_damage": 56.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2081,
+      "won": false,
+      "winner": "Enemies",
+      "kill_turn": null,
+      "turns": 7,
+      "boss_hp_left": 879.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1661.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 216.0,
+      "sinking_triggers": 39,
+      "deaths": 0,
+      "survivors": 0,
+      "ego_uses": [
+        "sinner-0-10110|20106",
+        "sinner-2-10813|20810"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {},
+        "setup_ok": false,
+        "pair_ok": false,
+        "post_trigger_damage": 0.0,
+        "pre_trigger_damage": 0.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2082,
+      "won": false,
+      "winner": null,
+      "kill_turn": null,
+      "turns": 7,
+      "boss_hp_left": 1369.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1465.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 142.0,
+      "sinking_triggers": 31,
+      "deaths": 0,
+      "survivors": 1,
+      "ego_uses": [],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {},
+        "setup_ok": false,
+        "pair_ok": false,
+        "post_trigger_damage": 0.0,
+        "pre_trigger_damage": 0.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2083,
+      "won": false,
+      "winner": "Enemies",
+      "kill_turn": null,
+      "turns": 6,
+      "boss_hp_left": 494.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1762.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 167.0,
+      "sinking_triggers": 35,
+      "deaths": 0,
+      "survivors": 0,
+      "ego_uses": [
+        "sinner-0-10110|20106"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {},
+        "setup_ok": false,
+        "pair_ok": false,
+        "post_trigger_damage": 0.0,
+        "pre_trigger_damage": 0.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2084,
+      "won": false,
+      "winner": "Enemies",
+      "kill_turn": null,
+      "turns": 6,
+      "boss_hp_left": 1902.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1505.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 315.0,
+      "sinking_triggers": 36,
+      "deaths": 0,
+      "survivors": 0,
+      "ego_uses": [
+        "sinner-0-10110|20109"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {
+          "20109": 4
+        },
+        "setup_ok": true,
+        "pair_ok": false,
+        "post_trigger_damage": 61.0,
+        "pre_trigger_damage": 252.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2085,
+      "won": false,
+      "winner": "Enemies",
+      "kill_turn": null,
+      "turns": 5,
+      "boss_hp_left": 264.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1568.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 209.0,
+      "sinking_triggers": 31,
+      "deaths": 0,
+      "survivors": 0,
+      "ego_uses": [],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {},
+        "setup_ok": false,
+        "pair_ok": false,
+        "post_trigger_damage": 0.0,
+        "pre_trigger_damage": 0.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2086,
+      "won": true,
+      "winner": "Sinners",
+      "kill_turn": 4,
+      "turns": 4,
+      "boss_hp_left": 0.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1663.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 349.0,
+      "sinking_triggers": 35,
+      "deaths": 0,
+      "survivors": 7,
+      "ego_uses": [
+        "sinner-0-10110|20106"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {},
+        "setup_ok": false,
+        "pair_ok": false,
+        "post_trigger_damage": 0.0,
+        "pre_trigger_damage": 0.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2087,
+      "won": true,
+      "winner": "Sinners",
+      "kill_turn": 3,
+      "turns": 3,
+      "boss_hp_left": 0.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1872.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 93.0,
+      "sinking_triggers": 27,
+      "deaths": 0,
+      "survivors": 7,
+      "ego_uses": [
+        "sinner-2-10813|20810",
+        "sinner-0-10110|20109"
+      ],
+      "axis_ok": true,
+      "axis": {
+        "first_ego_turn": {
+          "20109": 3
+        },
+        "setup_ok": true,
+        "pair_ok": false,
+        "post_trigger_damage": 53.0,
+        "pre_trigger_damage": 18.0,
+        "burst_ok": true,
+        "axis_ok": true
+      }
+    },
+    {
+      "seed": 2088,
+      "won": true,
+      "winner": "Sinners",
+      "kill_turn": 4,
+      "turns": 4,
+      "boss_hp_left": 0.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1865.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 181.0,
+      "sinking_triggers": 34,
+      "deaths": 0,
+      "survivors": 7,
+      "ego_uses": [
+        "sinner-0-10110|20106"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {},
+        "setup_ok": false,
+        "pair_ok": false,
+        "post_trigger_damage": 0.0,
+        "pre_trigger_damage": 0.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2089,
+      "won": true,
+      "winner": "Sinners",
+      "kill_turn": 3,
+      "turns": 3,
+      "boss_hp_left": 0.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1832.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 135.0,
+      "sinking_triggers": 35,
+      "deaths": 0,
+      "survivors": 7,
+      "ego_uses": [
+        "sinner-0-10110|20109",
+        "sinner-2-10813|20810"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {
+          "20109": 3
+        },
+        "setup_ok": true,
+        "pair_ok": false,
+        "post_trigger_damage": 23.0,
+        "pre_trigger_damage": 23.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2090,
+      "won": false,
+      "winner": null,
+      "kill_turn": null,
+      "turns": 4,
+      "boss_hp_left": 937.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 966.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 104.0,
+      "sinking_triggers": 22,
+      "deaths": 0,
+      "survivors": 3,
+      "ego_uses": [
+        "sinner-0-10110|20109"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {
+          "20109": 4
+        },
+        "setup_ok": true,
+        "pair_ok": false,
+        "post_trigger_damage": 0.0,
+        "pre_trigger_damage": 104.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2091,
+      "won": true,
+      "winner": "Sinners",
+      "kill_turn": 4,
+      "turns": 4,
+      "boss_hp_left": 0.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1858.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 149.0,
+      "sinking_triggers": 38,
+      "deaths": 0,
+      "survivors": 7,
+      "ego_uses": [
+        "sinner-0-10110|20109",
+        "sinner-2-10813|20810"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {
+          "20109": 4
+        },
+        "setup_ok": true,
+        "pair_ok": false,
+        "post_trigger_damage": 0.0,
+        "pre_trigger_damage": 121.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2092,
+      "won": false,
+      "winner": "Enemies",
+      "kill_turn": null,
+      "turns": 7,
+      "boss_hp_left": 1207.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1462.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 143.0,
+      "sinking_triggers": 39,
+      "deaths": 0,
+      "survivors": 0,
+      "ego_uses": [
+        "sinner-2-10813|20810"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {},
+        "setup_ok": false,
+        "pair_ok": false,
+        "post_trigger_damage": 0.0,
+        "pre_trigger_damage": 0.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2093,
+      "won": true,
+      "winner": "Sinners",
+      "kill_turn": 4,
+      "turns": 4,
+      "boss_hp_left": 0.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1874.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 156.0,
+      "sinking_triggers": 33,
+      "deaths": 0,
+      "survivors": 7,
+      "ego_uses": [
+        "sinner-0-10110|20106"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {},
+        "setup_ok": false,
+        "pair_ok": false,
+        "post_trigger_damage": 0.0,
+        "pre_trigger_damage": 0.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2094,
+      "won": false,
+      "winner": "Enemies",
+      "kill_turn": null,
+      "turns": 7,
+      "boss_hp_left": 273.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1696.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 216.0,
+      "sinking_triggers": 43,
+      "deaths": 0,
+      "survivors": 0,
+      "ego_uses": [
+        "sinner-0-10110|20109"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {
+          "20109": 4
+        },
+        "setup_ok": true,
+        "pair_ok": false,
+        "post_trigger_damage": 42.0,
+        "pre_trigger_damage": 142.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2095,
+      "won": true,
+      "winner": "Sinners",
+      "kill_turn": 4,
+      "turns": 4,
+      "boss_hp_left": 0.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1813.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 157.0,
+      "sinking_triggers": 39,
+      "deaths": 0,
+      "survivors": 7,
+      "ego_uses": [
+        "sinner-2-10813|20810",
+        "sinner-0-10110|20109"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {
+          "20109": 4
+        },
+        "setup_ok": true,
+        "pair_ok": false,
+        "post_trigger_damage": 27.0,
+        "pre_trigger_damage": 109.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    },
+    {
+      "seed": 2096,
+      "won": false,
+      "winner": null,
+      "kill_turn": null,
+      "turns": 6,
+      "boss_hp_left": 1223.0,
+      "boss_hp_start": 2049.0,
+      "damage_to_enemies": 1320.0,
+      "damage_to_allies": 0.0,
+      "sinking_damage": 155.0,
+      "sinking_triggers": 28,
+      "deaths": 0,
+      "survivors": 2,
+      "ego_uses": [
+        "sinner-3-10913|20903"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {},
+        "setup_ok": false,
+        "pair_ok": false,
+        "post_trigger_damage": 0.0,
+        "pre_trigger_damage": 0.0,
+        "burst_ok": false,
+        "axis_ok": false
+      }
+    }
+  ]
+}

@@ -84,6 +84,7 @@ Sources used below:
 | 98 | **Ishmael's `Koi-Koi`**: `[HanafudaCombo]` (`Bright -光-`) is granted at Turn Start with 0 Potency / 3 Count, loses 1 Count per Turn Start, and is capped at 5 Potency / 3 Count; "Kōzan" only comes out at a Skill End once the combo reaches 5 Potency or its Count runs dry - so the first one is the fourth Turn Start at the earliest, never on the opening turn.  Sakura-sen or an E.G.O used from the leftmost Slot adds 1 Potency per turn | `battle::{passive_follow_ups, apply_status_phase, prepare_use}`, `data/mechanics/status_effects.json` | passive `Koi-Koi` (in-game text), wiki.gg `Status Effects` / HanafudaCombo | multi_source_verified |
 | 99 | **The Line 6 Section 5 wave is the Imago plus its three Illusory Butterfly allies** (9567 + 9572/9573/9574, "Wave 1" of `Station 8: Advent`); each illusion is a 1 HP unit whose Speed is fixed to 1 | `setup::fixed::SECTION5_WAVE`, `Simulator::section5`, `tools/build_library.py` | wiki.gg `Line 6: Maru no Uchi no Sanzu no Kawa` / Encounter Details | multi_source_verified |
 | 100 | **`The X - Segmentation`**: every time an illusion is **hit as the main target** the Imago loses 1 Stack of that illusion's state of time (once per Coin) and the attacking Sinner heals 10 SP (once per turn per Sinner); a turn in which the illusion is *not* hit as the main target gives the Imago 5 Stacks of that state at Combat End (not while the Imago is Staggered) - which is what lets the Imago switch states | `battle::{apply_hit, end_turn}`, `scripts::Segmentation` | in-game passive `The Past/Present/Future - Segmentation [分節]` | official |
+| 102 | **An encounter's main enemy (`encounter_boss`) decides the fight**: when it is defeated the wave is over, even if an attached ally is still standing.  For the Line 6 Section 5 wave this is required, because the Illusory Butterflies' `Origination` floors their HP at 1, so "every enemy defeated" would never be reached | `battle` victory check, `EnemyRecord::encounter_boss` (`tools/build_library.py`: 9563, 9567) | wiki.gg `Line 6: Maru no Uchi no Sanzu no Kawa` / Encounter Details (the Section lists 9567 as the enemy; the Imago page lists 9572-9574 under **Allies**) | inferred (the table is sourced, the rule is the reading of it) |
 | 101 | **`The X - Origination [緣起]`**: "Fix this unit's Speed to 1; this unit's HP does not drop below 1.  When this unit takes HP damage, transfer half of damage taken to Butterfly of Entangled Lives::Imago (rounded down)" | `battle::apply_hit`, `scripts::Origination` | in-game passive `The Past/Present/Future - Origination [緣起]` | official |
 | 68 | **Chaining to an enemy Skill Slot (focused encounters)**: a Skill whose user out-speeds an enemy Slot redirects that enemy Skill onto itself ("自分速度が相手のスロットよりも早ければ、そのスキルの使用先を自分に向けさせることができる"); a Skill already aimed at the unit may chain to it regardless of Speed, and a unit whose Speed is equal to or lower than the Slot's cannot chain ("自分の速度が相手のスロットの速度以下であり、かつ矢印が自分に向いていない場合、その攻撃にマッチすることは出来ない。互いに一方攻撃となる").  Exposed as `Action::Engage { enemy_slot }`; normal battles decide Clash partners automatically; when several Skills chain to the same enemy Slot the **last** chain wins ("同じスロットに対して複数回行った場合、敵のスキルの使用先は当然「最後に行った使用先の変更」に準拠する") and that Slot can no longer be picked up by another Sinner through its old target | `battle::{legal_actions, submit, resolve_combat}`, `state::BattleConfig::focused_encounter` | JA-wiki 戦闘システム詳細 (集中戦闘 / 幻想体戦) | multi_source_verified |
 | 69 | **A hit resolves in a fixed order**: damage, then the **defender's** own effects (its buffs/debuffs oldest first, passives and "when hit" triggers), then the attacker's `[On Hit]` clauses - so a freshly inflicted [Sinking] is not consumed by the hit that applied it | `battle::apply_hit` | JA-wiki ダメージ / 攻撃の流れ ("ダメージ、被弾者のバフ/デバフ効果(古い順)、パッシブやギフトの効果、的中時効果がこの順番通りに発動する") | single_source_verified |
@@ -152,7 +153,7 @@ Sources used below:
 
 | Feature | Status | Note |
 |---------|--------|------|
-| Illusory Butterfly damage transfer ("Origination") | `NOT_IMPLEMENTED` | Out of scope: the deliverable is the Section 5 Imago; the butterfly data and its Segmentation passive exist for completeness but the campaign is optional (`Simulator::section5`). |
+| Focused-encounter Parts of the Pupa (`9563`), and any encounter whose Parts must be destroyed separately | `NOT_IMPLEMENTED` | Only the core unit is instantiated; the Pupa is loaded for documentation. |
 | Section 5 choice event (Sunset Wayfarer) and the earlier stations' choices that disable Past/Present/Future components | `NOT_IMPLEMENTED` | The encounter starts in `BattleConfig::initial_time_state` instead (the wiki ties the real starting state to those choices). |
 | HP Healing Down / Wrath Fragility / Gloom Fragility etc. | `NOT_IMPLEMENTED` | The Past passive and several skills apply them and they show up in the state, but their own effects (healing reduction, damage amplification by affinity) are not yet part of the damage formula. |
 | Illusory Butterfly Eclosion / encounter-end skills | `NOT_IMPLEMENTED` | "End the Encounter" skills are extracted but not acted upon. |
@@ -165,3 +166,16 @@ Sources used below:
 
 `Simulator::unknown_rules()` and `Simulator::strict_blockers()` return these
 lists at runtime; `python/demo.py --strict` prints them.
+
+## Engine instrumentation (not game rules)
+
+The training harness (`docs/TRAINING.md`) needs signals the game does not print.
+These are bookkeeping, not rules, and they are documented here so nobody mistakes
+them for a mechanic:
+
+| item | what it is |
+|------|-----------|
+| `BattleState::turn_stats` (`TurnStats`) | Damage actually applied per turn (to enemies / to allies), status and [Sinking] trigger damage, SP drained by [Sinking], Skill and E.G.O uses, deaths.  Accumulated where the engine already applies the effect, reset at the start of every `step_turn`. |
+| `hash::search_key` | The replay hash without the battle log, the warnings and the turn statistics - the log cannot affect the future, so it is excluded from the transposition key. |
+| `BattleConfig::enemy_hp_scale` | **Scenario knob** for training/evaluation (default 1.0 = the data's HP).  It scales enemy max HP and nothing else; `provenance()` records it in every report. |
+| `Simulator::submit_plan` | The atomic whole-turn API (validate -> commit -> resolve), including the rollback on an illegal or incomplete plan. |

@@ -32,8 +32,16 @@ sim/           Rust workspace
   crates/lcb-core   rules: state, clash, damage, statuses, E.G.O, replay, hash
   crates/lcb-cli    inspect / run / JSON-stdio driver
   crates/lcb-py     PyO3 bindings (`lcb_sim`)
-python/lcb/    environment wrapper + search (random, greedy, beam)
-docs/          MECHANICS.md (rule -> source), STATUS.md, DATA.md, COVERAGE.md
+python/lcb/    environment wrapper + search + the training stack (see docs/TRAINING.md)
+search/        stage A: multi-turn search teacher + DAgger-lite data collection
+training/      stage B/C: behaviour cloning, PPO
+eval/          stage D: Random / FirstLegal / Greedy / AI evaluation
+models/        checkpoints (the shipped AI policy is `models/ai.npz`)
+data/teacher*/ stage A datasets (per-seed .npz, git-ignored)
+reports/       evaluation.json + one JSONL per policy
+replays/       the fastest win of every policy, with per-turn hashes
+docs/          MECHANICS.md (rule -> source), STATUS.md, TRAINING.md,
+               TRAINING_PLAN.md, TRAINING_RESULTS.md, DATA.md, COVERAGE.md
 ```
 
 The data pipeline is `tools/build_all.py`, which runs, in order:
@@ -76,7 +84,8 @@ cp target/release/lcb_sim.dll ../python/lcb/lcb_sim.pyd   # .so on Linux/macOS
 
 # 4. play a turn / run the Python smoke tests
 python python/demo.py --turns 3 --policy greedy --seed 1
-python python/tests/test_env.py
+python python/tests/test_env.py        # wrapper smoke tests
+python python/tests/test_training.py   # training stack: atomic plans, masks, datasets, metrics
 ```
 
 `sim/crates/lcb-cli serve` speaks a JSON line protocol (`reset`,
@@ -89,7 +98,7 @@ python python/tests/test_env.py
 from lcb import LimbusEnv, greedy_turn
 
 env = LimbusEnv()                 # data/ is found automatically
-env.reset(seed=1)                 # 7 fixed identities vs the Section 5 Imago
+env.reset(seed=1)                 # 7 fixed identities vs the Section 5 wave
 for action in greedy_turn(env):   # each candidate is scored by simulating it
     env.step(action)
 env.commit()                      # resolve the turn
@@ -100,6 +109,25 @@ clone = env.clone_state()         # deep copy, safe to mutate
 Action space, as in the plan: pick unit → pick skill → pick target → commit.
 `legal_actions()` returns the full product, including E.G.O usages the team can
 currently afford.
+
+### The training interface
+
+One turn is one environment step, and the plan is submitted as a whole:
+
+```python
+env = LimbusEnv(strict=True)
+env.reset(seed=9001, enemies=SECTION5_WAVE, enemy_hp_scale=0.08)
+obs = env.observe()                       # compact: no battle log
+plan = [action for action in ...]         # one action per unit that can act
+info = env.step_turn(plan)                # atomic: illegal/partial plans change nothing
+info["ok"], info["stats"], info["transition_hash"], info["rng_after"]
+```
+
+`docs/TRAINING.md` describes the teacher, the encoders, the reward and how to
+reproduce every number in `docs/TRAINING_RESULTS.md` (results, the §7.1
+acceptance table and the honest limitations); `docs/TRAINING_PLAN.md` is the
+specification the harness implements.  `reports/evaluation.json` and
+`replays/index.json` are the machine-readable outcome.
 
 ## Sources and honesty
 

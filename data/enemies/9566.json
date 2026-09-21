@@ -3,6 +3,7 @@
   "kind": "enemy",
   "segmentation": null,
   "origination": null,
+  "encounter_boss": false,
   "name_en": "Refracted Illusory Butterfly of Entangled Lives::The Future",
   "wiki_title": "Illusory Butterfly of Entangled Lives::The Future",
   "abno_code": "O-03-14-03-c",

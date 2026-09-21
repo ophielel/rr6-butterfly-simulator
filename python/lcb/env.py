@@ -19,6 +19,9 @@ try:  # pragma: no cover - import guard
     TEAM: List[str] = list(lcb_sim.TEAM)
     BOSS_IMAGO: str = lcb_sim.BOSS_IMAGO
     BOSS_PUPA: str = lcb_sim.BOSS_PUPA
+    #: Line 6 Section 5 Wave 1: the Imago with its three Illusory Butterflies.
+    SECTION5_WAVE: List[str] = list(lcb_sim.SECTION5_WAVE)
+    EGO_LOADOUT: List[List[str]] = [list(pair) for pair in lcb_sim.EGO_LOADOUT]
 except ImportError:  # pragma: no cover - fallback path
     from .stdio_client import StdioSimulator
 
@@ -28,6 +31,16 @@ except ImportError:  # pragma: no cover - fallback path
     TEAM = ["10110", "10414", "10813", "10913", "11004", "11114", "11214"]
     BOSS_IMAGO = "9567"
     BOSS_PUPA = "9563"
+    SECTION5_WAVE = ["9567", "9572", "9573", "9574"]
+    EGO_LOADOUT = [
+        ["10110", "20109"],
+        ["10110", "20106"],
+        ["11214", "21207"],
+        ["10813", "20807"],
+        ["10813", "20810"],
+        ["11004", "21009"],
+        ["10913", "20903"],
+    ]
 
 
 @dataclass(frozen=True)
@@ -156,12 +169,21 @@ class LimbusEnv:
         seed: int,
         team: Optional[List[str]] = None,
         enemies: Optional[List[str]] = None,
+        max_turns: Optional[int] = None,
+        enemy_hp_scale: Optional[float] = None,
     ) -> str:
+        """Start a fresh encounter (returns the initial state hash).
+
+        `enemy_hp_scale` is a *scenario* knob for training/evaluation - it never
+        changes a rule, only the boss's HP pool (1.0 == the real encounter).
+        """
         return self._sim.reset(
             int(seed),
             list(team) if team else None,
             list(enemies) if enemies else None,
             bool(self.strict),
+            int(max_turns) if max_turns is not None else None,
+            float(enemy_hp_scale) if enemy_hp_scale is not None else None,
         )
 
     def clone_state(self) -> "LimbusEnv":
@@ -222,6 +244,45 @@ class LimbusEnv:
 
     def commit(self) -> Dict[str, Any]:
         return self.step(None)
+
+    # -- the training interface (TRAINING_PLAN.md §1) ----------------------
+    def submit(self, action: Any) -> Dict[str, Any]:
+        """Submit one action without resolving the turn (no state clone/hash)."""
+        wire = (
+            action.to_wire()
+            if isinstance(action, (Action, EngageAction, EgoAction))
+            else json.dumps(action)
+        )
+        return json.loads(self._sim.submit(wire))
+
+    def step_turn(self, plan: List[Any]) -> Dict[str, Any]:
+        """Resolve one **complete** turn plan atomically.
+
+        `plan` is a list of actions, one per unit that can act.  The simulator
+        validates every action against its own legal-action list and rejects a
+        partial or illegal plan without changing the state; the returned
+        `info` carries the replay material (hashes, RNG continuation, battle log
+        delta) and the turn's real statistics.
+        """
+        wire = [
+            json.loads(action.to_wire())
+            if isinstance(action, (Action, EngageAction, EgoAction))
+            else action
+            for action in plan
+        ]
+        result = json.loads(self._sim.step_turn(json.dumps(wire)))
+        self._last_transition = result.get("transition_hash")
+        if result.get("ok"):
+            self.turn = result.get("turn", self.turn)
+        return result
+
+    def observe(self) -> Dict[str, Any]:
+        """Compact observation: everything a decision may depend on, no log."""
+        return json.loads(self._sim.observation_json())
+
+    def search_key(self) -> str:
+        """Transposition key (state hash without the log/warnings/statistics)."""
+        return self._sim.search_key()
 
     # -- diagnostics -------------------------------------------------------
     def unknown_rules(self) -> List[str]:

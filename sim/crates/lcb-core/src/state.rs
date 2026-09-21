@@ -621,6 +621,9 @@ pub struct Unit {
     /// "The X - Origination" data (the Section 5 illusions).
     #[serde(default)]
     pub origination: Option<crate::scripts::Origination>,
+    /// This unit is the encounter's main enemy (`EnemyRecord::encounter_boss`).
+    #[serde(default)]
+    pub encounter_boss: bool,
     /// Hits taken as a main target this turn (Segmentation counts one per Coin).
     #[serde(default)]
     pub hits_taken: i32,
@@ -853,6 +856,17 @@ pub struct BattleConfig {
     /// default is the first listed state.
     #[serde(default = "default_initial_time_state")]
     pub initial_time_state: crate::scripts::TimeState,
+    /// **Scenario knob, not a game rule.**  Multiplies every enemy's max HP.
+    /// `1.0` is the encounter as the data describes it.  The training harness
+    /// lowers it to create terminal wins inside its turn budget (the real Imago
+    /// has 25616 HP, which a 30-turn cap cannot reach), and says so in every
+    /// report it writes.
+    #[serde(default = "default_enemy_hp_scale")]
+    pub enemy_hp_scale: f64,
+}
+
+pub fn default_enemy_hp_scale() -> f64 {
+    1.0
 }
 
 pub fn default_starting_sp() -> i32 {
@@ -875,6 +889,7 @@ impl Default for BattleConfig {
             focused_encounter: true,
             max_turns: 30,
             initial_time_state: crate::scripts::TimeState::Past,
+            enemy_hp_scale: 1.0,
         }
     }
 }
@@ -908,6 +923,45 @@ pub struct LogEntry {
     pub turn: u32,
     pub kind: String,
     pub detail: String,
+}
+
+/// Where an instance of damage came from (see `BattleState::record_damage`).
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum DamageSource {
+    /// A Skill's Coin (or a damage transfer caused by one).
+    Attack,
+    /// A [Sinking] trigger.
+    Sinking,
+    /// Another status effect (Rupture, Burn, ...).
+    Status,
+    /// The unit's own Skill / upkeep.
+    SelfDamage,
+}
+
+/// Per-turn bookkeeping for the training layer: real simulated signals, never
+/// estimates.  Reset at the start of every `Simulator::step_turn`, so after a
+/// turn it describes exactly that turn.
+#[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize)]
+pub struct TurnStats {
+    /// HP damage the Sinners dealt to the enemies (the Imago and its allies).
+    pub damage_to_enemies: i32,
+    /// HP damage the enemies dealt to the Sinners.
+    pub damage_to_allies: i32,
+    /// HP damage from status effects (Rupture and friends).
+    pub status_damage: i32,
+    /// HP damage from a [Sinking] trigger (including Butterfly).
+    pub sinking_damage: i32,
+    /// SP the [Sinking] trigger drained (SP units).
+    pub sinking_sp_damage: i32,
+    /// How many times [Sinking] triggered.
+    pub sinking_triggers: i32,
+    /// `unit id|skill id|slot` for every Skill that actually resolved, E.G.O
+    /// included (a Skill that lost a Clash still resolved).
+    pub skill_uses: Vec<String>,
+    /// `unit id|ego id` for every E.G.O Skill that resolved.
+    pub ego_uses: Vec<String>,
+    /// Units that died during this turn.
+    pub deaths: Vec<String>,
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
@@ -947,6 +1001,9 @@ pub struct BattleState {
     #[serde(default)]
     pub clash_counts: BTreeMap<String, i32>,
     pub log: Vec<LogEntry>,
+    /// Signals of the turn that just resolved (see `TurnStats`).
+    #[serde(default)]
+    pub turn_stats: TurnStats,
     pub warnings: Vec<String>,
     pub winner: Option<Winner>,
     /// Set when a skill with "End the Encounter" resolved (Refraction Railway
@@ -962,7 +1019,8 @@ pub struct BattleState {
     #[serde(default)]
     pub preset_flips: Vec<bool>,
     #[serde(default)]
-    pub flip_cursor: usize,    /// Behaviour of every status (loaded from `status_effects.json`), so that
+    pub flip_cursor: usize,
+    /// Behaviour of every status (loaded from `status_effects.json`), so that
     /// status text like "[Turn Start] gain 1 [X] for every Stack" can run.
     #[serde(default)]
     #[serde(skip)]
@@ -1059,5 +1117,62 @@ impl BattleState {
             kind: kind.to_string(),
             detail: detail.into(),
         });
+    }
+
+    /// Apply HP damage to `index` and record it in the turn's statistics.
+    /// Returns the HP actually lost.
+    pub fn damage_unit(&mut self, index: usize, amount: i32, source: DamageSource) -> i32 {
+        if amount <= 0 {
+            return 0;
+        }
+        let before = self.units[index].hp;
+        self.units[index].take_damage(amount);
+        let lost = before - self.units[index].hp;
+        if lost > 0 {
+            self.record_damage(index, lost, source);
+            if !self.units[index].alive {
+                let id = self.units[index].id.0.clone();
+                if !self.turn_stats.deaths.contains(&id) {
+                    self.turn_stats.deaths.push(id);
+                }
+            }
+        }
+        lost
+    }
+
+    /// Classify damage that was already applied (see `damage_unit`).
+    pub fn record_damage(&mut self, index: usize, amount: i32, source: DamageSource) {
+        if amount <= 0 {
+            return;
+        }
+        match source {
+            DamageSource::Attack => {
+                if self.units[index].kind.is_sinner() {
+                    self.turn_stats.damage_to_allies += amount;
+                } else {
+                    self.turn_stats.damage_to_enemies += amount;
+                }
+            }
+            DamageSource::Sinking => self.turn_stats.sinking_damage += amount,
+            DamageSource::Status => self.turn_stats.status_damage += amount,
+            DamageSource::SelfDamage => {}
+        }
+    }
+
+    /// Remember that a Skill resolved this turn (E.G.O too).
+    pub fn record_use(&mut self, index: usize, skill: &crate::ids::SkillId, slot: u32) {
+        let unit_id = self.units[index].id.0.clone();
+        let entry = format!("{}|{}|{}", unit_id, skill.0, slot);
+        if !self.turn_stats.skill_uses.contains(&entry) {
+            self.turn_stats.skill_uses.push(entry);
+        }
+    }
+
+    /// Remember that an E.G.O resolved this turn.
+    pub fn record_ego(&mut self, index: usize, ego: &crate::ids::EgoId) {
+        let entry = format!("{}|{}", self.units[index].id.0, ego.0);
+        if !self.turn_stats.ego_uses.contains(&entry) {
+            self.turn_stats.ego_uses.push(entry);
+        }
     }
 }

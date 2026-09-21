@@ -75,6 +75,13 @@ ENEMIES = {
 # `EnBox` on their page is the Imago they feed Stacks to.
 SECTION5_ILLUSIONS = {"9572", "9573", "9574"}
 
+# The encounter's main enemy.  The wiki's Encounter Details table
+# (`Line 6: Maru no Uchi no Sanzu no Kawa`) lists it as the Section's enemy and
+# the rest of the wave as its **Allies** table on the Abnormality page.  The
+# battle ends when it is defeated; that is what makes the Section 5 wave winnable
+# at all, because the Illusory Butterflies' `Origination` floors their HP at 1.
+ENCOUNTER_BOSSES = {"9563", "9567"}
+
 RESIST_WORDS = {
     "Fatal": 2.0,
     "Weak": 1.5,
@@ -626,6 +633,7 @@ def build_enemy(game_id: str, meta, en_enemies, skill_ids: Dict[str, str]) -> di
         "kind": "enemy",
         "segmentation": segmentation,
         "origination": origination,
+        "encounter_boss": game_id in ENCOUNTER_BOSSES,
         "name_en": en.get("name") or page.get("name"),
         "wiki_title": wiki_title,
         "abno_code": page.get("abnocode"),

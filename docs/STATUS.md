@@ -5,8 +5,10 @@ by a test that cites a source in `docs/MECHANICS.md`.
 
 **Current state (2026-09-21):** all seven identities, the seven E.G.O and the
 whole **Section 5 wave** (the Imago plus its three Illusory Butterfly allies) have
-**zero** unmodelled effect lines (see `docs/COVERAGE.md`); 132 Rust tests and the
-Python suite pass; the honest unknowns are listed at the end of this file.
+**zero** unmodelled effect lines (see `docs/COVERAGE.md`); 136 Rust tests and the
+Python suites pass; the training stack (`docs/TRAINING.md`,
+`docs/TRAINING_RESULTS.md`) is implemented and evaluated; the honest unknowns are
+listed at the end of this file.
 
 ## Phase 1 — base state — done
 
@@ -134,6 +136,23 @@ components), the illusory butterflies' "Origination" damage transfer (they are
 1 HP, so it rarely matters), Sin Resonance's level-gain table, Panic/Low Morale,
 E.G.O Corrosion forced actions, focused-encounter Parts, and the debuffs' own
 effects (HP Healing Down, Wrath Fragility).
+
+## Training and evaluation (2026-09-21)
+
+Specification: `docs/TRAINING_PLAN.md`.  Implementation: `docs/TRAINING.md`.
+Results and the §7.1 acceptance table: `docs/TRAINING_RESULTS.md`.
+
+| Item | Where | Test |
+|------|-------|------|
+| Atomic whole-turn plan API (`submit_plan`, rollback on illegal/incomplete) | `Simulator::submit_plan` | `engineering::submit_plan_is_validated_atomically`, `engineering::submit_plan_matches_incremental_submission` |
+| Per-turn real statistics (damage, Sinking triggers, Skill/E.G.O uses, deaths) | `state::TurnStats` | `engineering::submit_plan_is_validated_atomically` |
+| Log-free transposition key, compact observation | `hash::search_key`, `PySimulator::observation_json` | `python/tests/test_training.py` |
+| One action per unit, mask shared by search/policy/eval | `plans.actor_order` / `PlanGenerator` | `test_plan_and_mask_match_the_simulator` |
+| Turn-level beam teacher (horizon 3, width 32) | `teacher.BeamTeacher` | `test_teacher_plans_are_replayable`, `test_teacher_samples_are_labelled_inside_the_candidates` |
+| Reward (§3) and episode metrics (§7) | `rewards.py`, `evaluate.py` | `test_summarise_and_best_of_n` |
+| Behaviour cloning, PPO, DAgger-lite | `bc.py`, `ppo.py`, `dagger.py` | `training/train_bc.py`, `training/train_ppo.py` logs |
+| Axis detection from real state and stats | `teacher.detect_axis` | `test_axis_detection_uses_real_state` |
+| Encounter main enemy ends the wave | `battle` victory check, `EnemyRecord::encounter_boss` | `mechanics::defeating_the_main_enemy_ends_the_wave` (rule 102) |
 
 ## Search ladder
 

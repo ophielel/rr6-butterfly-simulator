@@ -355,6 +355,14 @@ pub struct EnemyRecord {
     /// "The X - Origination": half of the damage they take goes to the Imago.
     #[serde(default)]
     pub origination: Option<crate::scripts::Origination>,
+    /// The encounter's main enemy.  The wiki's Encounter Details table lists it
+    /// as the Section's enemy and the other units of the wave as its **Allies**
+    /// (`Line 6: Maru no Uchi no Sanzu no Kawa`, Section #5 / the Imago page's
+    /// "Allies" table).  When it is defeated the encounter is over, even if such
+    /// an ally is still standing - which matters here because the Illusory
+    /// Butterflies' `Origination` keeps their HP at 1, so they can never die.
+    #[serde(default)]
+    pub encounter_boss: bool,
     #[serde(default)]
     pub unparsed: Vec<String>,
     #[serde(default)]

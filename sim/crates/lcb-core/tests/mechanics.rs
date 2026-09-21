@@ -1752,7 +1752,7 @@ fn section5_golden_replay_is_deterministic() {
     assert_eq!(first_hp, vec![25403, 25196, 25051], "Imago HP after turns 1-3");
     assert_eq!(
         format!("{first_hash:016x}"),
-        "978d4341ae78dbc4",
+        "3d593ec1a6119237",
         "recorded state hash"
     );
 }
@@ -4344,4 +4344,29 @@ fn koi_koi_combo_gates_the_kozan_follow_up() {
         1,
         "the combo running out calls Kozan"
     );
+}
+
+/// The encounter's main enemy decides the fight: the Section 5 Imago can be
+/// defeated while its three Illusory Butterfly allies are still standing, and
+/// they can never die (their `Origination` floors their HP at 1), so without
+/// this rule the wave would be unwinnable.
+/// Sources: wiki.gg `Line 6: Maru no Uchi no Sanzu no Kawa` / Encounter Details
+/// (the Section lists 9567 as the enemy and the butterflies as its Allies).
+#[test]
+fn defeating_the_main_enemy_ends_the_wave() {
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&fixed::TEAM, &fixed::SECTION5_WAVE, 5, BattleConfig::default())
+        .unwrap();
+    let imago = state
+        .units
+        .iter()
+        .position(|u| u.encounter_boss)
+        .expect("the wave has a main enemy");
+    assert!(state.units.iter().any(|u| u.origination.is_some()));
+    let hp = state.units[imago].hp;
+    state.units[imago].take_damage(hp);
+    battle::end_turn(&mut state, &sim.mechanics);
+    assert_eq!(state.winner, Some(lcb_core::state::Winner::Sinners));
+    assert_eq!(state.phase, lcb_core::state::Phase::Finished);
 }

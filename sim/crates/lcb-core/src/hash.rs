@@ -28,6 +28,20 @@ pub fn state_hash<T: Serialize>(value: &T) -> u64 {
     }
 }
 
+/// Search / transposition key.
+///
+/// Identical to the replay hash except that it ignores the things that cannot
+/// affect the future: the battle log, the warnings and the per-turn statistics.
+/// The RNG continuation is part of the hash (every field of `Rng` is
+/// serialised), which is what the plan requires of a transposition key.
+pub fn search_key(state: &crate::state::BattleState) -> u64 {
+    let mut probe = state.clone();
+    probe.log.clear();
+    probe.warnings.clear();
+    probe.turn_stats = Default::default();
+    state_hash(&probe)
+}
+
 pub fn hex(hash: u64) -> String {
     format!("{hash:016x}")
 }
