@@ -3,6 +3,11 @@
 Mirrors the phases of the project plan.  "Done" means implemented **and** covered
 by a test that cites a source in `docs/MECHANICS.md`.
 
+**Current state (2026-09-20):** all seven identities, the Section 5 Imago and the
+seven E.G.O have **zero** unmodelled effect lines (see `docs/COVERAGE.md`); 129
+Rust tests and the Python suite pass; the honest unknowns are listed at the end of
+this file.
+
 ## Phase 1 — base state — done
 
 | Item | Where | Test |
