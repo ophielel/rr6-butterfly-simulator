@@ -119,6 +119,9 @@ pub struct Condition {
     /// one unit.
     #[serde(default)]
     pub single_target: bool,
+    /// "against Staggered targets".
+    #[serde(default)]
+    pub target_staggered: bool,
 }
 
 /// A single mechanical effect.  The struct is deliberately loose: every kind

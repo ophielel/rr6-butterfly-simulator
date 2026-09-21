@@ -286,6 +286,7 @@ impl<'a> EncounterBuilder<'a> {
         }
 
         let mut state = BattleState {
+            resonance_levels: Default::default(),
             status_book: None,
             seed: self.seed,
             rng: Rng::from_seed(self.seed),

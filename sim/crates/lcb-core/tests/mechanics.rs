@@ -1718,10 +1718,10 @@ fn section5_golden_replay_is_deterministic() {
     // action per Slot").  Update only together with a sourced rule change, and
     // name the source in the commit message.  Last updated when the identities'
     // passives started applying (in-game `Passives.json`).
-    assert_eq!(first_hp, vec![25455, 25229, 25096], "Imago HP after turns 1-3");
+    assert_eq!(first_hp, vec![25406, 25200, 25057], "Imago HP after turns 1-3");
     assert_eq!(
         format!("{first_hash:016x}"),
-        "9266e532afcd41eb",
+        "96048e26efb33861",
         "recorded state hash"
     );
 }
@@ -4072,4 +4072,63 @@ fn hanafuda_conversion_waits_for_the_next_turn() {
         Some("HanafudaOne"),
         "the Hand is converted at the following Turn Start"
     );
+}
+
+/// Sin Resonance grants Offense/Defense Level by the Skill's position on the
+/// chain.  Source: wiki.gg `Sin Resonance` / Offense-Defense Level Gain
+/// (+1/+3/+3/+5/+5/+7/+7/+9/+9/+11/+11; an Absolute chain gives the 3rd value
+/// onwards to every Skill in it).
+#[test]
+fn resonance_grants_offense_level_by_chain_position() {
+    assert_eq!(battle::resonance_level_bonus(1), 1);
+    assert_eq!(battle::resonance_level_bonus(3), 3);
+    assert_eq!(battle::resonance_level_bonus(4), 5);
+    assert_eq!(battle::resonance_level_bonus(11), 11);
+    assert_eq!(battle::resonance_level_bonus(20), 11);
+    assert_eq!(battle::a_resonance_level_bonus(1), 0);
+    assert_eq!(battle::a_resonance_level_bonus(2), 3);
+    assert_eq!(battle::a_resonance_level_bonus(3), 5);
+    assert_eq!(battle::a_resonance_level_bonus(4), 5);
+    assert_eq!(battle::a_resonance_level_bonus(9), 11);
+
+    // Three Gloom Skills in a row give every Skill of the chain +3 (A-Reson 3
+    // is +5, so the third one gets that; the first two get the regular value).
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&fixed::TEAM, &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    let mut gloom = Vec::new();
+    for (index, unit) in state.units.iter().enumerate() {
+        if !unit.kind.is_sinner() {
+            continue;
+        }
+        let skill = unit.dashboard[0].current.clone();
+        if battle::sin_of_for_test(&sim.library, &skill) == Some(lcb_core::ids::Sin::Gloom) {
+            gloom.push((index, skill));
+        }
+    }
+    if gloom.len() >= 3 {
+        state.actions.clear();
+        for (index, skill) in gloom.iter().take(3) {
+            state.actions.push(lcb_core::state::SubmittedAction {
+                actor: state.units[*index].id.clone(),
+                target: Some(state.units[state.units.len() - 1].id.clone()),
+                skill: skill.clone(),
+                slot: 0,
+                is_ego: false,
+                ego: None,
+                ego_kind: None,
+                enemy_slot: None,
+                used_top: false,
+            });
+        }
+        battle::resolve_combat(&mut state, &sim.library, &sim.mechanics);
+        let bonus = state
+            .resonance_levels
+            .values()
+            .copied()
+            .max()
+            .unwrap_or(0);
+        assert_eq!(bonus, 5, "the third Skill of a Gloom A-Reson gains +5");
+    }
 }

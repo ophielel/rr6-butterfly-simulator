@@ -923,6 +923,10 @@ pub struct BattleState {
     #[serde(default)]
     #[serde(skip)]
     pub status_book: Option<std::sync::Arc<crate::effects::StatusBook>>,
+    /// Offense/Defense Level a Skill gains from its Sin Resonance chain, keyed
+    /// `<unit id>|<slot>` (wiki.gg `Sin Resonance`).
+    #[serde(default)]
+    pub resonance_levels: std::collections::BTreeMap<String, i32>,
 
 }
 

@@ -95,7 +95,7 @@ Identity / enemy Passives (`data/passives/passives.json`).  Modelled clauses run
 | `1011021` | `10110` | support | Hand of Salvation | 0 | 1 |  |
 | `1041401` | `10414` | combat | Unwithering Flower | 0 | 3 |  |
 | `1041402` | `10414` | combat | A Void that Cannot be Filled | 1 | 3 | extract_passives.HAND_EFFECTS |
-| `1041411` | `10414` | combat | Unwithering Flower | 0 | 4 | extract_passives.HAND_EFFECTS |
+| `1041411` | `10414` | combat | Unwithering Flower | 1 | 2 | extract_passives.HAND_EFFECTS |
 | `1041421` | `10414` | support | Spring's Genesis | 0 | 1 |  |
 | `1081301` | `10813` | combat | Stacking the Deck | 2 | 0 | extract_passives.HAND_EFFECTS |
 | `1081302` | `10813` | combat | Koi-Koi [こいこい] | 2 | 11 | extract_passives.HAND_EFFECTS |
@@ -107,7 +107,7 @@ Identity / enemy Passives (`data/passives/passives.json`).  Modelled clauses run
 | `1091311` | `10913` | combat | Magical Girl of Justice / Knight of Despair | 6 | 4 | extract_passives.HAND_EFFECTS |
 | `1091321` | `10913` | support | For All Those Who Despair... | 0 | 2 |  |
 | `1091331` | `10913` | support | For All Those Who Despair... | 0 | 2 |  |
-| `1100401` | `11004` | combat | Júbilo Hedonista | 0 | 1 |  |
+| `1100401` | `11004` | combat | Júbilo Hedonista | 0 | 1 | extract_passives.HAND_EFFECTS |
 | `1100421` | `11004` | support | Jugar con Enemigos | 0 | 1 |  |
 | `1111401` | `11114` | combat | Vanguard Team | 2 | 0 | extract_passives.HAND_EFFECTS |
 | `1111402` | `11114` | combat | The Scepter of Horus - Replica | 1 | 2 | extract_passives.HAND_EFFECTS |

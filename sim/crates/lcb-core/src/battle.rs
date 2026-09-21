@@ -113,6 +113,9 @@ pub struct UseContext {
     /// An E.G.O's SP cost, paid at the [Before Attack] timing.
     #[serde(default)]
     pub ego_sp_pending: Option<i32>,
+    /// Offense/Defense Level this Skill gains from its Sin Resonance chain.
+    #[serde(default)]
+    pub resonance_level_bonus: i32,
     /// "Reuse this Skill on the target that has the highest HP" when it kills.
     #[serde(default)]
     pub reuse_on_kill: bool,
@@ -1010,6 +1013,12 @@ fn condition_holds(
             return false;
         }
     }
+    if condition.target_staggered {
+        match target {
+            Some(target) if target.is_staggered() => {}
+            _ => return false,
+        }
+    }
     // "When attacking just a single target, Coin Power +2 and deal +100% damage"
     // (the Skill use must hit one unit).
     if condition.single_target && actor.planned_targets > 1 {
@@ -1463,6 +1472,26 @@ pub fn apply_effects(
                         }
                     }
                     continue;
+                }
+                // "Gain [Petals] equal to [Faint Aroma] inflicted every time
+                // enemies gain [Faint Aroma]" (Ryoshu's Unwithering Flower).
+                if status == "Faint Aroma"
+                    && state.units[ctx.actor_index]
+                        .passive_ids
+                        .iter()
+                        .any(|id| id == "1041411")
+                {
+                    let amount = potency.max(count);
+                    if amount > 0 {
+                        let cap = petals_gain_cap(state, ctx.actor_index);
+                        let gained = amount.min(cap);
+                        if gained > 0 {
+                            state.units[ctx.actor_index]
+                                .statuses
+                                .add_stack("Petals", gained);
+                            state.units[ctx.actor_index].petals_gained += gained;
+                        }
+                    }
                 }
                 let count_status = effect.status2.clone().unwrap_or_else(|| status.clone());
                 // A state of time makes the unit inflict or gain more of its
@@ -2912,7 +2941,9 @@ pub fn match_power(
     // マッチ威力+1の補正がかかる" (JA-wiki 威力): a Clash compares both Skills'
     // **attack (Offense) Levels**, including each Skill's own level modifier -
     // the opponent's Defense Level plays no part here.
-    let my_level = state.units[unit_index].offense_level() + use_.offense_level_mod;
+    let my_level = state.units[unit_index].offense_level()
+        + use_.offense_level_mod
+        + use_.ctx.resonance_level_bonus;
     let their_level =
         state.units[opponent_index].offense_level() + opponent_use.offense_level_mod;
     let mut total = power + level_clash_bonus(my_level, their_level);
@@ -3300,7 +3331,9 @@ fn compute_hit_damage(
         sin_resist,
         damage_type_resist: defender.resist(use_.damage_type),
         stagger_bonus,
-        offense_level: state.units[attacker_index].offense_level() + use_.offense_level_mod,
+        offense_level: state.units[attacker_index].offense_level()
+            + use_.offense_level_mod
+            + use_.ctx.resonance_level_bonus,
         defense_level: active_defense_level(state, defender_index)
             .unwrap_or_else(|| defender.defense_level()),
         critical: crit,
@@ -3541,6 +3574,49 @@ fn apply_hit_inner(
             power >= power_of_incoming
         };
         if evaded {
+            // "After a successful evade, lower Stagger Threshold by the evade
+            // skill's Power at a (5x Gloom Reson.)% chance" (Sinclair's Jubilo
+            // Hedonista).
+            if state.units[defender_index]
+                .passive_ids
+                .iter()
+                .any(|id| id == "1100401")
+            {
+                let gloom = state.units[defender_index]
+                    .resonance_of
+                    .get("gloom")
+                    .copied()
+                    .unwrap_or(0);
+                let chance = (5 * gloom).clamp(0, 100);
+                if chance > 0 && state.flip(chance) {
+                    let power = final_power(&mut state.clone(), defender_index, &mut {
+                        let defense = &state.defenses[defense];
+                        SkillUse {
+                            actor: defense.unit.clone(),
+                            target: Some(state.units[attacker_index].id.clone()),
+                            slot: 0,
+                            skill: defense.skill.clone(),
+                            name: defense.name.clone(),
+                            sin: defense.sin,
+                            damage_type: defense.damage_type,
+                            base_power: defense.base_power,
+                            coin_power: defense.coin_power,
+                            offense_level_mod: defense.offense_level_mod,
+                            defense_level_mod: Some(defense.defense_level_mod),
+                            attack_weight: 1,
+                            coins: defense.coins.clone(),
+                            mechanics: defense.mechanics.clone(),
+                            ctx: defense.ctx.clone(),
+                            is_defense: true,
+                            is_ego: false,
+                            ego: None,
+                        }
+                    });
+                    state.units[defender_index]
+                        .stagger
+                        .shift_first_threshold(-power);
+                }
+            }
             // "[On Evade]" clauses of the defense Skill.
             let on_evade = state.defenses[defense].mechanics.on_evade.clone();
             if !on_evade.is_empty() {
@@ -3704,7 +3780,9 @@ fn apply_hit_inner(
         sin_resist,
         damage_type_resist: type_resist,
         stagger_bonus,
-        offense_level: state.units[attacker_index].offense_level() + use_.offense_level_mod,
+        offense_level: state.units[attacker_index].offense_level()
+            + use_.offense_level_mod
+            + use_.ctx.resonance_level_bonus,
         defense_level: active_defense_level(state, defender_index)
             .unwrap_or_else(|| state.units[defender_index].defense_level()),
         critical: crit,
@@ -5853,6 +5931,28 @@ fn ends_encounter(state: &BattleState, unit_index: usize, skill: &SkillId) -> bo
         .any(|id| id == skill.as_str())
 }
 
+/// Sin Resonance grants a Skill an Offense/Defense Level bonus by its position on
+/// the chain (wiki.gg `Sin Resonance` / Offense-Defense Level Gain): regular
+/// Resonance gives +1/+3/+3/+5/+5/+7/+7/+9/+9/+11/+11 for positions 1..11+, and an
+/// Absolute Resonance chain gives the same 3rd value (+3/+5/+5/+7/...) to every
+/// Skill in it.
+pub fn resonance_level_bonus(position: usize) -> i32 {
+    const TABLE: [i32; 11] = [1, 3, 3, 5, 5, 7, 7, 9, 9, 11, 11];
+    if position == 0 {
+        return 0;
+    }
+    TABLE[(position - 1).min(TABLE.len() - 1)]
+}
+
+pub fn a_resonance_level_bonus(chain: i32) -> i32 {
+    if chain < 2 {
+        return 0;
+    }
+    // The Absolute row starts at the 3rd value of the regular table.
+    const TABLE: [i32; 10] = [3, 5, 5, 7, 7, 9, 9, 11, 11, 11];
+    TABLE[(chain as usize - 2).min(TABLE.len() - 1)]
+}
+
 /// Sin Resonance over the Skills selected on the Dashboard.
 ///
 /// "occurs when 2 or more Skills of the same Affinity are selected on the
@@ -5864,12 +5964,14 @@ fn compute_resonance(state: &mut BattleState, library: &Library) {
     state.resonance.clear();
     state.a_resonance.clear();
     let mut table: Vec<(u32, u32)> = Vec::new();
+    let mut owners: Vec<(String, u32)> = Vec::new();
     for unit in state.units.iter().filter(|u| u.kind.is_sinner()) {
         for action in state.actions.iter().filter(|a| a.actor == unit.id) {
             let Some(sin) = sin_of(library, &action.skill) else {
                 continue;
             };
             table.push((action.slot, sin.index() as u32));
+            owners.push((unit.id.0.clone(), action.slot));
         }
     }
     // Sorted by slot index only (the Dashboard reads left to right); a stable
@@ -5900,6 +6002,26 @@ fn compute_resonance(state: &mut BattleState, library: &Library) {
             *entry = (*entry).max(run_len);
         }
     }
+    // Offense/Defense Level gain: a Skill's position on the chain, and the length
+    // of the Absolute chain it sits in.
+    let mut levels: BTreeMap<String, i32> = BTreeMap::new();
+    let mut chain_len = 0usize;
+    for index in 0..table.len() {
+        let same = index > 0 && table[index].1 == table[index - 1].1;
+        chain_len = if same { chain_len + 1 } else { 1 };
+        let position = if chain_len == 1 {
+            index + 1
+        } else {
+            index + 2 - chain_len
+        };
+        let bonus = resonance_level_bonus(position).max(a_resonance_level_bonus(chain_len as i32));
+        if let Some((owner, slot)) = owners.get(index) {
+            let key = format!("{owner}|{slot}");
+            let entry = levels.entry(key).or_insert(0);
+            *entry = (*entry).max(bonus);
+        }
+    }
+    state.resonance_levels = levels;
     // The units read the finished tables (an Absolute Resonance value copied
     // before the chains were measured would always be 0).
     let highest = highest_resonance(state);
@@ -6199,6 +6321,13 @@ fn prepare_use(
                 .sum::<i32>();
         use_.ctx.ammo_planned = planned;
     }
+    // Sin Resonance grants this Skill's Offense/Defense Level (wiki.gg
+    // `Sin Resonance` / Offense-Defense Level Gain).
+    use_.ctx.resonance_level_bonus = state
+        .resonance_levels
+        .get(&format!("{}|{}", state.units[unit_index].id, slot))
+        .copied()
+        .unwrap_or(0);
     let mut notes = Vec::new();
     let mut ctx = EffectContext {
         actor_index: unit_index,
@@ -6657,6 +6786,11 @@ pub fn apply_attack_end_for_test(
     use_: &mut SkillUse,
 ) {
     apply_attack_end(state, library, mechanics, unit_index, target_index, slot, use_)
+}
+
+#[doc(hidden)]
+pub fn sin_of_for_test(library: &Library, skill: &SkillId) -> Option<Sin> {
+    sin_of(library, skill)
 }
 
 #[doc(hidden)]

@@ -202,12 +202,23 @@
     "attack_end": [],
     "combat_start": [],
     "hand_modelled": "extract_passives.HAND_EFFECTS",
-    "passive": [],
+    "passive": [
+     {
+      "condition": {
+       "component": "stack",
+       "source": "target",
+       "status": "Faint Aroma",
+       "target_staggered": true
+      },
+      "kind": "damage_percent",
+      "per": 1,
+      "step": 1,
+      "value": 0
+     }
+    ],
     "turn_end": [],
     "turn_start": [],
     "unmodeled": [
-     "Deal +([AlriuneEGOThey] on the target)% damage against Staggered targets",
-     "Gain [AlriuneEGOWe] equal to [AlriuneEGOThey] inflicted every time enemies gain [AlriuneEGOThey]",
      "If this unit lost 10%+ HP this turn, heal 3% HP and 10 SP (once per turn)",
      "[Attack Skill End] At 30+ [AlriuneEGOWe], use 'Magnificent End' against the target that has the highest [AlriuneEGOThey] Stack"
     ]
@@ -714,6 +725,7 @@
    "effects": {
     "attack_end": [],
     "combat_start": [],
+    "hand_modelled": "extract_passives.HAND_EFFECTS",
     "passive": [],
     "turn_end": [],
     "turn_start": [],
@@ -721,7 +733,7 @@
      "After a successful evade, lower Stagger Threshold by the evade skill’s Power at a (5x Gloom Reson.)% chance."
     ]
    },
-   "hand_modelled": null,
+   "hand_modelled": "extract_passives.HAND_EFFECTS",
    "id": "1100401",
    "kind": "combat",
    "name": "Júbilo Hedonista",

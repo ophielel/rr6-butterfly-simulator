@@ -202,14 +202,27 @@ HAND_EFFECTS: Dict[str, dict] = {
              "component": "stack", "condition": {"self_sp_below": 0}},
         ],
     },
-    # Ryoshu - Unwithering Flower: Petals are gained when an enemy takes Sinking
-    # damage or a Tremor Burst fires (the engine hooks live in
-    # `battle::{apply_sinking, tremor_burst}`); "gain [AlriuneEGOWe] equal to
-    # [AlriuneEGOThey] inflicted" is not wired yet.
+    # Ryoshu - Unwithering Flower: the engine hooks live in
+    # `battle::{apply_sinking, tremor_burst, apply_effects}` (Petals from Sinking
+    # damage, from Tremor Bursts and equal to the [Faint Aroma] she inflicts).
     "1041411": {
         "covered": [
             "Gain 1 [AlriuneEGOWe] if the enemy takes [Sinking] damage",
             "Gain 2 [AlriuneEGOWe] every time Tremor Burst is triggered regardless of the unit",
+            "Gain [AlriuneEGOWe] equal to [AlriuneEGOThey] inflicted every time enemies gain [AlriuneEGOThey]",
+            "Deal +([AlriuneEGOThey] on the target)% damage against Staggered targets",
+        ],
+        "passive": [
+            {"kind": "damage_percent", "value": 0, "per": 1, "step": 1,
+             "condition": {"source": "target", "status": "Faint Aroma",
+                           "component": "stack", "target_staggered": True}},
+        ],
+    },
+    # Sinclair - Jubilo Hedonista: a successful Evade can knock the Stagger
+    # Threshold down (`battle::apply_hit`).
+    "1100401": {
+        "covered": [
+            "After a successful evade, lower Stagger Threshold by the evade skill's Power at a (5x Gloom Reson.)% chance.",
         ],
         "passive": [],
     },
