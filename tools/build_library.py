@@ -63,7 +63,17 @@ ENEMIES = {
     "9564": ("Illusory Butterfly of Entangled Lives::The Past", "illusory_past.wikitext"),
     "9565": ("Illusory Butterfly of Entangled Lives::The Present", "illusory_present.wikitext"),
     "9566": ("Illusory Butterfly of Entangled Lives::The Future", "illusory_future.wikitext"),
+    # The Section 5 wave (Line 6, Station 8) is the Imago **plus** its three
+    # Illusory Butterfly allies; the same wiki pages document both versions and
+    # the Section 5 one is the `ABPage` whose `id` matches.
+    "9572": ("Illusory Butterfly of Entangled Lives::The Past", "illusory_past.wikitext"),
+    "9573": ("Illusory Butterfly of Entangled Lives::The Present", "illusory_present.wikitext"),
+    "9574": ("Illusory Butterfly of Entangled Lives::The Future", "illusory_future.wikitext"),
 }
+
+# The three Illusory Butterfly allies of the Line 6 Section 5 wave; the other
+# `EnBox` on their page is the Imago they feed Stacks to.
+SECTION5_ILLUSIONS = {"9572", "9573", "9574"}
 
 RESIST_WORDS = {
     "Fatal": 2.0,
@@ -536,9 +546,14 @@ def build_enemy(game_id: str, meta, en_enemies, skill_ids: Dict[str, str]) -> di
     path = os.path.join(PAGES, filename)
     text = open(path, encoding="utf-8").read()
     pages = wt.find_templates(text, "ABPage")
-    page = pages[0] if pages else None
-    if page is None:
+    if not pages:
         raise RuntimeError(f"no ABPage in {filename}")
+    # A page can document several versions of the same Abnormality (the Stations
+    # 2-4 butterfly and the Section 5 ally); pick the one whose `id` matches.
+    page = next(
+        (candidate for candidate in pages if clean(candidate.get("id")) == game_id),
+        pages[0],
+    )
 
     parts_tpl = wt.find_template(page.get("abnoparts1", ""), "ABPage/Parts")
     parts = []
@@ -555,6 +570,15 @@ def build_enemy(game_id: str, meta, en_enemies, skill_ids: Dict[str, str]) -> di
             "resist_sin": {k.lower(): parse_resist(parts_tpl.get(k.lower())) for k in SIN_COLORS},
         })
 
+    # Who this unit belongs to: the wave's other EnBox entry (the Imago).
+    allies = [
+        clean(match) for match in re.findall(r"\{\{EnBox\|(\d+)\}\}", text)
+    ]
+    ally_id = next(
+        (ally for ally in allies if ally not in SECTION5_ILLUSIONS),
+        None,
+    )
+
     passives = []
     for key, raw in page.named.items():
         if not re.fullmatch(r"passive\d", key) or not raw:
@@ -570,9 +594,38 @@ def build_enemy(game_id: str, meta, en_enemies, skill_ids: Dict[str, str]) -> di
 
     en = en_enemies.get(game_id, {})
 
+    # The Section 5 wave is the Imago plus its three Illusory Butterfly allies;
+    # each butterfly carries "The X - Segmentation" (hitting it takes a Stack off
+    # the Imago) and "The X - Origination" (half of the damage it takes goes to
+    # the Imago, and its own HP never drops below 1).
+    segmentation = None
+    origination = None
+    for passive in passives:
+        text = passive.get("text") or ""
+        seg = re.search(r"loses (\d+) \[([^\]]+)\] Stack", text)
+        if seg and "hit as the main target" in text:
+            heal = re.search(r"heals (\d+) SP", text)
+            gain = re.search(r"gains (\d+) \[([^\]]+)\] Stack at Combat End", text)
+            segmentation = {
+                "stack_status": seg.group(2),
+                "stack_loss_per_hit": int(seg.group(1)),
+                "attacker_sp_heal": int(heal.group(1)) if heal else 0,
+                "gain_if_not_hit": int(gain.group(1)) if gain else 0,
+                "owner": ally_id,
+            }
+        if "transfer half of damage taken" in text:
+            origination = {
+                "damage_transfer_percent": 50,
+                "hp_floor": 1,
+                "speed": 1,
+                "owner": ally_id,
+            }
+
     return {
         "id": game_id,
         "kind": "enemy",
+        "segmentation": segmentation,
+        "origination": origination,
         "name_en": en.get("name") or page.get("name"),
         "wiki_title": wiki_title,
         "abno_code": page.get("abnocode"),

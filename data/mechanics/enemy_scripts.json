@@ -11,15 +11,8 @@
    "hp_floor_percent": 1,
    "notes": [
     "1 HP, 333 Shield on the first Turn Start; Eclosion is Unclashable, Target Fixed, deals 0 damage and ends the Encounter.",
-    "If the Shield is broken the encounter instead continues one turn (choice event) before ending.",
-    "Segmentation: each hit as the main target removes 1 Stack from the Imago's matching state of time and heals the attacker 10 SP (once per turn per Sinner); if the unit is never hit this turn the Imago gains 5 Stacks."
+    "If the Shield is broken the encounter instead continues one turn (choice event) before ending."
    ],
-   "segmentation": {
-    "attacker_sp_heal": 10,
-    "gain_if_not_hit": 5,
-    "stack_loss_per_hit": 1,
-    "stack_status": "In the Future"
-   },
    "shield_flat": 333,
    "slots": 1,
    "source": [
@@ -44,15 +37,8 @@
    "hp_floor_percent": 1,
    "notes": [
     "1 HP, 333 Shield on the first Turn Start; Eclosion is Unclashable, Target Fixed, deals 0 damage and ends the Encounter.",
-    "If the Shield is broken the encounter instead continues one turn (choice event) before ending.",
-    "Segmentation: each hit as the main target removes 1 Stack from the Imago's matching state of time and heals the attacker 10 SP (once per turn per Sinner); if the unit is never hit this turn the Imago gains 5 Stacks."
+    "If the Shield is broken the encounter instead continues one turn (choice event) before ending."
    ],
-   "segmentation": {
-    "attacker_sp_heal": 10,
-    "gain_if_not_hit": 5,
-    "stack_loss_per_hit": 1,
-    "stack_status": "In the Past"
-   },
    "shield_flat": 333,
    "slots": 1,
    "source": [
@@ -77,15 +63,8 @@
    "hp_floor_percent": 1,
    "notes": [
     "1 HP, 333 Shield on the first Turn Start; Eclosion is Unclashable, Target Fixed, deals 0 damage and ends the Encounter.",
-    "If the Shield is broken the encounter instead continues one turn (choice event) before ending.",
-    "Segmentation: each hit as the main target removes 1 Stack from the Imago's matching state of time and heals the attacker 10 SP (once per turn per Sinner); if the unit is never hit this turn the Imago gains 5 Stacks."
+    "If the Shield is broken the encounter instead continues one turn (choice event) before ending."
    ],
-   "segmentation": {
-    "attacker_sp_heal": 10,
-    "gain_if_not_hit": 5,
-    "stack_loss_per_hit": 1,
-    "stack_status": "In the Present"
-   },
    "shield_flat": 333,
    "slots": 1,
    "source": [

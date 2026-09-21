@@ -1,8 +1,19 @@
 {
-  "id": "9565",
+  "id": "9573",
   "kind": "enemy",
-  "segmentation": null,
-  "origination": null,
+  "segmentation": {
+    "stack_status": "In the Present",
+    "stack_loss_per_hit": 1,
+    "attacker_sp_heal": 10,
+    "gain_if_not_hit": 5,
+    "owner": "9567"
+  },
+  "origination": {
+    "damage_transfer_percent": 50,
+    "hp_floor": 1,
+    "speed": 1,
+    "owner": "9567"
+  },
   "name_en": "Refracted Illusory Butterfly of Entangled Lives::The Present",
   "wiki_title": "Illusory Butterfly of Entangled Lives::The Present",
   "abno_code": "O-03-14-03-b",
@@ -43,44 +54,17 @@
       }
     }
   ],
-  "skills": [
-    {
-      "key": "skill1",
-      "name": "Eclosion",
-      "hint": null,
-      "level": 60,
-      "sin": "Pride",
-      "rank": 3,
-      "type": "Pierce",
-      "base_power": 8,
-      "coin_power": 8,
-      "coins": 1,
-      "attack_weight": 7,
-      "offense_level_mod": 0,
-      "on_use_text": "[Unclashable][Target Fixed]\nThis Attack Skill deals 0 damage\n[Attack End] End the Encounter\n- If the Shield is broken, proceed to the next turn instead and face a unique Choice Event before the Encounter ends",
-      "coin_texts": [
-        "[Unbreakable Coin]",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        ""
-      ],
-      "id": "956501"
-    }
-  ],
+  "skills": [],
   "passives": [
     {
-      "name": "Eclosion - Life That Is",
+      "name": "The Present - Segmentation [<b>分節</b>]",
       "hint": null,
-      "text": "Fix this unit's Speed to 1; this unit's HP does not drop below 1\nFirst Turn Start after entering the Encounter: Gain 333 Shield\nAt Attack End of the Skill \"Eclosion\", end Encounter\n- If the Shield is broken, proceed to the next turn instead and face a unique Choice Event before the Encounter ends"
+      "text": "Displays current [In the Present] Stack on Butterfly of Entangled Lives::Imago\nEvery time this unit is hit as the main target:\n- Butterfly of Entangled Lives::Imago loses 1 [In the Present] Stack (once per Coin)\n- The Sinner who attacked this unit heals 10 SP (once per turn per Sinner)\nIf this unit did not get hit as the main target this turn, Butterfly of Entangled Lives::Imago gains 5 [In the Present] Stack at Combat End\n- If Butterfly of Entangled Lives::Imago is Staggered, this effect does not activate"
     },
     {
-      "name": "Kṣaṇa of Circumvolution",
+      "name": "The Present - Origination [<b>緣起</b>]",
       "hint": null,
-      "text": "Quadruple the effects of [Acuate Scale Dust]\nTake +100% damage from E.G.O Skills"
+      "text": "Fix this unit's Speed to 1; this unit's HP does not drop below 1\nWhen this unit takes HP damage, transfer half of damage taken to Butterfly of Entangled Lives::Imago (rounded down)"
     }
   ],
   "unparsed": [],
@@ -94,7 +78,7 @@
     {
       "kind": "game_text",
       "language": "en",
-      "id": "9565",
+      "id": "9573",
       "verification": "official"
     }
   ]

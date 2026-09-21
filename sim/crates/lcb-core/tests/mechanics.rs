@@ -1170,48 +1170,77 @@ fn critical_modifiers_from_statuses() {
     assert!((ctx.crit_damage_bonus - 0.30).abs() < 1e-9);
 }
 
-/// Stations 2-4: the illusory butterfly has 1 HP and 333 Shield, and its hits
-/// knock Stacks off the Imago in the campaign (Segmentation).
-/// Sources: wiki.gg Illusory Butterfly page, JA-wiki part info.
+/// The Line 6 Section 5 wave is the Imago **plus** its three Illusory Butterfly
+/// allies.  They have 1 HP, never die (Origination), hand half of the damage they
+/// take to the Imago, and every hit taken as a main target takes one Stack of the
+/// matching state of time off the Imago.
+/// Sources: wiki.gg `Line 6: Maru no Uchi no Sanzu no Kawa` / Encounter Details so
+/// the wave is 9567 + 9572/9573/9574; the passives `The X - Segmentation` and
+/// `The X - Origination`.
 #[test]
-fn illusory_butterfly_shield_and_segmentation() {
+fn section5_wave_butterflies_feed_the_imago() {
     let sim = sim();
     let mut state = sim
-        .new_encounter(&fixed::TEAM, &["9564"], 4, BattleConfig::default())
+        .new_encounter(
+            &fixed::TEAM,
+            &fixed::SECTION5_WAVE,
+            4,
+            BattleConfig::default(),
+        )
         .unwrap();
-    let butterfly = state.units.iter().position(|u| !u.kind.is_sinner()).unwrap();
-    assert_eq!(state.units[butterfly].max_hp, 1);
-    assert_eq!(state.units[butterfly].shield, 333);
-    assert!(state.units[butterfly].segmentation.is_some());
-    // The campaign starts with no Stacks; a hit as the main target removes one
-    // (floored at zero) and heals the attacker 10 SP.
-    state.campaign.time_stacks.insert("In the Past".to_string(), 4);
-    state.units[butterfly].take_damage(400); // break the shield
-    assert!(state.units[butterfly].barrier_broken);
-    assert_eq!(state.units[butterfly].hp, 1, "HP floor keeps it at 1");
-    let mut use_ = battle::build_use(&state, &sim.library, &sim.mechanics, 0, &SkillId::new("1011001"))
-        .unwrap();
-    use_.coins = vec![battle::CoinRuntime::fresh(false)];
+    assert_eq!(state.living_enemies().len(), 4, "the Imago and three illusions");
+    let past = state
+        .units
+        .iter()
+        .position(|unit| matches!(&unit.kind, lcb_core::state::UnitKind::Abnormality { enemy, .. } if enemy.as_str() == "9572"))
+        .expect("the Past illusion");
+    let imago = state
+        .units
+        .iter()
+        .position(|unit| matches!(&unit.kind, lcb_core::state::UnitKind::Abnormality { enemy, .. } if enemy.as_str() == "9567"))
+        .expect("the Imago");
+    assert_eq!(state.units[past].max_hp, 1);
+    assert_eq!((state.units[past].speed_range.0, state.units[past].speed_range.1), (1, 1));
+    assert!(state.units[past].segmentation.is_some());
+    assert!(state.units[past].origination.is_some());
+
+    // Hitting it as the main target takes one [In the Past] Stack off the Imago
+    // and heals the attacker 10 SP.
+    let before = state.units[imago].statuses.stack("In the Past");
     state.units[0].sanity = Sanity::Sane { sp: 0 };
-    // The Skill spends Unique Ammo (see `butterfly_heals_attacker_sp`).
     state.units[0].statuses.add_potency("The Living & The Departed", 10);
     state.units[0].statuses.add_count("The Living & The Departed", 10);
+    let mut use_ = battle::build_use(
+        &state,
+        &sim.library,
+        &sim.mechanics,
+        0,
+        &SkillId::new("1011001"),
+    )
+    .unwrap();
+    use_.coins = vec![battle::CoinRuntime::fresh(false)];
     state.preset_flips = vec![false; 16];
     state.flip_cursor = 0;
-    battle::one_sided_attack(&mut state, 0, butterfly, &mut use_, 0);
+    battle::one_sided_attack(&mut state, 0, past, &mut use_, 0);
     assert_eq!(
-        state.campaign.time_stacks.get("In the Past"),
-        Some(&3),
-        "one Stack was knocked off the Imago"
+        state.units[imago].statuses.stack("In the Past"),
+        before - 1,
+        "Segmentation takes a Stack off the Imago"
     );
-    assert_eq!(state.units[0].sanity.sp(), 10, "the attacker healed 10 SP");
-    assert_eq!(state.units[butterfly].hits_taken, 1);
-    // A turn in which the butterfly is never hit gives the Imago +5 Stacks.
+    assert_eq!(state.units[0].sanity.sp(), 10, "the attacker heals 10 SP");
+    assert_eq!(state.units[past].hp, 1, "Origination keeps it alive");
+    // Half of the damage it took went to the Imago instead.
+    assert!(
+        state.units[imago].hp < state.units[imago].max_hp,
+        "Origination transferred damage to the Imago"
+    );
+
+    // A turn in which it is never hit gives the Imago 5 Stacks back.
+    state.units[past].hits_taken = 0;
+    state.units[past].hp = 1;
+    let before = state.units[imago].statuses.stack("In the Past");
     battle::end_turn(&mut state, &sim.mechanics);
-    assert_eq!(state.campaign.time_stacks.get("In the Past"), Some(&3));
-    state.units[butterfly].hits_taken = 0;
-    battle::end_turn(&mut state, &sim.mechanics);
-    assert_eq!(state.campaign.time_stacks.get("In the Past"), Some(&8));
+    assert_eq!(state.units[imago].statuses.stack("In the Past"), before + 5);
 }
 
 /// Section 5 starts from the campaign: the Pupa's remaining HP carries over and
@@ -1723,7 +1752,7 @@ fn section5_golden_replay_is_deterministic() {
     assert_eq!(first_hp, vec![25403, 25196, 25051], "Imago HP after turns 1-3");
     assert_eq!(
         format!("{first_hash:016x}"),
-        "9caba3ff85ad8d2c",
+        "978d4341ae78dbc4",
         "recorded state hash"
     );
 }

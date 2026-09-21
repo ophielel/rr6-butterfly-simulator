@@ -7,10 +7,12 @@ seven identities, seven E.G.O, and the
 [羅生蝶]* (`9567`, the Imago).
 
 Scope note: the deliverables are the seven identities, their E.G.O and the
-Section 5 Imago encounter.  The Pupa (`9563`) and the illusory butterflies
-(`9564`-`9566`) are loaded because their data documents the Imago's mechanics,
-and `Simulator::section5` can carry a campaign state between stations, but they
-are not part of the required deliverable.
+Section 5 encounter, which is the Imago **together with its three Illusory
+Butterfly allies** (`9572`-`9574`, "Wave 1" of `Station 8: Advent`) - hitting an
+illusion takes Stacks off the Imago, which is how its state of time changes.  The
+Pupa (`9563`) and the Stations 2-4 butterflies (`9564`-`9566`) are loaded because
+their data documents the encounter, and `Simulator::section5` can carry a campaign
+state between stations, but they are not part of the required deliverable.
 
 The plan document and the five code-review documents it attracted are archived in
 [`docs/archive/`](docs/archive/) - every review item they list is resolved; see

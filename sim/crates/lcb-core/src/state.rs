@@ -618,6 +618,9 @@ pub struct Unit {
     /// "The X - Segmentation" data when this unit is an illusory butterfly.
     #[serde(default)]
     pub segmentation: Option<crate::scripts::Segmentation>,
+    /// "The X - Origination" data (the Section 5 illusions).
+    #[serde(default)]
+    pub origination: Option<crate::scripts::Origination>,
     /// Hits taken as a main target this turn (Segmentation counts one per Coin).
     #[serde(default)]
     pub hits_taken: i32,
@@ -763,10 +766,15 @@ impl Unit {
             self.barrier_broken = true;
         }
         let remainder = amount - absorbed;
-        let floor = match self.hp_floor_percent {
+        let mut floor = match self.hp_floor_percent {
             Some(percent) => (self.max_hp * percent / 100).max(1),
             None => 0,
         };
+        // "The X - Origination [緣起]: this unit's HP does not drop below 1" - the
+        // floor has to hold for every damage path (hits, status ticks, adders).
+        if let Some(origination) = &self.origination {
+            floor = floor.max(origination.hp_floor);
+        }
         let before = self.hp;
         // The floor never heals a unit that is already below it.
         let effective_floor = floor.min(before);

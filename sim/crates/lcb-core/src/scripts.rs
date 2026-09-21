@@ -83,6 +83,24 @@ pub struct Segmentation {
     pub stack_loss_per_hit: i32,
     pub gain_if_not_hit: i32,
     pub attacker_sp_heal: i32,
+    /// The unit whose Stacks this illusion feeds (the Imago).
+    #[serde(default)]
+    pub owner: Option<String>,
+}
+
+/// "The Past/Present/Future - Origination [緣起]": "Fix this unit's Speed to 1;
+/// this unit's HP does not drop below 1.  When this unit takes HP damage,
+/// transfer half of damage taken to Butterfly of Entangled Lives::Imago
+/// (rounded down)."
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct Origination {
+    pub damage_transfer_percent: i32,
+    pub hp_floor: i32,
+    /// "Fix this unit's Speed to 1".
+    #[serde(default)]
+    pub speed: Option<i32>,
+    #[serde(default)]
+    pub owner: Option<String>,
 }
 
 #[derive(Clone, Copy, Debug, Serialize, Deserialize)]

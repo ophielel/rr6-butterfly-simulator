@@ -442,6 +442,7 @@ impl<'a> EncounterBuilder<'a> {
             pending_next_turn: Vec::new(),
             retaliate_on_hit: Vec::new(),
             segmentation: None,
+            origination: None,
             hits_taken: 0,
             segmentation_healed: Vec::new(),
             resonance_max: 0,
@@ -500,7 +501,11 @@ impl<'a> EncounterBuilder<'a> {
             shield: 0,
             sanity: Sanity::None,
             speed: 0,
-            speed_range,
+            // "Fix this unit's Speed to 1" (Origination).
+            speed_range: match record.origination.as_ref().and_then(|o| o.speed) {
+                Some(speed) => (speed, speed),
+                None => speed_range,
+            },
             offense_level_mod: 0,
             defense_level_mod: record
                 .parts
@@ -562,10 +567,10 @@ impl<'a> EncounterBuilder<'a> {
             turn_effect_usage: BTreeMap::new(),
             pending_next_turn: Vec::new(),
             retaliate_on_hit: Vec::new(),
-            segmentation: self
-                .scripts
-                .for_enemy(&record.id)
-                .and_then(|script| script.segmentation.clone()),
+            // "The X - Segmentation" / "The X - Origination" come from the
+            // unit's own passives (the Section 5 illusion wave).
+            segmentation: record.segmentation.clone(),
+            origination: record.origination.clone(),
             hits_taken: 0,
             segmentation_healed: Vec::new(),
             resonance_max: 0,
@@ -641,6 +646,11 @@ pub mod fixed {
 
     pub const BOSS_PUPA: &str = "9563";
     pub const BOSS_IMAGO: &str = "9567";
+    /// Line 6, Section 5 (`Station 8: Advent`) is the Imago **plus** its three
+    /// Illusory Butterfly allies, which take Stacks off the Imago whenever they
+    /// are hit as the main target (wiki.gg `Line 6: Maru no Uchi no Sanzu no Kawa`
+    /// / Encounter Details, Wave 1).
+    pub const SECTION5_WAVE: [&str; 4] = [BOSS_IMAGO, "9572", "9573", "9574"];
     pub const ILLUSORY_PAST: &str = "9564";
     pub const ILLUSORY_PRESENT: &str = "9565";
     pub const ILLUSORY_FUTURE: &str = "9566";

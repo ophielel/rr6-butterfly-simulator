@@ -3964,6 +3964,20 @@ fn apply_hit_inner(
     };
     let breakdown = compute_damage(&inputs);
     let mut damage = if use_.ctx.zero_damage { 0 } else { breakdown.final_damage };
+    // "The X - Origination [緣起]": "Fix this unit's Speed to 1; this unit's HP
+    // does not drop below 1.  When this unit takes HP damage, transfer half of
+    // damage taken to Butterfly of Entangled Lives::Imago (rounded down)."
+    if let Some(origination) = state.units[defender_index].origination.clone() {
+        let transfer = damage * origination.damage_transfer_percent / 100;
+        if transfer > 0 {
+            if let Some(owner) = owner_unit(state, defender_index, origination.owner.as_deref()) {
+                state.units[owner].take_damage(transfer);
+            }
+        }
+        // The illusion's own share is floored by `Unit::take_damage` ("this
+        // unit's HP does not drop below 1").
+        damage = (damage - transfer).max(0);
+    }
     if sub_target && use_.ctx.sub_target_damage_percent != 0 {
         // "Deal -50% damage against sub-targets".
         damage = damage * (100 + use_.ctx.sub_target_damage_percent) / 100;
@@ -4163,12 +4177,17 @@ fn apply_hit_inner(
     if let Some(segmentation) = state.units[defender_index].segmentation.clone() {
         state.units[defender_index].hits_taken += 1;
         let loss = segmentation.stack_loss_per_hit;
-        let entry = state
-            .campaign
-            .time_stacks
-            .entry(segmentation.stack_status.clone())
-            .or_insert(0);
-        *entry = (*entry - loss).max(0);
+        // "Butterfly of Entangled Lives::Imago loses 1 [In the Past] Stack" - the
+        // owner's own status, which is what drives its state of time.
+        if let Some(owner) = owner_unit(state, defender_index, segmentation.owner.as_deref()) {
+            let stack = state.units[owner].statuses.stack(&segmentation.stack_status);
+            if stack > 0 {
+                state.units[owner].statuses.set_stack(
+                    &segmentation.stack_status,
+                    (stack - loss).max(0),
+                );
+            }
+        }
         let attacker_id = state.units[attacker_index].id.0.clone();
         if !state.units[defender_index]
             .segmentation_healed
@@ -5488,16 +5507,21 @@ pub fn end_turn(state: &mut BattleState, mechanics: &MechanicsBook) {
     // Segmentation: a butterfly that was never hit this turn gives the Imago
     // +N Stacks at Combat End.
     for index in 0..state.units.len() {
-        let Some(segmentation) = state.units[index].segmentation.clone() else {
-            continue;
+        let segmentation = state.units[index].segmentation.clone();
+        let segmentation = match segmentation {
+            Some(segmentation) => segmentation,
+            None => continue,
         };
         if state.units[index].hits_taken == 0 {
-            let entry = state
-                .campaign
-                .time_stacks
-                .entry(segmentation.stack_status.clone())
-                .or_insert(0);
-            *entry += segmentation.gain_if_not_hit;
+            // "If this unit did not get hit as the main target this turn, the
+            // Imago gains 5 [In the Past] Stack at Combat End".
+            if let Some(owner) = owner_unit(state, index, segmentation.owner.as_deref()) {
+                let stack = state.units[owner].statuses.stack(&segmentation.stack_status);
+                state.units[owner].statuses.set_stack(
+                    &segmentation.stack_status,
+                    stack + segmentation.gain_if_not_hit,
+                );
+            }
         }
     }
     state.defenses.clear();
@@ -5573,6 +5597,24 @@ pub fn end_turn(state: &mut BattleState, mechanics: &MechanicsBook) {
     } else {
         state.phase = Phase::TurnStart;
     }
+}
+
+/// The unit an illusion feeds: the Imago, found by its enemy id (the butterfly's
+/// own passives name it) or, failing that, the only other Abnormality.
+fn owner_unit(state: &BattleState, index: usize, owner_id: Option<&str>) -> Option<usize> {
+    if let Some(owner_id) = owner_id {
+        if let Some(found) = state.units.iter().position(|unit| {
+            matches!(&unit.kind, UnitKind::Abnormality { enemy, .. } if enemy.as_str() == owner_id)
+        }) {
+            return Some(found);
+        }
+    }
+    state
+        .units
+        .iter()
+        .enumerate()
+        .find(|(other, unit)| *other != index && unit.alive && !unit.kind.is_sinner())
+        .map(|(other, _)| other)
 }
 
 /// "the target that has the highest HP": the other units of the **opposing**

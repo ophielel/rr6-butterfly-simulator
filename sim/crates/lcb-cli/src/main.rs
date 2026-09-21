@@ -45,7 +45,12 @@ fn main() {
     let mut seed: u64 = 1;
     let mut turns: u32 = 6;
     let mut team: Vec<String> = fixed::TEAM.iter().map(|s| s.to_string()).collect();
-    let mut enemies: Vec<String> = vec![fixed::BOSS_IMAGO.to_string()];
+    // Line 6 Section 5 is the Imago **with** its three Illusory Butterfly allies
+    // (wiki.gg Encounter Details, Wave 1); `--enemies 9567` gives the boss alone.
+    let mut enemies: Vec<String> = fixed::SECTION5_WAVE
+        .iter()
+        .map(|id| id.to_string())
+        .collect();
 
     let mut args = std::env::args().skip(1);
     while let Some(arg) = args.next() {

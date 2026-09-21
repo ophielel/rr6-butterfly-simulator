@@ -220,12 +220,13 @@ def build_illusory() -> dict:
             "hp_floor_percent": 1,
             "ends_encounter_on": [eclosion],
             "ends_encounter_unless_shield_broken": True,
-            "segmentation": {"stack_status": stack_status, "stack_loss_per_hit": 1,
-                             "gain_if_not_hit": 5, "attacker_sp_heal": 10},
+            # Segmentation / Origination belong to the **Section 5** versions of
+            # these illusions (9572-9574), not to the Stations 2-4 fight, which is
+            # a lone butterfly whose Eclosion ends the Encounter.  They are read
+            # from the enemy records.
             "notes": [
                 "1 HP, 333 Shield on the first Turn Start; Eclosion is Unclashable, Target Fixed, deals 0 damage and ends the Encounter.",
                 "If the Shield is broken the encounter instead continues one turn (choice event) before ending.",
-                "Segmentation: each hit as the main target removes 1 Stack from the Imago's matching state of time and heals the attacker 10 SP (once per turn per Sinner); if the unit is never hit this turn the Imago gains 5 Stacks.",
             ],
             "source": [
                 f"https://limbuscompany.wiki.gg/wiki/Illusory_Butterfly_of_Entangled_Lives::{state.capitalize()}",

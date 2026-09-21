@@ -140,9 +140,11 @@ impl Simulator {
         seed: u64,
         config: BattleConfig,
     ) -> Result<BattleState, SimError> {
+        // The Section 5 wave is the Imago together with its three Illusory
+        // Butterfly allies.
         let mut built = self.new_encounter(
             &setup::fixed::TEAM,
-            &[setup::fixed::BOSS_IMAGO],
+            &setup::fixed::SECTION5_WAVE,
             seed,
             config,
         )?;

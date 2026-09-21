@@ -348,6 +348,13 @@ pub struct EnemyRecord {
     pub skills: Vec<EnemySkillRecord>,
     #[serde(default)]
     pub passives: Vec<EnemyPassiveRecord>,
+    /// "The X - Segmentation": the Section 5 Illusory Butterflies take a Stack
+    /// off the Imago whenever they are hit as the main target.
+    #[serde(default)]
+    pub segmentation: Option<crate::scripts::Segmentation>,
+    /// "The X - Origination": half of the damage they take goes to the Imago.
+    #[serde(default)]
+    pub origination: Option<crate::scripts::Origination>,
     #[serde(default)]
     pub unparsed: Vec<String>,
     #[serde(default)]

@@ -3,10 +3,10 @@
 Mirrors the phases of the project plan.  "Done" means implemented **and** covered
 by a test that cites a source in `docs/MECHANICS.md`.
 
-**Current state (2026-09-20):** all seven identities, the Section 5 Imago and the
-seven E.G.O have **zero** unmodelled effect lines (see `docs/COVERAGE.md`); 129
-Rust tests and the Python suite pass; the honest unknowns are listed at the end of
-this file.
+**Current state (2026-09-21):** all seven identities, the seven E.G.O and the
+whole **Section 5 wave** (the Imago plus its three Illusory Butterfly allies) have
+**zero** unmodelled effect lines (see `docs/COVERAGE.md`); 132 Rust tests and the
+Python suite pass; the honest unknowns are listed at the end of this file.
 
 ## Phase 1 — base state — done
 
@@ -157,7 +157,7 @@ marked as such instead of being guessed.
 | Rodion / Hong Lu / Ryoshu / Sinclair core passives | `DONE` | Rodion's Blessing / Despair (the Turn Start state, the statuses' own upkeep and the **Plus / Minus Coin Skill replacement**), Ryoshu's Petals (Sinking damage, Tremor Bursts, the [Faint Aroma] she inflicts, +([Faint Aroma])% against Staggered targets) and her three Unopposed Attacks, Hong Lu's Kōzan follow-up plus the `[Bright -光-]` kit and the deferred Hand conversion, Outis' Sheut Fracture rider, Gregor's Speed-free redirect. |
 | Gregor's "Clash regardless of Speed" passive | `DONE` | `Action::Engage` accepts a chain when the unit carries `Dazzling Lamp` or when the enemy Slot's Skill is tagged "Can Clash with this Skill regardless of Speed". |
 | E.G.O target counts and Corrosion targeting | `PARTIAL` | Coin-3 hit counting, "2 allies including this unit" and the Resonance-driven SP-heal count are fixed; the general Corrosion target selection is still approximated. |
-| Illusory butterflies / Pupa, Parts | `OUT OF SCOPE` | Loaded as documentation only, as the plan requires; the choice events of the earlier stations are explicitly not modelled (an "End the Encounter" Skill is honoured where its text is understood). |
+| Stations 2-4 butterflies / Pupa, Parts | `OUT OF SCOPE` (the **Section 5** illusions are done, rules 99-101) | Loaded as documentation only, as the plan requires; the choice events of the earlier stations are explicitly not modelled (an "End the Encounter" Skill is honoured where its text is understood). |
 | Breath (Poise) critical rate | `DONE` | The critical hit modifier is the fixed 20% the wiki documents (`0.2` plus modifiers) and Poise's chance is its Potency in percentage points (the status caps at 99), so nothing is left as an assumption (rule 96). |
 | Sin Resonance level-gain table | `DONE` | Rules 1..11+ are applied to each Skill's Offense/Defense Level from its chain position (rule 88). |
 
