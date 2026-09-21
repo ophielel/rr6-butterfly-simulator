@@ -2599,7 +2599,13 @@
    ]
   },
   "1041406@1": {
-   "attack_end": [],
+   "attack_end": [
+    {
+     "kind": "lose_status_all",
+     "raw": "[Attack End] Lose all [Petals] on self",
+     "status": "Petals"
+    }
+   ],
    "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
@@ -2648,7 +2654,22 @@
    "note": "Magnificent End",
    "on_evade": [],
    "on_kill": [],
-   "on_use": [],
+   "on_use": [
+    {
+     "condition": {
+      "all_targets": true,
+      "component": "stack",
+      "source": "target",
+      "status": "Faint Aroma"
+     },
+     "kind": "base_power",
+     "max": 6,
+     "per": 5,
+     "raw": "[On Use] Final Power +1 for every 5 (sum of [Faint Aroma] on all targets) (max 6)",
+     "step": 1,
+     "value": 0
+    }
+   ],
    "tags": [
     "unclashable"
    ],
@@ -2656,13 +2677,17 @@
    "turn_start": [],
    "unmodeled": [
     "Deal +30% damage for every excess Atk Weight beyond the number of actual targets (in Focused Encounters, the Part)",
-    "External effects cannot trigger this Skill to be Reused",
-    "[Attack End] Lose all [Petals] on self",
-    "[On Use] Final Power +1 for every 5 (sum of [Faint Aroma] on all targets) (max 6)"
+    "External effects cannot trigger this Skill to be Reused"
    ]
   },
   "1041406@2": {
-   "attack_end": [],
+   "attack_end": [
+    {
+     "kind": "lose_status_all",
+     "raw": "[Attack End] Lose all [Petals] on self",
+     "status": "Petals"
+    }
+   ],
    "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
@@ -2711,7 +2736,22 @@
    "note": "Magnificent End",
    "on_evade": [],
    "on_kill": [],
-   "on_use": [],
+   "on_use": [
+    {
+     "condition": {
+      "all_targets": true,
+      "component": "stack",
+      "source": "target",
+      "status": "Faint Aroma"
+     },
+     "kind": "base_power",
+     "max": 6,
+     "per": 5,
+     "raw": "[On Use] Final Power +1 for every 5 (sum of [Faint Aroma] on all targets) (max 6)",
+     "step": 1,
+     "value": 0
+    }
+   ],
    "tags": [
     "unclashable"
    ],
@@ -2719,13 +2759,17 @@
    "turn_start": [],
    "unmodeled": [
     "Deal +30% damage for every excess Atk Weight beyond the number of actual targets (in Focused Encounters, the Part)",
-    "External effects cannot trigger this Skill to be Reused",
-    "[Attack End] Lose all [Petals] on self",
-    "[On Use] Final Power +1 for every 5 (sum of [Faint Aroma] on all targets) (max 6)"
+    "External effects cannot trigger this Skill to be Reused"
    ]
   },
   "1041406@3": {
-   "attack_end": [],
+   "attack_end": [
+    {
+     "kind": "lose_status_all",
+     "raw": "[Attack End] Lose all [Petals] on self",
+     "status": "Petals"
+    }
+   ],
    "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
@@ -2774,7 +2818,22 @@
    "note": "Magnificent End",
    "on_evade": [],
    "on_kill": [],
-   "on_use": [],
+   "on_use": [
+    {
+     "condition": {
+      "all_targets": true,
+      "component": "stack",
+      "source": "target",
+      "status": "Faint Aroma"
+     },
+     "kind": "base_power",
+     "max": 6,
+     "per": 5,
+     "raw": "[On Use] Final Power +1 for every 5 (sum of [Faint Aroma] on all targets) (max 6)",
+     "step": 1,
+     "value": 0
+    }
+   ],
    "tags": [
     "unclashable"
    ],
@@ -2782,13 +2841,17 @@
    "turn_start": [],
    "unmodeled": [
     "Deal +30% damage for every excess Atk Weight beyond the number of actual targets (in Focused Encounters, the Part)",
-    "External effects cannot trigger this Skill to be Reused",
-    "[Attack End] Lose all [Petals] on self",
-    "[On Use] Final Power +1 for every 5 (sum of [Faint Aroma] on all targets) (max 6)"
+    "External effects cannot trigger this Skill to be Reused"
    ]
   },
   "1041406@4": {
-   "attack_end": [],
+   "attack_end": [
+    {
+     "kind": "lose_status_all",
+     "raw": "[Attack End] Lose all [Petals] on self",
+     "status": "Petals"
+    }
+   ],
    "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
@@ -2837,7 +2900,22 @@
    "note": "Magnificent End",
    "on_evade": [],
    "on_kill": [],
-   "on_use": [],
+   "on_use": [
+    {
+     "condition": {
+      "all_targets": true,
+      "component": "stack",
+      "source": "target",
+      "status": "Faint Aroma"
+     },
+     "kind": "base_power",
+     "max": 6,
+     "per": 5,
+     "raw": "[On Use] Final Power +1 for every 5 (sum of [Faint Aroma] on all targets) (max 6)",
+     "step": 1,
+     "value": 0
+    }
+   ],
    "tags": [
     "unclashable"
    ],
@@ -2845,9 +2923,7 @@
    "turn_start": [],
    "unmodeled": [
     "Deal +30% damage for every excess Atk Weight beyond the number of actual targets (in Focused Encounters, the Part)",
-    "External effects cannot trigger this Skill to be Reused",
-    "[Attack End] Lose all [Petals] on self",
-    "[On Use] Final Power +1 for every 5 (sum of [Faint Aroma] on all targets) (max 6)"
+    "External effects cannot trigger this Skill to be Reused"
    ]
   },
   "1081301@1": {
@@ -3389,7 +3465,25 @@
    "unmodeled": []
   },
   "10813032@1": {
-   "attack_end": [],
+   "attack_end": [
+    {
+     "kind": "lose_status_all",
+     "raw": "[Skill End] Lose [Bright -光-] on self",
+     "status": "Bright -光-"
+    },
+    {
+     "kind": "suit_convert",
+     "next_turn": true,
+     "per_turn": 1,
+     "raw": "[Skill End] Next turn, convert the Suit in this unit's Hand to a random Suit that corresponds to one of this unit's Base Attack Skills (once per turn)"
+    },
+    {
+     "kind": "gain_unused_coins",
+     "next_turn": true,
+     "raw": "[Skill End] Gain [Bright -光-] Potency next turn equal to the # of Coins that weren't used",
+     "status": "Bright -光-"
+    }
+   ],
    "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
@@ -3426,11 +3520,72 @@
    "on_kill": [],
    "on_use": [
     {
+     "kind": "noop",
+     "note": "no Defense Skills, no external Reuse",
+     "raw": "This Skill does not trigger Defense Skills, and external effects cannot trigger this Skill to be Reused"
+    },
+    {
+     "condition": {
+      "component": "potency",
+      "lte": 2,
+      "source": "self",
+      "status": "Bright -光-"
+     },
+     "kind": "cancel_skill",
+     "raw": "[On Use] At less than 3 [Bright -光-] Potency, cancel the Skill and gain 2 [Attack Power Up] next turn"
+    },
+    {
      "kind": "gain",
      "next_turn": true,
      "potency": 2,
      "raw": "[On Use] At less than 3 [Bright -光-] Potency, cancel the Skill and gain 2 [Attack Power Up] next turn",
      "status": "Attack Power Up"
+    },
+    {
+     "kind": "noop",
+     "note": "header for the bullets below",
+     "raw": "[On Use] At 3+ [Bright -光-] Potency, gain the following effects based on Potency:"
+    },
+    {
+     "condition": {
+      "component": "potency",
+      "gte": 3,
+      "source": "self",
+      "status": "Bright -光-"
+     },
+     "kind": "damage_percent",
+     "per": 1,
+     "raw": "Per 1 Potency: this Skill deals +10% damage",
+     "step": 10,
+     "value": 0
+    },
+    {
+     "condition": {
+      "component": "potency",
+      "gte": 4,
+      "source": "self",
+      "status": "Bright -光-"
+     },
+     "kind": "base_power",
+     "raw": "At 4+ Potency: Base Power +1",
+     "value": 1
+    },
+    {
+     "kind": "compound",
+     "raw": "At 5 Potency: On Hit with the final Reuse Coin, trigger [Tremor Burst] 2 times; then, reduce target's [Tremor] Count by 1",
+     "sub_effects": [
+      {
+       "condition": {
+        "component": "potency",
+        "gte": 5,
+        "source": "self",
+        "status": "Bright -光-"
+       },
+       "consume_count": 1,
+       "kind": "tremor_burst",
+       "times": 2
+      }
+     ]
     }
    ],
    "tags": [
@@ -3438,20 +3593,28 @@
    ],
    "turn_end": [],
    "turn_start": [],
-   "unmodeled": [
-    "At 4+ Potency: Base Power +1",
-    "At 5 Potency: On Hit with the final Reuse Coin, trigger [Tremor Burst] 2 times; then, reduce target's [Tremor] Count by 1",
-    "Per 1 Potency: this Skill deals +10% damage",
-    "This Skill does not trigger Defense Skills, and external effects cannot trigger this Skill to be Reused",
-    "[On Use] At 3+ [Bright -光-] Potency, gain the following effects based on Potency:",
-    "[On Use] At less than 3 [Bright -光-] Potency, cancel the Skill and gain 2 [Attack Power Up] next turn  [unparsed: At less than 3 [Bright -光-] Potency, cancel the Skill]",
-    "[Skill End] Gain [Bright -光-] Potency next turn equal to the # of Coins that weren't used",
-    "[Skill End] Lose [Bright -光-] on self",
-    "[Skill End] Next turn, convert the Suit in this unit's Hand to a random Suit that corresponds to one of this unit's Base Attack Skills (once per turn)"
-   ]
+   "unmodeled": []
   },
   "10813032@2": {
-   "attack_end": [],
+   "attack_end": [
+    {
+     "kind": "lose_status_all",
+     "raw": "[Skill End] Lose [Bright -光-] on self",
+     "status": "Bright -光-"
+    },
+    {
+     "kind": "suit_convert",
+     "next_turn": true,
+     "per_turn": 1,
+     "raw": "[Skill End] Next turn, convert the Suit in this unit's Hand to a random Suit that corresponds to one of this unit's Base Attack Skills (once per turn)"
+    },
+    {
+     "kind": "gain_unused_coins",
+     "next_turn": true,
+     "raw": "[Skill End] Gain [Bright -光-] Potency next turn equal to the # of Coins that weren't used",
+     "status": "Bright -光-"
+    }
+   ],
    "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
@@ -3488,11 +3651,72 @@
    "on_kill": [],
    "on_use": [
     {
+     "kind": "noop",
+     "note": "no Defense Skills, no external Reuse",
+     "raw": "This Skill does not trigger Defense Skills, and external effects cannot trigger this Skill to be Reused"
+    },
+    {
+     "condition": {
+      "component": "potency",
+      "lte": 2,
+      "source": "self",
+      "status": "Bright -光-"
+     },
+     "kind": "cancel_skill",
+     "raw": "[On Use] At less than 3 [Bright -光-] Potency, cancel the Skill and gain 2 [Attack Power Up] next turn"
+    },
+    {
      "kind": "gain",
      "next_turn": true,
      "potency": 2,
      "raw": "[On Use] At less than 3 [Bright -光-] Potency, cancel the Skill and gain 2 [Attack Power Up] next turn",
      "status": "Attack Power Up"
+    },
+    {
+     "kind": "noop",
+     "note": "header for the bullets below",
+     "raw": "[On Use] At 3+ [Bright -光-] Potency, gain the following effects based on Potency:"
+    },
+    {
+     "condition": {
+      "component": "potency",
+      "gte": 3,
+      "source": "self",
+      "status": "Bright -光-"
+     },
+     "kind": "damage_percent",
+     "per": 1,
+     "raw": "Per 1 Potency: this Skill deals +10% damage",
+     "step": 10,
+     "value": 0
+    },
+    {
+     "condition": {
+      "component": "potency",
+      "gte": 4,
+      "source": "self",
+      "status": "Bright -光-"
+     },
+     "kind": "base_power",
+     "raw": "At 4+ Potency: Base Power +1",
+     "value": 1
+    },
+    {
+     "kind": "compound",
+     "raw": "At 5 Potency: On Hit with the final Reuse Coin, trigger [Tremor Burst] 2 times; then, reduce target's [Tremor] Count by 1",
+     "sub_effects": [
+      {
+       "condition": {
+        "component": "potency",
+        "gte": 5,
+        "source": "self",
+        "status": "Bright -光-"
+       },
+       "consume_count": 1,
+       "kind": "tremor_burst",
+       "times": 2
+      }
+     ]
     }
    ],
    "tags": [
@@ -3500,20 +3724,28 @@
    ],
    "turn_end": [],
    "turn_start": [],
-   "unmodeled": [
-    "At 4+ Potency: Base Power +1",
-    "At 5 Potency: On Hit with the final Reuse Coin, trigger [Tremor Burst] 2 times; then, reduce target's [Tremor] Count by 1",
-    "Per 1 Potency: this Skill deals +10% damage",
-    "This Skill does not trigger Defense Skills, and external effects cannot trigger this Skill to be Reused",
-    "[On Use] At 3+ [Bright -光-] Potency, gain the following effects based on Potency:",
-    "[On Use] At less than 3 [Bright -光-] Potency, cancel the Skill and gain 2 [Attack Power Up] next turn  [unparsed: At less than 3 [Bright -光-] Potency, cancel the Skill]",
-    "[Skill End] Gain [Bright -光-] Potency next turn equal to the # of Coins that weren't used",
-    "[Skill End] Lose [Bright -光-] on self",
-    "[Skill End] Next turn, convert the Suit in this unit's Hand to a random Suit that corresponds to one of this unit's Base Attack Skills (once per turn)"
-   ]
+   "unmodeled": []
   },
   "10813032@3": {
-   "attack_end": [],
+   "attack_end": [
+    {
+     "kind": "lose_status_all",
+     "raw": "[Skill End] Lose [Bright -光-] on self",
+     "status": "Bright -光-"
+    },
+    {
+     "kind": "suit_convert",
+     "next_turn": true,
+     "per_turn": 1,
+     "raw": "[Skill End] Next turn, convert the Suit in this unit's Hand to a random Suit that corresponds to one of this unit's Base Attack Skills (once per turn)"
+    },
+    {
+     "kind": "gain_unused_coins",
+     "next_turn": true,
+     "raw": "[Skill End] Gain [Bright -光-] Potency next turn equal to the # of Coins that weren't used",
+     "status": "Bright -光-"
+    }
+   ],
    "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
@@ -3550,11 +3782,72 @@
    "on_kill": [],
    "on_use": [
     {
+     "kind": "noop",
+     "note": "no Defense Skills, no external Reuse",
+     "raw": "This Skill does not trigger Defense Skills, and external effects cannot trigger this Skill to be Reused"
+    },
+    {
+     "condition": {
+      "component": "potency",
+      "lte": 2,
+      "source": "self",
+      "status": "Bright -光-"
+     },
+     "kind": "cancel_skill",
+     "raw": "[On Use] At less than 3 [Bright -光-] Potency, cancel the Skill and gain 2 [Attack Power Up] next turn"
+    },
+    {
      "kind": "gain",
      "next_turn": true,
      "potency": 2,
      "raw": "[On Use] At less than 3 [Bright -光-] Potency, cancel the Skill and gain 2 [Attack Power Up] next turn",
      "status": "Attack Power Up"
+    },
+    {
+     "kind": "noop",
+     "note": "header for the bullets below",
+     "raw": "[On Use] At 3+ [Bright -光-] Potency, gain the following effects based on Potency:"
+    },
+    {
+     "condition": {
+      "component": "potency",
+      "gte": 3,
+      "source": "self",
+      "status": "Bright -光-"
+     },
+     "kind": "damage_percent",
+     "per": 1,
+     "raw": "Per 1 Potency: this Skill deals +10% damage",
+     "step": 10,
+     "value": 0
+    },
+    {
+     "condition": {
+      "component": "potency",
+      "gte": 4,
+      "source": "self",
+      "status": "Bright -光-"
+     },
+     "kind": "base_power",
+     "raw": "At 4+ Potency: Base Power +1",
+     "value": 1
+    },
+    {
+     "kind": "compound",
+     "raw": "At 5 Potency: On Hit with the final Reuse Coin, trigger [Tremor Burst] 2 times; then, reduce target's [Tremor] Count by 1",
+     "sub_effects": [
+      {
+       "condition": {
+        "component": "potency",
+        "gte": 5,
+        "source": "self",
+        "status": "Bright -光-"
+       },
+       "consume_count": 1,
+       "kind": "tremor_burst",
+       "times": 2
+      }
+     ]
     }
    ],
    "tags": [
@@ -3562,20 +3855,28 @@
    ],
    "turn_end": [],
    "turn_start": [],
-   "unmodeled": [
-    "At 4+ Potency: Base Power +1",
-    "At 5 Potency: On Hit with the final Reuse Coin, trigger [Tremor Burst] 2 times; then, reduce target's [Tremor] Count by 1",
-    "Per 1 Potency: this Skill deals +10% damage",
-    "This Skill does not trigger Defense Skills, and external effects cannot trigger this Skill to be Reused",
-    "[On Use] At 3+ [Bright -光-] Potency, gain the following effects based on Potency:",
-    "[On Use] At less than 3 [Bright -光-] Potency, cancel the Skill and gain 2 [Attack Power Up] next turn  [unparsed: At less than 3 [Bright -光-] Potency, cancel the Skill]",
-    "[Skill End] Gain [Bright -光-] Potency next turn equal to the # of Coins that weren't used",
-    "[Skill End] Lose [Bright -光-] on self",
-    "[Skill End] Next turn, convert the Suit in this unit's Hand to a random Suit that corresponds to one of this unit's Base Attack Skills (once per turn)"
-   ]
+   "unmodeled": []
   },
   "10813032@4": {
-   "attack_end": [],
+   "attack_end": [
+    {
+     "kind": "lose_status_all",
+     "raw": "[Skill End] Lose [Bright -光-] on self",
+     "status": "Bright -光-"
+    },
+    {
+     "kind": "suit_convert",
+     "next_turn": true,
+     "per_turn": 1,
+     "raw": "[Skill End] Next turn, convert the Suit in this unit's Hand to a random Suit that corresponds to one of this unit's Base Attack Skills (once per turn)"
+    },
+    {
+     "kind": "gain_unused_coins",
+     "next_turn": true,
+     "raw": "[Skill End] Gain [Bright -光-] Potency next turn equal to the # of Coins that weren't used",
+     "status": "Bright -光-"
+    }
+   ],
    "before_attack": [],
    "clash_lose": [],
    "clash_win": [],
@@ -3622,11 +3923,72 @@
    "on_kill": [],
    "on_use": [
     {
+     "kind": "noop",
+     "note": "no Defense Skills, no external Reuse",
+     "raw": "This Skill does not trigger Defense Skills, and external effects cannot trigger this Skill to be Reused"
+    },
+    {
+     "condition": {
+      "component": "potency",
+      "lte": 2,
+      "source": "self",
+      "status": "Bright -光-"
+     },
+     "kind": "cancel_skill",
+     "raw": "[On Use] At less than 3 [Bright -光-] Potency, cancel the Skill and gain 2 [Attack Power Up] next turn"
+    },
+    {
      "kind": "gain",
      "next_turn": true,
      "potency": 2,
      "raw": "[On Use] At less than 3 [Bright -光-] Potency, cancel the Skill and gain 2 [Attack Power Up] next turn",
      "status": "Attack Power Up"
+    },
+    {
+     "kind": "noop",
+     "note": "header for the bullets below",
+     "raw": "[On Use] At 3+ [Bright -光-] Potency, gain the following effects based on Potency:"
+    },
+    {
+     "condition": {
+      "component": "potency",
+      "gte": 3,
+      "source": "self",
+      "status": "Bright -光-"
+     },
+     "kind": "damage_percent",
+     "per": 1,
+     "raw": "Per 1 Potency: this Skill deals +10% damage",
+     "step": 10,
+     "value": 0
+    },
+    {
+     "condition": {
+      "component": "potency",
+      "gte": 4,
+      "source": "self",
+      "status": "Bright -光-"
+     },
+     "kind": "base_power",
+     "raw": "At 4+ Potency: Base Power +1",
+     "value": 1
+    },
+    {
+     "kind": "compound",
+     "raw": "At 5 Potency: On Hit with the final Reuse Coin, trigger [Tremor Burst] 2 times; then, reduce target's [Tremor] Count by 1",
+     "sub_effects": [
+      {
+       "condition": {
+        "component": "potency",
+        "gte": 5,
+        "source": "self",
+        "status": "Bright -光-"
+       },
+       "consume_count": 1,
+       "kind": "tremor_burst",
+       "times": 2
+      }
+     ]
     }
    ],
    "tags": [
@@ -3634,17 +3996,7 @@
    ],
    "turn_end": [],
    "turn_start": [],
-   "unmodeled": [
-    "At 4+ Potency: Base Power +1",
-    "At 5 Potency: On Hit with the final Reuse Coin, trigger [Tremor Burst] 2 times; then, reduce target's [Tremor] Count by 1",
-    "Per 1 Potency: this Skill deals +10% damage",
-    "This Skill does not trigger Defense Skills, and external effects cannot trigger this Skill to be Reused",
-    "[On Use] At 3+ [Bright -光-] Potency, gain the following effects based on Potency:",
-    "[On Use] At less than 3 [Bright -光-] Potency, cancel the Skill and gain 2 [Attack Power Up] next turn  [unparsed: At less than 3 [Bright -光-] Potency, cancel the Skill]",
-    "[Skill End] Gain [Bright -光-] Potency next turn equal to the # of Coins that weren't used",
-    "[Skill End] Lose [Bright -光-] on self",
-    "[Skill End] Next turn, convert the Suit in this unit's Hand to a random Suit that corresponds to one of this unit's Base Attack Skills (once per turn)"
-   ]
+   "unmodeled": []
   },
   "1081303@1": {
    "attack_end": [],

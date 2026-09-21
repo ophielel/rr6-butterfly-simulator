@@ -1721,7 +1721,7 @@ fn section5_golden_replay_is_deterministic() {
     assert_eq!(first_hp, vec![25406, 25200, 25057], "Imago HP after turns 1-3");
     assert_eq!(
         format!("{first_hash:016x}"),
-        "96048e26efb33861",
+        "ad505c9691031be2",
         "recorded state hash"
     );
 }

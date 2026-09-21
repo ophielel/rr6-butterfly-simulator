@@ -47,6 +47,7 @@ TRIGGERS = {
     "turn end": "turn_end",
     "turn start": "turn_start",
     "end skill": "attack_end",
+    "skill end": "attack_end",
     "win duel": "clash_win",
     "lose duel": "clash_lose",
 }
@@ -278,6 +279,49 @@ PATTERNS = [
     (re.compile(rf"^Deal \({ST} on self / {N}\) (Wrath|Lust|Sloth|Gluttony|Gloom|Pride|Envy) damage on target and lose {N} {ST} Count(?: \(rounded down\))?$"),
      lambda m: {"kind": "damage_from_status_divisor", "status": m.group(1),
                 "value": int(m.group(2)), "sin": m.group(3).lower(), "count": int(m.group(4))}),
+    # The header of a "[Bright -光-] Potency" block; its bullets carry their own
+    # conditions.
+    (re.compile(rf"^At {N}\+ {ST}(?: Potency)?, gain the following effects based on Potency:?$"),
+     lambda m: {"kind": "noop", "note": "header for the bullets below"}),
+    # "At less than 3 [Bright -光-] Potency, cancel the Skill".
+    (re.compile(rf"^At less than {N} {ST}(?: Potency)?, cancel the Skill\.?$"),
+     lambda m: {"kind": "cancel_skill",
+                "condition": {"source": "self", "status": m.group(2),
+                              "component": "potency", "lte": int(m.group(1)) - 1}}),
+    # "[Skill End] Next turn, convert the Suit in this unit's Hand ...".
+    (re.compile(r"^Next turn, convert the Suit in this unit's Hand to a random Suit that corresponds to one of this unit's Base Attack Skills$"),
+     lambda m: {"kind": "suit_convert", "next_turn": True}),
+    # "[Skill End] Lose [X] on self" / "Lose all [X] on self".
+    (re.compile(rf"^Lose {ST} on self$"),
+     lambda m: {"kind": "lose_status_all", "status": m.group(1)}),
+    (re.compile(rf"^Gain {ST} Potency next turn equal to the # of Coins that weren't used$"),
+     lambda m: {"kind": "gain_unused_coins", "status": m.group(1), "next_turn": True}),
+    # "[Bright -光-]" driven clauses of Kozan.
+    (re.compile(rf"^Per 1 Potency: this Skill deals \+{N}% damage$"),
+     lambda m: {"kind": "damage_percent", "value": 0, "step": int(m.group(1)), "per": 1,
+                "condition": {"source": "self", "status": "Bright -光-",
+                              "component": "potency", "gte": 3}}),
+    (re.compile(rf"^At {N}\+(?: Potency)?: Base Power \+{N}$"),
+     lambda m: {"kind": "base_power", "value": int(m.group(2)),
+                "condition": {"source": "self", "status": "Bright -光-",
+                              "component": "potency", "gte": int(m.group(1))}}),
+    (re.compile(rf"^At {N}(?: Potency)?: On Hit with the final Reuse Coin, trigger {ST} {N} times; then, reduce target's {ST} Count by {N}$"),
+     lambda m: {"kind": "compound", "sub_effects": [
+         {"kind": "tremor_burst", "times": int(m.group(3)), "consume_count": int(m.group(5)),
+          "condition": {"source": "self", "status": "Bright -光-", "component": "potency",
+                        "gte": int(m.group(1))}}]}),
+    (re.compile(r"^This Skill does not trigger Defense Skills, and external effects cannot trigger this Skill to be Reused$"),
+     lambda m: {"kind": "noop", "note": "no Defense Skills, no external Reuse"}),
+    # "[Attack End] Lose all [Petals] on self".
+    (re.compile(rf"^Lose all {ST} on self$"),
+     lambda m: {"kind": "lose_status_all", "status": m.group(1)}),
+    # "[On Use] Final Power +1 for every 5 (sum of [Faint Aroma] on all targets)
+    # (max 6)".
+    (re.compile(rf"^Final Power \+{N} for every {N} \(sum of {ST} on all targets\) \(max {N}\)$"),
+     lambda m: {"kind": "base_power", "value": 0, "step": int(m.group(1)),
+                "per": int(m.group(2)), "max": int(m.group(4)),
+                "condition": {"source": "target", "status": m.group(3),
+                              "component": "stack", "all_targets": True}}),
     # "Target cannot be Staggered until this Skill's Attack End": a phase-scoped
     # switch, so it must not leak into Skills that write it under [Clash Lose].
     (re.compile(r"^Target cannot be Staggered until this Skill's Attack End$"),

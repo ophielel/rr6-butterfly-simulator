@@ -116,6 +116,13 @@ pub struct UseContext {
     /// Offense/Defense Level this Skill gains from its Sin Resonance chain.
     #[serde(default)]
     pub resonance_level_bonus: i32,
+    /// How many Coins this Skill use holds ("the # of Coins that weren't used").
+    #[serde(default)]
+    pub coins_total: usize,
+    /// "At less than 3 [Bright -光-] Potency, cancel the Skill": the use produces
+    /// no attack at all.
+    #[serde(default)]
+    pub cancelled: bool,
     /// "Reuse this Skill on the target that has the highest HP" when it kills.
     #[serde(default)]
     pub reuse_on_kill: bool,
@@ -1579,25 +1586,25 @@ pub fn apply_effects(
                 }
             }
             "clash_power" => {
-                let measured = measured_from_condition(effect, &state.units[ctx.actor_index], ctx.target_index.map(|i| &state.units[i]));
+                let measured = measured_from_condition(state, ctx.actor_index, effect, &state.units[ctx.actor_index], ctx.target_index.map(|i| &state.units[i]));
                 use_ctx.clash_power_bonus += scaled(effect, measured);
             }
             "coin_power" => {
-                let measured = measured_from_condition(effect, &state.units[ctx.actor_index], ctx.target_index.map(|i| &state.units[i]));
+                let measured = measured_from_condition(state, ctx.actor_index, effect, &state.units[ctx.actor_index], ctx.target_index.map(|i| &state.units[i]));
                 use_ctx.coin_power_bonus += scaled(effect, measured);
             }
             "base_power" => {
-                let measured = measured_from_condition(effect, &state.units[ctx.actor_index], ctx.target_index.map(|i| &state.units[i]));
+                let measured = measured_from_condition(state, ctx.actor_index, effect, &state.units[ctx.actor_index], ctx.target_index.map(|i| &state.units[i]));
                 use_ctx.base_power_bonus += scaled(effect, measured);
             }
             "damage_percent" => {
-                let measured = measured_from_condition(effect, &state.units[ctx.actor_index], ctx.target_index.map(|i| &state.units[i]));
+                let measured = measured_from_condition(state, ctx.actor_index, effect, &state.units[ctx.actor_index], ctx.target_index.map(|i| &state.units[i]));
                 use_ctx.damage_bonus += scaled(effect, measured) as f64 / 100.0;
             }
             "shield_percent_hp" => {
                 let percent = effect.percent.unwrap_or(0);
                 let max_percent = effect.max.unwrap_or(percent);
-                let measured = measured_from_condition(effect, &state.units[ctx.actor_index], ctx.target_index.map(|i| &state.units[i]));
+                let measured = measured_from_condition(state, ctx.actor_index, effect, &state.units[ctx.actor_index], ctx.target_index.map(|i| &state.units[i]));
                 let gain = (percent * measured).min(max_percent);
                 let unit = &mut state.units[ctx.actor_index];
                 let shield = unit.max_hp * gain / 100;
@@ -1656,6 +1663,31 @@ pub fn apply_effects(
                 if consume > 0 {
                     tick_status(state, index, &status, 0, -consume);
                 }
+            }
+            "gain_unused_coins" => {
+                // "[Skill End] Gain [X] Potency next turn equal to the # of Coins
+                // that weren't used".
+                let Some(status) = effect.status.clone() else { continue };
+                let used = use_ctx.coin_hits.len() as i32;
+                let total = use_ctx.coins_total as i32;
+                let left = (total - used).max(0);
+                if left > 0 {
+                    state.units[ctx.actor_index].pending_next_turn.push(
+                        crate::state::PendingStatus {
+                            status,
+                            potency: left,
+                            count: 0,
+                            stack: 0,
+                        },
+                    );
+                }
+            }
+            "cancel_skill" => {
+                use_ctx.cancelled = true;
+            }
+            "lose_status_all" => {
+                let Some(status) = effect.status.clone() else { continue };
+                state.units[ctx.actor_index].statuses.remove(&status);
             }
             "lose_status_count" => {
                 let Some(status) = effect.status.clone() else { continue };
@@ -2082,11 +2114,7 @@ pub fn apply_effects(
             "sp_heal" | "heal_hp" | "heal_percent_hp" => {
                 let targets = ally_targets(state, ctx, effect);
                 let percent = effect.percent.unwrap_or(0);
-                let measured = measured_from_condition(
-                    effect,
-                    &state.units[ctx.actor_index],
-                    ctx.target_index.map(|i| &state.units[i]),
-                );
+                let measured = measured_from_condition(state, ctx.actor_index, effect, &state.units[ctx.actor_index], ctx.target_index.map(|i| &state.units[i]));
                 for index in targets {
                     match effect.kind.as_str() {
                         "sp_heal" => {
@@ -2398,13 +2426,28 @@ pub fn apply_effects(
     }
 }
 
-/// Read the value a condition measured on the actor/target.
+/// Read the value a condition measured on the actor/target.  "sum of [X] on all
+/// targets" reads every opposing unit instead of the main target.
 fn measured_from_condition(
+    state: &BattleState,
+    _actor_index: usize,
     effect: &Effect,
     actor: &Unit,
     target: Option<&Unit>,
 ) -> i32 {
     let Some(cond) = &effect.condition else { return 0 };
+    if cond.all_targets {
+        let actor_is_sinner = actor.kind.is_sinner();
+        return state
+            .units
+            .iter()
+            .filter(|unit| unit.alive && unit.kind.is_sinner() != actor_is_sinner)
+            .map(|unit| {
+                let status = cond.status.as_deref().unwrap_or_default();
+                unit_status_value(unit, status, cond.component)
+            })
+            .sum();
+    }
     let unit = if cond.source.as_deref() == Some("target") {
         match target {
             Some(t) => t,
@@ -3119,6 +3162,10 @@ pub fn one_sided_attack(
     use_: &mut SkillUse,
     clash_count: i32,
 ) -> Vec<HitResult> {
+    if use_.ctx.cancelled {
+        // "cancel the Skill": no Coin is used at all.
+        return Vec::new();
+    }
     // An E.G.O's SP cost belongs to the "[Before Attack]" timing: it is paid once
     // the Clash is over and just before the first Coin is tossed.
     if let Some(sp) = use_.ctx.ego_sp_pending.take() {
@@ -4672,13 +4719,13 @@ fn status_modifiers(state: &BattleState, index: usize, target: Option<usize>) ->
             match effect.kind.as_str() {
                 "damage_percent" => {
                     let step = effect.step_f.unwrap_or(effect.step.unwrap_or(1) as f64);
-                    let measured = measured_from_condition(&effect, actor, target_unit);
+                    let measured = measured_from_condition(state, index, &effect, actor, target_unit);
                     let max = effect.max.unwrap_or(i32::MAX) as f64;
                     outgoing += (step * measured as f64).min(max) / 100.0;
                 }
                 "damage_taken_percent" => {
                     let step = effect.step_f.unwrap_or(effect.step.unwrap_or(1) as f64);
-                    let measured = measured_from_condition(&effect, actor, target_unit);
+                    let measured = measured_from_condition(state, index, &effect, actor, target_unit);
                     let max = effect.max.unwrap_or(i32::MAX) as f64;
                     outgoing += 0.0;
                     incoming += (step * measured as f64).min(max) / 100.0;
@@ -4747,7 +4794,7 @@ fn passive_modifiers(state: &BattleState, index: usize, target: Option<usize>) -
             }
             match effect.kind.as_str() {
                 "damage_percent" => {
-                    let measured = measured_from_condition(effect, actor, target_unit);
+                    let measured = measured_from_condition(state, index, effect, actor, target_unit);
                     outgoing += scaled(effect, measured) as f64 / 100.0;
                 }
                 "damage_taken_percent" => {
@@ -6321,6 +6368,7 @@ fn prepare_use(
                 .sum::<i32>();
         use_.ctx.ammo_planned = planned;
     }
+    use_.ctx.coins_total = use_.coins.len();
     // Sin Resonance grants this Skill's Offense/Defense Level (wiki.gg
     // `Sin Resonance` / Offense-Defense Level Gain).
     use_.ctx.resonance_level_bonus = state
@@ -6561,6 +6609,33 @@ fn passive_follow_ups(
                     .statuses
                     .set_stack(AMMO_SOLITUDE, 6);
                 state.push_log("reload", "Full Reload [Bullet - Solitude]".to_string());
+            }
+        }
+    }
+    // Hong Lu's Koi-Koi: "At the Skill's Skill End: at 5 [HanafudaCombo] Potency,
+    // or at 0 [HanafudaCombo] Count, use 'Kozan'".
+    if passives.iter().any(|id| id == "1081302") {
+        let combo_potency = state.units[unit_index].statuses.potency("Bright -光-");
+        let combo_count = state.units[unit_index].statuses.count("Bright -光-");
+        if combo_potency >= 5 || combo_count == 0 {
+            let key = "encounter:unopposed:Kozan".to_string();
+            let used = state.units[unit_index]
+                .turn_effect_usage
+                .get(&key)
+                .copied()
+                .unwrap_or(0);
+            if used < 1 {
+                state.units[unit_index]
+                    .turn_effect_usage
+                    .insert(key, 1);
+                unopposed_attack(
+                    state,
+                    library,
+                    mechanics,
+                    unit_index,
+                    &SkillId::new("10813032"),
+                    target_index,
+                );
             }
         }
     }

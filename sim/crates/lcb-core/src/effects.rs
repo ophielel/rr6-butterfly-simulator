@@ -122,6 +122,10 @@ pub struct Condition {
     /// "against Staggered targets".
     #[serde(default)]
     pub target_staggered: bool,
+    /// "sum of [X] on all targets": measure over every opposing unit instead of
+    /// the main target.
+    #[serde(default)]
+    pub all_targets: bool,
 }
 
 /// A single mechanical effect.  The struct is deliberately loose: every kind
