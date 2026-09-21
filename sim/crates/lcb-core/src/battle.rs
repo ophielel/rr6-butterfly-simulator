@@ -2314,6 +2314,13 @@ pub fn apply_effects(
                 state.units[target].statuses.add_potency(&status, potency);
             }
             "suit_convert" => {
+                // "Next turn, convert the Hand on self to the one corresponding to
+                // the used Skill's Affinity" - the conversion is a Turn Start
+                // event of the following turn, not an immediate one.
+                if effect.next_turn {
+                    state.units[ctx.actor_index].pending_suit_conversion = true;
+                    continue;
+                }
                 // "[Combat Start] convert the Suit in this unit's Hand to a
                 // random Suit that corresponds to one of this unit's Base Attack
                 // Skills" (wiki.gg `Status Effects` / Hand - Suit).
@@ -4940,6 +4947,22 @@ pub fn begin_turn(
     // Sanity: clamp SP, then Low Morale (-30) / Panic (-45) for Sinners.
     // Source: wiki.gg `Sanity` + `Clash`.
     apply_sanity_states(state);
+    // A queued Hanafuda conversion ("Next turn, convert the Hand on self ...").
+    for index in 0..state.units.len() {
+        if std::mem::take(&mut state.units[index].pending_suit_conversion) {
+            let suits = ["HanafudaOne", "HanafudaTwo", "HanafudaThree"];
+            let current = state.units[index].suit.clone();
+            let options: Vec<&str> = suits
+                .iter()
+                .copied()
+                .filter(|suit| Some(suit.to_string()) != current)
+                .collect();
+            if !options.is_empty() {
+                let pick = state.rng.below(options.len() as u32) as usize;
+                state.units[index].suit = Some(options[pick].to_string());
+            }
+        }
+    }
     // Passives: "[Turn Start]" clauses, per unit.  The "[Combat Start]" half runs
     // once the Skills for the turn are chosen (see `resolve_combat`), because a
     // passive can read the turn's Sin Resonance.
@@ -5570,8 +5593,25 @@ pub fn resolve_combat(state: &mut BattleState, library: &Library, mechanics: &Me
                             // "[Attack End]" clauses must resolve here too, or a
                             // Skill behaves differently depending on whether it
                             // Clashed (wiki.gg `Clash` / Skill use phases).
-                            apply_attack_end(state, actor_i, Some(target), action_i.slot, a);
-                            clash_loser_follow_up(state, actor_j, actor_i, action_j.slot, b, clash_count);
+                            apply_attack_end(
+                                state,
+                                library,
+                                mechanics,
+                                actor_i,
+                                Some(target),
+                                action_i.slot,
+                                a,
+                            );
+                            clash_loser_follow_up(
+                                state,
+                                library,
+                                mechanics,
+                                actor_j,
+                                actor_i,
+                                action_j.slot,
+                                b,
+                                clash_count,
+                            );
                         }
                     } else if outcome.winner.as_ref() == Some(&state.units[actor_j].id) {
                         apply_clash_result(state, actor_j, Some(actor_i), b, true);
@@ -5579,12 +5619,29 @@ pub fn resolve_combat(state: &mut BattleState, library: &Library, mechanics: &Me
                         let clash_count = outcome.rounds;
                         let hits = one_sided_attack(state, actor_j, actor_i, b, clash_count);
                         splash_attack(state, actor_j, actor_i, b, &hits, clash_count);
-                        apply_attack_end(state, actor_j, Some(actor_i), action_j.slot, b);
+                        apply_attack_end(
+                            state,
+                            library,
+                            mechanics,
+                            actor_j,
+                            Some(actor_i),
+                            action_j.slot,
+                            b,
+                        );
                         if ends_encounter(state, actor_j, &b.skill) {
                             state.encounter_ended = true;
                             state.push_log("end", format!("{} ended the encounter", b.name));
                         }
-                        clash_loser_follow_up(state, actor_i, actor_j, action_i.slot, a, clash_count);
+                        clash_loser_follow_up(
+                            state,
+                            library,
+                            mechanics,
+                            actor_i,
+                            actor_j,
+                            action_i.slot,
+                            a,
+                            clash_count,
+                        );
                     } else {
                         apply_clash_result(state, actor_i, Some(actor_j), a, false);
                         apply_clash_result(state, actor_j, Some(actor_i), b, false);
@@ -5639,7 +5696,15 @@ pub fn resolve_combat(state: &mut BattleState, library: &Library, mechanics: &Me
                         prepare_use(state, library, mechanics, actor_i, Some(target), action_i.slot, &mut use_);
                         let hits = one_sided_attack(state, actor_i, target, &mut use_, 0);
                         splash_attack(state, actor_i, target, &mut use_, &hits, 0);
-                        apply_attack_end(state, actor_i, Some(target), action_i.slot, &mut use_);
+                        apply_attack_end(
+                            state,
+                            library,
+                            mechanics,
+                            actor_i,
+                            Some(target),
+                            action_i.slot,
+                            &mut use_,
+                        );
                         let total: i32 = hits.iter().map(|h| h.damage).sum();
                         let rolls: Vec<i32> = hits.iter().map(|h| h.power).collect();
                         state.push_log(
@@ -5751,6 +5816,8 @@ fn rotate_used_slots(state: &mut BattleState, executed: &[(usize, u32)]) {
 /// Attack End when every Coin it had was an Unbreakable Coin.
 fn clash_loser_follow_up(
     state: &mut BattleState,
+    library: &Library,
+    mechanics: &MechanicsBook,
     loser_index: usize,
     winner_index: usize,
     loser_slot: u32,
@@ -5765,7 +5832,15 @@ fn clash_loser_follow_up(
         splash_attack(state, loser_index, winner_index, loser_use, &hits, clash_count);
     }
     if all_unbreakable {
-        apply_attack_end(state, loser_index, Some(winner_index), loser_slot, loser_use);
+        apply_attack_end(
+            state,
+            library,
+            mechanics,
+            loser_index,
+            Some(winner_index),
+            loser_slot,
+            loser_use,
+        );
     }
 }
 
@@ -6284,43 +6359,164 @@ fn apply_clash_result(
     for note in notes {
         state.warnings.push(note);
     }
-    // "[Attack End] If target is killed, Reuse this Skill on the target that has
-    // the highest HP (once per turn)" (Smite the Wicked).  The clause is written
-    // under [Attack End], so the repeat can only start once that list resolved.
-    let killed_target = target_index
-        .map(|index| !state.units[index].alive)
-        .unwrap_or(false);
-    if use_.ctx.reuse_on_kill
-        && killed_target
-        && state.units[unit_index].alive
-        && state.units[unit_index]
-            .turn_effect_usage
-            .get("reuse_on_kill")
-            .copied()
-            .unwrap_or(0)
-            < 1
-    {
-        state.units[unit_index]
-            .turn_effect_usage
-            .insert("reuse_on_kill".to_string(), 1);
-        if let Some(next) = target_index.and_then(|defender| {
-            next_reuse_target(state, defender, unit_index)
-        }) {
-            let mut repeat = use_.clone();
-            for coin in repeat.coins.iter_mut() {
-                coin.state = CoinState::Fresh;
-                coin.heads = None;
+}
+
+/// Unopposed Attacks a passive triggers at a unit's Attack End.
+///
+/// Ryoshu's `A Void that Cannot be Filled` ("At 1+ [Bullet - Solitude], if the
+/// enemy has less than -40 SP or is Staggered at this unit or an ally's Attack
+/// End, use 'Bang. Bang.' as an Unopposed Attack (once per turn)"; "Attack End:
+/// At 0 [Bullet - Solitude], use 'Stories that Never Cease' as an Unopposed
+/// Attack against the target and consume 10 SP to [Reload]") and
+/// `Unwithering Flower` ("Attack Skill End: At 30+ [Petals], use 'Magnificent
+/// End' against the target that has the highest [Faint Aroma] Stack").
+fn passive_follow_ups(
+    state: &mut BattleState,
+    library: &Library,
+    mechanics: &MechanicsBook,
+    unit_index: usize,
+    target_index: Option<usize>,
+) {
+    if state.units[unit_index].follow_up_active {
+        return;
+    }
+    let passives = state.units[unit_index].passive_ids.clone();
+    if passives.iter().any(|id| id == "1041402") {
+        let bullets = state.units[unit_index].statuses.stack(AMMO_SOLITUDE);
+        if let Some(index) = target_index {
+            let (sp, staggered, alive) = (
+                state.units[index].sanity.sp(),
+                state.units[index].is_staggered(),
+                state.units[index].alive,
+            );
+            if alive && bullets >= 1 && (sp < -40 || staggered) {
+                let key = "encounter:unopposed:Bang. Bang.".to_string();
+                let used = state.units[unit_index]
+                    .turn_effect_usage
+                    .get(&key)
+                    .copied()
+                    .unwrap_or(0);
+                if used < 1 {
+                    state.units[unit_index]
+                        .turn_effect_usage
+                        .insert(key, 1);
+                    unopposed_attack(
+                        state,
+                        library,
+                        mechanics,
+                        unit_index,
+                        &SkillId::new("1041401"),
+                        Some(index),
+                    );
+                }
             }
-            repeat.ctx.accumulated = 0;
-            repeat.ctx.reuse_on_kill = false;
-            state.push_log("reuse", format!("{} was reused", use_.name));
-            one_sided_attack(state, unit_index, next, &mut repeat, 0);
+        }
+        // "Attack End: At 0 [Bullet - Solitude], use 'Stories that Never Cease'
+        // as an Unopposed Attack against the target and consume 10 SP to
+        // [FullReload]".
+        if state.units[unit_index].statuses.stack(AMMO_SOLITUDE) == 0
+            && state.units[unit_index].alive
+            && target_index.is_some()
+        {
+            let sanity = state.units[unit_index].sanity;
+            state.units[unit_index].sanity = sanity.add(-10);
+            if unopposed_attack(
+                state,
+                library,
+                mechanics,
+                unit_index,
+                &SkillId::new("1041405"),
+                target_index,
+            ) {
+                state.units[unit_index]
+                    .statuses
+                    .set_stack(AMMO_SOLITUDE, 6);
+                state.push_log("reload", "Full Reload [Bullet - Solitude]".to_string());
+            }
+        }
+    }
+    if passives.iter().any(|id| id == "1041411")
+        && state.units[unit_index].statuses.stack("Petals") >= 30
+    {
+        let key = "encounter:unopposed:Magnificent End".to_string();
+        let used = state.units[unit_index]
+            .turn_effect_usage
+            .get(&key)
+            .copied()
+            .unwrap_or(0);
+        if used < 1 {
+            // "against the target that has the highest [Faint Aroma] Stack".
+            let attacker_is_sinner = state.units[unit_index].kind.is_sinner();
+            let pick = state
+                .units
+                .iter()
+                .enumerate()
+                .filter(|(_, unit)| unit.alive && unit.kind.is_sinner() != attacker_is_sinner)
+                .max_by_key(|(_, unit)| unit.statuses.stack("Faint Aroma"))
+                .map(|(index, _)| index);
+            if let Some(pick) = pick {
+                state.units[unit_index]
+                    .turn_effect_usage
+                    .insert(key, 1);
+                unopposed_attack(
+                    state,
+                    library,
+                    mechanics,
+                    unit_index,
+                    &SkillId::new("1041406"),
+                    Some(pick),
+                );
+            }
         }
     }
 }
 
+/// Run one Skill as an unopposed Attack (no Clash).
+fn unopposed_attack(
+    state: &mut BattleState,
+    library: &Library,
+    mechanics: &MechanicsBook,
+    unit_index: usize,
+    skill: &SkillId,
+    target: Option<usize>,
+) -> bool {
+    let Some(mut use_) = build_use(state, library, mechanics, unit_index, skill) else {
+        return false;
+    };
+    let target = match target.filter(|index| state.units[*index].alive) {
+        Some(index) => index,
+        None => {
+            let attacker_is_sinner = state.units[unit_index].kind.is_sinner();
+            let Some(index) = state
+                .units
+                .iter()
+                .enumerate()
+                .filter(|(_, unit)| unit.alive && unit.kind.is_sinner() != attacker_is_sinner)
+                .max_by_key(|(_, unit)| unit.hp)
+                .map(|(index, _)| index)
+            else {
+                return false;
+            };
+            index
+        }
+    };
+    prepare_use(state, library, mechanics, unit_index, Some(target), use_.slot, &mut use_);
+    state.units[unit_index].follow_up_active = true;
+    state.push_log(
+        "unopposed",
+        format!("{} attacked with {}", state.units[unit_index].name, use_.name),
+    );
+    let hits = one_sided_attack(state, unit_index, target, &mut use_, 0);
+    splash_attack(state, unit_index, target, &mut use_, &hits, 0);
+    apply_attack_end(state, library, mechanics, unit_index, Some(target), use_.slot, &mut use_);
+    state.units[unit_index].follow_up_active = false;
+    true
+}
+
 fn apply_attack_end(
     state: &mut BattleState,
+    library: &Library,
+    mechanics: &MechanicsBook,
     unit_index: usize,
     target_index: Option<usize>,
     slot: u32,
@@ -6330,6 +6526,8 @@ fn apply_attack_end(
     // "[Attack End] If 1 or more targets are killed" reads this Skill's kills.
     state.units[unit_index].skill_kills = use_.ctx.kills;
     if list.is_empty() {
+        // A passive's Unopposed Attack still triggers at this unit's Attack End.
+        passive_follow_ups(state, library, mechanics, unit_index, target_index);
         return;
     }
     let mut notes = Vec::new();
@@ -6351,6 +6549,8 @@ fn apply_attack_end(
     let killed_target = target_index
         .map(|index| !state.units[index].alive)
         .unwrap_or(false);
+    // Passives that trigger an Unopposed Attack at this unit's Attack End.
+    passive_follow_ups(state, library, mechanics, unit_index, target_index);
     if use_.ctx.reuse_on_kill
         && killed_target
         && state.units[unit_index].alive
@@ -6449,12 +6649,14 @@ pub fn ego_affordable_for_test(
 #[doc(hidden)]
 pub fn apply_attack_end_for_test(
     state: &mut BattleState,
+    library: &Library,
+    mechanics: &MechanicsBook,
     unit_index: usize,
     target_index: Option<usize>,
     slot: u32,
     use_: &mut SkillUse,
 ) {
-    apply_attack_end(state, unit_index, target_index, slot, use_)
+    apply_attack_end(state, library, mechanics, unit_index, target_index, slot, use_)
 }
 
 #[doc(hidden)]

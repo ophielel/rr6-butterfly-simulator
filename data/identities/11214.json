@@ -115,6 +115,7 @@
           "tags": []
         }
       },
+      "variant": false,
       "name_en": "Intense Stare: Zero-Range",
       "name_zh": "零距离注视"
     },
@@ -198,6 +199,7 @@
           "tags": []
         }
       },
+      "variant": false,
       "name_en": "Destroy the Visible with the Invisible",
       "name_zh": "以不可见之物破坏可见之物"
     },
@@ -277,6 +279,7 @@
           "tags": []
         }
       },
+      "variant": false,
       "name_en": "Salvation for those Enchanted by the Lamp",
       "name_zh": "给予被灯所眩惑之人以救赎"
     },
@@ -348,6 +351,7 @@
           "tags": []
         }
       },
+      "variant": false,
       "name_en": "The Wick of Burned Feathers",
       "name_zh": "焚烧羽毛所做的灯芯"
     }

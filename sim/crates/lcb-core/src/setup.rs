@@ -374,6 +374,8 @@ impl<'a> EncounterBuilder<'a> {
         Ok(Unit {
             planned_targets: 1,
             passive_ids: Vec::new(),
+            follow_up_active: false,
+            pending_suit_conversion: false,
             petals_gained: 0,
             clash_any_speed_slots: Vec::new(),
             id: UnitId::new(format!("sinner-{index}-{}", record.id)),
@@ -472,6 +474,8 @@ impl<'a> EncounterBuilder<'a> {
         Ok(Unit {
             planned_targets: 1,
             passive_ids: Vec::new(),
+            follow_up_active: false,
+            pending_suit_conversion: false,
             petals_gained: 0,
             clash_any_speed_slots: Vec::new(),
             id: UnitId::new(format!("enemy-{index}-{}", record.id)),

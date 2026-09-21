@@ -509,6 +509,15 @@ pub struct Unit {
     /// rule ("this unit may redirect attacks to itself regardless of Speed").
     #[serde(default)]
     pub passive_ids: Vec<String>,
+    /// True while a passive's Unopposed Attack is resolving, so that attack's own
+    /// Attack End cannot start another one.
+    #[serde(default)]
+    pub follow_up_active: bool,
+    /// Hanafuda: the Hand is converted at the **next** Turn Start
+    /// ("Next turn, convert the Hand on self to the one corresponding to the used
+    /// Skill's Affinity").
+    #[serde(default)]
+    pub pending_suit_conversion: bool,
     /// `Petals` gained this turn ("can be gained up to 15 Stacks per turn").
     #[serde(default)]
     pub petals_gained: i32,

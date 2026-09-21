@@ -116,6 +116,7 @@
           "tags": []
         }
       },
+      "variant": false,
       "name_en": "Celebration for the Departed",
       "name_zh": "予逝者以祝贺"
     },
@@ -191,6 +192,7 @@
           "tags": []
         }
       },
+      "variant": false,
       "name_en": "Solemn Lament for the Living",
       "name_zh": "予弥留者以庄严哀悼"
     },
@@ -274,6 +276,7 @@
           "tags": []
         }
       },
+      "variant": false,
       "name_en": "Goodbye Now, a Sorrow in You",
       "name_zh": "葬仪师李箱，以上"
     },
@@ -337,6 +340,7 @@
           "tags": []
         }
       },
+      "variant": false,
       "name_en": "FromTheCoffinAButterflyTakesFlight",
       "name_zh": "蝶自棺中而来"
     }

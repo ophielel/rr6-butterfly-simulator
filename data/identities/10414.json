@@ -115,8 +115,90 @@
           "tags": []
         }
       },
+      "variant": false,
       "name_en": "Bang. Bang.",
       "name_zh": "砰。砰。"
+    },
+    {
+      "id": "1041405",
+      "slot": "skill1",
+      "name": "Stories that Never Cease",
+      "type": "Pierce",
+      "rank": 1,
+      "upties": {
+        "1": {
+          "base_power": 9,
+          "coin_power": 1,
+          "coins": 3,
+          "offense_level_mod": 3,
+          "attack_weight": 3,
+          "defense_level_mod": null,
+          "sin_affinity": "Sloth",
+          "skill_amount": 0,
+          "on_use_text": "[Unclashable]\n[Unfocused Volley]\nWhen this Skill inflicts [Solitude], if the target has [Solitude] this turn, or will be inflicted with [Solitude] next turn, trigger [Tremor Burst] instead; then, reduce target's [Tremor] Count by 1",
+          "coin_texts": [
+            "[On Hit] Inflict +1 [Sinking] Count\n[On Hit] Inflict 2 [Solitude] next turn",
+            "[On Hit] Inflict 2 [Tremor]\n[On Hit] Inflict 2 [Solitude] next turn",
+            "[On Hit] Inflict 2 [Tremor]\n[On Hit] Inflict 2 [Solitude] next turn"
+          ],
+          "tags": []
+        },
+        "2": {
+          "base_power": 9,
+          "coin_power": 1,
+          "coins": 3,
+          "offense_level_mod": 3,
+          "attack_weight": 3,
+          "defense_level_mod": null,
+          "sin_affinity": "Sloth",
+          "skill_amount": 0,
+          "on_use_text": "[Unclashable]\n[Unfocused Volley]\nWhen this Skill inflicts [Solitude], if the target has [Solitude] this turn, or will be inflicted with [Solitude] next turn, trigger [Tremor Burst] instead; then, reduce target's [Tremor] Count by 1",
+          "coin_texts": [
+            "[On Hit] Inflict +1 [Sinking] Count\n[On Hit] Inflict 2 [Solitude] next turn",
+            "[On Hit] Inflict 2 [Tremor]\n[On Hit] Inflict 2 [Solitude] next turn",
+            "[On Hit] Inflict 2 [Tremor]\n[On Hit] Inflict 2 [Solitude] next turn"
+          ],
+          "tags": []
+        },
+        "3": {
+          "base_power": 9,
+          "coin_power": 1,
+          "coins": 3,
+          "offense_level_mod": 3,
+          "attack_weight": 3,
+          "defense_level_mod": null,
+          "sin_affinity": "Sloth",
+          "skill_amount": 0,
+          "on_use_text": "[Unclashable]\n[Unfocused Volley]\nWhen this Skill inflicts [Solitude], if the target has [Solitude] this turn, or will be inflicted with [Solitude] next turn, trigger [Tremor Burst] instead; then, reduce target's [Tremor] Count by 1",
+          "coin_texts": [
+            "[On Hit] Inflict +1 [Sinking] Count\n[On Hit] Inflict 2 [Solitude] next turn",
+            "[On Hit] Inflict 2 [Tremor]\n[On Hit] Inflict 2 [Solitude] next turn",
+            "[On Hit] Inflict 2 [Tremor]\n[On Hit] Inflict 2 [Solitude] next turn"
+          ],
+          "tags": []
+        },
+        "4": {
+          "base_power": 9,
+          "coin_power": 1,
+          "coins": 3,
+          "offense_level_mod": 3,
+          "attack_weight": 3,
+          "defense_level_mod": null,
+          "sin_affinity": "Sloth",
+          "skill_amount": 0,
+          "on_use_text": "[Unclashable]\n[Unfocused Volley]\nWhen this Skill inflicts [Solitude], if the target has [Solitude] this turn, or will be inflicted with [Solitude] next turn, trigger [Tremor Burst] instead; then, reduce target's [Tremor] Count by 1",
+          "coin_texts": [
+            "[On Hit] Inflict +1 [Sinking] Count\n[On Hit] Inflict 2 [Solitude] next turn",
+            "[On Hit] Inflict 2 [Tremor]\n[On Hit] Inflict 2 [Solitude] next turn",
+            "[On Hit] Inflict 2 [Tremor]\n[On Hit] Inflict 2 [Solitude] next turn"
+          ],
+          "tags": []
+        }
+      },
+      "variant": true,
+      "variant_of": "10414012",
+      "name_en": "Stories that Never Cease",
+      "name_zh": "无尽的故事"
     },
     {
       "id": "1041402",
@@ -194,6 +276,7 @@
           "tags": []
         }
       },
+      "variant": false,
       "name_en": "Blossoming Fragrance in the Void",
       "name_zh": "自空虚中绽放的芬芳"
     },
@@ -273,8 +356,82 @@
           "tags": []
         }
       },
+      "variant": false,
       "name_en": "Full Bloom",
       "name_zh": "盛放"
+    },
+    {
+      "id": "1041406",
+      "slot": "skill3",
+      "name": "Magnificent End",
+      "type": "Pierce",
+      "rank": 3,
+      "upties": {
+        "1": {
+          "base_power": 12,
+          "coin_power": 7,
+          "coins": 1,
+          "offense_level_mod": 5,
+          "attack_weight": 3,
+          "defense_level_mod": null,
+          "sin_affinity": "Gloom",
+          "skill_amount": 0,
+          "on_use_text": "[Unclashable]\nExternal effects cannot trigger this Skill to be Reused\nDeal +30% damage for every excess Atk Weight beyond the number of actual targets (in Focused Encounters, the Part)\n[On Use] Final Power +1 for every 5 (sum of [Faint Aroma] on all targets) (max 6)\n[Attack End] Lose all [Petals] on self",
+          "coin_texts": [
+            "[On Hit] Inflict 5 [Faint Aroma]\n[On Hit] Inflict 3 [Sinking]\n[On Hit] Inflict 3 [Tremor]\n[On Hit] Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1\n[On Hit] Deal Gloom damage equal to [Sinking] on target"
+          ],
+          "tags": []
+        },
+        "2": {
+          "base_power": 12,
+          "coin_power": 7,
+          "coins": 1,
+          "offense_level_mod": 5,
+          "attack_weight": 3,
+          "defense_level_mod": null,
+          "sin_affinity": "Gloom",
+          "skill_amount": 0,
+          "on_use_text": "[Unclashable]\nExternal effects cannot trigger this Skill to be Reused\nDeal +30% damage for every excess Atk Weight beyond the number of actual targets (in Focused Encounters, the Part)\n[On Use] Final Power +1 for every 5 (sum of [Faint Aroma] on all targets) (max 6)\n[Attack End] Lose all [Petals] on self",
+          "coin_texts": [
+            "[On Hit] Inflict 5 [Faint Aroma]\n[On Hit] Inflict 3 [Sinking]\n[On Hit] Inflict 3 [Tremor]\n[On Hit] Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1\n[On Hit] Deal Gloom damage equal to [Sinking] on target"
+          ],
+          "tags": []
+        },
+        "3": {
+          "base_power": 12,
+          "coin_power": 7,
+          "coins": 1,
+          "offense_level_mod": 5,
+          "attack_weight": 3,
+          "defense_level_mod": null,
+          "sin_affinity": "Gloom",
+          "skill_amount": 0,
+          "on_use_text": "[Unclashable]\nExternal effects cannot trigger this Skill to be Reused\nDeal +30% damage for every excess Atk Weight beyond the number of actual targets (in Focused Encounters, the Part)\n[On Use] Final Power +1 for every 5 (sum of [Faint Aroma] on all targets) (max 6)\n[Attack End] Lose all [Petals] on self",
+          "coin_texts": [
+            "[On Hit] Inflict 5 [Faint Aroma]\n[On Hit] Inflict 3 [Sinking]\n[On Hit] Inflict 3 [Tremor]\n[On Hit] Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1\n[On Hit] Deal Gloom damage equal to [Sinking] on target"
+          ],
+          "tags": []
+        },
+        "4": {
+          "base_power": 12,
+          "coin_power": 7,
+          "coins": 1,
+          "offense_level_mod": 5,
+          "attack_weight": 3,
+          "defense_level_mod": null,
+          "sin_affinity": "Gloom",
+          "skill_amount": 0,
+          "on_use_text": "[Unclashable]\nExternal effects cannot trigger this Skill to be Reused\nDeal +30% damage for every excess Atk Weight beyond the number of actual targets (in Focused Encounters, the Part)\n[On Use] Final Power +1 for every 5 (sum of [Faint Aroma] on all targets) (max 6)\n[Attack End] Lose all [Petals] on self",
+          "coin_texts": [
+            "[On Hit] Inflict 5 [Faint Aroma]\n[On Hit] Inflict 3 [Sinking]\n[On Hit] Inflict 3 [Tremor]\n[On Hit] Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1\n[On Hit] Deal Gloom damage equal to [Sinking] on target"
+          ],
+          "tags": []
+        }
+      },
+      "variant": true,
+      "variant_of": "10414032",
+      "name_en": "Magnificent End",
+      "name_zh": "恍惚的终局"
     },
     {
       "id": "1041404",
@@ -336,6 +493,7 @@
           "tags": []
         }
       },
+      "variant": false,
       "name_en": "A.A.T.",
       "name_zh": "艺·观·时"
     }

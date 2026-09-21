@@ -2306,6 +2306,550 @@
    "turn_start": [],
    "unmodeled": []
   },
+  "1041405@1": {
+   "attack_end": [],
+   "before_attack": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "coin_index": 1,
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +1 [Sinking] Count",
+      "status": "Sinking"
+     },
+     {
+      "coin_index": 1,
+      "kind": "inflict",
+      "next_turn": true,
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Solitude] next turn",
+      "status": "Solitude"
+     }
+    ],
+    "2": [
+     {
+      "coin_index": 2,
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Tremor]",
+      "status": "Tremor"
+     },
+     {
+      "coin_index": 2,
+      "kind": "inflict",
+      "next_turn": true,
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Solitude] next turn",
+      "status": "Solitude"
+     }
+    ],
+    "3": [
+     {
+      "coin_index": 3,
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Tremor]",
+      "status": "Tremor"
+     },
+     {
+      "coin_index": 3,
+      "kind": "inflict",
+      "next_turn": true,
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Solitude] next turn",
+      "status": "Solitude"
+     }
+    ]
+   },
+   "combat_start": [],
+   "heads_hit": {},
+   "note": "Stories that Never Cease",
+   "on_evade": [],
+   "on_kill": [],
+   "on_use": [],
+   "tags": [
+    "unclashable"
+   ],
+   "turn_end": [],
+   "turn_start": [],
+   "unmodeled": [
+    "When this Skill inflicts [Solitude], if the target has [Solitude] this turn, or will be inflicted with [Solitude] next turn, trigger [Tremor Burst] instead; then, reduce target's [Tremor] Count by 1"
+   ]
+  },
+  "1041405@2": {
+   "attack_end": [],
+   "before_attack": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "coin_index": 1,
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +1 [Sinking] Count",
+      "status": "Sinking"
+     },
+     {
+      "coin_index": 1,
+      "kind": "inflict",
+      "next_turn": true,
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Solitude] next turn",
+      "status": "Solitude"
+     }
+    ],
+    "2": [
+     {
+      "coin_index": 2,
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Tremor]",
+      "status": "Tremor"
+     },
+     {
+      "coin_index": 2,
+      "kind": "inflict",
+      "next_turn": true,
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Solitude] next turn",
+      "status": "Solitude"
+     }
+    ],
+    "3": [
+     {
+      "coin_index": 3,
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Tremor]",
+      "status": "Tremor"
+     },
+     {
+      "coin_index": 3,
+      "kind": "inflict",
+      "next_turn": true,
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Solitude] next turn",
+      "status": "Solitude"
+     }
+    ]
+   },
+   "combat_start": [],
+   "heads_hit": {},
+   "note": "Stories that Never Cease",
+   "on_evade": [],
+   "on_kill": [],
+   "on_use": [],
+   "tags": [
+    "unclashable"
+   ],
+   "turn_end": [],
+   "turn_start": [],
+   "unmodeled": [
+    "When this Skill inflicts [Solitude], if the target has [Solitude] this turn, or will be inflicted with [Solitude] next turn, trigger [Tremor Burst] instead; then, reduce target's [Tremor] Count by 1"
+   ]
+  },
+  "1041405@3": {
+   "attack_end": [],
+   "before_attack": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "coin_index": 1,
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +1 [Sinking] Count",
+      "status": "Sinking"
+     },
+     {
+      "coin_index": 1,
+      "kind": "inflict",
+      "next_turn": true,
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Solitude] next turn",
+      "status": "Solitude"
+     }
+    ],
+    "2": [
+     {
+      "coin_index": 2,
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Tremor]",
+      "status": "Tremor"
+     },
+     {
+      "coin_index": 2,
+      "kind": "inflict",
+      "next_turn": true,
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Solitude] next turn",
+      "status": "Solitude"
+     }
+    ],
+    "3": [
+     {
+      "coin_index": 3,
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Tremor]",
+      "status": "Tremor"
+     },
+     {
+      "coin_index": 3,
+      "kind": "inflict",
+      "next_turn": true,
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Solitude] next turn",
+      "status": "Solitude"
+     }
+    ]
+   },
+   "combat_start": [],
+   "heads_hit": {},
+   "note": "Stories that Never Cease",
+   "on_evade": [],
+   "on_kill": [],
+   "on_use": [],
+   "tags": [
+    "unclashable"
+   ],
+   "turn_end": [],
+   "turn_start": [],
+   "unmodeled": [
+    "When this Skill inflicts [Solitude], if the target has [Solitude] this turn, or will be inflicted with [Solitude] next turn, trigger [Tremor Burst] instead; then, reduce target's [Tremor] Count by 1"
+   ]
+  },
+  "1041405@4": {
+   "attack_end": [],
+   "before_attack": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "coin_index": 1,
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +1 [Sinking] Count",
+      "status": "Sinking"
+     },
+     {
+      "coin_index": 1,
+      "kind": "inflict",
+      "next_turn": true,
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Solitude] next turn",
+      "status": "Solitude"
+     }
+    ],
+    "2": [
+     {
+      "coin_index": 2,
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Tremor]",
+      "status": "Tremor"
+     },
+     {
+      "coin_index": 2,
+      "kind": "inflict",
+      "next_turn": true,
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Solitude] next turn",
+      "status": "Solitude"
+     }
+    ],
+    "3": [
+     {
+      "coin_index": 3,
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Tremor]",
+      "status": "Tremor"
+     },
+     {
+      "coin_index": 3,
+      "kind": "inflict",
+      "next_turn": true,
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Solitude] next turn",
+      "status": "Solitude"
+     }
+    ]
+   },
+   "combat_start": [],
+   "heads_hit": {},
+   "note": "Stories that Never Cease",
+   "on_evade": [],
+   "on_kill": [],
+   "on_use": [],
+   "tags": [
+    "unclashable"
+   ],
+   "turn_end": [],
+   "turn_start": [],
+   "unmodeled": [
+    "When this Skill inflicts [Solitude], if the target has [Solitude] this turn, or will be inflicted with [Solitude] next turn, trigger [Tremor Burst] instead; then, reduce target's [Tremor] Count by 1"
+   ]
+  },
+  "1041406@1": {
+   "attack_end": [],
+   "before_attack": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "coin_index": 1,
+      "component": "stack",
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict 5 [Faint Aroma]",
+      "stack": 5,
+      "status": "Faint Aroma"
+     },
+     {
+      "coin_index": 1,
+      "kind": "inflict",
+      "potency": 3,
+      "raw": "[On Hit] Inflict 3 [Sinking]",
+      "status": "Sinking"
+     },
+     {
+      "coin_index": 1,
+      "kind": "inflict",
+      "potency": 3,
+      "raw": "[On Hit] Inflict 3 [Tremor]",
+      "status": "Tremor"
+     },
+     {
+      "coin_index": 1,
+      "consume_count": 1,
+      "kind": "tremor_burst",
+      "raw": "[On Hit] Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1",
+      "status": "Tremor Burst"
+     },
+     {
+      "coin_index": 1,
+      "component": "potency",
+      "kind": "gloom_damage_equal_target_status",
+      "raw": "[On Hit] Deal Gloom damage equal to [Sinking] on target",
+      "status": "Sinking"
+     }
+    ]
+   },
+   "combat_start": [],
+   "heads_hit": {},
+   "note": "Magnificent End",
+   "on_evade": [],
+   "on_kill": [],
+   "on_use": [],
+   "tags": [
+    "unclashable"
+   ],
+   "turn_end": [],
+   "turn_start": [],
+   "unmodeled": [
+    "Deal +30% damage for every excess Atk Weight beyond the number of actual targets (in Focused Encounters, the Part)",
+    "External effects cannot trigger this Skill to be Reused",
+    "[Attack End] Lose all [Petals] on self",
+    "[On Use] Final Power +1 for every 5 (sum of [Faint Aroma] on all targets) (max 6)"
+   ]
+  },
+  "1041406@2": {
+   "attack_end": [],
+   "before_attack": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "coin_index": 1,
+      "component": "stack",
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict 5 [Faint Aroma]",
+      "stack": 5,
+      "status": "Faint Aroma"
+     },
+     {
+      "coin_index": 1,
+      "kind": "inflict",
+      "potency": 3,
+      "raw": "[On Hit] Inflict 3 [Sinking]",
+      "status": "Sinking"
+     },
+     {
+      "coin_index": 1,
+      "kind": "inflict",
+      "potency": 3,
+      "raw": "[On Hit] Inflict 3 [Tremor]",
+      "status": "Tremor"
+     },
+     {
+      "coin_index": 1,
+      "consume_count": 1,
+      "kind": "tremor_burst",
+      "raw": "[On Hit] Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1",
+      "status": "Tremor Burst"
+     },
+     {
+      "coin_index": 1,
+      "component": "potency",
+      "kind": "gloom_damage_equal_target_status",
+      "raw": "[On Hit] Deal Gloom damage equal to [Sinking] on target",
+      "status": "Sinking"
+     }
+    ]
+   },
+   "combat_start": [],
+   "heads_hit": {},
+   "note": "Magnificent End",
+   "on_evade": [],
+   "on_kill": [],
+   "on_use": [],
+   "tags": [
+    "unclashable"
+   ],
+   "turn_end": [],
+   "turn_start": [],
+   "unmodeled": [
+    "Deal +30% damage for every excess Atk Weight beyond the number of actual targets (in Focused Encounters, the Part)",
+    "External effects cannot trigger this Skill to be Reused",
+    "[Attack End] Lose all [Petals] on self",
+    "[On Use] Final Power +1 for every 5 (sum of [Faint Aroma] on all targets) (max 6)"
+   ]
+  },
+  "1041406@3": {
+   "attack_end": [],
+   "before_attack": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "coin_index": 1,
+      "component": "stack",
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict 5 [Faint Aroma]",
+      "stack": 5,
+      "status": "Faint Aroma"
+     },
+     {
+      "coin_index": 1,
+      "kind": "inflict",
+      "potency": 3,
+      "raw": "[On Hit] Inflict 3 [Sinking]",
+      "status": "Sinking"
+     },
+     {
+      "coin_index": 1,
+      "kind": "inflict",
+      "potency": 3,
+      "raw": "[On Hit] Inflict 3 [Tremor]",
+      "status": "Tremor"
+     },
+     {
+      "coin_index": 1,
+      "consume_count": 1,
+      "kind": "tremor_burst",
+      "raw": "[On Hit] Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1",
+      "status": "Tremor Burst"
+     },
+     {
+      "coin_index": 1,
+      "component": "potency",
+      "kind": "gloom_damage_equal_target_status",
+      "raw": "[On Hit] Deal Gloom damage equal to [Sinking] on target",
+      "status": "Sinking"
+     }
+    ]
+   },
+   "combat_start": [],
+   "heads_hit": {},
+   "note": "Magnificent End",
+   "on_evade": [],
+   "on_kill": [],
+   "on_use": [],
+   "tags": [
+    "unclashable"
+   ],
+   "turn_end": [],
+   "turn_start": [],
+   "unmodeled": [
+    "Deal +30% damage for every excess Atk Weight beyond the number of actual targets (in Focused Encounters, the Part)",
+    "External effects cannot trigger this Skill to be Reused",
+    "[Attack End] Lose all [Petals] on self",
+    "[On Use] Final Power +1 for every 5 (sum of [Faint Aroma] on all targets) (max 6)"
+   ]
+  },
+  "1041406@4": {
+   "attack_end": [],
+   "before_attack": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "coin_index": 1,
+      "component": "stack",
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict 5 [Faint Aroma]",
+      "stack": 5,
+      "status": "Faint Aroma"
+     },
+     {
+      "coin_index": 1,
+      "kind": "inflict",
+      "potency": 3,
+      "raw": "[On Hit] Inflict 3 [Sinking]",
+      "status": "Sinking"
+     },
+     {
+      "coin_index": 1,
+      "kind": "inflict",
+      "potency": 3,
+      "raw": "[On Hit] Inflict 3 [Tremor]",
+      "status": "Tremor"
+     },
+     {
+      "coin_index": 1,
+      "consume_count": 1,
+      "kind": "tremor_burst",
+      "raw": "[On Hit] Trigger [Tremor Burst]; then, reduce target's [Tremor] Count by 1",
+      "status": "Tremor Burst"
+     },
+     {
+      "coin_index": 1,
+      "component": "potency",
+      "kind": "gloom_damage_equal_target_status",
+      "raw": "[On Hit] Deal Gloom damage equal to [Sinking] on target",
+      "status": "Sinking"
+     }
+    ]
+   },
+   "combat_start": [],
+   "heads_hit": {},
+   "note": "Magnificent End",
+   "on_evade": [],
+   "on_kill": [],
+   "on_use": [],
+   "tags": [
+    "unclashable"
+   ],
+   "turn_end": [],
+   "turn_start": [],
+   "unmodeled": [
+    "Deal +30% damage for every excess Atk Weight beyond the number of actual targets (in Focused Encounters, the Part)",
+    "External effects cannot trigger this Skill to be Reused",
+    "[Attack End] Lose all [Petals] on self",
+    "[On Use] Final Power +1 for every 5 (sum of [Faint Aroma] on all targets) (max 6)"
+   ]
+  },
   "1081301@1": {
    "attack_end": [],
    "before_attack": [],
@@ -2843,6 +3387,264 @@
    "turn_end": [],
    "turn_start": [],
    "unmodeled": []
+  },
+  "10813032@1": {
+   "attack_end": [],
+   "before_attack": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "coin_index": 1,
+      "kind": "reuse_coin",
+      "raw": "Reuse this Coin ([Bright -光-] Potency - 1) times (4 times max)",
+      "reuse_coin": 4,
+      "reuse_from_status": "Bright -光-",
+      "reuse_minus": 1
+     },
+     {
+      "coin_index": 1,
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +1 [Tremor] Count",
+      "status": "Tremor"
+     },
+     {
+      "coin_index": 1,
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +1 [Sinking] Count",
+      "status": "Sinking"
+     }
+    ]
+   },
+   "combat_start": [],
+   "heads_hit": {},
+   "note": "Kōzan ['''光斬''']",
+   "on_evade": [],
+   "on_kill": [],
+   "on_use": [
+    {
+     "kind": "gain",
+     "next_turn": true,
+     "potency": 2,
+     "raw": "[On Use] At less than 3 [Bright -光-] Potency, cancel the Skill and gain 2 [Attack Power Up] next turn",
+     "status": "Attack Power Up"
+    }
+   ],
+   "tags": [
+    "unclashable"
+   ],
+   "turn_end": [],
+   "turn_start": [],
+   "unmodeled": [
+    "At 4+ Potency: Base Power +1",
+    "At 5 Potency: On Hit with the final Reuse Coin, trigger [Tremor Burst] 2 times; then, reduce target's [Tremor] Count by 1",
+    "Per 1 Potency: this Skill deals +10% damage",
+    "This Skill does not trigger Defense Skills, and external effects cannot trigger this Skill to be Reused",
+    "[On Use] At 3+ [Bright -光-] Potency, gain the following effects based on Potency:",
+    "[On Use] At less than 3 [Bright -光-] Potency, cancel the Skill and gain 2 [Attack Power Up] next turn  [unparsed: At less than 3 [Bright -光-] Potency, cancel the Skill]",
+    "[Skill End] Gain [Bright -光-] Potency next turn equal to the # of Coins that weren't used",
+    "[Skill End] Lose [Bright -光-] on self",
+    "[Skill End] Next turn, convert the Suit in this unit's Hand to a random Suit that corresponds to one of this unit's Base Attack Skills (once per turn)"
+   ]
+  },
+  "10813032@2": {
+   "attack_end": [],
+   "before_attack": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "coin_index": 1,
+      "kind": "reuse_coin",
+      "raw": "Reuse this Coin ([Bright -光-] Potency - 1) times (4 times max)",
+      "reuse_coin": 4,
+      "reuse_from_status": "Bright -光-",
+      "reuse_minus": 1
+     },
+     {
+      "coin_index": 1,
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +1 [Tremor] Count",
+      "status": "Tremor"
+     },
+     {
+      "coin_index": 1,
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +1 [Sinking] Count",
+      "status": "Sinking"
+     }
+    ]
+   },
+   "combat_start": [],
+   "heads_hit": {},
+   "note": "Kōzan ['''光斬''']",
+   "on_evade": [],
+   "on_kill": [],
+   "on_use": [
+    {
+     "kind": "gain",
+     "next_turn": true,
+     "potency": 2,
+     "raw": "[On Use] At less than 3 [Bright -光-] Potency, cancel the Skill and gain 2 [Attack Power Up] next turn",
+     "status": "Attack Power Up"
+    }
+   ],
+   "tags": [
+    "unclashable"
+   ],
+   "turn_end": [],
+   "turn_start": [],
+   "unmodeled": [
+    "At 4+ Potency: Base Power +1",
+    "At 5 Potency: On Hit with the final Reuse Coin, trigger [Tremor Burst] 2 times; then, reduce target's [Tremor] Count by 1",
+    "Per 1 Potency: this Skill deals +10% damage",
+    "This Skill does not trigger Defense Skills, and external effects cannot trigger this Skill to be Reused",
+    "[On Use] At 3+ [Bright -光-] Potency, gain the following effects based on Potency:",
+    "[On Use] At less than 3 [Bright -光-] Potency, cancel the Skill and gain 2 [Attack Power Up] next turn  [unparsed: At less than 3 [Bright -光-] Potency, cancel the Skill]",
+    "[Skill End] Gain [Bright -光-] Potency next turn equal to the # of Coins that weren't used",
+    "[Skill End] Lose [Bright -光-] on self",
+    "[Skill End] Next turn, convert the Suit in this unit's Hand to a random Suit that corresponds to one of this unit's Base Attack Skills (once per turn)"
+   ]
+  },
+  "10813032@3": {
+   "attack_end": [],
+   "before_attack": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "coin_index": 1,
+      "kind": "reuse_coin",
+      "raw": "Reuse this Coin ([Bright -光-] Potency - 1) times (4 times max)",
+      "reuse_coin": 4,
+      "reuse_from_status": "Bright -光-",
+      "reuse_minus": 1
+     },
+     {
+      "coin_index": 1,
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +1 [Tremor] Count",
+      "status": "Tremor"
+     },
+     {
+      "coin_index": 1,
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +1 [Sinking] Count",
+      "status": "Sinking"
+     }
+    ]
+   },
+   "combat_start": [],
+   "heads_hit": {},
+   "note": "Kōzan ['''光斬''']",
+   "on_evade": [],
+   "on_kill": [],
+   "on_use": [
+    {
+     "kind": "gain",
+     "next_turn": true,
+     "potency": 2,
+     "raw": "[On Use] At less than 3 [Bright -光-] Potency, cancel the Skill and gain 2 [Attack Power Up] next turn",
+     "status": "Attack Power Up"
+    }
+   ],
+   "tags": [
+    "unclashable"
+   ],
+   "turn_end": [],
+   "turn_start": [],
+   "unmodeled": [
+    "At 4+ Potency: Base Power +1",
+    "At 5 Potency: On Hit with the final Reuse Coin, trigger [Tremor Burst] 2 times; then, reduce target's [Tremor] Count by 1",
+    "Per 1 Potency: this Skill deals +10% damage",
+    "This Skill does not trigger Defense Skills, and external effects cannot trigger this Skill to be Reused",
+    "[On Use] At 3+ [Bright -光-] Potency, gain the following effects based on Potency:",
+    "[On Use] At less than 3 [Bright -光-] Potency, cancel the Skill and gain 2 [Attack Power Up] next turn  [unparsed: At less than 3 [Bright -光-] Potency, cancel the Skill]",
+    "[Skill End] Gain [Bright -光-] Potency next turn equal to the # of Coins that weren't used",
+    "[Skill End] Lose [Bright -光-] on self",
+    "[Skill End] Next turn, convert the Suit in this unit's Hand to a random Suit that corresponds to one of this unit's Base Attack Skills (once per turn)"
+   ]
+  },
+  "10813032@4": {
+   "attack_end": [],
+   "before_attack": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "coin_index": 1,
+      "kind": "reuse_coin",
+      "raw": "Reuse this Coin ([Bright -光-] Potency - 1) times (4 times max)",
+      "reuse_coin": 4,
+      "reuse_from_status": "Bright -光-",
+      "reuse_minus": 1
+     },
+     {
+      "coin_index": 1,
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +1 [Tremor] Count",
+      "status": "Tremor"
+     },
+     {
+      "coin_index": 1,
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +1 [Sinking] Count",
+      "status": "Sinking"
+     }
+    ]
+   },
+   "combat_start": [],
+   "heads_hit": {
+    "1": [
+     {
+      "coin_index": 1,
+      "kind": "inflict",
+      "potency": 1,
+      "raw": "[Heads Hit] Inflict 1 [Defense Level Down]",
+      "status": "Defense Level Down"
+     }
+    ]
+   },
+   "note": "Kōzan ['''光斬''']",
+   "on_evade": [],
+   "on_kill": [],
+   "on_use": [
+    {
+     "kind": "gain",
+     "next_turn": true,
+     "potency": 2,
+     "raw": "[On Use] At less than 3 [Bright -光-] Potency, cancel the Skill and gain 2 [Attack Power Up] next turn",
+     "status": "Attack Power Up"
+    }
+   ],
+   "tags": [
+    "unclashable"
+   ],
+   "turn_end": [],
+   "turn_start": [],
+   "unmodeled": [
+    "At 4+ Potency: Base Power +1",
+    "At 5 Potency: On Hit with the final Reuse Coin, trigger [Tremor Burst] 2 times; then, reduce target's [Tremor] Count by 1",
+    "Per 1 Potency: this Skill deals +10% damage",
+    "This Skill does not trigger Defense Skills, and external effects cannot trigger this Skill to be Reused",
+    "[On Use] At 3+ [Bright -光-] Potency, gain the following effects based on Potency:",
+    "[On Use] At less than 3 [Bright -光-] Potency, cancel the Skill and gain 2 [Attack Power Up] next turn  [unparsed: At less than 3 [Bright -光-] Potency, cancel the Skill]",
+    "[Skill End] Gain [Bright -光-] Potency next turn equal to the # of Coins that weren't used",
+    "[Skill End] Lose [Bright -光-] on self",
+    "[Skill End] Next turn, convert the Suit in this unit's Hand to a random Suit that corresponds to one of this unit's Base Attack Skills (once per turn)"
+   ]
   },
   "1081303@1": {
    "attack_end": [],
@@ -4361,6 +5163,585 @@
    ],
    "turn_start": [],
    "unmodeled": []
+  },
+  "1091305@1": {
+   "attack_end": [],
+   "before_attack": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "coin_index": 1,
+      "kind": "inflict",
+      "potency": 1,
+      "raw": "[On Hit] Inflict 1 [Sinking]",
+      "status": "Sinking"
+     }
+    ],
+    "2": [
+     {
+      "coin_index": 2,
+      "kind": "gain",
+      "potency": 2,
+      "raw": "[On Hit] Gain 2 [Deep Tears]",
+      "status": "Deep Tears"
+     }
+    ]
+   },
+   "combat_start": [],
+   "heads_hit": {},
+   "note": "Faded Faith",
+   "on_evade": [],
+   "on_kill": [],
+   "on_use": [],
+   "tags": [],
+   "turn_end": [],
+   "turn_start": [],
+   "unmodeled": [
+    "[On Use] Lose 7 SP"
+   ]
+  },
+  "1091305@2": {
+   "attack_end": [],
+   "before_attack": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "coin_index": 1,
+      "kind": "inflict",
+      "potency": 1,
+      "raw": "[On Hit] Inflict 1 [Sinking]",
+      "status": "Sinking"
+     }
+    ],
+    "2": [
+     {
+      "coin_index": 2,
+      "kind": "gain",
+      "potency": 2,
+      "raw": "[On Hit] Gain 2 [Deep Tears]",
+      "status": "Deep Tears"
+     }
+    ]
+   },
+   "combat_start": [],
+   "heads_hit": {},
+   "note": "Faded Faith",
+   "on_evade": [],
+   "on_kill": [],
+   "on_use": [
+    {
+     "condition": {
+      "component": "potency",
+      "source": "target",
+      "status": "Sinking"
+     },
+     "kind": "base_power",
+     "max": 2,
+     "per": 3,
+     "raw": "Final Power +1 for every 3 [Sinking] on target (max 2)",
+     "step": 1,
+     "value": 0
+    }
+   ],
+   "tags": [],
+   "turn_end": [],
+   "turn_start": [],
+   "unmodeled": [
+    "[On Use] Lose 7 SP"
+   ]
+  },
+  "1091305@3": {
+   "attack_end": [],
+   "before_attack": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "coin_index": 1,
+      "kind": "inflict",
+      "potency": 1,
+      "raw": "[On Hit] Inflict 1 [Sinking]",
+      "status": "Sinking"
+     }
+    ],
+    "2": [
+     {
+      "coin_index": 2,
+      "kind": "gain",
+      "potency": 2,
+      "raw": "[On Hit] Gain 2 [Deep Tears]",
+      "status": "Deep Tears"
+     }
+    ]
+   },
+   "combat_start": [],
+   "heads_hit": {},
+   "note": "Faded Faith",
+   "on_evade": [],
+   "on_kill": [],
+   "on_use": [
+    {
+     "condition": {
+      "component": "potency",
+      "source": "target",
+      "status": "Sinking"
+     },
+     "kind": "base_power",
+     "max": 2,
+     "per": 3,
+     "raw": "Final Power +1 for every 3 [Sinking] on target (max 2)",
+     "step": 1,
+     "value": 0
+    }
+   ],
+   "tags": [],
+   "turn_end": [],
+   "turn_start": [],
+   "unmodeled": [
+    "[On Use] Lose 7 SP"
+   ]
+  },
+  "1091305@4": {
+   "attack_end": [],
+   "before_attack": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {
+    "1": [
+     {
+      "coin_index": 1,
+      "kind": "inflict",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Sinking]",
+      "status": "Sinking"
+     }
+    ],
+    "2": [
+     {
+      "coin_index": 2,
+      "kind": "inflict",
+      "potency": 1,
+      "raw": "[On Hit] Inflict 1 [Sinking]",
+      "status": "Sinking"
+     },
+     {
+      "coin_index": 2,
+      "kind": "gain",
+      "potency": 2,
+      "raw": "[On Hit] Gain 2 [Deep Tears]",
+      "status": "Deep Tears"
+     }
+    ]
+   },
+   "combat_start": [],
+   "heads_hit": {},
+   "note": "Faded Faith",
+   "on_evade": [],
+   "on_kill": [],
+   "on_use": [
+    {
+     "condition": {
+      "component": "potency",
+      "source": "target",
+      "status": "Sinking"
+     },
+     "kind": "base_power",
+     "max": 3,
+     "per": 3,
+     "raw": "Final Power +1 for every 3 [Sinking] on target (max 3)",
+     "step": 1,
+     "value": 0
+    }
+   ],
+   "tags": [],
+   "turn_end": [],
+   "turn_start": [],
+   "unmodeled": [
+    "Gain 1 additional [Deep Tears] for every 2 [Piercing Sword] this unit had at Combat Start (max 2)",
+    "[On Use] Lose 7 SP"
+   ]
+  },
+  "1091306@1": {
+   "attack_end": [],
+   "before_attack": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {},
+   "combat_start": [],
+   "heads_hit": {},
+   "note": "With the Tear-sharpened Sword",
+   "on_evade": [],
+   "on_kill": [],
+   "on_use": [
+    {
+     "kind": "consume_status_for_damage",
+     "percent": 20,
+     "raw": "[On Use] At 15+ [Deep Tears], consume 5 [Deep Tears] to deal +20% damage",
+     "status": "Deep Tears",
+     "threshold": 15,
+     "value": 5
+    }
+   ],
+   "tags": [],
+   "turn_end": [],
+   "turn_start": [],
+   "unmodeled": [
+    "[On Use] Lose 10 SP"
+   ]
+  },
+  "1091306@2": {
+   "attack_end": [],
+   "before_attack": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {},
+   "combat_start": [],
+   "heads_hit": {},
+   "note": "With the Tear-sharpened Sword",
+   "on_evade": [],
+   "on_kill": [],
+   "on_use": [
+    {
+     "condition": {
+      "component": "potency",
+      "source": "target",
+      "status": "Sinking"
+     },
+     "kind": "base_power",
+     "max": 2,
+     "per": 3,
+     "raw": "Final Power +1 for every 3 [Sinking] on target (max 2)",
+     "step": 1,
+     "value": 0
+    },
+    {
+     "kind": "consume_status_for_damage",
+     "percent": 20,
+     "raw": "[On Use] At 15+ [Deep Tears], consume 5 [Deep Tears] to deal +20% damage",
+     "status": "Deep Tears",
+     "threshold": 15,
+     "value": 5
+    }
+   ],
+   "tags": [],
+   "turn_end": [],
+   "turn_start": [],
+   "unmodeled": [
+    "[On Use] Lose 10 SP"
+   ]
+  },
+  "1091306@3": {
+   "attack_end": [],
+   "before_attack": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {},
+   "combat_start": [],
+   "heads_hit": {},
+   "note": "With the Tear-sharpened Sword",
+   "on_evade": [],
+   "on_kill": [],
+   "on_use": [
+    {
+     "condition": {
+      "component": "potency",
+      "source": "target",
+      "status": "Sinking"
+     },
+     "kind": "base_power",
+     "max": 2,
+     "per": 3,
+     "raw": "Final Power +1 for every 3 [Sinking] on target (max 2)",
+     "step": 1,
+     "value": 0
+    },
+    {
+     "kind": "consume_status_for_damage",
+     "percent": 20,
+     "raw": "[On Use] At 15+ [Deep Tears], consume 5 [Deep Tears] to deal +20% damage",
+     "status": "Deep Tears",
+     "threshold": 15,
+     "value": 5
+    }
+   ],
+   "tags": [],
+   "turn_end": [],
+   "turn_start": [],
+   "unmodeled": [
+    "[On Use] Lose 10 SP"
+   ]
+  },
+  "1091306@4": {
+   "attack_end": [],
+   "before_attack": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {},
+   "combat_start": [],
+   "heads_hit": {},
+   "note": "With the Tear-sharpened Sword",
+   "on_evade": [],
+   "on_kill": [],
+   "on_use": [
+    {
+     "condition": {
+      "component": "potency",
+      "source": "target",
+      "status": "Sinking"
+     },
+     "kind": "base_power",
+     "max": 3,
+     "per": 3,
+     "raw": "Final Power +1 for every 3 [Sinking] on target (max 3)",
+     "step": 1,
+     "value": 0
+    },
+    {
+     "kind": "consume_status_for_damage",
+     "percent": 20,
+     "raw": "[On Use] At 15+ [Deep Tears], consume 5 [Deep Tears] to deal +20% damage",
+     "status": "Deep Tears",
+     "threshold": 15,
+     "value": 5
+    }
+   ],
+   "tags": [],
+   "turn_end": [],
+   "turn_start": [],
+   "unmodeled": [
+    "[On Use] Lose 10 SP"
+   ]
+  },
+  "1091307@1": {
+   "attack_end": [
+    {
+     "condition": {
+      "target_defeated": true
+     },
+     "kind": "refund_consumed_status",
+     "raw": "[Attack End] If target is defeated, regain half of [Deep Tears] consumed by this Skill",
+     "refund_percent": 50,
+     "status": "Deep Tears"
+    }
+   ],
+   "before_attack": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {},
+   "combat_start": [],
+   "heads_hit": {},
+   "note": "Arcana: Tear and Pierce",
+   "on_evade": [],
+   "on_kill": [],
+   "on_use": [
+    {
+     "condition": {
+      "component": "potency",
+      "source": "target",
+      "status": "Sinking"
+     },
+     "kind": "base_power",
+     "max": 2,
+     "per": 3,
+     "raw": "Final Power +1 for every 3 [Sinking] on target (max 2)",
+     "step": 1,
+     "value": 0
+    },
+    {
+     "kind": "consume_status_up_to",
+     "raw": "[On Use] At 10+ [Deep Tears], consume up to 20 [Deep Tears]",
+     "status": "Deep Tears",
+     "threshold": 10,
+     "value": 20
+    },
+    {
+     "kind": "damage_percent_per_consumed_status",
+     "raw": "Deal +(Stack consumed x 3)% damage",
+     "step": 30
+    }
+   ],
+   "tags": [],
+   "turn_end": [],
+   "turn_start": [],
+   "unmodeled": [
+    "[On Use] Lose 15 SP"
+   ]
+  },
+  "1091307@2": {
+   "attack_end": [
+    {
+     "condition": {
+      "target_defeated": true
+     },
+     "kind": "refund_consumed_status",
+     "raw": "[Attack End] If target is defeated, regain half of [Deep Tears] consumed by this Skill",
+     "refund_percent": 50,
+     "status": "Deep Tears"
+    }
+   ],
+   "before_attack": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {},
+   "combat_start": [],
+   "heads_hit": {},
+   "note": "Arcana: Tear and Pierce",
+   "on_evade": [],
+   "on_kill": [],
+   "on_use": [
+    {
+     "condition": {
+      "component": "potency",
+      "source": "target",
+      "status": "Sinking"
+     },
+     "kind": "base_power",
+     "max": 2,
+     "per": 3,
+     "raw": "Final Power +1 for every 3 [Sinking] on target (max 2)",
+     "step": 1,
+     "value": 0
+    },
+    {
+     "kind": "consume_status_up_to",
+     "raw": "[On Use] At 10+ [Deep Tears], consume up to 20 [Deep Tears]",
+     "status": "Deep Tears",
+     "threshold": 10,
+     "value": 20
+    },
+    {
+     "kind": "damage_percent_per_consumed_status",
+     "raw": "Deal +(Stack consumed x 3)% damage",
+     "step": 30
+    }
+   ],
+   "tags": [],
+   "turn_end": [],
+   "turn_start": [],
+   "unmodeled": [
+    "[On Use] Lose 15 SP"
+   ]
+  },
+  "1091307@3": {
+   "attack_end": [
+    {
+     "condition": {
+      "target_defeated": true
+     },
+     "kind": "refund_consumed_status",
+     "raw": "[Attack End] If target is defeated, regain half of [Deep Tears] consumed by this Skill",
+     "refund_percent": 50,
+     "status": "Deep Tears"
+    }
+   ],
+   "before_attack": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {},
+   "combat_start": [],
+   "heads_hit": {},
+   "note": "Arcana: Tear and Pierce",
+   "on_evade": [],
+   "on_kill": [],
+   "on_use": [
+    {
+     "condition": {
+      "component": "potency",
+      "source": "target",
+      "status": "Sinking"
+     },
+     "kind": "base_power",
+     "max": 2,
+     "per": 3,
+     "raw": "Final Power +1 for every 3 [Sinking] on target (max 2)",
+     "step": 1,
+     "value": 0
+    },
+    {
+     "kind": "consume_status_up_to",
+     "raw": "[On Use] At 10+ [Deep Tears], consume up to 20 [Deep Tears]",
+     "status": "Deep Tears",
+     "threshold": 10,
+     "value": 20
+    },
+    {
+     "kind": "damage_percent_per_consumed_status",
+     "raw": "Deal +(Stack consumed x 3)% damage",
+     "step": 30
+    }
+   ],
+   "tags": [],
+   "turn_end": [],
+   "turn_start": [],
+   "unmodeled": [
+    "[On Use] Lose 15 SP"
+   ]
+  },
+  "1091307@4": {
+   "attack_end": [
+    {
+     "condition": {
+      "target_defeated": true
+     },
+     "kind": "refund_consumed_status",
+     "raw": "[Attack End] If target is defeated, regain half of [Deep Tears] consumed by this Skill",
+     "refund_percent": 50,
+     "status": "Deep Tears"
+    }
+   ],
+   "before_attack": [],
+   "clash_lose": [],
+   "clash_win": [],
+   "coins": {},
+   "combat_start": [],
+   "heads_hit": {},
+   "note": "Arcana: Tear and Pierce",
+   "on_evade": [],
+   "on_kill": [],
+   "on_use": [
+    {
+     "condition": {
+      "component": "potency",
+      "source": "target",
+      "status": "Sinking"
+     },
+     "kind": "base_power",
+     "max": 4,
+     "per": 3,
+     "raw": "Final Power +1 for every 3 [Sinking] on target (max 4)",
+     "step": 1,
+     "value": 0
+    },
+    {
+     "kind": "consume_status_up_to",
+     "raw": "[On Use] At 10+ [Deep Tears], consume up to 20 [Deep Tears]",
+     "status": "Deep Tears",
+     "threshold": 10,
+     "value": 20
+    },
+    {
+     "kind": "damage_percent_per_consumed_status",
+     "raw": "Deal +(Stack consumed x 3)% damage",
+     "step": 30
+    },
+    {
+     "kind": "base_power_from_consumed",
+     "per": 5,
+     "raw": "Base Power +1 for every 5 Stack consumed",
+     "step": 1
+    }
+   ],
+   "tags": [],
+   "turn_end": [],
+   "turn_start": [],
+   "unmodeled": [
+    "[On Use] Lose 15 SP"
+   ]
   },
   "1100401@1": {
    "attack_end": [],

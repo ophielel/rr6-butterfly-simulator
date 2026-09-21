@@ -190,17 +190,34 @@ def parse_skill(tpl: wt.Template, skill_id: str, slot: str) -> dict:
     }
 
 
-def parse_skills_from_page(page: wt.Template, page_id: str) -> List[dict]:
+def parse_skills_from_page(page: wt.Template, page_id: str, extra_slots: bool = False) -> List[dict]:
+    """The Skills of an identity.
+
+    `skill1-2` / `skill3-2` (and `-3`) are the alternate Skills a passive can
+    trigger ("use 'Stories that Never Cease' as an Unopposed Attack"); they carry
+    the same shape as a slot Skill but no Dashboard slot.
+    """
     out: List[dict] = []
     for slot in ("skill1", "skill2", "skill3", "defense", "skill4"):
-        raw = page.named.get(slot)
-        if not raw:
-            continue
-        tpl = wt.find_template(raw, "UptieSkills")
-        if tpl is None:
-            continue
-        suffix = {"skill1": "01", "skill2": "02", "skill3": "03", "defense": "04", "skill4": "05"}[slot]
-        out.append(parse_skill(tpl, page_id + suffix, "defense" if slot == "defense" else slot))
+        variants = [slot]
+        if extra_slots:
+            variants += [f"{slot}-{n}" for n in (2, 3)]
+        for name in variants:
+            raw = page.named.get(name)
+            if not raw:
+                continue
+            tpl = wt.find_template(raw, "UptieSkills")
+            if tpl is None:
+                continue
+            suffix = {"skill1": "01", "skill2": "02", "skill3": "03", "defense": "04", "skill4": "05"}[slot]
+            index = name.split("-")[1] if "-" in name else ""
+            skill = parse_skill(
+                tpl,
+                page_id + suffix + index,
+                "defense" if slot == "defense" else slot,
+            )
+            skill["variant"] = bool(index)
+            out.append(skill)
     return out
 
 
@@ -271,9 +288,22 @@ def build_identity(game_id: str, meta, en_pers, zh_pers, en_skills, zh_skills) -
 
     en_skills_idx = en_skills
     zh_skills_idx = zh_skills
-    skills = parse_skills_from_page(page, game_id)
+    skills = parse_skills_from_page(page, game_id, extra_slots=True)
+    # An alternate Skill (`skill1-2`) has no id of its own on the page; match it to
+    # the game record by name.
+    by_name = {}
+    for gid, record in en_skills_idx.items():
+        levels = record.get("levelList") or []
+        if levels:
+            by_name.setdefault(levels[-1].get("name"), int(gid))
     for skill in skills:
         gid = skill["id"]
+        if skill.get("variant") and gid not in en_skills_idx:
+            match = by_name.get(skill.get("name"))
+            if match is not None:
+                skill["id"] = str(match)
+                skill["variant_of"] = gid
+                gid = skill["id"]
         en = en_skills_idx.get(gid)
         zh = zh_skills_idx.get(gid)
         if en:

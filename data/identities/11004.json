@@ -107,6 +107,7 @@
           "tags": []
         }
       },
+      "variant": false,
       "name_en": "Baile y Rola",
       "name_zh": "舞动"
     },
@@ -186,6 +187,7 @@
           "tags": []
         }
       },
+      "variant": false,
       "name_en": "Danza de Pasión",
       "name_zh": "激情之舞"
     },
@@ -257,6 +259,7 @@
           "tags": []
         }
       },
+      "variant": false,
       "name_en": "Pañata Party",
       "name_zh": "皮纳塔派对"
     },
@@ -320,6 +323,7 @@
           "tags": []
         }
       },
+      "variant": false,
       "name_en": "Evade",
       "name_zh": "闪避"
     }

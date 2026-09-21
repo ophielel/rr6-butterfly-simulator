@@ -114,8 +114,86 @@
           "tags": []
         }
       },
+      "variant": false,
       "name_en": "The Knight's Sanctuary",
       "name_zh": "骑士的护佑"
+    },
+    {
+      "id": "1091305",
+      "slot": "skill1",
+      "name": "Faded Faith",
+      "type": "Pierce",
+      "rank": 1,
+      "upties": {
+        "1": {
+          "base_power": 8,
+          "coin_power": -4,
+          "coins": 2,
+          "offense_level_mod": 3,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Gloom",
+          "skill_amount": 0,
+          "on_use_text": "[On Use] Lose 7 SP",
+          "coin_texts": [
+            "[On Hit] Inflict 1 [Sinking]",
+            "[On Hit] Gain 2 [Deep Tears]"
+          ],
+          "tags": []
+        },
+        "2": {
+          "base_power": 8,
+          "coin_power": -4,
+          "coins": 2,
+          "offense_level_mod": 3,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Gloom",
+          "skill_amount": 0,
+          "on_use_text": "Final Power +1 for every 3 [Sinking] on target (max 2)\n[On Use] Lose 7 SP",
+          "coin_texts": [
+            "[On Hit] Inflict 1 [Sinking]",
+            "[On Hit] Gain 2 [Deep Tears]"
+          ],
+          "tags": []
+        },
+        "3": {
+          "base_power": 10,
+          "coin_power": -4,
+          "coins": 2,
+          "offense_level_mod": 3,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Gloom",
+          "skill_amount": 0,
+          "on_use_text": "Final Power +1 for every 3 [Sinking] on target (max 2)\n[On Use] Lose 7 SP",
+          "coin_texts": [
+            "[On Hit] Inflict 1 [Sinking]",
+            "[On Hit] Gain 2 [Deep Tears]"
+          ],
+          "tags": []
+        },
+        "4": {
+          "base_power": 10,
+          "coin_power": -4,
+          "coins": 2,
+          "offense_level_mod": 3,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Gloom",
+          "skill_amount": 0,
+          "on_use_text": "Final Power +1 for every 3 [Sinking] on target (max 3)\n[On Use] Lose 7 SP",
+          "coin_texts": [
+            "[On Hit] Inflict 2 [Sinking]",
+            "[On Hit] Inflict 1 [Sinking]\n[On Hit] Gain 2 [Deep Tears]\n- Gain 1 additional [Deep Tears] for every 2 [Piercing Sword] this unit had at Combat Start (max 2)"
+          ],
+          "tags": []
+        }
+      },
+      "variant": true,
+      "variant_of": "10913012",
+      "name_en": "Faded Faith",
+      "name_zh": "褪色的信条"
     },
     {
       "id": "1091302",
@@ -177,8 +255,74 @@
           "tags": []
         }
       },
+      "variant": false,
       "name_en": "With the Power of Justice",
       "name_zh": "以正义之力"
+    },
+    {
+      "id": "1091306",
+      "slot": "skill2",
+      "name": "With the Tear-sharpened Sword",
+      "type": "Pierce",
+      "rank": 2,
+      "upties": {
+        "1": {
+          "base_power": 12,
+          "coin_power": -4,
+          "coins": 3,
+          "offense_level_mod": 4,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Envy",
+          "skill_amount": 0,
+          "on_use_text": "[On Use] Lose 10 SP\n[On Use] At 15+ [Deep Tears], consume 5 [Deep Tears] to deal +20% damage",
+          "coin_texts": [],
+          "tags": []
+        },
+        "2": {
+          "base_power": 12,
+          "coin_power": -4,
+          "coins": 3,
+          "offense_level_mod": 4,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Envy",
+          "skill_amount": 0,
+          "on_use_text": "Final Power +1 for every 3 [Sinking] on target (max 2)\n[On Use] Lose 10 SP\n[On Use] At 15+ [Deep Tears], consume 5 [Deep Tears] to deal +20% damage",
+          "coin_texts": [],
+          "tags": []
+        },
+        "3": {
+          "base_power": 16,
+          "coin_power": -4,
+          "coins": 3,
+          "offense_level_mod": 4,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Envy",
+          "skill_amount": 0,
+          "on_use_text": "Final Power +1 for every 3 [Sinking] on target (max 2)\n[On Use] Lose 10 SP\n[On Use] At 15+ [Deep Tears], consume 5 [Deep Tears] to deal +20% damage",
+          "coin_texts": [],
+          "tags": []
+        },
+        "4": {
+          "base_power": 16,
+          "coin_power": -4,
+          "coins": 3,
+          "offense_level_mod": 4,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Envy",
+          "skill_amount": 0,
+          "on_use_text": "Final Power +1 for every 3 [Sinking] on target (max 3)\n[On Use] Lose 10 SP\n[On Use] At 15+ [Deep Tears], consume 5 [Deep Tears] to deal +20% damage",
+          "coin_texts": [],
+          "tags": []
+        }
+      },
+      "variant": true,
+      "variant_of": "10913022",
+      "name_en": "With the Tear-sharpened Sword",
+      "name_zh": "以泪锋之剑"
     },
     {
       "id": "1091303",
@@ -240,8 +384,74 @@
           "tags": []
         }
       },
+      "variant": false,
       "name_en": "Arcana Pierce",
       "name_zh": "阿卡纳穿刺"
+    },
+    {
+      "id": "1091307",
+      "slot": "skill3",
+      "name": "Arcana: Tear and Pierce",
+      "type": "Pierce",
+      "rank": 3,
+      "upties": {
+        "1": {
+          "base_power": 18,
+          "coin_power": -6,
+          "coins": 3,
+          "offense_level_mod": 5,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Pride",
+          "skill_amount": 0,
+          "on_use_text": "Final Power +1 for every 3 [Sinking] on target (max 2)\n[On Use] Lose 15 SP\n[On Use] At 10+ [Deep Tears], consume up to 20 [Deep Tears]\n- Deal +(Stack consumed x 3)% damage\n[Attack End] If target is defeated, regain half of [Deep Tears] consumed by this Skill",
+          "coin_texts": [],
+          "tags": []
+        },
+        "2": {
+          "base_power": 18,
+          "coin_power": -6,
+          "coins": 3,
+          "offense_level_mod": 5,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Pride",
+          "skill_amount": 0,
+          "on_use_text": "Final Power +1 for every 3 [Sinking] on target (max 2)\n[On Use] Lose 15 SP\n[On Use] At 10+ [Deep Tears], consume up to 20 [Deep Tears]\n- Deal +(Stack consumed x 3)% damage\n[Attack End] If target is defeated, regain half of [Deep Tears] consumed by this Skill",
+          "coin_texts": [],
+          "tags": []
+        },
+        "3": {
+          "base_power": 18,
+          "coin_power": -6,
+          "coins": 3,
+          "offense_level_mod": 5,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Pride",
+          "skill_amount": 0,
+          "on_use_text": "Final Power +1 for every 3 [Sinking] on target (max 2)\n[On Use] Lose 15 SP\n[On Use] At 10+ [Deep Tears], consume up to 20 [Deep Tears]\n- Deal +(Stack consumed x 3)% damage\n[Attack End] If target is defeated, regain half of [Deep Tears] consumed by this Skill",
+          "coin_texts": [],
+          "tags": []
+        },
+        "4": {
+          "base_power": 20,
+          "coin_power": -5,
+          "coins": 3,
+          "offense_level_mod": 5,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Pride",
+          "skill_amount": 0,
+          "on_use_text": "Final Power +1 for every 3 [Sinking] on target (max 4)\n[On Use] Lose 15 SP\n[On Use] At 10+ [Deep Tears], consume up to 20 [Deep Tears]\n- Deal +(Stack consumed x 3)% damage\n- Base Power +1 for every 5 Stack consumed\n[Attack End] If target is defeated, regain half of [Deep Tears] consumed by this Skill",
+          "coin_texts": [],
+          "tags": []
+        }
+      },
+      "variant": true,
+      "variant_of": "10913032",
+      "name_en": "Arcana: Tear and Pierce",
+      "name_zh": "阿卡纳裂泪穿刺"
     },
     {
       "id": "1091304",
@@ -311,6 +521,7 @@
           "tags": []
         }
       },
+      "variant": false,
       "name_en": "The Knight's Faith",
       "name_zh": "骑士的信条"
     }

@@ -112,6 +112,7 @@
           "tags": []
         }
       },
+      "variant": false,
       "name_en": "Tsuru-giri [鶴斬り]",
       "name_zh": "鹤斩"
     },
@@ -191,6 +192,7 @@
           "tags": []
         }
       },
+      "variant": false,
       "name_en": "Susuki Misdirection",
       "name_zh": "芒流"
     },
@@ -270,8 +272,79 @@
           "tags": []
         }
       },
+      "variant": false,
       "name_en": "Sakura-sen [桜閃]",
       "name_zh": "樱闪"
+    },
+    {
+      "id": "10813032",
+      "slot": "skill3",
+      "name": "Kōzan ['''光斬''']",
+      "type": "Slash",
+      "rank": 3,
+      "upties": {
+        "1": {
+          "base_power": 4,
+          "coin_power": 4,
+          "coins": 1,
+          "offense_level_mod": 5,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Envy",
+          "skill_amount": 0,
+          "on_use_text": "[Unclashable]\nThis Skill does not trigger Defense Skills, and external effects cannot trigger this Skill to be Reused\n[On Use] At less than 3 [Bright -光-] Potency, cancel the Skill and gain 2 [Attack Power Up] next turn\n[On Use] At 3+ [Bright -光-] Potency, gain the following effects based on Potency:\n- Per 1 Potency: this Skill deals +10% damage\n- At 4+ Potency: Base Power +1\n- At 5 Potency: On Hit with the final Reuse Coin, trigger [Tremor Burst] 2 times; then, reduce target's [Tremor] Count by 1\n[Skill End] Lose [Bright -光-] on self\n[Skill End] Next turn, convert the Suit in this unit's Hand to a random Suit that corresponds to one of this unit's Base Attack Skills (once per turn)\n[Skill End] Gain [Bright -光-] Potency next turn equal to the # of Coins that weren't used",
+          "coin_texts": [
+            "Reuse this Coin ([Bright -光-] Potency - 1) times (4 times max)\n[On Hit] Inflict +1 [Tremor] Count\n[On Hit] Inflict +1 [Sinking] Count"
+          ],
+          "tags": []
+        },
+        "2": {
+          "base_power": 4,
+          "coin_power": 4,
+          "coins": 1,
+          "offense_level_mod": 5,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Envy",
+          "skill_amount": 0,
+          "on_use_text": "[Unclashable]\nThis Skill does not trigger Defense Skills, and external effects cannot trigger this Skill to be Reused\n[On Use] At less than 3 [Bright -光-] Potency, cancel the Skill and gain 2 [Attack Power Up] next turn\n[On Use] At 3+ [Bright -光-] Potency, gain the following effects based on Potency:\n- Per 1 Potency: this Skill deals +10% damage\n- At 4+ Potency: Base Power +1\n- At 5 Potency: On Hit with the final Reuse Coin, trigger [Tremor Burst] 2 times; then, reduce target's [Tremor] Count by 1\n[Skill End] Lose [Bright -光-] on self\n[Skill End] Next turn, convert the Suit in this unit's Hand to a random Suit that corresponds to one of this unit's Base Attack Skills (once per turn)\n[Skill End] Gain [Bright -光-] Potency next turn equal to the # of Coins that weren't used",
+          "coin_texts": [
+            "Reuse this Coin ([Bright -光-] Potency - 1) times (4 times max)\n[On Hit] Inflict +1 [Tremor] Count\n[On Hit] Inflict +1 [Sinking] Count"
+          ],
+          "tags": []
+        },
+        "3": {
+          "base_power": 4,
+          "coin_power": 4,
+          "coins": 1,
+          "offense_level_mod": 5,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Envy",
+          "skill_amount": 0,
+          "on_use_text": "[Unclashable]\nThis Skill does not trigger Defense Skills, and external effects cannot trigger this Skill to be Reused\n[On Use] At less than 3 [Bright -光-] Potency, cancel the Skill and gain 2 [Attack Power Up] next turn\n[On Use] At 3+ [Bright -光-] Potency, gain the following effects based on Potency:\n- Per 1 Potency: this Skill deals +10% damage\n- At 4+ Potency: Base Power +1\n- At 5 Potency: On Hit with the final Reuse Coin, trigger [Tremor Burst] 2 times; then, reduce target's [Tremor] Count by 1\n[Skill End] Lose [Bright -光-] on self\n[Skill End] Next turn, convert the Suit in this unit's Hand to a random Suit that corresponds to one of this unit's Base Attack Skills (once per turn)\n[Skill End] Gain [Bright -光-] Potency next turn equal to the # of Coins that weren't used",
+          "coin_texts": [
+            "Reuse this Coin ([Bright -光-] Potency - 1) times (4 times max)\n[On Hit] Inflict +1 [Tremor] Count\n[On Hit] Inflict +1 [Sinking] Count"
+          ],
+          "tags": []
+        },
+        "4": {
+          "base_power": 4,
+          "coin_power": 5,
+          "coins": 1,
+          "offense_level_mod": 5,
+          "attack_weight": 1,
+          "defense_level_mod": null,
+          "sin_affinity": "Envy",
+          "skill_amount": 0,
+          "on_use_text": "[Unclashable]\nThis Skill does not trigger Defense Skills, and external effects cannot trigger this Skill to be Reused\n[On Use] At less than 3 [Bright -光-] Potency, cancel the Skill and gain 2 [Attack Power Up] next turn\n[On Use] At 3+ [Bright -光-] Potency, gain the following effects based on Potency:\n- Per 1 Potency: this Skill deals +10% damage\n- At 4+ Potency: Base Power +1\n- At 5 Potency: On Hit with the final Reuse Coin, trigger [Tremor Burst] 2 times; then, reduce target's [Tremor] Count by 1\n[Skill End] Lose [Bright -光-] on self\n[Skill End] Next turn, convert the Suit in this unit's Hand to a random Suit that corresponds to one of this unit's Base Attack Skills (once per turn)\n[Skill End] Gain [Bright -光-] Potency next turn equal to the # of Coins that weren't used",
+          "coin_texts": [
+            "Reuse this Coin ([Bright -光-] Potency - 1) times (4 times max)\n[On Hit] Inflict +1 [Tremor] Count\n[On Hit] Inflict +1 [Sinking] Count\n[Heads Hit] Inflict 1 [Defense Level Down]"
+          ],
+          "tags": []
+        }
+      },
+      "variant": true
     },
     {
       "id": "1081304",
@@ -345,6 +418,7 @@
           "tags": []
         }
       },
+      "variant": false,
       "name_en": "Shuffle Hands - Floral Deck",
       "name_zh": "花札洗切"
     }
@@ -369,7 +443,9 @@
       "raw_key": "passive2"
     }
   ],
-  "unparsed": [],
+  "unparsed": [
+    "game_text:10813032"
+  ],
   "sources": [
     {
       "kind": "wiki",

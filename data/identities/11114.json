@@ -114,6 +114,7 @@
           "tags": []
         }
       },
+      "variant": false,
       "name_en": "Khopesh Swordplay",
       "name_zh": "克赫帕什剑术"
     },
@@ -193,6 +194,7 @@
           "tags": []
         }
       },
+      "variant": false,
       "name_en": "Mirage Incision",
       "name_zh": "蜃景切割"
     },
@@ -272,6 +274,7 @@
           "tags": []
         }
       },
+      "variant": false,
       "name_en": "The Vanguard will See it Done",
       "name_zh": "先锋了结"
     },
@@ -335,6 +338,7 @@
           "tags": []
         }
       },
+      "variant": false,
       "name_en": "Composure",
       "name_zh": "整备"
     }

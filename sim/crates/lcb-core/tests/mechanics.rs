@@ -1718,10 +1718,10 @@ fn section5_golden_replay_is_deterministic() {
     // action per Slot").  Update only together with a sourced rule change, and
     // name the source in the commit message.  Last updated when the identities'
     // passives started applying (in-game `Passives.json`).
-    assert_eq!(first_hp, vec![25489, 25326, 25187], "Imago HP after turns 1-3");
+    assert_eq!(first_hp, vec![25455, 25229, 25096], "Imago HP after turns 1-3");
     assert_eq!(
         format!("{first_hash:016x}"),
-        "3a42838721369112",
+        "9266e532afcd41eb",
         "recorded state hash"
     );
 }
@@ -3869,7 +3869,7 @@ fn lca_fracture_rounds_are_spent_and_reloaded() {
     state.preset_flips = vec![true; 256];
     battle::one_sided_attack(&mut state, 0, 1, &mut use_, 0);
     assert_eq!(use_.ctx.ammo_spent_by_status.get("LCA Fracture Round"), Some(&4));
-    battle::apply_attack_end_for_test(&mut state, 0, Some(1), 0, &mut use_);
+    battle::apply_attack_end_for_test(&mut state, &sim.library, &sim.mechanics, 0, Some(1), 0, &mut use_);
     assert_eq!(
         state.units[0].statuses.stack("LCA Fracture Round"),
         16,
@@ -3944,5 +3944,132 @@ fn petals_grow_from_sinking_damage() {
     assert!(
         state.units[0].statuses.stack("Petals") > 0,
         "the enemy taking Sinking damage feeds her Petals"
+    );
+}
+
+/// Ryoshu's passives trigger Unopposed Attacks at her Attack End: "Bang. Bang."
+/// at 1+ [Bullet - Solitude] against a target below -40 SP or Staggered, and
+/// "Stories that Never Cease" at 0 ammo (which then full-reloads).
+/// Source: passives `A Void that Cannot be Filled` / `Unwithering Flower`.
+#[test]
+fn ryoshu_passives_fire_unopposed_attacks() {
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&["10414"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    let enemy = state.units.iter().position(|u| !u.kind.is_sinner()).unwrap();
+    state.units[enemy].hp = state.units[enemy].max_hp;
+    state.units[0].statuses.set_stack("Bullet - Solitude", 6);
+    let mut use_ = battle::build_use(
+        &state,
+        &sim.library,
+        &sim.mechanics,
+        0,
+        &SkillId::new("1041402"),
+    )
+    .unwrap();
+    battle::prepare_use_for_test(
+        &mut state,
+        &sim.library,
+        &sim.mechanics,
+        0,
+        Some(enemy),
+        &mut use_,
+    );
+    // The target is Staggered, so "Bang. Bang." follows this Attack End.
+    state.units[enemy].stagger.turns_remaining = 2;
+    let before = state.units[enemy].hp;
+    battle::apply_attack_end_for_test(
+        &mut state,
+        &sim.library,
+        &sim.mechanics,
+        0,
+        Some(enemy),
+        0,
+        &mut use_,
+    );
+    assert!(
+        state.units[enemy].hp < before,
+        "the passive follow-up attack must land"
+    );
+    assert_eq!(
+        state.log.iter().filter(|entry| entry.kind == "unopposed").count(),
+        1
+    );
+
+    // With the pool empty, "Stories that Never Cease" replaces it and full-reloads.
+    let mut state = sim
+        .new_encounter(&["10414"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    let enemy = state.units.iter().position(|u| !u.kind.is_sinner()).unwrap();
+    state.units[0].statuses.set_stack("Bullet - Solitude", 0);
+    let mut use_ = battle::build_use(
+        &state,
+        &sim.library,
+        &sim.mechanics,
+        0,
+        &SkillId::new("1041402"),
+    )
+    .unwrap();
+    battle::prepare_use_for_test(
+        &mut state,
+        &sim.library,
+        &sim.mechanics,
+        0,
+        Some(enemy),
+        &mut use_,
+    );
+    battle::apply_attack_end_for_test(
+        &mut state,
+        &sim.library,
+        &sim.mechanics,
+        0,
+        Some(enemy),
+        0,
+        &mut use_,
+    );
+    assert_eq!(
+        state.units[0].statuses.stack("Bullet - Solitude"),
+        6,
+        "the follow-up consumed 10 SP and full-reloaded"
+    );
+}
+
+/// Hong Lu's Hanafuda Hand is converted at the **next** Turn Start, not at once.
+/// Source: passive `Koi-Koi` / Skill `Shuffle Hands - Floral Deck`.
+#[test]
+fn hanafuda_conversion_waits_for_the_next_turn() {
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(&["10813"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .unwrap();
+    state.units[0].suit = Some("HanafudaOne".to_string());
+    let effects = vec![lcb_core::effects::Effect {
+        kind: "suit_convert".to_string(),
+        next_turn: true,
+        condition: Some(lcb_core::effects::Condition {
+            slot: Some("leftmost".to_string()),
+            ..Default::default()
+        }),
+        ..Default::default()
+    }];
+    battle::apply_effects_for_test(
+        &mut state,
+        &effects,
+        0,
+        None,
+        &mut Vec::new(),
+        &mut battle::UseContext::default(),
+    );
+    assert_eq!(
+        state.units[0].suit.as_deref(),
+        Some("HanafudaOne"),
+        "the conversion is queued, not applied"
+    );
+    battle::begin_turn(&mut state, &sim.library, &sim.mechanics, &sim.scripts);
+    assert_ne!(
+        state.units[0].suit.as_deref(),
+        Some("HanafudaOne"),
+        "the Hand is converted at the following Turn Start"
     );
 }

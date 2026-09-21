@@ -3018,7 +3018,7 @@
    ],
    "structure": "potency_count",
    "text": "Defense Level decreases based on the effect's Potency for one turn.",
-   "used_by_fixed_content": false
+   "used_by_fixed_content": true
   },
   "Defense Level Up": {
    "effects": {
@@ -11431,7 +11431,7 @@
    ],
    "structure": "stack",
    "text": "- Take +10% damage from GloomGloom Skills\n- SP Units: Change their Panic Type to 'Solitude PanicSolitude'\n- Non-SP Units: Gain +2 [Sinking] Count at Turn End\n- Turn End: Lose 1 Stack\n- This effect is not cumulative; inflicting it will replace the current value with the inflicted value\n- Apply the \"Non-SP Units\" conditional to certain enemies that have SP but cannot change their Panic Types\n※ Solitude PanicSolitude Panic Effect:\n- Low Morale: Gain +2 [Sinking] Count at Turn End\n- Panic: Gain +3 [Sinking] Count at Turn End",
-   "used_by_fixed_content": false
+   "used_by_fixed_content": true
   },
   "Somatic Frisson-inspiring Melody": {
    "effects": {
@@ -14152,6 +14152,7 @@
   "Damage Down",
   "Dazzle",
   "Deep Tears",
+  "Defense Level Down",
   "Faint Aroma",
   "Fragile",
   "Gloom Fragility",
@@ -14171,6 +14172,7 @@
   "Protection",
   "Sheut Fracture",
   "Sinking",
+  "Solitude",
   "Tear-sharpened",
   "The Living & The Departed",
   "The Udjat -Vanguard-",
