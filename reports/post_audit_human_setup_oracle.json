@@ -1,0 +1,1245 @@
+{
+  "policy": "KnownHumanSetupOracle",
+  "scenario": {
+    "name": "real",
+    "enemies": [
+      "9567",
+      "9572",
+      "9573",
+      "9574"
+    ],
+    "max_turns": 30,
+    "enemy_hp_scale": 1.0,
+    "strict": true,
+    "infinite_ego_resources": true,
+    "description": "Line 6 Section 5 wave exactly as the data describes it (Imago 25616 HP)"
+  },
+  "seed": 1,
+  "winner": "Enemies",
+  "won": false,
+  "kill_turn": null,
+  "boss_hp_left": 9659,
+  "peak_sinking_potency": 34,
+  "peak_sinking_count": 10,
+  "total_sinking_damage": 5394.0,
+  "total_direct_damage": 10596.0,
+  "turns": [
+    {
+      "turn": 1,
+      "phase": "ishmael_rodion_setup",
+      "plan": [
+        {
+          "Engage": {
+            "actor": "sinner-0-10110",
+            "enemy": "enemy-7-9567",
+            "enemy_slot": 0,
+            "skill": "1011001",
+            "slot": 0
+          }
+        },
+        {
+          "Engage": {
+            "actor": "sinner-1-10414",
+            "enemy": "enemy-7-9567",
+            "enemy_slot": 0,
+            "skill": "1041402",
+            "slot": 0
+          }
+        },
+        {
+          "UseEgo": {
+            "actor": "sinner-2-10813",
+            "ego": "20807",
+            "kind": "Overclock",
+            "slot": 0,
+            "target": "enemy-7-9567"
+          }
+        },
+        {
+          "UseEgo": {
+            "actor": "sinner-3-10913",
+            "ego": "20903",
+            "kind": "Overclock",
+            "slot": 0,
+            "target": "enemy-7-9567"
+          }
+        },
+        {
+          "Assign": {
+            "actor": "sinner-4-11004",
+            "skill": "1100402",
+            "slot": 0,
+            "target": "enemy-7-9567"
+          }
+        },
+        {
+          "Engage": {
+            "actor": "sinner-5-11114",
+            "enemy": "enemy-7-9567",
+            "enemy_slot": 0,
+            "skill": "1111401",
+            "slot": 0
+          }
+        },
+        {
+          "Engage": {
+            "actor": "sinner-6-11214",
+            "enemy": "enemy-7-9567",
+            "enemy_slot": 0,
+            "skill": "1121401",
+            "slot": 0
+          }
+        }
+      ],
+      "state_hash_before": "fa254382f1d9eb37",
+      "state_hash_after": "388228d78b64a401",
+      "transition_hash": "60cfb31618a4b61a",
+      "search_key": "5b6d4c9260eb4b75",
+      "stats": {
+        "damage_to_allies": 4,
+        "damage_to_enemies": 276,
+        "deaths": [],
+        "ego_uses": [
+          "sinner-2-10813|20807",
+          "sinner-3-10913|20903"
+        ],
+        "sinking_damage": 97,
+        "sinking_sp_damage": 0,
+        "sinking_triggers": 8,
+        "skill_uses": [
+          "sinner-1-10414|1041402|0",
+          "sinner-0-10110|1011001|0",
+          "enemy-7-9567|956704|1",
+          "sinner-2-10813|20807|0",
+          "enemy-7-9567|956701|2",
+          "sinner-3-10913|20903|0",
+          "enemy-7-9567|956701|3",
+          "sinner-5-11114|1111401|0",
+          "enemy-7-9567|956701|4",
+          "sinner-6-11214|1121401|0",
+          "enemy-7-9567|956704|0",
+          "enemy-7-9567|956701|5",
+          "sinner-4-11004|1100402|0"
+        ],
+        "status_damage": 0
+      },
+      "boss_hp": 25241,
+      "boss_sinking": {
+        "potency": 21,
+        "count": 10
+      }
+    },
+    {
+      "turn": 2,
+      "phase": "yi_sang_setup",
+      "plan": [
+        {
+          "UseEgo": {
+            "actor": "sinner-0-10110",
+            "ego": "20106",
+            "kind": "Awakening",
+            "slot": 0,
+            "target": "enemy-7-9567"
+          }
+        },
+        {
+          "Engage": {
+            "actor": "sinner-1-10414",
+            "enemy": "enemy-7-9567",
+            "enemy_slot": 0,
+            "skill": "1041401",
+            "slot": 0
+          }
+        },
+        {
+          "Engage": {
+            "actor": "sinner-2-10813",
+            "enemy": "enemy-7-9567",
+            "enemy_slot": 0,
+            "skill": "1081302",
+            "slot": 0
+          }
+        },
+        {
+          "Engage": {
+            "actor": "sinner-3-10913",
+            "enemy": "enemy-7-9567",
+            "enemy_slot": 0,
+            "skill": "1091303",
+            "slot": 0
+          }
+        },
+        {
+          "Engage": {
+            "actor": "sinner-4-11004",
+            "enemy": "enemy-7-9567",
+            "enemy_slot": 5,
+            "skill": "1100401",
+            "slot": 0
+          }
+        },
+        {
+          "Engage": {
+            "actor": "sinner-5-11114",
+            "enemy": "enemy-7-9567",
+            "enemy_slot": 0,
+            "skill": "1111401",
+            "slot": 0
+          }
+        },
+        {
+          "Assign": {
+            "actor": "sinner-6-11214",
+            "skill": "1121401",
+            "slot": 0,
+            "target": "enemy-7-9567"
+          }
+        }
+      ],
+      "state_hash_before": "388228d78b64a401",
+      "state_hash_after": "492845eb6a22c16c",
+      "transition_hash": "ba7f8abe24c1ec38",
+      "search_key": "f298971e6b5c5487",
+      "stats": {
+        "damage_to_allies": 51,
+        "damage_to_enemies": 229,
+        "deaths": [],
+        "ego_uses": [
+          "sinner-0-10110|20106"
+        ],
+        "sinking_damage": 394,
+        "sinking_sp_damage": 0,
+        "sinking_triggers": 15,
+        "skill_uses": [
+          "sinner-1-10414|1041401|0",
+          "enemy-7-9567|956711|1",
+          "sinner-3-10913|1091303|0",
+          "enemy-7-9567|956702|2",
+          "sinner-2-10813|1081302|0",
+          "enemy-7-9567|956702|3",
+          "sinner-5-11114|1111401|0",
+          "enemy-7-9567|956711|0",
+          "sinner-0-10110|20106|0",
+          "enemy-7-9567|956702|4",
+          "sinner-4-11004|1100401|0",
+          "enemy-7-9567|956702|5",
+          "sinner-6-11214|1121401|0"
+        ],
+        "status_damage": 0
+      },
+      "boss_hp": 24618,
+      "boss_sinking": {
+        "potency": 34,
+        "count": 3
+      }
+    },
+    {
+      "turn": 3,
+      "phase": "greedy_burst",
+      "plan": [
+        {
+          "UseEgo": {
+            "actor": "sinner-0-10110",
+            "ego": "20109",
+            "kind": "Awakening",
+            "slot": 0,
+            "target": "enemy-7-9567"
+          }
+        },
+        {
+          "Assign": {
+            "actor": "sinner-1-10414",
+            "skill": "1041406",
+            "slot": 0,
+            "target": "enemy-8-9572"
+          }
+        },
+        {
+          "Assign": {
+            "actor": "sinner-2-10813",
+            "skill": "1081303",
+            "slot": 0,
+            "target": "enemy-7-9567"
+          }
+        },
+        {
+          "UseEgo": {
+            "actor": "sinner-3-10913",
+            "ego": "20903",
+            "kind": "Overclock",
+            "slot": 0,
+            "target": "enemy-7-9567"
+          }
+        },
+        {
+          "UseEgo": {
+            "actor": "sinner-4-11004",
+            "ego": "21009",
+            "kind": "Awakening",
+            "slot": 0,
+            "target": "enemy-7-9567"
+          }
+        },
+        {
+          "Assign": {
+            "actor": "sinner-5-11114",
+            "skill": "1111402",
+            "slot": 0,
+            "target": "enemy-7-9567"
+          }
+        },
+        {
+          "UseEgo": {
+            "actor": "sinner-6-11214",
+            "ego": "21207",
+            "kind": "Awakening",
+            "slot": 0,
+            "target": "enemy-7-9567"
+          }
+        }
+      ],
+      "state_hash_before": "492845eb6a22c16c",
+      "state_hash_after": "571972fa8c638a83",
+      "transition_hash": "0db6596440d469f7",
+      "search_key": "601fb75da90f0409",
+      "stats": {
+        "damage_to_allies": 1,
+        "damage_to_enemies": 1047,
+        "deaths": [],
+        "ego_uses": [
+          "sinner-3-10913|20903",
+          "sinner-0-10110|20109",
+          "sinner-4-11004|21009",
+          "sinner-6-11214|21207"
+        ],
+        "sinking_damage": 1427,
+        "sinking_sp_damage": 0,
+        "sinking_triggers": 72,
+        "skill_uses": [
+          "sinner-3-10913|20903|0",
+          "enemy-7-9567|956703|1",
+          "sinner-1-10414|1041406|0",
+          "sinner-2-10813|1081303|0",
+          "enemy-7-9567|956703|3",
+          "sinner-0-10110|20109|0",
+          "sinner-5-11114|1111402|0",
+          "enemy-7-9567|956712|0",
+          "sinner-4-11004|21009|0",
+          "sinner-6-11214|21207|0",
+          "enemy-7-9567|956703|2"
+        ],
+        "status_damage": 0
+      },
+      "boss_hp": 22042,
+      "boss_sinking": {
+        "potency": 15,
+        "count": 0
+      }
+    },
+    {
+      "turn": 4,
+      "phase": "greedy_burst",
+      "plan": [
+        {
+          "UseEgo": {
+            "actor": "sinner-0-10110",
+            "ego": "20109",
+            "kind": "Awakening",
+            "slot": 0,
+            "target": "enemy-7-9567"
+          }
+        },
+        {
+          "Assign": {
+            "actor": "sinner-1-10414",
+            "skill": "1041402",
+            "slot": 0,
+            "target": "enemy-7-9567"
+          }
+        },
+        {
+          "UseEgo": {
+            "actor": "sinner-2-10813",
+            "ego": "20810",
+            "kind": "Awakening",
+            "slot": 0,
+            "target": "enemy-7-9567"
+          }
+        },
+        {
+          "UseEgo": {
+            "actor": "sinner-3-10913",
+            "ego": "20903",
+            "kind": "Overclock",
+            "slot": 0,
+            "target": "enemy-7-9567"
+          }
+        },
+        {
+          "UseEgo": {
+            "actor": "sinner-4-11004",
+            "ego": "21009",
+            "kind": "Overclock",
+            "slot": 0,
+            "target": "enemy-7-9567"
+          }
+        },
+        {
+          "Assign": {
+            "actor": "sinner-5-11114",
+            "skill": "1111402",
+            "slot": 0,
+            "target": "enemy-7-9567"
+          }
+        },
+        {
+          "UseEgo": {
+            "actor": "sinner-6-11214",
+            "ego": "21207",
+            "kind": "Awakening",
+            "slot": 0,
+            "target": "enemy-7-9567"
+          }
+        }
+      ],
+      "state_hash_before": "571972fa8c638a83",
+      "state_hash_after": "54de9945b21726d2",
+      "transition_hash": "35c69f74e2c2e482",
+      "search_key": "c776d9b8fc377776",
+      "stats": {
+        "damage_to_allies": 0,
+        "damage_to_enemies": 1697,
+        "deaths": [],
+        "ego_uses": [
+          "sinner-2-10813|20810",
+          "sinner-0-10110|20109",
+          "sinner-3-10913|20903",
+          "sinner-4-11004|21009",
+          "sinner-6-11214|21207"
+        ],
+        "sinking_damage": 690,
+        "sinking_sp_damage": 0,
+        "sinking_triggers": 55,
+        "skill_uses": [
+          "sinner-2-10813|20810|0",
+          "enemy-7-9567|956710|1",
+          "sinner-2-10813|1081305|0",
+          "sinner-5-11114|1111402|0",
+          "enemy-7-9567|956710|0",
+          "sinner-0-10110|20109|0",
+          "enemy-7-9567|956701|2",
+          "sinner-3-10913|20903|0",
+          "enemy-7-9567|956701|3",
+          "sinner-1-10414|1041402|0",
+          "enemy-7-9567|956701|4",
+          "sinner-1-10414|1041401|0",
+          "sinner-4-11004|21009|0",
+          "enemy-7-9567|956701|5",
+          "sinner-6-11214|21207|0"
+        ],
+        "status_damage": 0
+      },
+      "boss_hp": 19594,
+      "boss_sinking": {
+        "potency": 16,
+        "count": 0
+      }
+    },
+    {
+      "turn": 5,
+      "phase": "greedy_burst",
+      "plan": [
+        {
+          "UseEgo": {
+            "actor": "sinner-0-10110",
+            "ego": "20109",
+            "kind": "Awakening",
+            "slot": 0,
+            "target": "enemy-7-9567"
+          }
+        },
+        {
+          "Assign": {
+            "actor": "sinner-1-10414",
+            "skill": "1041405",
+            "slot": 0,
+            "target": "enemy-7-9567"
+          }
+        },
+        {
+          "UseEgo": {
+            "actor": "sinner-2-10813",
+            "ego": "20810",
+            "kind": "Awakening",
+            "slot": 0,
+            "target": "enemy-7-9567"
+          }
+        },
+        {
+          "UseEgo": {
+            "actor": "sinner-3-10913",
+            "ego": "20903",
+            "kind": "Overclock",
+            "slot": 0,
+            "target": "enemy-8-9572"
+          }
+        },
+        {
+          "UseEgo": {
+            "actor": "sinner-4-11004",
+            "ego": "21009",
+            "kind": "Awakening",
+            "slot": 0,
+            "target": "enemy-7-9567"
+          }
+        },
+        {
+          "Assign": {
+            "actor": "sinner-5-11114",
+            "skill": "1111403",
+            "slot": 0,
+            "target": "enemy-7-9567"
+          }
+        },
+        {
+          "UseEgo": {
+            "actor": "sinner-6-11214",
+            "ego": "21207",
+            "kind": "Awakening",
+            "slot": 0,
+            "target": "enemy-7-9567"
+          }
+        }
+      ],
+      "state_hash_before": "54de9945b21726d2",
+      "state_hash_after": "a90ad8f6486ee3ce",
+      "transition_hash": "8f1e4acd7f2844cb",
+      "search_key": "da7f1c67992f5c1c",
+      "stats": {
+        "damage_to_allies": 17,
+        "damage_to_enemies": 1731,
+        "deaths": [],
+        "ego_uses": [
+          "sinner-0-10110|20109",
+          "sinner-2-10813|20810",
+          "sinner-3-10913|20903",
+          "sinner-4-11004|21009",
+          "sinner-6-11214|21207"
+        ],
+        "sinking_damage": 350,
+        "sinking_sp_damage": 0,
+        "sinking_triggers": 45,
+        "skill_uses": [
+          "sinner-0-10110|20109|0",
+          "enemy-7-9567|956711|1",
+          "sinner-2-10813|20810|0",
+          "enemy-7-9567|956702|2",
+          "sinner-5-11114|1111403|0",
+          "enemy-7-9567|956711|0",
+          "sinner-1-10414|1041405|0",
+          "sinner-1-10414|1041406|0",
+          "sinner-3-10913|20903|0",
+          "sinner-4-11004|21009|0",
+          "enemy-7-9567|956702|5",
+          "sinner-6-11214|21207|0",
+          "enemy-7-9567|956702|3",
+          "enemy-7-9567|956702|4"
+        ],
+        "status_damage": 0
+      },
+      "boss_hp": 17422,
+      "boss_sinking": {
+        "potency": 19,
+        "count": 0
+      }
+    },
+    {
+      "turn": 6,
+      "phase": "greedy_burst",
+      "plan": [
+        {
+          "UseEgo": {
+            "actor": "sinner-0-10110",
+            "ego": "20109",
+            "kind": "Awakening",
+            "slot": 0,
+            "target": "enemy-7-9567"
+          }
+        },
+        {
+          "Assign": {
+            "actor": "sinner-1-10414",
+            "skill": "1041403",
+            "slot": 0,
+            "target": "enemy-7-9567"
+          }
+        },
+        {
+          "UseEgo": {
+            "actor": "sinner-2-10813",
+            "ego": "20810",
+            "kind": "Overclock",
+            "slot": 0,
+            "target": "enemy-7-9567"
+          }
+        },
+        {
+          "UseEgo": {
+            "actor": "sinner-3-10913",
+            "ego": "20903",
+            "kind": "Overclock",
+            "slot": 0,
+            "target": "enemy-8-9572"
+          }
+        },
+        {
+          "UseEgo": {
+            "actor": "sinner-4-11004",
+            "ego": "21009",
+            "kind": "Overclock",
+            "slot": 0,
+            "target": "enemy-7-9567"
+          }
+        },
+        {
+          "Assign": {
+            "actor": "sinner-5-11114",
+            "skill": "1111401",
+            "slot": 0,
+            "target": "enemy-7-9567"
+          }
+        },
+        {
+          "Assign": {
+            "actor": "sinner-6-11214",
+            "skill": "1121402",
+            "slot": 0,
+            "target": "enemy-7-9567"
+          }
+        }
+      ],
+      "state_hash_before": "a90ad8f6486ee3ce",
+      "state_hash_after": "4c2b6b8ee9b2b847",
+      "transition_hash": "f260ffce969f4a0b",
+      "search_key": "21a9a2d743fe0fe9",
+      "stats": {
+        "damage_to_allies": 52,
+        "damage_to_enemies": 825,
+        "deaths": [],
+        "ego_uses": [
+          "sinner-2-10813|20810",
+          "sinner-3-10913|20903",
+          "sinner-0-10110|20109",
+          "sinner-4-11004|21009"
+        ],
+        "sinking_damage": 738,
+        "sinking_sp_damage": 0,
+        "sinking_triggers": 54,
+        "skill_uses": [
+          "sinner-2-10813|20810|0",
+          "enemy-7-9567|956703|1",
+          "sinner-3-10913|20903|0",
+          "sinner-0-10110|20109|0",
+          "enemy-7-9567|956703|3",
+          "sinner-1-10414|1041403|0",
+          "sinner-5-11114|1111401|0",
+          "enemy-7-9567|956712|0",
+          "sinner-6-11214|1121402|0",
+          "sinner-4-11004|21009|0",
+          "enemy-7-9567|956703|2"
+        ],
+        "status_damage": 0
+      },
+      "boss_hp": 15892,
+      "boss_sinking": {
+        "potency": 10,
+        "count": 0
+      }
+    },
+    {
+      "turn": 7,
+      "phase": "greedy_burst",
+      "plan": [
+        {
+          "UseEgo": {
+            "actor": "sinner-0-10110",
+            "ego": "20109",
+            "kind": "Awakening",
+            "slot": 0,
+            "target": "enemy-7-9567"
+          }
+        },
+        {
+          "UseEgo": {
+            "actor": "sinner-2-10813",
+            "ego": "20810",
+            "kind": "Awakening",
+            "slot": 0,
+            "target": "enemy-7-9567"
+          }
+        },
+        {
+          "UseEgo": {
+            "actor": "sinner-3-10913",
+            "ego": "20903",
+            "kind": "Overclock",
+            "slot": 0,
+            "target": "enemy-7-9567"
+          }
+        },
+        {
+          "UseEgo": {
+            "actor": "sinner-4-11004",
+            "ego": "21009",
+            "kind": "Overclock",
+            "slot": 0,
+            "target": "enemy-7-9567"
+          }
+        },
+        {
+          "Assign": {
+            "actor": "sinner-5-11114",
+            "skill": "1111402",
+            "slot": 0,
+            "target": "enemy-7-9567"
+          }
+        },
+        {
+          "Assign": {
+            "actor": "sinner-6-11214",
+            "skill": "1121403",
+            "slot": 0,
+            "target": "enemy-7-9567"
+          }
+        }
+      ],
+      "state_hash_before": "4c2b6b8ee9b2b847",
+      "state_hash_after": "a4894f7d0c21b5de",
+      "transition_hash": "91a2ca568525871d",
+      "search_key": "777977fb804b7340",
+      "stats": {
+        "damage_to_allies": 76,
+        "damage_to_enemies": 1447,
+        "deaths": [],
+        "ego_uses": [
+          "sinner-2-10813|20810",
+          "sinner-3-10913|20903",
+          "sinner-0-10110|20109",
+          "sinner-4-11004|21009"
+        ],
+        "sinking_damage": 555,
+        "sinking_sp_damage": 0,
+        "sinking_triggers": 48,
+        "skill_uses": [
+          "sinner-2-10813|20810|0",
+          "enemy-7-9567|956710|1",
+          "sinner-3-10913|20903|0",
+          "enemy-7-9567|956710|2",
+          "sinner-5-11114|1111402|0",
+          "enemy-7-9567|956710|0",
+          "sinner-0-10110|20109|0",
+          "enemy-7-9567|956701|4",
+          "sinner-6-11214|1121403|0",
+          "enemy-7-9567|956701|5",
+          "sinner-4-11004|21009|0",
+          "enemy-7-9567|956701|3"
+        ],
+        "status_damage": 0
+      },
+      "boss_hp": 13818,
+      "boss_sinking": {
+        "potency": 10,
+        "count": 0
+      }
+    },
+    {
+      "turn": 8,
+      "phase": "greedy_burst",
+      "plan": [
+        {
+          "UseEgo": {
+            "actor": "sinner-0-10110",
+            "ego": "20109",
+            "kind": "Awakening",
+            "slot": 0,
+            "target": "enemy-7-9567"
+          }
+        },
+        {
+          "Engage": {
+            "actor": "sinner-1-10414",
+            "enemy": "enemy-7-9567",
+            "enemy_slot": 0,
+            "skill": "1041404",
+            "slot": 0
+          }
+        },
+        {
+          "UseEgo": {
+            "actor": "sinner-2-10813",
+            "ego": "20807",
+            "kind": "Overclock",
+            "slot": 0,
+            "target": "enemy-7-9567"
+          }
+        },
+        {
+          "UseEgo": {
+            "actor": "sinner-3-10913",
+            "ego": "20903",
+            "kind": "Overclock",
+            "slot": 0,
+            "target": "enemy-7-9567"
+          }
+        },
+        {
+          "UseEgo": {
+            "actor": "sinner-4-11004",
+            "ego": "21009",
+            "kind": "Overclock",
+            "slot": 0,
+            "target": "enemy-7-9567"
+          }
+        },
+        {
+          "Assign": {
+            "actor": "sinner-5-11114",
+            "skill": "1111401",
+            "slot": 0,
+            "target": "enemy-7-9567"
+          }
+        },
+        {
+          "UseEgo": {
+            "actor": "sinner-6-11214",
+            "ego": "21207",
+            "kind": "Awakening",
+            "slot": 0,
+            "target": "enemy-8-9572"
+          }
+        }
+      ],
+      "state_hash_before": "a4894f7d0c21b5de",
+      "state_hash_after": "10e74d4f1369fe75",
+      "transition_hash": "347449fc7b46836a",
+      "search_key": "c09b41b3d5e0747a",
+      "stats": {
+        "damage_to_allies": 107,
+        "damage_to_enemies": 929,
+        "deaths": [],
+        "ego_uses": [
+          "sinner-2-10813|20807",
+          "sinner-3-10913|20903",
+          "sinner-0-10110|20109",
+          "sinner-4-11004|21009",
+          "sinner-6-11214|21207"
+        ],
+        "sinking_damage": 442,
+        "sinking_sp_damage": 0,
+        "sinking_triggers": 49,
+        "skill_uses": [
+          "sinner-1-10414|1041404|0",
+          "sinner-2-10813|20807|0",
+          "enemy-7-9567|956711|1",
+          "sinner-3-10913|20903|0",
+          "enemy-7-9567|956711|2",
+          "sinner-5-11114|1111401|0",
+          "sinner-0-10110|20109|0",
+          "enemy-7-9567|956702|3",
+          "sinner-4-11004|21009|0",
+          "enemy-7-9567|956702|5",
+          "sinner-6-11214|21207|0",
+          "enemy-7-9567|956711|0",
+          "enemy-7-9567|956702|4"
+        ],
+        "status_damage": 0
+      },
+      "boss_hp": 12402,
+      "boss_sinking": {
+        "potency": 26,
+        "count": 0
+      }
+    },
+    {
+      "turn": 9,
+      "phase": "greedy_burst",
+      "plan": [
+        {
+          "Assign": {
+            "actor": "sinner-1-10414",
+            "skill": "1041401",
+            "slot": 0,
+            "target": "enemy-7-9567"
+          }
+        },
+        {
+          "UseEgo": {
+            "actor": "sinner-2-10813",
+            "ego": "20807",
+            "kind": "Overclock",
+            "slot": 0,
+            "target": "enemy-7-9567"
+          }
+        },
+        {
+          "UseEgo": {
+            "actor": "sinner-3-10913",
+            "ego": "20903",
+            "kind": "Overclock",
+            "slot": 0,
+            "target": "enemy-8-9572"
+          }
+        },
+        {
+          "UseEgo": {
+            "actor": "sinner-4-11004",
+            "ego": "21009",
+            "kind": "Awakening",
+            "slot": 0,
+            "target": "enemy-7-9567"
+          }
+        },
+        {
+          "Assign": {
+            "actor": "sinner-5-11114",
+            "skill": "1111401",
+            "slot": 0,
+            "target": "enemy-7-9567"
+          }
+        },
+        {
+          "UseEgo": {
+            "actor": "sinner-6-11214",
+            "ego": "21207",
+            "kind": "Awakening",
+            "slot": 0,
+            "target": "enemy-7-9567"
+          }
+        }
+      ],
+      "state_hash_before": "10e74d4f1369fe75",
+      "state_hash_after": "86c2eba954089dd2",
+      "transition_hash": "182c19b8480dbdab",
+      "search_key": "b417607378f862b7",
+      "stats": {
+        "damage_to_allies": 196,
+        "damage_to_enemies": 578,
+        "deaths": [],
+        "ego_uses": [
+          "sinner-3-10913|20903",
+          "sinner-4-11004|21009",
+          "sinner-6-11214|21207"
+        ],
+        "sinking_damage": 444,
+        "sinking_sp_damage": 0,
+        "sinking_triggers": 33,
+        "skill_uses": [
+          "sinner-3-10913|20903|0",
+          "sinner-5-11114|1111401|0",
+          "enemy-7-9567|956712|0",
+          "sinner-1-10414|1041401|0",
+          "enemy-7-9567|956703|3",
+          "sinner-4-11004|21009|0",
+          "sinner-6-11214|21207|0",
+          "enemy-7-9567|956703|2"
+        ],
+        "status_damage": 0
+      },
+      "boss_hp": 11506,
+      "boss_sinking": {
+        "potency": 14,
+        "count": 1
+      }
+    },
+    {
+      "turn": 10,
+      "phase": "greedy_burst",
+      "plan": [
+        {
+          "Assign": {
+            "actor": "sinner-1-10414",
+            "skill": "1041401",
+            "slot": 0,
+            "target": "enemy-7-9567"
+          }
+        },
+        {
+          "UseEgo": {
+            "actor": "sinner-3-10913",
+            "ego": "20903",
+            "kind": "Overclock",
+            "slot": 0,
+            "target": "enemy-7-9567"
+          }
+        },
+        {
+          "UseEgo": {
+            "actor": "sinner-4-11004",
+            "ego": "21009",
+            "kind": "Awakening",
+            "slot": 0,
+            "target": "enemy-7-9567"
+          }
+        },
+        {
+          "Assign": {
+            "actor": "sinner-5-11114",
+            "skill": "1111403",
+            "slot": 0,
+            "target": "enemy-7-9567"
+          }
+        },
+        {
+          "UseEgo": {
+            "actor": "sinner-6-11214",
+            "ego": "21207",
+            "kind": "Awakening",
+            "slot": 0,
+            "target": "enemy-7-9567"
+          }
+        }
+      ],
+      "state_hash_before": "86c2eba954089dd2",
+      "state_hash_after": "5fdb1002396f7398",
+      "transition_hash": "31389deebc0ed1f0",
+      "search_key": "0c1b2c7f99e4d86a",
+      "stats": {
+        "damage_to_allies": 65,
+        "damage_to_enemies": 707,
+        "deaths": [],
+        "ego_uses": [
+          "sinner-3-10913|20903",
+          "sinner-4-11004|21009",
+          "sinner-6-11214|21207"
+        ],
+        "sinking_damage": 238,
+        "sinking_sp_damage": 0,
+        "sinking_triggers": 33,
+        "skill_uses": [
+          "sinner-3-10913|20903|0",
+          "enemy-7-9567|956710|2",
+          "sinner-5-11114|1111403|0",
+          "enemy-7-9567|956710|0",
+          "sinner-1-10414|1041401|0",
+          "enemy-7-9567|956701|3",
+          "sinner-4-11004|21009|0",
+          "enemy-7-9567|956701|4",
+          "enemy-7-9567|956710|1",
+          "enemy-7-9567|956701|5",
+          "sinner-6-11214|21207|0"
+        ],
+        "status_damage": 0
+      },
+      "boss_hp": 10649,
+      "boss_sinking": {
+        "potency": 2,
+        "count": 0
+      }
+    },
+    {
+      "turn": 11,
+      "phase": "greedy_burst",
+      "plan": [
+        {
+          "UseEgo": {
+            "actor": "sinner-2-10813",
+            "ego": "20810",
+            "kind": "Overclock",
+            "slot": 0,
+            "target": "enemy-8-9572"
+          }
+        },
+        {
+          "Assign": {
+            "actor": "sinner-3-10913",
+            "skill": "1091307",
+            "slot": 0,
+            "target": "enemy-8-9572"
+          }
+        },
+        {
+          "UseEgo": {
+            "actor": "sinner-4-11004",
+            "ego": "21009",
+            "kind": "Awakening",
+            "slot": 0,
+            "target": "enemy-7-9567"
+          }
+        },
+        {
+          "Assign": {
+            "actor": "sinner-5-11114",
+            "skill": "1111401",
+            "slot": 0,
+            "target": "enemy-7-9567"
+          }
+        },
+        {
+          "UseEgo": {
+            "actor": "sinner-6-11214",
+            "ego": "21207",
+            "kind": "Awakening",
+            "slot": 0,
+            "target": "enemy-7-9567"
+          }
+        }
+      ],
+      "state_hash_before": "5fdb1002396f7398",
+      "state_hash_after": "5c2b95f2ecbdee00",
+      "transition_hash": "8a3059c62b720f2d",
+      "search_key": "6a70d85c3f87af50",
+      "stats": {
+        "damage_to_allies": 111,
+        "damage_to_enemies": 392,
+        "deaths": [],
+        "ego_uses": [
+          "sinner-4-11004|21009",
+          "sinner-6-11214|21207"
+        ],
+        "sinking_damage": 4,
+        "sinking_sp_damage": 0,
+        "sinking_triggers": 4,
+        "skill_uses": [
+          "sinner-3-10913|1091307|0",
+          "sinner-5-11114|1111401|0",
+          "enemy-7-9567|956711|0",
+          "sinner-4-11004|21009|0",
+          "enemy-7-9567|956702|3",
+          "sinner-6-11214|21207|0",
+          "enemy-7-9567|956702|4",
+          "enemy-7-9567|956702|5"
+        ],
+        "status_damage": 0
+      },
+      "boss_hp": 10331,
+      "boss_sinking": {
+        "potency": 3,
+        "count": 0
+      }
+    },
+    {
+      "turn": 12,
+      "phase": "greedy_burst",
+      "plan": [
+        {
+          "UseEgo": {
+            "actor": "sinner-4-11004",
+            "ego": "21009",
+            "kind": "Overclock",
+            "slot": 0,
+            "target": "enemy-7-9567"
+          }
+        },
+        {
+          "UseEgo": {
+            "actor": "sinner-6-11214",
+            "ego": "21207",
+            "kind": "Awakening",
+            "slot": 0,
+            "target": "enemy-7-9567"
+          }
+        }
+      ],
+      "state_hash_before": "5c2b95f2ecbdee00",
+      "state_hash_after": "f89d4e9cb7aa7d13",
+      "transition_hash": "ce1ff2e0b1c7dc75",
+      "search_key": "944624c190147672",
+      "stats": {
+        "damage_to_allies": 34,
+        "damage_to_enemies": 604,
+        "deaths": [
+          "sinner-5-11114"
+        ],
+        "ego_uses": [
+          "sinner-4-11004|21009",
+          "sinner-6-11214|21207"
+        ],
+        "sinking_damage": 3,
+        "sinking_sp_damage": 0,
+        "sinking_triggers": 3,
+        "skill_uses": [
+          "sinner-4-11004|21009|0",
+          "enemy-7-9567|956711|1",
+          "enemy-7-9567|956703|2",
+          "sinner-6-11214|21207|0"
+        ],
+        "status_damage": 0
+      },
+      "boss_hp": 9798,
+      "boss_sinking": {
+        "potency": 8,
+        "count": 0
+      }
+    },
+    {
+      "turn": 13,
+      "phase": "greedy_burst",
+      "plan": [
+        {
+          "Assign": {
+            "actor": "sinner-6-11214",
+            "skill": "1121402",
+            "slot": 0,
+            "target": "enemy-7-9567"
+          }
+        }
+      ],
+      "state_hash_before": "f89d4e9cb7aa7d13",
+      "state_hash_after": "c215aecd5d078430",
+      "transition_hash": "1dbe164a990430ab",
+      "search_key": "5a50f795add97c4e",
+      "stats": {
+        "damage_to_allies": 84,
+        "damage_to_enemies": 134,
+        "deaths": [],
+        "ego_uses": [],
+        "sinking_damage": 12,
+        "sinking_sp_damage": 0,
+        "sinking_triggers": 3,
+        "skill_uses": [
+          "sinner-6-11214|1121402|0",
+          "enemy-7-9567|956710|1",
+          "enemy-7-9567|956710|0",
+          "enemy-7-9567|956710|2",
+          "enemy-7-9567|956701|3",
+          "enemy-7-9567|956701|5"
+        ],
+        "status_damage": 0
+      },
+      "boss_hp": 9661,
+      "boss_sinking": {
+        "potency": 2,
+        "count": 1
+      }
+    },
+    {
+      "turn": 14,
+      "phase": "greedy_burst",
+      "plan": [],
+      "state_hash_before": "c215aecd5d078430",
+      "state_hash_after": "a4049731567f1a49",
+      "transition_hash": "e89b75b1ba73a34d",
+      "search_key": "4d17b076d29441dc",
+      "stats": {
+        "damage_to_allies": 56,
+        "damage_to_enemies": 0,
+        "deaths": [
+          "sinner-6-11214"
+        ],
+        "ego_uses": [],
+        "sinking_damage": 0,
+        "sinking_sp_damage": 0,
+        "sinking_triggers": 0,
+        "skill_uses": [
+          "enemy-7-9567|956711|0"
+        ],
+        "status_damage": 0
+      },
+      "boss_hp": 9659,
+      "boss_sinking": {
+        "potency": 2,
+        "count": 1
+      }
+    }
+  ]
+}

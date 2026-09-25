@@ -35,10 +35,10 @@ sim/           Rust workspace
 python/lcb/    environment wrapper + search + the training stack (see docs/TRAINING.md)
 search/        stage A: multi-turn search teacher + DAgger-lite data collection
 training/      stage B/C: behaviour cloning, PPO
-eval/          stage D: Random / FirstLegal / Greedy / AI evaluation
-models/        checkpoints (the shipped AI policy is `models/ai.npz`)
+eval/          stage D: Random / FirstLegal / Greedy / Teacher / BC / PPO evaluation
+models/        legacy checkpoints plus separate post-audit checkpoints (`*_post_audit.*`)
 data/teacher*/ stage A datasets (per-seed .npz, git-ignored)
-reports/       evaluation.json + one JSONL per policy
+reports/       legacy reports plus separately named post-audit summaries/replays
 replays/       the fastest win of every policy, with per-turn hashes
 docs/          MECHANICS.md (rule -> source), STATUS.md, TRAINING.md,
                TRAINING_PLAN.md, TRAINING_RESULTS.md, DATA.md, COVERAGE.md

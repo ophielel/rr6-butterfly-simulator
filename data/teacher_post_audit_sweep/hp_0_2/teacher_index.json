@@ -1,0 +1,508 @@
+{
+  "provenance": {
+    "generated_at": "2026-09-25T19:49:47+0800",
+    "python": "3.14.3",
+    "numpy": "2.4.6",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "git": {
+      "commit": "cf1964efec04d254f160c9e47a0c1014d346a014",
+      "dirty": true,
+      "branch": "main"
+    },
+    "data_fingerprint": "1aee247af8c6c874",
+    "scenario": {
+      "name": "real",
+      "enemies": [
+        "9567",
+        "9572",
+        "9573",
+        "9574"
+      ],
+      "max_turns": 30,
+      "enemy_hp_scale": 1.0,
+      "strict": true,
+      "infinite_ego_resources": true,
+      "description": "Line 6 Section 5 wave exactly as the data describes it (Imago 25616 HP)"
+    },
+    "seeds": {
+      "first": 1,
+      "last": 8,
+      "count": 8
+    },
+    "team": [
+      "10110",
+      "10414",
+      "10813",
+      "10913",
+      "11004",
+      "11114",
+      "11214"
+    ],
+    "teacher": {
+      "enemy_hp_scale": 0.2,
+      "scenario": "real",
+      "horizon": 3,
+      "plan_width": 16,
+      "candidate_cap": 4,
+      "turn_width": 3,
+      "rollout_width": 4,
+      "score_mode": "heuristic",
+      "max_turns": 20,
+      "out": "data\\teacher_post_audit_sweep\\hp_0_2",
+      "infinite_ego_resources": true
+    }
+  },
+  "elapsed_seconds": 17.6,
+  "summary": {
+    "episodes": 8,
+    "wins": 8,
+    "win_rate": 1.0,
+    "kill_turn_mean": 3.375,
+    "kill_turn_median": 3.0,
+    "kill_turn_p10": 3.0,
+    "kill_turn_p25": 3.0,
+    "fastest_kill_turn": 3.0,
+    "short_turn_threshold": 12,
+    "short_win_rate": 1.0,
+    "damage_to_enemies_mean": 3241.375,
+    "boss_hp_left_median": 0.0,
+    "survivors_mean": 6.5,
+    "sinking_damage_mean": 1834.75,
+    "axis_ok_rate": 0.0,
+    "axis_ok_rate_among_wins": 0.0,
+    "known_setup_like_rate": 0.0,
+    "direct_burst_rate": 1.0,
+    "peak_sinking_potency_mean": 22.5,
+    "peak_sinking_count_mean": 4.625,
+    "long_tail_failure_rate": 0.0,
+    "ego_use_turns": [
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      4,
+      4,
+      4,
+      4,
+      4,
+      5,
+      5,
+      5,
+      5,
+      5
+    ],
+    "errors": 0
+  },
+  "best_of_n": {
+    "n1": {
+      "windows": 8,
+      "window_win_rate": 1.0,
+      "best_kill_turn_min": 3,
+      "best_kill_turn_median": 3.0
+    }
+  },
+  "episodes": [
+    {
+      "seed": 1,
+      "won": true,
+      "winner": "Sinners",
+      "kill_turn": 3,
+      "turns": 3,
+      "boss_hp_left": 0.0,
+      "boss_hp_start": 5123.0,
+      "damage_to_enemies": 3268.0,
+      "damage_to_allies": 118.0,
+      "sinking_damage": 1689.0,
+      "sinking_triggers": 102,
+      "deaths": 0,
+      "survivors": 7,
+      "ego_uses": [
+        "sinner-0-10110|20109",
+        "sinner-2-10813|20810",
+        "sinner-6-11214|21207",
+        "sinner-4-11004|21009",
+        "sinner-3-10913|20903"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {
+          "20109": 2,
+          "21009": 2
+        },
+        "setup_ok": false,
+        "pair_ok": true,
+        "post_trigger_damage": 1119.0,
+        "pre_trigger_damage": 0,
+        "burst_ok": true,
+        "axis_ok": false,
+        "known_setup_like": false,
+        "direct_burst": true,
+        "peak_sinking_potency": 15,
+        "peak_sinking_count": 5,
+        "pre_burst_count": 0,
+        "setup_turn": null,
+        "burst_turn": 2
+      },
+      "search": {
+        "nodes": 0,
+        "transposition_hits": 15,
+        "plans": 27
+      }
+    },
+    {
+      "seed": 2,
+      "won": true,
+      "winner": "Sinners",
+      "kill_turn": 3,
+      "turns": 3,
+      "boss_hp_left": 0.0,
+      "boss_hp_start": 5123.0,
+      "damage_to_enemies": 3222.0,
+      "damage_to_allies": 309.0,
+      "sinking_damage": 1941.0,
+      "sinking_triggers": 130,
+      "deaths": 0,
+      "survivors": 7,
+      "ego_uses": [
+        "sinner-2-10813|20810",
+        "sinner-0-10110|20109",
+        "sinner-4-11004|21009",
+        "sinner-6-11214|21207",
+        "sinner-3-10913|20903"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {
+          "20109": 2,
+          "21009": 2
+        },
+        "setup_ok": false,
+        "pair_ok": true,
+        "post_trigger_damage": 516.0,
+        "pre_trigger_damage": 0,
+        "burst_ok": true,
+        "axis_ok": false,
+        "known_setup_like": false,
+        "direct_burst": true,
+        "peak_sinking_potency": 15,
+        "peak_sinking_count": 3,
+        "pre_burst_count": 0,
+        "setup_turn": null,
+        "burst_turn": 2
+      },
+      "search": {
+        "nodes": 0,
+        "transposition_hits": 12,
+        "plans": 24
+      }
+    },
+    {
+      "seed": 3,
+      "won": true,
+      "winner": "Sinners",
+      "kill_turn": 3,
+      "turns": 3,
+      "boss_hp_left": 0.0,
+      "boss_hp_start": 5123.0,
+      "damage_to_enemies": 3287.0,
+      "damage_to_allies": 271.0,
+      "sinking_damage": 1871.0,
+      "sinking_triggers": 127,
+      "deaths": 0,
+      "survivors": 7,
+      "ego_uses": [
+        "sinner-0-10110|20109",
+        "sinner-6-11214|21207",
+        "sinner-2-10813|20810",
+        "sinner-4-11004|21009",
+        "sinner-3-10913|20903"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {
+          "20109": 2,
+          "21009": 2
+        },
+        "setup_ok": false,
+        "pair_ok": true,
+        "post_trigger_damage": 1419.0,
+        "pre_trigger_damage": 0,
+        "burst_ok": true,
+        "axis_ok": false,
+        "known_setup_like": false,
+        "direct_burst": true,
+        "peak_sinking_potency": 35,
+        "peak_sinking_count": 4,
+        "pre_burst_count": 0,
+        "setup_turn": null,
+        "burst_turn": 2
+      },
+      "search": {
+        "nodes": 0,
+        "transposition_hits": 12,
+        "plans": 30
+      }
+    },
+    {
+      "seed": 4,
+      "won": true,
+      "winner": "Sinners",
+      "kill_turn": 3,
+      "turns": 3,
+      "boss_hp_left": 0.0,
+      "boss_hp_start": 5123.0,
+      "damage_to_enemies": 3335.0,
+      "damage_to_allies": 110.0,
+      "sinking_damage": 1637.0,
+      "sinking_triggers": 124,
+      "deaths": 0,
+      "survivors": 7,
+      "ego_uses": [
+        "sinner-3-10913|20903",
+        "sinner-2-10813|20810",
+        "sinner-6-11214|21207",
+        "sinner-0-10110|20109",
+        "sinner-4-11004|21009"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {
+          "20109": 2,
+          "21009": 2
+        },
+        "setup_ok": false,
+        "pair_ok": true,
+        "post_trigger_damage": 1596.0,
+        "pre_trigger_damage": 0,
+        "burst_ok": true,
+        "axis_ok": false,
+        "known_setup_like": false,
+        "direct_burst": true,
+        "peak_sinking_potency": 15,
+        "peak_sinking_count": 8,
+        "pre_burst_count": 0,
+        "setup_turn": null,
+        "burst_turn": 2
+      },
+      "search": {
+        "nodes": 0,
+        "transposition_hits": 15,
+        "plans": 27
+      }
+    },
+    {
+      "seed": 5,
+      "won": true,
+      "winner": "Sinners",
+      "kill_turn": 5,
+      "turns": 5,
+      "boss_hp_left": 0.0,
+      "boss_hp_start": 5123.0,
+      "damage_to_enemies": 3720.0,
+      "damage_to_allies": 730.0,
+      "sinking_damage": 1677.0,
+      "sinking_triggers": 139,
+      "deaths": 2,
+      "survivors": 4,
+      "ego_uses": [
+        "sinner-2-10813|20810",
+        "sinner-0-10110|20109",
+        "sinner-4-11004|21009",
+        "sinner-6-11214|21207",
+        "sinner-3-10913|20903"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {
+          "20109": 2,
+          "21009": 2
+        },
+        "setup_ok": false,
+        "pair_ok": true,
+        "post_trigger_damage": 1504.0,
+        "pre_trigger_damage": 0,
+        "burst_ok": true,
+        "axis_ok": false,
+        "known_setup_like": false,
+        "direct_burst": true,
+        "peak_sinking_potency": 15,
+        "peak_sinking_count": 6,
+        "pre_burst_count": 0,
+        "setup_turn": null,
+        "burst_turn": 2
+      },
+      "search": {
+        "nodes": 0,
+        "transposition_hits": 48,
+        "plans": 42
+      }
+    },
+    {
+      "seed": 6,
+      "won": true,
+      "winner": "Sinners",
+      "kill_turn": 4,
+      "turns": 4,
+      "boss_hp_left": 0.0,
+      "boss_hp_start": 5123.0,
+      "damage_to_enemies": 3047.0,
+      "damage_to_allies": 360.0,
+      "sinking_damage": 1831.0,
+      "sinking_triggers": 123,
+      "deaths": 0,
+      "survivors": 6,
+      "ego_uses": [
+        "sinner-0-10110|20109",
+        "sinner-2-10813|20810",
+        "sinner-4-11004|21009",
+        "sinner-6-11214|21207",
+        "sinner-3-10913|20903"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {
+          "20109": 2,
+          "21009": 2
+        },
+        "setup_ok": false,
+        "pair_ok": true,
+        "post_trigger_damage": 1331.0,
+        "pre_trigger_damage": 0,
+        "burst_ok": true,
+        "axis_ok": false,
+        "known_setup_like": false,
+        "direct_burst": true,
+        "peak_sinking_potency": 15,
+        "peak_sinking_count": 3,
+        "pre_burst_count": 0,
+        "setup_turn": null,
+        "burst_turn": 2
+      },
+      "search": {
+        "nodes": 0,
+        "transposition_hits": 24,
+        "plans": 36
+      }
+    },
+    {
+      "seed": 7,
+      "won": true,
+      "winner": "Sinners",
+      "kill_turn": 3,
+      "turns": 3,
+      "boss_hp_left": 0.0,
+      "boss_hp_start": 5123.0,
+      "damage_to_enemies": 3023.0,
+      "damage_to_allies": 65.0,
+      "sinking_damage": 1923.0,
+      "sinking_triggers": 131,
+      "deaths": 0,
+      "survivors": 7,
+      "ego_uses": [
+        "sinner-0-10110|20109",
+        "sinner-3-10913|20903",
+        "sinner-2-10813|20810",
+        "sinner-6-11214|21207",
+        "sinner-4-11004|21009"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {
+          "20109": 2,
+          "21009": 2
+        },
+        "setup_ok": false,
+        "pair_ok": true,
+        "post_trigger_damage": 1487.0,
+        "pre_trigger_damage": 0,
+        "burst_ok": true,
+        "axis_ok": false,
+        "known_setup_like": false,
+        "direct_burst": true,
+        "peak_sinking_potency": 38,
+        "peak_sinking_count": 3,
+        "pre_burst_count": 0,
+        "setup_turn": null,
+        "burst_turn": 2
+      },
+      "search": {
+        "nodes": 0,
+        "transposition_hits": 9,
+        "plans": 30
+      }
+    },
+    {
+      "seed": 8,
+      "won": true,
+      "winner": "Sinners",
+      "kill_turn": 3,
+      "turns": 3,
+      "boss_hp_left": 0.0,
+      "boss_hp_start": 5123.0,
+      "damage_to_enemies": 3029.0,
+      "damage_to_allies": 140.0,
+      "sinking_damage": 2109.0,
+      "sinking_triggers": 127,
+      "deaths": 0,
+      "survivors": 7,
+      "ego_uses": [
+        "sinner-2-10813|20810",
+        "sinner-0-10110|20109",
+        "sinner-4-11004|21009",
+        "sinner-6-11214|21207",
+        "sinner-3-10913|20903"
+      ],
+      "axis_ok": false,
+      "axis": {
+        "first_ego_turn": {
+          "20109": 2,
+          "21009": 2
+        },
+        "setup_ok": false,
+        "pair_ok": true,
+        "post_trigger_damage": 1328.0,
+        "pre_trigger_damage": 0,
+        "burst_ok": true,
+        "axis_ok": false,
+        "known_setup_like": false,
+        "direct_burst": true,
+        "peak_sinking_potency": 32,
+        "peak_sinking_count": 5,
+        "pre_burst_count": 0,
+        "setup_turn": null,
+        "burst_turn": 2
+      },
+      "search": {
+        "nodes": 0,
+        "transposition_hits": 15,
+        "plans": 21
+      }
+    }
+  ]
+}

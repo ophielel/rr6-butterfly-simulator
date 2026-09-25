@@ -9629,9 +9629,9 @@
   "20106.awakening@1": {
    "attack_end": [
     {
-     "kind": "inflict",
-     "multiplier": 1,
-     "raw": "[Attack End] Randomly inflict (6 + Gloom Reson.) [Sinking] between targets",
+     "kind": "inflict_random_each",
+     "multiplier_f": 1.5,
+     "raw": "[Attack End] Randomly inflict (6 + (Gloom Reson. x1.5)) [Sinking] between targets",
      "resonance_of": "Gloom",
      "status": "Sinking",
      "value": 6
@@ -9679,6 +9679,15 @@
      "kind": "attack_weight",
      "raw": "[Before Attack] At 3+ (Gloom Reson.), Atk Weight +1",
      "value": 1
+    },
+    {
+     "condition": {
+      "resonance_gte": 5,
+      "resonance_of": "Gloom"
+     },
+     "kind": "attack_weight",
+     "raw": "[Before Attack] At 5+ (Gloom Reson.), additional Atk Weight +1",
+     "value": 1
     }
    ],
    "clash_lose": [],
@@ -9710,10 +9719,10 @@
        "source": "target",
        "status": "Sinking"
       },
-      "count": 1,
+      "count": 2,
       "kind": "inflict",
       "next_turn": true,
-      "raw": "[On Hit] If target has 6+ [Sinking], inflict 1 [Bind] next turn",
+      "raw": "[On Hit] If target has 6+ [Sinking], inflict 2 [Bind] next turn",
       "status": "Bind"
      }
     ]
@@ -9760,6 +9769,13 @@
       "potency": 1,
       "raw": "[On Hit] Inflict 1 random [Butterfly]",
       "status": "Butterfly"
+     },
+     {
+      "coin_index": 1,
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +1 [Sinking] Count",
+      "status": "Sinking"
      }
     ],
     "2": [
@@ -9770,6 +9786,13 @@
       "potency": 2,
       "raw": "[On Hit] Inflict 2 random [Butterfly]",
       "status": "Butterfly"
+     },
+     {
+      "coin_index": 2,
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +1 [Sinking] Count",
+      "status": "Sinking"
      }
     ],
     "3": [
@@ -9780,6 +9803,13 @@
       "potency": 2,
       "raw": "[On Hit] Inflict 2 random [Butterfly]",
       "status": "Butterfly"
+     },
+     {
+      "coin_index": 3,
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +1 [Sinking] Count",
+      "status": "Sinking"
      }
     ],
     "4": [
@@ -9790,6 +9820,20 @@
       "potency": 3,
       "raw": "[On Hit] Inflict 3 random [Butterfly]",
       "status": "Butterfly"
+     },
+     {
+      "coin_index": 4,
+      "count": 1,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +1 [Sinking] Count",
+      "status": "Sinking"
+     },
+     {
+      "coin_index": 4,
+      "kind": "inflict",
+      "potency": 1,
+      "raw": "[On Hit] Inflict 1 [Gloom Fragility] and 1 [Gloom Resist Down], this turn and next turn",
+      "status": "Gloom Fragility"
      }
     ],
     "5": [
@@ -9859,6 +9903,23 @@
    "on_kill": [],
    "on_use": [
     {
+     "condition": {
+      "component": "potency",
+      "source": "target",
+      "statuses": [
+       "Sinking",
+       "Butterfly",
+       "Butterfly"
+      ]
+     },
+     "kind": "clash_power",
+     "max": 4,
+     "per": 4,
+     "raw": "Clash Power +1 for every 4 ([Sinking] + both [Butterfly]) on the main target (max 4)",
+     "step": 1,
+     "value": 0
+    },
+    {
      "kind": "noop",
      "note": "identity gate (always true for this team)",
      "raw": "If Lobotomy E.G.O::Solemn Lament Yi Sang used this Skill:"
@@ -9869,7 +9930,10 @@
    ],
    "turn_end": [],
    "turn_start": [],
-   "unmodeled": []
+   "unmodeled": [
+    "[On Hit] Inflict 1 [Gloom Fragility] and 1 [Gloom Resist Down], this turn and next turn  [unparsed: 1 [Gloom Resist Down], this turn]",
+    "[On Hit] Inflict 1 [Gloom Fragility] and 1 [Gloom Resist Down], this turn and next turn  [unparsed: next turn]"
+   ]
   },
   "20109.corrosion@1": {
    "attack_end": [],
@@ -9911,6 +9975,13 @@
       "potency": 3,
       "raw": "[On Hit] Inflict 3 [Butterfly](The Departed)",
       "status": "Butterfly"
+     },
+     {
+      "coin_index": 2,
+      "kind": "inflict",
+      "potency": 1,
+      "raw": "[On Hit] Inflict 1 [Gloom Fragility] and 1 [Gloom Resist Down], this turn and next turn",
+      "status": "Gloom Fragility"
      }
     ],
     "3": [
@@ -9940,6 +10011,13 @@
       "kind": "gloom_damage_equal_target_status",
       "raw": "[On Hit] Deal Gloom damage equal to the sum of both [Butterfly] on target",
       "status": "Butterfly"
+     },
+     {
+      "coin_index": 3,
+      "component": "potency",
+      "kind": "gloom_damage_equal_target_status",
+      "raw": "[On Hit] Deal Gloom damage equal to [Sinking] on target",
+      "status": "Sinking"
      }
     ]
    },
@@ -9948,13 +10026,34 @@
    "note": "Solemn Lament",
    "on_evade": [],
    "on_kill": [],
-   "on_use": [],
+   "on_use": [
+    {
+     "condition": {
+      "component": "potency",
+      "source": "target",
+      "statuses": [
+       "Sinking",
+       "Butterfly",
+       "Butterfly"
+      ]
+     },
+     "kind": "clash_power",
+     "max": 4,
+     "per": 4,
+     "raw": "Clash Power +1 for every 4 ([Sinking] + both [Butterfly]) on the main target (max 4)",
+     "step": 1,
+     "value": 0
+    }
+   ],
    "tags": [
     "targets_random"
    ],
    "turn_end": [],
    "turn_start": [],
-   "unmodeled": []
+   "unmodeled": [
+    "[On Hit] Inflict 1 [Gloom Fragility] and 1 [Gloom Resist Down], this turn and next turn  [unparsed: 1 [Gloom Resist Down], this turn]",
+    "[On Hit] Inflict 1 [Gloom Fragility] and 1 [Gloom Resist Down], this turn and next turn  [unparsed: next turn]"
+   ]
   },
   "20807.awakening@1": {
    "attack_end": [
@@ -9970,9 +10069,9 @@
      },
      "include_self": true,
      "kind": "heal_percent_hp",
-     "max": 15,
+     "max": 20,
      "per": 3,
-     "raw": "[Attack End] Heal 2 allies with the lowest HP percentages by (10 + ([Sinking] on the main target + [Sinking] Count on the main target)/3)% HP (max 15%)",
+     "raw": "[Attack End] Heal 2 allies with the lowest HP percentages by (10 + ([Sinking] on the main target + [Sinking] Count on the main target)/3)% HP (max 20%)",
      "step": 1,
      "value": 10
     }
@@ -10002,16 +10101,16 @@
     "1": [
      {
       "coin_index": 1,
-      "count": 2,
+      "count": 3,
       "kind": "inflict",
-      "raw": "[On Hit] Inflict +2 [Sinking] Count",
+      "raw": "[On Hit] Inflict +3 [Sinking] Count",
       "status": "Sinking"
      },
      {
       "coin_index": 1,
       "kind": "inflict",
-      "potency": 1,
-      "raw": "[On Hit] Inflict 1 [Curse]",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Curse]",
       "status": "Curse"
      },
      {
@@ -10043,7 +10142,9 @@
    "tags": [],
    "turn_end": [],
    "turn_start": [],
-   "unmodeled": []
+   "unmodeled": [
+    "If the highest Reson. was a 4+ Gloom Reson., heal 10% more of the max HP"
+   ]
   },
   "20807.corrosion@1": {
    "attack_end": [
@@ -10100,9 +10201,9 @@
     "1": [
      {
       "coin_index": 1,
-      "count": 2,
+      "count": 3,
       "kind": "inflict",
-      "raw": "[On Hit] Inflict +2 [Sinking] Count",
+      "raw": "[On Hit] Inflict +3 [Sinking] Count",
       "status": "Sinking"
      },
      {
@@ -10111,17 +10212,6 @@
       "potency": 2,
       "raw": "[On Hit] Inflict 2 [Curse]",
       "status": "Curse"
-     },
-     {
-      "coin_index": 1,
-      "condition": {
-       "resonance_gte": 3,
-       "resonance_of": "Gloom"
-      },
-      "kind": "inflict",
-      "potency": 1,
-      "raw": "[On Hit] At 3+ Gloom Reson., inflict 1 [Gloom Fragility]",
-      "status": "Gloom Fragility"
      },
      {
       "coin_index": 1,
@@ -10151,7 +10241,10 @@
    ],
    "turn_end": [],
    "turn_start": [],
-   "unmodeled": []
+   "unmodeled": [
+    "If the said Reson. was a Gloom Reson., heal an additional 5% HP",
+    "[On Hit] For every 3 Gloom Reson., inflict 1 [Gloom Fragility] (max 2)"
+   ]
   },
   "20810.awakening@1": {
    "attack_end": [
@@ -10171,9 +10264,9 @@
    "before_attack": [
     {
      "kind": "damage_percent_from_resist",
-     "max": 15,
-     "raw": "[Before Attack] If the main target has higher than 1 Gloom Resist., deal +3% damage for every 0.1 excess Resist. (max 15%)",
-     "step": 3,
+     "max": 20,
+     "raw": "[Before Attack] If the main target has higher than 1 Gloom Resist., deal +5% damage for every 0.1 excess Resist. (max 20%)",
+     "step": 5,
      "value": 10
     },
     {
@@ -10182,10 +10275,10 @@
       "resonance_of": "Gloom"
      },
      "kind": "damage_percent_per_resonance",
-     "max": 32,
-     "raw": "[Before Attack] At 2+ Gloom Reson., deal +8% damage for every Gloom Reson. (max 32%)",
+     "max": 40,
+     "raw": "[Before Attack] At 2+ Gloom Reson., deal +10% damage for every Gloom Reson. (max 40%)",
      "resonance_of": "Gloom",
-     "step": 8
+     "step": 10
     }
    ],
    "clash_lose": [],
@@ -10195,25 +10288,25 @@
      {
       "coin_index": 1,
       "kind": "inflict",
-      "potency": 2,
-      "raw": "[On Hit] Inflict 2 [Sinking]",
+      "potency": 3,
+      "raw": "[On Hit] Inflict 3 [Sinking]",
       "status": "Sinking"
      },
      {
       "coin_index": 1,
       "kind": "inflict",
-      "potency": 2,
-      "raw": "[On Hit] Inflict 2 [Tremor]",
+      "potency": 3,
+      "raw": "[On Hit] Inflict 3 [Tremor]",
       "status": "Tremor"
      }
     ],
     "2": [
      {
       "coin_index": 2,
-      "count": 1,
+      "count": 2,
       "kind": "inflict",
       "next_turn": true,
-      "raw": "[On Hit without Cracking] Inflict 1 [Bind] next turn",
+      "raw": "[On Hit without Cracking] Inflict 2 [Bind] next turn",
       "status": "Bind"
      }
     ],
@@ -10261,13 +10354,16 @@
     },
     {
      "condition": {
-      "gte": 4,
+      "component": "potency",
       "source": "target",
       "status": "Sinking"
      },
      "kind": "clash_power",
-     "raw": "[On Use] If the main target has 4+ [Sinking], Clash Power +1",
-     "value": 1
+     "max": 2,
+     "per": 4,
+     "raw": "[On Use] Clash Power +1 for every 4 [Sinking] on the main target (max 2)",
+     "step": 1,
+     "value": 0
     }
    ],
    "tags": [],
@@ -10302,18 +10398,15 @@
    ],
    "before_attack": [
     {
-     "from_resonance": true,
      "kind": "attack_weight",
-     "per": 3,
      "raw": "Gain +1 Atk Weight (max 2)",
-     "step": 1
+     "value": 1
     },
     {
-     "kind": "damage_percent_per_resonance",
+     "kind": "damage_percent",
      "max": 30,
-     "per": 3,
      "raw": "Deal +15% damage (max 30%)",
-     "step": 15
+     "value": 15
     }
    ],
    "clash_lose": [],
@@ -10332,8 +10425,8 @@
      {
       "coin_index": 2,
       "kind": "inflict",
-      "potency": 1,
-      "raw": "[On Hit] Inflict 1 [Sinking]",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Sinking]",
       "status": "Sinking"
      }
     ],
@@ -10350,8 +10443,8 @@
      {
       "coin_index": 4,
       "kind": "inflict",
-      "potency": 1,
-      "raw": "[On Hit] Inflict 1 [Tremor]",
+      "potency": 2,
+      "raw": "[On Hit] Inflict 2 [Tremor]",
       "status": "Tremor"
      },
      {
@@ -10384,9 +10477,9 @@
       "status": "Sinking"
      },
      "kind": "clash_power",
-     "max": 2,
+     "max": 3,
      "per": 5,
-     "raw": "[On Use] Clash Power +1 for every 5 [Sinking] on the main target (max 2)",
+     "raw": "[On Use] Clash Power +1 for every 5 [Sinking] on the main target (max 3)",
      "step": 1,
      "value": 0
     }
@@ -10396,7 +10489,9 @@
    ],
    "turn_end": [],
    "turn_start": [],
-   "unmodeled": []
+   "unmodeled": [
+    "[Before Attack] Gain the following effects for every 3 highest Reson. (if it was a Gloom Reson., for every 2 highest Reson.)"
+   ]
   },
   "20903.awakening@1": {
    "attack_end": [],
@@ -10412,9 +10507,16 @@
      },
      {
       "coin_index": 1,
-      "count": 3,
       "kind": "inflict",
-      "raw": "[On Hit] Inflict +3 [Sinking] Count",
+      "potency": 5,
+      "raw": "[On Hit] Inflict 5 [Sinking]",
+      "status": "Sinking"
+     },
+     {
+      "coin_index": 1,
+      "count": 5,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +5 [Sinking] Count",
       "status": "Sinking"
      }
     ]
@@ -10454,9 +10556,16 @@
      },
      {
       "coin_index": 1,
-      "count": 6,
       "kind": "inflict",
-      "raw": "[On Hit] Inflict +6 [Sinking] Count",
+      "potency": 10,
+      "raw": "[On Hit] Inflict 10 [Sinking]",
+      "status": "Sinking"
+     },
+     {
+      "coin_index": 1,
+      "count": 8,
+      "kind": "inflict",
+      "raw": "[On Hit] Inflict +8 [Sinking] Count",
       "status": "Sinking"
      }
     ]
@@ -10493,8 +10602,8 @@
      "include_self": false,
      "kind": "sp_heal",
      "max": 4,
-     "raw": "[Attack End] Heal 10 SP for (1 + highest Reson.) other allies with the least SP (max 4 units)",
-     "value": 10
+     "raw": "[Attack End] Heal 12 SP for (1 + highest Reson.) other allies with the least SP (max 4 units)",
+     "value": 12
     },
     {
      "kind": "combat_end_sp_damage",
@@ -10547,9 +10656,9 @@
       "kind": "gain",
       "next_turn": true,
       "per_turn": 1,
-      "range_max": 2,
+      "range_max": 3,
       "range_min": 1,
-      "raw": "[On Hit] A random ally gains 1 ~ 2 [Rhythm] next turn (once per Coin)",
+      "raw": "[On Hit] A random ally gains 1 ~ 3 [Rhythm] next turn (once per Coin)",
       "status": "Rhythm"
      }
     ]
@@ -10607,16 +10716,16 @@
       ]
      },
      "kind": "clash_power",
-     "max": 8,
+     "max": 10,
      "per": 2,
-     "raw": "Clash Power +1 for every 2 ([Bleed] + [Burn]) on the main target (max 8)",
+     "raw": "Clash Power +1 for every 2 ([Bleed] + [Burn]) on the main target (max 10)",
      "step": 1,
      "value": 0
     },
     {
-     "damage_percent_missing_hp": 15,
+     "damage_percent_missing_hp": 20,
      "kind": "damage_percent_missing_hp",
-     "raw": "Deal more damage based on missing HP on self (max 15%)"
+     "raw": "Deal more damage based on missing HP on self (max 20%)"
     },
     {
      "kind": "sub_target_damage",
@@ -10636,8 +10745,8 @@
      "ally_count": 4,
      "include_self": false,
      "kind": "sp_heal",
-     "raw": "[Attack End] Heal 12 SP for 4 other allies with the least SP",
-     "value": 12
+     "raw": "[Attack End] Heal 15 SP for 4 other allies with the least SP",
+     "value": 15
     },
     {
      "kind": "compound",
@@ -10771,9 +10880,9 @@
       "kind": "gain",
       "next_turn": true,
       "per_turn": 1,
-      "range_max": 2,
+      "range_max": 3,
       "range_min": 1,
-      "raw": "[On Hit] A random ally gains 1 ~ 2 [Rhythm] next turn (once per Coin)",
+      "raw": "[On Hit] A random ally gains 1 ~ 3 [Rhythm] next turn (once per Coin)",
       "status": "Rhythm"
      }
     ]
@@ -10794,16 +10903,16 @@
       ]
      },
      "kind": "clash_power",
-     "max": 8,
+     "max": 10,
      "per": 2,
-     "raw": "Clash Power +1 for every 2 ([Bleed] + [Burn]) on the main target (max 8)",
+     "raw": "Clash Power +1 for every 2 ([Bleed] + [Burn]) on the main target (max 10)",
      "step": 1,
      "value": 0
     },
     {
-     "damage_percent_missing_hp": 15,
+     "damage_percent_missing_hp": 20,
      "kind": "damage_percent_missing_hp",
-     "raw": "Deal more damage based on missing HP on self (max 15%)"
+     "raw": "Deal more damage based on missing HP on self (max 20%)"
     },
     {
      "kind": "sub_target_damage",
@@ -10825,20 +10934,20 @@
      "ally_count": 2,
      "include_self": true,
      "kind": "sp_heal",
-     "raw": "[Attack End] Heal 12 SP to self and 2 other allies with the least SP",
-     "value": 12
+     "raw": "[Attack End] Heal 15 SP to self and 2 other allies with the least SP",
+     "value": 15
     },
     {
      "condition": {
       "target_survived": true
      },
      "kind": "compound",
-     "raw": "If target survives this attack, consume 5 [Sinking] Count on target, then heal additional SP(to self & affected allies) equal to [Sinking] Potency on target (Max SP heal: 20)",
+     "raw": "If target survives this attack, consume 3 [Sinking] Count on target, then heal additional SP(to self & affected allies) equal to [Sinking] Potency on target (Max SP heal: 20)",
      "sub_effects": [
       {
        "kind": "lose_status_count",
        "status": "Sinking",
-       "value": 5
+       "value": 3
       },
       {
        "ally": "all_allies",
@@ -10855,18 +10964,18 @@
       "target_defeated": true
      },
      "kind": "compound",
-     "raw": "If target is defeated, inflict 3 [Sinking] and 1 [Curse] on 2 random enemies (For Focused Encounters, random Parts)",
+     "raw": "If target is defeated, inflict 3 [Sinking] and 1 [Curse] on 3 random enemies (For Focused Encounters, random Parts)",
      "sub_effects": [
       {
        "ally": "random",
-       "ally_count": 2,
+       "ally_count": 3,
        "kind": "inflict",
        "potency": 3,
        "status": "Sinking"
       },
       {
        "ally": "random",
-       "ally_count": 2,
+       "ally_count": 3,
        "kind": "inflict",
        "potency": 1,
        "status": "Curse"
@@ -10899,7 +11008,7 @@
      {
       "coin_index": 1,
       "kind": "compound",
-      "raw": "[On Hit] Inflict 2 [Gloom Fragility]. Inflict 1 additional [Gloom Fragility] for every 3 Gloom Reson. (max 2)",
+      "raw": "[On Hit] Inflict 2 [Gloom Fragility]. Inflict 1 additional [Gloom Fragility] for every 2 Gloom Reson. (max 2)",
       "sub_effects": [
        {
         "kind": "inflict",
@@ -10910,7 +11019,7 @@
         "kind": "inflict",
         "max": 2,
         "multiplier": 1,
-        "per": 3,
+        "per": 2,
         "potency": 1,
         "resonance_of": "Gloom",
         "status": "Gloom Fragility",
@@ -10928,8 +11037,8 @@
      {
       "coin_index": 1,
       "kind": "inflict",
-      "potency": 2,
-      "raw": "[On Hit] Inflict 2 [Curse]",
+      "potency": 3,
+      "raw": "[On Hit] Inflict 3 [Curse]",
       "status": "Curse"
      }
     ]
@@ -10939,7 +11048,18 @@
    "note": "Bygone Days",
    "on_evade": [],
    "on_kill": [],
-   "on_use": [],
+   "on_use": [
+    {
+     "condition": {
+      "gte": 1,
+      "source": "target",
+      "status": "Curse"
+     },
+     "kind": "damage_percent",
+     "raw": "If target has [Curse], deal +50% damage",
+     "value": 50
+    }
+   ],
    "tags": [
     "targets_random"
    ],
@@ -10953,8 +11073,8 @@
      "ally": "self",
      "coin_index": 3,
      "kind": "heal_per_coin_hits",
-     "raw": "[Attack End] Heal (# of Coin 3 hits x 2) SP",
-     "value": 2
+     "raw": "[Attack End] Heal (# of Coin 3 hits x 3) SP",
+     "value": 3
     }
    ],
    "before_attack": [],
@@ -11045,16 +11165,16 @@
       "butterfly_part": "living",
       "coin_index": 1,
       "kind": "inflict",
-      "potency": 4,
-      "raw": "[On Hit] Inflict 4 [Butterfly](The Living)",
+      "potency": 5,
+      "raw": "[On Hit] Inflict 5 [Butterfly](The Living)",
       "status": "Butterfly"
      },
      {
       "butterfly_part": "departed",
       "coin_index": 1,
       "kind": "inflict",
-      "potency": 4,
-      "raw": "[On Hit] Inflict 4 [Butterfly](The Departed)",
+      "potency": 5,
+      "raw": "[On Hit] Inflict 5 [Butterfly](The Departed)",
       "status": "Butterfly"
      },
      {
@@ -11063,6 +11183,11 @@
       "kind": "inflict",
       "raw": "[On Hit] Inflict +3 [Sinking] Count",
       "status": "Sinking"
+     },
+     {
+      "coin_index": 1,
+      "kind": "noop",
+      "raw": "\"All\" = the sum of both The Living and The Departed on target"
      }
     ]
    },
@@ -11107,7 +11232,9 @@
    ],
    "turn_end": [],
    "turn_start": [],
-   "unmodeled": []
+   "unmodeled": [
+    "[On Hit] If target has 50%- HP, inflict Gloom Damage equal to \"All\" [Butterfly] values on target"
+   ]
   },
   "956301@1": {
    "attack_end": [],

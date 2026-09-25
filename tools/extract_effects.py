@@ -552,12 +552,18 @@ PATTERNS = [
     # ------------------------------------------------------------------ #
     # E.G.O: Sin Resonance gates, attack adders and Butterfly
     # ------------------------------------------------------------------ #
+    (re.compile(rf"^Randomly inflict \({N} \+ \(Gloom Reson\. x1\.5\)\) {ST} between targets$"),
+     lambda m: {"kind": "inflict_random_each", "status": m.group(2), "value": int(m.group(1)),
+                "multiplier_f": 1.5, "resonance_of": "Gloom"}),
     (re.compile(rf"^Randomly inflict \({N} \+ Gloom Reson\.\) {ST} between targets$"),
      lambda m: {"kind": "inflict", "status": m.group(2), "value": int(m.group(1)),
                 "multiplier": 1, "resonance_of": "Gloom"}),
     (re.compile(rf"^If target has {N}\+ {ST}, inflict {N} {ST}$"),
      lambda m: {"kind": "inflict", "status": m.group(4), "potency": int(m.group(3)),
                 "condition": {"source": "target", "status": m.group(2), "gte": int(m.group(1))}}),
+    (re.compile(rf"^At {N}\+ \(Gloom Reson\.\), additional Atk Weight \+{N}$"),
+     lambda m: {"kind": "attack_weight", "value": int(m.group(2)),
+                "condition": {"resonance_gte": int(m.group(1)), "resonance_of": "Gloom"}}),
     (re.compile(rf"^At {N}\+ \(Gloom Reson\.\), Atk Weight \+{N}$"),
      lambda m: {"kind": "attack_weight", "value": int(m.group(2)),
                 "condition": {"resonance_gte": int(m.group(1)), "resonance_of": "Gloom"}}),

@@ -73,7 +73,7 @@ def main() -> int:
     parser.add_argument("--short-turn", type=int, default=0)
     args = parser.parse_args()
 
-    from lcb.evaluate import best_of_n, provenance, replay_index, summarise
+    from lcb.evaluate import best_of_n, provenance, replay_index, restart_aware, summarise
     from lcb.scenarios import scenario
 
     reports = Path(args.reports)
@@ -95,6 +95,7 @@ def main() -> int:
         policies[policy] = {
             "summary": summarise(rows, short_turn=short_turn),
             "best_of_n": best_of_n(rows, (1, 10, 50)),
+            "restart_aware": restart_aware(rows, turn_threshold=8),
             "fastest_kill_turn": min(
                 (r["kill_turn"] for r in rows if r.get("kill_turn")), default=None
             ),

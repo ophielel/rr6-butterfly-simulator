@@ -426,8 +426,8 @@ def build_ego(game_id: str, meta, en_egos, zh_egos) -> dict:
             # (`setup::sin_key`), so E.G.O costs use the same spelling.
             costs[sin.lower()] = value
     def pick_skill(prefix: str) -> Optional[wt.Template]:
-        """Highest threadspin variant of an E.G.O skill (`askill4` > `askill3` > ...)."""
-        for suffix in ("4", "3", "2", ""):
+        """Wiki.gg stores the current variant unnumbered; numbered ones are older."""
+        for suffix in ("", "4", "3", "2"):
             raw = page.get(f"{prefix}{suffix}")
             if raw:
                 found = wt.find_template(raw, "Skill")

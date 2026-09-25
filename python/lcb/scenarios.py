@@ -26,8 +26,10 @@ is a race the current content loses; a reachable terminal win is required to
 measure `kill_turn`, short-win rates and best-of-N at all.  The knob changes the
 HP pool and nothing else, and `provenance()` writes it into every report.
 
-`Scenario.enemy_hp_scale` is documented in `BattleConfig` as a scenario knob, not
-a game rule, and `provenance()` writes it into every report.
+All three formal research scenes enable `infinite_ego_resources=True`; this is an
+explicit experiment condition, not a game rule. `Scenario.enemy_hp_scale` is
+documented in `BattleConfig` as a scenario knob, not a game rule, and
+`provenance()` writes both settings into every report.
 """
 
 from __future__ import annotations
@@ -41,6 +43,7 @@ REAL = Scenario(
     max_turns=30,
     enemy_hp_scale=1.0,
     strict=True,
+    infinite_ego_resources=True,
     description="Line 6 Section 5 wave exactly as the data describes it (Imago 25616 HP)",
 )
 
@@ -49,6 +52,7 @@ SHORT = Scenario(
     max_turns=20,
     enemy_hp_scale=0.2,
     strict=True,
+    infinite_ego_resources=True,
     description="the same wave with the scenario knob enemy_hp_scale=0.2 (Imago 5123 HP)",
 )
 
@@ -57,6 +61,7 @@ BURST = Scenario(
     max_turns=12,
     enemy_hp_scale=0.08,
     strict=True,
+    infinite_ego_resources=True,
     description="the same wave with the scenario knob enemy_hp_scale=0.08 (Imago 2049 HP)",
 )
 

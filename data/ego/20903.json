@@ -23,7 +23,7 @@
     "offense_level_mod": 1,
     "on_use_text": "If target’s HP is above 50%, deal +30% damage",
     "coin_texts": [
-      "[On Hit] Trigger [Tremor Burst]\n[On Hit] Inflict +3 [Sinking] Count",
+      "[On Hit] Trigger [Tremor Burst]\n[On Hit] Inflict 5 [Sinking]\n[On Hit] Inflict +5 [Sinking] Count",
       "",
       "",
       "",
@@ -41,11 +41,11 @@
     "base_power": 21,
     "coin_power": 6,
     "coins": 1,
-    "attack_weight": 1,
+    "attack_weight": 3,
     "offense_level_mod": 1,
     "on_use_text": "[Indiscriminate]\nTargets the unit with the most HP\nIf target’s HP is above 50%, +30% Damage",
     "coin_texts": [
-      "[On Hit] Trigger [Tremor Burst]\n[On Hit] Inflict +6 [Sinking] Count",
+      "[On Hit] Trigger [Tremor Burst]\n[On Hit] Inflict 10 [Sinking]\n[On Hit] Inflict +8 [Sinking] Count",
       "",
       "",
       "",

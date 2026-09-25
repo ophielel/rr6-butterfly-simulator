@@ -203,6 +203,9 @@ pub struct Effect {
     /// `gain_from_resonance`: multiplier applied to the highest Resonance.
     #[serde(default)]
     pub multiplier: Option<i32>,
+    /// Fractional per-Resonance multiplier used by effects such as 6 + 1.5 × Resonance.
+    #[serde(default)]
+    pub multiplier_f: Option<f64>,
     /// Percentages that the wiki writes with a decimal ("+0.5% damage").
     #[serde(default)]
     pub step_f: Option<f64>,
@@ -683,6 +686,9 @@ impl MechanicsBook {
 
     /// Skills referenced by the fixed content that are missing from the book.
     pub fn missing(&self, ids: &[SkillId]) -> Vec<SkillId> {
-        ids.iter().filter(|id| !self.skills.contains_key(id.as_str())).cloned().collect()
+        ids.iter()
+            .filter(|id| !self.skills.contains_key(id.as_str()))
+            .cloned()
+            .collect()
     }
 }

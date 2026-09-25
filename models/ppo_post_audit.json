@@ -1,0 +1,89 @@
+{
+  "scenario": "burst",
+  "seeds": {
+    "first": 9001,
+    "last": 9008,
+    "count": 8
+  },
+  "config": {
+    "checkpoint": "models/bc_post_audit.npz",
+    "out": "models/ppo_post_audit.npz",
+    "scenario": "burst",
+    "seed_start": 9001,
+    "seed_count": 8,
+    "iterations": 3,
+    "episodes_per_iteration": 4,
+    "epochs_per_iteration": 1,
+    "learning_rate": 0.001,
+    "clip": 0.2,
+    "value_coef": 0.5,
+    "seed": 20260920,
+    "val_seed_start": 9101,
+    "val_seed_count": 4,
+    "require_bc_accuracy": 0.2
+  },
+  "history": {
+    "iteration": [
+      1,
+      2,
+      3
+    ],
+    "mean_return": [
+      -672.6275,
+      -1215.655,
+      -1182.65
+    ],
+    "win_rate": [
+      0.25,
+      0.0,
+      0.0
+    ],
+    "policy_loss": [
+      -0.019886914497075647,
+      0.05600555099166607,
+      0.08730062495677178
+    ],
+    "value_loss": [
+      1.1072566380929072,
+      2.1774856652053103,
+      1.4163448167735366
+    ],
+    "ratio": [
+      1.0000000000000002,
+      1.0000000000000004,
+      0.9999999999999998
+    ],
+    "clip_fraction": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "validation_win_rate": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "validation_kill_turn": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "info": {
+    "episodes": 12,
+    "wins": 1,
+    "best_validation_win_rate": 0.0,
+    "best_iteration": 1,
+    "win_rate": 0.08333333333333333,
+    "mean_return": -1023.6441666666668,
+    "selected_by_validation": true
+  },
+  "mean_return": -1023.6441666666668,
+  "win_rate": 0.08333333333333333,
+  "elapsed_seconds": 5.3,
+  "log": [
+    "iteration 1/3: return=-672.63 win_rate=0.25 policy_loss=-0.020 value_loss=1.1 ratio=1.000 clip=0.00 val_win=0.00 val_kill=None",
+    "iteration 2/3: return=-1215.65 win_rate=0.00 policy_loss=0.056 value_loss=2.2 ratio=1.000 clip=0.00 val_win=0.00 val_kill=None",
+    "iteration 3/3: return=-1182.65 win_rate=0.00 policy_loss=0.087 value_loss=1.4 ratio=1.000 clip=0.00 val_win=0.00 val_kill=None"
+  ]
+}

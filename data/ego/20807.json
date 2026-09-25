@@ -22,9 +22,9 @@
     "coins": 1,
     "attack_weight": 1,
     "offense_level_mod": 2,
-    "on_use_text": "[Before Attack] At 4+ highest Reson., gain +1 Atk Weight\n- If the said Reson. was a Gloom Reson., gain +1 Atk Weight\n[Attack End] Heal 2 allies with the lowest HP percentages by (10 + ([Sinking] on the main target + [Sinking] Count on the main target)/3)% HP (max 15%)",
+    "on_use_text": "[Before Attack] At 4+ highest Reson., gain +1 Atk Weight\n- If the said Reson. was a Gloom Reson., gain +1 Atk Weight\n[Attack End] Heal 2 allies with the lowest HP percentages by (10 + ([Sinking] on the main target + [Sinking] Count on the main target)/3)% HP (max 20%)\n- If the highest Reson. was a 4+ Gloom Reson., heal 10% more of the max HP",
     "coin_texts": [
-      "[On Hit] Inflict +2 [Sinking] Count\n[On Hit] Inflict 1 [Curse]\n[On Hit] At 4+ Gloom Reson., inflict 1 [Gloom Fragility]\n[On Hit] Inflict 2 [The Uninvited]",
+      "[On Hit] Inflict +3 [Sinking] Count\n[On Hit] Inflict 2 [Curse]\n[On Hit] At 4+ Gloom Reson., inflict 1 [Gloom Fragility]\n[On Hit] Inflict 2 [The Uninvited]",
       "",
       "",
       "",
@@ -44,9 +44,9 @@
     "coins": 1,
     "attack_weight": 3,
     "offense_level_mod": -3,
-    "on_use_text": "[Indiscriminate]\nPrioritizes targets that have the most [Sinking]\n[Before Attack] Lose HP by 10% of Max HP (does not get Staggered due to this effect)\n[Attack End] Heal 3 other allies with the lowest HP percentages by (10 + ([Sinking] on the main target + [Sinking] Count on the main target)/3)% HP (max 15%)\n- At 4+ highest Reson., heal 1 additional ally",
+    "on_use_text": "[Indiscriminate]\nPrioritizes targets that have the most [Sinking]\n[Before Attack] Lose HP by 10% of Max HP (does not get Staggered due to this effect)\n[Attack End] Heal 3 other allies with the lowest HP percentages by (10 + ([Sinking] on the main target + [Sinking] Count on the main target)/3)% HP (max 15%)\n- At 4+ highest Reson., heal 1 additional ally\n- If the said Reson. was a Gloom Reson., heal an additional 5% HP",
     "coin_texts": [
-      "[On Hit] Inflict +2 [Sinking] Count\n[On Hit] Inflict 2 [Curse]\n[On Hit] At 3+ Gloom Reson., inflict 1 [Gloom Fragility]\n[On Hit] Inflict 2 [The Uninvited]\n[On Hit] Inflict 2 [Echoes of the Manor] next turn",
+      "[On Hit] Inflict +3 [Sinking] Count\n[On Hit] Inflict 2 [Curse]\n[On Hit] For every 3 Gloom Reson., inflict 1 [Gloom Fragility] (max 2)\n[On Hit] Inflict 2 [The Uninvited]\n[On Hit] Inflict 2 [Echoes of the Manor] next turn",
       "",
       "",
       "",

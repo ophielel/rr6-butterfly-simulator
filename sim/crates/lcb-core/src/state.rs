@@ -4,7 +4,7 @@
 //! game's rules allow it - an Abnormality cannot hold Sanity, a unit without a
 //! Stagger Threshold cannot be staggered, and so on.
 
-use crate::ids::{EgoId, EnemyId, IdentityId, Sin, SkillId, Uptie, UnitId};
+use crate::ids::{EgoId, EnemyId, IdentityId, Sin, SkillId, UnitId, Uptie};
 use crate::rng::{heads_chance, Rng};
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
@@ -17,7 +17,9 @@ pub const SP_LIMIT: i32 = 45;
 pub enum Sanity {
     /// Abnormalities and other unsapient units: coins always flip at 50%.
     None,
-    Sane { sp: i32 },
+    Sane {
+        sp: i32,
+    },
 }
 
 impl Sanity {
@@ -243,7 +245,9 @@ impl StaggerState {
             }
             return None;
         }
-        let index = self.consumed.min(self.thresholds_hp.len().saturating_sub(1));
+        let index = self
+            .consumed
+            .min(self.thresholds_hp.len().saturating_sub(1));
         let value = self.thresholds_hp.get_mut(index)?;
         *value = (*value + amount).max(0);
         Some(*value)
@@ -444,8 +448,13 @@ impl SkillDeck {
 
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub enum UnitKind {
-    Sinner { identity: IdentityId },
-    Abnormality { enemy: EnemyId, part: Option<String> },
+    Sinner {
+        identity: IdentityId,
+    },
+    Abnormality {
+        enemy: EnemyId,
+        part: Option<String>,
+    },
 }
 
 impl UnitKind {
@@ -706,7 +715,8 @@ impl Unit {
         // The status is measured by Count per the wiki text, but the localisation
         // dump words some of them as Stack; read whichever component was filled.
         let key = format!("{name} Resist Down");
-        let down = self.statuses.count(&key) + self.statuses.potency(&key) + self.statuses.stack(&key);
+        let down =
+            self.statuses.count(&key) + self.statuses.potency(&key) + self.statuses.stack(&key);
         (base + 0.1 * down as f64).max(0.0)
     }
 
@@ -726,7 +736,8 @@ impl Unit {
         // The status is measured by Count per the wiki text, but the localisation
         // dump words some of them as Stack; read whichever component was filled.
         let key = format!("{name} Resist Down");
-        let down = self.statuses.count(&key) + self.statuses.potency(&key) + self.statuses.stack(&key);
+        let down =
+            self.statuses.count(&key) + self.statuses.potency(&key) + self.statuses.stack(&key);
         (base + 0.1 * down as f64).max(0.0)
     }
 
@@ -863,6 +874,10 @@ pub struct BattleConfig {
     /// report it writes.
     #[serde(default = "default_enemy_hp_scale")]
     pub enemy_hp_scale: f64,
+    /// Research scenario override: E.G.O resource affordability is unlimited and
+    /// resource costs are not deducted. SP costs and E.G.O effects still apply.
+    #[serde(default)]
+    pub infinite_ego_resources: bool,
 }
 
 pub fn default_enemy_hp_scale() -> f64 {
@@ -890,6 +905,7 @@ impl Default for BattleConfig {
             max_turns: 30,
             initial_time_state: crate::scripts::TimeState::Past,
             enemy_hp_scale: 1.0,
+            infinite_ego_resources: false,
         }
     }
 }
@@ -964,6 +980,20 @@ pub struct TurnStats {
     pub deaths: Vec<String>,
 }
 
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct StatusGainEvent {
+    pub source_actor: UnitId,
+    pub target: UnitId,
+    pub status: String,
+    pub potency_delta: i32,
+    pub count_delta: i32,
+    /// `skill_coin`, `skill_effect`, or `echoes_of_the_manor`.
+    pub source_type: String,
+    pub skill_id: Option<SkillId>,
+    pub coin_index: Option<u32>,
+    pub effect_raw: Option<String>,
+}
+
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct BattleState {
     pub seed: u64,
@@ -1004,6 +1034,9 @@ pub struct BattleState {
     /// Signals of the turn that just resolved (see `TurnStats`).
     #[serde(default)]
     pub turn_stats: TurnStats,
+    /// Ordered status applications from the current/most recently resolved turn.
+    #[serde(default)]
+    pub status_gain_events: Vec<StatusGainEvent>,
     pub warnings: Vec<String>,
     pub winner: Option<Winner>,
     /// Set when a skill with "End the Encounter" resolved (Refraction Railway
@@ -1029,7 +1062,6 @@ pub struct BattleState {
     /// `<unit id>|<slot>` (wiki.gg `Sin Resonance`).
     #[serde(default)]
     pub resonance_levels: std::collections::BTreeMap<String, i32>,
-
 }
 
 impl BattleState {

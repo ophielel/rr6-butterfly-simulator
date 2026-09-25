@@ -76,7 +76,7 @@ class StdioSimulator:
         if not line:
             raise RuntimeError("lcb-cli terminated")
         response = json.loads(line)
-        if "error" in response:
+        if response.get("error") is not None:
             raise RuntimeError(response["error"])
         return response
 
@@ -86,8 +86,18 @@ class StdioSimulator:
         team: Optional[List[str]] = None,
         enemies: Optional[List[str]] = None,
         strict: bool = False,
+        max_turns: Optional[int] = None,
+        enemy_hp_scale: Optional[float] = None,
+        infinite_ego_resources: bool = False,
     ) -> str:
-        request: Dict[str, Any] = {"cmd": "reset", "seed": seed, "strict": strict}
+        request: Dict[str, Any] = {
+            "cmd": "reset", "seed": seed, "strict": strict,
+            "infinite_ego_resources": infinite_ego_resources,
+        }
+        if max_turns is not None:
+            request["max_turns"] = int(max_turns)
+        if enemy_hp_scale is not None:
+            request["enemy_hp_scale"] = float(enemy_hp_scale)
         if team:
             request["team"] = team
         if enemies:
@@ -97,11 +107,18 @@ class StdioSimulator:
     def legal_actions(self) -> str:
         return json.dumps(self._call({"cmd": "legal_actions"})["actions"])
 
+    def submit(self, action_json: str) -> str:
+        request: Dict[str, Any] = {"cmd": "submit", "action": json.loads(action_json)}
+        return json.dumps(self._call(request))
+
     def step(self, action_json: Optional[str]) -> str:
         request: Dict[str, Any] = {"cmd": "step"}
         if action_json is not None and action_json.strip() != "null":
             request["action"] = json.loads(action_json)
         return json.dumps(self._call(request))
+
+    def step_turn(self, plan_json: str) -> str:
+        return json.dumps(self._call({"cmd": "step_turn", "plan": json.loads(plan_json)}))
 
     def state_json(self) -> str:
         return json.dumps(self._call({"cmd": "state"})["state"])

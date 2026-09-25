@@ -1,0 +1,35 @@
+{
+ "count": 1,
+ "entries": [
+  {
+   "file": "burst_PPO_seed10001.json",
+   "policy": "PPO",
+   "scenario": "burst",
+   "scenario_config": {
+    "name": "burst",
+    "enemies": [
+     "9567",
+     "9572",
+     "9573",
+     "9574"
+    ],
+    "max_turns": 12,
+    "enemy_hp_scale": 0.08,
+    "strict": true,
+    "infinite_ego_resources": true,
+    "description": "the same wave with the scenario knob enemy_hp_scale=0.08 (Imago 2049 HP)"
+   },
+   "seed": 10001,
+   "won": true,
+   "kill_turn": 2,
+   "turns": 2,
+   "transition_hashes": [
+    "0c48de7ab59bae96",
+    "154df7aa4f65193f"
+   ],
+   "state_hash_before": "0fa8053a752b5a72",
+   "state_hash_after": "6bad8ce60bedcb6d",
+   "replayable": true
+  }
+ ]
+}

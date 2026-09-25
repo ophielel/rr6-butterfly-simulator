@@ -2,6 +2,8 @@
 
 对 `docs/TRAINING_PLAN.md` 的实现结果。**结论先行**，然后是数字与对照。
 
+> **Legacy notice:** Sections 0–8 below record the pre-audit run and must not be mixed with the post-audit artifacts. The corrected run is summarized in `reports/post_audit_summary.json` and uses `data/teacher_post_audit_sweep/`, `models/*_post_audit.*`, and `reports/post_audit_*`.
+
 ## 0. 结论
 
 1. **短轴存在，而且被搜索找到了。** 阶段 A 的回合级树搜索（`search/run_teacher.py`）
@@ -18,6 +20,14 @@
    四策略胜率全为 0，队伍约 630-800 伤害/局并在 9 回合左右团灭。因此
    `kill_turn`/短胜率/best-of-N 只在 `burst` 场景（`enemy_hp_scale=0.08`，
    Imago 2049 HP）上度量；旋钮只改 HP，`provenance()` 把它写进报告。
+
+## 0.1 修复后实验（post-audit）
+
+- Teacher HP sweep: scales 0.08/0.20/0.50/1.00, 8 seeds per scale, generic combat objective; route labels were post-hoc only.
+- BC was trained from the fresh sweep data; PPO fine-tuned from that BC checkpoint after the finite-difference gate.
+- Burst (`enemy_hp_scale=0.08`, infinite E.G.O resources): Random 20%, FirstLegal 12%, Greedy 100%, Teacher 100%, BC 100%, PPO 100% wins over 50 seeds.
+- Real HP (`enemy_hp_scale=1.0`, Imago 25616 HP): all six policies had 0/50 wins. Thus N=1/5/10/20/50 restart clear rates are also 0 for this run; the real boss result is a failure to reach terminal victory, not a scaled-burst result.
+- Full summaries, configuration fingerprints, and restart windows: `reports/post_audit_summary.json`.
 
 ## 1. 协议与样本量（§7 的"必须写明样本数"）
 
@@ -111,7 +121,7 @@ DAgger 轮次与更大算力）才能把教师的能力搬进网络。
 | `eval/` 基线与指标 | `eval/run_eval.py`、`eval/summarise_reports.py` |
 | `replays/` 成功与失败样例 | `replays/*.json`（每回合带 `transition_hash`）+ `replays/index.json` |
 | `reports/evaluation.json` + 回放索引 | `reports/evaluation.json`（burst）、`reports/evaluation_real.json`（real）、`reports/<scenario>_<policy>.jsonl` |
-| checkpoint + 配置 + seed 清单 | `models/ai.npz`（当前 AI 策略）、`models/*.json`（每次运行的配置与历史，含 git commit 与 seed 范围）|
+| checkpoint + 配置 + seed 清单 | Legacy: `models/ai.npz`; post-audit: `models/bc_post_audit.npz`, `models/ppo_post_audit.npz` and their JSON reports |
 
 ## 7. 复现
 

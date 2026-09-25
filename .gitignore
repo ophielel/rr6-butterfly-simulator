@@ -20,6 +20,9 @@ data/teacher_tree/seed_*.npz
 data/teacher_rollout/seed_*.npz
 data/teacher_merged/seed_*.npz
 data/dagger1/seed_*.npz
+data/teacher*/seed_*.npz
+data/teacher*/**/seed_*.npz
 data/teacher*/replays/
+data/teacher*/**/replays/
 models/bc*.npz
 models/ppo*.npz

@@ -12,7 +12,7 @@ ordered so that a win dominates, then a faster win, then a healthier team:
 
 ```text
 value(state) = win - boss_hp - turn - ally_damage - deaths
-             + sinking_readiness + available_ego_value
+             + generic combat reward (damage, survival, turn cost)
 ```
 
 Every `TeacherSample` it emits can be replayed: it stores the plan, the state
@@ -47,8 +47,11 @@ class ValueWeights:
     turn: float = 0.0
     ally_damage: float = 30.0
     death: float = 60.0
-    sinking_readiness: float = 12.0
-    ego_value: float = 6.0
+    # Specific Sinking/E.G.O terms are disabled by default. They remain
+    # available as explicit ablations, but formal emergence searches use only
+    # generic combat outcomes and post-hoc labels.
+    sinking_readiness: float = 0.0
+    ego_value: float = 0.0
 
 
 def imago(obs: Dict[str, Any]) -> Optional[Dict[str, Any]]:
@@ -148,6 +151,7 @@ class TeacherConfig:
     enemies: Tuple[str, ...] = tuple(SECTION5_WAVE)
     #: **Scenario knob** handed to `BattleConfig::enemy_hp_scale` (1.0 == the data).
     enemy_hp_scale: float = 1.0
+    infinite_ego_resources: bool = False
 
 
 @dataclass
@@ -314,6 +318,7 @@ class BeamTeacher:
             enemy_hp_scale=(
                 enemy_hp_scale if enemy_hp_scale is not None else self.config.enemy_hp_scale
             ),
+            infinite_ego_resources=self.config.infinite_ego_resources,
         )
         obs = env.observe()
         self._boss_hp_start = 0.0
@@ -394,6 +399,7 @@ class BeamTeacher:
             if u.get("kind") == "sinner" and u.get("alive")
         )
         axis = detect_axis(replay, samples, table=self.table)
+        axis.update(detect_strategy_labels(replay))
         stats.axis = axis
         for sample in samples:
             sample.episode_won = stats.won
@@ -409,6 +415,52 @@ class BeamTeacher:
 #: "Harmony" (Sinclair) and "Solemn Lament" (Yi Sang) - the two E.G.O of the
 #: documented Sinking burst.
 AXIS_EGO = {"21009": "Harmony", "20109": "Solemn Lament"}
+
+
+def detect_strategy_labels(replay: Sequence[Dict[str, Any]]) -> Dict[str, Any]:
+    """Post-hoc labels for analysis; these never enter policy features."""
+    peak_potency = 0
+    peak_count = 0
+    first_setup: Optional[int] = None
+    first_burst: Optional[int] = None
+    sinking_by_turn: Dict[int, float] = {}
+    ego_by_turn: Dict[int, set[str]] = {}
+    for entry in replay:
+        turn = int(entry.get("turn") or 0)
+        sinking = entry.get("boss_sinking") or {}
+        peak_potency = max(peak_potency, int(sinking.get("potency") or 0))
+        peak_count = max(peak_count, int(sinking.get("count") or 0))
+        sinking_by_turn[turn] = float((entry.get("stats") or {}).get("sinking_damage") or 0)
+        ids = {str(value).split("|")[-1] for value in (entry.get("stats") or {}).get("ego_uses") or []}
+        ego_by_turn[turn] = ids
+        if {"20807", "20903"}.issubset(ids) and first_setup is None:
+            first_setup = turn
+        if ids.intersection(set(AXIS_EGO) | {"20106", "20807", "20903"}) and first_burst is None:
+            first_burst = turn
+    known_setup = False
+    if first_setup is not None:
+        known_setup = any(
+            "20106" in ego_by_turn.get(turn, set())
+            for turn in range(first_setup + 1, first_setup + 3)
+        )
+    pre_count = max(
+        (int((entry.get("boss_sinking") or {}).get("count") or 0)
+         for entry in replay if first_burst is None or int(entry.get("turn") or 0) < first_burst),
+        default=0,
+    )
+    pre_values = [value for turn, value in sinking_by_turn.items() if first_burst is None or turn < first_burst]
+    post_values = [value for turn, value in sinking_by_turn.items() if first_burst is None or turn >= first_burst]
+    pre_median = float(np.median(pre_values)) if pre_values else 0.0
+    direct_burst = bool(post_values and max(post_values) > max(1.0, 2.0 * pre_median))
+    return {
+        "known_setup_like": known_setup,
+        "direct_burst": direct_burst,
+        "peak_sinking_potency": peak_potency,
+        "peak_sinking_count": peak_count,
+        "pre_burst_count": pre_count,
+        "setup_turn": first_setup,
+        "burst_turn": first_burst,
+    }
 
 
 def detect_axis(
@@ -438,12 +490,6 @@ def detect_axis(
         for turn, sinking in sinking_before.items():
             if turn < earliest and (sinking.get("potency", 0) >= 5 or sinking.get("count", 0) >= 3):
                 setup_ok = True
-    # The one that used the E.G.O must have been the Sinner that owns it, which
-    # the replay records as `<unit id>|<ego id>`.
-    for entry in replay:
-        for ego in (entry.get("stats") or {}).get("ego_uses") or []:
-            if ego.split("|")[-1] in AXIS_EGO:
-                setup_ok = setup_ok or True
     pair_ok = False
     if len(first_ego_turn) >= 2:
         turns = sorted(first_ego_turn.values())
@@ -552,6 +598,7 @@ __all__ = [
     "sinking_readiness",
     "ego_readiness",
     "detect_axis",
+    "detect_strategy_labels",
     "encode_samples",
     "imago",
     "AXIS_EGO",

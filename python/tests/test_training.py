@@ -20,9 +20,10 @@ sys.path.insert(0, str(ROOT / "python"))
 from lcb import dataset as ds  # noqa: E402
 from lcb.baselines import FirstLegalPolicy, GreedyPolicy, NeuralPolicy, RandomPolicy  # noqa: E402
 from lcb.env import LimbusEnv, SECTION5_WAVE  # noqa: E402
-from lcb.evaluate import Scenario, best_of_n, run_episode, summarise  # noqa: E402
+from lcb.evaluate import Scenario, best_of_n, restart_aware, run_episode, summarise  # noqa: E402
 from lcb.features import Encoder, SkillTable  # noqa: E402
 from lcb.nn import PolicyValueNet  # noqa: E402
+from lcb.stdio_client import StdioSimulator  # noqa: E402
 from lcb.plans import (  # noqa: E402
     PlanGenerator,
     actor_order,
@@ -31,9 +32,66 @@ from lcb.plans import (  # noqa: E402
     first_legal_plan,
     group_candidates,
 )
-from lcb.teacher import BeamTeacher, TeacherConfig, detect_axis, encode_samples  # noqa: E402
+from lcb.teacher import BeamTeacher, TeacherConfig, detect_axis, detect_strategy_labels, encode_samples  # noqa: E402
 
 SCENARIO = Scenario(name="test", max_turns=4, enemy_hp_scale=0.08)
+
+
+def test_ppo_policy_gradient_matches_finite_difference_direction() -> None:
+    net = PolicyValueNet(state_dim=3, action_dim=2, hidden=5, seed=71, lr=1e-4)
+    state = np.asarray([0.2, -0.4, 0.7], dtype=np.float64)
+    candidates = np.asarray([[1.0, 0.0], [0.0, 1.0], [0.5, -0.3]], dtype=np.float64)
+    action = 1
+    old_logprob = float(np.log(net.probs(state, candidates)[action]))
+    advantage = 0.8
+    parameter = net.params["W3"]
+    index = 0
+    original = float(parameter[index])
+
+    def surrogate() -> float:
+        logprob = float(np.log(net.probs(state, candidates)[action]))
+        ratio = np.exp(logprob - old_logprob)
+        return -min(ratio * advantage, np.clip(ratio, 0.8, 1.2) * advantage)
+
+    epsilon = 1e-6
+    parameter[index] = original + epsilon
+    plus = surrogate()
+    parameter[index] = original - epsilon
+    minus = surrogate()
+    parameter[index] = original
+    finite_difference = (plus - minus) / (2 * epsilon)
+    assert abs(finite_difference) > 1e-8
+
+    net.ppo_update([(state, [(candidates, action, old_logprob)], advantage)], clip=0.2)
+    assert (float(parameter[index]) - original) * finite_difference < 0.0
+
+
+def test_pyo3_and_stdio_have_matching_reset_mask_and_turn() -> None:
+    py = LimbusEnv(strict=True)
+    std = StdioSimulator(data_dir=str(ROOT / "data"))
+    team = ["10110", "10913"]
+    enemies = list(SECTION5_WAVE)
+    try:
+        py.reset(77, team=team, enemies=enemies, max_turns=6, enemy_hp_scale=0.08,
+                 infinite_ego_resources=True)
+        std.reset(77, team=team, enemies=enemies, strict=True, max_turns=6,
+                  enemy_hp_scale=0.08, infinite_ego_resources=True)
+        assert py.state_hash() == std.state_hash()
+        py_actions = json.loads(py._sim.legal_actions())
+        std_actions = json.loads(std.legal_actions())
+        assert sorted(json.dumps(a, sort_keys=True) for a in py_actions) == sorted(
+            json.dumps(a, sort_keys=True) for a in std_actions
+        )
+        plan = first_legal_plan(py.observe(), py.legal_actions())
+        py_result = py.step_turn(plan)
+        wire_plan = [json.loads(action.to_wire()) for action in plan]
+        std_result = json.loads(std.step_turn(json.dumps(wire_plan)))
+        assert py_result["ok"] and std_result["ok"]
+        assert py_result["state_hash_after"] == std_result["state_hash_after"]
+        assert py_result["search_key"] == std_result["search_key"]
+        assert py_result["stats"] == std_result["stats"]
+    finally:
+        std.close()
 
 
 def test_step_turn_is_atomic() -> None:
@@ -176,8 +234,12 @@ def test_dataset_split_is_by_seed() -> None:
     val_seeds = set(int(s) for s in np.unique(validation["seed"]))
     assert not (train_seeds & val_seeds), "a seed may not be in both splits"
     assert train["cand"].shape[0] == int(train["offsets"].sum())
-    # Every kept decision still has its candidates.
-    assert len(np.unique(train["decision"])) == len(set(train["seed"].tolist())) or True
+    # Each decision contains multiple actors, but no actor occurs twice in it.
+    decision_keys = list(zip(train["seed"].tolist(), train["decision"].tolist(), train["actor"].tolist()))
+    assert len(decision_keys) == len(set(decision_keys))
+    assert np.all(train["offsets"] > 0)
+    assert np.all(train["label"] >= 0)
+    assert np.all(train["label"] < train["offsets"])
     with tempfile.TemporaryDirectory() as tmp:
         path = Path(tmp) / "data.npz"
         ds.save_dataset(path, merged)
@@ -223,6 +285,10 @@ def test_summarise_and_best_of_n() -> None:
     # A single window covering both seeds: best-of-2 wins because one of them did.
     assert best["n2"]["window_win_rate"] == 1.0
     assert best["n2"]["best_kill_turn_min"] == 3
+    restart = restart_aware(rows, turn_threshold=4, n_values=(1, 2))
+    assert restart["clear_rate_per_attempt"] == 0.5
+    assert restart["n2"]["clear_within_n_rate"] == 1.0
+    assert restart["n2"]["median_attempts_until_clear"] == 1.0
 
 
 def test_axis_detection_uses_real_state() -> None:
@@ -240,6 +306,15 @@ def test_axis_detection_uses_real_state() -> None:
     assert axis["post_trigger_damage"] >= axis["pre_trigger_damage"]
     empty = detect_axis([])
     assert empty["axis_ok"] is False
+    labels = detect_strategy_labels([
+        {"turn": 1, "boss_sinking": {"potency": 0, "count": 0},
+         "stats": {"ego_uses": ["sinner-2|20807", "sinner-3|20903"], "sinking_damage": 4}},
+        {"turn": 2, "boss_sinking": {"potency": 8, "count": 5},
+         "stats": {"ego_uses": ["sinner-0|20106"], "sinking_damage": 20}},
+    ])
+    assert labels["known_setup_like"] is True
+    assert labels["peak_sinking_potency"] == 8
+    assert labels["pre_burst_count"] == 0
 
 
 def test_evaluation_smoke() -> None:

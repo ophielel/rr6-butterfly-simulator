@@ -21,7 +21,7 @@
     "coins": 1,
     "attack_weight": 1,
     "offense_level_mod": -3,
-    "on_use_text": "[Attack End] Heal 12 SP to self and 2 other allies with the least SP\n- If target survives this attack, consume 5 [Sinking] Count on target, then heal additional SP(to self & affected allies) equal to [Sinking] Potency on target (Max SP heal: 20)\n- If target is defeated, inflict 3 [Sinking] and 1 [Curse] on 2 random enemies (For Focused Encounters, random Parts)",
+    "on_use_text": "[Attack End] Heal 15 SP to self and 2 other allies with the least SP\n- If target survives this attack, consume 3 [Sinking] Count on target, then heal additional SP(to self & affected allies) equal to [Sinking] Potency on target (Max SP heal: 20)\n- If target is defeated, inflict 3 [Sinking] and 1 [Curse] on 3 random enemies (For Focused Encounters, random Parts)",
     "coin_texts": [
       "",
       "",
@@ -43,9 +43,9 @@
     "coins": 1,
     "attack_weight": 1,
     "offense_level_mod": 3,
-    "on_use_text": "[Indiscriminate]\nTargets randomly",
+    "on_use_text": "[Indiscriminate]\nTargets randomly\nIf target has [Curse], deal +50% damage",
     "coin_texts": [
-      "[On Hit] Inflict 2 [Gloom Fragility]. Inflict 1 additional [Gloom Fragility] for every 3 Gloom Reson. (max 2)\n[On Hit] Inflict +3 [Sinking] Count\n[On Hit] Inflict 2 [Curse]",
+      "[On Hit] Inflict 2 [Gloom Fragility]. Inflict 1 additional [Gloom Fragility] for every 2 Gloom Reson. (max 2)\n[On Hit] Inflict +3 [Sinking] Count\n[On Hit] Inflict 3 [Curse]",
       "",
       "",
       "",

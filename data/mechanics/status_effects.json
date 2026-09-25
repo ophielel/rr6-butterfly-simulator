@@ -3775,22 +3775,19 @@
    "effects": {
     "clash_end": [],
     "on_hit": [],
-    "passive": [
+    "passive": [],
+    "turn_end": [
      {
-      "component": "stack",
       "kind": "gain",
       "potency": -1,
       "raw": "Reduced by 1 at Turn End",
       "status": "self"
      }
     ],
-    "turn_end": [],
     "turn_start": [],
     "unmodeled": [
-     "50% chance to gain +1 [Sinking] Count when gaining [Sinking] Potency or Count from Skill or Coin effects",
      "Non-SP Units: -10% chance to flip Heads.",
      "SP Units: Change Panic Type to Echoes of the Manor PanicEchoes of the Manor. When this unit Panics, inflict Echoes of the Manor to 2 random other allies of this unit.",
-     "This effect is not cumulative; inflicting it will replace the current value with the inflicted value.",
      "※ Apply the \"Non-SP Units\" conditional to certain enemies that have SP but can't change their Panic Types."
     ]
    },

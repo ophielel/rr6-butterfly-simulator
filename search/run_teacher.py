@@ -46,6 +46,7 @@ def _run_one(args: Tuple[int, Dict[str, Any]]) -> Dict[str, Any]:
             rollout_width=cfg["rollout_width"],
             max_turns=cfg["max_turns"],
             enemy_hp_scale=cfg["enemy_hp_scale"],
+            infinite_ego_resources=cfg["infinite_ego_resources"],
         ),
     )
     scene = scenario(cfg["scenario"])
@@ -86,6 +87,7 @@ def main() -> int:
                         help="overrides the scenario's own knobs when given")
     parser.add_argument("--jobs", type=int, default=1)
     parser.add_argument("--out", default=str(ROOT / "data" / "teacher"))
+    parser.add_argument("--infinite-ego-resources", action="store_true")
     args = parser.parse_args()
 
     from lcb.scenarios import scenario as get_scenario
@@ -106,6 +108,7 @@ def main() -> int:
         "score_mode": args.score_mode,
         "max_turns": args.max_turns,
         "out": str(out),
+        "infinite_ego_resources": args.infinite_ego_resources,
     }
     seeds = list(range(args.seed_start, args.seed_start + args.seed_count))
     started = time.time()

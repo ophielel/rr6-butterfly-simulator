@@ -60,14 +60,15 @@ def _worker(args: Tuple[str, Dict[str, Any], int]) -> Dict[str, Any]:
                 turn_width=cfg["teacher_turn_width"],
                 max_turns=scene.max_turns,
                 enemy_hp_scale=scene.enemy_hp_scale,
+                infinite_ego_resources=scene.infinite_ego_resources,
             ),
         )
         policy = TeacherPolicy(encoder.table, encoder, teacher)
-    elif policy_name == "AI":
+    elif policy_name in ("AI", "BC", "PPO"):
         from lcb.nn import PolicyValueNet
 
         net = PolicyValueNet.load(cfg["checkpoint"])
-        policy = NeuralPolicy(net, encoder, sample=cfg["sample"], seed=seed, name="AI")
+        policy = NeuralPolicy(net, encoder, sample=cfg["sample"], seed=seed, name=policy_name)
     else:  # pragma: no cover - guarded by argparse
         raise ValueError(policy_name)
 
@@ -75,6 +76,7 @@ def _worker(args: Tuple[str, Dict[str, Any], int]) -> Dict[str, Any]:
     return {
         "policy": record.policy,
         "seed": seed,
+        "scenario_config": scenario(cfg["scenario"]).to_dict(),
         "stats": record.stats,
         "replay": record.replay,
         "error": record.error,
@@ -87,7 +89,9 @@ def main() -> int:
     parser.add_argument("--seed-start", type=int, default=9001)
     parser.add_argument("--seed-count", type=int, default=40)
     parser.add_argument(
-        "--policies", nargs="+", default=["Random", "FirstLegal", "Greedy", "AI"]
+        "--policies", nargs="+",
+        default=["Random", "FirstLegal", "Greedy", "Teacher", "BC", "PPO"],
+        choices=["Random", "FirstLegal", "Greedy", "Teacher", "AI", "BC", "PPO"],
     )
     parser.add_argument("--checkpoint", default=str(ROOT / "models" / "ppo.npz"))
     parser.add_argument("--greedy-cap", type=int, default=6)
@@ -103,7 +107,7 @@ def main() -> int:
     parser.add_argument("--replays", default=str(ROOT / "replays"))
     args = parser.parse_args()
 
-    from lcb.evaluate import best_of_n, provenance, replay_index, summarise
+    from lcb.evaluate import best_of_n, provenance, replay_index, restart_aware, summarise
     from lcb.scenarios import scenario
 
     scene = scenario(args.scenario)
@@ -157,6 +161,7 @@ def main() -> int:
                     {
                         "policy": policy_name,
                         "scenario": args.scenario,
+                        "scenario_config": best["scenario_config"],
                         "seed": best["seed"],
                         "stats": best["stats"],
                         "turns": best["replay"],
@@ -199,6 +204,7 @@ def main() -> int:
         payload["policies"][policy_name] = {
             "summary": summarise(stats, short_turn=short_turn),
             "best_of_n": best_of_n(stats, (1, 10, 50)),
+            "restart_aware": restart_aware(stats, turn_threshold=8),
             "fastest_kill_turn": min(
                 (s["kill_turn"] for s in stats if s.get("kill_turn")), default=None
             ),

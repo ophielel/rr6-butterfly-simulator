@@ -24,9 +24,11 @@ pub mod testsupport;
 
 use battle::Action;
 use effects::{MechanicsBook, PanicBook, PassiveBook, StatusBook};
+use ids::EgoId;
+use ids::SkillId;
+use ids::UnitId;
 use library::{Library, LibraryError};
 use setup::{EncounterBuilder, SetupError};
-use ids::UnitId;
 use state::{BattleConfig, BattleState};
 use std::path::{Path, PathBuf};
 
@@ -92,20 +94,15 @@ impl Simulator {
         let library = Library::load(&root)?;
         let mechanics = MechanicsBook::load(&root.join("mechanics").join("effects.json"))
             .map_err(SimError::Mechanics)?;
-        let scripts = scripts::ScriptsBook::load(&root.join("mechanics").join("enemy_scripts.json"))
+        let scripts =
+            scripts::ScriptsBook::load(&root.join("mechanics").join("enemy_scripts.json"))
+                .map_err(SimError::Mechanics)?;
+        let passives = PassiveBook::load(&root.join("passives").join("passives.json"))
             .map_err(SimError::Mechanics)?;
-        let passives = PassiveBook::load(
-            &root.join("passives").join("passives.json"),
-        )
-        .map_err(SimError::Mechanics)?;
-        let panics = PanicBook::load(
-            &root.join("mechanics").join("panic_types.json"),
-        )
-        .map_err(SimError::Mechanics)?;
-        let statuses = StatusBook::load(
-            &root.join("mechanics").join("status_effects.json"),
-        )
-        .map_err(SimError::Mechanics)?;
+        let panics = PanicBook::load(&root.join("mechanics").join("panic_types.json"))
+            .map_err(SimError::Mechanics)?;
+        let statuses = StatusBook::load(&root.join("mechanics").join("status_effects.json"))
+            .map_err(SimError::Mechanics)?;
         Ok(Self {
             library,
             mechanics,
@@ -115,6 +112,82 @@ impl Simulator {
             statuses,
             data_root: root,
         })
+    }
+
+    fn strict_core_preflight(&self, state: &BattleState) -> Vec<String> {
+        let mut blockers = Vec::new();
+        let critical_egos = ["20106", "20903"];
+        for unit in &state.units {
+            for ego in &unit.ego_slots {
+                if !critical_egos.contains(&ego.as_str()) {
+                    continue;
+                }
+                for kind in ["awakening", "corrosion"] {
+                    let id = SkillId::new(format!("{}.{}", ego.as_str(), kind));
+                    match self.mechanics.get_for(&id, state.config.uptie) {
+                        None => {
+                            blockers.push(format!("missing critical mechanics {}", id.as_str()))
+                        }
+                        Some(mechanics) => {
+                            blockers.extend(
+                                mechanics
+                                    .unmodeled
+                                    .iter()
+                                    .map(|line| format!("{}: {}", id.as_str(), line)),
+                            );
+                            let has_sinking = |potency: i32, count: i32| {
+                                let mut effects = mechanics.coins.values().flatten();
+                                let has_potency = effects.clone().any(|effect| {
+                                    effect.kind == "inflict"
+                                        && effect.status.as_deref() == Some("Sinking")
+                                        && effect.potency == Some(potency)
+                                });
+                                let has_count = effects.any(|effect| {
+                                    effect.kind == "inflict"
+                                        && effect.status.as_deref() == Some("Sinking")
+                                        && effect.count == Some(count)
+                                });
+                                has_potency && has_count
+                            };
+                            if ego.as_str() == "20106" && kind == "awakening"
+                                && !mechanics.attack_end.iter().any(|effect| {
+                                    effect.kind == "inflict_random_each"
+                                        && effect.status.as_deref() == Some("Sinking")
+                                        && effect.value == Some(6)
+                                        && effect.multiplier_f == Some(1.5)
+                                })
+                            {
+                                blockers.push("20106.awakening: missing 6 + 1.5 Gloom Sinking events".into());
+                            }
+                            if ego.as_str() == "20903" && !has_sinking(
+                                if kind == "awakening" { 5 } else { 10 },
+                                if kind == "awakening" { 5 } else { 8 },
+                            ) {
+                                blockers.push(format!("{}: missing fixed Sinking Potency/Count", id.as_str()));
+                            }
+                        },
+                    }
+                }
+            }
+        }
+        for ego in ["20106", "20903"] {
+            let record = self.library.ego(&EgoId::new(ego));
+            for kind in ["awakening", "corrosion"] {
+                let weight = record.and_then(|entry| {
+                    if kind == "awakening" {
+                        entry.awakening.as_ref()
+                    } else {
+                        entry.corrosion.as_ref()
+                    }
+                }).and_then(|skill| skill.attack_weight);
+                if ego == "20903" && weight != Some(3) {
+                    blockers.push(format!("{}.{}: expected Attack Weight 3, got {:?}", ego, kind, weight));
+                }
+            }
+        }
+        blockers.sort();
+        blockers.dedup();
+        blockers
     }
 
     pub fn new_encounter(
@@ -130,6 +203,12 @@ impl Simulator {
             .seed(seed)
             .config(config)
             .build(team, enemies)?;
+        if state.config.strict_mechanics {
+            let blockers = self.strict_core_preflight(&state);
+            if !blockers.is_empty() {
+                return Err(SetupError::StrictBlockers(blockers).into());
+            }
+        }
         Ok(state)
     }
 
@@ -193,7 +272,11 @@ impl Simulator {
         outcome
     }
 
-    fn submit_plan_inner(&self, state: &mut BattleState, plan: Vec<Action>) -> Result<(), SimError> {
+    fn submit_plan_inner(
+        &self,
+        state: &mut BattleState,
+        plan: Vec<Action>,
+    ) -> Result<(), SimError> {
         let mut submitted: Vec<UnitId> = Vec::new();
         for action in plan.iter() {
             if matches!(action, Action::Commit) {
@@ -227,7 +310,9 @@ impl Simulator {
                 Action::Commit => continue,
             };
             if !submitted.contains(&actor) {
-                return Err(SimError::Rule(format!("incomplete plan: {actor} has no action")));
+                return Err(SimError::Rule(format!(
+                    "incomplete plan: {actor} has no action"
+                )));
             }
         }
         self.step_turn(state)
@@ -291,7 +376,11 @@ impl Simulator {
 
     /// Target lookup helper used by the search layer.
     pub fn unit_id(&self, state: &BattleState, name: &str) -> Option<UnitId> {
-        state.units.iter().find(|u| u.name == name).map(|u| u.id.clone())
+        state
+            .units
+            .iter()
+            .find(|u| u.name == name)
+            .map(|u| u.id.clone())
     }
 
     /// The rules this build knows it does not implement, for reporting.
@@ -307,11 +396,7 @@ impl Simulator {
     /// The same list as owned strings, including the Passive clauses that are
     /// not modelled yet (the Python binding and the CLI use this form).
     pub fn unknown_rules_owned(&self) -> Vec<String> {
-        let mut out: Vec<String> = self
-            .unknown_rules()
-            .iter()
-            .map(|s| s.to_string())
-            .collect();
+        let mut out: Vec<String> = self.unknown_rules().iter().map(|s| s.to_string()).collect();
         out.extend(self.passive_gaps());
         out.extend(self.panics.gaps());
         out.extend(self.status_gaps());
@@ -338,7 +423,6 @@ impl Simulator {
     }
 
     /// Passive clauses this project has not modelled, per passive id.
-
 
     pub fn passive_gaps(&self) -> Vec<String> {
         let mut out = Vec::new();

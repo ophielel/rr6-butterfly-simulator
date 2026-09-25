@@ -39,7 +39,7 @@ impl PySimulator {
     /// enemy_hp_scale=None)` - start a fresh encounter.  Returns the initial
     /// state hash.  `enemy_hp_scale` is a **scenario** knob for the training
     /// harness (1.0 == the encounter as the data describes it).
-    #[pyo3(signature = (seed, team=None, enemies=None, strict=false, max_turns=None, enemy_hp_scale=None))]
+    #[pyo3(signature = (seed, team=None, enemies=None, strict=false, max_turns=None, enemy_hp_scale=None, infinite_ego_resources=false))]
     fn reset(
         &mut self,
         seed: u64,
@@ -48,14 +48,11 @@ impl PySimulator {
         strict: bool,
         max_turns: Option<u32>,
         enemy_hp_scale: Option<f64>,
+        infinite_ego_resources: bool,
     ) -> PyResult<String> {
         let team = team.unwrap_or_else(|| fixed::TEAM.iter().map(|s| s.to_string()).collect());
-        let enemies = enemies.unwrap_or_else(|| {
-            fixed::SECTION5_WAVE
-                .iter()
-                .map(|s| s.to_string())
-                .collect()
-        });
+        let enemies =
+            enemies.unwrap_or_else(|| fixed::SECTION5_WAVE.iter().map(|s| s.to_string()).collect());
         let mut config = BattleConfig {
             strict_mechanics: strict,
             ..Default::default()
@@ -66,6 +63,7 @@ impl PySimulator {
         if let Some(scale) = enemy_hp_scale {
             config.enemy_hp_scale = scale;
         }
+        config.infinite_ego_resources = infinite_ego_resources;
         let team_refs: Vec<&str> = team.iter().map(|s| s.as_str()).collect();
         let enemy_refs: Vec<&str> = enemies.iter().map(|s| s.as_str()).collect();
         let state = self
@@ -346,7 +344,11 @@ impl PySimulator {
 
     /// Passive clauses this project has not modelled yet.
     fn passive_gaps(&self) -> Vec<String> {
-        self.sim.passive_gaps().iter().map(|s| s.to_string()).collect()
+        self.sim
+            .passive_gaps()
+            .iter()
+            .map(|s| s.to_string())
+            .collect()
     }
 
     fn strict_blockers(&self) -> Vec<String> {

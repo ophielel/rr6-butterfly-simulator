@@ -72,10 +72,13 @@ class EngageAction:
     actor: str
     slot: int
     skill: str
+    enemy: str
     enemy_slot: int
-    #: The enemy unit that owns the Slot (the wire format does not carry it, so
-    #: the wrapper fills it from the current state for the search layer).
-    target: str = ""
+
+    @property
+    def target(self) -> str:
+        """Compatibility alias for generic target-scoring helpers."""
+        return self.enemy
 
     def to_wire(self) -> str:
         return json.dumps(
@@ -84,6 +87,7 @@ class EngageAction:
                     "actor": self.actor,
                     "slot": self.slot,
                     "skill": self.skill,
+                    "enemy": self.enemy,
                     "enemy_slot": self.enemy_slot,
                 }
             }
@@ -129,6 +133,7 @@ def _decode(action: Dict[str, Any]) -> Any:
             actor=payload["actor"],
             slot=payload["slot"],
             skill=payload["skill"],
+            enemy=payload["enemy"],
             enemy_slot=payload["enemy_slot"],
         )
     if "UseEgo" in action:
@@ -171,6 +176,7 @@ class LimbusEnv:
         enemies: Optional[List[str]] = None,
         max_turns: Optional[int] = None,
         enemy_hp_scale: Optional[float] = None,
+        infinite_ego_resources: bool = False,
     ) -> str:
         """Start a fresh encounter (returns the initial state hash).
 
@@ -184,6 +190,7 @@ class LimbusEnv:
             bool(self.strict),
             int(max_turns) if max_turns is not None else None,
             float(enemy_hp_scale) if enemy_hp_scale is not None else None,
+            bool(infinite_ego_resources),
         )
 
     def clone_state(self) -> "LimbusEnv":
@@ -205,28 +212,6 @@ class LimbusEnv:
     # -- interaction -------------------------------------------------------
     def legal_actions(self) -> List[Any]:
         actions = [_decode(a) for a in json.loads(self._sim.legal_actions())]
-        # `EngageAction` chains to an enemy Skill Slot; the enemy unit that owns
-        # it comes from the state so callers can treat every action uniformly.
-        enemy_ids = [
-            unit["id"]
-            for unit in self.state()["units"]
-            if "Sinner" not in unit.get("kind", {})
-        ]
-        if enemy_ids:
-            actions = [
-                (
-                    EngageAction(
-                        actor=a.actor,
-                        slot=a.slot,
-                        skill=a.skill,
-                        enemy_slot=a.enemy_slot,
-                        target=enemy_ids[0],
-                    )
-                    if isinstance(a, EngageAction)
-                    else a
-                )
-                for a in actions
-            ]
         return actions
 
     def step(self, action: Any) -> Dict[str, Any]:

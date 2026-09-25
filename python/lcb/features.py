@@ -537,7 +537,7 @@ class Encoder:
         ]
         out[: self.skill_dim] = skill_block
 
-        target_id = payload.get("target") if kind != "Engage" else None
+        target_id = payload.get("target") if kind != "Engage" else payload.get("enemy")
         position = index.get(str(target_id), -1) if target_id else -1
         target = None
         if target_id:

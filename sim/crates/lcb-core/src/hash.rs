@@ -39,6 +39,7 @@ pub fn search_key(state: &crate::state::BattleState) -> u64 {
     probe.log.clear();
     probe.warnings.clear();
     probe.turn_stats = Default::default();
+    probe.status_gain_events.clear();
     state_hash(&probe)
 }
 
@@ -63,8 +64,14 @@ mod tests {
             a: i32,
             b: Vec<i32>,
         }
-        let x = S { a: 1, b: vec![1, 2, 3] };
-        let y = S { a: 1, b: vec![1, 2, 4] };
+        let x = S {
+            a: 1,
+            b: vec![1, 2, 3],
+        };
+        let y = S {
+            a: 1,
+            b: vec![1, 2, 4],
+        };
         assert_ne!(state_hash(&x), state_hash(&y));
     }
 }

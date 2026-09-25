@@ -1,13 +1,13 @@
 //! Encounter construction: turning library records into runtime units.
 
 use crate::effects::MechanicsBook;
-use crate::ids::{DamageType, EgoId, EnemyId, IdentityId, Sin, SkillId, Uptie, UnitId};
+use crate::ids::{DamageType, EgoId, EnemyId, IdentityId, Sin, SkillId, UnitId, Uptie};
 use crate::library::{EnemyRecord, IdentityRecord, Library};
+use crate::rng::Rng;
 use crate::state::{
     BattleConfig, BattleState, DashboardSlot, Phase, Sanity, SkillDeck, StaggerState, StatusSet,
     Unit, UnitKind,
 };
-use crate::rng::Rng;
 use std::collections::BTreeMap;
 
 pub const TEAM_SIZE_CAP: usize = 6;
@@ -18,6 +18,7 @@ pub enum SetupError {
     UnknownEnemy(String),
     MissingSkill(String),
     MissingField(String),
+    StrictBlockers(Vec<String>),
 }
 
 impl std::fmt::Display for SetupError {
@@ -27,6 +28,11 @@ impl std::fmt::Display for SetupError {
             SetupError::UnknownEnemy(id) => write!(f, "unknown enemy id {id}"),
             SetupError::MissingSkill(id) => write!(f, "identity {id} has no usable skills"),
             SetupError::MissingField(what) => write!(f, "missing library field: {what}"),
+            SetupError::StrictBlockers(blockers) => write!(
+                f,
+                "strict encounter preflight failed: {}",
+                blockers.join("; ")
+            ),
         }
     }
 }
@@ -41,7 +47,10 @@ fn resist_map(identity: &IdentityRecord) -> BTreeMap<String, f64> {
             DamageType::Pierce => "pierce",
             DamageType::Blunt => "blunt",
         };
-        map.insert(key.to_string(), identity.stats.resist_physical(kind).unwrap_or(1.0));
+        map.insert(
+            key.to_string(),
+            identity.stats.resist_physical(kind).unwrap_or(1.0),
+        );
     }
     map
 }
@@ -158,7 +167,11 @@ pub fn build_deck(identity: &IdentityRecord, uptie: Uptie) -> SkillDeck {
         if slot == crate::ids::SkillSlot::Defense {
             continue;
         }
-        let amount = skill.tier(uptie).and_then(|t| t.skill_amount).unwrap_or(1).max(1);
+        let amount = skill
+            .tier(uptie)
+            .and_then(|t| t.skill_amount)
+            .unwrap_or(1)
+            .max(1);
         composition.push((SkillId::new(skill.id.clone()), amount));
     }
     SkillDeck::new(composition)
@@ -223,11 +236,7 @@ impl<'a> EncounterBuilder<'a> {
         self
     }
 
-    pub fn build(
-        self,
-        team: &[&str],
-        enemies: &[&str],
-    ) -> Result<BattleState, SetupError> {
+    pub fn build(self, team: &[&str], enemies: &[&str]) -> Result<BattleState, SetupError> {
         let mut units = Vec::new();
         let mut deployment = Vec::new();
         let mut warnings = Vec::new();
@@ -315,13 +324,18 @@ impl<'a> EncounterBuilder<'a> {
                 .collect(),
             log: Vec::new(),
             turn_stats: Default::default(),
+            status_gain_events: Vec::new(),
             warnings,
             winner: None,
             encounter_ended: false,
             defense_slots_used: Vec::new(),
             preset_flips: Vec::new(),
             flip_cursor: 0,
-            slot_target: if team.len() >= TEAM_SIZE_CAP { team.len() } else { TEAM_SIZE_CAP },
+            slot_target: if team.len() >= TEAM_SIZE_CAP {
+                team.len()
+            } else {
+                TEAM_SIZE_CAP
+            },
         };
 
         // Attach the rules books before Turn 1 starts.
@@ -371,8 +385,10 @@ impl<'a> EncounterBuilder<'a> {
         }
         let speed = speed_range(record, uptie);
         let resist_physical = resist_map(record);
-        let resist_sin: BTreeMap<String, f64> =
-            Sin::ALL.iter().map(|s| (sin_key(*s).to_string(), 1.0)).collect();
+        let resist_sin: BTreeMap<String, f64> = Sin::ALL
+            .iter()
+            .map(|s| (sin_key(*s).to_string(), 1.0))
+            .collect();
         Ok(Unit {
             planned_targets: 1,
             passive_ids: Vec::new(),
@@ -410,7 +426,11 @@ impl<'a> EncounterBuilder<'a> {
                 stagger
             },
             statuses: StatusSet::default(),
-            identity_skills: record.skills.iter().map(|s| SkillId::new(s.id.clone())).collect(),
+            identity_skills: record
+                .skills
+                .iter()
+                .map(|s| SkillId::new(s.id.clone()))
+                .collect(),
             passives: Vec::new(),
             corrosion_egos: Vec::new(),
             panic_type: None,
@@ -500,10 +520,7 @@ impl<'a> EncounterBuilder<'a> {
                 enemy: EnemyId::new(record.id.clone()),
                 part: record.parts.first().and_then(|p| p.name.clone()),
             },
-            name: record
-                .name_en
-                .clone()
-                .unwrap_or_else(|| record.id.clone()),
+            name: record.name_en.clone().unwrap_or_else(|| record.id.clone()),
             level,
             hp: max_hp,
             max_hp,

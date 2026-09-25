@@ -9,9 +9,7 @@ use crate::damage::{compute_damage, level_clash_bonus, DamageInputs};
 use crate::effects::{Component, Condition, Effect, MechanicsBook, SkillMechanics};
 use crate::ids::{DamageType, EgoId, Sin, SkillId, UnitId, Uptie};
 use crate::library::Library;
-use crate::state::{
-    BattleState, Phase, Sanity, SubmittedAction, Unit, UnitKind, Winner, SP_LIMIT,
-};
+use crate::state::{BattleState, Phase, Sanity, SubmittedAction, Unit, UnitKind, Winner, SP_LIMIT};
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 
@@ -60,6 +58,9 @@ pub struct UseContext {
     pub damage_bonus: f64,
     pub shield_gain: i32,
     pub ammo_spent: i32,
+    /// Skill that owns status applications emitted through this context.
+    #[serde(default)]
+    pub skill_id: Option<SkillId>,
     /// "The Living & The Departed" is a **two-part** pool: each unit spent is
     /// randomly The Living (Potency) or The Departed (Count), and a Skill that
     /// inflicts the unique [Sinking] mirrors the split it consumed.
@@ -244,7 +245,10 @@ impl SkillUse {
     }
 
     pub fn remaining_coins(&self) -> usize {
-        self.coins.iter().filter(|c| c.state != CoinState::Destroyed).count()
+        self.coins
+            .iter()
+            .filter(|c| c.state != CoinState::Destroyed)
+            .count()
     }
 }
 
@@ -320,6 +324,7 @@ pub enum Action {
         actor: UnitId,
         slot: u32,
         skill: SkillId,
+        enemy: UnitId,
         enemy_slot: u32,
     },
     /// Use an E.G.O skill (wiki.gg `Clash` / E.G.O Skills).
@@ -360,7 +365,9 @@ pub fn legal_actions(state: &BattleState, library: &Library) -> Vec<Action> {
             UnitKind::Sinner { identity } => identity,
             _ => continue,
         };
-        let Some(record) = library.identity(identity) else { continue };
+        let Some(record) = library.identity(identity) else {
+            continue;
+        };
         // Both clearly visible skills of a slot are selectable ("2 clearly
         // visible skills and 1 faint preview", JA-wiki チェーンパネル).
         let mut skills: Vec<SkillId> = unit
@@ -380,7 +387,7 @@ pub fn legal_actions(state: &BattleState, library: &Library) -> Vec<Action> {
         // Enemy Skill Slots this unit may chain to: the ones already aimed at it,
         // plus (in a focused encounter) any Slot it out-speeds
         // ("幻想体戦では、速度で勝っている敵のスキルの使用先を変更することができる").
-        let pullable: Vec<u32> = if state.config.focused_encounter {
+        let pullable: Vec<(UnitId, u32)> = if state.config.focused_encounter {
             state
                 .actions
                 .iter()
@@ -398,18 +405,19 @@ pub fn legal_actions(state: &BattleState, library: &Library) -> Vec<Action> {
                         .unwrap_or(0);
                     aimed_at_me || unit.speed > owner_speed
                 })
-                .map(|a| a.slot)
+                .map(|a| (a.actor.clone(), a.slot))
                 .collect()
         } else {
             Vec::new()
         };
         for slot in unit.dashboard.iter().map(|s| s.slot).collect::<Vec<_>>() {
             for skill in &skills {
-                for enemy_slot in &pullable {
+                for (enemy, enemy_slot) in &pullable {
                     out.push(Action::Engage {
                         actor: unit.id.clone(),
                         slot,
                         skill: skill.clone(),
+                        enemy: enemy.clone(),
                         enemy_slot: *enemy_slot,
                     });
                 }
@@ -424,7 +432,9 @@ pub fn legal_actions(state: &BattleState, library: &Library) -> Vec<Action> {
             }
             // E.G.O skills the identity owns and the team can currently pay for.
             for ego_id in &unit.ego_slots {
-                let Some(ego) = library.ego(ego_id) else { continue };
+                let Some(ego) = library.ego(ego_id) else {
+                    continue;
+                };
                 // The player never picks Corrosion directly (JA-wiki 戦闘システム
                 // 詳細: it fires randomly when SP is negative, or through
                 // Overclock, or is forced in the E.G.O Corrosion state).
@@ -484,7 +494,9 @@ pub fn submit(state: &mut BattleState, action: Action) -> Result<(), String> {
                 }
                 entry.current = skill.clone();
             }
-            state.actions.retain(|a| !(a.actor == actor && a.slot == slot));
+            state
+                .actions
+                .retain(|a| !(a.actor == actor && a.slot == slot));
             state.actions.push(SubmittedAction {
                 actor,
                 slot,
@@ -502,6 +514,7 @@ pub fn submit(state: &mut BattleState, action: Action) -> Result<(), String> {
             actor,
             slot,
             skill,
+            enemy,
             enemy_slot,
         } => {
             let Some(unit) = state.unit(&actor) else {
@@ -512,12 +525,16 @@ pub fn submit(state: &mut BattleState, action: Action) -> Result<(), String> {
             }
             // The pull is only legal when this Skill already has that enemy
             // Slot aimed at it, or beats its Speed.
-            let Some(enemy) = state.units.iter().find(|u| !u.kind.is_sinner()) else {
-                return Err("no enemy".to_string());
+            let Some(enemy_unit) = state
+                .units
+                .iter()
+                .find(|u| u.id == enemy && !u.kind.is_sinner())
+            else {
+                return Err(format!("unknown enemy {enemy}"));
             };
-            let enemy_index = state.index_of(&enemy.id).unwrap_or(0);
+            let enemy_index = state.index_of(&enemy_unit.id).unwrap_or(0);
             let aimed_at_me = state.actions.iter().any(|a| {
-                a.actor == enemy.id && a.slot == enemy_slot && a.target.as_ref() == Some(&actor)
+                a.actor == enemy && a.slot == enemy_slot && a.target.as_ref() == Some(&actor)
             });
             // "When chaining Skills, this unit can redirect the Attack Skills'
             // targeting to itself regardless of Speed (Focused Encounters only)"
@@ -534,7 +551,7 @@ pub fn submit(state: &mut BattleState, action: Action) -> Result<(), String> {
                     unit.speed, state.units[enemy_index].speed
                 ));
             }
-            let target = enemy.id.clone();
+            let target = enemy.clone();
             let Some(entry) = state
                 .unit_mut(&actor)
                 .and_then(|unit| unit.dashboard.iter_mut().find(|s| s.slot == slot))
@@ -550,7 +567,9 @@ pub fn submit(state: &mut BattleState, action: Action) -> Result<(), String> {
                 }
                 entry.current = skill.clone();
             }
-            state.actions.retain(|a| !(a.actor == actor && a.slot == slot));
+            state
+                .actions
+                .retain(|a| !(a.actor == actor && a.slot == slot));
             state.actions.push(SubmittedAction {
                 actor,
                 slot,
@@ -580,7 +599,9 @@ pub fn submit(state: &mut BattleState, action: Action) -> Result<(), String> {
             if !unit.ego_slots.contains(&ego) {
                 return Err(format!("{actor} does not have E.G.O {ego} equipped"));
             }
-            state.actions.retain(|a| !(a.actor == actor && a.slot == slot));
+            state
+                .actions
+                .retain(|a| !(a.actor == actor && a.slot == slot));
             state.actions.push(SubmittedAction {
                 actor,
                 slot,
@@ -608,7 +629,12 @@ fn ego_kind_available(_state: &BattleState, ego: &EgoId, kind: EgoSkillKind) -> 
 }
 
 /// Resource + SP check (wiki.gg `Clash` / E.G.O Skills, Overclocking).
-fn ego_affordable(state: &BattleState, unit: &Unit, ego: &crate::library::EgoRecord, kind: EgoSkillKind) -> bool {
+fn ego_affordable(
+    state: &BattleState,
+    unit: &Unit,
+    ego: &crate::library::EgoRecord,
+    kind: EgoSkillKind,
+) -> bool {
     let (sp_cost, multiplier) = match kind {
         EgoSkillKind::Awakening => (ego.awakening_sp.unwrap_or(0), 1.0),
         EgoSkillKind::Corrosion => (ego.corrosion_sp.unwrap_or(0), 1.0),
@@ -629,15 +655,17 @@ fn ego_affordable(state: &BattleState, unit: &Unit, ego: &crate::library::EgoRec
             }
         }
     }
-    for (sin, amount) in crate::library::Library::ego_cost(ego) {
-        let needed = if multiplier == 1.0 {
-            amount
-        } else {
-            (amount as f64 * multiplier).ceil() as i32
-        };
-        let have = state.ego_resources.get(&sin).copied().unwrap_or(0);
-        if have < needed {
-            return false;
+    if !state.config.infinite_ego_resources {
+        for (sin, amount) in crate::library::Library::ego_cost(ego) {
+            let needed = if multiplier == 1.0 {
+                amount
+            } else {
+                (amount as f64 * multiplier).ceil() as i32
+            };
+            let have = state.ego_resources.get(&sin).copied().unwrap_or(0);
+            if have < needed {
+                return false;
+            }
         }
     }
     true
@@ -671,12 +699,7 @@ fn roll_living(state: &mut BattleState, unit_index: usize) -> bool {
 }
 
 /// Spend `amount` from one ammo pool.  Returns how much was actually spent.
-fn spend_ammo(
-    state: &mut BattleState,
-    unit_index: usize,
-    status: &str,
-    amount: i32,
-) -> i32 {
+fn spend_ammo(state: &mut BattleState, unit_index: usize, status: &str, amount: i32) -> i32 {
     if amount <= 0 {
         return 0;
     }
@@ -699,7 +722,11 @@ fn spend_ammo(
         let unit = &mut state.units[unit_index];
         let has_living = unit.statuses.potency(AMMO_SOLEMN_LAMENT) > 0;
         let has_departed = unit.statuses.count(AMMO_SOLEMN_LAMENT) > 0;
-        let take_living = if wants_living { has_living } else { !has_departed && has_living };
+        let take_living = if wants_living {
+            has_living
+        } else {
+            !has_departed && has_living
+        };
         if take_living {
             unit.statuses.add_potency(AMMO_SOLEMN_LAMENT, -1);
             living += 1;
@@ -746,8 +773,7 @@ pub fn reload_solitude(state: &mut BattleState, unit_index: usize) -> String {
     let living = living.clamp(1, 19);
     let unit = &mut state.units[unit_index];
     unit.statuses.add_potency(AMMO_SOLEMN_LAMENT, living);
-    unit.statuses
-        .add_count(AMMO_SOLEMN_LAMENT, 20 - living);
+    unit.statuses.add_count(AMMO_SOLEMN_LAMENT, 20 - living);
     unit.statuses.add_potency("Reload (Solemn Lament)", 1);
     format!("Reloaded [The Living & The Departed] (SP -{sp_cost})")
 }
@@ -779,10 +805,7 @@ fn corrosion_chance_for_sp(sp: i32) -> Option<i32> {
 
 /// Give back the 0.5x surcharge an Overclock paid, so a random Corrosion costs
 /// the normal Corrosion price.
-fn refund_overclock_surcharge(
-    state: &mut BattleState,
-    ego: &crate::library::EgoRecord,
-) {
+fn refund_overclock_surcharge(state: &mut BattleState, ego: &crate::library::EgoRecord) {
     for (sin, amount) in crate::library::Library::ego_cost(ego) {
         let surcharge = (amount as f64 * 1.5).ceil() as i32 - amount;
         if surcharge > 0 {
@@ -816,11 +839,19 @@ pub fn pay_ego_sp(state: &mut BattleState, unit_index: usize, sp: i32) {
     state.units[unit_index].sanity = sanity.add(-sp);
 }
 
-fn pay_ego(state: &mut BattleState, _unit_index: usize, ego: &crate::library::EgoRecord, kind: EgoSkillKind) -> String {
+fn pay_ego(
+    state: &mut BattleState,
+    _unit_index: usize,
+    ego: &crate::library::EgoRecord,
+    kind: EgoSkillKind,
+) -> String {
     let multiplier = match kind {
         EgoSkillKind::Overclock => 1.5,
         _ => 1.0,
     };
+    if state.config.infinite_ego_resources {
+        return "resources: unlimited (not spent)".to_string();
+    }
     let mut spent = Vec::new();
     for (sin, amount) in crate::library::Library::ego_cost(ego) {
         let needed = if multiplier == 1.0 {
@@ -844,9 +875,7 @@ fn unit_status_value(unit: &Unit, key: &str, component: Option<Component>) -> i3
         Some(Component::Potency) => unit.statuses.potency(key),
         Some(Component::Count) => unit.statuses.count(key),
         Some(Component::Stack) => unit.statuses.stack(key),
-        Some(Component::CombatStart) => {
-            unit.combat_start_statuses.get(key).copied().unwrap_or(0)
-        }
+        Some(Component::CombatStart) => unit.combat_start_statuses.get(key).copied().unwrap_or(0),
         // No component: "has [X]" covers Potency + Count and Stack, so that
         // stack-only statuses (Dazzle, Charge, ...) are detected too.
         None => {
@@ -1120,14 +1149,17 @@ pub const AMPLITUDE_ENTANGLEMENT: &str = "Amplitude Entanglement";
 /// A status is "present" if it carries a value or is a marker (amplitudes).
 fn has_named(unit: &Unit, name: &str) -> bool {
     unit_status_value(unit, name, None) > 0
-        || unit.status_markers.iter().any(|marker| marker.starts_with(name))
+        || unit
+            .status_markers
+            .iter()
+            .any(|marker| marker.starts_with(name))
 }
 
 #[doc(hidden)]
 pub fn has_amplitude(unit: &Unit) -> bool {
-    unit.status_markers
-        .iter()
-        .any(|marker| marker.starts_with(AMPLITUDE_CONVERSION) || marker.starts_with(AMPLITUDE_ENTANGLEMENT))
+    unit.status_markers.iter().any(|marker| {
+        marker.starts_with(AMPLITUDE_CONVERSION) || marker.starts_with(AMPLITUDE_ENTANGLEMENT)
+    })
 }
 
 #[doc(hidden)]
@@ -1149,7 +1181,9 @@ pub fn amplitude_of(unit: &Unit) -> Option<&str> {
 fn ally_targets(state: &BattleState, ctx: &EffectContext<'_>, effect: &Effect) -> Vec<usize> {
     let actor_index = ctx.actor_index;
     let actor = &state.units[actor_index];
-    let include_self = effect.include_self.unwrap_or(matches!(effect.ally.as_deref(), None | Some("self")));
+    let include_self = effect
+        .include_self
+        .unwrap_or(matches!(effect.ally.as_deref(), None | Some("self")));
     let same_side = |unit: &Unit| unit.alive && unit.kind.is_sinner() == actor.kind.is_sinner();
     let mut others: Vec<usize> = state
         .units
@@ -1170,18 +1204,14 @@ fn ally_targets(state: &BattleState, ctx: &EffectContext<'_>, effect: &Effect) -
             ((base + reson).max(0) as usize).min(effect.max.unwrap_or(i32::MAX) as usize)
         }
         false => match effect.ally_from_status.as_deref() {
-        Some(status) => {
-            let divisor = effect.ally_from_divisor.unwrap_or(1).max(1);
-            let have = actor.statuses.count(status)
-                + actor.statuses.potency(status)
-                + actor.statuses.stack(status);
-            (have / divisor).max(0) as usize
-        }
-            None => effect
-                .ally_count
-                .or(effect.value)
-                .unwrap_or(0)
-                .max(0) as usize,
+            Some(status) => {
+                let divisor = effect.ally_from_divisor.unwrap_or(1).max(1);
+                let have = actor.statuses.count(status)
+                    + actor.statuses.potency(status)
+                    + actor.statuses.stack(status);
+                (have / divisor).max(0) as usize
+            }
+            None => effect.ally_count.or(effect.value).unwrap_or(0).max(0) as usize,
         },
     };
     if kind == "self" {
@@ -1245,6 +1275,103 @@ pub struct EffectContext<'a> {
     /// Dashboard slot the skill was used from, when known.
     pub slot: u32,
     pub mechanics_note: &'a mut Vec<String>,
+}
+
+fn record_sinking_gain(
+    state: &mut BattleState,
+    actor_index: usize,
+    target_index: usize,
+    potency: i32,
+    count: i32,
+    coin_index: Option<u32>,
+    raw: Option<String>,
+    skill_id: Option<SkillId>,
+) {
+    let source_actor = state.units[actor_index].id.clone();
+    let target = state.units[target_index].id.clone();
+    let source_type = if coin_index.is_some() {
+        "skill_coin"
+    } else {
+        "skill_effect"
+    };
+    if potency > 0 {
+        state.units[target_index]
+            .statuses
+            .add_potency("Sinking", potency);
+        state
+            .status_gain_events
+            .push(crate::state::StatusGainEvent {
+                source_actor: source_actor.clone(),
+                target: target.clone(),
+                status: "Sinking".into(),
+                potency_delta: potency,
+                count_delta: 0,
+                source_type: source_type.into(),
+                skill_id: skill_id.clone(),
+                coin_index,
+                effect_raw: raw.clone(),
+            });
+        if state.units[target_index]
+            .statuses
+            .potency("Echoes of the Manor")
+            > 0
+            && state.flip(50)
+        {
+            state.units[target_index].statuses.add_count("Sinking", 1);
+            state
+                .status_gain_events
+                .push(crate::state::StatusGainEvent {
+                    source_actor: source_actor.clone(),
+                    target: target.clone(),
+                    status: "Sinking".into(),
+                    potency_delta: 0,
+                    count_delta: 1,
+                    source_type: "echoes_of_the_manor".into(),
+                    skill_id: skill_id.clone(),
+                    coin_index,
+                    effect_raw: Some("Echoes of the Manor: 50% Count".into()),
+                });
+        }
+    }
+    if count > 0 {
+        state.units[target_index]
+            .statuses
+            .add_count("Sinking", count);
+        state
+            .status_gain_events
+            .push(crate::state::StatusGainEvent {
+                source_actor: source_actor.clone(),
+                target: target.clone(),
+                status: "Sinking".into(),
+                potency_delta: 0,
+                count_delta: count,
+                source_type: source_type.into(),
+                skill_id: skill_id.clone(),
+                coin_index,
+                effect_raw: raw.clone(),
+            });
+        if state.units[target_index]
+            .statuses
+            .potency("Echoes of the Manor")
+            > 0
+            && state.flip(50)
+        {
+            state.units[target_index].statuses.add_count("Sinking", 1);
+            state
+                .status_gain_events
+                .push(crate::state::StatusGainEvent {
+                    source_actor,
+                    target,
+                    status: "Sinking".into(),
+                    potency_delta: 0,
+                    count_delta: 1,
+                    source_type: "echoes_of_the_manor".into(),
+                    skill_id,
+                    coin_index,
+                    effect_raw: Some("Echoes of the Manor: 50% Count".into()),
+                });
+        }
+    }
 }
 
 /// Apply a list of effects.  Unknown kinds are recorded, never silently dropped.
@@ -1317,6 +1444,54 @@ pub fn apply_effects(
         if !holds {
             continue;
         }
+        if effect.kind == "inflict_random_each" {
+            let status = effect.status.as_deref().unwrap_or("Sinking");
+            let resonance = effect
+                .resonance_of
+                .as_deref()
+                .map(|sin| {
+                    state.units[ctx.actor_index]
+                        .resonance_of
+                        .get(&sin.to_lowercase())
+                        .copied()
+                        .unwrap_or(0)
+                })
+                .unwrap_or(state.units[ctx.actor_index].resonance_max);
+            let amount = (effect.value.unwrap_or(0) as f64
+                + effect.multiplier_f.unwrap_or(0.0) * resonance as f64)
+                .floor()
+                .max(0.0) as usize;
+            let actor_is_sinner = state.units[ctx.actor_index].kind.is_sinner();
+            let targets: Vec<usize> = state
+                .units
+                .iter()
+                .enumerate()
+                .filter(|(_, unit)| unit.alive && unit.kind.is_sinner() != actor_is_sinner)
+                .map(|(index, _)| index)
+                .collect();
+            if targets.is_empty() {
+                continue;
+            }
+            for _ in 0..amount {
+                let pick = state.rng.below(targets.len() as u32) as usize;
+                let target_index = targets[pick];
+                if status == "Sinking" {
+                    record_sinking_gain(
+                        state,
+                        ctx.actor_index,
+                        target_index,
+                        1,
+                        0,
+                        effect.coin_index,
+                        effect.raw.clone(),
+                        use_ctx.skill_id.clone(),
+                    );
+                } else {
+                    state.units[target_index].statuses.add_potency(status, 1);
+                }
+            }
+            continue;
+        }
         match effect.kind.as_str() {
             "inflict" | "gain" => {
                 let index = if effect.source.as_deref() == Some("self") || effect.kind == "gain" {
@@ -1325,7 +1500,9 @@ pub fn apply_effects(
                     ctx.target_index
                 };
                 let Some(index) = index else { continue };
-                let Some(status) = effect.status.clone() else { continue };
+                let Some(status) = effect.status.clone() else {
+                    continue;
+                };
                 // "inflict 3 [Sinking] on 2 random enemies" and other clauses
                 // that reach beyond the main target.
                 if effect.ally.is_some() {
@@ -1351,6 +1528,17 @@ pub fn apply_effects(
                             continue;
                         }
                         let unit = &mut state.units[target];
+                        if status == "Echoes of the Manor" {
+                            unit.statuses.set(
+                                &status,
+                                crate::state::StatusInstance {
+                                    potency: base.max(effect.count.unwrap_or(0)),
+                                    count: 0,
+                                    stack: 0,
+                                },
+                            );
+                            continue;
+                        }
                         match effect.butterfly_part.as_deref() {
                             Some("departed") | Some("count") => {
                                 unit.statuses.add_count(&status, base)
@@ -1358,7 +1546,8 @@ pub fn apply_effects(
                             Some(_) => unit.statuses.add_potency(&status, base),
                             None => {
                                 unit.statuses.add_potency(&status, base);
-                                unit.statuses.add_count(&status, effect.count.unwrap_or(base));
+                                unit.statuses
+                                    .add_count(&status, effect.count.unwrap_or(base));
                             }
                         }
                     }
@@ -1372,7 +1561,10 @@ pub fn apply_effects(
                         if !c.statuses.is_empty() {
                             sum_statuses(unit, &c.statuses, c.component)
                         } else {
-                            c.status.as_deref().map(|s| unit_status_value(unit, s, c.component)).unwrap_or(0)
+                            c.status
+                                .as_deref()
+                                .map(|s| unit_status_value(unit, s, c.component))
+                                .unwrap_or(0)
                         }
                     })
                     .unwrap_or(0);
@@ -1389,14 +1581,13 @@ pub fn apply_effects(
                     .map(|base| amount(base, effect, measured))
                     .unwrap_or(0);
                 // "A random ally gains 1 ~ 2 [Rhythm]".
-                let (potency, count) = if let (Some(lo), Some(hi)) =
-                    (effect.range_min, effect.range_max)
-                {
-                    let rolled = lo + state.roll_inclusive(hi - lo);
-                    (rolled, 0)
-                } else {
-                    (potency, count)
-                };
+                let (potency, count) =
+                    if let (Some(lo), Some(hi)) = (effect.range_min, effect.range_max) {
+                        let rolled = lo + state.roll_inclusive(hi - lo);
+                        (rolled, 0)
+                    } else {
+                        (potency, count)
+                    };
                 let potency = if let Some(per_sp) = effect.per_sp {
                     // "Turn Start: gain 1 [Protecting Sword] for every 8 SP".
                     let sp = state.units[ctx.actor_index].sanity.sp();
@@ -1435,12 +1626,14 @@ pub fn apply_effects(
                 if effect.next_turn {
                     // "Gain 2 Protection next turn" / "Inflict 3 [Blue Sand] next
                     // turn" -> applied at the next Turn Start, component included.
-                    state.units[index].pending_next_turn.push(crate::state::PendingStatus {
-                        status: status.clone(),
-                        potency,
-                        count,
-                        stack: stack_amount,
-                    });
+                    state.units[index]
+                        .pending_next_turn
+                        .push(crate::state::PendingStatus {
+                            status: status.clone(),
+                            potency,
+                            count,
+                            stack: stack_amount,
+                        });
                     continue;
                 }
                 // Stack-based statuses (In the Past/Present/Future, Dazzle, …)
@@ -1466,7 +1659,10 @@ pub fn apply_effects(
                 // `Status Effects` / Butterfly).
                 // "(Chance to flip Heads)% chance to inflict The Departed ...
                 // (calculates every [Butterfly] Stack independently)".
-                if status == "Butterfly" && use_ctx.butterfly_split && effect.butterfly_part.is_none() {
+                if status == "Butterfly"
+                    && use_ctx.butterfly_split
+                    && effect.butterfly_part.is_none()
+                {
                     let heads_percent = heads_percent(state, &state.units[ctx.actor_index]);
                     let stacks = potency.max(count);
                     let mut departed = 0;
@@ -1521,8 +1717,10 @@ pub fn apply_effects(
                 if status == "Butterfly" {
                     let unit = &mut state.units[index];
                     unit.statuses.add_potency(&status, potency);
-                    unit.statuses
-                        .add_count(&effect.status2.clone().unwrap_or_else(|| status.clone()), count);
+                    unit.statuses.add_count(
+                        &effect.status2.clone().unwrap_or_else(|| status.clone()),
+                        count,
+                    );
                     continue;
                 }
                 if let Some((boosted, bonus)) = time_state_bonus(state, ctx.actor_index) {
@@ -1533,9 +1731,35 @@ pub fn apply_effects(
                         count += bonus.count;
                     }
                 }
-                let unit = &mut state.units[index];
-                unit.statuses.add_potency(&status, potency);
-                unit.statuses.add_count(&count_status, count);
+                if status == "Echoes of the Manor" && potency.max(count) > 0 {
+                    state.units[index].statuses.set(
+                        &status,
+                        crate::state::StatusInstance {
+                            potency: potency.max(count),
+                            count: 0,
+                            stack: 0,
+                        },
+                    );
+                } else if status == "Echoes of the Manor" {
+                    state.units[index]
+                        .statuses
+                        .add_potency(&status, potency.min(count.min(0)));
+                } else if status == "Sinking" && count_status == "Sinking" {
+                    record_sinking_gain(
+                        state,
+                        ctx.actor_index,
+                        index,
+                        potency,
+                        count,
+                        effect.coin_index,
+                        effect.raw.clone(),
+                        use_ctx.skill_id.clone(),
+                    );
+                } else {
+                    let unit = &mut state.units[index];
+                    unit.statuses.add_potency(&status, potency);
+                    unit.statuses.add_count(&count_status, count);
+                }
                 // "Potency: Base 0, Max 5" / "Count: Base 3, Max 3" caps.
                 if let Some(behaviour) = state
                     .status_book
@@ -1583,8 +1807,12 @@ pub fn apply_effects(
                 *use_ctx.ammo_spent_by_status.entry(status).or_insert(0) += spent;
             }
             "inflict_equal_ammo_spent" => {
-                let Some(status) = effect.status.clone() else { continue };
-                let Some(index) = ctx.target_index else { continue };
+                let Some(status) = effect.status.clone() else {
+                    continue;
+                };
+                let Some(index) = ctx.target_index else {
+                    continue;
+                };
                 // "Inflict [Butterfly] equal to [The Living & The Departed]
                 // spent": the unique Sinking keeps the split the Skill consumed
                 // ("inflict the same amount of The Living and The Departed as
@@ -1613,25 +1841,55 @@ pub fn apply_effects(
                 }
             }
             "clash_power" => {
-                let measured = measured_from_condition(state, ctx.actor_index, effect, &state.units[ctx.actor_index], ctx.target_index.map(|i| &state.units[i]));
+                let measured = measured_from_condition(
+                    state,
+                    ctx.actor_index,
+                    effect,
+                    &state.units[ctx.actor_index],
+                    ctx.target_index.map(|i| &state.units[i]),
+                );
                 use_ctx.clash_power_bonus += scaled(effect, measured);
             }
             "coin_power" => {
-                let measured = measured_from_condition(state, ctx.actor_index, effect, &state.units[ctx.actor_index], ctx.target_index.map(|i| &state.units[i]));
+                let measured = measured_from_condition(
+                    state,
+                    ctx.actor_index,
+                    effect,
+                    &state.units[ctx.actor_index],
+                    ctx.target_index.map(|i| &state.units[i]),
+                );
                 use_ctx.coin_power_bonus += scaled(effect, measured);
             }
             "base_power" => {
-                let measured = measured_from_condition(state, ctx.actor_index, effect, &state.units[ctx.actor_index], ctx.target_index.map(|i| &state.units[i]));
+                let measured = measured_from_condition(
+                    state,
+                    ctx.actor_index,
+                    effect,
+                    &state.units[ctx.actor_index],
+                    ctx.target_index.map(|i| &state.units[i]),
+                );
                 use_ctx.base_power_bonus += scaled(effect, measured);
             }
             "damage_percent" => {
-                let measured = measured_from_condition(state, ctx.actor_index, effect, &state.units[ctx.actor_index], ctx.target_index.map(|i| &state.units[i]));
+                let measured = measured_from_condition(
+                    state,
+                    ctx.actor_index,
+                    effect,
+                    &state.units[ctx.actor_index],
+                    ctx.target_index.map(|i| &state.units[i]),
+                );
                 use_ctx.damage_bonus += scaled(effect, measured) as f64 / 100.0;
             }
             "shield_percent_hp" => {
                 let percent = effect.percent.unwrap_or(0);
                 let max_percent = effect.max.unwrap_or(percent);
-                let measured = measured_from_condition(state, ctx.actor_index, effect, &state.units[ctx.actor_index], ctx.target_index.map(|i| &state.units[i]));
+                let measured = measured_from_condition(
+                    state,
+                    ctx.actor_index,
+                    effect,
+                    &state.units[ctx.actor_index],
+                    ctx.target_index.map(|i| &state.units[i]),
+                );
                 let gain = (percent * measured).min(max_percent);
                 let unit = &mut state.units[ctx.actor_index];
                 let shield = unit.max_hp * gain / 100;
@@ -1645,11 +1903,15 @@ pub fn apply_effects(
                 }
             }
             "unbreakable_coin" => {
-                use_ctx.unbreakable_coins.extend(effect.coins.iter().copied());
+                use_ctx
+                    .unbreakable_coins
+                    .extend(effect.coins.iter().copied());
             }
             "tremor_burst" => {
                 // "Raise target's Stagger Threshold by [Tremor] Potency on target"
-                let Some(index) = ctx.target_index else { continue };
+                let Some(index) = ctx.target_index else {
+                    continue;
+                };
                 let potency = state.units[index].statuses.potency("Tremor");
                 if potency > 0 {
                     // "Gain 2 [AlriuneEGOWe] every time Tremor Burst is triggered
@@ -1675,10 +1937,14 @@ pub fn apply_effects(
                 }
             }
             "activate_status" => {
-                let Some(status) = effect.status.clone() else { continue };
+                let Some(status) = effect.status.clone() else {
+                    continue;
+                };
                 let times = effect.times.unwrap_or(1);
                 let consume = effect.consume_count.unwrap_or(1);
-                let Some(index) = ctx.target_index else { continue };
+                let Some(index) = ctx.target_index else {
+                    continue;
+                };
                 let unit = &mut state.units[index];
                 let potency = unit.statuses.potency(&status);
                 if potency > 0 {
@@ -1694,7 +1960,9 @@ pub fn apply_effects(
             "gain_unused_coins" => {
                 // "[Skill End] Gain [X] Potency next turn equal to the # of Coins
                 // that weren't used".
-                let Some(status) = effect.status.clone() else { continue };
+                let Some(status) = effect.status.clone() else {
+                    continue;
+                };
                 let used = use_ctx.coin_hits.len() as i32;
                 let total = use_ctx.coins_total as i32;
                 let left = (total - used).max(0);
@@ -1716,11 +1984,15 @@ pub fn apply_effects(
                 // The caps are carried on the status record, not as effects.
             }
             "lose_status_all" => {
-                let Some(status) = effect.status.clone() else { continue };
+                let Some(status) = effect.status.clone() else {
+                    continue;
+                };
                 state.units[ctx.actor_index].statuses.remove(&status);
             }
             "lose_status_count" => {
-                let Some(status) = effect.status.clone() else { continue };
+                let Some(status) = effect.status.clone() else {
+                    continue;
+                };
                 // A status' own upkeep ("Turn Start: lose 1 Count") has no target.
                 let index = ctx.target_index.unwrap_or(ctx.actor_index);
                 let amount = effect.count.or(effect.value).unwrap_or(1);
@@ -1772,19 +2044,29 @@ pub fn apply_effects(
             "inflict_per_ammo" => {
                 // "If [LCA_Bullet] was spent, inflict additional [SheutFracture]
                 // per [LCA_Bullet] spent" (Outis's Scepter of Horus - Replica).
-                let Some(status) = effect.status.clone() else { continue };
-                let Some(index) = ctx.target_index else { continue };
+                let Some(status) = effect.status.clone() else {
+                    continue;
+                };
+                let Some(index) = ctx.target_index else {
+                    continue;
+                };
                 let ammo = effect
                     .ammo
                     .clone()
                     .unwrap_or_else(|| AMMO_FRACTURE.to_string());
-                let spent = use_ctx.ammo_spent_by_status.get(&ammo).copied().unwrap_or(0);
+                let spent = use_ctx
+                    .ammo_spent_by_status
+                    .get(&ammo)
+                    .copied()
+                    .unwrap_or(0);
                 let amount = effect.potency.unwrap_or(1) + spent;
                 state.units[index].statuses.add_potency(&status, amount);
             }
             "inflict_on_attacker" => {
                 // Stored on the defender and applied when it is hit with Shield.
-                let Some(status) = effect.status.clone() else { continue };
+                let Some(status) = effect.status.clone() else {
+                    continue;
+                };
                 let potency = effect.potency.unwrap_or(0);
                 state.units[ctx.actor_index]
                     .retaliate_on_hit
@@ -1818,7 +2100,9 @@ pub fn apply_effects(
             "consume_surplus_status" => {
                 // "If this unit has 20+ [Poise] Potency, consume up to 20 surplus
                 // Potency past 20 to deal +(consumed x N)% damage".
-                let Some(status) = effect.status.clone() else { continue };
+                let Some(status) = effect.status.clone() else {
+                    continue;
+                };
                 let threshold = effect.threshold.unwrap_or(0);
                 let limit = effect.value.unwrap_or(0);
                 let step = effect.step.unwrap_or(0);
@@ -1868,7 +2152,9 @@ pub fn apply_effects(
                 }
             }
             "halve_status" => {
-                let Some(status) = effect.status.clone() else { continue };
+                let Some(status) = effect.status.clone() else {
+                    continue;
+                };
                 let unit = &mut state.units[ctx.actor_index];
                 let stack = unit.statuses.stack(&status);
                 unit.statuses.set_stack(&status, stack / 2);
@@ -1878,7 +2164,9 @@ pub fn apply_effects(
             }
             "damage_from_status_divisor" => {
                 // "Deal ([Poise] on self / 2) Pride damage on target"
-                let Some(status) = effect.status.clone() else { continue };
+                let Some(status) = effect.status.clone() else {
+                    continue;
+                };
                 let divisor = effect.value.unwrap_or(1).max(1);
                 let amount = state.units[ctx.actor_index].statuses.potency(&status) / divisor;
                 if amount > 0 {
@@ -1906,10 +2194,7 @@ pub fn apply_effects(
                 // this Skill use that the Clash destroyed ("破壊不能コインはマッチで
                 // 破壊されるとコイン威力が1になる" - they still act, so a Skill can
                 // read how many of its own Coins are cracked).
-                let cracked = use_ctx
-                    .cracked_coins
-                    .len()
-                    .max(0) as i32;
+                let cracked = use_ctx.cracked_coins.len().max(0) as i32;
                 let step = effect.step.unwrap_or(0);
                 let capped = (step * cracked).min(effect.max.unwrap_or(i32::MAX));
                 use_ctx.base_power_bonus -= capped;
@@ -1948,7 +2233,9 @@ pub fn apply_effects(
                 }
             }
             "sp_damage_self_per_stack" => {
-                let Some(status) = effect.status.clone() else { continue };
+                let Some(status) = effect.status.clone() else {
+                    continue;
+                };
                 let step = effect.step.unwrap_or(0);
                 let stack = state.units[ctx.actor_index].statuses.stack(&status);
                 let sanity = state.units[ctx.actor_index].sanity;
@@ -1960,7 +2247,9 @@ pub fn apply_effects(
                 // ([Tear-sharpened] Stack x 15) more SP": the sub-clause reads the
                 // Stack the unit had when the clause started, which is why the
                 // extra loss is folded in here (see the extractor).
-                let Some(status) = effect.status.clone() else { continue };
+                let Some(status) = effect.status.clone() else {
+                    continue;
+                };
                 let threshold = effect.threshold.unwrap_or(0);
                 let unit = &state.units[ctx.actor_index];
                 let current = unit.statuses.stack(&status);
@@ -1970,18 +2259,25 @@ pub fn apply_effects(
                     state.units[ctx.actor_index].sanity =
                         sanity.add(-(effect.value.unwrap_or(0) + extra));
                     let count = effect.count.unwrap_or(1);
-                    state.units[ctx.actor_index].statuses.add_stack(&status, count);
+                    state.units[ctx.actor_index]
+                        .statuses
+                        .add_stack(&status, count);
                 }
             }
             "consume_status_to_inflict" => {
                 // "consume 1 [PenetratingSword] to inflict 1 [Sinking]",
                 // "consume all [SwordCutwithTear] to inflict 3 [Sinking] and
                 // +3 [Sinking] Count, and deal +50% damage with that Coin".
-                let Some(from) = effect.status.clone() else { continue };
-                let Some(to) = effect.status2.clone() else { continue };
+                let Some(from) = effect.status.clone() else {
+                    continue;
+                };
+                let Some(to) = effect.status2.clone() else {
+                    continue;
+                };
                 let limit = effect.value.unwrap_or(1).max(1);
                 let unit = &state.units[ctx.actor_index];
-                let have = unit.statuses.stack(&from) + unit.statuses.potency(&from)
+                let have = unit.statuses.stack(&from)
+                    + unit.statuses.potency(&from)
                     + unit.statuses.count(&from);
                 if have <= 0 {
                     continue;
@@ -1992,7 +2288,9 @@ pub fn apply_effects(
                 unit.statuses.remove(&from);
                 use_ctx.consumed_status += consume;
                 *use_ctx.consumed_by_status.entry(from).or_insert(0) += consume;
-                let Some(target) = ctx.target_index else { continue };
+                let Some(target) = ctx.target_index else {
+                    continue;
+                };
                 let potency = effect.potency.unwrap_or(consume).max(consume);
                 let count = effect.count.unwrap_or(0);
                 state.units[target].statuses.add_potency(&to, potency);
@@ -2004,7 +2302,9 @@ pub fn apply_effects(
                 }
             }
             "consume_status_up_to" => {
-                let Some(status) = effect.status.clone() else { continue };
+                let Some(status) = effect.status.clone() else {
+                    continue;
+                };
                 let threshold = effect.threshold.unwrap_or(0);
                 let limit = effect.value.unwrap_or(0);
                 let unit = &state.units[ctx.actor_index];
@@ -2012,12 +2312,8 @@ pub fn apply_effects(
                 if have >= threshold {
                     // "consume up to 20 [Deep Tears]" spends what is there, at
                     // most 20 - the rest stays.
-                    let consumed = consume_status_amount(
-                        state,
-                        ctx.actor_index,
-                        &status,
-                        have.min(limit),
-                    );
+                    let consumed =
+                        consume_status_amount(state, ctx.actor_index, &status, have.min(limit));
                     use_ctx.consumed_status += consumed;
                     *use_ctx.consumed_by_status.entry(status).or_insert(0) += consumed;
                 }
@@ -2034,7 +2330,11 @@ pub fn apply_effects(
                 // "Deal +2% damage for every value of [X] spent by this Skill":
                 // the pool the clause names, not every pool the Skill spent.
                 let step = effect.step.unwrap_or(0);
-                let spent = match effect.status.as_deref().filter(|name| !name.contains(" spent")) {
+                let spent = match effect
+                    .status
+                    .as_deref()
+                    .filter(|name| !name.contains(" spent"))
+                {
                     Some(status) => use_ctx
                         .ammo_spent_by_status
                         .get(status)
@@ -2047,8 +2347,12 @@ pub fn apply_effects(
             "gloom_damage_equal_target_status" => {
                 // "[On Hit] Inflict Gloom Damage equal to "All" [Butterfly] on
                 // target", where "All" is the sum of both values on the target.
-                let Some(status) = effect.status.clone() else { continue };
-                let Some(index) = ctx.target_index else { continue };
+                let Some(status) = effect.status.clone() else {
+                    continue;
+                };
+                let Some(index) = ctx.target_index else {
+                    continue;
+                };
                 let amount = match effect.component {
                     Some(Component::Potency) => state.units[index].statuses.potency(&status),
                     Some(Component::Count) => state.units[index].statuses.count(&status),
@@ -2073,7 +2377,9 @@ pub fn apply_effects(
                 }
             }
             "consume_status_for_damage" => {
-                let Some(status) = effect.status.clone() else { continue };
+                let Some(status) = effect.status.clone() else {
+                    continue;
+                };
                 let threshold = effect.threshold.unwrap_or(0);
                 let consume = effect.value.unwrap_or(0);
                 let unit = &state.units[ctx.actor_index];
@@ -2096,7 +2402,9 @@ pub fn apply_effects(
                 use_ctx.shield_gain += shield;
             }
             "shield_percent_per_status" => {
-                let Some(status) = effect.status.clone() else { continue };
+                let Some(status) = effect.status.clone() else {
+                    continue;
+                };
                 let percent = effect.percent.unwrap_or(0);
                 let max = effect.max.unwrap_or(percent);
                 let count = state.units[ctx.actor_index].statuses.count(&status)
@@ -2165,7 +2473,8 @@ pub fn apply_effects(
             }
             "self_sp_damage" => {
                 let mut amount = effect.self_sp_damage.unwrap_or(0);
-                if let (Some(lo), Some(hi)) = (effect.self_sp_damage_min, effect.self_sp_damage_max) {
+                if let (Some(lo), Some(hi)) = (effect.self_sp_damage_min, effect.self_sp_damage_max)
+                {
                     amount = lo + state.roll_inclusive(hi - lo);
                 }
                 if amount == 0 {
@@ -2177,7 +2486,13 @@ pub fn apply_effects(
             "sp_heal" | "heal_hp" | "heal_percent_hp" => {
                 let targets = ally_targets(state, ctx, effect);
                 let percent = effect.percent.unwrap_or(0);
-                let measured = measured_from_condition(state, ctx.actor_index, effect, &state.units[ctx.actor_index], ctx.target_index.map(|i| &state.units[i]));
+                let measured = measured_from_condition(
+                    state,
+                    ctx.actor_index,
+                    effect,
+                    &state.units[ctx.actor_index],
+                    ctx.target_index.map(|i| &state.units[i]),
+                );
                 for index in targets {
                     match effect.kind.as_str() {
                         "sp_heal" => {
@@ -2201,7 +2516,9 @@ pub fn apply_effects(
                 }
             }
             "heal_from_status" => {
-                let Some(status) = effect.heal_from_status.clone() else { continue };
+                let Some(status) = effect.heal_from_status.clone() else {
+                    continue;
+                };
                 let divisor = effect.heal_from_divisor.unwrap_or(1).max(1);
                 let cap = effect.max.unwrap_or(i32::MAX);
                 let amount = ctx
@@ -2219,7 +2536,9 @@ pub fn apply_effects(
                 }
             }
             "refund_consumed_status" => {
-                let Some(status) = effect.status.clone() else { continue };
+                let Some(status) = effect.status.clone() else {
+                    continue;
+                };
                 let percent = effect.refund_percent.unwrap_or(50);
                 let consumed = use_ctx
                     .consumed_by_status
@@ -2234,11 +2553,15 @@ pub fn apply_effects(
                     });
                 let refund = consumed * percent / 100;
                 if refund > 0 {
-                    state.units[ctx.actor_index].statuses.add_potency(&status, refund);
+                    state.units[ctx.actor_index]
+                        .statuses
+                        .add_potency(&status, refund);
                 }
             }
             "amplitude_conversion" => {
-                let Some(index) = ctx.target_index else { continue };
+                let Some(index) = ctx.target_index else {
+                    continue;
+                };
                 let into = effect
                     .amplitude_into
                     .clone()
@@ -2255,7 +2578,9 @@ pub fn apply_effects(
                 );
             }
             "amplitude_entanglement" => {
-                let Some(index) = ctx.target_index else { continue };
+                let Some(index) = ctx.target_index else {
+                    continue;
+                };
                 let into = effect
                     .amplitude_into
                     .clone()
@@ -2312,7 +2637,9 @@ pub fn apply_effects(
             "damage_percent_from_resist" => {
                 // "If the main target has higher than N Sin Resist., deal +X%
                 // damage for every 0.1 excess Resist. (max Y%)".
-                let Some(index) = ctx.target_index else { continue };
+                let Some(index) = ctx.target_index else {
+                    continue;
+                };
                 let base = effect.value.unwrap_or(10) as f64 / 10.0;
                 let resist = state.units[index].resist_sin(Sin::Gloom);
                 let excess = (resist - base).max(0.0);
@@ -2324,7 +2651,9 @@ pub fn apply_effects(
             "gain_up_to_with_self_damage" => {
                 // "Gain [Lamp] up to 8 Stack; for every Stack gained, take HP
                 // damage equal to 1% of max HP (does not reduce HP below 1)".
-                let Some(status) = effect.status.clone() else { continue };
+                let Some(status) = effect.status.clone() else {
+                    continue;
+                };
                 let cap = effect.up_to.unwrap_or(0);
                 let percent = effect.self_damage_percent.unwrap_or(0);
                 let (gained, max_hp) = {
@@ -2400,7 +2729,9 @@ pub fn apply_effects(
             }
             "inflict_on_random_other" => {
                 // "inflict N [X] against a random non-targeted enemy".
-                let Some(status) = effect.status.clone() else { continue };
+                let Some(status) = effect.status.clone() else {
+                    continue;
+                };
                 let potency = effect.potency.unwrap_or(0);
                 let actor_is_sinner = state.units[ctx.actor_index].kind.is_sinner();
                 let mut pool: Vec<usize> = state
@@ -2421,7 +2752,9 @@ pub fn apply_effects(
                         .iter()
                         .enumerate()
                         .filter(|(index, unit)| {
-                            unit.alive && *index != ctx.actor_index && Some(*index) != ctx.target_index
+                            unit.alive
+                                && *index != ctx.actor_index
+                                && Some(*index) != ctx.target_index
                         })
                         .map(|(index, _)| index)
                         .collect();
@@ -2470,8 +2803,10 @@ pub fn apply_effects(
             }
             "noop" => {}
             other => {
-                ctx.mechanics_note
-                    .push(format!("unhandled effect kind `{other}` ({:?})", effect.raw));
+                ctx.mechanics_note.push(format!(
+                    "unhandled effect kind `{other}` ({:?})",
+                    effect.raw
+                ));
             }
         }
         // The clause resolved, so its per-turn / per-encounter allowance is spent
@@ -2498,7 +2833,9 @@ fn measured_from_condition(
     actor: &Unit,
     target: Option<&Unit>,
 ) -> i32 {
-    let Some(cond) = &effect.condition else { return 0 };
+    let Some(cond) = &effect.condition else {
+        return 0;
+    };
     if cond.all_targets {
         let actor_is_sinner = actor.kind.is_sinner();
         return state
@@ -2537,16 +2874,20 @@ pub fn heads_percent(state: &BattleState, unit: &Unit) -> i32 {
     unit.sanity.heads_percent()
 }
 
-
-
 // --------------------------------------------------------------------------- //
 // actions
 // --------------------------------------------------------------------------- //
 
-pub fn pending_uses(state: &BattleState, library: &Library, mechanics: &MechanicsBook) -> Vec<SkillUse> {
+pub fn pending_uses(
+    state: &BattleState,
+    library: &Library,
+    mechanics: &MechanicsBook,
+) -> Vec<SkillUse> {
     let mut uses = Vec::new();
     for action in &state.actions {
-        let Some(unit_index) = state.index_of(&action.actor) else { continue };
+        let Some(unit_index) = state.index_of(&action.actor) else {
+            continue;
+        };
         if let Some(use_) = build_use(state, library, mechanics, unit_index, &action.skill) {
             uses.push(use_);
         }
@@ -2568,9 +2909,10 @@ pub fn build_ego_use(
     let record = library.ego(ego_id)?;
     let (skill, key) = match kind {
         EgoSkillKind::Awakening => (record.awakening.as_ref(), "awakening"),
-        EgoSkillKind::Corrosion | EgoSkillKind::Overclock => {
-            (record.corrosion.as_ref().or(record.awakening.as_ref()), "corrosion")
-        }
+        EgoSkillKind::Corrosion | EgoSkillKind::Overclock => (
+            record.corrosion.as_ref().or(record.awakening.as_ref()),
+            "corrosion",
+        ),
     };
     let skill = skill?;
     let mech = mechanics.get_ego(ego_id.as_str(), key);
@@ -2588,8 +2930,16 @@ pub fn build_ego_use(
         target: None,
         slot: 0,
         skill: SkillId::new(ego_id.as_str().to_string()),
-        name: format!("{} [{}]", skill.name.clone().unwrap_or_else(|| ego_id.to_string()), key),
-        sin: skill.sin.as_deref().and_then(Sin::parse).unwrap_or(Sin::Wrath),
+        name: format!(
+            "{} [{}]",
+            skill.name.clone().unwrap_or_else(|| ego_id.to_string()),
+            key
+        ),
+        sin: skill
+            .sin
+            .as_deref()
+            .and_then(Sin::parse)
+            .unwrap_or(Sin::Wrath),
         damage_type: skill
             .kind
             .as_deref()
@@ -2642,7 +2992,13 @@ pub fn build_use(
     let tier = skill_record.tier(state.config.uptie)?;
     let mech = mechanics.get_or_default_for(&resolved, state.config.uptie);
     let coins = (0..tier.coins.unwrap_or(1))
-        .map(|index| CoinRuntime::fresh(mech.coin(index + 1).iter().any(|e| e.kind == "unbreakable_coin")))
+        .map(|index| {
+            CoinRuntime::fresh(
+                mech.coin(index + 1)
+                    .iter()
+                    .any(|e| e.kind == "unbreakable_coin"),
+            )
+        })
         .collect();
     Some(SkillUse {
         actor: unit.id.clone(),
@@ -2651,7 +3007,9 @@ pub fn build_use(
         skill: resolved.clone(),
         name: skill_record.display_name(),
         sin: skill_record.sin(state.config.uptie).unwrap_or(Sin::Wrath),
-        damage_type: skill_record.damage_type(state.config.uptie).unwrap_or(DamageType::Blunt),
+        damage_type: skill_record
+            .damage_type(state.config.uptie)
+            .unwrap_or(DamageType::Blunt),
         base_power: tier.base_power.unwrap_or(0),
         coin_power: tier.coin_power.unwrap_or(0),
         offense_level_mod: tier.offense_level_mod.unwrap_or(0),
@@ -2686,7 +3044,13 @@ fn build_enemy_use(
         .or_else(|| mechanics.get(skill).cloned())
         .unwrap_or_default();
     let coins = (0..skill_record.coins.unwrap_or(1))
-        .map(|index| CoinRuntime::fresh(mech.coin(index + 1).iter().any(|e| e.kind == "unbreakable_coin")))
+        .map(|index| {
+            CoinRuntime::fresh(
+                mech.coin(index + 1)
+                    .iter()
+                    .any(|e| e.kind == "unbreakable_coin"),
+            )
+        })
         .collect();
     Some(SkillUse {
         actor: unit.id.clone(),
@@ -2837,11 +3201,7 @@ fn effective_coin_power(
 /// their Skill's Coins; this determines the Skill's power in a Clash") and the
 /// Japanese wiki `戦闘システム詳細` ("両者が自分のスキルにある全てのコインを投げて
 /// 最終威力を決定。コインの表裏によって基本威力+コイン威力の値になる").
-pub fn final_power(
-    state: &mut BattleState,
-    unit_index: usize,
-    use_: &mut SkillUse,
-) -> i32 {
+pub fn final_power(state: &mut BattleState, unit_index: usize, use_: &mut SkillUse) -> i32 {
     let mut total = power_base(state, unit_index, use_);
     for index in 0..use_.coins.len() {
         if use_.coins[index].state != CoinState::Fresh {
@@ -2893,7 +3253,9 @@ pub mod time_passives {
     /// Is `skill` the state-exclusive "big" skill of the unit's active state?
     pub fn is_signature(state: &BattleState, unit_index: usize, skill: &SkillId) -> bool {
         let unit = &state.units[unit_index];
-        let Some(active) = unit.time_state else { return false };
+        let Some(active) = unit.time_state else {
+            return false;
+        };
         unit.time_signature
             .iter()
             .any(|(time_state, id)| *time_state == active && id == skill.as_str())
@@ -2927,7 +3289,9 @@ pub mod time_passives {
 
     /// Turn-start effects of the active state.
     pub fn turn_start(state: &mut BattleState, unit_index: usize) {
-        let Some(active) = state.units[unit_index].time_state else { return };
+        let Some(active) = state.units[unit_index].time_state else {
+            return;
+        };
         let stack = state.units[unit_index].statuses.stack(active.stack_key());
         let sinner_count = state
             .units
@@ -2948,8 +3312,12 @@ pub mod time_passives {
                     }
                     let burn = state.units[index].statuses.total_of("Burn");
                     if burn >= 10 {
-                        state.units[index].statuses.add_potency("HP Healing Down", 5);
-                        state.units[index].statuses.add_potency("Wrath Fragility", 3);
+                        state.units[index]
+                            .statuses
+                            .add_potency("HP Healing Down", 5);
+                        state.units[index]
+                            .statuses
+                            .add_potency("Wrath Fragility", 3);
                     }
                 }
                 let _ = stack;
@@ -2985,7 +3353,9 @@ pub mod time_passives {
         if coin_index + 1 != coin_count || !is_signature(state, enemy_index, skill) {
             return;
         }
-        let Some(active) = state.units[enemy_index].time_state else { return };
+        let Some(active) = state.units[enemy_index].time_state else {
+            return;
+        };
         let stack = state.units[enemy_index].statuses.stack(active.stack_key());
         match active {
             crate::scripts::TimeState::Past => {
@@ -3028,9 +3398,10 @@ pub mod time_passives {
 
     /// Future: Bleed damage heals the unit that has the state active.
     pub fn bleed_lifesteal_target(state: &BattleState) -> Option<usize> {
-        state.units.iter().position(|u| {
-            u.alive && u.time_state == Some(crate::scripts::TimeState::Future)
-        })
+        state
+            .units
+            .iter()
+            .position(|u| u.alive && u.time_state == Some(crate::scripts::TimeState::Future))
     }
 }
 
@@ -3042,7 +3413,10 @@ pub fn time_state_bonus(
     let unit = &state.units[unit_index];
     let time_state = unit.time_state?;
     let stack = unit.statuses.stack(time_state.stack_key());
-    Some((time_state.boosted_status(), crate::scripts::TimeState::stack_bonus(stack)))
+    Some((
+        time_state.boosted_status(),
+        crate::scripts::TimeState::stack_bonus(stack),
+    ))
 }
 
 /// **Match Power** = Final Power + level bonus.  Only the side with the higher
@@ -3063,8 +3437,7 @@ pub fn match_power(
     let my_level = state.units[unit_index].offense_level()
         + use_.offense_level_mod
         + use_.ctx.resonance_level_bonus;
-    let their_level =
-        state.units[opponent_index].offense_level() + opponent_use.offense_level_mod;
+    let their_level = state.units[opponent_index].offense_level() + opponent_use.offense_level_mod;
     let mut total = power + level_clash_bonus(my_level, their_level);
     // "Clash Power +N" clauses of the Skill itself ("[On Use] At 10+ [X],
     // Clash Power +1").
@@ -3147,8 +3520,16 @@ fn resolve_clash_inner(
         // のタイミング一覧: "出血と呼吸で扱いが違う(マッチ中に発動する/しない)").
         // A Skill's "While Clashing with this Skill, the main target's [Bleed]
         // Count does not drop below 1" protects its opponent.
-        let floor_on_a = b.ctx.status_count_floor.iter().any(|status| status == "Bleed");
-        let floor_on_b = a.ctx.status_count_floor.iter().any(|status| status == "Bleed");
+        let floor_on_a = b
+            .ctx
+            .status_count_floor
+            .iter()
+            .any(|status| status == "Bleed");
+        let floor_on_b = a
+            .ctx
+            .status_count_floor
+            .iter()
+            .any(|status| status == "Bleed");
         tick_bleed_with_floor(state, a_index, floor_on_a);
         tick_bleed_with_floor(state, b_index, floor_on_b);
         // A Clash whose participant died to Bleed ends there.
@@ -3296,7 +3677,9 @@ pub fn one_sided_attack(
     // grants while it resolves ("Then, Reuse this Coin (4 times per Skill)").
 
     loop {
-        let Some(coin_index) = order.first().copied() else { break };
+        let Some(coin_index) = order.first().copied() else {
+            break;
+        };
         order.remove(0);
         let keep_bleed = use_.ctx.status_count_floor.iter().any(|s| s == "Bleed");
         tick_bleed_with_floor(state, attacker_index, keep_bleed);
@@ -3327,7 +3710,8 @@ pub fn one_sided_attack(
                 .iter()
                 .enumerate()
                 .filter(|(_, unit)| {
-                    unit.alive && unit.kind.is_sinner() != state.units[attacker_index].kind.is_sinner()
+                    unit.alive
+                        && unit.kind.is_sinner() != state.units[attacker_index].kind.is_sinner()
                 })
                 .map(|(index, _)| index)
                 .collect();
@@ -3362,8 +3746,17 @@ pub fn one_sided_attack(
         }
         // "Then, Reuse this Coin (N times per Skill)": the Coin may be used again
         // while it is under its cap, which is granted while the Coin resolves.
-        let used_times = *use_.ctx.coin_hits.get(&(coin_index as u32 + 1)).unwrap_or(&1);
-        let cap = use_.ctx.reuse_caps.get(&(coin_index as u32 + 1)).copied().unwrap_or(0);
+        let used_times = *use_
+            .ctx
+            .coin_hits
+            .get(&(coin_index as u32 + 1))
+            .unwrap_or(&1);
+        let cap = use_
+            .ctx
+            .reuse_caps
+            .get(&(coin_index as u32 + 1))
+            .copied()
+            .unwrap_or(0);
         let under_cap = used_times - 1 < cap;
         // "Reuse this Coin once for every N% missing HP (max K times)".
         let hp_budget = use_
@@ -3453,12 +3846,7 @@ pub fn one_sided_attack(
 }
 
 /// Toss one coin of a skill (used by one-sided attacks).
-fn toss_single(
-    state: &mut BattleState,
-    unit_index: usize,
-    use_: &mut SkillUse,
-    coin_index: usize,
-) {
+fn toss_single(state: &mut BattleState, unit_index: usize, use_: &mut SkillUse, coin_index: usize) {
     let percent = heads_percent(state, &state.units[unit_index]);
     let heads = state.flip(percent);
     let paralyze = state.units[unit_index].statuses.potency("Paralyze");
@@ -3468,8 +3856,6 @@ fn toss_single(
         state.units[unit_index].statuses.add_potency("Paralyze", -1);
     }
 }
-
-
 
 /// Damage-only calculation shared by normal hits and Attack Weight splash hits.
 fn compute_hit_damage(
@@ -3651,11 +4037,9 @@ fn apply_hit_inner(
         .unwrap_or(false);
     // Guard: on the first attack of the turn the Guard rolls its Coins and adds
     // Shield equal to its Final Power (wiki.gg `Battles` / Guard).
-    if let Some(position) = state
-        .defenses
-        .iter()
-        .position(|d| d.unit == state.units[defender_index].id && d.kind == DefenseKind::Guard && !d.activated)
-    {
+    if let Some(position) = state.defenses.iter().position(|d| {
+        d.unit == state.units[defender_index].id && d.kind == DefenseKind::Guard && !d.activated
+    }) {
         let mut defense_use = {
             let defense = &state.defenses[position];
             SkillUse {
@@ -3695,11 +4079,9 @@ fn apply_hit_inner(
     }
     // Bleed is applied when the coin is tossed; damage is computed for the hit.
     // Evade: flip against the incoming Coin; equal or higher negates the hit.
-    if let Some(defense) = state
-        .defenses
-        .iter()
-        .position(|d| d.unit == state.units[defender_index].id && d.kind == DefenseKind::Evade && !d.lost)
-    {
+    if let Some(defense) = state.defenses.iter().position(|d| {
+        d.unit == state.units[defender_index].id && d.kind == DefenseKind::Evade && !d.lost
+    }) {
         let evaded = {
             // The Evade rolls its own Coin and compares its **Final Power**,
             // which carries the Skill's modifiers, Paralysis and the defense
@@ -3817,10 +4199,7 @@ fn apply_hit_inner(
         let crit = chance > 0 && state.flip(chance);
         (crit, potency)
     };
-    if crit
-        && poise_potency > 0
-        && !time_passives::keeps_poise_on_crit(state, attacker_index)
-    {
+    if crit && poise_potency > 0 && !time_passives::keeps_poise_on_crit(state, attacker_index) {
         tick_status(state, attacker_index, "Poise", 0, -1);
     }
     let defender_snapshot = state.units[defender_index].clone();
@@ -3835,7 +4214,12 @@ fn apply_hit_inner(
     let mut type_resist = defender.resist(use_.damage_type);
     // [On Hit] coin effects.  "[Reuse - ...]" clauses only resolve on a Coin
     // that is being used again (wiki.gg `Clash`, trigger table).
-    let hits_so_far = use_.ctx.coin_hits.get(&(coin_index as u32 + 1)).copied().unwrap_or(0);
+    let hits_so_far = use_
+        .ctx
+        .coin_hits
+        .get(&(coin_index as u32 + 1))
+        .copied()
+        .unwrap_or(0);
     let reused = hits_so_far > 1;
     let mut effects: Vec<Effect> = use_
         .mechanics
@@ -3950,7 +4334,9 @@ fn apply_hit_inner(
             .unwrap_or_else(|| state.units[defender_index].defense_level()),
         critical: crit,
         clash_count,
-        dynamic_modifier: use_.ctx.damage_bonus + rider_bonus + coin_damage_bonus
+        dynamic_modifier: use_.ctx.damage_bonus
+            + rider_bonus
+            + coin_damage_bonus
             + state.units[attacker_index].outgoing_damage_modifier()
             + incoming_damage_modifier(defender, sin_name)
             + passive_modifiers(state, defender_index, Some(attacker_index)).1
@@ -3963,7 +4349,11 @@ fn apply_hit_inner(
         ..Default::default()
     };
     let breakdown = compute_damage(&inputs);
-    let mut damage = if use_.ctx.zero_damage { 0 } else { breakdown.final_damage };
+    let mut damage = if use_.ctx.zero_damage {
+        0
+    } else {
+        breakdown.final_damage
+    };
     // "The X - Origination [緣起]": "Fix this unit's Speed to 1; this unit's HP
     // does not drop below 1.  When this unit takes HP damage, transfer half of
     // damage taken to Butterfly of Entangled Lives::Imago (rounded down)."
@@ -4032,16 +4422,11 @@ fn apply_hit_inner(
             }
             if gloom > 0 {
                 let resist = state.units[defender_index].resist_sin(Sin::Gloom);
-                let dealt = (gloom as f64
-                    * (1.0 + crate::damage::resistance_modifier(resist)))
-                .floor() as i32;
+                let dealt = (gloom as f64 * (1.0 + crate::damage::resistance_modifier(resist)))
+                    .floor() as i32;
                 // "max Gloom damage 30" bounds the damage actually taken.
                 let damage = dealt.clamp(1, 30);
-                state.damage_unit(
-                    defender_index,
-                    damage,
-                    crate::state::DamageSource::Sinking,
-                );
+                state.damage_unit(defender_index, damage, crate::state::DamageSource::Sinking);
                 state.push_log(
                     "butterfly",
                     format!(
@@ -4051,7 +4436,6 @@ fn apply_hit_inner(
             }
         }
     }
-
 
     let mut notes = Vec::new();
     {
@@ -4184,12 +4568,13 @@ fn apply_hit_inner(
         // "Butterfly of Entangled Lives::Imago loses 1 [In the Past] Stack" - the
         // owner's own status, which is what drives its state of time.
         if let Some(owner) = owner_unit(state, defender_index, segmentation.owner.as_deref()) {
-            let stack = state.units[owner].statuses.stack(&segmentation.stack_status);
+            let stack = state.units[owner]
+                .statuses
+                .stack(&segmentation.stack_status);
             if stack > 0 {
-                state.units[owner].statuses.set_stack(
-                    &segmentation.stack_status,
-                    (stack - loss).max(0),
-                );
+                state.units[owner]
+                    .statuses
+                    .set_stack(&segmentation.stack_status, (stack - loss).max(0));
             }
         }
         let attacker_id = state.units[attacker_index].id.0.clone();
@@ -4201,8 +4586,7 @@ fn apply_hit_inner(
                 .segmentation_healed
                 .push(attacker_id);
             let sanity = state.units[attacker_index].sanity;
-            state.units[attacker_index].sanity =
-                sanity.add(segmentation.attacker_sp_heal);
+            state.units[attacker_index].sanity = sanity.add(segmentation.attacker_sp_heal);
         }
     }
     // "When hit while this unit has Shield, inflict N [X] against the attacker."
@@ -4231,9 +4615,7 @@ fn apply_hit_inner(
     // Defense Skills: a normal Counter triggers per incoming Skill, not per Coin).
     if state.units[defender_index].alive {
         if let Some(position) = state.defenses.iter().position(|d| {
-            d.unit == state.units[defender_index].id
-                && d.kind == DefenseKind::Counter
-                && !d.lost
+            d.unit == state.units[defender_index].id && d.kind == DefenseKind::Counter && !d.lost
         }) {
             let counter = state.defenses[position].clone();
             let mut use_ = SkillUse {
@@ -4321,7 +4703,11 @@ pub fn apply_sinking(state: &mut BattleState, unit_index: usize) {
     // "Gain 1 [AlriuneEGOWe] if the enemy takes [Sinking] damage" (Ryoshu's
     // Unwithering Flower).
     for other in 0..state.units.len() {
-        if state.units[other].passive_ids.iter().any(|id| id == "1041411") {
+        if state.units[other]
+            .passive_ids
+            .iter()
+            .any(|id| id == "1041411")
+        {
             if state.units[other].kind.is_sinner() != state.units[unit_index].kind.is_sinner() {
                 let cap = petals_gain_cap(state, other);
                 if cap > 0 {
@@ -4580,11 +4966,7 @@ fn resolve_self(effect: &Effect, status: &str) -> Effect {
 
 /// "[Turn Start]" / "[Turn End]" clauses of the statuses a unit holds, plus
 /// "Expires at Turn End" / "Turn End: Lose N Stack" upkeep.
-fn apply_status_phase(
-    state: &mut BattleState,
-    book: &crate::effects::StatusBook,
-    start: bool,
-) {
+fn apply_status_phase(state: &mut BattleState, book: &crate::effects::StatusBook, start: bool) {
     // The statuses a unit already holds before this Turn End pass: a one-turn
     // status granted *by* a Turn End clause must survive into the next turn, so
     // only the ones present beforehand expire.
@@ -4607,14 +4989,19 @@ fn apply_status_phase(
             .statuses
             .iter()
             .map(|(key, instance)| {
-                (key.clone(), instance.potency + instance.count + instance.stack)
+                (
+                    key.clone(),
+                    instance.potency + instance.count + instance.stack,
+                )
             })
             .collect();
         for (status, total) in held {
             if total <= 0 {
                 continue;
             }
-            let Some(behaviour) = book.get(&status) else { continue };
+            let Some(behaviour) = book.get(&status) else {
+                continue;
+            };
             let mut list: Vec<Effect> = if start {
                 behaviour.effects.turn_start.clone()
             } else {
@@ -4635,7 +5022,10 @@ fn apply_status_phase(
             if list.is_empty() {
                 continue;
             }
-            list = list.iter().map(|effect| resolve_self(effect, &status)).collect();
+            list = list
+                .iter()
+                .map(|effect| resolve_self(effect, &status))
+                .collect();
             let mut notes = Vec::new();
             let mut ctx = EffectContext {
                 actor_index: index,
@@ -4780,19 +5170,26 @@ fn tick_status(
 /// Run the `[When Clash ends]` / `[When hit]` clauses of a unit's statuses.
 /// `target` is the other unit ("inflict 2 [Sinking] on the attacker").
 fn apply_status_event(state: &mut BattleState, index: usize, phase: &str, target: Option<usize>) {
-    let Some(book) = state.status_book.clone() else { return };
+    let Some(book) = state.status_book.clone() else {
+        return;
+    };
     let held: Vec<(String, i32)> = state.units[index]
         .statuses
         .iter()
         .map(|(key, instance)| {
-            (key.clone(), instance.potency + instance.count + instance.stack)
+            (
+                key.clone(),
+                instance.potency + instance.count + instance.stack,
+            )
         })
         .collect();
     for (status, total) in held {
         if total <= 0 {
             continue;
         }
-        let Some(behaviour) = book.get(&status) else { continue };
+        let Some(behaviour) = book.get(&status) else {
+            continue;
+        };
         let list: Vec<Effect> = if phase == "clash_end" {
             behaviour.effects.clash_end.clone()
         } else {
@@ -4834,9 +5231,18 @@ fn status_modifiers(state: &BattleState, index: usize, target: Option<usize>) ->
         return (0.0, 0.0);
     };
     if std::env::var("LCB_DEBUG").is_ok() {
-        eprintln!("status_modifiers unit {index}: {} statuses", state.units[index].statuses.iter().count());
+        eprintln!(
+            "status_modifiers unit {index}: {} statuses",
+            state.units[index].statuses.iter().count()
+        );
         for (k, v) in state.units[index].statuses.iter() {
-            eprintln!("   {k} p={} c={} s={} in_book={}", v.potency, v.count, v.stack, book.get(k).is_some());
+            eprintln!(
+                "   {k} p={} c={} s={} in_book={}",
+                v.potency,
+                v.count,
+                v.stack,
+                book.get(k).is_some()
+            );
         }
     }
     let actor = &state.units[index];
@@ -4847,7 +5253,9 @@ fn status_modifiers(state: &BattleState, index: usize, target: Option<usize>) ->
         if instance.potency + instance.count + instance.stack <= 0 {
             continue;
         }
-        let Some(behaviour) = book.get(status) else { continue };
+        let Some(behaviour) = book.get(status) else {
+            continue;
+        };
         for effect in &behaviour.effects.passive {
             let effect = resolve_self(effect, status);
             let holds = match &effect.condition {
@@ -4860,13 +5268,15 @@ fn status_modifiers(state: &BattleState, index: usize, target: Option<usize>) ->
             match effect.kind.as_str() {
                 "damage_percent" => {
                     let step = effect.step_f.unwrap_or(effect.step.unwrap_or(1) as f64);
-                    let measured = measured_from_condition(state, index, &effect, actor, target_unit);
+                    let measured =
+                        measured_from_condition(state, index, &effect, actor, target_unit);
                     let max = effect.max.unwrap_or(i32::MAX) as f64;
                     outgoing += (step * measured as f64).min(max) / 100.0;
                 }
                 "damage_taken_percent" => {
                     let step = effect.step_f.unwrap_or(effect.step.unwrap_or(1) as f64);
-                    let measured = measured_from_condition(state, index, &effect, actor, target_unit);
+                    let measured =
+                        measured_from_condition(state, index, &effect, actor, target_unit);
                     let max = effect.max.unwrap_or(i32::MAX) as f64;
                     outgoing += 0.0;
                     incoming += (step * measured as f64).min(max) / 100.0;
@@ -4935,7 +5345,8 @@ fn passive_modifiers(state: &BattleState, index: usize, target: Option<usize>) -
             }
             match effect.kind.as_str() {
                 "damage_percent" => {
-                    let measured = measured_from_condition(state, index, effect, actor, target_unit);
+                    let measured =
+                        measured_from_condition(state, index, effect, actor, target_unit);
                     outgoing += scaled(effect, measured) as f64 / 100.0;
                 }
                 "damage_taken_percent" => {
@@ -5017,7 +5428,9 @@ fn apply_dashboard_phase(state: &mut BattleState, mechanics: &MechanicsBook, sta
                 continue;
             }
             seen.push(skill.as_str().to_string());
-            let Some(record) = mechanics.get_for(&skill, Uptie(4)) else { continue };
+            let Some(record) = mechanics.get_for(&skill, Uptie(4)) else {
+                continue;
+            };
             let list = if start {
                 record.turn_start.clone()
             } else {
@@ -5056,6 +5469,7 @@ pub fn begin_turn(
 ) {
     state.turn += 1;
     state.phase = Phase::TurnStart;
+    state.status_gain_events.clear();
     state.actions.clear();
     // Defense Slots armed last turn that never made it into a rotation.
     state.defense_slots_used.clear();
@@ -5065,9 +5479,26 @@ pub fn begin_turn(
         let queued: Vec<crate::state::PendingStatus> =
             std::mem::take(&mut state.units[index].pending_next_turn);
         for entry in queued {
-            state.units[index].statuses.add_potency(&entry.status, entry.potency);
-            state.units[index].statuses.add_count(&entry.status, entry.count);
-            state.units[index].statuses.add_stack(&entry.status, entry.stack);
+            if entry.status == "Echoes of the Manor" {
+                state.units[index].statuses.set(
+                    &entry.status,
+                    crate::state::StatusInstance {
+                        potency: entry.potency.max(entry.count),
+                        count: 0,
+                        stack: entry.stack,
+                    },
+                );
+            } else {
+                state.units[index]
+                    .statuses
+                    .add_potency(&entry.status, entry.potency);
+                state.units[index]
+                    .statuses
+                    .add_count(&entry.status, entry.count);
+                state.units[index]
+                    .statuses
+                    .add_stack(&entry.status, entry.stack);
+            }
         }
     }
     // Shield does not carry over between turns (wiki.gg `Clash` / Shield).
@@ -5091,7 +5522,6 @@ pub fn begin_turn(
         let bind = state.units[index].statuses.count("Bind");
         state.units[index].speed = (speed + haste - bind).max(1);
         // Bleed/other turn-start ticks handled by mechanics entries below.
-
     }
     // Extra Skill Slots: from turn 2 on, the Sinner with the lowest Deployment
     // Order who does not have one yet receives an additional slot, and so on
@@ -5126,7 +5556,11 @@ pub fn begin_turn(
             if !state.units[index].kind.is_sinner() {
                 continue;
             }
-            let slots: Vec<u32> = state.units[index].dashboard.iter().map(|s| s.slot).collect();
+            let slots: Vec<u32> = state.units[index]
+                .dashboard
+                .iter()
+                .map(|s| s.slot)
+                .collect();
             for slot in slots {
                 let (needs_current, needs_next, needs_preview) = {
                     let entry = state.units[index]
@@ -5369,9 +5803,11 @@ fn update_time_state(
         return;
     };
     // Encounter start: 10 Stacks of each state of time.
-    if state.turn <= 1 && crate::scripts::TimeState::ALL.iter().all(|s| {
-        state.units[unit_index].statuses.stack(s.stack_key()) == 0
-    }) {
+    if state.turn <= 1
+        && crate::scripts::TimeState::ALL
+            .iter()
+            .all(|s| state.units[unit_index].statuses.stack(s.stack_key()) == 0)
+    {
         for time_state in crate::scripts::TimeState::ALL {
             state.units[unit_index]
                 .statuses
@@ -5411,7 +5847,9 @@ fn update_time_state(
         if stack > current_stack {
             if current != Some(candidate) {
                 // Switching states adds Temporal Disjunction.
-                state.units[unit_index].statuses.add_stack("Temporal Disjunction", 1);
+                state.units[unit_index]
+                    .statuses
+                    .add_stack("Temporal Disjunction", 1);
             }
             state.units[unit_index].time_state = Some(candidate);
         }
@@ -5502,7 +5940,11 @@ pub fn end_turn(state: &mut BattleState, mechanics: &MechanicsBook) {
         if unit.combat_end_sp_loss.is_empty() {
             continue;
         }
-        let total: i32 = unit.combat_end_sp_loss.iter().map(|(amount, _)| *amount).sum();
+        let total: i32 = unit
+            .combat_end_sp_loss
+            .iter()
+            .map(|(amount, _)| *amount)
+            .sum();
         let sanity = unit.sanity;
         unit.sanity = sanity.add(-total);
         unit.combat_end_sp_loss.retain_mut(|(_, turns)| {
@@ -5522,7 +5964,9 @@ pub fn end_turn(state: &mut BattleState, mechanics: &MechanicsBook) {
             // "If this unit did not get hit as the main target this turn, the
             // Imago gains 5 [In the Past] Stack at Combat End".
             if let Some(owner) = owner_unit(state, index, segmentation.owner.as_deref()) {
-                let stack = state.units[owner].statuses.stack(&segmentation.stack_status);
+                let stack = state.units[owner]
+                    .statuses
+                    .stack(&segmentation.stack_status);
                 state.units[owner].statuses.set_stack(
                     &segmentation.stack_status,
                     stack + segmentation.gain_if_not_hit,
@@ -5639,7 +6083,11 @@ fn owner_unit(state: &BattleState, index: usize, owner_id: Option<&str>) -> Opti
 
 /// "the target that has the highest HP": the other units of the **opposing**
 /// side (a Sinner's Skill reuses onto another enemy and vice versa).
-fn next_reuse_target(state: &BattleState, defender_index: usize, attacker_index: usize) -> Option<usize> {
+fn next_reuse_target(
+    state: &BattleState,
+    defender_index: usize,
+    attacker_index: usize,
+) -> Option<usize> {
     let attacker_is_sinner = state.units[attacker_index].kind.is_sinner();
     state
         .units
@@ -5679,21 +6127,29 @@ fn can_act_now(state: &BattleState, index: usize) -> bool {
 }
 
 /// Resolve the combat phase: pair up skills into clashes in speed order.
-pub fn resolve_combat(state: &mut BattleState, library: &Library, mechanics: &MechanicsBook) -> Vec<ClashResult> {
+pub fn resolve_combat(
+    state: &mut BattleState,
+    library: &Library,
+    mechanics: &MechanicsBook,
+) -> Vec<ClashResult> {
     let mut results = Vec::new();
     let mut actions = state.actions.clone();
     // A Corroding Sinner "will go out of control and use E.G.O Corrosion Skills
     // indiscriminately": their submitted action is replaced by the Corrosion
     // Skill of one of their E.G.O, aimed at a random enemy (wiki.gg `Sanity`).
     for action in actions.iter_mut() {
-        let Some(actor) = state.index_of(&action.actor) else { continue };
+        let Some(actor) = state.index_of(&action.actor) else {
+            continue;
+        };
         if !state.units[actor].corroded {
             continue;
         }
         let Some(ego) = state.units[actor].corrosion_egos.first().cloned() else {
             continue;
         };
-        let Some(record) = library.ego(&ego) else { continue };
+        let Some(record) = library.ego(&ego) else {
+            continue;
+        };
         if record.corrosion.is_none() {
             continue;
         }
@@ -5712,7 +6168,9 @@ pub fn resolve_combat(state: &mut BattleState, library: &Library, mechanics: &Me
     }
     let mut pending_draft: Vec<(usize, SubmittedAction, Option<usize>)> = Vec::new();
     for action in actions {
-        let Some(actor) = state.index_of(&action.actor) else { continue };
+        let Some(actor) = state.index_of(&action.actor) else {
+            continue;
+        };
         if !state.units[actor].alive {
             continue;
         }
@@ -5800,11 +6258,14 @@ pub fn resolve_combat(state: &mut BattleState, library: &Library, mechanics: &Me
     // 複数回行った場合、敵のスキルの使用先は当然「最後に行った使用先の変更」に準拠
     // する" (JA-wiki 戦闘システム詳細): when several Skills chain to the same enemy
     // Slot, the last one submitted owns it.
-    let mut pull_owner: std::collections::BTreeMap<u32, crate::ids::UnitId> =
+    let mut pull_owner: std::collections::BTreeMap<(crate::ids::UnitId, u32), crate::ids::UnitId> =
         std::collections::BTreeMap::new();
     for action in state.actions.iter() {
         if let Some(slot) = action.enemy_slot {
-            pull_owner.insert(slot, action.actor.clone());
+            let Some(target) = action.target.clone() else {
+                continue;
+            };
+            pull_owner.insert((target, slot), action.actor.clone());
         }
     }
     let mut done: Vec<bool> = vec![false; pending.len()];
@@ -5830,16 +6291,22 @@ pub fn resolve_combat(state: &mut BattleState, library: &Library, mechanics: &Me
             .enemy_slot
             .filter(|_| !actor_unclashable)
             .filter(|slot| {
-            pull_owner
-                .get(slot)
-                .map(|owner| *owner == state.units[actor_i].id)
-                .unwrap_or(false)
-        }) {
+                action_i
+                    .target
+                    .as_ref()
+                    .and_then(|enemy| pull_owner.get(&(enemy.clone(), *slot)))
+                    .map(|owner| *owner == state.units[actor_i].id)
+                    .unwrap_or(false)
+            })
+        {
+            let enemy_id = action_i.target.as_ref();
             for (j, (actor_j, action_j, _)) in pending.iter().enumerate() {
                 if done[j] || *actor_j == actor_i || action_j.slot != wanted {
                     continue;
                 }
-                if state.units[*actor_j].kind.is_sinner() {
+                if enemy_id != Some(&state.units[*actor_j].id)
+                    || state.units[*actor_j].kind.is_sinner()
+                {
                     continue;
                 }
                 opponent_slot = Some(j);
@@ -5863,7 +6330,7 @@ pub fn resolve_combat(state: &mut BattleState, library: &Library, mechanics: &Me
                         continue;
                     }
                     let taken_by_other = pull_owner
-                        .get(&action_j.slot)
+                        .get(&(action_j.actor.clone(), action_j.slot))
                         .map(|owner| *owner != state.units[actor_i].id)
                         .unwrap_or(false);
                     if taken_by_other {
@@ -5892,8 +6359,24 @@ pub fn resolve_combat(state: &mut BattleState, library: &Library, mechanics: &Me
                 let mut use_a = build_action_use(state, library, mechanics, actor_i, &action_i);
                 let mut use_b = build_action_use(state, library, mechanics, actor_j, &action_j);
                 if let (Some(a), Some(b)) = (use_a.as_mut(), use_b.as_mut()) {
-                    let pre_a = prepare_use(state, library, mechanics, actor_i, target_i, action_i.slot, a);
-                    let pre_b = prepare_use(state, library, mechanics, actor_j, Some(actor_i), action_j.slot, b);
+                    let pre_a = prepare_use(
+                        state,
+                        library,
+                        mechanics,
+                        actor_i,
+                        target_i,
+                        action_i.slot,
+                        a,
+                    );
+                    let pre_b = prepare_use(
+                        state,
+                        library,
+                        mechanics,
+                        actor_j,
+                        Some(actor_i),
+                        action_j.slot,
+                        b,
+                    );
                     let _ = (pre_a, pre_b);
                     {
                         let key = clash_key(state, actor_i, actor_j);
@@ -6011,7 +6494,15 @@ pub fn resolve_combat(state: &mut BattleState, library: &Library, mechanics: &Me
                     if let Some(mut use_) =
                         build_action_use(state, library, mechanics, actor_i, &action_i)
                     {
-                        prepare_use(state, library, mechanics, actor_i, Some(target), action_i.slot, &mut use_);
+                        prepare_use(
+                            state,
+                            library,
+                            mechanics,
+                            actor_i,
+                            Some(target),
+                            action_i.slot,
+                            &mut use_,
+                        );
                         let hits = one_sided_attack(state, actor_i, target, &mut use_, 0);
                         splash_attack(state, actor_i, target, &mut use_, &hits, 0);
                         apply_attack_end(
@@ -6041,10 +6532,7 @@ pub fn resolve_combat(state: &mut BattleState, library: &Library, mechanics: &Me
                                 && state.units[actor_i].barrier_broken)
                         {
                             state.encounter_ended = true;
-                            state.push_log(
-                                "end",
-                                format!("{} ended the encounter", use_.name),
-                            );
+                            state.push_log("end", format!("{} ended the encounter", use_.name));
                         }
                     }
                 }
@@ -6143,11 +6631,18 @@ fn clash_loser_follow_up(
     clash_count: i32,
 ) {
     let cracked = loser_use.cracked_coins();
-    let all_unbreakable = !loser_use.coins.is_empty()
-        && loser_use.coins.iter().all(|coin| coin.unbreakable);
+    let all_unbreakable =
+        !loser_use.coins.is_empty() && loser_use.coins.iter().all(|coin| coin.unbreakable);
     if !cracked.is_empty() && state.units[loser_index].alive {
         let hits = one_sided_attack(state, loser_index, winner_index, loser_use, clash_count);
-        splash_attack(state, loser_index, winner_index, loser_use, &hits, clash_count);
+        splash_attack(
+            state,
+            loser_index,
+            winner_index,
+            loser_use,
+            &hits,
+            clash_count,
+        );
     }
     if all_unbreakable {
         apply_attack_end(
@@ -6334,7 +6829,12 @@ pub fn highest_resonance(state: &BattleState) -> i32 {
 
 /// Discard the second visible Skill of a slot (the wiki's "the other Skill in
 /// the same Skill Slot"), refilling the panel from the composition.
-fn discard_from_slot(state: &mut BattleState, unit_index: usize, slot: u32, only_if_different: bool) {
+fn discard_from_slot(
+    state: &mut BattleState,
+    unit_index: usize,
+    slot: u32,
+    only_if_different: bool,
+) {
     let Some(entry) = state.units[unit_index]
         .dashboard
         .iter()
@@ -6348,8 +6848,8 @@ fn discard_from_slot(state: &mut BattleState, unit_index: usize, slot: u32, only
     }
     let discarded = entry.next.clone();
     state.units[unit_index].deck.consume(&discarded);
-    let drawn = crate::setup::draw_for_unit(state, unit_index)
-        .unwrap_or_else(crate::setup::empty_skill);
+    let drawn =
+        crate::setup::draw_for_unit(state, unit_index).unwrap_or_else(crate::setup::empty_skill);
     if let Some(target) = state.units[unit_index]
         .dashboard
         .iter_mut()
@@ -6413,7 +6913,9 @@ fn action_defense_kind(
         return None;
     }
     let unit = state.unit(&action.actor)?;
-    let UnitKind::Sinner { identity } = &unit.kind else { return None };
+    let UnitKind::Sinner { identity } = &unit.kind else {
+        return None;
+    };
     let record = library.identity(identity)?;
     let skill = record.skills.iter().find(|s| s.id == action.skill.0)?;
     if skill.slot() != Some(crate::ids::SkillSlot::Defense) {
@@ -6482,8 +6984,7 @@ fn build_action_use(
         // after paying: -24 or higher 0%, -25..-34 25%, -35..-44 75%, -45 100%
         // (JA-wiki 戦闘システム詳細 / ランダム侵蝕の仕様).
         let projected_sp = state.units[unit_index].sanity.sp() - sp_cost;
-        if let Some(chance) = corrosion_chance_for_sp(projected_sp)
-        {
+        if let Some(chance) = corrosion_chance_for_sp(projected_sp) {
             if state.flip(chance) {
                 if let Some(corrosion) = build_ego_use(
                     state,
@@ -6499,10 +7000,11 @@ fn build_action_use(
                     // "オーバークロックは…余計に払ったE.G.O資源が返却される":
                     // a random Corrosion during an Overclock refunds the surcharge
                     // and costs the normal Corrosion price.
-                    if kind == EgoSkillKind::Overclock {
+                    if kind == EgoSkillKind::Overclock && !state.config.infinite_ego_resources {
                         refund_overclock_surcharge(state, &record);
                         use_ = corrosion;
-                        detail = format!("{detail} (random Corrosion; Overclock surcharge refunded)");
+                        detail =
+                            format!("{detail} (random Corrosion; Overclock surcharge refunded)");
                     } else {
                         use_ = corrosion;
                         detail = format!("{detail} (random Corrosion)");
@@ -6562,6 +7064,7 @@ fn prepare_use(
         use_.ctx.ammo_planned = planned;
     }
     use_.ctx.coins_total = use_.coins.len();
+    use_.ctx.skill_id = Some(use_.skill.clone());
     // Bookkeeping for the training layer: this Skill actually resolves (it may
     // still lose its Clash - a Skill that lost was used too).
     state.record_use(unit_index, &use_.skill, slot);
@@ -6586,9 +7089,7 @@ fn prepare_use(
             .copied()
             .unwrap_or(0);
         if used < 1 {
-            state.units[unit_index]
-                .turn_effect_usage
-                .insert(key, 1);
+            state.units[unit_index].turn_effect_usage.insert(key, 1);
             state.units[unit_index]
                 .statuses
                 .add_potency("Bright -光-", 1);
@@ -6606,7 +7107,7 @@ fn prepare_use(
         actor_index: unit_index,
         target_index,
         clash_count: 0,
-            clash_lost: false,
+        clash_lost: false,
         slot,
         mechanics_note: &mut notes,
     };
@@ -6695,9 +7196,7 @@ fn prepare_use(
     // the listed Coins are 1-based indexes, so each Coin is checked by its own
     // position (checking coin 1 only marked the first Coin for every clause).
     for (index, coin) in use_.coins.iter_mut().enumerate() {
-        if use_.ctx.unbreakable_all
-            || use_.ctx.unbreakable_coins.contains(&(index as u32 + 1))
-        {
+        if use_.ctx.unbreakable_all || use_.ctx.unbreakable_coins.contains(&(index as u32 + 1)) {
             coin.unbreakable = true;
         }
     }
@@ -6725,7 +7224,9 @@ fn apply_clash_result(
             state.units[unit_index].sanity = sanity.add(value);
         }
         None => {
-            let warning = crate::state::UnknownRule::SanityGainOnClash.text().to_string();
+            let warning = crate::state::UnknownRule::SanityGainOnClash
+                .text()
+                .to_string();
             if !state.warnings.contains(&warning) {
                 state.warnings.push(warning);
             }
@@ -6744,7 +7245,7 @@ fn apply_clash_result(
         actor_index: unit_index,
         target_index,
         clash_count: 0,
-            clash_lost: false,
+        clash_lost: false,
         slot,
         mechanics_note: &mut notes,
     };
@@ -6790,9 +7291,7 @@ fn passive_follow_ups(
                     .copied()
                     .unwrap_or(0);
                 if used < 1 {
-                    state.units[unit_index]
-                        .turn_effect_usage
-                        .insert(key, 1);
+                    state.units[unit_index].turn_effect_usage.insert(key, 1);
                     unopposed_attack(
                         state,
                         library,
@@ -6821,9 +7320,7 @@ fn passive_follow_ups(
                 &SkillId::new("1041405"),
                 target_index,
             ) {
-                state.units[unit_index]
-                    .statuses
-                    .set_stack(AMMO_SOLITUDE, 6);
+                state.units[unit_index].statuses.set_stack(AMMO_SOLITUDE, 6);
                 state.push_log("reload", "Full Reload [Bullet - Solitude]".to_string());
             }
         }
@@ -6848,9 +7345,7 @@ fn passive_follow_ups(
                 .copied()
                 .unwrap_or(0);
             if used < 1 {
-                state.units[unit_index]
-                    .turn_effect_usage
-                    .insert(key, 1);
+                state.units[unit_index].turn_effect_usage.insert(key, 1);
                 unopposed_attack(
                     state,
                     library,
@@ -6882,9 +7377,7 @@ fn passive_follow_ups(
                 .max_by_key(|(_, unit)| unit.statuses.stack("Faint Aroma"))
                 .map(|(index, _)| index);
             if let Some(pick) = pick {
-                state.units[unit_index]
-                    .turn_effect_usage
-                    .insert(key, 1);
+                state.units[unit_index].turn_effect_usage.insert(key, 1);
                 unopposed_attack(
                     state,
                     library,
@@ -6927,15 +7420,34 @@ fn unopposed_attack(
             index
         }
     };
-    prepare_use(state, library, mechanics, unit_index, Some(target), use_.slot, &mut use_);
+    prepare_use(
+        state,
+        library,
+        mechanics,
+        unit_index,
+        Some(target),
+        use_.slot,
+        &mut use_,
+    );
     state.units[unit_index].follow_up_active = true;
     state.push_log(
         "unopposed",
-        format!("{} attacked with {}", state.units[unit_index].name, use_.name),
+        format!(
+            "{} attacked with {}",
+            state.units[unit_index].name, use_.name
+        ),
     );
     let hits = one_sided_attack(state, unit_index, target, &mut use_, 0);
     splash_attack(state, unit_index, target, &mut use_, &hits, 0);
-    apply_attack_end(state, library, mechanics, unit_index, Some(target), use_.slot, &mut use_);
+    apply_attack_end(
+        state,
+        library,
+        mechanics,
+        unit_index,
+        Some(target),
+        use_.slot,
+        &mut use_,
+    );
     state.units[unit_index].follow_up_active = false;
     true
 }
@@ -6949,6 +7461,7 @@ fn apply_attack_end(
     slot: u32,
     use_: &mut SkillUse,
 ) {
+    use_.ctx.skill_id = Some(use_.skill.clone());
     let list = use_.mechanics.attack_end.clone();
     // "[Attack End] If 1 or more targets are killed" reads this Skill's kills.
     state.units[unit_index].skill_kills = use_.ctx.kills;
@@ -6962,7 +7475,7 @@ fn apply_attack_end(
         actor_index: unit_index,
         target_index,
         clash_count: 0,
-            clash_lost: false,
+        clash_lost: false,
         slot,
         mechanics_note: &mut notes,
     };
@@ -6991,9 +7504,9 @@ fn apply_attack_end(
         state.units[unit_index]
             .turn_effect_usage
             .insert("reuse_on_kill".to_string(), 1);
-        if let Some(next) = target_index.and_then(|defender| {
-            next_reuse_target(state, defender, unit_index)
-        }) {
+        if let Some(next) =
+            target_index.and_then(|defender| next_reuse_target(state, defender, unit_index))
+        {
             let mut repeat = use_.clone();
             for coin in repeat.coins.iter_mut() {
                 coin.state = CoinState::Fresh;
@@ -7023,7 +7536,9 @@ mod tests {
         let mut a = build_use(&state, &library, &mechanics, 0, &SkillId::new("1011001")).unwrap();
         let mut b = {
             let record = state.units[1].kind.clone();
-            let UnitKind::Abnormality { enemy, .. } = record else { unreachable!() };
+            let UnitKind::Abnormality { enemy, .. } = record else {
+                unreachable!()
+            };
             let name = library
                 .enemy(&enemy)
                 .unwrap()
@@ -7083,7 +7598,15 @@ pub fn apply_attack_end_for_test(
     slot: u32,
     use_: &mut SkillUse,
 ) {
-    apply_attack_end(state, library, mechanics, unit_index, target_index, slot, use_)
+    apply_attack_end(
+        state,
+        library,
+        mechanics,
+        unit_index,
+        target_index,
+        slot,
+        use_,
+    )
 }
 
 #[doc(hidden)]
@@ -7124,7 +7647,7 @@ pub fn apply_effects_for_test(
         actor_index,
         target_index,
         clash_count: 0,
-            clash_lost: false,
+        clash_lost: false,
         slot: 0,
         mechanics_note: notes,
     };
@@ -7161,7 +7684,15 @@ pub fn prepare_use_for_test(
     target_index: Option<usize>,
     use_: &mut SkillUse,
 ) {
-    prepare_use(state, library, mechanics, unit_index, target_index, use_.slot, use_);
+    prepare_use(
+        state,
+        library,
+        mechanics,
+        unit_index,
+        target_index,
+        use_.slot,
+        use_,
+    );
 }
 
 #[doc(hidden)]

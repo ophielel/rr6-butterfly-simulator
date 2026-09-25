@@ -397,6 +397,17 @@ def main() -> int:
         entries.append((name, f"wiki:{name}", wiki[name], "wiki"))
     for name, key, text, source_kind in entries:
         parsed = parse_status(text)
+        if name == "Echoes of the Manor":
+            # Single Potency value: the source says "Reduced by 1", not
+            # "Lose 1 Stack". The on-gain rider and replacement are handled
+            # in the status-application path rather than the status phase.
+            parsed["passive"] = [effect for effect in parsed["passive"]
+                                  if effect.get("raw") != "Reduced by 1 at Turn End"]
+            parsed["turn_end"].append({"kind": "gain", "status": "self", "potency": -1,
+                                       "raw": "Reduced by 1 at Turn End"})
+            parsed["unmodeled"] = [line for line in parsed["unmodeled"]
+                                   if "This effect is not cumulative" not in line
+                                   and not line.startswith("50% chance to gain +1 [Sinking] Count")]
         owned = STATUS_CLAUSES_OWNED_BY_A_SKILL.get(name)
         if owned:
             for phase, value in parsed.items():

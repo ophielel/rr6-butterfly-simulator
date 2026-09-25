@@ -21,7 +21,7 @@
     "coins": 1,
     "attack_weight": 3,
     "offense_level_mod": 0,
-    "on_use_text": "[Attack End] Randomly inflict (6 + Gloom Reson.) [Sinking] between targets",
+    "on_use_text": "[Attack End] Randomly inflict (6 + (Gloom Reson. x1.5)) [Sinking] between targets",
     "coin_texts": [
       "[On Hit] If target has 6+ [Sinking], inflict 2 [Bind] next turn",
       "",
@@ -43,9 +43,9 @@
     "coins": 1,
     "attack_weight": 3,
     "offense_level_mod": 0,
-    "on_use_text": "[Indiscriminate]\nTargets Randomly\n[Before Attack] At 3+ (Gloom Reson.), Atk Weight +1",
+    "on_use_text": "[Indiscriminate]\nTargets Randomly\n[Before Attack] At 3+ (Gloom Reson.), Atk Weight +1\n[Before Attack] At 5+ (Gloom Reson.), additional Atk Weight +1",
     "coin_texts": [
-      "[On Hit] Inflict 2 [Sinking]. Inflict 2 [Bind] next turn\n[On Hit] If target has 6+ [Sinking], inflict 1 [Bind] next turn",
+      "[On Hit] Inflict 2 [Sinking]. Inflict 2 [Bind] next turn\n[On Hit] If target has 6+ [Sinking], inflict 2 [Bind] next turn",
       "",
       "",
       "",

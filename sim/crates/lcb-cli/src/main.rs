@@ -200,13 +200,7 @@ fn print_turn(state: &BattleState) {
     for unit in &state.units {
         let time = unit
             .time_state
-            .map(|state| {
-                format!(
-                    " [{:?} {}]",
-                    state,
-                    unit.statuses.stack(state.stack_key())
-                )
-            })
+            .map(|state| format!(" [{:?} {}]", state, unit.statuses.stack(state.stack_key())))
             .unwrap_or_default();
         println!(
             "  {:<34} HP {}/{} SP {} speed {}{} {}",
@@ -224,6 +218,49 @@ fn print_turn(state: &BattleState) {
 // --------------------------------------------------------------------------- //
 // JSON line protocol (fallback transport for the Python environment)
 // --------------------------------------------------------------------------- //
+
+fn step_turn_response(
+    sim: &Simulator,
+    state: &mut BattleState,
+    plan: Vec<Action>,
+) -> serde_json::Value {
+    let before = state.clone();
+    let log_from = before.log.len();
+    let outcome = sim.submit_plan(state, plan.clone());
+    match outcome {
+        Ok(()) => {
+            let transition = sim.transition_hash(&before, &plan, state);
+            serde_json::json!({
+                "ok": true,
+                "error": null,
+                "turn": state.turn,
+                "phase": format!("{:?}", state.phase),
+                "winner": state.winner,
+                "state_hash_before": format!("{:016x}", sim.state_hash(&before)),
+                "state_hash_after": format!("{:016x}", sim.state_hash(state)),
+                "transition_hash": format!("{:016x}", transition),
+                "search_key": format!("{:016x}", sim.search_key(state)),
+                "seed": state.seed,
+                "rng_before": serde_json::to_value(&before.rng).unwrap_or(serde_json::Value::Null),
+                "rng_after": serde_json::to_value(&state.rng).unwrap_or(serde_json::Value::Null),
+                "plan": plan,
+                "log": &state.log[log_from.min(state.log.len())..],
+                "stats": serde_json::to_value(&state.turn_stats).unwrap_or(serde_json::Value::Null),
+            })
+        }
+        Err(err) => serde_json::json!({
+            "ok": false,
+            "error": err.to_string(),
+            "turn": before.turn,
+            "phase": format!("{:?}", before.phase),
+            "winner": before.winner,
+            "state_hash_before": format!("{:016x}", sim.state_hash(&before)),
+            "state_hash_after": format!("{:016x}", sim.state_hash(state)),
+            "log": [],
+            "stats": serde_json::Value::Null,
+        }),
+    }
+}
 
 fn serve(sim: &Simulator) {
     let stdin = std::io::stdin();
@@ -247,18 +284,38 @@ fn serve(sim: &Simulator) {
                 let team: Vec<String> = request
                     .get("team")
                     .and_then(|v| v.as_array())
-                    .map(|a| a.iter().filter_map(|v| v.as_str().map(String::from)).collect())
+                    .map(|a| {
+                        a.iter()
+                            .filter_map(|v| v.as_str().map(String::from))
+                            .collect()
+                    })
                     .unwrap_or_else(|| fixed::TEAM.iter().map(|s| s.to_string()).collect());
                 let enemies: Vec<String> = request
                     .get("enemies")
                     .and_then(|v| v.as_array())
-                    .map(|a| a.iter().filter_map(|v| v.as_str().map(String::from)).collect())
+                    .map(|a| {
+                        a.iter()
+                            .filter_map(|v| v.as_str().map(String::from))
+                            .collect()
+                    })
                     .unwrap_or_else(|| vec![fixed::BOSS_IMAGO.to_string()]);
                 let config = BattleConfig {
                     strict_mechanics: request
                         .get("strict")
                         .and_then(|v| v.as_bool())
                         .unwrap_or(true),
+                    infinite_ego_resources: request
+                        .get("infinite_ego_resources")
+                        .and_then(|v| v.as_bool())
+                        .unwrap_or(false),
+                    max_turns: request
+                        .get("max_turns")
+                        .and_then(|v| v.as_u64())
+                        .unwrap_or(30) as u32,
+                    enemy_hp_scale: request
+                        .get("enemy_hp_scale")
+                        .and_then(|v| v.as_f64())
+                        .unwrap_or(1.0),
                     ..Default::default()
                 };
                 match sim.new_encounter(
@@ -280,6 +337,35 @@ fn serve(sim: &Simulator) {
                     let actions = sim.legal_actions(state);
                     serde_json::json!({"ok": true, "actions": actions})
                 }
+                None => serde_json::json!({"error": "not initialised"}),
+            },
+            "submit" => match &mut state {
+                Some(state) => match request
+                    .get("action")
+                    .cloned()
+                    .ok_or_else(|| "missing action".to_string())
+                    .and_then(|value| {
+                        serde_json::from_value::<Action>(value).map_err(|err| err.to_string())
+                    }) {
+                    Ok(action) => match sim.submit(state, action) {
+                        Ok(()) => serde_json::json!({"ok": true}),
+                        Err(err) => serde_json::json!({"error": err.to_string()}),
+                    },
+                    Err(err) => serde_json::json!({"error": err}),
+                },
+                None => serde_json::json!({"error": "not initialised"}),
+            },
+            "step_turn" => match &mut state {
+                Some(state) => match request
+                    .get("plan")
+                    .cloned()
+                    .ok_or_else(|| "missing plan".to_string())
+                    .and_then(|value| {
+                        serde_json::from_value::<Vec<Action>>(value).map_err(|err| err.to_string())
+                    }) {
+                    Ok(plan) => step_turn_response(sim, state, plan),
+                    Err(err) => serde_json::json!({"error": err}),
+                },
                 None => serde_json::json!({"error": "not initialised"}),
             },
             "step" => match &mut state {

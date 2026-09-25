@@ -34,7 +34,7 @@ from .env import LimbusEnv, SECTION5_WAVE, TEAM
 from .features import Encoder, SkillTable
 from .plans import canonical
 from .rewards import EpisodeStats, compute_reward
-from .teacher import AXIS_EGO, boss_sinking, detect_axis, imago
+from .teacher import AXIS_EGO, boss_sinking, detect_axis, detect_strategy_labels, imago
 
 REPO = Path(__file__).resolve().parents[2]
 
@@ -49,6 +49,7 @@ class Scenario:
     #: **Scenario knob**: 1.0 is the encounter as the data describes it.
     enemy_hp_scale: float = 1.0
     strict: bool = True
+    infinite_ego_resources: bool = False
     description: str = ""
 
     def to_dict(self) -> Dict[str, Any]:
@@ -83,6 +84,7 @@ def run_episode(
         enemies=list(scenario.enemies),
         max_turns=scenario.max_turns,
         enemy_hp_scale=scenario.enemy_hp_scale,
+        infinite_ego_resources=scenario.infinite_ego_resources,
     )
     first = env.observe()
     boss = imago(first)
@@ -154,6 +156,7 @@ def run_episode(
         1 for u in final.get("units", []) if u.get("kind") == "sinner" and u.get("alive")
     )
     stats.axis = detect_axis(replay)
+    stats.axis.update(detect_strategy_labels(replay))
     return EpisodeRecord(
         policy=policy.name,
         scenario=scenario.name,
@@ -188,6 +191,7 @@ def summarise(records: Sequence[Dict[str, Any]], short_turn: Optional[int] = Non
     survivors = [float(r.get("survivors") or 0) for r in records]
     sinking = [float(r.get("sinking_damage") or 0) for r in records]
     axis_rows = [r for r in records if r.get("axis_ok")]
+    strategy_rows = [r.get("axis") or {} for r in records]
     ego_turns: List[int] = []
     for row in records:
         for entry in row.get("ego_uses") or []:
@@ -215,10 +219,63 @@ def summarise(records: Sequence[Dict[str, Any]], short_turn: Optional[int] = Non
         "sinking_damage_mean": float(np.mean(sinking)),
         "axis_ok_rate": len(axis_rows) / total,
         "axis_ok_rate_among_wins": (len(axis_rows) / len(wins)) if wins else 0.0,
+        "known_setup_like_rate": sum(bool(row.get("known_setup_like")) for row in strategy_rows) / total,
+        "direct_burst_rate": sum(bool(row.get("direct_burst")) for row in strategy_rows) / total,
+        "peak_sinking_potency_mean": float(np.mean([float(row.get("peak_sinking_potency") or 0) for row in strategy_rows])),
+        "peak_sinking_count_mean": float(np.mean([float(row.get("peak_sinking_count") or 0) for row in strategy_rows])),
         "long_tail_failure_rate": len(long_tail) / total,
         "ego_use_turns": sorted(ego_turns),
         "errors": sum(1 for r in records if r.get("error")),
     }
+
+
+def restart_aware(
+    records: Sequence[Dict[str, Any]],
+    turn_threshold: int = 8,
+    n_values: Sequence[int] = (1, 5, 10, 20, 50),
+) -> Dict[str, Any]:
+    """Report both single-attempt and restart-budget clear probabilities."""
+    rows = sorted(records, key=lambda r: int(r["seed"]))
+    qualifying_rows = [
+        r for r in rows
+        if r.get("won") and r.get("kill_turn") and int(r["kill_turn"]) <= turn_threshold
+    ]
+    out: Dict[str, Any] = {
+        "turn_threshold": turn_threshold,
+        "attempts": len(rows),
+        "clear_attempts": len(qualifying_rows),
+        "clear_rate_per_attempt": len(qualifying_rows) / len(rows) if rows else 0.0,
+    }
+    for n in n_values:
+        if n <= 0 or len(rows) < n:
+            continue
+        window_clear: List[bool] = []
+        best_kills: List[int] = []
+        attempts_until: List[int] = []
+        for start in range(0, len(rows) - n + 1):
+            window = rows[start : start + n]
+            qualifying = [
+                int(row["kill_turn"])
+                for row in window
+                if row.get("won") and row.get("kill_turn")
+                and int(row["kill_turn"]) <= turn_threshold
+            ]
+            window_clear.append(bool(qualifying))
+            if qualifying:
+                best_kills.append(min(qualifying))
+                attempts_until.append(next(
+                    index + 1 for index, row in enumerate(window)
+                    if row.get("won") and row.get("kill_turn")
+                    and int(row["kill_turn"]) <= turn_threshold
+                ))
+        out[f"n{n}"] = {
+            "windows": len(window_clear),
+            "clear_within_n_rate": sum(window_clear) / len(window_clear) if window_clear else 0.0,
+            "best_kill_turn_min": min(best_kills) if best_kills else None,
+            "best_kill_turn_median": float(np.median(best_kills)) if best_kills else None,
+            "median_attempts_until_clear": float(np.median(attempts_until)) if attempts_until else None,
+        }
+    return out
 
 
 def best_of_n(
@@ -334,6 +391,7 @@ def replay_index(directory: Path) -> Dict[str, Any]:
                 "file": path.name,
                 "policy": payload.get("policy"),
                 "scenario": payload.get("scenario"),
+                "scenario_config": payload.get("scenario_config"),
                 "seed": payload.get("seed"),
                 "won": (payload.get("stats") or {}).get("won"),
                 "kill_turn": (payload.get("stats") or {}).get("kill_turn"),
@@ -365,6 +423,7 @@ __all__ = [
     "run_episode",
     "summarise",
     "best_of_n",
+    "restart_aware",
     "provenance",
     "data_fingerprint",
     "git_revision",

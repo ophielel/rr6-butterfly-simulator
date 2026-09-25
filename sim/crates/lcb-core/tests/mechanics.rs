@@ -27,11 +27,11 @@ fn sim() -> Simulator {
 fn damage_formula_matches_source() {
     let inputs = DamageInputs {
         coin_roll: 20,
-        sin_resist: 1.25,      // Weak [x1.25] -> +0.25
+        sin_resist: 1.25, // Weak [x1.25] -> +0.25
         damage_type_resist: 1.0,
         offense_level: 63,
-        defense_level: 60,     // 3 levels -> +0.10
-        clash_count: 2,        // +0.06
+        defense_level: 60, // 3 levels -> +0.10
+        clash_count: 2,    // +0.06
         dynamic_modifier: 0.20,
         ..Default::default()
     };
@@ -64,7 +64,11 @@ fn sanity_changes_coin_flip_odds() {
     assert_eq!(Sanity::Sane { sp: 0 }.heads_percent(), 50);
     assert_eq!(Sanity::Sane { sp: 45 }.heads_percent(), 95);
     assert_eq!(Sanity::Sane { sp: -45 }.heads_percent(), 5);
-    assert_eq!(Sanity::None.heads_percent(), 50, "abnormalities flip at 50%");
+    assert_eq!(
+        Sanity::None.heads_percent(),
+        50,
+        "abnormalities flip at 50%"
+    );
     let over = Sanity::Sane { sp: 40 }.add(20);
     assert_eq!(over.sp(), 45);
     let under = Sanity::Sane { sp: -40 }.add(-20);
@@ -117,7 +121,11 @@ fn clash_loser_loses_one_coin_per_round() {
     let result = battle::resolve_clash(&mut state, 0, 1, &mut a, &mut b);
     assert_eq!(result.winner, Some(state.units[0].id.clone()));
     assert!(b.remaining_coins() < coins_before);
-    assert_eq!(b.remaining_coins(), 0, "clash continues until one side is empty");
+    assert_eq!(
+        b.remaining_coins(),
+        0,
+        "clash continues until one side is empty"
+    );
 }
 
 /// Clash power is the sum over **all** coins: Base Power once plus the Coin
@@ -130,8 +138,14 @@ fn clash_power_sums_every_coin() {
     let mut state = sim
         .new_encounter(&["10110"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
         .unwrap();
-    let mut use_ = battle::build_use(&state, &sim.library, &sim.mechanics, 0, &SkillId::new("1011003"))
-        .unwrap();
+    let mut use_ = battle::build_use(
+        &state,
+        &sim.library,
+        &sim.mechanics,
+        0,
+        &SkillId::new("1011003"),
+    )
+    .unwrap();
     use_.base_power = 4;
     use_.coin_power = 4;
     use_.coins = vec![
@@ -159,10 +173,22 @@ fn clash_tie_destroys_no_coin() {
     let mut state = sim
         .new_encounter(&["10110"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
         .unwrap();
-    let mut a = battle::build_use(&state, &sim.library, &sim.mechanics, 0, &SkillId::new("1011001"))
-        .unwrap();
-    let mut b = battle::build_use(&state, &sim.library, &sim.mechanics, 1, &SkillId::new("956701"))
-        .unwrap();
+    let mut a = battle::build_use(
+        &state,
+        &sim.library,
+        &sim.mechanics,
+        0,
+        &SkillId::new("1011001"),
+    )
+    .unwrap();
+    let mut b = battle::build_use(
+        &state,
+        &sim.library,
+        &sim.mechanics,
+        1,
+        &SkillId::new("956701"),
+    )
+    .unwrap();
     a.base_power = 10;
     b.base_power = 10;
     a.coin_power = 0;
@@ -212,8 +238,15 @@ fn sinking_damages_sp_or_gloom() {
     let hp_before = state.units[1].hp;
     battle::apply_sinking_for_test(&mut state, 0);
     battle::apply_sinking_for_test(&mut state, 1);
-    assert_eq!(state.units[0].sanity.sp(), 2, "8 Sinking potency -> 8 SP damage");
-    assert!(state.units[1].hp < hp_before, "non-SP unit takes Gloom damage");
+    assert_eq!(
+        state.units[0].sanity.sp(),
+        2,
+        "8 Sinking potency -> 8 SP damage"
+    );
+    assert!(
+        state.units[1].hp < hp_before,
+        "non-SP unit takes Gloom damage"
+    );
 }
 
 /// Butterfly is unique Sinking: the attacker heals SP when hitting a unit that
@@ -229,10 +262,20 @@ fn butterfly_heals_attacker_sp() {
     state.units[0].sanity = Sanity::Sane { sp: 0 };
     // The Skill spends Unique Ammo; a unit that runs dry mid-Skill cancels the
     // remaining Coins and pays for a Reload, which this test is not about.
-    state.units[0].statuses.add_potency("The Living & The Departed", 10);
-    state.units[0].statuses.add_count("The Living & The Departed", 10);
-    let mut a = battle::build_use(&state, &sim.library, &sim.mechanics, 0, &SkillId::new("1011001"))
-        .unwrap();
+    state.units[0]
+        .statuses
+        .add_potency("The Living & The Departed", 10);
+    state.units[0]
+        .statuses
+        .add_count("The Living & The Departed", 10);
+    let mut a = battle::build_use(
+        &state,
+        &sim.library,
+        &sim.mechanics,
+        0,
+        &SkillId::new("1011001"),
+    )
+    .unwrap();
     a.coins = vec![battle::CoinRuntime::fresh(false)];
     battle::one_sided_attack(&mut state, 0, 1, &mut a, 0);
     assert_eq!(state.units[0].sanity.sp(), 3, "The Living / 4 = 3 SP");
@@ -246,7 +289,11 @@ fn ego_costs_and_overclock_round_up() {
     let mut state = sim
         .new_encounter(&["10110"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
         .unwrap();
-    let ego = sim.library.ego(&lcb_core::ids::EgoId::new("20106")).unwrap().clone();
+    let ego = sim
+        .library
+        .ego(&lcb_core::ids::EgoId::new("20106"))
+        .unwrap()
+        .clone();
     // The data and the battle state use the same lowercase sin keys.
     assert_eq!(ego.resource_cost.get("gloom"), Some(&3));
     assert!(ego.resource_cost.get("Gloom").is_none());
@@ -259,6 +306,43 @@ fn ego_costs_and_overclock_round_up() {
     assert!(affordable, "9 resources are enough for ceil(4.5)=5");
     battle::pay_ego_for_test(&mut state, 0, &ego, kind);
     assert_eq!(state.ego_resources.get("gloom"), Some(&4));
+}
+
+#[test]
+fn infinite_ego_resources_bypass_affordability_and_spending_only() {
+    let sim = sim();
+    let mut config = BattleConfig::default();
+    config.infinite_ego_resources = true;
+    let mut state = sim
+        .new_encounter(&fixed::TEAM, &[fixed::BOSS_IMAGO], 41, config)
+        .unwrap();
+    state.ego_resources.clear();
+    state.units[0].sanity = Sanity::Sane { sp: 45 };
+    let ego = sim
+        .library
+        .ego(&lcb_core::ids::EgoId::new("20106"))
+        .unwrap()
+        .clone();
+    assert!(battle::ego_affordable_for_test(
+        &state,
+        0,
+        &ego,
+        EgoSkillKind::Overclock
+    ));
+    let before_sp = state.units[0].sanity.sp();
+    let before_resources = state.ego_resources.clone();
+    battle::pay_ego_for_test(&mut state, 0, &ego, EgoSkillKind::Overclock);
+    battle::pay_ego_sp(
+        &mut state,
+        0,
+        battle::ego_sp_cost(&ego, EgoSkillKind::Overclock),
+    );
+    assert_eq!(state.ego_resources, before_resources);
+    assert_eq!(state.units[0].sanity.sp(), before_sp - 23);
+    assert!(sim
+        .legal_actions(&state)
+        .iter()
+        .any(|a| matches!(a, Action::UseEgo { .. })));
 }
 
 /// Resources that normal attacks generate must be spendable on E.G.O: the
@@ -291,7 +375,9 @@ fn generated_resources_pay_for_ego() {
     // Nothing is affordable with one resource; grant a full set and check that
     // the E.G.O now appears and is paid for with the same keys.
     assert!(
-        !sim.legal_actions(&state).iter().any(|action| matches!(action, Action::UseEgo { .. })),
+        !sim.legal_actions(&state)
+            .iter()
+            .any(|action| matches!(action, Action::UseEgo { .. })),
         "an E.G.O is not affordable yet"
     );
     for sin in lcb_core::ids::Sin::ALL {
@@ -398,7 +484,10 @@ fn panel_rotates_after_use() {
 #[test]
 fn uptie_resolution_matches_wiki_convention() {
     let sim = sim();
-    let record = sim.library.identity(&lcb_core::ids::IdentityId::new("10110")).unwrap();
+    let record = sim
+        .library
+        .identity(&lcb_core::ids::IdentityId::new("10110"))
+        .unwrap();
     let s1 = record.skills.iter().find(|s| s.id == "1011001").unwrap();
     assert_eq!(s1.tier(Uptie(1)).unwrap().base_power, Some(3));
     assert_eq!(s1.tier(Uptie(2)).unwrap().base_power, Some(3));
@@ -467,9 +556,16 @@ fn guard_gains_shield_when_attacked() {
     sim.step_turn(&mut state).unwrap();
     // 10 + 4 = 14 Shield, then the enemy's hit is absorbed by it.
     assert!(
-        state.log.iter().any(|entry| entry.kind == "guard" && entry.detail.contains("14 Shield")),
+        state
+            .log
+            .iter()
+            .any(|entry| entry.kind == "guard" && entry.detail.contains("14 Shield")),
         "guard log: {:?}",
-        state.log.iter().map(|e| e.detail.clone()).collect::<Vec<_>>()
+        state
+            .log
+            .iter()
+            .map(|e| e.detail.clone())
+            .collect::<Vec<_>>()
     );
 }
 
@@ -480,7 +576,12 @@ fn guard_gains_shield_when_attacked() {
 fn imago_plays_the_documented_rotation() {
     let sim = sim();
     let mut state = sim
-        .new_encounter(&fixed::TEAM, &[fixed::BOSS_IMAGO], 1, BattleConfig::default())
+        .new_encounter(
+            &fixed::TEAM,
+            &[fixed::BOSS_IMAGO],
+            1,
+            BattleConfig::default(),
+        )
         .unwrap();
     let enemy_id = state
         .units
@@ -508,16 +609,34 @@ fn imago_plays_the_documented_rotation() {
     );
     // Turn 2: Immolation x2, Pulverization x4.
     for action in sim.legal_actions(&state) {
-        if let Action::Assign { actor, slot, skill, target } = action {
+        if let Action::Assign {
+            actor,
+            slot,
+            skill,
+            target,
+        } = action
+        {
             if actor != enemy_id {
-                sim.submit(&mut state, Action::Assign { actor, slot, skill, target }).unwrap();
+                sim.submit(
+                    &mut state,
+                    Action::Assign {
+                        actor,
+                        slot,
+                        skill,
+                        target,
+                    },
+                )
+                .unwrap();
                 break;
             }
         }
     }
     sim.step_turn(&mut state).unwrap();
     let second = turn_skills(&state);
-    assert_eq!(second, vec!["956705", "956705", "956702", "956702", "956702", "956702"]);
+    assert_eq!(
+        second,
+        vec!["956705", "956705", "956702", "956702", "956702", "956702"]
+    );
 }
 
 /// Turn start activates the highest-Stacked state of time; ties keep the state.
@@ -527,7 +646,12 @@ fn time_state_follows_the_highest_stack() {
     use lcb_core::scripts::TimeState;
     let sim = sim();
     let mut state = sim
-        .new_encounter(&fixed::TEAM, &[fixed::BOSS_IMAGO], 2, BattleConfig::default())
+        .new_encounter(
+            &fixed::TEAM,
+            &[fixed::BOSS_IMAGO],
+            2,
+            BattleConfig::default(),
+        )
         .unwrap();
     let enemy = state
         .units
@@ -539,8 +663,23 @@ fn time_state_follows_the_highest_stack() {
     // Push Future ahead of the others.
     state.units[enemy].statuses.add_stack("In the Future", 15);
     for action in sim.legal_actions(&state) {
-        if let Action::Assign { actor, slot, skill, target } = action {
-            sim.submit(&mut state, Action::Assign { actor, slot, skill, target }).unwrap();
+        if let Action::Assign {
+            actor,
+            slot,
+            skill,
+            target,
+        } = action
+        {
+            sim.submit(
+                &mut state,
+                Action::Assign {
+                    actor,
+                    slot,
+                    skill,
+                    target,
+                },
+            )
+            .unwrap();
         }
     }
     sim.step_turn(&mut state).unwrap();
@@ -555,11 +694,20 @@ fn time_state_follows_the_highest_stack() {
 fn time_state_stack_bonus_matches_game_text() {
     use lcb_core::scripts::TimeState;
     let low = TimeState::stack_bonus(5);
-    assert_eq!((low.clash_power, low.final_power, low.potency, low.count), (0, 0, 1, 1));
+    assert_eq!(
+        (low.clash_power, low.final_power, low.potency, low.count),
+        (0, 0, 1, 1)
+    );
     let mid = TimeState::stack_bonus(15);
-    assert_eq!((mid.clash_power, mid.final_power, mid.potency, mid.count), (1, 0, 2, 1));
+    assert_eq!(
+        (mid.clash_power, mid.final_power, mid.potency, mid.count),
+        (1, 0, 2, 1)
+    );
     let high = TimeState::stack_bonus(25);
-    assert_eq!((high.clash_power, high.final_power, high.potency, high.count), (0, 2, 3, 2));
+    assert_eq!(
+        (high.clash_power, high.final_power, high.potency, high.count),
+        (0, 2, 3, 2)
+    );
     assert_eq!(TimeState::Past.boosted_status(), "Burn");
     assert_eq!(TimeState::Present.boosted_status(), "Poise");
     assert_eq!(TimeState::Future.boosted_status(), "Bleed");
@@ -576,8 +724,14 @@ fn rupture_ticks_on_hit() {
     state.units[1].statuses.add_potency("Rupture", 12);
     state.units[1].statuses.add_count("Rupture", 3);
     let before = state.units[1].hp;
-    let mut use_ = battle::build_use(&state, &sim.library, &sim.mechanics, 0, &SkillId::new("1011001"))
-        .unwrap();
+    let mut use_ = battle::build_use(
+        &state,
+        &sim.library,
+        &sim.mechanics,
+        0,
+        &SkillId::new("1011001"),
+    )
+    .unwrap();
     use_.coins = vec![battle::CoinRuntime::fresh(false)];
     state.preset_flips = vec![false; 16];
     state.flip_cursor = 0;
@@ -602,7 +756,10 @@ fn protection_and_fragile_modify_incoming_damage() {
     let modifier = battle::incoming_damage_modifier_for_test(&defense, "Wrath");
     assert!((modifier - 0.20).abs() < 1e-9, "got {modifier}");
     let other = battle::incoming_damage_modifier_for_test(&defense, "Gloom");
-    assert!((other - 0.10).abs() < 1e-9, "fragility is affinity specific: {other}");
+    assert!(
+        (other - 0.10).abs() < 1e-9,
+        "fragility is affinity specific: {other}"
+    );
     // Resist Down raises the resistance value by 0.1 per Count.
     state.units[1].statuses.add_count("Gloom Resist Down", 3);
     assert!((state.units[1].resist_sin(lcb_core::ids::Sin::Gloom) - 1.3).abs() < 1e-9);
@@ -616,8 +773,14 @@ fn power_statuses_change_final_power() {
     let mut state = sim
         .new_encounter(&["10110"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
         .unwrap();
-    let mut use_ = battle::build_use(&state, &sim.library, &sim.mechanics, 0, &SkillId::new("1011001"))
-        .unwrap();
+    let mut use_ = battle::build_use(
+        &state,
+        &sim.library,
+        &sim.mechanics,
+        0,
+        &SkillId::new("1011001"),
+    )
+    .unwrap();
     use_.base_power = 4;
     use_.coin_power = 0;
     use_.coins = vec![battle::CoinRuntime::fresh(false)];
@@ -678,9 +841,18 @@ fn bind_lowers_speed() {
 fn pupa_shield_and_hp_floor() {
     let sim = sim();
     let mut state = sim
-        .new_encounter(&fixed::TEAM, &[fixed::BOSS_PUPA], 4, BattleConfig::default())
+        .new_encounter(
+            &fixed::TEAM,
+            &[fixed::BOSS_PUPA],
+            4,
+            BattleConfig::default(),
+        )
         .unwrap();
-    let pupa = state.units.iter().position(|u| !u.kind.is_sinner()).unwrap();
+    let pupa = state
+        .units
+        .iter()
+        .position(|u| !u.kind.is_sinner())
+        .unwrap();
     // floor(25616 * 1.3%) = 333
     assert_eq!(state.units[pupa].shield, 333);
     let floor = state.units[pupa].max_hp * 90 / 100;
@@ -703,16 +875,40 @@ fn pupa_shield_and_hp_floor() {
 fn pupa_barrier_break_switches_pattern_and_quickening_ends_the_encounter() {
     let sim = sim();
     let mut state = sim
-        .new_encounter(&fixed::TEAM, &[fixed::BOSS_PUPA], 6, BattleConfig::default())
+        .new_encounter(
+            &fixed::TEAM,
+            &[fixed::BOSS_PUPA],
+            6,
+            BattleConfig::default(),
+        )
         .unwrap();
-    let pupa = state.units.iter().position(|u| !u.kind.is_sinner()).unwrap();
+    let pupa = state
+        .units
+        .iter()
+        .position(|u| !u.kind.is_sinner())
+        .unwrap();
     // Consume the barrier during turn 1.
     state.units[pupa].take_damage(333);
     assert!(state.units[pupa].barrier_broken);
     // Play turn 1 out.
     for action in sim.legal_actions(&state) {
-        if let Action::Assign { actor, slot, skill, target } = action {
-            sim.submit(&mut state, Action::Assign { actor, slot, skill, target }).unwrap();
+        if let Action::Assign {
+            actor,
+            slot,
+            skill,
+            target,
+        } = action
+        {
+            sim.submit(
+                &mut state,
+                Action::Assign {
+                    actor,
+                    slot,
+                    skill,
+                    target,
+                },
+            )
+            .unwrap();
         }
     }
     sim.step_turn(&mut state).unwrap();
@@ -728,8 +924,23 @@ fn pupa_barrier_break_switches_pattern_and_quickening_ends_the_encounter() {
     assert_eq!(ids, vec!["956304", "956305", "956306", "956303"]);
     // Resolve turn 2: The Quickening ends the encounter.
     for action in sim.legal_actions(&state) {
-        if let Action::Assign { actor, slot, skill, target } = action {
-            sim.submit(&mut state, Action::Assign { actor, slot, skill, target }).unwrap();
+        if let Action::Assign {
+            actor,
+            slot,
+            skill,
+            target,
+        } = action
+        {
+            sim.submit(
+                &mut state,
+                Action::Assign {
+                    actor,
+                    slot,
+                    skill,
+                    target,
+                },
+            )
+            .unwrap();
         }
     }
     sim.step_turn(&mut state).unwrap();
@@ -742,11 +953,26 @@ fn pupa_barrier_break_switches_pattern_and_quickening_ends_the_encounter() {
 fn quickening_deals_and_takes_no_damage() {
     let sim = sim();
     let mut state = sim
-        .new_encounter(&fixed::TEAM, &[fixed::BOSS_PUPA], 8, BattleConfig::default())
+        .new_encounter(
+            &fixed::TEAM,
+            &[fixed::BOSS_PUPA],
+            8,
+            BattleConfig::default(),
+        )
         .unwrap();
-    let pupa = state.units.iter().position(|u| !u.kind.is_sinner()).unwrap();
-    let mut use_ = battle::build_use(&state, &sim.library, &sim.mechanics, pupa, &SkillId::new("956303"))
+    let pupa = state
+        .units
+        .iter()
+        .position(|u| !u.kind.is_sinner())
         .unwrap();
+    let mut use_ = battle::build_use(
+        &state,
+        &sim.library,
+        &sim.mechanics,
+        pupa,
+        &SkillId::new("956303"),
+    )
+    .unwrap();
     // [On Use] effects are applied by the engine when the skill resolves, so the
     // test drives the same two effects through the public effect path.
     let effects = use_.mechanics.on_use.clone();
@@ -795,12 +1021,26 @@ fn any_of_conditions_are_alternatives() {
     state.units[0].speed = 5;
     let mut notes = Vec::new();
     let mut ctx = battle::UseContext::default();
-    battle::apply_effects_for_test(&mut state, &[effect.clone()], 0, Some(1), &mut notes, &mut ctx);
+    battle::apply_effects_for_test(
+        &mut state,
+        &[effect.clone()],
+        0,
+        Some(1),
+        &mut notes,
+        &mut ctx,
+    );
     assert_eq!(ctx.coin_power_bonus, 0);
     // Dazzle on the target satisfies the second alternative.
     state.units[1].statuses.add_stack("Dazzle", 1);
     let mut ctx = battle::UseContext::default();
-    battle::apply_effects_for_test(&mut state, &[effect.clone()], 0, Some(1), &mut notes, &mut ctx);
+    battle::apply_effects_for_test(
+        &mut state,
+        &[effect.clone()],
+        0,
+        Some(1),
+        &mut notes,
+        &mut ctx,
+    );
     assert_eq!(ctx.coin_power_bonus, 1);
     // Speed 1 satisfies the first alternative.
     state.units[1].statuses.remove("Dazzle");
@@ -818,8 +1058,14 @@ fn bonus_damage_percent_of_coin_adds_damage() {
     let mut state = sim
         .new_encounter(&["10110"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
         .unwrap();
-    let mut use_ = battle::build_use(&state, &sim.library, &sim.mechanics, 0, &SkillId::new("1011001"))
-        .unwrap();
+    let mut use_ = battle::build_use(
+        &state,
+        &sim.library,
+        &sim.mechanics,
+        0,
+        &SkillId::new("1011001"),
+    )
+    .unwrap();
     use_.coins = vec![battle::CoinRuntime::fresh(false)];
     use_.mechanics.coins.insert(
         "1".to_string(),
@@ -835,7 +1081,10 @@ fn bonus_damage_percent_of_coin_adds_damage() {
     let hits = battle::one_sided_attack(&mut state, 0, 1, &mut use_, 0);
     let base: i32 = hits.iter().map(|h| h.damage).sum();
     let dealt = before - state.units[1].hp;
-    assert!(dealt >= base * 2 - 1, "adder doubled the hit: {base} -> {dealt}");
+    assert!(
+        dealt >= base * 2 - 1,
+        "adder doubled the hit: {base} -> {dealt}"
+    );
 }
 
 /// Effects with a per-turn limit only fire that many times per turn, and the
@@ -858,7 +1107,14 @@ fn per_turn_limits_are_enforced() {
     let mut notes = Vec::new();
     for _ in 0..3 {
         let mut ctx = battle::UseContext::default();
-        battle::apply_effects_for_test(&mut state, &[effect.clone()], 0, Some(1), &mut notes, &mut ctx);
+        battle::apply_effects_for_test(
+            &mut state,
+            &[effect.clone()],
+            0,
+            Some(1),
+            &mut notes,
+            &mut ctx,
+        );
     }
     assert_eq!(state.units[0].statuses.count("Protection"), 2);
     // A new turn clears the limit.
@@ -891,12 +1147,7 @@ fn next_turn_buffs_apply_at_turn_start() {
     assert_eq!(state.units[0].pending_next_turn.len(), 1);
     // Resolve the turn; the buff lands at the next Turn Start.
     battle::end_turn(&mut state, &sim.mechanics);
-    battle::begin_turn(
-        &mut state,
-        &sim.library,
-        &sim.mechanics,
-        &sim.scripts,
-    );
+    battle::begin_turn(&mut state, &sim.library, &sim.mechanics, &sim.scripts);
     assert_eq!(state.units[0].statuses.count("Protection"), 2);
 }
 
@@ -919,7 +1170,14 @@ fn consume_status_for_damage() {
     };
     let mut notes = Vec::new();
     let mut ctx = battle::UseContext::default();
-    battle::apply_effects_for_test(&mut state, &[effect.clone()], 0, Some(1), &mut notes, &mut ctx);
+    battle::apply_effects_for_test(
+        &mut state,
+        &[effect.clone()],
+        0,
+        Some(1),
+        &mut notes,
+        &mut ctx,
+    );
     assert!((ctx.damage_bonus - 0.15).abs() < 1e-9);
     // "consume 5 [Deep Tears]" spends 5 and leaves the rest behind.
     assert_eq!(state.units[0].statuses.potency("Deep Tears"), 15);
@@ -998,7 +1256,12 @@ fn sin_resonance_is_counted_from_the_dashboard() {
     use lcb_core::ids::Sin;
     let sim = sim();
     let mut state = sim
-        .new_encounter(&fixed::TEAM, &[fixed::BOSS_IMAGO], 1, BattleConfig::default())
+        .new_encounter(
+            &fixed::TEAM,
+            &[fixed::BOSS_IMAGO],
+            1,
+            BattleConfig::default(),
+        )
         .unwrap();
     // Pick, for each Sinner, the first skill of a chosen affinity (Pride).
     let mut chosen = 0;
@@ -1006,13 +1269,14 @@ fn sin_resonance_is_counted_from_the_dashboard() {
         if !unit.kind.is_sinner() {
             continue;
         }
-        let lcb_core::state::UnitKind::Sinner { identity } = &unit.kind else { continue };
+        let lcb_core::state::UnitKind::Sinner { identity } = &unit.kind else {
+            continue;
+        };
         let record = sim.library.identity(identity).unwrap();
-        let Some(skill) = record
-            .skills
-            .iter()
-            .find(|s| s.sin(Uptie::IV) == Some(Sin::Pride) && s.slot() != Some(lcb_core::ids::SkillSlot::Defense))
-        else {
+        let Some(skill) = record.skills.iter().find(|s| {
+            s.sin(Uptie::IV) == Some(Sin::Pride)
+                && s.slot() != Some(lcb_core::ids::SkillSlot::Defense)
+        }) else {
             continue;
         };
         state.actions.push(lcb_core::state::SubmittedAction {
@@ -1028,7 +1292,10 @@ fn sin_resonance_is_counted_from_the_dashboard() {
         });
         chosen += 1;
     }
-    assert!(chosen >= 3, "need at least three Pride skills to test resonance");
+    assert!(
+        chosen >= 3,
+        "need at least three Pride skills to test resonance"
+    );
     sim.step_turn(&mut state).unwrap();
     // Every selected skill has slot 0, so the run length equals the count.
     assert_eq!(state.resonance.get("pride"), Some(&chosen));
@@ -1061,8 +1328,18 @@ fn gain_from_resonance_uses_the_highest_value() {
     };
     let mut notes = Vec::new();
     let mut ctx = battle::UseContext::default();
-    battle::apply_effects_for_test(&mut state, &[effect.clone()], 0, Some(1), &mut notes, &mut ctx);
-    assert_eq!(state.units[0].statuses.potency("The Living & The Departed"), 4);
+    battle::apply_effects_for_test(
+        &mut state,
+        &[effect.clone()],
+        0,
+        Some(1),
+        &mut notes,
+        &mut ctx,
+    );
+    assert_eq!(
+        state.units[0].statuses.potency("The Living & The Departed"),
+        4
+    );
     // The x2 A-Reson variant doubles it and respects the cap.
     let doubled = Effect {
         multiplier: Some(2),
@@ -1072,7 +1349,14 @@ fn gain_from_resonance_uses_the_highest_value() {
     };
     state.units[0].a_reson_max = 0;
     let mut ctx = battle::UseContext::default();
-    battle::apply_effects_for_test(&mut state, &[doubled.clone()], 0, Some(1), &mut notes, &mut ctx);
+    battle::apply_effects_for_test(
+        &mut state,
+        &[doubled.clone()],
+        0,
+        Some(1),
+        &mut notes,
+        &mut ctx,
+    );
     assert_eq!(
         state.units[0].statuses.potency("The Living & The Departed"),
         4,
@@ -1095,8 +1379,14 @@ fn ammo_planned_and_spent_scale_the_skill() {
     let mut state = sim
         .new_encounter(&["10110"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
         .unwrap();
-    let mut use_ = battle::build_use(&state, &sim.library, &sim.mechanics, 0, &SkillId::new("1011003"))
-        .unwrap();
+    let mut use_ = battle::build_use(
+        &state,
+        &sim.library,
+        &sim.mechanics,
+        0,
+        &SkillId::new("1011003"),
+    )
+    .unwrap();
     // Isolate the clause under test from the skill's own effects.
     use_.mechanics.on_use.clear();
     use_.mechanics.on_use.push(Effect {
@@ -1104,7 +1394,9 @@ fn ammo_planned_and_spent_scale_the_skill() {
         step: Some(1),
         ..Default::default()
     });
-    use_.coins.iter_mut().for_each(|c| c.state = battle::CoinState::Fresh);
+    use_.coins
+        .iter_mut()
+        .for_each(|c| c.state = battle::CoinState::Fresh);
     use_.mechanics.coins.insert(
         "1".to_string(),
         vec![Effect {
@@ -1126,7 +1418,14 @@ fn ammo_planned_and_spent_scale_the_skill() {
         .add_potency("The Living & The Departed", 10);
     // [On Use] effects run through the engine's own preparation step so that
     // "about to be spent" is computed from this use's coin effects.
-    battle::prepare_use_for_test(&mut state, &sim.library, &sim.mechanics, 0, Some(1), &mut use_);
+    battle::prepare_use_for_test(
+        &mut state,
+        &sim.library,
+        &sim.mechanics,
+        0,
+        Some(1),
+        &mut use_,
+    );
     assert_eq!(use_.ctx.ammo_planned, 3, "three ammo are about to be spent");
     assert_eq!(use_.ctx.base_power_bonus, 3, "+1 per planned ammo");
 }
@@ -1188,7 +1487,11 @@ fn section5_wave_butterflies_feed_the_imago() {
             BattleConfig::default(),
         )
         .unwrap();
-    assert_eq!(state.living_enemies().len(), 4, "the Imago and three illusions");
+    assert_eq!(
+        state.living_enemies().len(),
+        4,
+        "the Imago and three illusions"
+    );
     let past = state
         .units
         .iter()
@@ -1200,7 +1503,13 @@ fn section5_wave_butterflies_feed_the_imago() {
         .position(|unit| matches!(&unit.kind, lcb_core::state::UnitKind::Abnormality { enemy, .. } if enemy.as_str() == "9567"))
         .expect("the Imago");
     assert_eq!(state.units[past].max_hp, 1);
-    assert_eq!((state.units[past].speed_range.0, state.units[past].speed_range.1), (1, 1));
+    assert_eq!(
+        (
+            state.units[past].speed_range.0,
+            state.units[past].speed_range.1
+        ),
+        (1, 1)
+    );
     assert!(state.units[past].segmentation.is_some());
     assert!(state.units[past].origination.is_some());
 
@@ -1208,8 +1517,12 @@ fn section5_wave_butterflies_feed_the_imago() {
     // and heals the attacker 10 SP.
     let before = state.units[imago].statuses.stack("In the Past");
     state.units[0].sanity = Sanity::Sane { sp: 0 };
-    state.units[0].statuses.add_potency("The Living & The Departed", 10);
-    state.units[0].statuses.add_count("The Living & The Departed", 10);
+    state.units[0]
+        .statuses
+        .add_potency("The Living & The Departed", 10);
+    state.units[0]
+        .statuses
+        .add_count("The Living & The Departed", 10);
     let mut use_ = battle::build_use(
         &state,
         &sim.library,
@@ -1253,21 +1566,22 @@ fn section5_carries_the_campaign() {
     let mut campaign = CampaignState::default();
     campaign.pupa_hp = Some(12_000);
     campaign.station = 4;
-    campaign.disabled_passives.push("past:burn_on_hit".to_string());
-    let mut state = sim
-        .section5(&campaign, 1, BattleConfig::default())
+    campaign
+        .disabled_passives
+        .push("past:burn_on_hit".to_string());
+    let mut state = sim.section5(&campaign, 1, BattleConfig::default()).unwrap();
+    let imago = state
+        .units
+        .iter()
+        .position(|u| !u.kind.is_sinner())
         .unwrap();
-    let imago = state.units.iter().position(|u| !u.kind.is_sinner()).unwrap();
     assert_eq!(state.units[imago].hp, 12_000, "starts from the Pupa's HP");
     assert_eq!(state.campaign.station, 5);
     // The disabled component no longer burns attackers.
     state.units[imago].time_state = Some(lcb_core::scripts::TimeState::Past);
     battle::time_passives::on_hit_by_sinner(&mut state, imago, 0);
     assert_eq!(state.units[0].statuses.potency("Burn"), 0);
-    state
-        .campaign
-        .disabled_passives
-        .clear();
+    state.campaign.disabled_passives.clear();
     battle::time_passives::on_hit_by_sinner(&mut state, imago, 0);
     assert_eq!(state.units[0].statuses.potency("Burn"), 1);
 }
@@ -1290,7 +1604,10 @@ fn section5_rotation_covers_states_and_hp_bands() {
         assert_eq!(turn1.len(), 6, "{state:?} turn 1 has six slots");
         assert_eq!(turn1[0], entry.small);
         assert_eq!(turn1[1], entry.small);
-        assert!(turn1[2..].iter().all(|id| *id == "956701"), "Fluttering Havoc x4");
+        assert!(
+            turn1[2..].iter().all(|id| *id == "956701"),
+            "Fluttering Havoc x4"
+        );
         // Turn 2 = mid x2 + Pulverization x4.
         let turn2 = script.turn_skills(100, state, 1);
         assert_eq!(turn2[0], entry.mid);
@@ -1314,9 +1631,18 @@ fn section5_rotation_covers_states_and_hp_bands() {
 fn section5_imago_acts_while_staggered() {
     let sim = sim();
     let mut state = sim
-        .new_encounter(&fixed::TEAM, &[fixed::BOSS_IMAGO], 1, BattleConfig::default())
+        .new_encounter(
+            &fixed::TEAM,
+            &[fixed::BOSS_IMAGO],
+            1,
+            BattleConfig::default(),
+        )
         .unwrap();
-    let imago = state.units.iter().position(|u| !u.kind.is_sinner()).unwrap();
+    let imago = state
+        .units
+        .iter()
+        .position(|u| !u.kind.is_sinner())
+        .unwrap();
     assert!(state.units[imago].acts_while_staggered);
     // Stagger it, then run the combat phase: it must still use its six slots.
     state.units[imago].stagger.turns_remaining = 2;
@@ -1327,7 +1653,11 @@ fn section5_imago_acts_while_staggered() {
         .filter(|a| a.actor == state.units[imago].id)
         .map(|a| a.slot)
         .collect();
-    assert_eq!(slots.len(), 6, "the Imago keeps its Skill Slots while Staggered");
+    assert_eq!(
+        slots.len(),
+        6,
+        "the Imago keeps its Skill Slots while Staggered"
+    );
 }
 
 /// The Imago drives its own states of time: Clash Win grants +5 Stacks, Clash
@@ -1339,9 +1669,18 @@ fn imago_stack_gains_halve_and_bonuses() {
     use lcb_core::scripts::TimeState;
     let sim = sim();
     let mut state = sim
-        .new_encounter(&[fixed::TEAM[0]], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .new_encounter(
+            &[fixed::TEAM[0]],
+            &[fixed::BOSS_IMAGO],
+            3,
+            BattleConfig::default(),
+        )
         .unwrap();
-    let imago = state.units.iter().position(|u| !u.kind.is_sinner()).unwrap();
+    let imago = state
+        .units
+        .iter()
+        .position(|u| !u.kind.is_sinner())
+        .unwrap();
     assert_eq!(state.units[imago].time_state, Some(TimeState::Past));
     let gain = Effect {
         kind: "gain".to_string(),
@@ -1356,7 +1695,15 @@ fn imago_stack_gains_halve_and_bonuses() {
     assert_eq!(state.units[imago].statuses.stack("In the Past"), 15);
     // 11-20 Stacks: Clash Power +1 and +2 Burn Potency / +1 Burn Count.
     let (_, bonus) = battle::time_state_bonus(&state, imago).unwrap();
-    assert_eq!((bonus.clash_power, bonus.final_power, bonus.potency, bonus.count), (1, 0, 2, 1));
+    assert_eq!(
+        (
+            bonus.clash_power,
+            bonus.final_power,
+            bonus.potency,
+            bonus.count
+        ),
+        (1, 0, 2, 1)
+    );
     let burn = Effect {
         kind: "inflict".to_string(),
         status: Some("Burn".to_string()),
@@ -1365,8 +1712,16 @@ fn imago_stack_gains_halve_and_bonuses() {
         ..Default::default()
     };
     battle::apply_effects_for_test(&mut state, &[burn], imago, Some(0), &mut notes, &mut ctx);
-    assert_eq!(state.units[0].statuses.potency("Burn"), 3, "1 + 2 from the Stack bonus");
-    assert_eq!(state.units[0].statuses.count("Burn"), 2, "1 + 1 from the Stack bonus");
+    assert_eq!(
+        state.units[0].statuses.potency("Burn"),
+        3,
+        "1 + 2 from the Stack bonus"
+    );
+    assert_eq!(
+        state.units[0].statuses.count("Burn"),
+        2,
+        "1 + 1 from the Stack bonus"
+    );
     // "Halve [In the Past] (rounded down)".
     let halve = Effect {
         kind: "halve_status".to_string(),
@@ -1383,9 +1738,18 @@ fn imago_stack_gains_halve_and_bonuses() {
 fn attack_weight_hits_multiple_slots() {
     let sim = sim();
     let mut state = sim
-        .new_encounter(&fixed::TEAM, &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .new_encounter(
+            &fixed::TEAM,
+            &[fixed::BOSS_IMAGO],
+            3,
+            BattleConfig::default(),
+        )
         .unwrap();
-    let imago = state.units.iter().position(|u| !u.kind.is_sinner()).unwrap();
+    let imago = state
+        .units
+        .iter()
+        .position(|u| !u.kind.is_sinner())
+        .unwrap();
     let mut use_ = battle::build_use(
         &state,
         &sim.library,
@@ -1405,9 +1769,7 @@ fn attack_weight_hits_multiple_slots() {
         .units
         .iter()
         .enumerate()
-        .filter(|(index, unit)| {
-            unit.kind.is_sinner() && unit.hp < hp_before[*index]
-        })
+        .filter(|(index, unit)| unit.kind.is_sinner() && unit.hp < hp_before[*index])
         .map(|(index, _)| index)
         .collect();
     assert_eq!(damaged.len(), 7, "all seven Sinners were hit: {damaged:?}");
@@ -1421,9 +1783,18 @@ fn heads_hit_effects_and_butterfly_parts() {
     use lcb_core::effects::Effect;
     let sim = sim();
     let mut state = sim
-        .new_encounter(&[fixed::TEAM[0]], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .new_encounter(
+            &[fixed::TEAM[0]],
+            &[fixed::BOSS_IMAGO],
+            3,
+            BattleConfig::default(),
+        )
         .unwrap();
-    let target = state.units.iter().position(|u| !u.kind.is_sinner()).unwrap();
+    let target = state
+        .units
+        .iter()
+        .position(|u| !u.kind.is_sinner())
+        .unwrap();
     let mut notes = Vec::new();
     let mut ctx = battle::UseContext::default();
     let heads_only = Effect {
@@ -1432,7 +1803,14 @@ fn heads_hit_effects_and_butterfly_parts() {
         potency: Some(2),
         ..Default::default()
     };
-    battle::apply_effects_for_test(&mut state, &[heads_only], 0, Some(target), &mut notes, &mut ctx);
+    battle::apply_effects_for_test(
+        &mut state,
+        &[heads_only],
+        0,
+        Some(target),
+        &mut notes,
+        &mut ctx,
+    );
     assert_eq!(state.units[target].statuses.potency("Sinking"), 2);
     // Butterfly(The Living) is Potency, (The Departed) is Count.
     let living = Effect {
@@ -1457,8 +1835,16 @@ fn heads_hit_effects_and_butterfly_parts() {
         &mut notes,
         &mut ctx,
     );
-    assert_eq!(state.units[target].statuses.potency("Butterfly"), 3, "The Living");
-    assert_eq!(state.units[target].statuses.count("Butterfly"), 4, "The Departed");
+    assert_eq!(
+        state.units[target].statuses.potency("Butterfly"),
+        3,
+        "The Living"
+    );
+    assert_eq!(
+        state.units[target].statuses.count("Butterfly"),
+        4,
+        "The Departed"
+    );
 }
 
 /// Heals reach exactly the allies the clause names ("self and 2 other allies
@@ -1469,12 +1855,19 @@ fn heals_scope_to_the_named_allies() {
     use lcb_core::effects::Effect;
     let sim = sim();
     let mut state = sim
-        .new_encounter(&fixed::TEAM, &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .new_encounter(
+            &fixed::TEAM,
+            &[fixed::BOSS_IMAGO],
+            3,
+            BattleConfig::default(),
+        )
         .unwrap();
     // Give the whole team a known SP spread.
     for (index, unit) in state.units.iter_mut().enumerate() {
         if unit.kind.is_sinner() {
-            unit.sanity = Sanity::Sane { sp: -(index as i32) * 5 };
+            unit.sanity = Sanity::Sane {
+                sp: -(index as i32) * 5,
+            };
         }
     }
     let heal = Effect {
@@ -1509,9 +1902,18 @@ fn tremor_amplitude_conversion_is_marked_and_read() {
     use lcb_core::effects::{Condition, Effect};
     let sim = sim();
     let mut state = sim
-        .new_encounter(&[fixed::TEAM[0]], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .new_encounter(
+            &[fixed::TEAM[0]],
+            &[fixed::BOSS_IMAGO],
+            3,
+            BattleConfig::default(),
+        )
         .unwrap();
-    let target = state.units.iter().position(|u| !u.kind.is_sinner()).unwrap();
+    let target = state
+        .units
+        .iter()
+        .position(|u| !u.kind.is_sinner())
+        .unwrap();
     let mut notes = Vec::new();
     let mut ctx = battle::UseContext::default();
     let convert = Effect {
@@ -1519,9 +1921,19 @@ fn tremor_amplitude_conversion_is_marked_and_read() {
         amplitude_into: Some("Tremor - Decay".to_string()),
         ..Default::default()
     };
-    battle::apply_effects_for_test(&mut state, &[convert], 0, Some(target), &mut notes, &mut ctx);
+    battle::apply_effects_for_test(
+        &mut state,
+        &[convert],
+        0,
+        Some(target),
+        &mut notes,
+        &mut ctx,
+    );
     assert!(battle::has_amplitude(&state.units[target]));
-    assert_eq!(battle::amplitude_of(&state.units[target]), Some("Tremor - Decay"));
+    assert_eq!(
+        battle::amplitude_of(&state.units[target]),
+        Some("Tremor - Decay")
+    );
     // A "+48% damage" clause gated on the amplitude state now applies.
     let boosted = Effect {
         kind: "damage_percent".to_string(),
@@ -1532,7 +1944,14 @@ fn tremor_amplitude_conversion_is_marked_and_read() {
         }),
         ..Default::default()
     };
-    battle::apply_effects_for_test(&mut state, &[boosted], 0, Some(target), &mut notes, &mut ctx);
+    battle::apply_effects_for_test(
+        &mut state,
+        &[boosted],
+        0,
+        Some(target),
+        &mut notes,
+        &mut ctx,
+    );
     assert!((ctx.damage_bonus - 0.48).abs() < 1e-9);
 }
 
@@ -1544,7 +1963,12 @@ fn lamp_stacks_stop_at_eight_and_cost_hp() {
     use lcb_core::effects::Effect;
     let sim = sim();
     let mut state = sim
-        .new_encounter(&[fixed::TEAM[6]], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .new_encounter(
+            &[fixed::TEAM[6]],
+            &[fixed::BOSS_IMAGO],
+            3,
+            BattleConfig::default(),
+        )
         .unwrap();
     let lamp = Effect {
         kind: "gain_up_to_with_self_damage".to_string(),
@@ -1560,21 +1984,21 @@ fn lamp_stacks_stop_at_eight_and_cost_hp() {
     // assertion measures this use only.
     state.units[0].statuses.remove("Lamp");
     let hp_before = state.units[0].hp;
-    battle::apply_effects_for_test(&mut state, std::slice::from_ref(&lamp), 0, None, &mut notes, &mut ctx);
+    battle::apply_effects_for_test(
+        &mut state,
+        std::slice::from_ref(&lamp),
+        0,
+        None,
+        &mut notes,
+        &mut ctx,
+    );
     assert_eq!(state.units[0].statuses.stack("Lamp"), 8);
     let cost = hp_before - state.units[0].hp;
     let per_stack = state.units[0].max_hp * 1 / 100;
     assert_eq!(cost, per_stack * 8, "1% of max HP for every Stack gained");
     // A second use gains nothing and costs nothing.
     let hp_second = state.units[0].hp;
-    battle::apply_effects_for_test(
-        &mut state,
-        &[lamp.clone()],
-        0,
-        None,
-        &mut notes,
-        &mut ctx,
-    );
+    battle::apply_effects_for_test(&mut state, &[lamp.clone()], 0, None, &mut notes, &mut ctx);
     assert_eq!(state.units[0].statuses.stack("Lamp"), 8);
     assert_eq!(state.units[0].hp, hp_second, "nothing gained, nothing paid");
 }
@@ -1586,7 +2010,12 @@ fn self_damage_respects_the_hp_floor() {
     use lcb_core::effects::{Condition, Effect};
     let sim = sim();
     let mut state = sim
-        .new_encounter(&[fixed::TEAM[0]], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .new_encounter(
+            &[fixed::TEAM[0]],
+            &[fixed::BOSS_IMAGO],
+            3,
+            BattleConfig::default(),
+        )
         .unwrap();
     state.units[0].hp = 3;
     let damage = Effect {
@@ -1604,7 +2033,10 @@ fn self_damage_respects_the_hp_floor() {
     let mut ctx = battle::UseContext::default();
     battle::apply_effects_for_test(&mut state, &[damage], 0, None, &mut notes, &mut ctx);
     assert_eq!(state.units[0].hp, 1, "HP never drops below 1");
-    assert!(!state.units[0].is_staggered(), "this damage does not Stagger");
+    assert!(
+        !state.units[0].is_staggered(),
+        "this damage does not Stagger"
+    );
 }
 
 /// "[Combat Start] convert the Suit in this unit's Hand to a random Suit that
@@ -1689,7 +2121,12 @@ fn section5_golden_replay_is_deterministic() {
     fn run() -> (Vec<i32>, u64) {
         let sim = sim();
         let mut state = sim
-            .new_encounter(&fixed::TEAM, &[fixed::BOSS_IMAGO], 17, BattleConfig::default())
+            .new_encounter(
+                &fixed::TEAM,
+                &[fixed::BOSS_IMAGO],
+                17,
+                BattleConfig::default(),
+            )
             .unwrap();
         // A fixed Coin sequence: Heads, Tails, Heads, ... (no client RNG).
         state.preset_flips = (0..8192).map(|i| i % 3 != 1).collect();
@@ -1707,15 +2144,34 @@ fn section5_golden_replay_is_deterministic() {
             let mut engages = 0;
             for action in sim.legal_actions(&state) {
                 match action {
-                    Action::Assign { actor, slot, skill, target } => {
+                    Action::Assign {
+                        actor,
+                        slot,
+                        skill,
+                        target,
+                    } => {
                         if used.contains(&(actor.clone(), slot)) {
                             continue;
                         }
                         used.push((actor.clone(), slot));
-                        sim.submit(&mut state, Action::Assign { actor, slot, skill, target })
-                            .unwrap();
+                        sim.submit(
+                            &mut state,
+                            Action::Assign {
+                                actor,
+                                slot,
+                                skill,
+                                target,
+                            },
+                        )
+                        .unwrap();
                     }
-                    Action::Engage { actor, slot, skill, enemy_slot } => {
+                    Action::Engage {
+                        actor,
+                        slot,
+                        skill,
+                        enemy,
+                        enemy_slot,
+                    } => {
                         if used.contains(&(actor.clone(), slot)) {
                             continue;
                         }
@@ -1723,7 +2179,13 @@ fn section5_golden_replay_is_deterministic() {
                         engages += 1;
                         sim.submit(
                             &mut state,
-                            Action::Engage { actor, slot, skill, enemy_slot },
+                            Action::Engage {
+                                actor,
+                                slot,
+                                skill,
+                                enemy,
+                                enemy_slot,
+                            },
                         )
                         .unwrap();
                     }
@@ -1749,10 +2211,14 @@ fn section5_golden_replay_is_deterministic() {
     // action per Slot").  Update only together with a sourced rule change, and
     // name the source in the commit message.  Last updated when the identities'
     // passives started applying (in-game `Passives.json`).
-    assert_eq!(first_hp, vec![25403, 25196, 25051], "Imago HP after turns 1-3");
+    assert_eq!(
+        first_hp,
+        vec![25403, 25196, 25051],
+        "Imago HP after turns 1-3"
+    );
     assert_eq!(
         format!("{first_hash:016x}"),
-        "3d593ec1a6119237",
+        "e08219e3653516ea",
         "recorded state hash"
     );
 }
@@ -1766,7 +2232,12 @@ fn section5_golden_replay_is_deterministic() {
 fn passives_grant_and_modify() {
     let sim = sim();
     let mut state = sim
-        .new_encounter(&["11214", "11114", "10913"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .new_encounter(
+            &["11214", "11114", "10913"],
+            &[fixed::BOSS_IMAGO],
+            3,
+            BattleConfig::default(),
+        )
         .unwrap();
     // Every unit carries its own Combat Passives.
     assert!(!state.units[0].passives.is_empty(), "Gregor has passives");
@@ -1781,7 +2252,10 @@ fn passives_grant_and_modify() {
     state.units[1].statuses.remove("Protection");
     state.units[1].statuses.add_count("Protection", 2);
     let (outgoing, _) = lcb_core::battle::passive_modifiers_for_test(&state, 1, Some(3));
-    assert!((outgoing - 0.10).abs() < 1e-9, "2 Protection = +10% damage: {outgoing}");
+    assert!(
+        (outgoing - 0.10).abs() < 1e-9,
+        "2 Protection = +10% damage: {outgoing}"
+    );
     state.units[1].statuses.add_count("Protection", 10);
     let (capped, _) = lcb_core::battle::passive_modifiers_for_test(&state, 1, Some(3));
     assert!((capped - 0.15).abs() < 1e-9, "the bonus caps at 15%");
@@ -1790,7 +2264,10 @@ fn passives_grant_and_modify() {
     state.units[2].statuses.add_stack("Blessing", 1);
     state.units[2].sanity = Sanity::Sane { sp: 20 };
     let (_, taken) = lcb_core::battle::passive_modifiers_for_test(&state, 2, Some(3));
-    assert!((taken + 0.10).abs() < 1e-9, "takes 10% less damage: {taken}");
+    assert!(
+        (taken + 0.10).abs() < 1e-9,
+        "takes 10% less damage: {taken}"
+    );
 }
 
 /// Sanity, Low Morale and Panic: SP is clamped to [-45, 45], -45 causes Panic
@@ -1822,7 +2299,11 @@ fn low_morale_and_panic_follow_the_sanity_rules() {
     assert_eq!(state.units[0].statuses.count("Sinking"), before + 3);
     // The following Turn Start resets the SP to 0 (Panic recovery).
     battle::begin_turn(&mut state, &sim.library, &sim.mechanics, &sim.scripts);
-    assert_eq!(state.units[0].sanity.sp(), 0, "SP resets after a Panic turn");
+    assert_eq!(
+        state.units[0].sanity.sp(),
+        0,
+        "SP resets after a Panic turn"
+    );
     assert!(!state.units[0].panicked);
     // -35 SP is Low Morale, not Panic.
     state.units[0].sanity = Sanity::Sane { sp: -35 };
@@ -1850,7 +2331,10 @@ fn status_text_runs_as_effects() {
     state.units[0].statuses.remove("Tear-sharpened");
     state.units[0].statuses.add_stack("Tear-sharpened", 2);
     let (outgoing, _) = battle::passive_modifiers_for_test(&state, 0, Some(1));
-    assert!((outgoing - 0.20).abs() < 1e-9, "2 Stack = +20% damage: {outgoing}");
+    assert!(
+        (outgoing - 0.20).abs() < 1e-9,
+        "2 Stack = +20% damage: {outgoing}"
+    );
     state.units[0].statuses.add_stack("Tear-sharpened", 10);
     let (capped, _) = battle::passive_modifiers_for_test(&state, 0, Some(1));
     assert!((capped - 0.30).abs() < 1e-9, "the bonus caps at 30%");
@@ -1874,7 +2358,10 @@ fn status_text_runs_as_effects() {
     state.units[0].statuses.add_potency("Sinking", 4);
     state.units[0].statuses.add_potency("Burn", 2);
     let (_, taken) = battle::passive_modifiers_for_test(&state, 0, Some(1));
-    assert!((taken - 0.03).abs() < 1e-9, "6 combined = +3% taken: {taken}");
+    assert!(
+        (taken - 0.03).abs() < 1e-9,
+        "6 combined = +3% taken: {taken}"
+    );
 }
 
 /// Status riders: "[When Clash ends] inflict 2 [Sinking]" (Blessing) and
@@ -1889,7 +2376,11 @@ fn status_clash_end_and_hit_riders_fire() {
     // Blessing rides on the unit that holds it.
     state.units[0].statuses.remove("Blessing");
     state.units[0].statuses.add_stack("Blessing", 1);
-    let target = state.units.iter().position(|u| !u.kind.is_sinner()).unwrap();
+    let target = state
+        .units
+        .iter()
+        .position(|u| !u.kind.is_sinner())
+        .unwrap();
     let before = state.units[target].statuses.potency("Sinking");
     // A Clash between the two ends: the rider inflicts 2 [Sinking] on the other
     // unit (once per turn).
@@ -1925,7 +2416,12 @@ fn status_clash_end_and_hit_riders_fire() {
 fn corrosion_replaces_panic_at_minus_forty_five() {
     let sim = sim();
     let mut state = sim
-        .new_encounter(&[fixed::TEAM[3]], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .new_encounter(
+            &[fixed::TEAM[3]],
+            &[fixed::BOSS_IMAGO],
+            3,
+            BattleConfig::default(),
+        )
         .unwrap();
     assert!(
         !state.units[0].corrosion_egos.is_empty(),
@@ -1937,17 +2433,37 @@ fn corrosion_replaces_panic_at_minus_forty_five() {
     assert!(!state.units[0].panicked);
     // Submitting anything for that unit is replaced by its Corrosion Skill.
     for action in sim.legal_actions(&state) {
-        if let Action::Assign { actor, slot, skill, target } = action {
-            sim.submit(&mut state, Action::Assign { actor, slot, skill, target })
-                .unwrap();
+        if let Action::Assign {
+            actor,
+            slot,
+            skill,
+            target,
+        } = action
+        {
+            sim.submit(
+                &mut state,
+                Action::Assign {
+                    actor,
+                    slot,
+                    skill,
+                    target,
+                },
+            )
+            .unwrap();
         }
     }
     battle::resolve_combat(&mut state, &sim.library, &sim.mechanics);
     assert!(
-        state.log.iter().any(|entry| entry.kind == "ego"
-            && entry.detail.contains("corrosion")),
+        state
+            .log
+            .iter()
+            .any(|entry| entry.kind == "ego" && entry.detail.contains("corrosion")),
         "a Corrosion E.G.O Skill was used: {:?}",
-        state.log.iter().map(|e| e.detail.clone()).collect::<Vec<_>>()
+        state
+            .log
+            .iter()
+            .map(|e| e.detail.clone())
+            .collect::<Vec<_>>()
     );
 }
 
@@ -1963,7 +2479,11 @@ fn reuse_coin_uses_the_coin_again() {
     let mut state = sim
         .new_encounter(&["11004"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
         .unwrap();
-    let target = state.units.iter().position(|u| !u.kind.is_sinner()).unwrap();
+    let target = state
+        .units
+        .iter()
+        .position(|u| !u.kind.is_sinner())
+        .unwrap();
     let mut use_ = battle::build_ego_use(
         &state,
         &sim.library,
@@ -1990,6 +2510,372 @@ fn reuse_coin_uses_the_coin_again() {
     // The reused Coin kept its index, so it appears five times in total.
     let third = hits.iter().filter(|hit| hit.coin_index == 2).count();
     assert_eq!(third, 5, "the third Coin was used five times");
+}
+
+#[test]
+fn bygone_days_threadspin_iv_applies_sinking_as_individual_gain_events() {
+    use lcb_core::ids::EgoId;
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(
+            &fixed::TEAM,
+            &fixed::SECTION5_WAVE,
+            20106,
+            BattleConfig::default(),
+        )
+        .unwrap();
+    state.units[0].resonance_of.insert("gloom".into(), 4);
+    let targets: Vec<usize> = state
+        .units
+        .iter()
+        .enumerate()
+        .filter(|(_, unit)| !unit.kind.is_sinner() && unit.alive)
+        .map(|(index, _)| index)
+        .collect();
+    let mut use_ = battle::build_ego_use(
+        &state,
+        &sim.library,
+        &sim.mechanics,
+        0,
+        &EgoId::new("20106"),
+        EgoSkillKind::Awakening,
+    )
+    .expect("Bygone Days builds");
+    battle::apply_attack_end_for_test(
+        &mut state,
+        &sim.library,
+        &sim.mechanics,
+        0,
+        None,
+        0,
+        &mut use_,
+    );
+    assert_eq!(
+        state.status_gain_events.len(),
+        12,
+        "6 + floor(4 × 1.5) separate inflictions"
+    );
+    assert_eq!(
+        state
+            .status_gain_events
+            .iter()
+            .map(|event| event.potency_delta)
+            .sum::<i32>(),
+        12
+    );
+    assert!(state
+        .status_gain_events
+        .iter()
+        .all(|event| event.status == "Sinking"));
+    assert!(state
+        .status_gain_events
+        .iter()
+        .all(|event| targets.contains(&state.index_of(&event.target).unwrap())));
+    assert_eq!(
+        targets
+            .iter()
+            .map(|&i| state.units[i].statuses.potency("Sinking"))
+            .sum::<i32>(),
+        12
+    );
+}
+
+#[test]
+fn echoes_of_the_manor_rolls_once_per_bygone_gain_and_replays_deterministically() {
+    use lcb_core::ids::EgoId;
+    fn play(seed: u64) -> Vec<lcb_core::state::StatusGainEvent> {
+        let sim = sim();
+        let mut state = sim
+            .new_encounter(
+                &fixed::TEAM,
+                &fixed::SECTION5_WAVE,
+                seed,
+                BattleConfig::default(),
+            )
+            .unwrap();
+        state.units[0].resonance_of.insert("gloom".into(), 4);
+        for unit in state.units.iter_mut().filter(|unit| !unit.kind.is_sinner()) {
+            unit.statuses.add_potency("Echoes of the Manor", 2);
+        }
+        let mut use_ = battle::build_ego_use(
+            &state,
+            &sim.library,
+            &sim.mechanics,
+            0,
+            &EgoId::new("20106"),
+            EgoSkillKind::Awakening,
+        )
+        .expect("Bygone Days builds");
+        battle::apply_attack_end_for_test(
+            &mut state,
+            &sim.library,
+            &sim.mechanics,
+            0,
+            None,
+            0,
+            &mut use_,
+        );
+        state.status_gain_events
+    }
+    let first = play(82001);
+    let second = play(82001);
+    assert_eq!(first, second);
+    let base_events: Vec<_> = first
+        .iter()
+        .filter(|event| event.source_type == "skill_effect")
+        .collect();
+    let echoes: Vec<_> = first
+        .iter()
+        .filter(|event| event.source_type == "echoes_of_the_manor")
+        .collect();
+    assert_eq!(base_events.len(), 12);
+    assert!(
+        base_events
+            .iter()
+            .all(|event| event.skill_id.as_ref().map(|id| id.as_str()) == Some("20106")),
+        "events: {base_events:?}"
+    );
+    assert!(!echoes.is_empty(), "the fixed RNG seed exercises Echoes");
+    assert!(echoes
+        .iter()
+        .all(|event| event.count_delta == 1 && event.potency_delta == 0));
+}
+
+#[test]
+fn echoes_replaces_queued_value_and_reduces_at_turn_end() {
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(
+            &fixed::TEAM,
+            &fixed::SECTION5_WAVE,
+            82002,
+            BattleConfig::default(),
+        )
+        .unwrap();
+    let target = state
+        .units
+        .iter()
+        .position(|u| !u.kind.is_sinner())
+        .unwrap();
+    state.units[target]
+        .statuses
+        .add_potency("Echoes of the Manor", 3);
+    state.units[target]
+        .pending_next_turn
+        .push(lcb_core::state::PendingStatus {
+            status: "Echoes of the Manor".into(),
+            potency: 5,
+            count: 0,
+            stack: 0,
+        });
+    battle::begin_turn(&mut state, &sim.library, &sim.mechanics, &sim.scripts);
+    assert_eq!(
+        state.units[target].statuses.potency("Echoes of the Manor"),
+        5
+    );
+    state.phase = Phase::Combat;
+    battle::end_turn(&mut state, &sim.mechanics);
+    assert_eq!(
+        state.units[target].statuses.potency("Echoes of the Manor"),
+        4
+    );
+}
+
+#[test]
+fn echoes_direct_gain_replaces_instead_of_stacking() {
+    use lcb_core::effects::Effect;
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(
+            &[fixed::TEAM[0]],
+            &[fixed::BOSS_IMAGO],
+            82003,
+            BattleConfig::default(),
+        )
+        .unwrap();
+    let target = state
+        .units
+        .iter()
+        .position(|unit| !unit.kind.is_sinner())
+        .unwrap();
+    state.units[target]
+        .statuses
+        .add_potency("Echoes of the Manor", 3);
+    let effects = vec![Effect {
+        kind: "inflict".into(),
+        status: Some("Echoes of the Manor".into()),
+        potency: Some(5),
+        ..Default::default()
+    }];
+    let mut notes = Vec::new();
+    let mut use_ctx = battle::UseContext::default();
+    battle::apply_effects_for_test(
+        &mut state,
+        &effects,
+        0,
+        Some(target),
+        &mut notes,
+        &mut use_ctx,
+    );
+    assert_eq!(
+        state.units[target]
+            .statuses
+            .potency("Echoes of the Manor"),
+        5
+    );
+}
+
+#[test]
+fn rime_shank_threadspin_iv_inflicts_exact_sinking_values_and_weight() {
+    use lcb_core::ids::EgoId;
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(
+            &["10913"],
+            &[fixed::BOSS_IMAGO],
+            1903,
+            BattleConfig::default(),
+        )
+        .unwrap();
+    let target = state
+        .units
+        .iter()
+        .position(|u| !u.kind.is_sinner())
+        .unwrap();
+    for (kind, potency, count) in [
+        (EgoSkillKind::Awakening, 5, 5),
+        (EgoSkillKind::Corrosion, 10, 8),
+    ] {
+        state.units[target].statuses.remove("Sinking");
+        let mut use_ = battle::build_ego_use(
+            &state,
+            &sim.library,
+            &sim.mechanics,
+            0,
+            &EgoId::new("20903"),
+            kind,
+        )
+        .expect("Rime Shank record builds");
+        assert_eq!(use_.attack_weight, 3, "Threadspin IV attack weight");
+        use_.coins = vec![battle::CoinRuntime::fresh(true)];
+        battle::one_sided_attack(&mut state, 0, target, &mut use_, 0);
+        assert_eq!(state.units[target].statuses.potency("Sinking"), potency);
+        assert_eq!(state.units[target].statuses.count("Sinking"), count);
+    }
+}
+
+#[test]
+fn rime_shank_above_half_hp_damage_modifier_is_active() {
+    use lcb_core::ids::EgoId;
+    fn damage_at(hp: i32) -> i32 {
+        let sim = sim();
+        let mut state = sim
+            .new_encounter(
+                &["10913"],
+                &[fixed::BOSS_IMAGO],
+                1904,
+                BattleConfig::default(),
+            )
+            .unwrap();
+        let target = state
+            .units
+            .iter()
+            .position(|u| !u.kind.is_sinner())
+            .unwrap();
+        state.units[target].max_hp = 2000;
+        state.units[target].hp = hp;
+        let mut use_ = battle::build_ego_use(
+            &state,
+            &sim.library,
+            &sim.mechanics,
+            0,
+            &EgoId::new("20903"),
+            EgoSkillKind::Awakening,
+        )
+        .unwrap();
+        battle::prepare_use_for_test(
+            &mut state,
+            &sim.library,
+            &sim.mechanics,
+            0,
+            Some(target),
+            &mut use_,
+        );
+        use_.coins = vec![battle::CoinRuntime::fresh(true)];
+        battle::one_sided_attack(&mut state, 0, target, &mut use_, 0)
+            .into_iter()
+            .map(|hit| hit.damage)
+            .sum()
+    }
+    let boosted = damage_at(1500);
+    let normal = damage_at(500);
+    assert!(
+        boosted > normal,
+        ">50% HP gets the documented +30% damage: {boosted} vs {normal}"
+    );
+    assert!(
+        boosted * 10 >= normal * 12,
+        "modifier is materially present"
+    );
+}
+
+#[test]
+fn rime_shank_attack_weight_hits_two_additional_enemy_slots() {
+    use lcb_core::ids::EgoId;
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(
+            &["10913"],
+            &fixed::SECTION5_WAVE,
+            1905,
+            BattleConfig::default(),
+        )
+        .unwrap();
+    let main_target = state
+        .units
+        .iter()
+        .position(|unit| unit.id.as_str().ends_with(fixed::BOSS_IMAGO))
+        .unwrap();
+    let enemies: Vec<_> = state
+        .units
+        .iter()
+        .enumerate()
+        .filter(|(_, unit)| !unit.kind.is_sinner())
+        .map(|(index, _)| index)
+        .collect();
+    for &index in &enemies {
+        state.units[index].max_hp = 100_000;
+        state.units[index].hp = 100_000;
+    }
+    let before: Vec<_> = enemies.iter().map(|&index| state.units[index].hp).collect();
+    let mut use_ = battle::build_ego_use(
+        &state,
+        &sim.library,
+        &sim.mechanics,
+        0,
+        &EgoId::new("20903"),
+        EgoSkillKind::Awakening,
+    )
+    .unwrap();
+    battle::prepare_use_for_test(
+        &mut state,
+        &sim.library,
+        &sim.mechanics,
+        0,
+        Some(main_target),
+        &mut use_,
+    );
+    use_.coins = vec![battle::CoinRuntime::fresh(true)];
+    let hits = battle::one_sided_attack(&mut state, 0, main_target, &mut use_, 0);
+    battle::splash_attack_for_test(&mut state, 0, main_target, &mut use_, &hits, 0);
+    let changed: Vec<_> = enemies
+        .iter()
+        .enumerate()
+        .filter(|(position, &index)| state.units[index].hp < before[*position])
+        .map(|(_, &index)| index)
+        .collect();
+    assert_eq!(changed.len(), 3, "Attack Weight 3 should resolve main + 2 slots");
+    assert!(changed.contains(&main_target));
 }
 
 /// E.G.O Skill effect text must actually reach the engine.  The E.G.O entries
@@ -2041,9 +2927,18 @@ fn ego_skills_load_their_mechanics() {
 fn reuse_from_missing_hp_scales_with_hp() {
     let sim = sim();
     let mut state = sim
-        .new_encounter(&fixed::TEAM, &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .new_encounter(
+            &fixed::TEAM,
+            &[fixed::BOSS_IMAGO],
+            3,
+            BattleConfig::default(),
+        )
         .unwrap();
-    let enemy = state.units.iter().position(|u| !u.kind.is_sinner()).unwrap();
+    let enemy = state
+        .units
+        .iter()
+        .position(|u| !u.kind.is_sinner())
+        .unwrap();
     let target = 0usize;
     let hits_at = |state: &mut lcb_core::state::BattleState, hp_percent: i32| -> usize {
         state.units[enemy].hp = state.units[enemy].max_hp * hp_percent / 100;
@@ -2075,18 +2970,37 @@ fn reuse_from_missing_hp_scales_with_hp() {
 fn fixed_content_playthrough_has_no_unhandled_kinds() {
     let sim = sim();
     let mut state = sim
-        .new_encounter(&fixed::TEAM, &[fixed::BOSS_IMAGO], 23, BattleConfig::default())
+        .new_encounter(
+            &fixed::TEAM,
+            &[fixed::BOSS_IMAGO],
+            23,
+            BattleConfig::default(),
+        )
         .unwrap();
     for _ in 0..4 {
         let mut used: Vec<(lcb_core::ids::UnitId, u32)> = Vec::new();
         for action in sim.legal_actions(&state) {
-            if let Action::Assign { actor, slot, skill, target } = action {
+            if let Action::Assign {
+                actor,
+                slot,
+                skill,
+                target,
+            } = action
+            {
                 if used.contains(&(actor.clone(), slot)) {
                     continue;
                 }
                 used.push((actor.clone(), slot));
-                sim.submit(&mut state, Action::Assign { actor, slot, skill, target })
-                    .unwrap();
+                sim.submit(
+                    &mut state,
+                    Action::Assign {
+                        actor,
+                        slot,
+                        skill,
+                        target,
+                    },
+                )
+                .unwrap();
             }
         }
         sim.step_turn(&mut state).unwrap();
@@ -2137,7 +3051,10 @@ fn fixed_content_skills_all_resolve_mechanics() {
             }
         }
     }
-    let script = sim.scripts.for_enemy(fixed::BOSS_IMAGO).expect("Imago script");
+    let script = sim
+        .scripts
+        .for_enemy(fixed::BOSS_IMAGO)
+        .expect("Imago script");
     for state in lcb_core::scripts::TimeState::ALL {
         for turn in 0..3 {
             for skill in script.turn_skills(100, state, turn) {
@@ -2161,7 +3078,12 @@ fn fixed_content_skills_all_resolve_mechanics() {
 fn first_turn_already_applies_passives() {
     let sim = sim();
     let mut state = sim
-        .new_encounter(&fixed::TEAM, &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .new_encounter(
+            &fixed::TEAM,
+            &[fixed::BOSS_IMAGO],
+            3,
+            BattleConfig::default(),
+        )
         .unwrap();
     // A passive's "[Combat Start]" belongs to the turn's Skill selection, so it
     // resolves once the panel is submitted (see `resolve_combat`).
@@ -2197,7 +3119,12 @@ fn first_turn_already_applies_passives() {
 fn support_passives_are_not_applied() {
     let sim = sim();
     let mut state = sim
-        .new_encounter(&fixed::TEAM, &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .new_encounter(
+            &fixed::TEAM,
+            &[fixed::BOSS_IMAGO],
+            3,
+            BattleConfig::default(),
+        )
         .unwrap();
     // A passive's "[Combat Start]" belongs to the turn's Skill selection, so it
     // resolves once the panel is submitted (see `resolve_combat`).
@@ -2236,9 +3163,18 @@ fn butterfly_dot_and_turn_end_conversion() {
     use lcb_core::effects::Effect;
     let sim = sim();
     let mut state = sim
-        .new_encounter(&[fixed::TEAM[0]], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .new_encounter(
+            &[fixed::TEAM[0]],
+            &[fixed::BOSS_IMAGO],
+            3,
+            BattleConfig::default(),
+        )
         .unwrap();
-    let target = state.units.iter().position(|u| !u.kind.is_sinner()).unwrap();
+    let target = state
+        .units
+        .iter()
+        .position(|u| !u.kind.is_sinner())
+        .unwrap();
     // Turn End: The Living (Potency) 8 and The Departed (Count) 3 become
     // [Sinking] 8 plus The Departed 8.
     state.units[target].statuses.remove("Sinking");
@@ -2305,9 +3241,16 @@ fn corrosion_is_not_a_player_choice() {
     use lcb_core::ids::EgoId;
     let sim = sim();
     let mut state = sim
-        .new_encounter(&fixed::TEAM, &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .new_encounter(
+            &fixed::TEAM,
+            &[fixed::BOSS_IMAGO],
+            3,
+            BattleConfig::default(),
+        )
         .unwrap();
-    for sin in ["wrath", "lust", "sloth", "gluttony", "gloom", "pride", "envy"] {
+    for sin in [
+        "wrath", "lust", "sloth", "gluttony", "gloom", "pride", "envy",
+    ] {
         state.ego_resources.insert(sin.to_string(), 9);
     }
     let offers_corrosion = sim.legal_actions(&state).iter().any(|action| {
@@ -2372,7 +3315,11 @@ fn attack_end_runs_after_a_clash_win() {
     let mut state = sim
         .new_encounter(&["11114"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
         .unwrap();
-    let enemy = state.units.iter().position(|u| !u.kind.is_sinner()).unwrap();
+    let enemy = state
+        .units
+        .iter()
+        .position(|u| !u.kind.is_sinner())
+        .unwrap();
     // A large level gap makes the Clash a guaranteed win, and every Coin Heads.
     state.units[0].level = 60;
     state.units[enemy].level = 1;
@@ -2412,9 +3359,18 @@ fn attack_end_runs_after_a_clash_win() {
 fn imago_coins_only_become_unbreakable_below_the_threshold() {
     let sim = sim();
     let mut state = sim
-        .new_encounter(&fixed::TEAM, &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .new_encounter(
+            &fixed::TEAM,
+            &[fixed::BOSS_IMAGO],
+            3,
+            BattleConfig::default(),
+        )
         .unwrap();
-    let enemy = state.units.iter().position(|u| !u.kind.is_sinner()).unwrap();
+    let enemy = state
+        .units
+        .iter()
+        .position(|u| !u.kind.is_sinner())
+        .unwrap();
     let target = 0usize;
     let count = |state: &mut lcb_core::state::BattleState, percent: i32| -> usize {
         state.units[enemy].hp = state.units[enemy].max_hp * percent / 100;
@@ -2436,7 +3392,11 @@ fn imago_coins_only_become_unbreakable_below_the_threshold() {
         );
         use_.coins.iter().filter(|coin| coin.unbreakable).count()
     };
-    assert_eq!(count(&mut state, 90), 0, "no Unbreakable Coins above 66% HP");
+    assert_eq!(
+        count(&mut state, 90),
+        0,
+        "no Unbreakable Coins above 66% HP"
+    );
     assert_eq!(count(&mut state, 60), 1, "the final Coin below 66% HP");
     assert_eq!(count(&mut state, 30), 2, "every Coin below 33% HP");
 }
@@ -2451,38 +3411,59 @@ fn only_gregors_third_skill_converts_to_unbreakable_coins() {
     let mut state = sim
         .new_encounter(&["11214"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
         .unwrap();
-    let enemy = state.units.iter().position(|u| !u.kind.is_sinner()).unwrap();
+    let enemy = state
+        .units
+        .iter()
+        .position(|u| !u.kind.is_sinner())
+        .unwrap();
     fn build(
         sim: &Simulator,
         state: &mut lcb_core::state::BattleState,
         enemy: usize,
         skill: &str,
     ) -> usize {
-        let mut use_ = battle::build_use(
+        let mut use_ =
+            battle::build_use(state, &sim.library, &sim.mechanics, 0, &SkillId::new(skill))
+                .unwrap();
+        battle::prepare_use_for_test(
             state,
             &sim.library,
             &sim.mechanics,
             0,
-            &SkillId::new(skill),
-        )
-        .unwrap();
-        battle::prepare_use_for_test(state, &sim.library, &sim.mechanics, 0, Some(enemy), &mut use_);
+            Some(enemy),
+            &mut use_,
+        );
         use_.coins.iter().filter(|coin| coin.unbreakable).count()
     }
     // Without [Dazzle] even Skill 3 stays breakable.
     state.units[enemy].statuses.remove("Dazzle");
     for skill in ["1121401", "1121402", "1121403", "1121404"] {
-        assert_eq!(build(&sim, &mut state, enemy, skill), 0, "{skill} without [Dazzle]");
+        assert_eq!(
+            build(&sim, &mut state, enemy, skill),
+            0,
+            "{skill} without [Dazzle]"
+        );
     }
     // With 3 [Dazzle] on the target only Skill 3 converts (all of its Coins).
     state.units[enemy].statuses.add_count("Dazzle", 3);
-    assert_eq!(build(&sim, &mut state, enemy, "1121401"), 0, "Skill 1 never converts");
-    assert_eq!(build(&sim, &mut state, enemy, "1121402"), 0, "Skill 2 never converts");
+    assert_eq!(
+        build(&sim, &mut state, enemy, "1121401"),
+        0,
+        "Skill 1 never converts"
+    );
+    assert_eq!(
+        build(&sim, &mut state, enemy, "1121402"),
+        0,
+        "Skill 2 never converts"
+    );
     let third = build(&sim, &mut state, enemy, "1121403");
     assert!(third > 0, "Skill 3 converts every Coin");
     // The guard (Skill 4) has one natively Unbreakable Coin, not all of them.
     let guard = build(&sim, &mut state, enemy, "1121404");
-    assert!(guard < 2, "the guard has a single Unbreakable Coin: {guard}");
+    assert!(
+        guard < 2,
+        "the guard has a single Unbreakable Coin: {guard}"
+    );
 }
 
 /// A destroyed ("cracked") Unbreakable Coin keeps the Skill's Base Power and the
@@ -2494,9 +3475,18 @@ fn only_gregors_third_skill_converts_to_unbreakable_coins() {
 fn cracked_unbreakable_coins_keep_base_power_and_coin_power_bonus() {
     let sim = sim();
     let mut state = sim
-        .new_encounter(&[fixed::TEAM[0]], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .new_encounter(
+            &[fixed::TEAM[0]],
+            &[fixed::BOSS_IMAGO],
+            3,
+            BattleConfig::default(),
+        )
         .unwrap();
-    let enemy = state.units.iter().position(|u| !u.kind.is_sinner()).unwrap();
+    let enemy = state
+        .units
+        .iter()
+        .position(|u| !u.kind.is_sinner())
+        .unwrap();
     let target = 0usize;
     // Fluttering Havoc: Base Power 4, Coin Power 3, 2 Coins.
     let build = |state: &mut lcb_core::state::BattleState, bonus: i32| {
@@ -2579,7 +3569,11 @@ fn clash_loser_keeps_its_unbreakable_coins() {
     let mut state = sim
         .new_encounter(&["11214"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
         .unwrap();
-    let enemy = state.units.iter().position(|u| !u.kind.is_sinner()).unwrap();
+    let enemy = state
+        .units
+        .iter()
+        .position(|u| !u.kind.is_sinner())
+        .unwrap();
     // Gregor's 1121403 converts all of its Coins to Unbreakable Coins while the
     // target has [Dazzle]; put it on his panel and make the Clash a loss.
     state.units[enemy].statuses.add_count("Dazzle", 3);
@@ -2630,7 +3624,11 @@ fn clash_loser_with_normal_coins_has_no_attack_end() {
     let mut state = sim
         .new_encounter(&["11114"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
         .unwrap();
-    let enemy = state.units.iter().position(|u| !u.kind.is_sinner()).unwrap();
+    let enemy = state
+        .units
+        .iter()
+        .position(|u| !u.kind.is_sinner())
+        .unwrap();
     state.units[0].dashboard[0].current = SkillId::new("1111403");
     state.units[0].level = 1;
     state.units[enemy].level = 60;
@@ -2671,7 +3669,11 @@ fn using_the_top_card_keeps_the_bottom_card() {
         .unwrap();
     let (current, next, preview) = {
         let entry = &state.units[0].dashboard[0];
-        (entry.current.clone(), entry.next.clone(), entry.preview.clone())
+        (
+            entry.current.clone(),
+            entry.next.clone(),
+            entry.preview.clone(),
+        )
     };
     assert_ne!(current, next, "the panel has two different cards");
     let enemy = state.units[1].id.clone();
@@ -2690,7 +3692,11 @@ fn using_the_top_card_keeps_the_bottom_card() {
     {
         let entry = &state.units[0].dashboard[0];
         assert_eq!(
-            (entry.current.clone(), entry.next.clone(), entry.preview.clone()),
+            (
+                entry.current.clone(),
+                entry.next.clone(),
+                entry.preview.clone()
+            ),
             (current.clone(), next.clone(), preview.clone()),
             "submitting leaves the panel untouched"
         );
@@ -2714,13 +3720,19 @@ fn protection_lands_on_count_and_one_turn_statuses_expire() {
         .unwrap();
     state.units[0].statuses.remove("Protection");
     // A real Skill grants it: 1111403's Attack End queues it for the next turn.
-    state.units[0].pending_next_turn.push(lcb_core::state::PendingStatus {
-        stack: 0,
-        status: "Protection".to_string(),
-        potency: 0,
-        count: 2,
-    });
-    let enemy = state.units.iter().position(|u| !u.kind.is_sinner()).unwrap();
+    state.units[0]
+        .pending_next_turn
+        .push(lcb_core::state::PendingStatus {
+            stack: 0,
+            status: "Protection".to_string(),
+            potency: 0,
+            count: 2,
+        });
+    let enemy = state
+        .units
+        .iter()
+        .position(|u| !u.kind.is_sinner())
+        .unwrap();
     lcb_core::battle::begin_turn(&mut state, &sim.library, &sim.mechanics, &sim.scripts);
     assert_eq!(
         state.units[0].statuses.count("Protection"),
@@ -2729,7 +3741,10 @@ fn protection_lands_on_count_and_one_turn_statuses_expire() {
     );
     // It reduces incoming damage (10% per Count).
     let reduced = battle::incoming_damage_modifier_for_test(&state.units[0], "Wrath");
-    assert!(reduced < 0.0, "Protection reduces incoming damage: {reduced}");
+    assert!(
+        reduced < 0.0,
+        "Protection reduces incoming damage: {reduced}"
+    );
     // Haste and Bind move Speed by their Count, and both last one turn.
     state.units[0].statuses.remove("Haste");
     state.units[0].statuses.remove("Bind");
@@ -2768,16 +3783,17 @@ fn next_turn_speed_status_arrives_before_speed_is_rolled() {
     lcb_core::battle::begin_turn(&mut state, &sim.library, &sim.mechanics, &sim.scripts);
     assert_eq!(state.units[0].speed, 5, "no Bind yet");
     // The Skill queued "[On Use] Gain 1 [Bind] next turn".
-    state.units[0].pending_next_turn.push(lcb_core::state::PendingStatus {
-        stack: 0,
-        status: "Bind".to_string(),
-        potency: 0,
-        count: 1,
-    });
+    state.units[0]
+        .pending_next_turn
+        .push(lcb_core::state::PendingStatus {
+            stack: 0,
+            status: "Bind".to_string(),
+            potency: 0,
+            count: 1,
+        });
     lcb_core::battle::begin_turn(&mut state, &sim.library, &sim.mechanics, &sim.scripts);
     assert_eq!(
-        state.units[0].speed,
-        4,
+        state.units[0].speed, 4,
         "the queued Bind lowered this turn's Speed"
     );
     assert_eq!(state.units[0].statuses.count("Bind"), 1);
@@ -2795,7 +3811,11 @@ fn defense_skill_rotates_its_slot() {
         .unwrap();
     let (current, next, preview) = {
         let entry = &state.units[0].dashboard[0];
-        (entry.current.clone(), entry.next.clone(), entry.preview.clone())
+        (
+            entry.current.clone(),
+            entry.next.clone(),
+            entry.preview.clone(),
+        )
     };
     let actor = state.units[0].id.clone();
     let target = state.units[1].id.clone();
@@ -2810,7 +3830,10 @@ fn defense_skill_rotates_its_slot() {
         },
     )
     .unwrap();
-    assert!(state.units[0].dashboard[0].converted, "the card was replaced");
+    assert!(
+        state.units[0].dashboard[0].converted,
+        "the card was replaced"
+    );
     assert_eq!(
         state.units[0].dashboard[0].replaced.as_ref(),
         Some(&current),
@@ -2834,7 +3857,11 @@ fn clash_level_bonus_uses_both_attack_levels() {
     let state = sim
         .new_encounter(&["10110"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
         .unwrap();
-    let enemy = state.units.iter().position(|u| !u.kind.is_sinner()).unwrap();
+    let enemy = state
+        .units
+        .iter()
+        .position(|u| !u.kind.is_sinner())
+        .unwrap();
     // Same Skill, all Coins Tails so only the level bonus differs.
     let power = |state: &mut lcb_core::state::BattleState| -> i32 {
         let mut a = battle::build_use(
@@ -2888,9 +3915,18 @@ fn clash_level_bonus_uses_both_attack_levels() {
 fn sinking_stops_once_its_count_is_gone() {
     let sim = sim();
     let mut state = sim
-        .new_encounter(&[fixed::TEAM[0]], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .new_encounter(
+            &[fixed::TEAM[0]],
+            &[fixed::BOSS_IMAGO],
+            3,
+            BattleConfig::default(),
+        )
         .unwrap();
-    let target = state.units.iter().position(|u| !u.kind.is_sinner()).unwrap();
+    let target = state
+        .units
+        .iter()
+        .position(|u| !u.kind.is_sinner())
+        .unwrap();
     // The Imago has no SP, so Sinking deals Gloom damage.
     state.units[target].statuses.remove("Sinking");
     state.units[target].statuses.add_potency("Sinking", 10);
@@ -2912,6 +3948,36 @@ fn sinking_stops_once_its_count_is_gone() {
     );
 }
 
+/// Five separate hits cause five Sinking triggers; Potency is read on each hit,
+/// while Count is the consumable trigger budget.
+#[test]
+fn sinking_multihit_consumes_count_without_changing_potency() {
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(
+            &[fixed::TEAM[0]],
+            &[fixed::BOSS_IMAGO],
+            3,
+            BattleConfig::default(),
+        )
+        .unwrap();
+    let target = state
+        .units
+        .iter()
+        .position(|u| !u.kind.is_sinner())
+        .unwrap();
+    state.units[target].statuses.add_potency("Sinking", 10);
+    state.units[target].statuses.add_count("Sinking", 8);
+    let before = state.units[target].hp;
+    for _ in 0..5 {
+        battle::apply_sinking(&mut state, target);
+    }
+    assert_eq!(state.turn_stats.sinking_triggers, 5);
+    assert!(state.units[target].hp < before);
+    assert_eq!(state.units[target].statuses.potency("Sinking"), 10);
+    assert_eq!(state.units[target].statuses.count("Sinking"), 3);
+}
+
 /// PROBE: can a fast Sinner pull an enemy Skill that targets someone else into
 /// a Clash?  "スキルをセットする際、自分速度が相手のスロットよりも早ければ、その
 /// スキルの使用先を自分に向けさせることができる" (JA-wiki 戦闘システム詳細 /
@@ -2921,9 +3987,19 @@ fn sinking_stops_once_its_count_is_gone() {
 fn probe_fast_sinner_pulls_an_enemy_skill() {
     let sim = sim();
     let mut state = sim
-        .new_encounter(&fixed::TEAM, &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .new_encounter(
+            &fixed::TEAM,
+            &[fixed::BOSS_IMAGO],
+            3,
+            BattleConfig::default(),
+        )
         .unwrap();
-    let enemy = state.units.iter().position(|u| !u.kind.is_sinner()).unwrap();
+    let enemy = state
+        .units
+        .iter()
+        .position(|u| !u.kind.is_sinner())
+        .unwrap();
+    let enemy_id = state.units[enemy].id.clone();
     // Sinner 0 is much faster than the enemy; every enemy Slot targets Sinner 1.
     for unit in state.units.iter_mut().filter(|u| u.kind.is_sinner()) {
         unit.speed = 2;
@@ -2961,6 +4037,7 @@ fn probe_fast_sinner_pulls_an_enemy_skill() {
             actor,
             slot: 0,
             skill,
+            enemy: enemy_id.clone(),
             enemy_slot: 0,
         },
     )
@@ -2990,9 +4067,19 @@ fn probe_fast_sinner_pulls_an_enemy_skill() {
 fn last_chain_wins_even_when_it_is_slower_than_the_original_target() {
     let sim = sim();
     let mut state = sim
-        .new_encounter(&fixed::TEAM, &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .new_encounter(
+            &fixed::TEAM,
+            &[fixed::BOSS_IMAGO],
+            3,
+            BattleConfig::default(),
+        )
         .unwrap();
-    let enemy = state.units.iter().position(|u| !u.kind.is_sinner()).unwrap();
+    let enemy = state
+        .units
+        .iter()
+        .position(|u| !u.kind.is_sinner())
+        .unwrap();
+    let enemy_id = state.units[enemy].id.clone();
     // The enemy Slot aims at Sinner 2.  Sinner 0 (speed 9) chains first, Sinner 1
     // (speed 7) chains last: both out-speed the enemy (3), but the *original
     // target* is Sinner 0's victim?  No - the original target is Sinner 2, so
@@ -3021,12 +4108,11 @@ fn last_chain_wins_even_when_it_is_slower_than_the_original_target() {
     let last = state.units[1].id.clone();
     let skill0 = state.units[0].dashboard[0].current.clone();
     let skill1 = state.units[1].dashboard[0].current.clone();
-    let name_of =
-        |state: &lcb_core::state::BattleState, index: usize, skill: &SkillId| -> String {
-            battle::build_use(state, &sim.library, &sim.mechanics, index, skill)
-                .map(|use_| use_.name)
-                .unwrap_or_default()
-        };
+    let name_of = |state: &lcb_core::state::BattleState, index: usize, skill: &SkillId| -> String {
+        battle::build_use(state, &sim.library, &sim.mechanics, index, skill)
+            .map(|use_| use_.name)
+            .unwrap_or_default()
+    };
     let first_skill = name_of(&state, 0, &skill0);
     let last_skill = name_of(&state, 1, &skill1);
     // The original target chains first, the slower Sinner chains last.
@@ -3036,6 +4122,7 @@ fn last_chain_wins_even_when_it_is_slower_than_the_original_target() {
             actor: first.clone(),
             slot: 0,
             skill: skill0,
+            enemy: enemy_id.clone(),
             enemy_slot: 0,
         },
     )
@@ -3046,6 +4133,7 @@ fn last_chain_wins_even_when_it_is_slower_than_the_original_target() {
             actor: last.clone(),
             slot: 0,
             skill: skill1,
+            enemy: enemy_id.clone(),
             enemy_slot: 0,
         },
     )
@@ -3090,9 +4178,19 @@ fn last_chain_wins_even_when_it_is_slower_than_the_original_target() {
 fn the_last_chain_to_an_enemy_slot_wins() {
     let sim = sim();
     let mut state = sim
-        .new_encounter(&fixed::TEAM, &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .new_encounter(
+            &fixed::TEAM,
+            &[fixed::BOSS_IMAGO],
+            3,
+            BattleConfig::default(),
+        )
         .unwrap();
-    let enemy = state.units.iter().position(|u| !u.kind.is_sinner()).unwrap();
+    let enemy = state
+        .units
+        .iter()
+        .position(|u| !u.kind.is_sinner())
+        .unwrap();
+    let enemy_id = state.units[enemy].id.clone();
     // Both Sinner 0 and Sinner 1 out-speed the enemy, which aims at Sinner 2.
     for unit in state.units.iter_mut().filter(|u| u.kind.is_sinner()) {
         unit.speed = 1;
@@ -3112,10 +4210,7 @@ fn the_last_chain_to_an_enemy_slot_wins() {
     let skill1 = state.units[1].dashboard[0].current.clone();
     // Ask the engine what the two Skills are called in the log, before the turn
     // resolves and the panel rotates.
-    let name_of = |state: &lcb_core::state::BattleState,
-                   index: usize,
-                   skill: &SkillId|
-     -> String {
+    let name_of = |state: &lcb_core::state::BattleState, index: usize, skill: &SkillId| -> String {
         battle::build_use(state, &sim.library, &sim.mechanics, index, skill)
             .map(|use_| use_.name)
             .unwrap_or_default()
@@ -3128,6 +4223,7 @@ fn the_last_chain_to_an_enemy_slot_wins() {
             actor: first.clone(),
             slot: 0,
             skill: skill0,
+            enemy: enemy_id.clone(),
             enemy_slot: 0,
         },
     )
@@ -3138,6 +4234,7 @@ fn the_last_chain_to_an_enemy_slot_wins() {
             actor: last.clone(),
             slot: 0,
             skill: skill1,
+            enemy: enemy_id.clone(),
             enemy_slot: 0,
         },
     )
@@ -3183,9 +4280,19 @@ fn the_last_chain_to_an_enemy_slot_wins() {
 fn slow_sinner_cannot_pull_and_engage_is_rejected() {
     let sim = sim();
     let mut state = sim
-        .new_encounter(&fixed::TEAM, &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .new_encounter(
+            &fixed::TEAM,
+            &[fixed::BOSS_IMAGO],
+            3,
+            BattleConfig::default(),
+        )
         .unwrap();
-    let enemy = state.units.iter().position(|u| !u.kind.is_sinner()).unwrap();
+    let enemy = state
+        .units
+        .iter()
+        .position(|u| !u.kind.is_sinner())
+        .unwrap();
+    let enemy_id = state.units[enemy].id.clone();
     for unit in state.units.iter_mut().filter(|u| u.kind.is_sinner()) {
         unit.speed = 1;
     }
@@ -3212,6 +4319,7 @@ fn slow_sinner_cannot_pull_and_engage_is_rejected() {
                 actor,
                 slot: 0,
                 skill,
+                enemy: enemy_id.clone(),
                 enemy_slot: 0,
             },
         )
@@ -3225,16 +4333,18 @@ fn slow_sinner_cannot_pull_and_engage_is_rejected() {
 fn turn_advances_phase_and_logs() {
     let sim = sim();
     let mut state = sim
-        .new_encounter(&[fixed::TEAM[0]], &[fixed::BOSS_IMAGO], 1, BattleConfig::default())
+        .new_encounter(
+            &[fixed::TEAM[0]],
+            &[fixed::BOSS_IMAGO],
+            1,
+            BattleConfig::default(),
+        )
         .unwrap();
     assert_eq!(state.phase, Phase::AwaitingActions);
     let target = state.living_enemies()[0].clone();
     for action in sim.legal_actions(&state) {
         if let Action::Assign {
-            actor,
-            slot,
-            skill,
-            ..
+            actor, slot, skill, ..
         } = action
         {
             sim.submit(
@@ -3252,7 +4362,10 @@ fn turn_advances_phase_and_logs() {
     }
     sim.step_turn(&mut state).unwrap();
     assert!(state.turn >= 2);
-    assert!(matches!(state.phase, Phase::AwaitingActions | Phase::Finished));
+    assert!(matches!(
+        state.phase,
+        Phase::AwaitingActions | Phase::Finished
+    ));
     let _ = EncounterBuilder::new(&sim.library, &sim.mechanics);
 }
 
@@ -3321,7 +4434,10 @@ fn power_modifiers_reach_both_clash_and_attack() {
         Some(1),
         &mut use_,
     );
-    assert!(use_.ctx.clash_power_bonus > 0, "the Skill grants Clash Power");
+    assert!(
+        use_.ctx.clash_power_bonus > 0,
+        "the Skill grants Clash Power"
+    );
     let opponent = use_.clone();
     let with_bonus = battle::match_power(&mut state, 0, 1, &mut use_, &opponent);
     use_.ctx.clash_power_bonus = 0;
@@ -3499,7 +4615,12 @@ fn clashable_defenses_take_part_in_clashes() {
     let sim = sim();
     for (identity, defense) in [("10913", "1091304"), ("10813", "1081304")] {
         let mut state = sim
-            .new_encounter(&[identity], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+            .new_encounter(
+                &[identity],
+                &[fixed::BOSS_IMAGO],
+                3,
+                BattleConfig::default(),
+            )
             .unwrap();
         state.actions = vec![
             lcb_core::state::SubmittedAction {
@@ -3529,7 +4650,11 @@ fn clashable_defenses_take_part_in_clashes() {
         let results = battle::resolve_combat(&mut state, &sim.library, &sim.mechanics);
         assert_eq!(results.len(), 1, "{defense} must Clash");
         assert_eq!(
-            state.log.iter().filter(|entry| entry.kind == "counter").count(),
+            state
+                .log
+                .iter()
+                .filter(|entry| entry.kind == "counter")
+                .count(),
             0,
             "{defense} clashed, so no Counter fires"
         );
@@ -3611,7 +4736,9 @@ fn failed_conditions_do_not_spend_the_allowance() {
         .cloned()
         .collect();
     assert!(!reload.is_empty(), "the Skill has a Reload clause");
-    state.units[0].statuses.add_potency("LCA Fracture Round", 10);
+    state.units[0]
+        .statuses
+        .add_potency("LCA Fracture Round", 10);
     for _ in 0..5 {
         battle::apply_effects_for_test(
             &mut state,
@@ -3733,7 +4860,10 @@ fn status_components_round_trip() {
         &mut battle::UseContext::default(),
     );
     assert!(
-        state.units[1].pending_next_turn.iter().any(|entry| entry.stack == 3),
+        state.units[1]
+            .pending_next_turn
+            .iter()
+            .any(|entry| entry.stack == 3),
         "the queued Blue Sand keeps its Stack"
     );
     battle::begin_turn(&mut state, &sim.library, &sim.mechanics, &sim.scripts);
@@ -3750,7 +4880,11 @@ fn time_state_is_decided_before_its_turn_start_passive() {
     let mut state = sim
         .new_encounter(&["11004"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
         .unwrap();
-    let enemy = state.units.iter().position(|u| !u.kind.is_sinner()).unwrap();
+    let enemy = state
+        .units
+        .iter()
+        .position(|u| !u.kind.is_sinner())
+        .unwrap();
     state.units[enemy].time_state = Some(TimeState::Present);
     state.units[enemy].statuses.remove("Poise");
     state.units[enemy].statuses.set_stack("In the Present", 10);
@@ -3784,7 +4918,10 @@ fn unique_ammo_opens_and_mirrors_its_split() {
         10,
         "Begin encounters with 10 of each of [BulletLament]"
     );
-    assert_eq!(state.units[0].statuses.count("The Living & The Departed"), 10);
+    assert_eq!(
+        state.units[0].statuses.count("The Living & The Departed"),
+        10
+    );
 
     // Spend from a pool that only holds The Living: both units must come from it
     // and the target's Butterfly must repeat the split.
@@ -3792,7 +4929,9 @@ fn unique_ammo_opens_and_mirrors_its_split() {
         .new_encounter(&["10110"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
         .unwrap();
     state.units[0].statuses = lcb_core::state::StatusSet::default();
-    state.units[0].statuses.add_potency("The Living & The Departed", 2);
+    state.units[0]
+        .statuses
+        .add_potency("The Living & The Departed", 2);
     state.units[1].statuses = lcb_core::state::StatusSet::default();
     let mut use_ = battle::build_use(
         &state,
@@ -3815,7 +4954,10 @@ fn unique_ammo_opens_and_mirrors_its_split() {
     }
     state.preset_flips = vec![true; 256];
     battle::one_sided_attack(&mut state, 0, 1, &mut use_, 0);
-    assert_eq!(state.units[0].statuses.total("The Living & The Departed"), 0);
+    assert_eq!(
+        state.units[0].statuses.total("The Living & The Departed"),
+        0
+    );
     assert_eq!(
         state.units[1].statuses.potency("Butterfly"),
         2,
@@ -3833,7 +4975,9 @@ fn running_dry_cancels_the_coins_and_reloads() {
         .new_encounter(&["10110"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
         .unwrap();
     state.units[0].statuses = lcb_core::state::StatusSet::default();
-    state.units[0].statuses.add_potency("The Living & The Departed", 1);
+    state.units[0]
+        .statuses
+        .add_potency("The Living & The Departed", 1);
     state.units[0].sanity = Sanity::Sane { sp: 10 };
     let mut use_ = battle::build_use(
         &state,
@@ -3856,7 +5000,11 @@ fn running_dry_cancels_the_coins_and_reloads() {
     }
     state.preset_flips = vec![true; 256];
     let hits = battle::one_sided_attack(&mut state, 0, 1, &mut use_, 0);
-    assert_eq!(hits.len(), 1, "the Skill is cancelled once the ammo runs out");
+    assert_eq!(
+        hits.len(),
+        1,
+        "the Skill is cancelled once the ammo runs out"
+    );
     assert!(use_.ctx.ammo_exhausted);
     assert_eq!(
         state.units[0].statuses.total("The Living & The Departed"),
@@ -3899,8 +5047,19 @@ fn lca_fracture_rounds_are_spent_and_reloaded() {
     }
     state.preset_flips = vec![true; 256];
     battle::one_sided_attack(&mut state, 0, 1, &mut use_, 0);
-    assert_eq!(use_.ctx.ammo_spent_by_status.get("LCA Fracture Round"), Some(&4));
-    battle::apply_attack_end_for_test(&mut state, &sim.library, &sim.mechanics, 0, Some(1), 0, &mut use_);
+    assert_eq!(
+        use_.ctx.ammo_spent_by_status.get("LCA Fracture Round"),
+        Some(&4)
+    );
+    battle::apply_attack_end_for_test(
+        &mut state,
+        &sim.library,
+        &sim.mechanics,
+        0,
+        Some(1),
+        0,
+        &mut use_,
+    );
     assert_eq!(
         state.units[0].statuses.stack("LCA Fracture Round"),
         16,
@@ -3914,7 +5073,12 @@ fn lca_fracture_rounds_are_spent_and_reloaded() {
 fn gregor_redirects_without_outspeeding() {
     let sim = sim();
     let mut state = sim
-        .new_encounter(&["11214", "11004"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .new_encounter(
+            &["11214", "11004"],
+            &[fixed::BOSS_IMAGO],
+            3,
+            BattleConfig::default(),
+        )
         .unwrap();
     state.units[0].speed = 1;
     state.units[2].speed = 3;
@@ -3923,7 +5087,12 @@ fn gregor_redirects_without_outspeeding() {
             continue;
         }
     }
-    let enemy = state.units.iter().position(|u| !u.kind.is_sinner()).unwrap();
+    let enemy = state
+        .units
+        .iter()
+        .position(|u| !u.kind.is_sinner())
+        .unwrap();
+    let enemy_id = state.units[enemy].id.clone();
     for action in state.actions.iter_mut() {
         if action.actor == state.units[enemy].id {
             action.target = Some(state.units[1].id.clone());
@@ -3933,6 +5102,7 @@ fn gregor_redirects_without_outspeeding() {
         actor: state.units[0].id.clone(),
         slot: 0,
         skill: state.units[0].dashboard[0].current.clone(),
+        enemy: enemy_id.clone(),
         enemy_slot: 0,
     };
     assert!(
@@ -3988,7 +5158,12 @@ fn ryoshu_passives_fire_unopposed_attacks() {
     let mut state = sim
         .new_encounter(&["10414"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
         .unwrap();
-    let enemy = state.units.iter().position(|u| !u.kind.is_sinner()).unwrap();
+    let enemy = state
+        .units
+        .iter()
+        .position(|u| !u.kind.is_sinner())
+        .unwrap();
+    let enemy_id = state.units[enemy].id.clone();
     state.units[enemy].hp = state.units[enemy].max_hp;
     state.units[0].statuses.set_stack("Bullet - Solitude", 6);
     let mut use_ = battle::build_use(
@@ -4024,7 +5199,11 @@ fn ryoshu_passives_fire_unopposed_attacks() {
         "the passive follow-up attack must land"
     );
     assert_eq!(
-        state.log.iter().filter(|entry| entry.kind == "unopposed").count(),
+        state
+            .log
+            .iter()
+            .filter(|entry| entry.kind == "unopposed")
+            .count(),
         1
     );
 
@@ -4032,7 +5211,12 @@ fn ryoshu_passives_fire_unopposed_attacks() {
     let mut state = sim
         .new_encounter(&["10414"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
         .unwrap();
-    let enemy = state.units.iter().position(|u| !u.kind.is_sinner()).unwrap();
+    let enemy = state
+        .units
+        .iter()
+        .position(|u| !u.kind.is_sinner())
+        .unwrap();
+    let enemy_id = state.units[enemy].id.clone();
     state.units[0].statuses.set_stack("Bullet - Solitude", 0);
     let mut use_ = battle::build_use(
         &state,
@@ -4126,7 +5310,12 @@ fn resonance_grants_offense_level_by_chain_position() {
     // is +5, so the third one gets that; the first two get the regular value).
     let sim = sim();
     let mut state = sim
-        .new_encounter(&fixed::TEAM, &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .new_encounter(
+            &fixed::TEAM,
+            &[fixed::BOSS_IMAGO],
+            3,
+            BattleConfig::default(),
+        )
         .unwrap();
     let mut gloom = Vec::new();
     for (index, unit) in state.units.iter().enumerate() {
@@ -4154,12 +5343,7 @@ fn resonance_grants_offense_level_by_chain_position() {
             });
         }
         battle::resolve_combat(&mut state, &sim.library, &sim.mechanics);
-        let bonus = state
-            .resonance_levels
-            .values()
-            .copied()
-            .max()
-            .unwrap_or(0);
+        let bonus = state.resonance_levels.values().copied().max().unwrap_or(0);
         assert_eq!(bonus, 5, "the third Skill of a Gloom A-Reson gains +5");
     }
 }
@@ -4213,7 +5397,11 @@ fn cracked_coins_act_and_lower_base_power() {
         EgoSkillKind::Corrosion,
     )
     .expect("the Corrosion E.G.O builds");
-    let enemy = state.units.iter().position(|unit| !unit.kind.is_sinner()).unwrap();
+    let enemy = state
+        .units
+        .iter()
+        .position(|unit| !unit.kind.is_sinner())
+        .unwrap();
     battle::prepare_use_for_test(
         &mut state,
         &sim.library,
@@ -4247,7 +5435,12 @@ fn cracked_coins_act_and_lower_base_power() {
 fn sinners_start_with_the_configured_sanity() {
     let sim = sim();
     let state = sim
-        .new_encounter(&fixed::TEAM, &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
+        .new_encounter(
+            &fixed::TEAM,
+            &[fixed::BOSS_IMAGO],
+            3,
+            BattleConfig::default(),
+        )
         .unwrap();
     for unit in state.units.iter().filter(|unit| unit.kind.is_sinner()) {
         assert_eq!(unit.sanity.sp(), 45, "{} starts at 45 SP", unit.name);
@@ -4286,7 +5479,11 @@ fn koi_koi_combo_gates_the_kozan_follow_up() {
     let mut state = sim
         .new_encounter(&["10813"], &[fixed::BOSS_IMAGO], 3, BattleConfig::default())
         .unwrap();
-    let enemy = state.units.iter().position(|unit| !unit.kind.is_sinner()).unwrap();
+    let enemy = state
+        .units
+        .iter()
+        .position(|unit| !unit.kind.is_sinner())
+        .unwrap();
     // `new_encounter` already ran the first Turn Start.
     assert_eq!(state.units[0].statuses.count("Bright -光-"), 3);
     assert_eq!(state.units[0].statuses.potency("Bright -光-"), 0);
@@ -4301,7 +5498,14 @@ fn koi_koi_combo_gates_the_kozan_follow_up() {
             &SkillId::new("1081302"),
         )
         .unwrap();
-        battle::prepare_use_for_test(state, &sim.library, &sim.mechanics, 0, Some(enemy), &mut use_);
+        battle::prepare_use_for_test(
+            state,
+            &sim.library,
+            &sim.mechanics,
+            0,
+            Some(enemy),
+            &mut use_,
+        );
         battle::apply_attack_end_for_test(
             state,
             &sim.library,
@@ -4314,7 +5518,11 @@ fn koi_koi_combo_gates_the_kozan_follow_up() {
     };
     attack_end(&mut state);
     assert_eq!(
-        state.log.iter().filter(|entry| entry.kind == "unopposed").count(),
+        state
+            .log
+            .iter()
+            .filter(|entry| entry.kind == "unopposed")
+            .count(),
         0,
         "no Kozan on turn 1: {:?}",
         state
@@ -4340,7 +5548,11 @@ fn koi_koi_combo_gates_the_kozan_follow_up() {
     );
     attack_end(&mut state);
     assert_eq!(
-        state.log.iter().filter(|entry| entry.kind == "unopposed").count(),
+        state
+            .log
+            .iter()
+            .filter(|entry| entry.kind == "unopposed")
+            .count(),
         1,
         "the combo running out calls Kozan"
     );
@@ -4356,7 +5568,12 @@ fn koi_koi_combo_gates_the_kozan_follow_up() {
 fn defeating_the_main_enemy_ends_the_wave() {
     let sim = sim();
     let mut state = sim
-        .new_encounter(&fixed::TEAM, &fixed::SECTION5_WAVE, 5, BattleConfig::default())
+        .new_encounter(
+            &fixed::TEAM,
+            &fixed::SECTION5_WAVE,
+            5,
+            BattleConfig::default(),
+        )
         .unwrap();
     let imago = state
         .units
