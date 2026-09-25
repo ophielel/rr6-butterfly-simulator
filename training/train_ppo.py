@@ -88,6 +88,7 @@ def main() -> int:
         Path(args.out).with_suffix(".json"),
         {
             "scenario": args.scenario,
+            "scenario_config": scenario(args.scenario).to_dict(),
             "seeds": {"first": min(seeds), "last": max(seeds), "count": len(seeds)},
             "config": vars(args),
             "history": {

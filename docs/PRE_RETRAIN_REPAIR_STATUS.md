@@ -40,16 +40,16 @@
   - `echoes_of_the_manor_rolls_once_per_bygone_gain_and_replays_deterministically`
   - `infinite_ego_resources_bypass_affordability_and_spending_only`
 - Full Rust suite now passes: 118 tests.
-- Python training suite now passes: all tests, including PPO finite-difference and PyO3/stdio parity.
+- Python training suite now passes: all tests, including PPO finite-difference, PyO3/stdio parity, and a regression asserting both PPO rollout and validation propagate `Scenario.infinite_ego_resources`.
 - The PyO3 extension was rebuilt from the current Rust sources and copied to `python/lcb/lcb_sim.pyd`; the stale-extension failure and W3 indexing issue are resolved.
 - `tools/build_all.py --skip-fetch` now passes after the extractor changes and regenerates the intended Threadspin IV records and `inflict_random_each` mechanics.
-- Backend parity, strict critical preflight, multi-hit Sinking audit, and the human setup oracle are complete. A fresh 4-point Teacher HP sweep (8 seeds/scale), BC-from-scratch, corrected PPO fine-tune, 50-seed burst/real-HP evaluation, N=1/5/10/20/50 restart metrics, and `reports/post_audit_summary.json` are complete. Real HP produced 0/50 wins for Random, FirstLegal, Greedy, Teacher, BC, and PPO; the 0.08 burst sanity scene produced 100% wins for Greedy, Teacher, BC, and PPO in this run.
+- Backend parity, strict critical preflight, multi-hit Sinking audit, and the human setup oracle are complete. A fresh 4-point Teacher HP sweep (8 seeds/scale), BC-from-scratch, PPO fine-tune, 50-seed burst/real-HP evaluation, N=1/5/10/20/50 restart metrics, and `reports/post_audit_summary.json` are complete. A follow-up audit found the first PPO training run omitted `infinite_ego_resources` in both rollout and validation resets; that run is superseded. The corrected PPO run now records the full `burst` scenario config with infinite resources enabled. Real HP produced 0/50 wins for all six policies; the 0.08 burst sanity scene produced 100% wins for Greedy, Teacher, BC, and corrected PPO in this run.
 
 ## Not done / open
 
 1. **Rime Shank multi-target allocation:** exact P/C, AW=3, the >50% HP damage boundary, and Attack Weight 3 resolving the main slot plus two additional enemy slots are tested.
 2. **Status events are partial:** SkillUse paths carry `skill_id`; passive/status-only paths intentionally do not. Not every Sinking application path emits events, and the event buffer is cleared at Turn Start rather than exposed as a separate immutable turn log.
-3. **Echoes integration gaps:** direct target replacement, queued replacement, Turn End reduction, and Bygone per-event integration tests pass. Echoes panic-type transfer and Non-SP head-rate effects remain outside this patch. Echoes panic-type transfer and Non-SP head-rate effects remain outside this patch.
+3. **Echoes integration gaps:** direct target replacement, queued replacement, Turn End reduction, and Bygone per-event integration tests pass. Echoes panic-type transfer and Non-SP head-rate effects remain outside this patch.
 4. **Fixed-content data pipeline:** current Threadspin IV and Bygone event semantics are now reproducible from `tools/build_all.py`; broader generated-data diffs should still be reviewed before commit.
 5. **Infinite-resource metadata and strict mode:** scenario serialization and Python/PyO3/stdio reset parity carry the option. Strict mode currently blocks the critical Bygone/Rime mechanics only; a complete global unknown-rule blocker audit remains open.
 6. **Engage edge cases:** `Action::Engage` now carries enemy identity and slot. Same-slot collision behavior across multiple enemy owners needs a focused regression test.
@@ -61,7 +61,7 @@
 
 ## Working tree
 
-All current changes are local and uncommitted. Main modified areas are `sim/crates/lcb-core`, `sim/crates/lcb-py`, CLI stdio reset, Python scenario/evaluation, test files, E.G.O records, and mechanics JSON. Review `git status --short` before resuming.
+The core repair is on `main`; follow-up fixes may be local and uncommitted. Main areas include Rust/PyO3/stdio, Python PPO reset configuration, tests, generated reports, and mechanics data. Review `git status --short` before resuming.
 
 ## Suggested resume order
 

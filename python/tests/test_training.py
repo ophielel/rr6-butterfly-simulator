@@ -23,6 +23,7 @@ from lcb.env import LimbusEnv, SECTION5_WAVE  # noqa: E402
 from lcb.evaluate import Scenario, best_of_n, restart_aware, run_episode, summarise  # noqa: E402
 from lcb.features import Encoder, SkillTable  # noqa: E402
 from lcb.nn import PolicyValueNet  # noqa: E402
+import lcb.ppo as ppo_module  # noqa: E402
 from lcb.stdio_client import StdioSimulator  # noqa: E402
 from lcb.plans import (  # noqa: E402
     PlanGenerator,
@@ -35,6 +36,34 @@ from lcb.plans import (  # noqa: E402
 from lcb.teacher import BeamTeacher, TeacherConfig, detect_axis, detect_strategy_labels, encode_samples  # noqa: E402
 
 SCENARIO = Scenario(name="test", max_turns=4, enemy_hp_scale=0.08)
+
+
+def test_ppo_rollout_and_validation_propagate_infinite_ego_resources() -> None:
+    calls = []
+
+    class TerminalEnv:
+        def __init__(self, strict=False):
+            self.strict = strict
+
+        def reset(self, seed, **kwargs):
+            calls.append((seed, kwargs))
+
+        def observe(self):
+            return {"winner": "Sinners", "phase": "Finished", "units": []}
+
+    original_env = ppo_module.LimbusEnv
+    ppo_module.LimbusEnv = TerminalEnv
+    try:
+        scene = Scenario(name="ppo-infinite", infinite_ego_resources=True)
+        encoder = Encoder()
+        net = PolicyValueNet(state_dim=encoder.state_dim, action_dim=encoder.action_dim, hidden=4)
+        ppo_module.collect_episode(net, encoder, scene, 17, np.random.default_rng(17))
+        ppo_module.evaluate_argmax(net, encoder, scene, [18], episodes=1)
+    finally:
+        ppo_module.LimbusEnv = original_env
+
+    assert len(calls) == 2
+    assert all(kwargs["infinite_ego_resources"] is True for _, kwargs in calls)
 
 
 def test_ppo_policy_gradient_matches_finite_difference_direction() -> None:

@@ -24,7 +24,7 @@
 ## 0.1 修复后实验（post-audit）
 
 - Teacher HP sweep: scales 0.08/0.20/0.50/1.00, 8 seeds per scale, generic combat objective; route labels were post-hoc only.
-- BC was trained from the fresh sweep data; PPO fine-tuned from that BC checkpoint after the finite-difference gate.
+- BC was trained from the fresh sweep data. The first PPO run was superseded after an audit found that its rollout/validation resets omitted `infinite_ego_resources`; PPO was then rerun with the corrected propagation and its scenario metadata records `infinite_ego_resources=true`.
 - Burst (`enemy_hp_scale=0.08`, infinite E.G.O resources): Random 20%, FirstLegal 12%, Greedy 100%, Teacher 100%, BC 100%, PPO 100% wins over 50 seeds.
 - Real HP (`enemy_hp_scale=1.0`, Imago 25616 HP): all six policies had 0/50 wins. Thus N=1/5/10/20/50 restart clear rates are also 0 for this run; the real boss result is a failure to reach terminal victory, not a scaled-burst result.
 - Full summaries, configuration fingerprints, and restart windows: `reports/post_audit_summary.json`.

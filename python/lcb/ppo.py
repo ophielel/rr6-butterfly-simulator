@@ -75,6 +75,7 @@ def collect_episode(
         enemies=list(scenario.enemies),
         max_turns=scenario.max_turns,
         enemy_hp_scale=scenario.enemy_hp_scale,
+        infinite_ego_resources=scenario.infinite_ego_resources,
     )
     first = env.observe()
     turns: List[TurnRecord] = []
@@ -274,6 +275,7 @@ def evaluate_argmax(
             enemies=list(scenario.enemies),
             max_turns=scenario.max_turns,
             enemy_hp_scale=scenario.enemy_hp_scale,
+            infinite_ego_resources=scenario.infinite_ego_resources,
         )
         turns = 0
         while True:
