@@ -1,10 +1,12 @@
 """The scenes the training/evaluation harness uses.
 
-Two are defined, and every report says which one it used:
+Every report records which scene it used:
 
 * `real` - the Line 6 Section 5 wave **as the data describes it**: the Imago with
   its 25616 HP, its three Illusory Butterfly allies, 30 turns.  No scenario knob
   is touched (`enemy_hp_scale = 1.0`).
+* `half` - the same wave with the **scenario knob** `enemy_hp_scale = 0.5`
+  (Imago 12808 HP) and 30 turns.
 * `short` - the same wave with the **scenario knob** `enemy_hp_scale = 0.2`
   (Imago 5123 HP) and 20 turns.
 * `burst` - `enemy_hp_scale = 0.08` (Imago 2049 HP) and 12 turns.  This is the
@@ -26,7 +28,7 @@ is a race the current content loses; a reachable terminal win is required to
 measure `kill_turn`, short-win rates and best-of-N at all.  The knob changes the
 HP pool and nothing else, and `provenance()` writes it into every report.
 
-All three formal research scenes enable `infinite_ego_resources=True`; this is an
+All four formal research scenes enable `infinite_ego_resources=True`; this is an
 explicit experiment condition, not a game rule. `Scenario.enemy_hp_scale` is
 documented in `BattleConfig` as a scenario knob, not a game rule, and
 `provenance()` writes both settings into every report.
@@ -47,6 +49,15 @@ REAL = Scenario(
     description="Line 6 Section 5 wave exactly as the data describes it (Imago 25616 HP)",
 )
 
+HALF = Scenario(
+    name="half",
+    max_turns=30,
+    enemy_hp_scale=0.5,
+    strict=True,
+    infinite_ego_resources=True,
+    description="the same wave with the scenario knob enemy_hp_scale=0.5 (Imago 12808 HP)",
+)
+
 SHORT = Scenario(
     name="short",
     max_turns=20,
@@ -65,7 +76,7 @@ BURST = Scenario(
     description="the same wave with the scenario knob enemy_hp_scale=0.08 (Imago 2049 HP)",
 )
 
-SCENARIOS: Dict[str, Scenario] = {"real": REAL, "short": SHORT, "burst": BURST}
+SCENARIOS: Dict[str, Scenario] = {"real": REAL, "half": HALF, "short": SHORT, "burst": BURST}
 
 
 def scenario(name: str) -> Scenario:
@@ -74,4 +85,4 @@ def scenario(name: str) -> Scenario:
     return SCENARIOS[name]
 
 
-__all__ = ["REAL", "SHORT", "BURST", "SCENARIOS", "scenario"]
+__all__ = ["REAL", "HALF", "SHORT", "BURST", "SCENARIOS", "scenario"]

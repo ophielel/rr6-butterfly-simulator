@@ -137,7 +137,7 @@ def run(seed: int, scenario_name: str, yi_kind: str, max_turns: int) -> Dict[str
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--scenario", default="real", choices=("real", "short", "burst"))
+    parser.add_argument("--scenario", default="real", choices=("real", "half", "short", "burst"))
     parser.add_argument("--seed", type=int, default=1)
     parser.add_argument("--yi-kind", choices=("Awakening", "Overclock"), default="Awakening")
     parser.add_argument("--max-turns", type=int, default=30)

@@ -1,0 +1,173 @@
+{
+  "scenario": "real",
+  "scenario_config": {
+    "name": "real",
+    "enemies": [
+      "9567",
+      "9572",
+      "9573",
+      "9574"
+    ],
+    "max_turns": 30,
+    "enemy_hp_scale": 1.0,
+    "strict": true,
+    "infinite_ego_resources": true,
+    "description": "Line 6 Section 5 wave exactly as the data describes it (Imago 25616 HP)"
+  },
+  "seeds": {
+    "first": 14001,
+    "last": 14100,
+    "count": 100
+  },
+  "config": {
+    "checkpoint": "models/bc_post_audit.npz",
+    "out": "models/ppo_hp_full_100.npz",
+    "scenario": "real",
+    "seed_start": 14001,
+    "seed_count": 100,
+    "iterations": 10,
+    "episodes_per_iteration": 10,
+    "epochs_per_iteration": 1,
+    "learning_rate": 0.001,
+    "clip": 0.2,
+    "value_coef": 0.5,
+    "seed": 20260922,
+    "val_seed_start": 15001,
+    "val_seed_count": 20,
+    "require_bc_accuracy": 0.2
+  },
+  "history": {
+    "iteration": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "mean_return": [
+      -1149.0059999999999,
+      -1098.2259999999999,
+      -1093.3529999999998,
+      -1116.8120000000001,
+      -1072.9479999999999,
+      -1088.913,
+      -1102.5030000000002,
+      -1128.108,
+      -1092.262,
+      -1067.606
+    ],
+    "win_rate": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "policy_loss": [
+      -0.15418761366848274,
+      -0.31041247302246566,
+      -0.2618098732635581,
+      -0.12059121392216415,
+      0.09630333906843772,
+      0.39923533045024406,
+      0.059879827990476746,
+      -0.16860811915846421,
+      0.16558682505141165,
+      0.0
+    ],
+    "value_loss": [
+      0.9765371760509092,
+      1.3337113737493713,
+      0.4718731328434128,
+      0.14230554731479075,
+      0.09783805859007791,
+      0.13349935733200807,
+      0.045197175279577825,
+      0.06302034116801436,
+      0.03784736223460414,
+      0.01625756749238832
+    ],
+    "ratio": [
+      0.8798285041593755,
+      0.994776081216188,
+      0.9870474202994103,
+      0.9922318188018124,
+      0.9701407067303687,
+      1.0094665201527164,
+      1.0581225664386462,
+      1.0012210913114683,
+      1.0168776392480494,
+      0.0
+    ],
+    "clip_fraction": [
+      0.38461538461538464,
+      0.0,
+      0.0,
+      0.2222222222222222,
+      0.038461538461538464,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "validation_win_rate": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "validation_kill_turn": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "info": {
+    "episodes": 100,
+    "wins": 0,
+    "best_validation_win_rate": 0.0,
+    "best_iteration": 1,
+    "win_rate": 0.0,
+    "mean_return": -1100.9736999999998,
+    "selected_by_validation": true
+  },
+  "mean_return": -1100.9736999999998,
+  "win_rate": 0.0,
+  "elapsed_seconds": 125.4,
+  "log": [
+    "iteration 1/10: return=-1149.01 win_rate=0.00 policy_loss=-0.154 value_loss=1.0 ratio=0.880 clip=0.38 val_win=0.00 val_kill=None",
+    "iteration 2/10: return=-1098.23 win_rate=0.00 policy_loss=-0.310 value_loss=1.3 ratio=0.995 clip=0.00 val_win=0.00 val_kill=None",
+    "iteration 3/10: return=-1093.35 win_rate=0.00 policy_loss=-0.262 value_loss=0.5 ratio=0.987 clip=0.00 val_win=0.00 val_kill=None",
+    "iteration 4/10: return=-1116.81 win_rate=0.00 policy_loss=-0.121 value_loss=0.1 ratio=0.992 clip=0.22 val_win=0.00 val_kill=None",
+    "iteration 5/10: return=-1072.95 win_rate=0.00 policy_loss=0.096 value_loss=0.1 ratio=0.970 clip=0.04 val_win=0.00 val_kill=None",
+    "iteration 6/10: return=-1088.91 win_rate=0.00 policy_loss=0.399 value_loss=0.1 ratio=1.009 clip=0.00 val_win=0.00 val_kill=None",
+    "iteration 7/10: return=-1102.50 win_rate=0.00 policy_loss=0.060 value_loss=0.0 ratio=1.058 clip=0.00 val_win=0.00 val_kill=None",
+    "iteration 8/10: return=-1128.11 win_rate=0.00 policy_loss=-0.169 value_loss=0.1 ratio=1.001 clip=0.00 val_win=0.00 val_kill=None",
+    "iteration 9/10: return=-1092.26 win_rate=0.00 policy_loss=0.166 value_loss=0.0 ratio=1.017 clip=0.00 val_win=0.00 val_kill=None",
+    "iteration 10/10: return=-1067.61 win_rate=0.00 policy_loss=0.000 value_loss=0.0 ratio=0.000 clip=0.00 val_win=0.00 val_kill=None"
+  ]
+}

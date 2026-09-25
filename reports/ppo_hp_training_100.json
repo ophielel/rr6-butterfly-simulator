@@ -1,0 +1,38 @@
+{
+  "status": "post-audit PPO training; 100 rollout episodes per scenario",
+  "checkpoint_base": "models/bc_post_audit.npz",
+  "infinite_ego_resources": true,
+  "experiments": {
+    "half": {
+      "scenario": "half",
+      "enemy_hp_scale": 0.5,
+      "training_report": "models/ppo_hp_half_100.json",
+      "checkpoint": "models/ppo_hp_half_100.npz",
+      "training_episodes": 100,
+      "training_win_rate": 0.01,
+      "validation_win_rate_by_iteration": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+      "evaluation_report": "reports/ppo_hp_half_100_eval/evaluation.json",
+      "evaluation_episodes": 100,
+      "evaluation_wins": 1,
+      "evaluation_win_rate": 0.01,
+      "evaluation_kill_turn_median": 8.0,
+      "restart_clear_rate": 0.01
+    },
+    "full": {
+      "scenario": "real",
+      "enemy_hp_scale": 1.0,
+      "training_report": "models/ppo_hp_full_100.json",
+      "checkpoint": "models/ppo_hp_full_100.npz",
+      "training_episodes": 100,
+      "training_win_rate": 0.0,
+      "validation_win_rate_by_iteration": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+      "evaluation_report": "reports/ppo_hp_full_100_eval/evaluation.json",
+      "evaluation_episodes": 100,
+      "evaluation_wins": 0,
+      "evaluation_win_rate": 0.0,
+      "evaluation_kill_turn_median": null,
+      "restart_clear_rate": 0.0
+    }
+  },
+  "caveat": "Both runs start from the same post-audit BC checkpoint; this is a separate 100-rollout PPO comparison, not a from-scratch BC retrain for each HP scale."
+}
