@@ -3,7 +3,7 @@
 Mirrors the phases of the project plan.  "Done" means implemented **and** covered
 by a test that cites a source in `docs/MECHANICS.md`.
 
-**Current state (2026-09-21):** all seven identities, the seven E.G.O and the
+**Current state (2026-09-26):** all seven identities, the seven E.G.O and the
 whole **Section 5 wave** (the Imago plus its three Illusory Butterfly allies) have
 **zero** unmodelled effect lines (see `docs/COVERAGE.md`); 147 Rust tests and the
 Python suites pass; Sinking Potency/Count are capped at the sourced default Max Value

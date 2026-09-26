@@ -2,7 +2,9 @@
 
 > 本文是本仓库从开始编写模拟器，到完成当前场景专属训练、DAgger 审计和完整血量评测的全过程记录。
 >
-> 截止版本：`5cadfbf`，分支：`main`，远程：`origin/main`。
+> 截止版本：post-fix cap/reward-removal update，分支：`main`，远程：`origin/main`。
+>
+> 对应提交：`fd7447b`（Sinking 上限、奖励消融、matched T1 artifacts）。
 >
 > 本文记录实现路径、证据来源、代码结构、修复过程、实验协议、结果、协议偏差和仍未解决的问题。它不是一份新的游戏规则表。逐条规则的来源和实现状态仍以 [`docs/MECHANICS.md`](MECHANICS.md) 为准，生成数据覆盖以 [`docs/COVERAGE.md`](COVERAGE.md) 为准，训练接口以 [`docs/TRAINING.md`](TRAINING.md) 和 [`docs/TRAINING_PLAN.md`](TRAINING_PLAN.md) 为准。
 
