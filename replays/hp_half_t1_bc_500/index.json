@@ -1,0 +1,39 @@
+{
+ "count": 1,
+ "entries": [
+  {
+   "file": "half_BC_seed42219.json",
+   "policy": "BC",
+   "scenario": "half",
+   "scenario_config": {
+    "name": "half",
+    "enemies": [
+     "9567",
+     "9572",
+     "9573",
+     "9574"
+    ],
+    "max_turns": 30,
+    "enemy_hp_scale": 0.5,
+    "strict": true,
+    "infinite_ego_resources": true,
+    "description": "the same wave with the scenario knob enemy_hp_scale=0.5 (Imago 12808 HP)"
+   },
+   "seed": 42219,
+   "won": true,
+   "kill_turn": 6,
+   "turns": 6,
+   "transition_hashes": [
+    "9650afc5b1fd9fbc",
+    "69d397e8ff501695",
+    "ab84062b4440c13a",
+    "b8133d67b41e7e26",
+    "05674d9eb3cd782c",
+    "1da62514a3717d19"
+   ],
+   "state_hash_before": "4ffd0051612c0bf2",
+   "state_hash_after": "f355573757aa92d4",
+   "replayable": true
+  }
+ ]
+}

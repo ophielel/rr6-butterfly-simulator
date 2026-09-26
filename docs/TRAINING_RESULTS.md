@@ -31,6 +31,27 @@
 - Separate 100-rollout PPO comparison: `reports/ppo_hp_training_100.json`. Half HP achieved 1/100 in matched evaluation; full HP achieved 0/100. Both runs record `infinite_ego_resources=true`. These are superseded by the scenario-specific run below.
 - Scenario-specific Teacher → BC → PPO run: `reports/ppo_hp_scenario_specific_1000.json`. Teacher used 200 episodes per scene, PPO used 1000 rollouts per scene, and one Teacher-demonstration constraint update per PPO iteration. Half HP reached 27/100 matched evaluation wins; full HP reached 0/100 because its Teacher produced 0/200 wins.
 
+## 0.2 T1 + curriculum run (current)
+
+The current, seed-separated result is summarized in `reports/ppo_hp_research_t1_curriculum.json`.
+The T1 Teacher budget is `horizon=4`, `plan_width=32`, `candidate_cap=6`, `turn_width=4`.
+
+| Scene / policy | Wins | Episodes | Rate | Wilson 95% CI |
+|---|---:|---:|---:|---|
+| Half T1 Teacher | 272 | 500 | 54.4% | — |
+| Half T1 BC | 93 | 500 | 18.6% | 15.4–22.2% |
+| Half plain PPO | 119 | 500 | 23.8% | 20.3–27.7% |
+| **Half PPO + Teacher demo** | **495** | **500** | **99.0%** | **97.7–99.6%** |
+| Full T1 Teacher | 2 | 500 | 0.4% | — |
+| Full direct PPO + Teacher demo | 212 | 500 | 42.4% | 38.1–46.8% |
+| **Full curriculum PPO (0.50→0.65→0.80→1.00)** | **406** | **500** | **81.2%** | **77.5–84.4%** |
+
+All final evaluations use new seed bands (`42001–42500` half and `43001–43500` full),
+`strict=true`, 30 turns, and `infinite_ego_resources=true`. The same full-HP seed band
+was used for direct PPO and curriculum PPO. DAgger was implemented and audited, but its
+sampled and argmax mixtures were neutral or negative on the fixed half-HP diagnostic band;
+it is retained as a negative ablation rather than selected by outcome.
+
 ## 1. 协议与样本量（§7 的"必须写明样本数"）
 
 | 项目 | 值 |

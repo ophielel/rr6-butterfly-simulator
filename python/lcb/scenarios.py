@@ -14,6 +14,8 @@ Every report records which scene it used:
   terminal win is reachable inside the team's lifetime, and the fastest kill is
   still produced by the real `Sinking -> E.G.O -> trigger` burst rather than by
   chip damage.
+* `curriculum_065` and `curriculum_080` - registered intermediate HP scenes for
+  curriculum experiments; they are not substitutes for the final `real` evaluation.
 
 The scale was chosen by a sweep with the Greedy baseline (cap 6, three seeds):
 `0.05` -> kill on turn 3 every time, `0.08` -> 2 of 3 wins on turn 3-4, `0.12` and
@@ -28,7 +30,7 @@ is a race the current content loses; a reachable terminal win is required to
 measure `kill_turn`, short-win rates and best-of-N at all.  The knob changes the
 HP pool and nothing else, and `provenance()` writes it into every report.
 
-All four formal research scenes enable `infinite_ego_resources=True`; this is an
+All formal research scenes enable `infinite_ego_resources=True`; this is an
 explicit experiment condition, not a game rule. `Scenario.enemy_hp_scale` is
 documented in `BattleConfig` as a scenario knob, not a game rule, and
 `provenance()` writes both settings into every report.
@@ -76,7 +78,21 @@ BURST = Scenario(
     description="the same wave with the scenario knob enemy_hp_scale=0.08 (Imago 2049 HP)",
 )
 
-SCENARIOS: Dict[str, Scenario] = {"real": REAL, "half": HALF, "short": SHORT, "burst": BURST}
+# Registered curriculum scenes. They change only the explicit HP scenario knob;
+# the final curriculum checkpoint is always evaluated on REAL.
+CURRICULUM_065 = Scenario(
+    name="curriculum_065", max_turns=30, enemy_hp_scale=0.65, strict=True,
+    infinite_ego_resources=True, description="curriculum intermediate HP scale 0.65",
+)
+CURRICULUM_080 = Scenario(
+    name="curriculum_080", max_turns=30, enemy_hp_scale=0.80, strict=True,
+    infinite_ego_resources=True, description="curriculum intermediate HP scale 0.80",
+)
+
+SCENARIOS: Dict[str, Scenario] = {
+    "real": REAL, "half": HALF, "short": SHORT, "burst": BURST,
+    "curriculum_065": CURRICULUM_065, "curriculum_080": CURRICULUM_080,
+}
 
 
 def scenario(name: str) -> Scenario:
@@ -85,4 +101,7 @@ def scenario(name: str) -> Scenario:
     return SCENARIOS[name]
 
 
-__all__ = ["REAL", "HALF", "SHORT", "BURST", "SCENARIOS", "scenario"]
+__all__ = [
+    "REAL", "HALF", "SHORT", "BURST", "CURRICULUM_065", "CURRICULUM_080",
+    "SCENARIOS", "scenario",
+]

@@ -41,6 +41,10 @@ def main() -> int:
     parser.add_argument("--val-seed-count", type=int, default=12)
     parser.add_argument("--require-bc-accuracy", type=float, default=0.2)
     parser.add_argument(
+        "--allow-non-bc-checkpoint", action="store_true",
+        help="allow curriculum fine-tuning from an earlier PPO checkpoint",
+    )
+    parser.add_argument(
         "--demo-data", nargs="+", default=[],
         help="scenario-matched Teacher dataset directories/files for replay constraint",
     )
@@ -60,11 +64,16 @@ def main() -> int:
         with report_path.open(encoding="utf-8") as handle:
             bc_report = json.load(handle)
         accuracy = bc_report.get("info", {}).get("val_accuracy", 0.0)
-        if accuracy < args.require_bc_accuracy:
+        if accuracy < args.require_bc_accuracy and not args.allow_non_bc_checkpoint:
             raise SystemExit(
                 f"BC validation accuracy {accuracy:.3f} < {args.require_bc_accuracy}; "
                 "the plan requires PPO to start from a policy that imitates the teacher"
             )
+    elif not args.allow_non_bc_checkpoint:
+        raise SystemExit(
+            f"missing BC report for {args.checkpoint}; use --allow-non-bc-checkpoint "
+            "only for an explicit curriculum continuation"
+        )
     encoder = Encoder()
     net = PolicyValueNet.load(args.checkpoint)
     seeds = list(range(args.seed_start, args.seed_start + args.seed_count))

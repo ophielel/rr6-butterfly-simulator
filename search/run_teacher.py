@@ -76,23 +76,30 @@ def main() -> int:
     parser.add_argument("--scenario", default="burst")
     parser.add_argument("--seed-start", type=int, default=1)
     parser.add_argument("--seed-count", type=int, default=40)
-    parser.add_argument("--horizon", type=int, default=3)
-    parser.add_argument("--plan-width", type=int, default=32)
-    parser.add_argument("--candidate-cap", type=int, default=6)
-    parser.add_argument("--turn-width", type=int, default=4)
-    parser.add_argument("--rollout-width", type=int, default=4)
+    parser.add_argument("--budget", choices=["custom", "t0", "t1", "t2"], default="custom")
+    parser.add_argument("--horizon", type=int, default=None)
+    parser.add_argument("--plan-width", type=int, default=None)
+    parser.add_argument("--candidate-cap", type=int, default=None)
+    parser.add_argument("--turn-width", type=int, default=None)
+    parser.add_argument("--rollout-width", type=int, default=None)
     parser.add_argument("--score-mode", default="heuristic", choices=["heuristic", "rollout"])
-    parser.add_argument("--max-turns", type=int, default=12)
+    parser.add_argument("--max-turns", type=int, default=None)
     parser.add_argument("--enemy-hp-scale", type=float, default=None,
                         help="overrides the scenario's own knobs when given")
     parser.add_argument("--jobs", type=int, default=1)
     parser.add_argument("--out", default=str(ROOT / "data" / "teacher"))
-    parser.add_argument("--infinite-ego-resources", action="store_true")
+    parser.add_argument(
+        "--infinite-ego-resources", action=argparse.BooleanOptionalAction, default=None,
+        help="override the scenario's E.G.O resource setting",
+    )
     args = parser.parse_args()
 
     from lcb.scenarios import scenario as get_scenario
 
+    from lcb.teacher import teacher_budget
+
     scene = get_scenario(args.scenario)
+    preset = teacher_budget(args.budget) if args.budget != "custom" else {}
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
     cfg = {
@@ -100,15 +107,20 @@ def main() -> int:
             args.enemy_hp_scale if args.enemy_hp_scale is not None else scene.enemy_hp_scale
         ),
         "scenario": args.scenario,
-        "horizon": args.horizon,
-        "plan_width": args.plan_width,
-        "candidate_cap": args.candidate_cap,
-        "turn_width": args.turn_width,
-        "rollout_width": args.rollout_width,
+        "budget": args.budget,
+        "horizon": args.horizon if args.horizon is not None else preset.get("horizon", 3),
+        "plan_width": args.plan_width if args.plan_width is not None else preset.get("plan_width", 32),
+        "candidate_cap": args.candidate_cap if args.candidate_cap is not None else preset.get("candidate_cap", 6),
+        "turn_width": args.turn_width if args.turn_width is not None else preset.get("turn_width", 4),
+        "rollout_width": args.rollout_width if args.rollout_width is not None else preset.get("rollout_width", 4),
         "score_mode": args.score_mode,
-        "max_turns": args.max_turns,
+        "max_turns": args.max_turns if args.max_turns is not None else scene.max_turns,
         "out": str(out),
-        "infinite_ego_resources": args.infinite_ego_resources,
+        "infinite_ego_resources": (
+            args.infinite_ego_resources
+            if args.infinite_ego_resources is not None
+            else scene.infinite_ego_resources
+        ),
     }
     seeds = list(range(args.seed_start, args.seed_start + args.seed_count))
     started = time.time()

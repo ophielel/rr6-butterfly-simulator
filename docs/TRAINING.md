@@ -46,10 +46,10 @@ reset(seed) -> 读取 observation -> 为全部角色选技能/目标/E.G.O
 | `python/lcb/nn.py` | 纯 NumPy 策略/价值网络（手写反向传播 + Adam），无 torch 依赖 |
 | `python/lcb/bc.py`, `python/lcb/ppo.py` | 阶段 B/C |
 | `python/lcb/dataset.py` | 教师样本的 npz 存取、**按 seed 切分**、`iter_decisions` |
-| `python/lcb/dagger.py` | DAgger-lite：在策略自己访问到的状态上请教师打标签 |
+| `training/run_dagger.py` | DAgger：在策略自己访问到的 clone 状态上请教师打标签 |
 | `python/lcb/evaluate.py` | §7 评测协议：`run_episode` / `summarise` / `best_of_n` / `provenance` |
 | `python/lcb/scenarios.py` | 评测场景（见 §4 的场景旋钮） |
-| `search/run_teacher.py`, `search/run_dagger.py` | 阶段 A 数据收集 CLI |
+| `search/run_teacher.py`, `training/run_dagger.py` | 阶段 A 数据收集 CLI |
 | `training/train_bc.py`, `training/train_ppo.py` | 阶段 B/C CLI |
 | `eval/run_eval.py` | 四策略评测 CLI，输出 `reports/*.jsonl` + `reports/evaluation.json` + `replays/` |
 
@@ -107,9 +107,9 @@ python search/run_teacher.py --scenario burst --seed-start 1 --seed-count 400 \
 # 2) 阶段 B：行为克隆
 python training/train_bc.py --data data/teacher_tree --out models/bc_tree.npz --epochs 14
 
-# 2b) 可选：DAgger-lite 一轮，再合并训练
-python search/run_dagger.py --checkpoint models/bc_tree.npz --out data/dagger1 \
-    --seed-start 2001 --seed-count 96 --policy-prob 0.5 --jobs 12
+# 2b) 可选：DAgger 一轮，再合并训练；Teacher 查询的是策略实际访问状态的 clone
+python training/run_dagger.py --checkpoint models/bc_tree.npz --out data/dagger1 \
+    --scenario burst --seed-start 2001 --seed-count 96 --teacher-budget t1 --jobs 4
 python training/train_bc.py --data data/teacher_tree data/dagger1 --out models/bc2.npz
 
 # 3) 阶段 C：PPO（从 BC 继续，验证带选 checkpoint）

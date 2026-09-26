@@ -20,7 +20,7 @@ sys.path.insert(0, str(ROOT / "python"))
 from lcb import dataset as ds  # noqa: E402
 from lcb.baselines import FirstLegalPolicy, GreedyPolicy, NeuralPolicy, RandomPolicy  # noqa: E402
 from lcb.env import LimbusEnv, SECTION5_WAVE  # noqa: E402
-from lcb.evaluate import Scenario, best_of_n, restart_aware, run_episode, summarise  # noqa: E402
+from lcb.evaluate import Scenario, best_of_n, restart_aware, run_episode, summarise, wilson_interval  # noqa: E402
 from lcb.features import Encoder, SkillTable  # noqa: E402
 from lcb.nn import PolicyValueNet  # noqa: E402
 import lcb.ppo as ppo_module  # noqa: E402
@@ -34,7 +34,7 @@ from lcb.plans import (  # noqa: E402
     first_legal_plan,
     group_candidates,
 )
-from lcb.teacher import BeamTeacher, TeacherConfig, detect_axis, detect_strategy_labels, encode_samples  # noqa: E402
+from lcb.teacher import BeamTeacher, TeacherConfig, detect_axis, detect_strategy_labels, encode_samples, teacher_budget  # noqa: E402
 
 SCENARIO = Scenario(name="test", max_turns=4, enemy_hp_scale=0.08)
 
@@ -56,6 +56,20 @@ def test_reward_credits_main_boss_hp_not_butterfly_damage() -> None:
         {"stats": {"damage_to_enemies": 101, "sinking_damage": 0}}, before, after
     )
     assert reward == -9.0
+
+
+def test_registered_budgets_and_wilson_interval() -> None:
+    assert teacher_budget("t1") == {
+        "horizon": 4,
+        "plan_width": 32,
+        "candidate_cap": 6,
+        "turn_width": 4,
+        "rollout_width": 4,
+    }
+    low, high = wilson_interval(0, 100)
+    assert low == 0.0 and high > 0.0
+    low, high = wilson_interval(100, 100)
+    assert low < 1.0 and high > 0.999
 
 
 def test_ppo_rollout_and_validation_propagate_infinite_ego_resources() -> None:

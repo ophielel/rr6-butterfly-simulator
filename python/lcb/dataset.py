@@ -11,6 +11,7 @@ The teacher writes `.npz` files with one row per **actor decision**:
 | `weight` | sample weight (§5) |
 | `actor` | position of the actor inside the turn (0 = first to choose) |
 | `seed` | episode seed; splits are **by seed**, never by neighbouring rows |
+| `turn` | simulator turn at which the decision was made |
 | `decision` | which turn-decision the row belongs to |
 
 `iter_decisions` turns the flat arrays back into the nested structure the policy

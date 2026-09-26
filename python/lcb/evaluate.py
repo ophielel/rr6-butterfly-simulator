@@ -177,6 +177,18 @@ def _percentile(values: Sequence[float], q: float) -> Optional[float]:
     return float(np.percentile(np.asarray(values, dtype=float), q))
 
 
+def wilson_interval(successes: int, total: int, z: float = 1.96) -> Tuple[float, float]:
+    """Two-sided Wilson score interval for a binomial rate."""
+    if total <= 0:
+        return (0.0, 1.0)
+    p = min(1.0, max(0.0, successes / total))
+    z2 = z * z
+    denominator = 1.0 + z2 / total
+    center = (p + z2 / (2.0 * total)) / denominator
+    margin = z * np.sqrt(p * (1.0 - p) / total + z2 / (4.0 * total * total)) / denominator
+    return (max(0.0, float(center - margin)), min(1.0, float(center + margin)))
+
+
 def summarise(records: Sequence[Dict[str, Any]], short_turn: Optional[int] = None) -> Dict[str, Any]:
     """The §7 metric block for one policy on one scenario."""
     total = len(records)
@@ -202,10 +214,12 @@ def summarise(records: Sequence[Dict[str, Any]], short_turn: Optional[int] = Non
         for r in failures
         if float(r.get("boss_hp_left") or 0) > 0.75 * float(r.get("boss_hp_start") or 1)
     ]
+    ci_low, ci_high = wilson_interval(len(wins), total)
     return {
         "episodes": total,
         "wins": len(wins),
         "win_rate": len(wins) / total,
+        "win_rate_wilson_95": [ci_low, ci_high],
         "kill_turn_mean": float(np.mean(kill_turns)) if kill_turns else None,
         "kill_turn_median": float(np.median(kill_turns)) if kill_turns else None,
         "kill_turn_p10": _percentile(kill_turns, 10),
@@ -422,6 +436,7 @@ __all__ = [
     "EpisodeRecord",
     "run_episode",
     "summarise",
+    "wilson_interval",
     "best_of_n",
     "restart_aware",
     "provenance",

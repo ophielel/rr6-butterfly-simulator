@@ -1,0 +1,132 @@
+{
+  "status": "post-audit T1 Teacher, PPO demonstration ablation, DAgger audit, and HP curriculum",
+  "protocol": {
+    "strict": true,
+    "infinite_ego_resources": true,
+    "max_turns": 30,
+    "final_evaluation_episodes": 500,
+    "final_half_seeds": "42001-42500",
+    "final_full_seeds": "43001-43500",
+    "seed_policy": "training, validation, DAgger, and final evaluation ranges are disjoint",
+    "teacher_budget": {"name": "t1", "horizon": 4, "plan_width": 32, "candidate_cap": 6, "turn_width": 4}
+  },
+  "teacher": {
+    "half": {
+      "scenario": "half",
+      "enemy_hp_scale": 0.5,
+      "episodes": 500,
+      "wins": 272,
+      "win_rate": 0.544,
+      "report": "data/teacher_t1_half_500/teacher_index.json"
+    },
+    "full": {
+      "scenario": "real",
+      "enemy_hp_scale": 1.0,
+      "episodes": 500,
+      "wins": 2,
+      "win_rate": 0.004,
+      "report": "data/teacher_t1_full_500/teacher_index.json"
+    },
+    "curriculum_065": {
+      "episodes": 200,
+      "wins": 17,
+      "win_rate": 0.085,
+      "report": "data/teacher_curriculum_065_200/teacher_index.json"
+    },
+    "curriculum_080": {
+      "episodes": 200,
+      "wins": 4,
+      "win_rate": 0.02,
+      "report": "data/teacher_curriculum_080_200/teacher_index.json"
+    }
+  },
+  "diagnostics": {
+    "half_t1_bc_validation_action_agreement": {
+      "top1": 0.781349405658798,
+      "top3": 0.9946425581784698,
+      "lowest_actor_position": {"actor": 2, "top1": 0.6059957173447538},
+      "report": "reports/agreement_hp_half_t1_500.json"
+    },
+    "full_t1_bc_validation_action_agreement": {
+      "top1": 0.7646234229641902,
+      "top3": 0.9927360774818402,
+      "lowest_actor_position": {"actor": 2, "top1": 0.5825874694873882},
+      "report": "reports/agreement_hp_full_t1_500.json"
+    },
+    "dagger": {
+      "sampled_round_1_half_same_seed_eval_wins": 6,
+      "argmax_round_1_half_same_seed_eval_wins": 21,
+      "argmax_round_2_half_same_seed_eval_wins": 19,
+      "base_t1_bc_same_seed_eval_wins": 23,
+      "interpretation": "DAgger states were collected and retained as an auditable negative ablation; neither tested mixture improved the fixed seed band, so they were not used for the final checkpoint.",
+      "sampled_round_1": "data/dagger_t1_half_r1_200/dagger_index.json",
+      "argmax_round_1": "data/dagger_t1_half_argmax_r1_200/dagger_index.json",
+      "argmax_round_2": "data/dagger_t1_half_argmax_r2_200/dagger_index.json"
+    }
+  },
+  "half_final_evaluation": {
+    "bc": {
+      "wins": 93,
+      "episodes": 500,
+      "win_rate": 0.186,
+      "report": "reports/hp_half_t1_bc_500/evaluation.json"
+    },
+    "ppo_plain": {
+      "wins": 119,
+      "episodes": 500,
+      "win_rate": 0.238,
+      "wilson_95": [0.20275841101838787, 0.2772368890918055],
+      "checkpoint": "models/ppo_hp_half_t1_plain_1000.npz",
+      "report": "reports/ppo_hp_half_t1_plain_1000_eval/evaluation.json"
+    },
+    "ppo_teacher_demo": {
+      "wins": 495,
+      "episodes": 500,
+      "win_rate": 0.99,
+      "wilson_95": [0.976806564621235, 0.9957213092184797],
+      "median_kill_turn": 5.0,
+      "checkpoint": "models/ppo_hp_half_t1_demo_3000.npz",
+      "report": "reports/ppo_hp_half_t1_demo_3000_eval/evaluation.json"
+    }
+  },
+  "full_final_evaluation": {
+    "bc": {
+      "wins": 1,
+      "episodes": 500,
+      "win_rate": 0.002,
+      "wilson_95": [0.000353127309584542, 0.011240992747195207],
+      "report": "reports/hp_full_t1_bc_500/evaluation.json"
+    },
+    "ppo_direct_teacher_demo": {
+      "wins": 212,
+      "episodes": 500,
+      "win_rate": 0.424,
+      "wilson_95": [0.38142335182762455, 0.46773559018907274],
+      "checkpoint": "models/ppo_hp_full_t1_demo_3000_v2.npz",
+      "report": "reports/ppo_hp_full_t1_demo_3000_v2_eval/evaluation.json",
+      "validation_seed_range": "40001-40100"
+    },
+    "ppo_curriculum": {
+      "curriculum": ["0.50", "0.65", "0.80", "1.00"],
+      "wins": 406,
+      "episodes": 500,
+      "win_rate": 0.812,
+      "wilson_95": [0.7754216622802987, 0.8438205757564177],
+      "median_kill_turn": 8.0,
+      "restart_clear_rate": 0.66,
+      "checkpoint": "models/ppo_curriculum_1000.npz",
+      "report": "reports/ppo_hp_full_curriculum_eval/evaluation.json",
+      "stages": {
+        "0.65": "models/ppo_curriculum_065_1000.json",
+        "0.80": "models/ppo_curriculum_080_1000.json",
+        "1.00": "models/ppo_curriculum_1000.json"
+      }
+    }
+  },
+  "interpretation": {
+    "half": "The 3000-rollout PPO with one Teacher demonstration update per iteration reaches 99.0% on 500 unseen half-HP seeds; plain PPO reaches 23.8% on the same seed band.",
+    "full": "Direct full-HP PPO reaches 42.4%; the registered 0.50→0.65→0.80→1.00 curriculum reaches 81.2% on the same 500 unseen real-HP seeds.",
+    "dagger": "The implemented DAgger path is correct and its negative result is retained. The sampled-policy mixture entered too many unrecoverable states; the argmax mixtures were neutral or slightly negative on the fixed band.",
+    "honesty": "No route-specific action was hard-coded. Both final policies use infinite E.G.O resources as an explicit scenario condition, and all final scores use enemy_hp_scale=0.5 or 1.0 exactly as reported."
+  }
+}

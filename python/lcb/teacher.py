@@ -136,9 +136,24 @@ def state_value(
 # ---------------------------------------------------------------------------
 
 
+TEACHER_BUDGETS: Dict[str, Dict[str, int]] = {
+    "t0": {"horizon": 3, "plan_width": 16, "candidate_cap": 4, "turn_width": 3, "rollout_width": 4},
+    "t1": {"horizon": 4, "plan_width": 32, "candidate_cap": 6, "turn_width": 4, "rollout_width": 4},
+    "t2": {"horizon": 5, "plan_width": 64, "candidate_cap": 8, "turn_width": 5, "rollout_width": 4},
+}
+
+
+def teacher_budget(name: str) -> Dict[str, int]:
+    """Return a named, pre-registered search budget."""
+    try:
+        return dict(TEACHER_BUDGETS[name.lower()])
+    except KeyError as exc:
+        raise ValueError(f"unknown Teacher budget {name!r}; choose {sorted(TEACHER_BUDGETS)}") from exc
+
+
 @dataclass
 class TeacherConfig:
-    """Search budget (the plan's baseline is `plan_width=32`, `horizon=3`)."""
+    """Search budget; formal runs should identify one of ``t0``/``t1``/``t2``."""
 
     horizon: int = 3
     plan_width: int = 32
@@ -538,6 +553,7 @@ def encode_samples(
     actors: List[int] = []
     seeds: List[int] = []
     decisions: List[int] = []
+    turns: List[int] = []
     decision_index = 0
     for sample in samples:
         state_vec = encoder.encode_state(sample.obs)
@@ -562,6 +578,7 @@ def encode_samples(
             weights.append(weight)
             actors.append(position)
             seeds.append(int(sample.seed))
+            turns.append(int(sample.turn))
             decisions.append(decision_index)
             chosen.append(sample.plan[position])
         decision_index += 1
@@ -574,6 +591,7 @@ def encode_samples(
             "weight": np.zeros((0,), dtype=np.float32),
             "actor": np.zeros((0,), dtype=np.int32),
             "seed": np.zeros((0,), dtype=np.int32),
+            "turn": np.zeros((0,), dtype=np.int32),
             "decision": np.zeros((0,), dtype=np.int32),
         }
     return {
@@ -584,6 +602,7 @@ def encode_samples(
         "weight": np.asarray(weights, dtype=np.float32),
         "actor": np.asarray(actors, dtype=np.int32),
         "seed": np.asarray(seeds, dtype=np.int32),
+        "turn": np.asarray(turns, dtype=np.int32),
         "decision": np.asarray(decisions, dtype=np.int32),
     }
 
@@ -602,4 +621,6 @@ __all__ = [
     "encode_samples",
     "imago",
     "AXIS_EGO",
+    "TEACHER_BUDGETS",
+    "teacher_budget",
 ]

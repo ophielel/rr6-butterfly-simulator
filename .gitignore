@@ -24,5 +24,9 @@ data/teacher*/seed_*.npz
 data/teacher*/**/seed_*.npz
 data/teacher*/replays/
 data/teacher*/**/replays/
+data/dagger*/seed_*.npz
+data/dagger*/**/seed_*.npz
+data/dagger*/replays/
+data/dagger*/**/replays/
 models/bc*.npz
 models/ppo*.npz
