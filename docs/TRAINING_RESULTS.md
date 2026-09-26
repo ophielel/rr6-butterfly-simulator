@@ -28,7 +28,8 @@
 - Burst (`enemy_hp_scale=0.08`, infinite E.G.O resources): Random 20%, FirstLegal 12%, Greedy 100%, Teacher 100%, BC 100%, PPO 100% wins over 50 seeds.
 - Real HP (`enemy_hp_scale=1.0`, Imago 25616 HP): all six policies had 0/50 wins. Thus N=1/5/10/20/50 restart clear rates are also 0 for this run; the real boss result is a failure to reach terminal victory, not a scaled-burst result.
 - Full summaries, configuration fingerprints, and restart windows: `reports/post_audit_summary.json`.
-- Separate 100-rollout PPO comparison: `reports/ppo_hp_training_100.json`. Half HP achieved 1/100 in matched evaluation; full HP achieved 0/100. Both runs record `infinite_ego_resources=true`.
+- Separate 100-rollout PPO comparison: `reports/ppo_hp_training_100.json`. Half HP achieved 1/100 in matched evaluation; full HP achieved 0/100. Both runs record `infinite_ego_resources=true`. These are superseded by the scenario-specific run below.
+- Scenario-specific Teacher → BC → PPO run: `reports/ppo_hp_scenario_specific_1000.json`. Teacher used 200 episodes per scene, PPO used 1000 rollouts per scene, and one Teacher-demonstration constraint update per PPO iteration. Half HP reached 27/100 matched evaluation wins; full HP reached 0/100 because its Teacher produced 0/200 wins.
 
 ## 1. 协议与样本量（§7 的"必须写明样本数"）
 

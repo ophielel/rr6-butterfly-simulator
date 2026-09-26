@@ -1,0 +1,68 @@
+{
+  "status": "post-audit scenario-specific training with corrected Boss-HP reward",
+  "reward_change": "DAMAGE_REWARD now uses actual Imago HP decrease, not aggregate damage to all enemies or 1 HP butterflies.",
+  "infinite_ego_resources": true,
+  "teacher": {
+    "half": {
+      "scenario": "half",
+      "enemy_hp_scale": 0.5,
+      "episodes": 200,
+      "wins": 77,
+      "win_rate": 0.385,
+      "data": "data/teacher_hp_half_200/teacher_index.json"
+    },
+    "full": {
+      "scenario": "real",
+      "enemy_hp_scale": 1.0,
+      "episodes": 200,
+      "wins": 0,
+      "win_rate": 0.0,
+      "data": "data/teacher_hp_full_200/teacher_index.json"
+    }
+  },
+  "bc": {
+    "half": {"checkpoint": "models/bc_hp_half_200.npz", "report": "models/bc_hp_half_200.json", "validation_accuracy": 0.579},
+    "full": {"checkpoint": "models/bc_hp_full_200.npz", "report": "models/bc_hp_full_200.json", "validation_accuracy": 0.580}
+  },
+  "matched_half_hp_baselines": {
+    "evaluation_report": "reports/half_hp_baselines_100/evaluation.json",
+    "episodes": 100,
+    "Greedy": {"wins": 25, "win_rate": 0.25, "restart_clear_rate": 0.24},
+    "BC": {"wins": 12, "win_rate": 0.12, "restart_clear_rate": 0.08}
+  },
+  "ppo": {
+    "common": {
+      "rollout_episodes": 1000,
+      "teacher_demonstration_updates_per_iteration": 1,
+      "teacher_demo_batch_decisions": 32,
+      "starting_checkpoint": "scenario-specific BC"
+    },
+    "half": {
+      "scenario": "half",
+      "enemy_hp_scale": 0.5,
+      "checkpoint": "models/ppo_hp_half_teacher_demo_1000.npz",
+      "report": "models/ppo_hp_half_teacher_demo_1000.json",
+      "training_win_rate": 0.101,
+      "best_validation_win_rate": 0.25,
+      "evaluation_report": "reports/ppo_hp_half_teacher_demo_1000_eval/evaluation.json",
+      "evaluation_episodes": 100,
+      "evaluation_wins": 27,
+      "evaluation_win_rate": 0.27,
+      "restart_clear_rate": 0.26
+    },
+    "full": {
+      "scenario": "real",
+      "enemy_hp_scale": 1.0,
+      "checkpoint": "models/ppo_hp_full_teacher_demo_1000.npz",
+      "report": "models/ppo_hp_full_teacher_demo_1000.json",
+      "training_win_rate": 0.002,
+      "best_validation_win_rate": 0.0,
+      "evaluation_report": "reports/ppo_hp_full_teacher_demo_1000_eval/evaluation.json",
+      "evaluation_episodes": 100,
+      "evaluation_wins": 0,
+      "evaluation_win_rate": 0.0,
+      "restart_clear_rate": 0.0
+    }
+  },
+  "interpretation": "The half-HP result improves over the earlier 1/100 transfer run without changing the simulator rules or injecting a route label. Full HP remains unsupported by the current Teacher: 0/200 Teacher wins, so PPO has no positive terminal demonstrations to imitate."
+}

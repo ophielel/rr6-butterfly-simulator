@@ -24,6 +24,7 @@ from lcb.evaluate import Scenario, best_of_n, restart_aware, run_episode, summar
 from lcb.features import Encoder, SkillTable  # noqa: E402
 from lcb.nn import PolicyValueNet  # noqa: E402
 import lcb.ppo as ppo_module  # noqa: E402
+from lcb.rewards import compute_reward  # noqa: E402
 from lcb.stdio_client import StdioSimulator  # noqa: E402
 from lcb.plans import (  # noqa: E402
     PlanGenerator,
@@ -36,6 +37,25 @@ from lcb.plans import (  # noqa: E402
 from lcb.teacher import BeamTeacher, TeacherConfig, detect_axis, detect_strategy_labels, encode_samples  # noqa: E402
 
 SCENARIO = Scenario(name="test", max_turns=4, enemy_hp_scale=0.08)
+
+
+def test_reward_credits_main_boss_hp_not_butterfly_damage() -> None:
+    before = {
+        "units": [
+            {"id": "boss", "kind": "enemy", "max_hp": 1000, "hp": 1000},
+            {"id": "butterfly", "kind": "enemy", "max_hp": 1, "hp": 1},
+        ]
+    }
+    after = {
+        "units": [
+            {"id": "boss", "kind": "enemy", "max_hp": 1000, "hp": 900},
+            {"id": "butterfly", "kind": "enemy", "max_hp": 1, "hp": 0},
+        ]
+    }
+    reward = compute_reward(
+        {"stats": {"damage_to_enemies": 101, "sinking_damage": 0}}, before, after
+    )
+    assert reward == -9.0
 
 
 def test_ppo_rollout_and_validation_propagate_infinite_ego_resources() -> None:

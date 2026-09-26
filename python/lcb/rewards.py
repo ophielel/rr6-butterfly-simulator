@@ -8,7 +8,7 @@ Boss kill                     +1000
 every turn                    -10
 ally death                    -30
 team wipe                     -1000
-Boss HP actually lost         +0.01 * damage
+Boss HP actually lost         +0.01 * Imago HP delta
 Sinking trigger damage        +0.02 * sinking_damage
 ```
 
@@ -36,13 +36,10 @@ def _unit_map(obs: Dict[str, Any]) -> Dict[str, Dict[str, Any]]:
 
 
 def _boss_hp(obs: Dict[str, Any]) -> float:
-    """HP of the encounter's main enemy (the Imago), summed over all enemies."""
-    total = 0.0
-    for unit in obs.get("units", []):
-        if unit.get("kind") == "sinner":
-            continue
-        total += float(unit.get("hp") or 0)
-    return total
+    """HP of the main enemy, selected by the largest max-HP unit."""
+    enemies = [unit for unit in obs.get("units", []) if unit.get("kind") != "sinner"]
+    boss = max(enemies, key=lambda unit: float(unit.get("max_hp") or 0), default=None)
+    return float((boss or {}).get("hp") or 0.0)
 
 
 def compute_reward(
@@ -53,7 +50,8 @@ def compute_reward(
     reward = TURN_PENALTY
     if after is None:
         return reward
-    reward += DAMAGE_REWARD * float(stats.get("damage_to_enemies") or 0.0)
+    boss_delta = max(0.0, _boss_hp(before) - _boss_hp(after))
+    reward += DAMAGE_REWARD * boss_delta
     reward += SINKING_DAMAGE_REWARD * float(stats.get("sinking_damage") or 0.0)
     before_units = _unit_map(before)
     for unit_id in stats.get("deaths") or []:

@@ -43,6 +43,10 @@ class PPOConfig:
     #: (0 = keep the last one).  The test band is never touched here.
     validation_seeds: Tuple[int, ...] = ()
     validation_episodes: int = 0
+    #: Optional Teacher replay constraint. Zero keeps pure PPO; formal
+    #: scenario-specific runs use one small BC update per iteration.
+    demo_updates_per_iteration: int = 0
+    demo_batch_decisions: int = 32
 
 
 @dataclass
@@ -52,6 +56,7 @@ class PPOHistory:
     win_rate: List[float] = field(default_factory=list)
     policy_loss: List[float] = field(default_factory=list)
     value_loss: List[float] = field(default_factory=list)
+    demo_loss: List[float] = field(default_factory=list)
     ratio: List[float] = field(default_factory=list)
     clip_fraction: List[float] = field(default_factory=list)
     validation_win_rate: List[float] = field(default_factory=list)
@@ -154,16 +159,34 @@ def train_ppo(
     seeds: Sequence[int],
     config: Optional[PPOConfig] = None,
     log: Optional[List[str]] = None,
+    demonstrations: Sequence[ds.Decision] = (),
 ) -> Tuple[PolicyValueNet, PPOHistory, Dict[str, Any]]:
     config = config or PPOConfig()
     history = PPOHistory()
     rng = np.random.default_rng(config.seed)
     seed_pool = list(seeds)
-    info: Dict[str, Any] = {"episodes": 0, "returns": [], "wins": 0}
+    if not seed_pool:
+        raise ValueError("PPO needs at least one training seed")
+    seed_order: List[int] = []
+    seed_cursor = 0
+    # The CLI learning-rate flag must affect a loaded BC checkpoint too.
+    net.lr = config.learning_rate
+    net.value_lr = config.learning_rate
+    info: Dict[str, Any] = {
+        "episodes": 0,
+        "returns": [],
+        "wins": 0,
+        "demonstration_decisions": len(demonstrations),
+    }
     for iteration in range(config.iterations):
         rollouts: List[Tuple[List[TurnRecord], Dict[str, Any]]] = []
         for _ in range(config.episodes_per_iteration):
-            seed = int(rng.choice(seed_pool))
+            if seed_cursor >= len(seed_order):
+                seed_order = list(seed_pool)
+                rng.shuffle(seed_order)
+                seed_cursor = 0
+            seed = seed_order[seed_cursor]
+            seed_cursor += 1
             rollouts.append(collect_episode(net, encoder, scenario, seed, rng))
         info["episodes"] += len(rollouts)
         info["wins"] += sum(1 for _, summary in rollouts if summary["won"])
@@ -199,6 +222,20 @@ def train_ppo(
             for start in range(0, len(order), 32):
                 batch = [decisions[i] for i in order[start : start + 32]]
                 policy_stats = net.ppo_update(batch, clip=config.clip)
+        demo_loss = 0.0
+        if demonstrations and config.demo_updates_per_iteration > 0:
+            demo_losses: List[float] = []
+            for _ in range(config.demo_updates_per_iteration):
+                if len(demonstrations) <= config.demo_batch_decisions:
+                    demo_batch = list(demonstrations)
+                else:
+                    demo_indices = rng.choice(
+                        len(demonstrations), config.demo_batch_decisions, replace=False
+                    )
+                    demo_batch = [demonstrations[int(index)] for index in demo_indices]
+                demo_losses.append(net.bc_update(demo_batch))
+            demo_loss = float(np.mean(demo_losses)) if demo_losses else 0.0
+
         value_loss = 0.0
         order = rng.permutation(len(values))
         for start in range(0, len(order), 32):
@@ -212,6 +249,7 @@ def train_ppo(
         )
         history.policy_loss.append(float(policy_stats["loss"]))
         history.value_loss.append(float(value_loss))
+        history.demo_loss.append(demo_loss)
         history.ratio.append(float(policy_stats["ratio"]))
         history.clip_fraction.append(float(policy_stats["clip_frac"]))
         if log is not None:
@@ -239,6 +277,7 @@ def train_ppo(
                 f"iteration {iteration + 1}/{config.iterations}: "
                 f"return={history.mean_return[-1]:.2f} win_rate={history.win_rate[-1]:.2f} "
                 f"policy_loss={history.policy_loss[-1]:.3f} value_loss={history.value_loss[-1]:.1f} "
+                f"demo_loss={history.demo_loss[-1]:.3f} "
                 f"ratio={history.ratio[-1]:.3f} clip={history.clip_fraction[-1]:.2f}"
             )
             if config.validation_seeds:

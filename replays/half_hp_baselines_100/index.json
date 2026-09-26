@@ -1,0 +1,72 @@
+{
+ "count": 2,
+ "entries": [
+  {
+   "file": "half_BC_seed26051.json",
+   "policy": "BC",
+   "scenario": "half",
+   "scenario_config": {
+    "name": "half",
+    "enemies": [
+     "9567",
+     "9572",
+     "9573",
+     "9574"
+    ],
+    "max_turns": 30,
+    "enemy_hp_scale": 0.5,
+    "strict": true,
+    "infinite_ego_resources": true,
+    "description": "the same wave with the scenario knob enemy_hp_scale=0.5 (Imago 12808 HP)"
+   },
+   "seed": 26051,
+   "won": true,
+   "kill_turn": 6,
+   "turns": 6,
+   "transition_hashes": [
+    "ca0f2d729b47164f",
+    "e58db654c46877d5",
+    "af3f883380ae01b4",
+    "6c56a89cdc178b4d",
+    "beae86c6bc2b2fa8",
+    "e98e3aa485bda167"
+   ],
+   "state_hash_before": "e3c119a49852ee61",
+   "state_hash_after": "6282b98d61ae84e1",
+   "replayable": true
+  },
+  {
+   "file": "half_Greedy_seed26004.json",
+   "policy": "Greedy",
+   "scenario": "half",
+   "scenario_config": {
+    "name": "half",
+    "enemies": [
+     "9567",
+     "9572",
+     "9573",
+     "9574"
+    ],
+    "max_turns": 30,
+    "enemy_hp_scale": 0.5,
+    "strict": true,
+    "infinite_ego_resources": true,
+    "description": "the same wave with the scenario knob enemy_hp_scale=0.5 (Imago 12808 HP)"
+   },
+   "seed": 26004,
+   "won": true,
+   "kill_turn": 5,
+   "turns": 5,
+   "transition_hashes": [
+    "31d59d4748a359c0",
+    "cedacbf0dd5dfa39",
+    "8c498ebcf18cd463",
+    "ccc934ef0b1271c4",
+    "19bb8d4e7c1d610d"
+   ],
+   "state_hash_before": "6a0d6e94a2d60b2e",
+   "state_hash_after": "a5ed9d4d3fc280e6",
+   "replayable": true
+  }
+ ]
+}

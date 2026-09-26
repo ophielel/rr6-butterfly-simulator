@@ -40,8 +40,15 @@ def main() -> int:
     parser.add_argument("--val-seed-start", type=int, default=8001)
     parser.add_argument("--val-seed-count", type=int, default=12)
     parser.add_argument("--require-bc-accuracy", type=float, default=0.2)
+    parser.add_argument(
+        "--demo-data", nargs="+", default=[],
+        help="scenario-matched Teacher dataset directories/files for replay constraint",
+    )
+    parser.add_argument("--demo-updates-per-iteration", type=int, default=0)
+    parser.add_argument("--demo-batch-decisions", type=int, default=32)
     args = parser.parse_args()
 
+    from lcb import dataset as ds
     from lcb.evaluate import write_json
     from lcb.features import Encoder
     from lcb.nn import PolicyValueNet
@@ -61,6 +68,17 @@ def main() -> int:
     encoder = Encoder()
     net = PolicyValueNet.load(args.checkpoint)
     seeds = list(range(args.seed_start, args.seed_start + args.seed_count))
+    demo_files = []
+    for entry in args.demo_data:
+        path = Path(entry)
+        found = sorted(path.glob("seed_*.npz")) if path.is_dir() else [path]
+        if not found:
+            raise SystemExit(f"no Teacher .npz files in {entry}")
+        demo_files.extend(found)
+    demonstrations = []
+    if demo_files:
+        demo_arrays = ds.merge([ds.load_dataset(path) for path in demo_files])
+        demonstrations = list(ds.iter_decisions(demo_arrays))
     log = []
     started = time.time()
     net, history, info = train_ppo(
@@ -80,8 +98,11 @@ def main() -> int:
                 range(args.val_seed_start, args.val_seed_start + args.val_seed_count)
             ),
             validation_episodes=args.val_seed_count,
+            demo_updates_per_iteration=args.demo_updates_per_iteration,
+            demo_batch_decisions=args.demo_batch_decisions,
         ),
         log=log,
+        demonstrations=demonstrations,
     )
     net.save(args.out)
     write_json(
@@ -89,6 +110,11 @@ def main() -> int:
         {
             "scenario": args.scenario,
             "scenario_config": scenario(args.scenario).to_dict(),
+            "demonstrations": {
+                "files": len(demo_files),
+                "decisions": len(demonstrations),
+                "updates_per_iteration": args.demo_updates_per_iteration,
+            },
             "seeds": {"first": min(seeds), "last": max(seeds), "count": len(seeds)},
             "config": vars(args),
             "history": {
@@ -97,6 +123,7 @@ def main() -> int:
                 "win_rate": history.win_rate,
                 "policy_loss": history.policy_loss,
                 "value_loss": history.value_loss,
+                "demo_loss": history.demo_loss,
                 "ratio": history.ratio,
                 "clip_fraction": history.clip_fraction,
                 "validation_win_rate": history.validation_win_rate,
