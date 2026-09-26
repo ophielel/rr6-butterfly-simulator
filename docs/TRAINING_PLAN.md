@@ -88,11 +88,10 @@ Boss 击杀                         +1000
 每经过一回合                       -10
 我方角色死亡                       -30
 团灭                              -1000
-Boss HP 实际下降                    +0.01 * damage
-真实 Sinking 触发造成的伤害          +0.02 * sinking_damage
+Boss HP 实际下降                    +0.01 * Imago HP delta
 ```
 
-不要给“增加 Potency/Count”过高的独立奖励，否则会学出无限叠层而不收割。过程奖励只能辅助 credit assignment，终局胜利和速度始终占主导。
+旧版实验曾将真实 Sinking 触发伤害以 `+0.02 * sinking_damage` 加入 reward；该 shaping 项已在奖励审计后移除。`sinking_damage` 继续作为真实模拟统计和评测指标保存，但不能直接提高训练 reward。不要给“增加 Potency/Count”过高的独立奖励，否则会学出无限叠层而不收割。过程奖励只能辅助 credit assignment，终局胜利和速度始终占主导。
 
 搜索和训练分别保存以下指标，避免把单回合伤害误当最终目标：
 

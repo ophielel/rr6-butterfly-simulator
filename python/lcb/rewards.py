@@ -9,7 +9,6 @@ every turn                    -10
 ally death                    -30
 team wipe                     -1000
 Boss HP actually lost         +0.01 * Imago HP delta
-Sinking trigger damage        +0.02 * sinking_damage
 ```
 
 Death and kill speed dominate; the process terms only help credit assignment,
@@ -28,7 +27,6 @@ TURN_PENALTY = -10.0
 DEATH_PENALTY = -30.0
 WIPE_PENALTY = -1000.0
 DAMAGE_REWARD = 0.01
-SINKING_DAMAGE_REWARD = 0.02
 
 
 def _unit_map(obs: Dict[str, Any]) -> Dict[str, Dict[str, Any]]:
@@ -52,7 +50,8 @@ def compute_reward(
         return reward
     boss_delta = max(0.0, _boss_hp(before) - _boss_hp(after))
     reward += DAMAGE_REWARD * boss_delta
-    reward += SINKING_DAMAGE_REWARD * float(stats.get("sinking_damage") or 0.0)
+    # Sinking damage remains an evaluation statistic, but is not a shaping
+    # term.  The policy must receive credit through the actual Imago HP delta.
     before_units = _unit_map(before)
     for unit_id in stats.get("deaths") or []:
         unit = before_units.get(unit_id)
@@ -135,5 +134,4 @@ __all__ = [
     "DEATH_PENALTY",
     "WIPE_PENALTY",
     "DAMAGE_REWARD",
-    "SINKING_DAMAGE_REWARD",
 ]

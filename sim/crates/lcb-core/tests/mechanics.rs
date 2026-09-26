@@ -3907,10 +3907,73 @@ fn clash_level_bonus_uses_both_attack_levels() {
     );
 }
 
+#[test]
+fn sinking_potency_is_capped_at_99_in_all_status_entry_points() {
+    use lcb_core::state::{StatusInstance, StatusSet, SINKING_MAX_VALUE};
+
+    let mut statuses = StatusSet::default();
+    statuses.add_potency("Sinking", 150);
+    assert_eq!(statuses.potency("Sinking"), SINKING_MAX_VALUE);
+    statuses.add_potency("Sinking", 10);
+    assert_eq!(statuses.potency("Sinking"), SINKING_MAX_VALUE);
+    statuses.add_potency("Sinking", -20);
+    assert_eq!(statuses.potency("Sinking"), 79);
+
+    statuses.set(
+        "Sinking",
+        StatusInstance {
+            potency: 150,
+            count: 150,
+            stack: 0,
+        },
+    );
+    assert_eq!(statuses.potency("Sinking"), SINKING_MAX_VALUE);
+    assert_eq!(statuses.count("Sinking"), SINKING_MAX_VALUE);
+
+    let loaded: StatusSet =
+        serde_json::from_str(r#"{"map":{"Sinking":{"potency":150,"count":150,"stack":0}}}"#)
+            .unwrap();
+    assert_eq!(loaded.potency("Sinking"), SINKING_MAX_VALUE);
+    assert_eq!(loaded.count("Sinking"), SINKING_MAX_VALUE);
+}
+
 /// A status whose Count is consumed to 0 is removed, so it stops triggering.
 /// Source: wiki.gg `Status Effects` (Overview): "In single-value or double-value
 /// modes, if one or more of the values reach 0, the status effect is removed
 /// from the unit."
+#[test]
+fn sinking_gain_reports_only_the_amount_that_fits_under_the_cap() {
+    use lcb_core::effects::Effect;
+    use lcb_core::state::SINKING_MAX_VALUE;
+
+    let sim = sim();
+    let mut state = sim
+        .new_encounter(
+            &[fixed::TEAM[0]],
+            &[fixed::BOSS_IMAGO],
+            3,
+            BattleConfig::default(),
+        )
+        .unwrap();
+    state.units[1].statuses.add_potency("Sinking", 98);
+    let effects = [Effect {
+        kind: "inflict".to_string(),
+        status: Some("Sinking".to_string()),
+        potency: Some(5),
+        ..Default::default()
+    }];
+    let mut notes = Vec::new();
+    let mut ctx = battle::UseContext::default();
+    battle::apply_effects_for_test(&mut state, &effects, 0, Some(1), &mut notes, &mut ctx);
+
+    assert_eq!(
+        state.units[1].statuses.potency("Sinking"),
+        SINKING_MAX_VALUE
+    );
+    assert_eq!(state.status_gain_events.len(), 1);
+    assert_eq!(state.status_gain_events[0].potency_delta, 1);
+}
+
 #[test]
 fn sinking_stops_once_its_count_is_gone() {
     let sim = sim();

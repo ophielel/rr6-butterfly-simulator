@@ -1,0 +1,212 @@
+{
+  "status": "post-fix matched T1 reward ablation",
+  "scope": "Sinking Max Value cap plus removal of sinking_damage from training reward",
+  "code_changes": {
+    "sinking_max_value": 99,
+    "capped_paths": [
+      "StatusSet.add_potency",
+      "StatusSet.add_count",
+      "StatusSet.set",
+      "StatusSet.deserialize",
+      "StatusSet.clamp_potency",
+      "StatusSet.clamp_count"
+    ],
+    "status_gain_events_report_actual_delta": true,
+    "reward_before": {
+      "damage_reward": 0.01,
+      "sinking_damage_reward": 0.02
+    },
+    "reward_after": {
+      "damage_reward": 0.01,
+      "sinking_damage_reward": 0.0
+    },
+    "sinking_damage_remains_evaluation_stat": true
+  },
+  "protocol": {
+    "strict": true,
+    "max_turns": 30,
+    "infinite_ego_resources": true,
+    "teacher_budget": "t1",
+    "teacher_seeds_half": "30001-30500",
+    "teacher_seeds_full": "31001-31500",
+    "ppo_seeds_half": "35001-38000",
+    "ppo_seeds_full": "37001-40000",
+    "validation_seeds_half": "38001-38100",
+    "validation_seeds_full": "40001-40100",
+    "holdout_half": "42001-42500",
+    "holdout_full": "43001-43500",
+    "paired_with_pre_fix": true
+  },
+  "teacher": {
+    "half": {
+      "before": {
+        "wins": 272,
+        "episodes": 500,
+        "win_rate": 0.544,
+        "peak_sinking_potency_max": 146,
+        "episodes_over_99": 16
+      },
+      "after": {
+        "wins": 310,
+        "episodes": 500,
+        "win_rate": 0.62,
+        "peak_sinking_potency_max": 99,
+        "episodes_over_99": 0
+      }
+    },
+    "full": {
+      "before": {
+        "wins": 2,
+        "episodes": 500,
+        "win_rate": 0.004,
+        "peak_sinking_potency_max": 203,
+        "episodes_over_99": 110
+      },
+      "after": {
+        "wins": 1,
+        "episodes": 500,
+        "win_rate": 0.002,
+        "peak_sinking_potency_max": 99,
+        "episodes_over_99": 0
+      }
+    }
+  },
+  "cap_verification": {
+    "teacher": {
+      "half_before": {"peak_sinking_potency_max": 146, "episodes_over_99": 16},
+      "full_before": {"peak_sinking_potency_max": 203, "episodes_over_99": 110},
+      "half_after": {"peak_sinking_potency_max": 99, "episodes_over_99": 0},
+      "full_after": {"peak_sinking_potency_max": 99, "episodes_over_99": 0}
+    },
+    "holdout": {
+      "BC_half_before": {"peak_sinking_potency_max": 141, "episodes_over_99": 59},
+      "BC_full_before": {"peak_sinking_potency_max": 196, "episodes_over_99": 118},
+      "PPO_half_before": {"peak_sinking_potency_max": 163, "episodes_over_99": 458},
+      "PPO_full_before": {"peak_sinking_potency_max": 263, "episodes_over_99": 500},
+      "BC_half_after": {"peak_sinking_potency_max": 99, "episodes_over_99": 0},
+      "BC_full_after": {"peak_sinking_potency_max": 99, "episodes_over_99": 0},
+      "PPO_half_after": {"peak_sinking_potency_max": 99, "episodes_over_99": 0},
+      "PPO_full_after": {"peak_sinking_potency_max": 99, "episodes_over_99": 0}
+    }
+  },
+  "bc_validation_accuracy": {
+    "half": {
+      "before": 0.575590155700653,
+      "after": 0.5704609284652239
+    },
+    "full": {
+      "before": 0.5738498789346247,
+      "after": 0.5717475614055706
+    }
+  },
+  "holdout": {
+    "half": {
+      "BC": {
+        "before": {
+          "wins": 93,
+          "episodes": 500,
+          "win_rate": 0.186,
+          "wilson_95": [0.15433345489426237, 0.22245480554314495],
+          "median_kill_turn": 8.0
+        },
+        "after": {
+          "wins": 89,
+          "episodes": 500,
+          "win_rate": 0.178,
+          "wilson_95": [0.14696436225520904, 0.2139458920786927],
+          "median_kill_turn": 8.0
+        }
+      },
+      "PPO_teacher_demo": {
+        "before": {
+          "wins": 495,
+          "episodes": 500,
+          "win_rate": 0.99,
+          "wilson_95": [0.976806564621235, 0.9957213092184797],
+          "median_kill_turn": 5.0,
+          "peak_sinking_potency_mean": 117.278
+        },
+        "after": {
+          "wins": 168,
+          "episodes": 500,
+          "win_rate": 0.336,
+          "wilson_95": [0.29598730030060416, 0.3785135745775322],
+          "median_kill_turn": 7.0,
+          "peak_sinking_potency_mean": 74.458
+        }
+      }
+    },
+    "full": {
+      "BC": {
+        "before": {
+          "wins": 1,
+          "episodes": 500,
+          "win_rate": 0.002,
+          "wilson_95": [0.000353127309584542, 0.011240992747195207],
+          "median_kill_turn": 12.0
+        },
+        "after": {
+          "wins": 1,
+          "episodes": 500,
+          "win_rate": 0.002,
+          "wilson_95": [0.000353127309584542, 0.011240992747195207],
+          "median_kill_turn": 13.0
+        }
+      },
+      "PPO_teacher_demo": {
+        "before": {
+          "wins": 212,
+          "episodes": 500,
+          "win_rate": 0.424,
+          "wilson_95": [0.38142335182762455, 0.46773559018907274],
+          "median_kill_turn": 7.0,
+          "peak_sinking_potency_mean": 214.218
+        },
+        "after": {
+          "wins": 1,
+          "episodes": 500,
+          "win_rate": 0.002,
+          "wilson_95": [0.000353127309584542, 0.011240992747195207],
+          "median_kill_turn": 12.0,
+          "peak_sinking_potency_mean": 76.224
+        }
+      }
+    }
+  },
+  "artifacts": {
+    "teacher_half_before": "data/teacher_t1_half_500/teacher_index.json",
+    "teacher_half_after": "data/teacher_t1_half_500_nosinking_reward/teacher_index.json",
+    "teacher_full_before": "data/teacher_t1_full_500/teacher_index.json",
+    "teacher_full_after": "data/teacher_t1_full_500_nosinking_reward/teacher_index.json",
+    "bc_half_before": "models/bc_hp_half_t1_500.json",
+    "bc_full_before": "models/bc_hp_full_t1_500.json",
+    "bc_half_after": "models/bc_hp_half_t1_500_nosinking_reward.json",
+    "bc_full_after": "models/bc_hp_full_t1_500_nosinking_reward.json",
+    "ppo_half_before": "models/ppo_hp_half_t1_demo_3000.json",
+    "ppo_full_before": "models/ppo_hp_full_t1_demo_3000_v2.json",
+    "ppo_half_after": "models/ppo_hp_half_t1_demo_3000_nosinking_reward.json",
+    "ppo_full_after": "models/ppo_hp_full_t1_demo_3000_nosinking_reward.json",
+    "bc_holdout_half_before": "reports/hp_half_t1_bc_500/evaluation.json",
+    "bc_holdout_full_before": "reports/hp_full_t1_bc_500/evaluation.json",
+    "bc_holdout_half_after": "reports/hp_half_t1_nosinking_reward_500/evaluation.json",
+    "bc_holdout_full_after": "reports/hp_full_t1_nosinking_reward_500/evaluation.json",
+    "ppo_holdout_half_before": "reports/ppo_hp_half_t1_demo_3000_eval/evaluation.json",
+    "ppo_holdout_full_before": "reports/ppo_hp_full_t1_demo_3000_v2_eval/evaluation.json",
+    "ppo_holdout_half_after": "reports/ppo_hp_half_t1_demo_3000_nosinking_reward_eval/evaluation.json",
+    "ppo_holdout_full_after": "reports/ppo_hp_full_t1_demo_3000_nosinking_reward_eval/evaluation.json"
+  },
+  "interpretation": [
+    "The cap fix removes the observed over-99 Potency states: old matched Teacher data peaked at 146 (half) and 203 (full), while every new Teacher and holdout row stayed at or below 99.",
+    "Removing the direct Sinking-trigger reward reduced matched direct PPO holdout wins from 495/500 to 168/500 in half HP and from 212/500 to 1/500 in full HP.",
+    "This is a matched direct T1 demonstration ablation, not a rerun of the old 0.50 -> 0.65 -> 0.80 -> 1.00 curriculum. The old curriculum result remains historical and must not be merged with this post-fix run.",
+    "Sinking damage remains in EpisodeStats and evaluation summaries for diagnosis, but compute_reward no longer reads it."
+  ],
+  "tests": {
+    "rust_command": "cargo test --manifest-path sim/Cargo.toml",
+    "rust_mechanics_tests_after": 120,
+    "python_training_command": "python python/tests/test_training.py",
+    "python_training_failures": 0,
+    "python_env_command": "python python/tests/test_env.py",
+    "python_env_failures": 0
+  }
+}

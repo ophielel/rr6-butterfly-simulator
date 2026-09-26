@@ -1,0 +1,46 @@
+{
+ "count": 1,
+ "entries": [
+  {
+   "file": "real_BC_seed43380.json",
+   "policy": "BC",
+   "scenario": "real",
+   "scenario_config": {
+    "name": "real",
+    "enemies": [
+     "9567",
+     "9572",
+     "9573",
+     "9574"
+    ],
+    "max_turns": 30,
+    "enemy_hp_scale": 1.0,
+    "strict": true,
+    "infinite_ego_resources": true,
+    "description": "Line 6 Section 5 wave exactly as the data describes it (Imago 25616 HP)"
+   },
+   "seed": 43380,
+   "won": true,
+   "kill_turn": 13,
+   "turns": 13,
+   "transition_hashes": [
+    "20d9db59cb219126",
+    "a0f274800eb58154",
+    "7a4eddc60c4ef7b4",
+    "c5a5eb2adce02934",
+    "a9aa6f9f4dfc6793",
+    "755587eb0c4ae1fb",
+    "3167ab197c9db506",
+    "5d13d34409b75009",
+    "f8521c6067b737f2",
+    "faff10da0cd7478a",
+    "25619501add5d127",
+    "6e1350702f698a51",
+    "313b0d41922f04d4"
+   ],
+   "state_hash_before": "09f9f097516d7f6c",
+   "state_hash_after": "798a1dc51066c598",
+   "replayable": true
+  }
+ ]
+}

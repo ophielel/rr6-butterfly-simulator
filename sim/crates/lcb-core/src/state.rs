@@ -53,6 +53,10 @@ impl Sanity {
     }
 }
 
+/// Status Effects default to a Max Value of 99 when no status-specific cap is listed.
+/// Source: wiki.gg `Status Effects` (Overview), cached in `data/_raw/pages/Status_Effects.wikitext`.
+pub const SINKING_MAX_VALUE: i32 = 99;
+
 /// Potency / Count / Stack triple.  Most statuses use Potency + Count; a few use
 /// Stack only; quantities that do not apply stay at 0.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
@@ -68,12 +72,41 @@ impl StatusInstance {
     }
 }
 
-#[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Debug, Default, PartialEq, Eq, Serialize)]
 pub struct StatusSet {
     map: BTreeMap<String, StatusInstance>,
 }
 
+impl<'de> Deserialize<'de> for StatusSet {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: serde::Deserializer<'de>,
+    {
+        #[derive(Deserialize)]
+        struct Representation {
+            map: BTreeMap<String, StatusInstance>,
+        }
+
+        let representation = Representation::deserialize(deserializer)?;
+        let mut statuses = Self {
+            map: representation.map,
+        };
+        statuses.normalize_sinking();
+        Ok(statuses)
+    }
+}
+
 impl StatusSet {
+    fn normalize_sinking(&mut self) {
+        if let Some(sinking) = self.map.get_mut("Sinking") {
+            sinking.potency = sinking.potency.clamp(0, SINKING_MAX_VALUE);
+            sinking.count = sinking.count.clamp(0, SINKING_MAX_VALUE);
+            if sinking.is_empty() {
+                self.map.remove("Sinking");
+            }
+        }
+    }
+
     pub fn get(&self, key: &str) -> StatusInstance {
         self.map.get(key).copied().unwrap_or_default()
     }
@@ -101,7 +134,12 @@ impl StatusSet {
 
     pub fn add_potency(&mut self, key: &str, delta: i32) {
         let entry = self.map.entry(key.to_string()).or_default();
-        entry.potency = (entry.potency + delta).max(0);
+        let max = if key == "Sinking" {
+            SINKING_MAX_VALUE
+        } else {
+            i32::MAX
+        };
+        entry.potency = entry.potency.saturating_add(delta).clamp(0, max);
         if entry.is_empty() {
             self.map.remove(key);
         }
@@ -110,6 +148,11 @@ impl StatusSet {
     /// Cap a status at its documented maximum ("Potency: Base 0, Max 5").
     pub fn clamp_potency(&mut self, key: &str, max: i32) {
         let entry = self.map.entry(key.to_string()).or_default();
+        let max = if key == "Sinking" {
+            max.min(SINKING_MAX_VALUE)
+        } else {
+            max
+        };
         entry.potency = entry.potency.min(max);
         if entry.is_empty() {
             self.map.remove(key);
@@ -118,6 +161,11 @@ impl StatusSet {
 
     pub fn clamp_count(&mut self, key: &str, max: i32) {
         let entry = self.map.entry(key.to_string()).or_default();
+        let max = if key == "Sinking" {
+            max.min(SINKING_MAX_VALUE)
+        } else {
+            max
+        };
         entry.count = entry.count.min(max);
         if entry.is_empty() {
             self.map.remove(key);
@@ -126,7 +174,12 @@ impl StatusSet {
 
     pub fn add_count(&mut self, key: &str, delta: i32) {
         let entry = self.map.entry(key.to_string()).or_default();
-        entry.count = (entry.count + delta).max(0);
+        let max = if key == "Sinking" {
+            SINKING_MAX_VALUE
+        } else {
+            i32::MAX
+        };
+        entry.count = entry.count.saturating_add(delta).clamp(0, max);
         if entry.is_empty() {
             self.map.remove(key);
         }
@@ -155,6 +208,11 @@ impl StatusSet {
     }
 
     pub fn set(&mut self, key: &str, value: StatusInstance) {
+        let mut value = value;
+        if key == "Sinking" {
+            value.potency = value.potency.clamp(0, SINKING_MAX_VALUE);
+            value.count = value.count.clamp(0, SINKING_MAX_VALUE);
+        }
         if value.is_empty() {
             self.map.remove(key);
             return;

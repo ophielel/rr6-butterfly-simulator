@@ -29,7 +29,7 @@ Sources used below:
 | 9 | Heads chance `H = 50 + SP`, SP clamped to [-45, 45]; units without Sanity flip at 50% | `rng::heads_chance`, `state::Sanity` | wiki.gg `Sanity`, `Clash` | single_source_verified |
 | 10 | Burn: turn end, fixed damage by Potency, then Count −1 | `battle::end_turn` | wiki.gg `Status Effects`, in-game text | multi_source_verified |
 | 11 | Bleed: when tossing an attack coin, fixed damage by Potency, then Count −1 | `battle::tick_bleed` | wiki.gg `Status Effects`, in-game text | multi_source_verified |
-| 12 | Sinking: when hit, SP damage by Potency then Count −1; non-SP units take Gloom damage instead | `battle::apply_sinking` | wiki.gg `Status Effects`, in-game text | multi_source_verified |
+| 12 | Sinking: when hit, SP damage by Potency then Count −1; non-SP units take Gloom damage instead; the default status Max Value caps Potency and Count at 99 | `battle::apply_sinking`, `state::StatusSet` | wiki.gg `Status Effects` (Overview: default Max Value 99), in-game text | multi_source_verified |
 | 13 | Poise: on hit, Potency% chance of a crit (1.2x, static +0.2), Count −1 on success and at turn end | `battle::apply_hit`, `battle::end_turn` | wiki.gg `Status Effects`, `Damage` | multi_source_verified |
 | 12a | Rupture: when hit, fixed damage by Potency, then Count −1 | `battle::apply_hit` | wiki.gg `Status Effects` / Rupture | single_source_verified |
 | 14 | Fragile: +10% damage taken per Count (max 10) | `battle::incoming_damage_modifier` | wiki.gg `Status Effects` | single_source_verified |

@@ -127,10 +127,13 @@ info["ok"], info["stats"], info["transition_hash"], info["rng_after"]
 `docs/TRAINING.md` describes the teacher, the encoders, the reward and how to
 reproduce every number in `docs/TRAINING_RESULTS.md` (results, the §7.1
 acceptance table and the honest limitations); `docs/TRAINING_PLAN.md` is the
-specification the harness implements. The current HP experiments are summarized
-in `reports/ppo_hp_research_t1_curriculum.json`: 99.0% half-HP and 81.2% real-HP
-on 500 unseen evaluation seeds. `reports/evaluation.json` and
-`replays/index.json` are the machine-readable outcome.
+specification the harness implements. The historical pre-fix curriculum result is
+in `reports/ppo_hp_research_t1_curriculum.json` (99.0% half-HP and 81.2% real-HP
+on 500 evaluation seeds). The post-fix matched direct T1 cap/reward ablation is in
+`reports/ppo_hp_sinking_reward_ablation.json`: Sinking is capped at the sourced
+Max Value 99, and `sinking_damage` remains a statistic but no longer contributes
+to training reward. `reports/evaluation.json` and `replays/index.json` are the
+machine-readable outcome for the historical evaluation.
 
 ## Sources and honesty
 

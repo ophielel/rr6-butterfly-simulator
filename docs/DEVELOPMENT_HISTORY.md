@@ -32,7 +32,7 @@
 20. [HP 场景和 curriculum](#20-hp-场景和-curriculum)
 21. [评测协议和指标](#21-评测协议和指标)
 22. [所有主要实验的时间线](#22-所有主要实验的时间线)
-23. [当前最终结果](#23-当前最终结果)
+23. [当前结果与历史 final baseline](#23-当前结果与历史-final-baseline)
 24. [结果应该怎样解释](#24-结果应该怎样解释)
 25. [复现当前流程](#25-复现当前流程)
 26. [文件和产物索引](#26-文件和产物索引)
@@ -625,9 +625,11 @@ Sinking 的主要路径是：
 - 新命中施加的 Sinking 不能被同一次命中错误地立即消耗；
 - Butterfly 的 The Living 和 The Departed 分别对应 Potency 和 Count；
 - 统计真实 Sinking damage 和 Sinking SP damage；
-- Echoes of the Manor 对每个合格 Potency/Count gain component 单独掷概率。
+- Echoes of the Manor 对每个合格 Potency/Count gain component 单独掷概率；
+- 使用 `StatusSet` 的统一写入边界和 JSON 载入归一化，把 Sinking Potency/Count 限制在默认 Max Value 99；
+- 达到上限时，`StatusGainEvent` 记录实际增加量，而不是效果请求量。
 
-奖励不直接奖励增加 Potency 或 Count，避免策略只叠层、不执行收割。
+奖励不直接奖励增加 Potency 或 Count，避免策略只叠层、不执行收割。训练层也不再直接奖励 Sinking 触发伤害，触发伤害只作为评测统计保留。
 
 ### 9.3 理智和 Panic
 
@@ -958,6 +960,25 @@ Turn 2: Yi Sang Bygone Days
 
 Oracle 不是训练策略，也不加入 Teacher 数据。它只验证固定技能、E.G.O、资源、Sinking 事件和 replay 是否连通。burst 场景可以在三回合左右清除，real HP 也能执行完整三回合而不报接口错误。
 
+### 14.6 本次修订：Sinking 上限和训练奖励再审计
+
+本次修订追踪了一个在旧 Teacher replay 中可直接观察的规则违反：Sinking Potency
+曾经超过默认 Max Value 99。旧的 half T1 数据最高到 146，full T1 数据最高到
+203。根因不是某一张 E.G.O 的特例，而是状态容器的通用 `add_potency()`、直接
+`set()` 和载入路径都没有把状态的默认上限作为最后边界。
+
+修复集中在 `sim/crates/lcb-core/src/state.rs`：`Sinking` 的增量、直接写入、
+`clamp_*` 和反序列化都经过同一个 99 上限；`record_sinking_gain()` 同时把
+事件中的 Potency/Count delta 改为实际成功写入的数量，并且不让“没有真正获得
+Potency”的 gain 继续触发 Echoes 的额外 Count。来源是缓存的 wiki.gg
+`Status Effects` Overview，其中说明未另列上限的状态默认 Max Value 为 99。
+
+同一轮审计还删除了 `python/lcb/rewards.py` 中的
+`+0.02 * sinking_damage`。这是训练 shaping reward，不是战斗规则；保留
+`sinking_damage` 统计不会改变模拟器。因奖励函数同时被 Teacher、PPO、DAgger
+和评测调用，本次对照重新生成了 matched T1 Teacher、BC 和 3000-rollout
+Teacher-demo PPO 数据，而不是把旧数据悄悄混入新结论。
+
 ---
 
 ## 15. 训练系统的设计
@@ -1022,10 +1043,13 @@ Action feature 包括：
 每名我方角色死亡                -30
 我方团灭                       -1000
 主 Boss 实际 HP 下降            +0.01 x delta
-真实 Sinking 触发伤害            +0.02 x sinking_damage
 ```
 
-不直接奖励“增加 Potency/Count”。这样可以防止策略一直叠 Sinking，却不执行 E.G.O 或触发收割。
+早期版本曾加入 `+0.02 x sinking_damage`。奖励审计后删除了这一项：
+`sinking_damage` 仍从 Rust `TurnStats` 进入 `EpisodeStats` 和评测报告，但
+`compute_reward()` 不再读取它。这样 PPO、Teacher 的回合排序和所有训练阶段都
+必须依靠真实 Imago HP 下降、存活、击杀和回合成本获得 credit，而不是把触发
+伤害本身当成独立目标。不直接奖励“增加 Potency/Count”。
 
 `TurnStats` 由 Rust 在实际效果发生的位置累计，不由 Python 估算：
 
@@ -1571,9 +1595,23 @@ models/ppo_hp_half_t1_demo_3000.npz
 
 最后一个 commit 包含代码、训练元数据、Teacher 索引、DAgger 索引、报告、replay 和文档更新，共 392 个文件，NPZ checkpoint 仍按 `.gitignore` 不提交。
 
+### 22.6 本次修订的 matched reward ablation
+
+本次对照沿用 T1、相同的 Teacher seed、PPO seed 和 500-seed holdout，以隔离
+“移除 Sinking 触发奖励”的影响。Teacher 也必须重新生成，因为 BeamTeacher 的
+每个候选回合通过 `compute_reward()` 排序。结果和完整路径见
+`reports/ppo_hp_sinking_reward_ablation.json`。这轮没有重新跑旧的
+0.50 -> 0.65 -> 0.80 -> 1.00 curriculum，因此不把新 direct PPO 数字写成新的
+curriculum 结论。
+
 ---
 
-## 23. 当前最终结果
+## 23. 当前结果与历史 final baseline
+
+本节的 23.2-23.5 保留了上一轮 T1/curriculum 的完整 baseline，方便复核
+`reports/ppo_hp_research_t1_curriculum.json`。它们属于 pre-cap / pre-reward-removal
+实验；本次 post-fix matched direct ablation 在 23.6 单独列出，不能把两轮数字
+拼接成一个结论。
 
 ### 23.1 实验公共条件
 
@@ -1632,6 +1670,11 @@ Curriculum PPO 使用：
 0.50 -> 0.65 -> 0.80 -> 1.00
 ```
 
+这组数字属于 **pre-cap / pre-reward-removal 的历史结果**。本次修订只完成
+matched direct T1 ablation，没有重新生成 curriculum checkpoint；因此旧 curriculum
+不能和 `reports/ppo_hp_sinking_reward_ablation.json` 中的 post-fix direct PPO
+混成一张“最终”表。
+
 对应 checkpoint：
 
 ```text
@@ -1661,6 +1704,32 @@ Half plain PPO 和 Teacher-demo PPO 也使用同一 `42001-42500` band：
 - 两者都负：5/500。
 
 这说明 demonstration replay 对最终 half 策略产生了明显的行为改变。
+
+### 23.6 本次修订后的 matched direct T1 ablation
+
+以下表格仍使用原来的 half `42001-42500` 和 full `43001-43500` holdout，
+但新模型、Teacher 数据和 PPO 训练都使用了修订后的代码和奖励。旧值只作为
+matched baseline，并不与新值合并。
+
+| 场景 / 策略 | 旧版本 | 修订后 | 变化 |
+|---|---:|---:|---:|
+| Half T1 Teacher | 272/500 (54.4%) | 310/500 (62.0%) | +38 |
+| Full T1 Teacher | 2/500 (0.4%) | 1/500 (0.2%) | -1 |
+| Half BC holdout | 93/500 (18.6%) | 89/500 (17.8%) | -4 |
+| Full BC holdout | 1/500 (0.2%) | 1/500 (0.2%) | 0 |
+| Half direct PPO + Teacher demo | 495/500 (99.0%) | 168/500 (33.6%) | -327 |
+| Full direct PPO + Teacher demo | 212/500 (42.4%) | 1/500 (0.2%) | -211 |
+
+旧数据的最高 Sinking Potency 分别为 half 146、full 203；修订后 Teacher 和
+holdout 的逐局峰值均不超过 99。新 BC validation accuracy 为 half 57.05%、
+full 57.17%，与旧版 57.56%、57.38% 同一量级；主要变化出现在 direct PPO 的
+训练目标和结果，而不是一个隐藏的 validation accuracy 变化。
+
+这轮结果说明删除 shaping reward 不是一个只改报告的清理动作：在当前 3000
+rollout、每轮一次 Teacher demonstration update 的 direct PPO 配置下，策略
+性能明显下降。它也没有证明“奖励项应该恢复”；相反，它说明如果要在没有
+Sinking 直接奖励的约束下恢复 full curriculum 能力，需要另行设计并预注册
+curriculum 复训，不能引用旧 checkpoint 冒充 post-fix 结果。
 
 ---
 
@@ -1692,6 +1761,14 @@ Half plain PPO 和 Teacher-demo PPO 也使用同一 `42001-42500` band：
 T1 Teacher 找到 2/500，direct PPO 达到 212/500，curriculum 达到 406/500。因此更准确的表述是：
 
 > 在早期配置和搜索预算下没有发现稳定 full HP 路线。加入 T1 数据、demo constraint 和 HP curriculum 后，在当前显式实验条件下发现了可重复的 full HP 策略。
+
+### 24.4 本次修订的解释边界
+
+本次 cap/reward ablation 可以确认两件事：模拟器状态不再产生超过 99 的 Sinking
+Potency，且移除直接触发奖励会显著改变 Teacher-demo PPO 的学习结果。它不能
+确认修订后的 direct PPO 是最优训练配置，也不能把旧 curriculum 的 81.2% 迁移
+到新奖励。下一步若要保留 curriculum 作为正式 post-fix 结论，必须重新生成
+0.65/0.80 Teacher 数据、重新训练每一级 checkpoint，并使用新的独立 holdout。
 
 ---
 
@@ -1989,8 +2066,15 @@ reports/ppo_hp_half_t1_plain_1000_eval/
 reports/ppo_hp_half_t1_demo_3000_eval/
 reports/ppo_hp_full_t1_demo_3000_v2_eval/
 reports/ppo_hp_full_curriculum_eval/
+reports/ppo_hp_sinking_reward_ablation.json
+reports/ppo_hp_half_t1_demo_3000_nosinking_reward_eval/
+reports/ppo_hp_full_t1_demo_3000_nosinking_reward_eval/
 replays/
 ```
+
+本次 reward ablation 的 Teacher/BC/PPO metadata 使用带
+`nosinking_reward` 后缀的路径；对应的 `.npz` 仍被 `.gitignore` 忽略，JSON
+index、训练报告、holdout JSON 和选定 replay 可以提交。
 
 每个 `.jsonl` 是逐 episode 的机器可读结果。每个 replay JSON 记录最短胜局或选定样例，`replays/index.json` 汇总文件名、seed、kill turn 和 transition hashes。
 
@@ -2008,7 +2092,7 @@ replays/
 | 第二轮复查后 | 99 项 |
 | 第三轮复查后 | 106 项 |
 | post-audit 修复完成记录 | 118 项 |
-| T1/curriculum 当前 STATUS 记录 | 136 项 |
+| 本次修订后 workspace 测试记录 | 147 项（14 unit + 13 engineering + 120 mechanics） |
 
 数量变化不是同一份固定测试报告重复运行，而是每轮新增机制和回归测试后的阶段记录。
 
@@ -2045,7 +2129,8 @@ replays/
 - Bygone individual gain events；
 - Echoes per-event deterministic rolls；
 - infinite resource affordability 和 SP 保留；
-- main enemy victory condition。
+- main enemy victory condition；
+- Sinking Potency/Count 的 99 上限、JSON 载入归一化和 cap 后事件 delta。
 
 #### Python training tests
 
@@ -2054,6 +2139,7 @@ replays/
 - Teacher sample label 在 candidate 中；
 - seed split 不泄漏 episode；
 - reward summary；
+- `sinking_damage` 不再影响 `compute_reward()` 的回归测试；
 - best-of-N；
 - axis detection 读取真实状态；
 - PPO finite-difference direction；

@@ -1295,29 +1295,34 @@ fn record_sinking_gain(
         "skill_effect"
     };
     if potency > 0 {
+        let before = state.units[target_index].statuses.potency("Sinking");
         state.units[target_index]
             .statuses
             .add_potency("Sinking", potency);
+        let applied = state.units[target_index].statuses.potency("Sinking") - before;
         state
             .status_gain_events
             .push(crate::state::StatusGainEvent {
                 source_actor: source_actor.clone(),
                 target: target.clone(),
                 status: "Sinking".into(),
-                potency_delta: potency,
+                potency_delta: applied,
                 count_delta: 0,
                 source_type: source_type.into(),
                 skill_id: skill_id.clone(),
                 coin_index,
                 effect_raw: raw.clone(),
             });
-        if state.units[target_index]
-            .statuses
-            .potency("Echoes of the Manor")
-            > 0
+        if applied > 0
+            && state.units[target_index]
+                .statuses
+                .potency("Echoes of the Manor")
+                > 0
             && state.flip(50)
         {
+            let before = state.units[target_index].statuses.count("Sinking");
             state.units[target_index].statuses.add_count("Sinking", 1);
+            let applied = state.units[target_index].statuses.count("Sinking") - before;
             state
                 .status_gain_events
                 .push(crate::state::StatusGainEvent {
@@ -1325,7 +1330,7 @@ fn record_sinking_gain(
                     target: target.clone(),
                     status: "Sinking".into(),
                     potency_delta: 0,
-                    count_delta: 1,
+                    count_delta: applied,
                     source_type: "echoes_of_the_manor".into(),
                     skill_id: skill_id.clone(),
                     coin_index,
@@ -1334,9 +1339,11 @@ fn record_sinking_gain(
         }
     }
     if count > 0 {
+        let before = state.units[target_index].statuses.count("Sinking");
         state.units[target_index]
             .statuses
             .add_count("Sinking", count);
+        let applied = state.units[target_index].statuses.count("Sinking") - before;
         state
             .status_gain_events
             .push(crate::state::StatusGainEvent {
@@ -1344,19 +1351,22 @@ fn record_sinking_gain(
                 target: target.clone(),
                 status: "Sinking".into(),
                 potency_delta: 0,
-                count_delta: count,
+                count_delta: applied,
                 source_type: source_type.into(),
                 skill_id: skill_id.clone(),
                 coin_index,
                 effect_raw: raw.clone(),
             });
-        if state.units[target_index]
-            .statuses
-            .potency("Echoes of the Manor")
-            > 0
+        if applied > 0
+            && state.units[target_index]
+                .statuses
+                .potency("Echoes of the Manor")
+                > 0
             && state.flip(50)
         {
+            let before = state.units[target_index].statuses.count("Sinking");
             state.units[target_index].statuses.add_count("Sinking", 1);
+            let applied = state.units[target_index].statuses.count("Sinking") - before;
             state
                 .status_gain_events
                 .push(crate::state::StatusGainEvent {
@@ -1364,7 +1374,7 @@ fn record_sinking_gain(
                     target,
                     status: "Sinking".into(),
                     potency_delta: 0,
-                    count_delta: 1,
+                    count_delta: applied,
                     source_type: "echoes_of_the_manor".into(),
                     skill_id,
                     coin_index,

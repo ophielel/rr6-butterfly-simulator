@@ -5,8 +5,9 @@ by a test that cites a source in `docs/MECHANICS.md`.
 
 **Current state (2026-09-21):** all seven identities, the seven E.G.O and the
 whole **Section 5 wave** (the Imago plus its three Illusory Butterfly allies) have
-**zero** unmodelled effect lines (see `docs/COVERAGE.md`); 136 Rust tests and the
-Python suites pass; the training stack (`docs/TRAINING.md`,
+**zero** unmodelled effect lines (see `docs/COVERAGE.md`); 147 Rust tests and the
+Python suites pass; Sinking Potency/Count are capped at the sourced default Max Value
+of 99; the training stack (`docs/TRAINING.md`,
 `docs/TRAINING_RESULTS.md`) is implemented and evaluated; the honest unknowns are
 listed at the end of this file.
 
@@ -47,8 +48,9 @@ Tests: `mechanics::imago_stack_gains_halve_and_bonuses`.
 
 ## Phase 4 — statuses — partial
 
-Implemented: Burn, Bleed, Sinking, Butterfly (unique Sinking), The Living & The
-Departed (ammo), Poise, Fragile, Rupture, Tremor + Tremor Burst, Protection,
+Implemented: Burn, Bleed, Sinking (Potency/Count capped at the sourced default Max
+Value 99), Butterfly (unique Sinking), The Living & The Departed (ammo), Poise,
+Fragile, Rupture, Tremor + Tremor Burst, Protection,
 Damage Up/Down, Power Up/Down, Attack Power Up/Down, Plus Coin Boost / Minus
 Coin Drop, Offense/Defense Level Up/Down, `<Sin>`/`<Type>` Resist Down,
 `<Sin>` Fragility, Bind, Haste, Paralyze (per-coin power fix), Charge tick,

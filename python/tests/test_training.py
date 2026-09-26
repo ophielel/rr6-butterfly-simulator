@@ -39,6 +39,23 @@ from lcb.teacher import BeamTeacher, TeacherConfig, detect_axis, detect_strategy
 SCENARIO = Scenario(name="test", max_turns=4, enemy_hp_scale=0.08)
 
 
+def test_reward_ignores_sinking_trigger_damage() -> None:
+    before = {
+        "units": [
+            {"id": "boss", "kind": "enemy", "max_hp": 1000, "hp": 1000},
+        ]
+    }
+    after = {
+        "units": [
+            {"id": "boss", "kind": "enemy", "max_hp": 1000, "hp": 1000},
+        ]
+    }
+    reward = compute_reward(
+        {"stats": {"damage_to_enemies": 0, "sinking_damage": 100}}, before, after
+    )
+    assert reward == -10.0
+
+
 def test_reward_credits_main_boss_hp_not_butterfly_damage() -> None:
     before = {
         "units": [

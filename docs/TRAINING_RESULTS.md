@@ -52,6 +52,31 @@ was used for direct PPO and curriculum PPO. DAgger was implemented and audited, 
 sampled and argmax mixtures were neutral or negative on the fixed half-HP diagnostic band;
 it is retained as a negative ablation rather than selected by outcome.
 
+## 0.3 Sinking cap and reward-removal ablation
+
+The simulator now enforces the default status Max Value of 99 for Sinking Potency
+(and Count) at every status write and JSON load boundary. The old matched T1 Teacher
+replays reached Potency 146 on half HP and 203 on full HP; the regenerated data stayed
+at or below 99 in every episode.
+
+The old training reward included `+0.02 * sinking_damage`. That term has been removed.
+`sinking_damage` is still recorded for diagnostics and evaluation, but `compute_reward()`
+only credits actual Imago HP loss, turn cost, deaths, wipe, and victory.
+
+| Matched result | Pre-fix | Post-fix | Difference |
+|---|---:|---:|---:|
+| Half T1 Teacher | 272/500 | 310/500 | +38 |
+| Full T1 Teacher | 2/500 | 1/500 | -1 |
+| Half BC holdout | 93/500 | 89/500 | -4 |
+| Full BC holdout | 1/500 | 1/500 | 0 |
+| Half direct PPO + demo | 495/500 | 168/500 | -327 |
+| Full direct PPO + demo | 212/500 | 1/500 | -211 |
+
+This is a matched direct T1 ablation, not a rerun of the historical
+`0.50 -> 0.65 -> 0.80 -> 1.00` curriculum. Full details and artifact paths are in
+`reports/ppo_hp_sinking_reward_ablation.json`; do not merge this table with the
+pre-fix curriculum result.
+
 ## 1. 协议与样本量（§7 的"必须写明样本数"）
 
 | 项目 | 值 |

@@ -1,0 +1,45 @@
+{
+ "count": 1,
+ "entries": [
+  {
+   "file": "real_PPO_seed43030.json",
+   "policy": "PPO",
+   "scenario": "real",
+   "scenario_config": {
+    "name": "real",
+    "enemies": [
+     "9567",
+     "9572",
+     "9573",
+     "9574"
+    ],
+    "max_turns": 30,
+    "enemy_hp_scale": 1.0,
+    "strict": true,
+    "infinite_ego_resources": true,
+    "description": "Line 6 Section 5 wave exactly as the data describes it (Imago 25616 HP)"
+   },
+   "seed": 43030,
+   "won": true,
+   "kill_turn": 12,
+   "turns": 12,
+   "transition_hashes": [
+    "adebe7b0a60bf628",
+    "246c679249fcb396",
+    "36446f1fb1b04eec",
+    "2561ca64a5ae8b76",
+    "332781d1320b6b9f",
+    "f59db09a6aac4b35",
+    "af119a2a3476b80a",
+    "2f39e828a9429007",
+    "711998cb4f1dc047",
+    "d1d46a8dc0e783e2",
+    "cd5ddebd4a77c8dc",
+    "ce28f78b7f879974"
+   ],
+   "state_hash_before": "50b1f5dcf454f82b",
+   "state_hash_after": "112d217bc35ae64b",
+   "replayable": true
+  }
+ ]
+}
