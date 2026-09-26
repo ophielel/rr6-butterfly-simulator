@@ -7,7 +7,8 @@
     "final_evaluation_episodes": 500,
     "final_half_seeds": "42001-42500",
     "final_full_seeds": "43001-43500",
-    "seed_policy": "training, validation, DAgger, and final evaluation ranges are disjoint",
+    "seed_policy": "final evaluation holdouts are disjoint from the recorded training and validation bands; scenario-specific training bands reuse some numeric seed IDs, and curriculum validation bands overlap a later curriculum training band",
+    "seed_policy_detail": "The final half holdout is 42001-42500 and the final full holdout is 43001-43500. The full curriculum uses validation 48201-48300 inside its 48001-49000 training band, so curriculum checkpoint selection is not globally validation-independent.",
     "teacher_budget": {"name": "t1", "horizon": 4, "plan_width": 32, "candidate_cap": 6, "turn_width": 4}
   },
   "teacher": {
