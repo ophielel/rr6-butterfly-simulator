@@ -75,9 +75,11 @@ actor 选了什么）。上下文块使"共享打分器 + 固定 actor 顺序"�
 
 **奖励** (§3)：`+1000 击杀`、`-30/回合`、`-30 角色死亡`、`-1000 团灭`、
 `+0.01*Imago 实际 HP 下降`。本次 post-fix fast-turn ablation 将通用回合成本从
-`-10` 提高到 `-30`；它不奖励沉沦层数，也不指定某条 E.G.O 路线。`sinking_damage`
-仍由模拟器记录并用于评测，但不再作为训练 shaping reward；沉沦必须通过真实的
-Imago HP 变化获得 credit。叠层本身也不给独立奖励。
+`-10` 提高到 `-30`；另对胜利回合加入通用速度项：`<=6T +400`、`7T +0`、
+`>7T -200/超出回合`。它不读取沉沦、技能、身份或 E.G.O，不奖励沉沦层数，也不
+指定某条 E.G.O 路线。`sinking_damage` 仍由模拟器记录并用于评测，但不再作为
+训练 shaping reward；沉沦必须通过真实的 Imago HP 变化获得 credit。叠层本身也不
+给独立奖励。
 
 ## 4. 必须记录在案的偏差
 
@@ -161,6 +163,52 @@ python training/train_ppo.py \
 
 然后在 `42001-42500` 和 `43001-43500` holdout 上分别用 `half`/`real` 评测。
 完整 JSON、训练 metadata 和评测目录见 `reports/ppo_hp_turn_penalty_ablation.json`。
+
+### 5.2 Generic terminal speed-reward adaptation（`<=6T +400`，`7T +0`）
+
+本次新增的终局项只读取胜利回合：`<=6T` 加 `400`，`7T` 不变，`>7T` 每
+超出一回合扣 `200`。它不读取或奖励 Sinking、技能、身份或 E.G.O；`sinking_damage`
+仍是统计字段。Teacher 先用新 reward 重新生成，再从上一轮 `-30` mixed-demo
+checkpoint 做顺序适配：
+
+```bash
+python search/run_teacher.py --scenario half --budget t1 \
+  --seed-start 84001 --seed-count 500 --jobs 8 \
+  --out data/teacher_t1_half_500_fast6_nosinking_reward
+python search/run_teacher.py --scenario real --budget t1 \
+  --seed-start 85001 --seed-count 500 --jobs 8 \
+  --out data/teacher_t1_full_500_fast6_nosinking_reward
+
+# 可选的直接 Teacher -> BC -> PPO chain；half/full 使用独立训练和验证带
+python training/train_bc.py --data data/teacher_t1_half_500_fast6_nosinking_reward \
+  --out models/bc_hp_half_t1_fast6_nosinking_reward.npz --epochs 20 --seed 20261431
+python training/train_bc.py --data data/teacher_t1_full_500_fast6_nosinking_reward \
+  --out models/bc_hp_full_t1_fast6_nosinking_reward.npz --epochs 20 --seed 20261432
+
+# mixed-demo sequential adaptation
+python training/train_ppo.py \
+  --checkpoint models/ppo_curriculum_legacy_init_mixed_demo_turn30_nosinking_reward.npz \
+  --out models/ppo_curriculum_legacy_init_mixed_demo_fast6_nosinking_reward.npz \
+  --scenario real --seed-start 86001 --seed-count 1000 \
+  --iterations 10 --episodes-per-iteration 100 --epochs-per-iteration 3 \
+  --learning-rate 0.0005 --seed 20261430 \
+  --val-seed-start 87101 --val-seed-count 100 \
+  --allow-non-bc-checkpoint \
+  --demo-data data/teacher_t1_half_500_fast6_nosinking_reward \
+    data/teacher_curriculum_065_200_fast6_nosinking_reward \
+    data/teacher_curriculum_080_200_fast6_nosinking_reward \
+    data/teacher_t1_full_500_fast6_nosinking_reward \
+  --demo-updates-per-iteration 10 --demo-batch-decisions 32
+```
+
+结果使用复用的 `42001-42500` / `43001-43500` holdout；因此这是 sequential
+adaptation ablation，不是 globally seed-disjoint 的 from-scratch curriculum。
+完整协议、Teacher 索引、训练 metadata 和评测路径见
+`reports/ppo_hp_fast6_terminal_reward_ablation.json`。中间的 `0.65`/`0.80`
+Teacher pilot 分别使用 `83001-83200` 和 `83301-83500`，对应数据目录也记录在
+该 JSON 中。直接 BC/PPO 链使用 half `88001-89000`、full `89001-90000`
+训练带，验证带分别为 `90101-90200` 和 `90201-90300`；其 JSON metadata 与
+评测目录也由该报告列出。
 
 ## 6. 与计划的接口对照（P0 差异报告）
 

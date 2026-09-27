@@ -126,6 +126,35 @@ assignment. The new Teacher and evaluated policies still report `axis_ok_rate=0`
 Sinking → Harmony/Solemn Lament route. Full protocol and artifact paths are in
 `reports/ppo_hp_turn_penalty_ablation.json`.
 
+## 0.6 Generic terminal speed-reward follow-up
+
+The next ablation added only a generic terminal term: wins by `6T` or earlier receive
+`+400`, `7T` is neutral, and each winning turn after `7T` pays `-200`. The existing
+`-30` per-turn cost, actual Imago HP reward, and `sinking_damage=0` training-reward
+rule were unchanged. The fresh Teacher data did not become faster: half reached
+`305/500` wins with median kill turn `7`, while full remained `0/500`.
+
+The direct Teacher → BC → PPO chain was also rerun. BC validation accuracy was
+`57.5%` on half and `56.0%` on full; on the same holdouts, BC reached `138/500`
+half and `0/500` full, while direct PPO reached the same `138/500` half and `0/500`
+full. The direct chain therefore did not recover full-HP credit assignment.
+
+A sequential mixed-demo adaptation started from the preceding `-30` checkpoint and
+used new half/full plus `0.65`/`0.80` Teacher data. On the reused holdout bands:
+
+| Policy | Half HP | Full HP | Median kill turn |
+|---|---:|---:|---:|
+| Previous `-30` mixed adaptation | 492/500 (98.4%) | 181/500 (36.2%) | 5 / 8 |
+| **Terminal speed-reward adaptation** | **494/500 (98.8%)** | **201/500 (40.2%)** | **5 / 8** |
+
+The paired full holdout has 171 shared wins, 10 wins unique to the previous policy,
+30 unique to the new policy, and 289 shared losses. Both new evaluations keep
+`axis_ok_rate=0`, `direct_burst_rate=1`, and Potency `<=99`. Thus the terminal term
+improves this particular sequential full adaptation but still does not teach the
+intended Sinking → Harmony/Solemn Lament route. It is not a fresh causal comparison
+or a globally seed-disjoint curriculum result. Full protocol and artifact paths are
+in `reports/ppo_hp_fast6_terminal_reward_ablation.json`.
+
 ## 1. 协议与样本量（§7 的"必须写明样本数"）
 
 | 项目 | 值 |

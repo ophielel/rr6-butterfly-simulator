@@ -1,0 +1,241 @@
+{
+  "status": "post-fix generic terminal speed-reward ablation",
+  "scope": "Add a generic terminal speed term: reward wins by turn 6 or earlier, leave turn 7 neutral, and penalize later wins without naming Sinking, a skill, an identity, or an E.G.O.",
+  "reward": {
+    "win_reward": 1000.0,
+    "turn_penalty": -30.0,
+    "death_penalty": -30.0,
+    "wipe_penalty": -1000.0,
+    "damage_reward": 0.01,
+    "fast_kill_turn": 6,
+    "neutral_kill_turn": 7,
+    "fast_kill_bonus": 400.0,
+    "late_kill_penalty_per_turn": -200.0,
+    "sinking_damage_reward": 0.0,
+    "sinking_damage_remains_evaluation_stat": true,
+    "terminal_examples_without_deaths": {
+      "turn_6_excluding_boss_hp_credit": 1400.0,
+      "turn_7_excluding_boss_hp_credit": 1000.0,
+      "turn_8_excluding_boss_hp_credit": 800.0
+    },
+    "implementation": "python/lcb/rewards.py::kill_speed_reward; applied by compute_reward and terminal_reward"
+  },
+  "protocol": {
+    "strict": true,
+    "max_turns": 30,
+    "infinite_ego_resources": true,
+    "holdout_half": "42001-42500",
+    "holdout_full": "43001-43500",
+    "teacher_half": "84001-84500",
+    "teacher_full": "85001-85500",
+    "teacher_curriculum_065": "83001-83200",
+    "teacher_curriculum_080": "83301-83500",
+    "adaptation_training": "86001-87000",
+    "adaptation_validation": "87101-87200",
+    "direct_half_training": "88001-89000",
+    "direct_full_training": "89001-90000",
+    "direct_half_validation": "90101-90200",
+    "direct_full_validation": "90201-90300",
+    "holdout_is_reused": true,
+    "holdout_note": "The public holdout bands are reused from the post-fix comparison protocol; this is a sequential adaptation ablation, not a globally seed-disjoint from-scratch curriculum result."
+  },
+  "teacher": {
+    "half": {
+      "wins": 305,
+      "episodes": 500,
+      "win_rate": 0.61,
+      "wilson_95": [0.566563167828306, 0.6517594160948953],
+      "median_kill_turn": 7.0,
+      "fastest_kill_turn": 6.0,
+      "axis_ok_rate": 0.0,
+      "direct_burst_rate": 1.0,
+      "peak_sinking_potency_max": 99,
+      "artifact": "data/teacher_t1_half_500_fast6_nosinking_reward/teacher_index.json"
+    },
+    "full": {
+      "wins": 0,
+      "episodes": 500,
+      "win_rate": 0.0,
+      "wilson_95": [0.0, 0.007624618530903363],
+      "median_kill_turn": null,
+      "fastest_kill_turn": null,
+      "axis_ok_rate": 0.0,
+      "direct_burst_rate": 1.0,
+      "peak_sinking_potency_max": 99,
+      "artifact": "data/teacher_t1_full_500_fast6_nosinking_reward/teacher_index.json"
+    },
+    "curriculum_pilots": {
+      "065": {
+        "wins": 34,
+        "episodes": 200,
+        "win_rate": 0.17,
+        "median_kill_turn": 9.0,
+        "artifact": "data/teacher_curriculum_065_200_fast6_nosinking_reward/teacher_index.json"
+      },
+      "080": {
+        "wins": 6,
+        "episodes": 200,
+        "win_rate": 0.03,
+        "median_kill_turn": 11.0,
+        "artifact": "data/teacher_curriculum_080_200_fast6_nosinking_reward/teacher_index.json"
+      }
+    },
+    "matched_turn30_reference": {
+      "half": {"wins": 312, "episodes": 500, "win_rate": 0.624},
+      "full": {"wins": 1, "episodes": 500, "win_rate": 0.002},
+      "artifact": "reports/ppo_hp_turn_penalty_ablation.json"
+    }
+  },
+  "bc": {
+    "half": {
+      "validation_accuracy": 0.5750740862693448,
+      "holdout": {"wins": 138, "episodes": 500, "win_rate": 0.276, "median_kill_turn": 7.0},
+      "metadata": "models/bc_hp_half_t1_fast6_nosinking_reward.json",
+      "evaluation": "reports/bc_hp_half_t1_fast6_nosinking_reward_eval/evaluation.json"
+    },
+    "full": {
+      "validation_accuracy": 0.5600142467054494,
+      "holdout": {"wins": 0, "episodes": 500, "win_rate": 0.0, "median_kill_turn": null},
+      "metadata": "models/bc_hp_full_t1_fast6_nosinking_reward.json",
+      "evaluation": "reports/bc_hp_full_t1_fast6_nosinking_reward_eval/evaluation.json"
+    }
+  },
+  "direct_ppo": {
+    "half": {
+      "wins": 138,
+      "episodes": 500,
+      "win_rate": 0.276,
+      "wilson_95": [0.23863748141495, 0.3167783476868947],
+      "median_kill_turn": 7.0,
+      "artifact": "reports/ppo_hp_half_t1_demo_1000_fast6_nosinking_reward_eval/evaluation.json",
+      "metadata": "models/ppo_hp_half_t1_demo_1000_fast6_nosinking_reward.json"
+    },
+    "full": {
+      "wins": 0,
+      "episodes": 500,
+      "win_rate": 0.0,
+      "wilson_95": [0.0, 0.007624618530903363],
+      "median_kill_turn": null,
+      "artifact": "reports/ppo_hp_full_t1_demo_1000_fast6_nosinking_reward_eval/evaluation.json",
+      "metadata": "models/ppo_hp_full_t1_demo_1000_fast6_nosinking_reward.json"
+    }
+  },
+  "method": {
+    "initial_checkpoint": "models/ppo_curriculum_legacy_init_mixed_demo_turn30_nosinking_reward.npz",
+    "initial_checkpoint_role": "The preceding generic-turn-penalty adaptation checkpoint; this is sequential fine-tuning, not a from-scratch result.",
+    "demo_data": [
+      "data/teacher_t1_half_500_fast6_nosinking_reward",
+      "data/teacher_curriculum_065_200_fast6_nosinking_reward",
+      "data/teacher_curriculum_080_200_fast6_nosinking_reward",
+      "data/teacher_t1_full_500_fast6_nosinking_reward"
+    ],
+    "ppo_iterations": 10,
+    "episodes_per_iteration": 100,
+    "ppo_epochs_per_iteration": 3,
+    "learning_rate": 0.0005,
+    "demo_updates_per_iteration": 10,
+    "demo_batch_decisions": 32,
+    "checkpoint_selection": "highest greedy validation win rate",
+    "demonstration_decisions": 14341,
+    "model_metadata": "models/ppo_curriculum_legacy_init_mixed_demo_fast6_nosinking_reward.json"
+  },
+  "holdout": {
+    "previous_turn30_adaptation": {
+      "half": {
+        "wins": 492,
+        "episodes": 500,
+        "win_rate": 0.984,
+        "median_kill_turn": 5.0,
+        "artifact": "reports/ppo_curriculum_legacy_init_mixed_demo_turn30_nosinking_reward_half_eval/evaluation.json"
+      },
+      "full": {
+        "wins": 181,
+        "episodes": 500,
+        "win_rate": 0.362,
+        "median_kill_turn": 8.0,
+        "artifact": "reports/ppo_curriculum_legacy_init_mixed_demo_turn30_nosinking_reward_eval/evaluation.json"
+      }
+    },
+    "direct_teacher_bc_ppo_chain": {
+      "bc_half": {"wins": 138, "episodes": 500, "win_rate": 0.276, "median_kill_turn": 7.0},
+      "bc_full": {"wins": 0, "episodes": 500, "win_rate": 0.0, "median_kill_turn": null},
+      "ppo_half": {"wins": 138, "episodes": 500, "win_rate": 0.276, "median_kill_turn": 7.0},
+      "ppo_full": {"wins": 0, "episodes": 500, "win_rate": 0.0, "median_kill_turn": null}
+    },
+    "fast6_terminal_reward_adaptation": {
+      "half": {
+        "wins": 494,
+        "episodes": 500,
+        "win_rate": 0.988,
+        "wilson_95": [0.9740692922810136, 0.9944890800328247],
+        "median_kill_turn": 5.0,
+        "fastest_kill_turn": 4.0,
+        "axis_ok_rate": 0.0,
+        "direct_burst_rate": 1.0,
+        "peak_sinking_potency_max": 99,
+        "artifact": "reports/ppo_curriculum_legacy_init_mixed_demo_fast6_nosinking_reward_half_eval/evaluation.json"
+      },
+      "full": {
+        "wins": 201,
+        "episodes": 500,
+        "win_rate": 0.402,
+        "wilson_95": [0.35992798652483676, 0.4455664387072203],
+        "median_kill_turn": 8.0,
+        "fastest_kill_turn": 7.0,
+        "axis_ok_rate": 0.0,
+        "direct_burst_rate": 1.0,
+        "peak_sinking_potency_max": 99,
+        "artifact": "reports/ppo_curriculum_legacy_init_mixed_demo_fast6_nosinking_reward_eval/evaluation.json"
+      }
+    }
+  },
+  "paired_holdout_comparisons": {
+    "fast6_vs_turn30_adaptation_half": {
+      "both_win": 492,
+      "turn30_only_win": 0,
+      "fast6_only_win": 2,
+      "both_lose": 6
+    },
+    "fast6_vs_turn30_adaptation_full": {
+      "both_win": 171,
+      "turn30_only_win": 10,
+      "fast6_only_win": 30,
+      "both_lose": 289
+    },
+    "direct_fast6_bc_vs_ppo_half": {
+      "both_win": 77,
+      "bc_only_win": 61,
+      "ppo_only_win": 61,
+      "both_lose": 301
+    },
+    "direct_fast6_bc_vs_ppo_full": {
+      "both_win": 0,
+      "bc_only_win": 0,
+      "ppo_only_win": 0,
+      "both_lose": 500
+    }
+  },
+  "interpretation": [
+    "The new terminal term changed the Teacher objective exactly at the requested boundary, but the fresh T1 Teacher did not become faster: half wins fell from 312/500 to 305/500 and the median remained 7; full remained effectively unsolved at 0/500.",
+    "Sequential mixed-demo adaptation improved the reused full holdout from 181/500 to 201/500 and changed the paired outcome by 30 fast6-only wins versus 10 turn30-only wins. Half changed only from 492/500 to 494/500, with the same median kill turn of 5.",
+    "The full adapted policy still has axis_ok_rate=0 and direct_burst_rate=1. A generic terminal speed incentive improves outcome selection in this adaptation, but it does not teach the intended Sinking-to-Harmony/Solemn-Lament route.",
+    "The fresh direct chain did not recover full credit assignment: BC and direct PPO were both 138/500 on half and 0/500 on full. The mixed adaptation result is therefore not a generic consequence of the terminal term alone; initialization and mixed demonstration replay remain material.",
+    "All inspected Teacher and evaluated episodes stayed at or below the sourced Sinking Potency cap of 99. sinking_damage remains diagnostic only and was not used as a reward.",
+    "Because the direct and mixed models use different initial checkpoints/data paths, and the holdout bands are reused, these numbers are sequential ablations rather than causal comparisons against a freshly trained, globally seed-disjoint baseline."
+  ],
+  "artifacts": {
+    "source": "python/lcb/rewards.py",
+    "test": "python/tests/test_training.py::test_generic_kill_speed_reward_has_six_turn_bonus_and_seven_turn_neutral",
+    "teacher_half": "data/teacher_t1_half_500_fast6_nosinking_reward/teacher_index.json",
+    "teacher_full": "data/teacher_t1_full_500_fast6_nosinking_reward/teacher_index.json",
+    "teacher_curriculum_065": "data/teacher_curriculum_065_200_fast6_nosinking_reward/teacher_index.json",
+    "teacher_curriculum_080": "data/teacher_curriculum_080_200_fast6_nosinking_reward/teacher_index.json",
+    "bc_half_metadata": "models/bc_hp_half_t1_fast6_nosinking_reward.json",
+    "bc_full_metadata": "models/bc_hp_full_t1_fast6_nosinking_reward.json",
+    "direct_half_metadata": "models/ppo_hp_half_t1_demo_1000_fast6_nosinking_reward.json",
+    "direct_full_metadata": "models/ppo_hp_full_t1_demo_1000_fast6_nosinking_reward.json",
+    "model_metadata": "models/ppo_curriculum_legacy_init_mixed_demo_fast6_nosinking_reward.json",
+    "holdout_full": "reports/ppo_curriculum_legacy_init_mixed_demo_fast6_nosinking_reward_eval/",
+    "holdout_half": "reports/ppo_curriculum_legacy_init_mixed_demo_fast6_nosinking_reward_half_eval/"
+  }
+}

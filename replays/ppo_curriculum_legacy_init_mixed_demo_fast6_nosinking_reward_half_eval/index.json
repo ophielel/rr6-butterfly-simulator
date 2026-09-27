@@ -1,0 +1,37 @@
+{
+ "count": 1,
+ "entries": [
+  {
+   "file": "half_PPO_seed42015.json",
+   "policy": "PPO",
+   "scenario": "half",
+   "scenario_config": {
+    "name": "half",
+    "enemies": [
+     "9567",
+     "9572",
+     "9573",
+     "9574"
+    ],
+    "max_turns": 30,
+    "enemy_hp_scale": 0.5,
+    "strict": true,
+    "infinite_ego_resources": true,
+    "description": "the same wave with the scenario knob enemy_hp_scale=0.5 (Imago 12808 HP)"
+   },
+   "seed": 42015,
+   "won": true,
+   "kill_turn": 4,
+   "turns": 4,
+   "transition_hashes": [
+    "2cf72972e6559204",
+    "7d745cc19522cd9c",
+    "4c94f34480b1fa00",
+    "cb0fbf327adacbdf"
+   ],
+   "state_hash_before": "0b79644e3624710a",
+   "state_hash_after": "d41426ebcbc88cf6",
+   "replayable": true
+  }
+ ]
+}

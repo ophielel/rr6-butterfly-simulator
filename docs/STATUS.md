@@ -3,7 +3,7 @@
 Mirrors the phases of the project plan.  "Done" means implemented **and** covered
 by a test that cites a source in `docs/MECHANICS.md`.
 
-**Current state (2026-09-26):** all seven identities, the seven E.G.O and the
+**Current state (2026-09-27):** all seven identities, the seven E.G.O and the
 whole **Section 5 wave** (the Imago plus its three Illusory Butterfly allies) have
 **zero** unmodelled effect lines (see `docs/COVERAGE.md`); 147 Rust tests and the
 Python suites pass; Sinking Potency/Count are capped at the sourced default Max Value
@@ -142,7 +142,7 @@ effects (HP Healing Down, Wrath Fragility).
 ## Training and evaluation (2026-09-21)
 
 Specification: `docs/TRAINING_PLAN.md`.  Implementation: `docs/TRAINING.md`.
-Results and the §7.1 acceptance table: `docs/TRAINING_RESULTS.md`. The 99.0% half-HP and 81.2% real-HP values in `reports/ppo_hp_research_t1_curriculum.json` are pre-fix historical baselines. The post-fix direct/mixed ablations are recorded in `reports/ppo_hp_sinking_reward_ablation.json` and `reports/ppo_hp_postfix_mixed_demo_followup.json`. The current generic turn-cost `-30` ablation is in `reports/ppo_hp_turn_penalty_ablation.json`: 326/500 half direct PPO, 181/500 full mixed adaptation, and no Sinking-specific reward.
+Results and the §7.1 acceptance table: `docs/TRAINING_RESULTS.md`. The 99.0% half-HP and 81.2% real-HP values in `reports/ppo_hp_research_t1_curriculum.json` are pre-fix historical baselines. The post-fix direct/mixed ablations are recorded in `reports/ppo_hp_sinking_reward_ablation.json` and `reports/ppo_hp_postfix_mixed_demo_followup.json`. The current generic turn-cost `-30` ablation is in `reports/ppo_hp_turn_penalty_ablation.json`: 326/500 half direct PPO, 181/500 full mixed adaptation, and no Sinking-specific reward. A separate generic terminal speed-reward adaptation (`<=6T +400`, `7T +0`, later wins `-200` per extra turn) is recorded in `reports/ppo_hp_fast6_terminal_reward_ablation.json`: 494/500 half and 201/500 full from the preceding mixed-demo checkpoint; it remains a sequential ablation, not a globally seed-disjoint curriculum result.
 
 | Item | Where | Test |
 |------|-------|------|

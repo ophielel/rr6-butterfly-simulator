@@ -9,6 +9,9 @@ every turn                    -30
 ally death                    -30
 team wipe                     -1000
 Boss HP actually lost         +0.01 * Imago HP delta
+winning turn <= 6              +400
+winning turn == 7               +0
+winning turn > 7                -200 per extra turn
 ```
 
 Death and kill speed dominate; the process terms only help credit assignment,
@@ -30,6 +33,13 @@ TURN_PENALTY = -30.0
 DEATH_PENALTY = -30.0
 WIPE_PENALTY = -1000.0
 DAMAGE_REWARD = 0.01
+# Generic terminal speed shaping.  A win by turn 6 (or earlier) gets a sizeable
+# bonus; turn 7 is neutral; each later winning turn pays a larger cost.  These
+# constants deliberately mention no status, identity, skill, or E.G.O.
+FAST_KILL_TURN = 6
+NEUTRAL_KILL_TURN = 7
+FAST_KILL_BONUS = 400.0
+LATE_KILL_PENALTY_PER_TURN = -200.0
 
 
 def _unit_map(obs: Dict[str, Any]) -> Dict[str, Dict[str, Any]]:
@@ -41,6 +51,20 @@ def _boss_hp(obs: Dict[str, Any]) -> float:
     enemies = [unit for unit in obs.get("units", []) if unit.get("kind") != "sinner"]
     boss = max(enemies, key=lambda unit: float(unit.get("max_hp") or 0), default=None)
     return float((boss or {}).get("hp") or 0.0)
+
+
+def kill_speed_reward(after: Dict[str, Any]) -> float:
+    """Return generic terminal reward based on the winning turn."""
+    if after.get("winner") != "Sinners":
+        return 0.0
+    turn = int(after.get("turn") or 0)
+    if turn <= 0:
+        return 0.0
+    if turn <= FAST_KILL_TURN:
+        return FAST_KILL_BONUS
+    if turn > NEUTRAL_KILL_TURN:
+        return LATE_KILL_PENALTY_PER_TURN * (turn - NEUTRAL_KILL_TURN)
+    return 0.0
 
 
 def compute_reward(
@@ -61,17 +85,16 @@ def compute_reward(
         if unit is not None and unit.get("kind") == "sinner":
             reward += DEATH_PENALTY
     if after.get("winner") == "Sinners":
-        reward += WIN_REWARD
+        reward += WIN_REWARD + kill_speed_reward(after)
     elif after.get("winner") in ("Enemies",):
         reward += WIPE_PENALTY
     return reward
 
 
 def terminal_reward(after: Dict[str, Any]) -> float:
-    """Extra terminal reward; generic kill speed is also represented by the
-    per-turn time cost, while evaluation still reports exact kill turns."""
+    """Return the terminal victory/defeat reward, including generic speed."""
     if after.get("winner") == "Sinners":
-        return WIN_REWARD
+        return WIN_REWARD + kill_speed_reward(after)
     if after.get("winner") == "Enemies":
         return WIPE_PENALTY
     return 0.0
@@ -137,4 +160,9 @@ __all__ = [
     "DEATH_PENALTY",
     "WIPE_PENALTY",
     "DAMAGE_REWARD",
+    "FAST_KILL_TURN",
+    "NEUTRAL_KILL_TURN",
+    "FAST_KILL_BONUS",
+    "LATE_KILL_PENALTY_PER_TURN",
+    "kill_speed_reward",
 ]

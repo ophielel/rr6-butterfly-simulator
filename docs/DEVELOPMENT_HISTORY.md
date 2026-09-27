@@ -1647,6 +1647,21 @@ corrected half/0.65/0.80/full Teacher 数据作为 mixed demonstration replay，
 `146/500` 提升到 `180/500`，half holdout 为 `494/500`。该结果不是 global
 seed-disjoint from-scratch curriculum，不能覆盖待完成的正式 curriculum 重跑。
 
+### 22.8 Generic terminal speed-reward ablation
+
+用户要求在 6T 与 7T 之间增加一个通用终局速度项。实现固定为：胜利回合 `<=6T`
+加 `400`，`7T` 不变，超过 7T 每回合扣 `200`。该项只读取胜利回合，不读取
+Sinking、技能、身份或 E.G.O；`sinking_damage` 仍是评测统计而不是训练奖励。
+
+在新 reward 下重新生成了 T1 Teacher：half 为 `305/500`，中位击杀 7T；full 为
+`0/500`。随后从前一轮 `TURN_PENALTY=-30` 的 mixed-demo checkpoint 顺序适配，
+混合 half、0.65、0.80、full Teacher 数据。复用 holdout 上 half 为 `494/500`，
+full 为 `201/500`，相对上一轮 `492/500` 和 `181/500`；full 配对比较为新策略独胜
+30、旧策略独胜 10、共同胜 171、共同负 289。两侧 `axis_ok_rate=0`、
+`direct_burst_rate=1`，因此更强的终局速度压力改善了该适配的 full 胜率，但仍未
+教出预期的 Sinking → Harmony/Solemn Lament 路线。完整协议见
+`reports/ppo_hp_fast6_terminal_reward_ablation.json`。
+
 ---
 
 ## 23. 当前结果与历史 final baseline
@@ -1795,6 +1810,23 @@ Potency 峰值都不超过 99。它证明的是“通用 demonstration replay �
 已经完成”。训练配置、seed、CI 和路径见
 `reports/ppo_hp_postfix_mixed_demo_followup.json`。
 
+### 23.8 Generic terminal speed-reward follow-up
+
+本轮在 `TURN_PENALTY=-30` 之上增加终局速度项：`<=6T +400`、`7T +0`、
+`>7T -200/超出回合`。旧的 `+1000` 胜利奖励、实际 Imago HP credit、死亡/团灭
+惩罚以及 `sinking_damage=0` 训练约束不变。
+
+| policy | half holdout | full holdout | median kill turn |
+|---|---:|---:|---:|
+| 上一轮 `-30` mixed adaptation | 492/500 (98.4%) | 181/500 (36.2%) | 5 / 8 |
+| 新 terminal speed adaptation | 494/500 (98.8%) | 201/500 (40.2%) | 5 / 8 |
+
+这是顺序适配：新模型从上一轮 `-30` mixed checkpoint 开始，并使用新的 half、full、
+0.65、0.80 Teacher 数据；holdout 仍为已公开的 `42001-42500` 和 `43001-43500`。
+因此不能把 +20/500 写成独立的因果增益，也不能替代 globally seed-disjoint
+from-scratch curriculum。完整 CI、配对结果、数据索引和 artifact 路径见
+`reports/ppo_hp_fast6_terminal_reward_ablation.json`。
+
 ---
 
 ## 24. 结果应该怎样解释
@@ -1809,6 +1841,7 @@ Potency 峰值都不超过 99。它证明的是“通用 demonstration replay �
 6. 最终 holdout 的 full curriculum 胜局在同一 500 seed band 上稳定出现，而不是单条 replay 的偶然结果。
 7. PPO 结果没有通过硬编码 Rime Shank、Sinking 或特定 E.G.O 路线得到。奖励和动作选择都来自真实模拟状态及合法动作集合。
 8. 在不增加 Sinking 专属奖励的前提下，legacy 初始化 + mixed corrected demonstration replay 将 corrected full holdout 从 146/500 提升到 180/500；这仍是 adaptation ablation，不是 from-scratch curriculum 结论。
+9. 在上一轮 `-30` mixed checkpoint 上加入通用终局速度项后，顺序适配的 full holdout 为 201/500，较上一轮 181/500 更高；但该结果仍保持 `axis_ok_rate=0`，没有证明目标路线被学会。
 
 ### 24.2 不能确认的结论
 
@@ -1829,13 +1862,15 @@ T1 Teacher 找到 2/500，direct PPO 达到 212/500，curriculum 达到 406/500�
 
 ### 24.4 本次修订的解释边界
 
-本次 cap/reward ablation 可以确认两件事：模拟器状态不再产生超过 99 的 Sinking
-Potency，且移除直接触发奖励会显著改变 Teacher-demo PPO 的学习结果。它不能
-确认修订后的 direct PPO 是最优训练配置，也不能把旧 curriculum 的 81.2% 迁移
-到新奖励。随后完成的 corrected 0.65/0.80/full chain 在 full holdout 为 138/500；
-legacy 初始化的 mixed-demo adaptation 达到 180/500，并保留 half 494/500。
-因为后者继承了 legacy checkpoint，仍不能作为 globally seed-disjoint 的 post-fix
-curriculum 结论；该正式重跑仍是后续工作。
+本次 cap/reward ablation 可以确认三件事：模拟器状态不再产生超过 99 的 Sinking
+Potency，移除直接触发奖励会显著改变 Teacher-demo PPO 的学习结果，以及在已有
+`-30` mixed checkpoint 上增加通用终局速度项后，顺序适配 full holdout 从 181/500
+变为 201/500。它不能确认修订后的 direct PPO 是最优训练配置，也不能把旧
+curriculum 的 81.2% 迁移到新奖励。随后完成的 corrected 0.65/0.80/full chain 在
+full holdout 为 138/500；`-30` mixed adaptation 为 181/500；terminal speed
+adaptation 为 201/500，并保留 half 494/500。因为这些适配结果继承已有 checkpoint
+且复用 holdout，仍不能作为 globally seed-disjoint 的 post-fix curriculum 结论；
+该正式重跑仍是后续工作。
 
 ---
 
@@ -2069,6 +2104,52 @@ python eval/run_eval.py --scenario half --seed-start 42001 --seed-count 500 \
   --replays replays/ppo_curriculum_legacy_init_mixed_demo_nosinking_reward_half_eval
 ```
 
+### 25.10.1 Generic terminal speed-reward adaptation
+
+这是在当前 `-30` mixed checkpoint 上加入 `<=6T +400`、`7T +0`、`>7T -200`
+后的顺序适配：
+
+```bash
+python search/run_teacher.py --scenario half --budget t1 \
+  --seed-start 84001 --seed-count 500 --jobs 8 \
+  --out data/teacher_t1_half_500_fast6_nosinking_reward
+python search/run_teacher.py --scenario real --budget t1 \
+  --seed-start 85001 --seed-count 500 --jobs 8 \
+  --out data/teacher_t1_full_500_fast6_nosinking_reward
+
+python training/train_ppo.py \
+  --checkpoint models/ppo_curriculum_legacy_init_mixed_demo_turn30_nosinking_reward.npz \
+  --out models/ppo_curriculum_legacy_init_mixed_demo_fast6_nosinking_reward.npz \
+  --scenario real --seed-start 86001 --seed-count 1000 \
+  --iterations 10 --episodes-per-iteration 100 --epochs-per-iteration 3 \
+  --learning-rate 0.0005 --seed 20261430 \
+  --val-seed-start 87101 --val-seed-count 100 \
+  --allow-non-bc-checkpoint \
+  --demo-data data/teacher_t1_half_500_fast6_nosinking_reward \
+    data/teacher_curriculum_065_200_fast6_nosinking_reward \
+    data/teacher_curriculum_080_200_fast6_nosinking_reward \
+    data/teacher_t1_full_500_fast6_nosinking_reward \
+  --demo-updates-per-iteration 10 --demo-batch-decisions 32
+```
+
+```bash
+python eval/run_eval.py --scenario real --seed-start 43001 --seed-count 500 \
+  --policies PPO \
+  --checkpoint models/ppo_curriculum_legacy_init_mixed_demo_fast6_nosinking_reward.npz \
+  --out reports/ppo_curriculum_legacy_init_mixed_demo_fast6_nosinking_reward_eval \
+  --replays replays/ppo_curriculum_legacy_init_mixed_demo_fast6_nosinking_reward_eval
+python eval/run_eval.py --scenario half --seed-start 42001 --seed-count 500 \
+  --policies PPO \
+  --checkpoint models/ppo_curriculum_legacy_init_mixed_demo_fast6_nosinking_reward.npz \
+  --out reports/ppo_curriculum_legacy_init_mixed_demo_fast6_nosinking_reward_half_eval \
+  --replays replays/ppo_curriculum_legacy_init_mixed_demo_fast6_nosinking_reward_half_eval
+```
+
+直接 Teacher → BC → PPO 链使用独立训练/验证带：half `88001-89000` /
+`90101-90200`，full `89001-90000` / `90201-90300`；BC 与 direct PPO 的 holdout
+结果分别为 half `138/500`、full `0/500`。结果与限制见
+`reports/ppo_hp_fast6_terminal_reward_ablation.json`。
+
 ### 25.11 最终评测
 
 Half demo PPO：
@@ -2154,12 +2235,19 @@ data/teacher_curriculum_065_200/
 data/teacher_curriculum_080_200/
 data/teacher_curriculum_065_200_nosinking_reward/
 data/teacher_curriculum_080_200_nosinking_reward/
+data/teacher_t1_half_500_fast6_nosinking_reward/
+data/teacher_t1_full_500_fast6_nosinking_reward/
+data/teacher_curriculum_065_200_fast6_nosinking_reward/
+data/teacher_curriculum_080_200_fast6_nosinking_reward/
 data/dagger_t1_half_r1_200/
 data/dagger_t1_half_argmax_r1_200/
 data/dagger_t1_half_argmax_r2_200/
 data/dagger_t1_full_r1_200/
 
 models/*.json                 训练配置和指标，可提交
+models/bc_hp_*_fast6_nosinking_reward.json
+models/ppo_hp_*_fast6_nosinking_reward.json
+models/ppo_curriculum_legacy_init_mixed_demo_fast6_nosinking_reward.json
 models/*.npz                  二进制 checkpoint，按规则忽略
 reports/ppo_hp_research_t1_curriculum.json
 reports/agreement_hp_half_t1_500.json
@@ -2172,6 +2260,13 @@ reports/ppo_hp_full_t1_demo_3000_v2_eval/
 reports/ppo_hp_full_curriculum_eval/
 reports/ppo_hp_sinking_reward_ablation.json
 reports/ppo_hp_postfix_mixed_demo_followup.json
+reports/ppo_hp_fast6_terminal_reward_ablation.json
+reports/ppo_curriculum_legacy_init_mixed_demo_fast6_nosinking_reward_eval/
+reports/ppo_curriculum_legacy_init_mixed_demo_fast6_nosinking_reward_half_eval/
+reports/bc_hp_half_t1_fast6_nosinking_reward_eval/
+reports/bc_hp_full_t1_fast6_nosinking_reward_eval/
+reports/ppo_hp_half_t1_demo_1000_fast6_nosinking_reward_eval/
+reports/ppo_hp_full_t1_demo_1000_fast6_nosinking_reward_eval/
 reports/ppo_hp_half_t1_demo_3000_nosinking_reward_eval/
 reports/ppo_hp_full_t1_demo_3000_nosinking_reward_eval/
 reports/ppo_curriculum_1000_nosinking_reward_eval/

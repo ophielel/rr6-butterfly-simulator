@@ -132,8 +132,11 @@ in `reports/ppo_hp_research_t1_curriculum.json` (99.0% half-HP and 81.2% real-HP
 on 500 evaluation seeds). The post-fix matched direct T1 cap/reward ablation is in
 `reports/ppo_hp_sinking_reward_ablation.json`: Sinking is capped at the sourced
 Max Value 99, and `sinking_damage` remains a statistic but no longer contributes
-to training reward. `reports/evaluation.json` and `replays/index.json` are the
-machine-readable outcome for the historical evaluation.
+to training reward. The generic terminal speed-reward follow-up (`<=6T +400`,
+`7T +0`, later wins `-200` per extra turn) is recorded separately in
+`reports/ppo_hp_fast6_terminal_reward_ablation.json`. `reports/evaluation.json`
+and `replays/index.json` are the machine-readable outcome for the historical
+evaluation.
 
 ## Sources and honesty
 

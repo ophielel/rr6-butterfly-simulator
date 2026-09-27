@@ -24,7 +24,14 @@ from lcb.evaluate import Scenario, best_of_n, restart_aware, run_episode, summar
 from lcb.features import Encoder, SkillTable  # noqa: E402
 from lcb.nn import PolicyValueNet  # noqa: E402
 import lcb.ppo as ppo_module  # noqa: E402
-from lcb.rewards import TURN_PENALTY, compute_reward  # noqa: E402
+from lcb.rewards import (  # noqa: E402
+    DAMAGE_REWARD,
+    FAST_KILL_BONUS,
+    LATE_KILL_PENALTY_PER_TURN,
+    TURN_PENALTY,
+    compute_reward,
+    terminal_reward,
+)
 from lcb.stdio_client import StdioSimulator  # noqa: E402
 from lcb.plans import (  # noqa: E402
     PlanGenerator,
@@ -54,6 +61,34 @@ def test_reward_ignores_sinking_trigger_damage() -> None:
         {"stats": {"damage_to_enemies": 0, "sinking_damage": 100}}, before, after
     )
     assert reward == TURN_PENALTY == -30.0
+
+
+def test_generic_kill_speed_reward_has_six_turn_bonus_and_seven_turn_neutral() -> None:
+    before = {
+        "units": [
+            {"id": "boss", "kind": "enemy", "max_hp": 1000, "hp": 1000},
+        ]
+    }
+
+    def reward_at(turn: int) -> float:
+        after = {
+            "turn": turn,
+            "winner": "Sinners",
+            "units": [
+                {"id": "boss", "kind": "enemy", "max_hp": 1000, "hp": 0},
+            ],
+        }
+        return compute_reward({"stats": {}}, before, after)
+
+    six = reward_at(6)
+    seven = reward_at(7)
+    eight = reward_at(8)
+    assert six - seven == FAST_KILL_BONUS
+    assert eight - seven == LATE_KILL_PENALTY_PER_TURN
+    assert six == TURN_PENALTY + DAMAGE_REWARD * 1000 + 1000.0 + FAST_KILL_BONUS
+    assert terminal_reward({"winner": "Sinners", "turn": 6}) == 1400.0
+    assert terminal_reward({"winner": "Sinners", "turn": 7}) == 1000.0
+    assert terminal_reward({"winner": "Sinners", "turn": 8}) == 800.0
 
 
 def test_reward_credits_main_boss_hp_not_butterfly_damage() -> None:
