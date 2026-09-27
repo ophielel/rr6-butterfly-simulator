@@ -24,7 +24,7 @@ from lcb.evaluate import Scenario, best_of_n, restart_aware, run_episode, summar
 from lcb.features import Encoder, SkillTable  # noqa: E402
 from lcb.nn import PolicyValueNet  # noqa: E402
 import lcb.ppo as ppo_module  # noqa: E402
-from lcb.rewards import compute_reward  # noqa: E402
+from lcb.rewards import TURN_PENALTY, compute_reward  # noqa: E402
 from lcb.stdio_client import StdioSimulator  # noqa: E402
 from lcb.plans import (  # noqa: E402
     PlanGenerator,
@@ -53,7 +53,7 @@ def test_reward_ignores_sinking_trigger_damage() -> None:
     reward = compute_reward(
         {"stats": {"damage_to_enemies": 0, "sinking_damage": 100}}, before, after
     )
-    assert reward == -10.0
+    assert reward == TURN_PENALTY == -30.0
 
 
 def test_reward_credits_main_boss_hp_not_butterfly_damage() -> None:
@@ -72,7 +72,7 @@ def test_reward_credits_main_boss_hp_not_butterfly_damage() -> None:
     reward = compute_reward(
         {"stats": {"damage_to_enemies": 101, "sinking_damage": 0}}, before, after
     )
-    assert reward == -9.0
+    assert reward == TURN_PENALTY + 1.0
 
 
 def test_registered_budgets_and_wilson_interval() -> None:

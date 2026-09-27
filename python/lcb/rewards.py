@@ -5,7 +5,7 @@ observations around it - never from a hand-written damage model:
 
 ```text
 Boss kill                     +1000
-every turn                    -10
+every turn                    -30
 ally death                    -30
 team wipe                     -1000
 Boss HP actually lost         +0.01 * Imago HP delta
@@ -23,7 +23,10 @@ from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional
 
 WIN_REWARD = 1000.0
-TURN_PENALTY = -10.0
+# A turn is a meaningful opportunity cost: a nine-turn win now loses 270 reward
+# to time, while the +1000 terminal win still dominates.  This remains a
+# generic time cost; it does not reward or name any particular status route.
+TURN_PENALTY = -30.0
 DEATH_PENALTY = -30.0
 WIPE_PENALTY = -1000.0
 DAMAGE_REWARD = 0.01
@@ -65,8 +68,8 @@ def compute_reward(
 
 
 def terminal_reward(after: Dict[str, Any]) -> float:
-    """Extra reward for the final state of an episode (kill speed is scored by
-    the evaluation, not by a reward shaping term)."""
+    """Extra terminal reward; generic kill speed is also represented by the
+    per-turn time cost, while evaluation still reports exact kill turns."""
     if after.get("winner") == "Sinners":
         return WIN_REWARD
     if after.get("winner") == "Enemies":

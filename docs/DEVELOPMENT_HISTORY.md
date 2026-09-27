@@ -981,6 +981,25 @@ Potency”的 gain 继续触发 Echoes 的额外 Count。来源是缓存的 wiki
 和评测调用，本次对照重新生成了 matched T1 Teacher、BC 和 3000-rollout
 Teacher-demo PPO 数据，而不是把旧数据悄悄混入新结论。
 
+### 14.7 通用回合成本 ablation：-10 -> -30
+
+针对“回合成本太宽泛，网络没有理由尽快完成叠层和触发”的假设，当前代码把
+`TURN_PENALTY` 从 `-10` 提高到 `-30`。这是通用时间机会成本，不读取
+`Sinking`、技能 ID、身份或 E.G.O 名称，也没有新增任何沉沦奖励。九回合胜局的
+时间成本现在为 `-270`，但 `+1000` 的终局胜利仍然占主导。
+
+新 Teacher half 为 `312/500`，full 为 `1/500`；两者仍是
+`axis_ok_rate=0`、`direct_burst_rate=1`。使用新惩罚训练的 direct half PPO 在
+最终 holdout 达到 `326/500`，但 direct full PPO 为 `0/500`。从 corrected chain
+继续训练的 turn30 curriculum 为 `118/500` full；legacy mixed-demo adaptation
+为 `181/500` full、`492/500` half，full median kill turn 从 9 降到 8。
+
+因此这项 ablation 支持“更强的通用时间成本有助于 half 的快速完成”，但没有证明
+它能单独教出预期的 `Sinking -> Harmony/Solemn Lament` 流程。direct 新旧 run 的
+PPO rollout 预算也不同（1000 对历史 3000），而 mixed adaptation 是从旧模型继续
+训练；完整 CI、paired seed 对照和 artifact 路径见
+`reports/ppo_hp_turn_penalty_ablation.json`。
+
 ---
 
 ## 15. 训练系统的设计
@@ -1041,7 +1060,7 @@ Action feature 包括：
 
 ```text
 击杀 Boss                       +1000
-每回合                         -10
+每回合                         -30（历史 post-fix -10 结果另行标注）
 每名我方角色死亡                -30
 我方团灭                       -1000
 主 Boss 实际 HP 下降            +0.01 x delta
@@ -2015,10 +2034,11 @@ python training/train_ppo.py \
 
 随后将 checkpoint 改为 `ppo_curriculum_065_1000.npz`、scenario 改为 `curriculum_080`，最后将 checkpoint 改为 `ppo_curriculum_080_1000.npz`、scenario 改为 `real`。
 
-### 25.10 Post-fix mixed-demo adaptation
+### 25.10 Historical post-fix mixed-demo adaptation（`TURN_PENALTY=-10`）
 
 该 follow-up 使用 legacy checkpoint 作为初始化，但训练和 replay 都使用修订后的
-模拟器与 Teacher 数据：
+模拟器与 Teacher 数据。它是历史 -10 artifact；当前 `TURN_PENALTY=-30` 的复现命令
+见 `docs/TRAINING.md` §5.1 和 `reports/ppo_hp_turn_penalty_ablation.json`：
 
 ```bash
 python training/train_ppo.py \

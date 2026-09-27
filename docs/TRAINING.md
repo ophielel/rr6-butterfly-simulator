@@ -73,8 +73,11 @@ actor 选了什么）。上下文块使"共享打分器 + 固定 actor 顺序"�
 `damage_to_enemies`、`damage_to_allies`、`status_damage`、`sinking_damage`、
 `sinking_sp_damage`、`sinking_triggers`、`skill_uses`、`ego_uses`、`deaths`。
 
-**奖励** (§3)：`+1000 击杀`、`-10/回合`、`-30 角色死亡`、`-1000 团灭`、
-`+0.01*Imago 实际 HP 下降`。`sinking_damage` 仍由模拟器记录并用于评测，但不再作为训练 shaping reward；沉沦必须通过真实的 Imago HP 变化获得 credit。叠层本身也不给独立奖励。
+**奖励** (§3)：`+1000 击杀`、`-30/回合`、`-30 角色死亡`、`-1000 团灭`、
+`+0.01*Imago 实际 HP 下降`。本次 post-fix fast-turn ablation 将通用回合成本从
+`-10` 提高到 `-30`；它不奖励沉沦层数，也不指定某条 E.G.O 路线。`sinking_damage`
+仍由模拟器记录并用于评测，但不再作为训练 shaping reward；沉沦必须通过真实的
+Imago HP 变化获得 credit。叠层本身也不给独立奖励。
 
 ## 4. 必须记录在案的偏差
 
@@ -134,30 +137,30 @@ python python/tests/test_env.py          # wrapper 冒烟
 cargo test --manifest-path sim/Cargo.toml
 ```
 
-### 5.1 Post-fix mixed-demonstration adaptation
+### 5.1 Post-fix mixed-demonstration adaptation（当前 turn cost = -30）
 
-这条命令复现报告中的适配 ablation；它不新增任何 Sinking reward，且故意保留
+这条命令复现当前的适配 ablation；它不新增任何 Sinking reward，且故意保留
 legacy 初始化的限制：
 
 ```bash
 python training/train_ppo.py \
-  --checkpoint models/ppo_curriculum_1000.npz \
-  --out models/ppo_curriculum_legacy_init_mixed_demo_nosinking_reward.npz \
+  --checkpoint models/ppo_curriculum_legacy_init_mixed_demo_nosinking_reward.npz \
+  --out models/ppo_curriculum_legacy_init_mixed_demo_turn30_nosinking_reward.npz \
   --scenario real \
-  --seed-start 60001 --seed-count 1000 \
+  --seed-start 69001 --seed-count 1000 \
   --iterations 10 --episodes-per-iteration 100 --epochs-per-iteration 3 \
-  --learning-rate 0.001 --seed 20261405 \
-  --val-seed-start 61101 --val-seed-count 100 \
+  --learning-rate 0.0005 --seed 20261422 \
+  --val-seed-start 70101 --val-seed-count 100 \
   --allow-non-bc-checkpoint \
   --demo-data data/teacher_t1_half_500_nosinking_reward \
     data/teacher_curriculum_065_200_nosinking_reward \
     data/teacher_curriculum_080_200_nosinking_reward \
-    data/teacher_t1_full_500_nosinking_reward \
+    data/teacher_t1_full_500_turn30_nosinking_reward \
   --demo-updates-per-iteration 10 --demo-batch-decisions 32
 ```
 
 然后在 `42001-42500` 和 `43001-43500` holdout 上分别用 `half`/`real` 评测。
-完整 JSON、训练 metadata 和评测目录见报告的 `artifacts` 字段。
+完整 JSON、训练 metadata 和评测目录见 `reports/ppo_hp_turn_penalty_ablation.json`。
 
 ## 6. 与计划的接口对照（P0 差异报告）
 

@@ -101,6 +101,31 @@ in the corrected simulator, the legacy policy won alone on 71 seeds and mixed-de
 on 105 (75 both won, 249 both lost). The legacy initialization means this result
 must not replace the pending globally seed-disjoint corrected curriculum conclusion.
 
+## 0.5 Increased generic turn penalty
+
+The current fast-turn ablation changes only the generic time cost from `-10` to `-30`
+per resolved turn. Victory, actual Boss HP credit, deaths, wipe, and the absence of
+`Sinking` reward shaping are unchanged.
+
+| Post-fix policy / baseline | Half HP | Full HP | Median kill turn |
+|---|---:|---:|---:|
+| Direct PPO, old `-10` | 168/500 (33.6%) | 1/500 (0.2%) | 7 / 12 |
+| **Direct PPO, new `-30`** | **326/500 (65.2%)** | **0/500 (0.0%)** | **5 / —** |
+| Mixed legacy-init adaptation, old `-10` | 494/500 (98.8%) | 180/500 (36.0%) | 5 / 9 |
+| **Mixed legacy-init adaptation, new `-30`** | **492/500 (98.4%)** | **181/500 (36.2%)** | **5 / 8** |
+| Corrected curriculum, new `-30` | — | 118/500 (23.6%) | — / 9 |
+
+The direct old-reference model used 3000 PPO rollout episodes while the new `-30`
+direct model used 1000, so that row is directional rather than a budget-matched causal
+comparison. The two mixed-adaptation rows each used 1000 rollout episodes, but the
+new run starts from the old mixed checkpoint. The larger generic penalty clearly helps
+the direct half-HP learner and makes the
+mixed full policy slightly faster, but it does not recover full direct credit
+assignment. The new Teacher and evaluated policies still report `axis_ok_rate=0` and
+`direct_burst_rate=1`; a stronger time cost alone did not produce the intended
+Sinking → Harmony/Solemn Lament route. Full protocol and artifact paths are in
+`reports/ppo_hp_turn_penalty_ablation.json`.
+
 ## 1. 协议与样本量（§7 的"必须写明样本数"）
 
 | 项目 | 值 |

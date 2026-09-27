@@ -1,0 +1,163 @@
+{
+  "status": "post-fix generic turn-cost ablation",
+  "scope": "Increase the per-turn opportunity cost without adding Sinking-specific reward",
+  "reward": {
+    "turn_penalty_before": -10.0,
+    "turn_penalty_after": -30.0,
+    "win_reward": 1000.0,
+    "death_penalty": -30.0,
+    "wipe_penalty": -1000.0,
+    "damage_reward": 0.01,
+    "sinking_damage_reward": 0.0,
+    "sinking_damage_remains_evaluation_stat": true,
+    "rationale": "A nine-turn win pays 270 reward in generic time cost while the terminal win remains dominant; no status, identity, E.G.O., or route is named."
+  },
+  "comparability": {
+    "direct_minus10_reference": "historical post-fix 3000-rollout models; the new -30 direct run used 1000 rollouts, so the direct comparison is directional rather than a budget-matched causal estimate",
+    "mixed_adaptation": "both the old -10 and new -30 adaptation used 1000 rollout episodes and ten demonstration updates per iteration; the new run starts from the old mixed-demo checkpoint, so it measures a sequential adaptation",
+    "curriculum": "the new -30 stages used 1000 rollout episodes per stage; the earlier corrected -10 chain also used 1000 per stage but started from a 3000-rollout half checkpoint"
+  },
+  "protocol": {
+    "strict": true,
+    "max_turns": 30,
+    "infinite_ego_resources": true,
+    "holdout_half": "42001-42500",
+    "holdout_full": "43001-43500",
+    "teacher_half_seeds": "72001-72500",
+    "teacher_full_seeds": "73001-73500",
+    "direct_half_training_seeds": "65001-66000",
+    "direct_full_training_seeds": "66001-67000",
+    "curriculum_training_seeds": ["74001-75000", "76001-77000", "78001-79000"],
+    "mixed_adaptation_training_seeds": "69001-70000"
+  },
+  "teacher": {
+    "half": {
+      "wins": 312,
+      "episodes": 500,
+      "win_rate": 0.624,
+      "median_kill_turn": 7.0,
+      "axis_ok_rate": 0.0,
+      "direct_burst_rate": 1.0,
+      "peak_sinking_potency_max": 99,
+      "artifact": "data/teacher_t1_half_500_turn30_nosinking_reward/teacher_index.json"
+    },
+    "full": {
+      "wins": 1,
+      "episodes": 500,
+      "win_rate": 0.002,
+      "median_kill_turn": 13.0,
+      "axis_ok_rate": 0.0,
+      "direct_burst_rate": 1.0,
+      "peak_sinking_potency_max": 99,
+      "artifact": "data/teacher_t1_full_500_turn30_nosinking_reward/teacher_index.json"
+    }
+  },
+  "holdout": {
+    "historical_post_fix_minus10_reference": {
+      "half": {"wins": 168, "episodes": 500, "win_rate": 0.336},
+      "full": {"wins": 1, "episodes": 500, "win_rate": 0.002},
+      "artifact": "reports/ppo_hp_sinking_reward_ablation.json"
+    },
+    "direct_ppo_minus30": {
+      "half": {
+        "wins": 326,
+        "episodes": 500,
+        "win_rate": 0.652,
+        "wilson_95": [0.6092317009492663, 0.6924504150173392],
+        "median_kill_turn": 5.0,
+        "artifact": "reports/ppo_hp_half_t1_demo_1000_turn30_nosinking_reward_eval/evaluation.json"
+      },
+      "full": {
+        "wins": 0,
+        "episodes": 500,
+        "win_rate": 0.0,
+        "wilson_95": [0.0, 0.007624618530903363],
+        "artifact": "reports/ppo_hp_full_t1_demo_1000_turn30_nosinking_reward_eval/evaluation.json"
+      }
+    },
+    "turn30_curriculum": {
+      "full": {
+        "wins": 118,
+        "episodes": 500,
+        "win_rate": 0.236,
+        "wilson_95": [0.20088068978132578, 0.27514510880299115],
+        "median_kill_turn": 9.0,
+        "artifact": "reports/ppo_curriculum_1000_turn30_nosinking_reward_eval/evaluation.json"
+      }
+    },
+    "mixed_adaptation_minus30": {
+      "half": {
+        "wins": 492,
+        "episodes": 500,
+        "win_rate": 0.984,
+        "wilson_95": [0.9687485245822888, 0.9918708446797967],
+        "median_kill_turn": 5.0,
+        "artifact": "reports/ppo_curriculum_legacy_init_mixed_demo_turn30_nosinking_reward_half_eval/evaluation.json"
+      },
+      "full": {
+        "wins": 181,
+        "episodes": 500,
+        "win_rate": 0.362,
+        "wilson_95": [0.32107531661676714, 0.4050290780977621],
+        "median_kill_turn": 8.0,
+        "artifact": "reports/ppo_curriculum_legacy_init_mixed_demo_turn30_nosinking_reward_eval/evaluation.json"
+      }
+    }
+  },
+  "paired_comparisons": {
+    "direct_half_minus10_vs_minus30": {
+      "both_win": 107,
+      "minus10_only_win": 61,
+      "minus30_only_win": 219,
+      "both_lose": 113
+    },
+    "direct_full_minus10_vs_minus30": {
+      "both_win": 0,
+      "minus10_only_win": 1,
+      "minus30_only_win": 0,
+      "both_lose": 499
+    },
+    "mixed_full_minus10_vs_minus30": {
+      "both_win": 151,
+      "minus10_only_win": 29,
+      "minus30_only_win": 30,
+      "both_lose": 290
+    },
+    "mixed_half_minus10_vs_minus30": {
+      "both_win": 490,
+      "minus10_only_win": 4,
+      "minus30_only_win": 2,
+      "both_lose": 4
+    }
+  },
+  "diagnostics": {
+    "turn30_direct_half_peak_sinking_potency_max": 99,
+    "turn30_direct_full_peak_sinking_potency_max": 99,
+    "turn30_mixed_half_peak_sinking_potency_max": 99,
+    "turn30_mixed_full_peak_sinking_potency_max": 99,
+    "all_episodes_over_99": 0,
+    "axis_ok_rate": 0.0,
+    "direct_burst_rate": 1.0
+  },
+  "interpretation": [
+    "The stronger generic time cost materially improved the direct half-HP ablation from 168/500 to 326/500 and moved its median kill turn to 5.",
+    "It did not solve full-HP direct credit assignment: direct PPO remained 0/500, and the from-corrected-checkpoint turn30 curriculum reached 118/500, below the earlier corrected -10 curriculum diagnostic of 138/500.",
+    "On the legacy-initialized mixed-demo adaptation, full performance changed only from 180/500 to 181/500, while median kill turn improved from 9 to 8; half performance changed from 494/500 to 492/500.",
+    "The new Teacher still reports axis_ok_rate=0 and direct_burst_rate=1, so a larger generic turn penalty alone does not teach the intended Sinking-to-Harmony/Solemn-Lament route.",
+    "The result supports keeping -30 as a tested generic fast-turn ablation, not treating it as a solution to the missing route-specific behavior."
+  ],
+  "artifacts": {
+    "source": "python/lcb/rewards.py",
+    "test": "python/tests/test_training.py",
+    "teacher_half": "data/teacher_t1_half_500_turn30_nosinking_reward/teacher_index.json",
+    "teacher_full": "data/teacher_t1_full_500_turn30_nosinking_reward/teacher_index.json",
+    "direct_half_metadata": "models/ppo_hp_half_t1_demo_1000_turn30_nosinking_reward.json",
+    "direct_full_metadata": "models/ppo_hp_full_t1_demo_1000_turn30_nosinking_reward.json",
+    "curriculum_metadata": [
+      "models/ppo_curriculum_065_1000_turn30_nosinking_reward.json",
+      "models/ppo_curriculum_080_1000_turn30_nosinking_reward.json",
+      "models/ppo_curriculum_1000_turn30_nosinking_reward.json"
+    ],
+    "mixed_metadata": "models/ppo_curriculum_legacy_init_mixed_demo_turn30_nosinking_reward.json"
+  }
+}

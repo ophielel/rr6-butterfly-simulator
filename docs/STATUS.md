@@ -142,7 +142,7 @@ effects (HP Healing Down, Wrath Fragility).
 ## Training and evaluation (2026-09-21)
 
 Specification: `docs/TRAINING_PLAN.md`.  Implementation: `docs/TRAINING.md`.
-Results and the §7.1 acceptance table: `docs/TRAINING_RESULTS.md`. The 99.0% half-HP and 81.2% real-HP values in `reports/ppo_hp_research_t1_curriculum.json` are pre-fix historical baselines. The post-fix direct ablation and mixed-demonstration adaptation are recorded in `reports/ppo_hp_sinking_reward_ablation.json` and `reports/ppo_hp_postfix_mixed_demo_followup.json`; the latter reaches 494/500 half and 180/500 full without a Sinking-specific reward.
+Results and the §7.1 acceptance table: `docs/TRAINING_RESULTS.md`. The 99.0% half-HP and 81.2% real-HP values in `reports/ppo_hp_research_t1_curriculum.json` are pre-fix historical baselines. The post-fix direct/mixed ablations are recorded in `reports/ppo_hp_sinking_reward_ablation.json` and `reports/ppo_hp_postfix_mixed_demo_followup.json`. The current generic turn-cost `-30` ablation is in `reports/ppo_hp_turn_penalty_ablation.json`: 326/500 half direct PPO, 181/500 full mixed adaptation, and no Sinking-specific reward.
 
 | Item | Where | Test |
 |------|-------|------|
