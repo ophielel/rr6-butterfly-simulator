@@ -309,6 +309,43 @@ def test_teacher_plans_are_replayable() -> None:
         assert value == value  # not NaN
 
 
+def test_rollout_teacher_completes_partial_plans_and_keeps_diverse_candidates() -> None:
+    encoder = Encoder()
+    teacher = BeamTeacher(
+        encoder.table,
+        encoder,
+        TeacherConfig(
+            horizon=1,
+            plan_width=4,
+            candidate_cap=6,
+            turn_width=2,
+            rollout_width=3,
+            score_mode="rollout",
+            candidate_mode="diverse",
+            leaf_value_weight=1.0,
+            max_turns=2,
+            enemy_hp_scale=0.08,
+            infinite_ego_resources=True,
+        ),
+    )
+    env = LimbusEnv(strict=True)
+    env.reset(
+        1234,
+        enemies=SECTION5_WAVE,
+        max_turns=2,
+        enemy_hp_scale=0.08,
+        infinite_ego_resources=True,
+    )
+    obs = env.observe()
+    plan, _value, _groups, _actors = teacher.plan_turn(env, obs, env.legal_actions())
+    assert plan
+    assert env.clone_state().step_turn(plan)["ok"]
+    assert teacher.stats["rollout_calls"] > 0
+    assert teacher.stats.get("rollout_rejections", 0) == 0
+    assert teacher.stats["candidate_kept"] < teacher.stats["candidate_available"]
+    assert teacher.stats["bucket_defense_kept"] > 0
+
+
 def test_teacher_samples_are_labelled_inside_the_candidates() -> None:
     encoder = Encoder()
     teacher = BeamTeacher(
@@ -329,6 +366,39 @@ def test_teacher_samples_are_labelled_inside_the_candidates() -> None:
     assert data["cand"].shape[1] == encoder.action_dim
     assert data["offsets"].sum() == data["cand"].shape[0]
     assert ds.describe(data)["episodes"] == 1
+
+
+def test_quality_weighting_downweights_generic_near_failures() -> None:
+    encoder = Encoder()
+    teacher = BeamTeacher(
+        encoder.table,
+        encoder,
+        TeacherConfig(
+            horizon=1,
+            plan_width=4,
+            candidate_cap=3,
+            turn_width=1,
+            max_turns=2,
+            counterfactual_credit=True,
+        ),
+    )
+    _stats, samples, _replay = teacher.run_episode(4321, enemy_hp_scale=0.08)
+    assert teacher.stats.get("counterfactual_calls", 0) > 0
+    assert samples
+    for sample in samples:
+        sample.episode_won = False
+        sample.episode_quality = 0.25
+    plain = encode_samples(encoder, samples)
+    weighted = encode_samples(
+        encoder,
+        samples,
+        quality_weighting=True,
+        quality_power=2.0,
+        failure_weight=0.1,
+        credit_weighting=True,
+    )
+    assert np.all(weighted["weight"] < plain["weight"])
+    assert np.all(weighted["weight"] >= 0.1)
 
 
 def test_dataset_split_is_by_seed() -> None:

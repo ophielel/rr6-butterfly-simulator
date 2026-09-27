@@ -28,5 +28,6 @@ data/dagger*/seed_*.npz
 data/dagger*/**/seed_*.npz
 data/dagger*/replays/
 data/dagger*/**/replays/
+data/diagnostic*/seed_*.npz
 models/bc*.npz
 models/ppo*.npz

@@ -1,0 +1,114 @@
+{
+  "status": "post-search-repair full-HP Teacher diagnostics",
+  "scope": "Test generic candidate diversity, valid whole-turn rollout scoring, and non-route-specific leaf survival value before training another student.",
+  "protocol": {
+    "scenario": "real",
+    "strict": true,
+    "max_turns": 30,
+    "infinite_ego_resources": true,
+    "seed_bands": {
+      "baseline_top50": "92001-92050",
+      "heuristic_diverse_leaf50": "92051-92100",
+      "rollout_diverse50": "92106-92155",
+      "rollout_all20": "92156-92175",
+      "rollout_survival50": "92221-92270"
+    },
+    "holdout_note": "These are fresh Teacher diagnostic seeds, not policy holdout evaluations. No BC/PPO checkpoint was trained from them."
+  },
+  "implementation_repairs": [
+    "Rollout Teacher now completes an actor prefix with legal fallback actions before calling submit_plan; rollout_rejections stayed at 0.",
+    "Candidate selection supports top, diverse, and all modes, with generic structural and target diversity diagnostics.",
+    "Turn-level beam pruning and leaf ranking can include a generic nonterminal state value based on Boss HP, ally damage, deaths, and turn progress.",
+    "Teacher CLI exposes generic leaf and survival weights without naming a status, identity, skill, or E.G.O route.",
+    "Teacher samples can optionally downweight failed episodes by generic final-state quality, omit rows below a quality threshold, and apply generic one-actor counterfactual score margins; legacy weighting remains the default."
+  ],
+  "candidate_recall": {
+    "reference": "uncapped first-turn heuristic Teacher on the same initial state",
+    "top_cap6": {
+      "action_recall": 1.0,
+      "exact_plan_rate": 1.0,
+      "actions": 350,
+      "artifact": "reports/diagnose_teacher_candidates_top50.json"
+    },
+    "diverse_cap12": {
+      "action_recall": 1.0,
+      "exact_plan_rate": 1.0,
+      "actions": 350,
+      "artifact": "reports/diagnose_teacher_candidates_diverse50.json"
+    },
+    "interpretation": "At least on the common first turn, cap=6 did not remove the uncapped Teacher's chosen actions. Candidate pruning is therefore not the primary demonstrated bottleneck for this scene."
+  },
+  "experiments": {
+    "heuristic_top_cap6": {
+      "episodes": 50,
+      "wins": 0,
+      "win_rate": 0.0,
+      "damage_to_enemies_mean": 10016.16,
+      "boss_hp_left_median": 7567.5,
+      "survivors_mean": 0.36,
+      "axis_ok_rate": 0.0,
+      "direct_burst_rate": 1.0,
+      "artifact": "data/diagnostic_full_t1_top50/teacher_index.json"
+    },
+    "heuristic_diverse_leaf1": {
+      "episodes": 50,
+      "wins": 0,
+      "win_rate": 0.0,
+      "damage_to_enemies_mean": 10665.96,
+      "boss_hp_left_median": 7111.0,
+      "survivors_mean": 0.64,
+      "axis_ok_rate": 0.0,
+      "direct_burst_rate": 1.0,
+      "artifact": "data/diagnostic_full_diverse_leaf50/teacher_index.json"
+    },
+    "rollout_diverse_leaf1": {
+      "episodes": 50,
+      "wins": 1,
+      "win_rate": 0.02,
+      "damage_to_enemies_mean": 11215.94,
+      "boss_hp_left_median": 6541.0,
+      "survivors_mean": 0.42,
+      "rollout_rejections": 0,
+      "axis_ok_rate": 0.0,
+      "direct_burst_rate": 1.0,
+      "artifact": "data/diagnostic_full_rollout_diverse50_fixed/teacher_index.json"
+    },
+    "rollout_all_leaf1": {
+      "episodes": 20,
+      "wins": 0,
+      "win_rate": 0.0,
+      "damage_to_enemies_mean": 10183.55,
+      "boss_hp_left_median": 7428.5,
+      "survivors_mean": 0.6,
+      "rollout_rejections": 0,
+      "axis_ok_rate": 0.0,
+      "direct_burst_rate": 1.0,
+      "artifact": "data/diagnostic_full_rollout_all20/teacher_index.json"
+    },
+    "rollout_diverse_leaf5_survival_weighted": {
+      "episodes": 50,
+      "wins": 3,
+      "win_rate": 0.06,
+      "wilson_95": [0.020614596364630478, 0.16217343370877002],
+      "kill_turn_median": 12.0,
+      "damage_to_enemies_mean": 11633.12,
+      "boss_hp_left_median": 5333.0,
+      "survivors_mean": 0.26,
+      "rollout_rejections": 0,
+      "axis_ok_rate": 0.0,
+      "direct_burst_rate": 1.0,
+      "weights": {
+        "leaf_value_weight": 5.0,
+        "ally_damage_weight": 100.0,
+        "death_weight": 200.0
+      },
+      "artifact": "data/diagnostic_full_rollout_survival5_50/teacher_index.json"
+    }
+  },
+  "conclusion": [
+    "The rollout implementation bug was real and is fixed: the previous implementation sent incomplete partial plans to submit_plan, so every partial rollout was rejected.",
+    "Generic diversity plus leaf value materially improves damage and survival, and the survival-weighted rollout increases fresh full-HP Teacher wins from 0-1/50 to 3/50.",
+    "This is not yet enough successful data for BC/PPO. All successful episodes still have axis_ok_rate=0 and direct_burst_rate=1, so the intended delayed route has not emerged.",
+    "The next bottleneck is search value/credit quality and demonstration selection, not another terminal reward tweak. Keep successful and near-successful trajectories separate from ordinary failures, then add counterfactual or top-k plan credit before training a new policy."
+  ]
+}

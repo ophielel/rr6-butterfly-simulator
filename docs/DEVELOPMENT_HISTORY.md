@@ -1827,6 +1827,33 @@ Potency 峰值都不超过 99。它证明的是“通用 demonstration replay �
 from-scratch curriculum。完整 CI、配对结果、数据索引和 artifact 路径见
 `reports/ppo_hp_fast6_terminal_reward_ablation.json`。
 
+### 23.9 Post-search repair：候选、rollout 与 leaf value 诊断
+
+在没有继续调整终端奖励之前，先修正了 Teacher rollout 的工程问题：actor beam
+产生的是 prefix，但模拟器只接受完整回合，因此 rollout 现在用当前状态的合法
+fallback 补齐剩余 actor 后再调用 `step_turn`。同时加入了 `top`、`diverse`、
+`all` 三种通用候选模式，以及由 Boss HP、队友损失和死亡组成的可选非终局 leaf
+value。没有加入 Sinking、特定技能、身份或 E.G.O 路线奖励。
+
+候选 recall 诊断用同一状态的 uncapped Teacher 作参照。`cap=6` 在 50 个 full-HP
+seed 的首回合保留了 `350/350` 个参照 action，首回合完整 plan agreement 也是
+`50/50`。这不能证明所有后续状态都没有剪枝，但说明当前停滞不能仅归因于第一层
+candidate cap。
+
+| 配置 | n | wins | 平均伤害 | Boss HP 中位 | 平均存活 |
+|---|---:|---:|---:|---:|---:|
+| T1/top | 50 | 0 | 10016 | 7568 | 0.36 |
+| diverse + heuristic leaf | 50 | 0 | 10666 | 7111 | 0.64 |
+| diverse + rollout/leaf | 50 | 1 | 11216 | 6541 | 0.42 |
+| diverse + rollout + 通用 survival leaf | 50 | **3** | **11633** | **5333** | 0.26 |
+
+rollout rejection 在修复后为 0。最后一行使用 `leaf=5`、`ally_damage=100`、
+`death=200`，仍保持 `axis_ok_rate=0`、`direct_burst_rate=1`；因此它是搜索
+质量的方向性改善，不是已经发现目标路线的证据，也没有足够成功轨迹支持新一轮
+BC/PPO。完整配置、fresh seed 带、回放和统计在
+`reports/teacher_search_diagnostics.json`；候选诊断工具为
+`tools/diagnose_teacher_candidates.py`。
+
 ---
 
 ## 24. 结果应该怎样解释
@@ -1842,6 +1869,7 @@ from-scratch curriculum。完整 CI、配对结果、数据索引和 artifact �
 7. PPO 结果没有通过硬编码 Rime Shank、Sinking 或特定 E.G.O 路线得到。奖励和动作选择都来自真实模拟状态及合法动作集合。
 8. 在不增加 Sinking 专属奖励的前提下，legacy 初始化 + mixed corrected demonstration replay 将 corrected full holdout 从 146/500 提升到 180/500；这仍是 adaptation ablation，不是 from-scratch curriculum 结论。
 9. 在上一轮 `-30` mixed checkpoint 上加入通用终局速度项后，顺序适配的 full holdout 为 201/500，较上一轮 181/500 更高；但该结果仍保持 `axis_ok_rate=0`，没有证明目标路线被学会。
+10. Post-search repair 修复了不完整 rollout prefix，并用首回合 `350/350` candidate recall 排除了“第一层 cap 已剪掉目标动作”这一简单解释；generic survival leaf 将 fresh full-HP Teacher 诊断提高到 3/50，但仍是 direct burst，不能据此宣称目标轴已出现。
 
 ### 24.2 不能确认的结论
 

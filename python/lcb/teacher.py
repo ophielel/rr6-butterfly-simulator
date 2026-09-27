@@ -32,7 +32,7 @@ import numpy as np
 
 from .env import LimbusEnv, SECTION5_WAVE
 from .features import Encoder, SkillTable
-from .plans import PlanGenerator, action_actor, canonical, group_candidates, payload
+from .plans import PlanGenerator, action_actor, actor_order, canonical, group_candidates, payload
 from .rewards import EpisodeStats, compute_reward
 
 # ---------------------------------------------------------------------------
@@ -161,6 +161,9 @@ class TeacherConfig:
     turn_width: int = 4
     score_mode: str = "heuristic"  # "heuristic" | "rollout"
     rollout_width: int = 4
+    candidate_mode: str = "top"  # "top" | "diverse" | "all"
+    leaf_value_weight: float = 0.0
+    counterfactual_credit: bool = False
     transposition: bool = True
     max_turns: int = 12
     enemies: Tuple[str, ...] = tuple(SECTION5_WAVE)
@@ -184,6 +187,10 @@ class TeacherSample:
     episode_won: bool = False
     kill_turn: Optional[int] = None
     episode_axis: Optional[Dict[str, Any]] = None
+    #: Generic final-state quality in [0, 1]; ``None`` keeps legacy unit weight.
+    episode_quality: Optional[float] = None
+    #: Per-actor generic counterfactual credit multipliers, when requested.
+    actor_credit: Optional[List[float]] = None
 
     def labels(self) -> List[int]:
         """Index of the teacher's action inside each actor's candidate list."""
@@ -213,26 +220,108 @@ class BeamTeacher:
         #: The key contains the RNG continuation, because the RNG state is part
         #: of `search_key` (§4.4).
         self.transposition: Dict[str, Tuple[LimbusEnv, float]] = {}
+        self.last_candidate_groups: Dict[str, List[Any]] = {}
         self.stats = {"nodes": 0, "transposition_hits": 0, "plans": 0}
 
     # -- turn planning -----------------------------------------------------
-    def _rollout(self, env: LimbusEnv, partial: List[Any]) -> float:
-        """Score a partial plan by filling it and resolving the turn for real."""
-        probe = env.clone_state()
-        obs_before = probe.observe()
-        info = probe.step_turn(partial)
-        if not info.get("ok"):
-            return float("-inf")
-        after = probe.observe()
-        self.stats["nodes"] += 1
-        return state_value(
-            after,
+    @staticmethod
+    def _complete_partial(env: LimbusEnv, partial: Sequence[Any]) -> List[Any]:
+        """Complete an actor prefix with the first legal action per remaining actor."""
+        legal = env.legal_actions()
+        groups = group_candidates(legal)
+        actors = actor_order(env.observe(), legal)
+        selected = {action_actor(action) for action in partial}
+        completed = list(partial)
+        for actor in actors:
+            if actor in selected:
+                continue
+            options = groups.get(actor, [])
+            if options:
+                completed.append(options[0])
+        return completed
+
+    def _leaf_value(self, env: LimbusEnv, turn_start: int) -> float:
+        if not self.config.leaf_value_weight:
+            return 0.0
+        obs = env.observe()
+        if obs.get("winner") or obs.get("phase") == "Finished":
+            return 0.0
+        return self.config.leaf_value_weight * state_value(
+            obs,
             self.table,
             self.weights,
             getattr(self, "_boss_hp_start", 1.0),
             getattr(self, "_allies_hp_start", 1.0),
-            obs_before.get("turn") or 0,
-        ) + compute_reward(info, obs_before, after)
+            turn_start,
+        )
+
+    def _counterfactual_actor_credit(
+        self,
+        env: LimbusEnv,
+        before: Dict[str, Any],
+        plan: Sequence[Any],
+        groups: Dict[str, List[Any]],
+        actors: Sequence[str],
+    ) -> List[float]:
+        """Estimate generic responsibility inside one complete joint plan.
+
+        Each actor is compared with one legal alternative while every other
+        actor stays fixed. The result is a bounded multiplier rather than a
+        route label, so it can reduce noisy actor labels without claiming that
+        an individual action caused the whole turn in isolation.
+        """
+        base_probe = env.clone_state()
+        base_info = base_probe.step_turn(list(plan))
+        if not base_info.get("ok"):
+            return [1.0 for _ in actors]
+        base_score = compute_reward(base_info, before, base_probe.observe()) + self._leaf_value(
+            base_probe, int(before.get("turn") or 0)
+        )
+        raw: List[float] = []
+        for position, actor in enumerate(actors):
+            chosen = plan[position] if position < len(plan) else None
+            alternative = next(
+                (
+                    option
+                    for option in groups.get(actor, [])
+                    if chosen is None or canonical(option) != canonical(chosen)
+                ),
+                None,
+            )
+            if alternative is None:
+                raw.append(0.0)
+                continue
+            counterfactual = list(plan)
+            counterfactual[position] = alternative
+            probe = env.clone_state()
+            info = probe.step_turn(counterfactual)
+            if not info.get("ok"):
+                raw.append(0.0)
+                continue
+            alternative_score = compute_reward(info, before, probe.observe()) + self._leaf_value(
+                probe, int(before.get("turn") or 0)
+            )
+            raw.append(max(0.0, base_score - alternative_score))
+            self.stats["counterfactual_calls"] = self.stats.get("counterfactual_calls", 0) + 1
+        maximum = max(raw, default=0.0)
+        if maximum <= 1e-9:
+            return [1.0 for _ in raw]
+        return [0.5 + 0.5 * value / maximum for value in raw]
+
+    def _rollout(self, env: LimbusEnv, partial: List[Any]) -> float:
+        """Score a partial plan after completing and resolving the whole turn."""
+        probe = env.clone_state()
+        obs_before = probe.observe()
+        completed = self._complete_partial(probe, partial)
+        info = probe.step_turn(completed)
+        self.stats["rollout_calls"] = self.stats.get("rollout_calls", 0) + 1
+        if not info.get("ok"):
+            self.stats["rollout_rejections"] = self.stats.get("rollout_rejections", 0) + 1
+            return float("-inf")
+        after = probe.observe()
+        self.stats["nodes"] += 1
+        reward = compute_reward(info, obs_before, after)
+        return reward + self._leaf_value(probe, int(obs_before.get("turn") or 0))
 
     def plan_turn(
         self, env: LimbusEnv, obs: Dict[str, Any], legal: Sequence[Any]
@@ -251,8 +340,6 @@ class BeamTeacher:
         groups and actor order always describe the **current** state, which is
         what the BC labels are built from.
         """
-        from .plans import actor_order
-
         actors = actor_order(obs, legal)
         groups = group_candidates(legal)
         rollout = self._rollout if self.config.score_mode == "rollout" else None
@@ -261,6 +348,7 @@ class BeamTeacher:
             width=self.config.rollout_width if rollout else self.config.plan_width,
             cap=self.config.candidate_cap,
             rollout=rollout,
+            candidate_mode=self.config.candidate_mode,
         )
         turn_start = int(obs.get("turn") or 0)
         nodes: List[Tuple[float, LimbusEnv, List[List[Any]]]] = [(0.0, env, [])]
@@ -297,17 +385,29 @@ class BeamTeacher:
                     children.append((cum + reward, child, path + [plan]))
             if not children:
                 break
-            children.sort(key=lambda item: item[0], reverse=True)
+            children.sort(
+                key=lambda item: item[0] + self._leaf_value(item[1], turn_start),
+                reverse=True,
+            )
             nodes = children[: max(1, self.config.turn_width)]
         # Lexicographic leaf ordering: a win first, then the faster win, then the
-        # accumulated turn value (§4.3).
+        # accumulated reward plus a generic nonterminal leaf value.
         def rank(node: Tuple[float, LimbusEnv, List[List[Any]]]) -> Tuple[int, int, float]:
             value, node_env, _path = node
             final = node_env.observe()
             won = final.get("winner") == "Sinners"
             elapsed = int(final.get("turn") or 0) - turn_start
-            return (1 if won else 0, -elapsed if won else 0, value)
+            return (
+                1 if won else 0,
+                -elapsed if won else 0,
+                value + self._leaf_value(node_env, turn_start),
+            )
 
+        self.last_candidate_groups = {
+            actor: list(options) for actor, options in generator.first_candidates.items()
+        }
+        for key, value in generator.selection_stats.items():
+            self.stats[key] = self.stats.get(key, 0) + value
         best = max(nodes, key=rank)
         plan = best[2][0] if best[2] else []
         return plan, best[0], groups, actors
@@ -354,6 +454,11 @@ class BeamTeacher:
             plan, value, groups, actors = self.plan_turn(env, obs, legal)
             if not plan:
                 break
+            actor_credit = (
+                self._counterfactual_actor_credit(env, obs, plan, groups, actors)
+                if self.config.counterfactual_credit
+                else None
+            )
             info = env.step_turn(plan)
             if not info.get("ok"):
                 raise RuntimeError(f"teacher plan rejected: {info.get('error')}")
@@ -398,6 +503,7 @@ class BeamTeacher:
                         actors=actors,
                         value=value,
                         seed=seed,
+                        actor_credit=actor_credit,
                     )
                 )
             if stats.turns >= (max_turns or self.config.max_turns):
@@ -416,10 +522,20 @@ class BeamTeacher:
         axis = detect_axis(replay, samples, table=self.table)
         axis.update(detect_strategy_labels(replay))
         stats.axis = axis
+        boss_progress = (
+            1.0 - stats.boss_hp_left / stats.boss_hp_start
+            if stats.boss_hp_start > 0
+            else 0.0
+        )
+        survival_fraction = stats.survivors / 7.0
+        episode_quality = 1.0 if stats.won else max(
+            0.0, min(1.0, boss_progress * (0.75 + 0.25 * survival_fraction))
+        )
         for sample in samples:
             sample.episode_won = stats.won
             sample.kill_turn = stats.kill_turn
             sample.episode_axis = axis
+            sample.episode_quality = episode_quality
         return stats, samples, replay
 
 
@@ -532,7 +648,14 @@ def detect_axis(
 
 
 def encode_samples(
-    encoder: Encoder, samples: Iterable[TeacherSample], weight_by_speed: bool = True
+    encoder: Encoder,
+    samples: Iterable[TeacherSample],
+    weight_by_speed: bool = True,
+    quality_weighting: bool = False,
+    quality_power: float = 2.0,
+    failure_weight: float = 0.1,
+    min_quality: float = 0.0,
+    credit_weighting: bool = False,
 ) -> Dict[str, np.ndarray]:
     """Turn teacher decisions into arrays the policy can be trained on.
 
@@ -544,6 +667,12 @@ def encode_samples(
     * `weight`: sample weight (short wins and burst windows count more, §5),
     * `decision`: which turn-decision the row belongs to (one row per actor),
     * `seed`: the episode's seed, so training/validation splits are by seed.
+
+    When enabled, ``quality_weighting`` downweights failed episodes by a generic
+    final-state quality (Boss HP progress combined with survivor fraction) and
+    can omit rows below ``min_quality``. ``credit_weighting`` additionally uses
+    generic one-actor counterfactual margins recorded by the Teacher. Neither
+    option reads status, skill, identity, or E.G.O labels.
     """
     states: List[np.ndarray] = []
     cands: List[np.ndarray] = []
@@ -565,6 +694,9 @@ def encode_samples(
             if not options or labels_for_turn[position] < 0:
                 continue
             matrix = encoder.action_matrix(sample.obs, options, index, chosen)
+            # Preserve the joint-plan context even when this actor's row is
+            # omitted by a quality threshold.
+            chosen.append(sample.plan[position])
             states.append(state_vec)
             cands.append(matrix)
             offsets.append(len(options))
@@ -575,12 +707,28 @@ def encode_samples(
                 weight += max(0.0, (12 - kill) / 12.0) * 2.0
             if sample.episode_axis and sample.episode_axis.get("axis_ok"):
                 weight += 0.5
+            if quality_weighting and sample.episode_quality is not None:
+                quality = max(0.0, min(1.0, float(sample.episode_quality)))
+                if quality < min_quality:
+                    # Keep the decision index monotonic while omitting this
+                    # low-quality trajectory row from the training corpus.
+                    continue
+                if not sample.episode_won:
+                    weight *= max(failure_weight, quality ** quality_power)
+            if credit_weighting and sample.actor_credit is not None:
+                credit = sample.actor_credit[position] if position < len(sample.actor_credit) else 1.0
+                weight *= max(0.25, min(1.0, float(credit)))
+            if (
+                quality_weighting
+                and sample.episode_quality is not None
+                and not sample.episode_won
+            ):
+                weight = max(failure_weight, weight)
             weights.append(weight)
             actors.append(position)
             seeds.append(int(sample.seed))
             turns.append(int(sample.turn))
             decisions.append(decision_index)
-            chosen.append(sample.plan[position])
         decision_index += 1
     if not states:
         return {

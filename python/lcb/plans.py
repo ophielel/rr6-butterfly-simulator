@@ -177,31 +177,129 @@ RolloutFn = Callable[[LimbusEnv, List[Any]], float]
 class PlanGenerator:
     """Beam over actor-ordered partial plans.
 
-    `width` is the number of partial plans kept after each actor (the plan's
-    baseline is 32), `cap` bounds the candidates considered per actor (they are
-    pre-sorted by the analytic prior), and `rollout` marks a function that scores
-    a partial plan with the real simulator.
+    `width` is the number of partial plans kept after each actor, `cap` bounds
+    the candidates considered per actor, and `rollout` scores a partial plan by
+    completing it with legal fallback actions and resolving the whole turn.
+    ``candidate_mode=\"diverse\"`` prevents the analytic prior from removing
+    every defense, E.G.O, low-output, or target-diverse option before search can
+    inspect it. The categories are structural and numeric; they do not name a
+    status or route.
     """
 
     table: SkillTable
     width: int = 8
     cap: int = 6
     rollout: Optional[RolloutFn] = None
+    candidate_mode: str = "top"  # "top" | "diverse" | "all"
     scores: List[float] = field(default_factory=list)
+    selection_stats: Dict[str, int] = field(default_factory=dict)
+    first_candidates: Dict[str, List[Any]] = field(default_factory=dict)
+
+    def __post_init__(self) -> None:
+        if self.candidate_mode not in {"top", "diverse", "all"}:
+            raise ValueError(f"unknown candidate mode: {self.candidate_mode}")
+
+    def _bucket(self, action: Any, score: float) -> str:
+        wire = payload(action)
+        kind = next(iter(decode(action).keys()), "Assign") if isinstance(decode(action), dict) else "Assign"
+        props = self.table.props_for_wire(wire, kind)
+        if kind == "UseEgo" or props.is_ego:
+            return "ego"
+        if props.is_defense:
+            return "defense"
+        raw_power = props.base_power + props.coin_power * max(0.0, props.coins)
+        if raw_power <= 0.0 or score <= 0.25:
+            return "low_output"
+        return "attack"
+
+    @staticmethod
+    def _target_key(action: Any) -> str:
+        wire = payload(action)
+        return str(wire.get("target") or wire.get("enemy") or "<none>")
+
+    def _record_selection(
+        self, ranked: Sequence[Tuple[float, Any]], selected: Sequence[Any]
+    ) -> None:
+        stats = self.selection_stats
+        stats["candidate_calls"] = stats.get("candidate_calls", 0) + 1
+        stats["candidate_available"] = stats.get("candidate_available", 0) + len(ranked)
+        stats["candidate_kept"] = stats.get("candidate_kept", 0) + len(selected)
+        selected_keys = {canonical(action) for action in selected}
+        top_score = ranked[0][0] if ranked else 0.0
+        low_available = 0
+        low_kept = 0
+        available_buckets = set()
+        kept_buckets = set()
+        for score, action in ranked:
+            bucket = self._bucket(action, score)
+            available_buckets.add(bucket)
+            if score <= top_score * 0.5:
+                low_available += 1
+            if canonical(action) in selected_keys:
+                kept_buckets.add(bucket)
+                if score <= top_score * 0.5:
+                    low_kept += 1
+        stats["low_output_available"] = stats.get("low_output_available", 0) + (
+            1 if "low_output" in available_buckets else 0
+        )
+        stats["low_output_kept"] = stats.get("low_output_kept", 0) + (
+            1 if "low_output" in kept_buckets else 0
+        )
+        stats["low_prior_available"] = stats.get("low_prior_available", 0) + low_available
+        stats["low_prior_kept"] = stats.get("low_prior_kept", 0) + low_kept
+        for bucket in available_buckets:
+            key = f"bucket_{bucket}_available"
+            stats[key] = stats.get(key, 0) + 1
+        for bucket in kept_buckets:
+            key = f"bucket_{bucket}_kept"
+            stats[key] = stats.get(key, 0) + 1
 
     def candidate_actions(
         self, obs: Dict[str, Any], legal: Sequence[Any], actor: str
     ) -> List[Any]:
         grouped = group_candidates(legal)
         options = grouped.get(actor, [])
-        if self.cap and len(options) > self.cap:
-            scored = sorted(
-                options,
-                key=lambda action: estimate_action(obs, action, self.table),
-                reverse=True,
-            )
-            options = scored[: self.cap]
-        return options
+        ranked = sorted(
+            options,
+            key=lambda action: estimate_action(obs, action, self.table),
+            reverse=True,
+        )
+        if self.candidate_mode == "all" or not self.cap or len(ranked) <= self.cap:
+            selected = ranked
+        elif self.candidate_mode == "top":
+            selected = ranked[: self.cap]
+        else:
+            selected = []
+            selected_keys = set()
+
+            def add(action: Any) -> None:
+                key = canonical(action)
+                if key not in selected_keys and len(selected) < self.cap:
+                    selected_keys.add(key)
+                    selected.append(action)
+
+            # Keep a representative from every structural action family first.
+            for bucket in ("attack", "defense", "ego", "low_output"):
+                for action in ranked:
+                    score = estimate_action(obs, action, self.table)
+                    if self._bucket(action, score) == bucket:
+                        add(action)
+                        break
+            # Then keep target diversity, which is important even when all
+            # candidates belong to the same numeric family.
+            seen_targets = set()
+            for action in ranked:
+                target = self._target_key(action)
+                if target not in seen_targets:
+                    seen_targets.add(target)
+                    add(action)
+            for action in ranked:
+                add(action)
+        scored = [
+            (estimate_action(obs, action, self.table), action) for action in ranked
+        ]
+        self._record_selection(scored, selected)
+        return selected
 
     def generate(
         self, env: LimbusEnv, obs: Dict[str, Any], legal: Sequence[Any]
@@ -209,8 +307,12 @@ class PlanGenerator:
         """Every plan the beam keeps, best first (score = prior of the prefix)."""
         actors = actor_order(obs, legal)
         beams: List[Tuple[float, List[Any]]] = [(0.0, [])]
+        self.first_candidates = {}
+        capture_root = True
         for actor in actors:
             options = self.candidate_actions(obs, legal, actor)
+            if capture_root:
+                self.first_candidates[actor] = list(options)
             if not options:
                 continue
             expanded: List[Tuple[float, List[Any]]] = []
@@ -218,13 +320,15 @@ class PlanGenerator:
                 for option in options:
                     prior = estimate_action(obs, option, self.table)
                     expanded.append((score + prior, plan + [option]))
-            if self.rollout is not None:
-                rescored = [
-                    (self.rollout(env, plan), plan) for _, plan in expanded
-                ]
-                expanded = rescored
+            # Prefix scores stay cheap so every actor can expand a useful beam.
+            # Running a full simulator rollout for each partial prefix is both
+            # wasteful and biased by the arbitrary fallback actions. Score only
+            # complete plans with the simulator after the actor beam is finished.
             expanded.sort(key=lambda item: item[0], reverse=True)
             beams = expanded[: self.width]
+        if self.rollout is not None:
+            beams = [(self.rollout(env, plan), plan) for _prior, plan in beams]
+            beams.sort(key=lambda item: item[0], reverse=True)
         self.scores = [score for score, _ in beams]
         return beams
 

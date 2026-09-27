@@ -31,7 +31,7 @@ def _run_one(args: Tuple[int, Dict[str, Any]]) -> Dict[str, Any]:
     from lcb.dataset import save_dataset
     from lcb.features import Encoder
     from lcb.scenarios import scenario
-    from lcb.teacher import BeamTeacher, TeacherConfig, encode_samples
+    from lcb.teacher import BeamTeacher, TeacherConfig, ValueWeights, encode_samples
 
     encoder = Encoder()
     teacher = BeamTeacher(
@@ -44,9 +44,18 @@ def _run_one(args: Tuple[int, Dict[str, Any]]) -> Dict[str, Any]:
             turn_width=cfg["turn_width"],
             score_mode=cfg["score_mode"],
             rollout_width=cfg["rollout_width"],
+            candidate_mode=cfg["candidate_mode"],
+            leaf_value_weight=cfg["leaf_value_weight"],
+            counterfactual_credit=cfg["counterfactual_credit"],
             max_turns=cfg["max_turns"],
             enemy_hp_scale=cfg["enemy_hp_scale"],
             infinite_ego_resources=cfg["infinite_ego_resources"],
+        ),
+        ValueWeights(
+            boss_hp=cfg["boss_hp_weight"],
+            turn=cfg["turn_weight"],
+            ally_damage=cfg["ally_damage_weight"],
+            death=cfg["death_weight"],
         ),
     )
     scene = scenario(cfg["scenario"])
@@ -58,7 +67,15 @@ def _run_one(args: Tuple[int, Dict[str, Any]]) -> Dict[str, Any]:
         max_turns=cfg["max_turns"],
     )
     out = Path(cfg["out"])
-    arrays = encode_samples(encoder, samples)
+    arrays = encode_samples(
+        encoder,
+        samples,
+        quality_weighting=cfg["quality_weighting"],
+        quality_power=cfg["quality_power"],
+        failure_weight=cfg["failure_weight"],
+        min_quality=cfg["min_quality"],
+        credit_weighting=cfg["counterfactual_credit"],
+    )
     save_dataset(out / f"seed_{seed:05d}.npz", arrays)
     row = stats.to_row()
     row["search"] = dict(teacher.stats)
@@ -83,6 +100,23 @@ def main() -> int:
     parser.add_argument("--turn-width", type=int, default=None)
     parser.add_argument("--rollout-width", type=int, default=None)
     parser.add_argument("--score-mode", default="heuristic", choices=["heuristic", "rollout"])
+    parser.add_argument("--candidate-mode", default="top", choices=["top", "diverse", "all"])
+    parser.add_argument("--leaf-value-weight", type=float, default=0.0)
+    parser.add_argument("--boss-hp-weight", type=float, default=100.0)
+    parser.add_argument("--turn-weight", type=float, default=0.0)
+    parser.add_argument("--ally-damage-weight", type=float, default=30.0)
+    parser.add_argument("--death-weight", type=float, default=60.0)
+    parser.add_argument(
+        "--quality-weighting", action=argparse.BooleanOptionalAction, default=False,
+        help="weight failed Teacher rows by generic final-state quality",
+    )
+    parser.add_argument("--quality-power", type=float, default=2.0)
+    parser.add_argument("--failure-weight", type=float, default=0.1)
+    parser.add_argument("--min-quality", type=float, default=0.0)
+    parser.add_argument(
+        "--counterfactual-credit", action=argparse.BooleanOptionalAction, default=False,
+        help="compute generic one-actor replacement margins for BC weights",
+    )
     parser.add_argument("--max-turns", type=int, default=None)
     parser.add_argument("--enemy-hp-scale", type=float, default=None,
                         help="overrides the scenario's own knobs when given")
@@ -114,6 +148,17 @@ def main() -> int:
         "turn_width": args.turn_width if args.turn_width is not None else preset.get("turn_width", 4),
         "rollout_width": args.rollout_width if args.rollout_width is not None else preset.get("rollout_width", 4),
         "score_mode": args.score_mode,
+        "candidate_mode": args.candidate_mode,
+        "leaf_value_weight": args.leaf_value_weight,
+        "boss_hp_weight": args.boss_hp_weight,
+        "turn_weight": args.turn_weight,
+        "ally_damage_weight": args.ally_damage_weight,
+        "death_weight": args.death_weight,
+        "quality_weighting": args.quality_weighting,
+        "quality_power": args.quality_power,
+        "failure_weight": args.failure_weight,
+        "min_quality": args.min_quality,
+        "counterfactual_credit": args.counterfactual_credit,
         "max_turns": args.max_turns if args.max_turns is not None else scene.max_turns,
         "out": str(out),
         "infinite_ego_resources": (

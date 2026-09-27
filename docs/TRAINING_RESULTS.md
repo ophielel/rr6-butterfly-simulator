@@ -155,6 +155,27 @@ intended Sinking → Harmony/Solemn Lament route. It is not a fresh causal compa
 or a globally seed-disjoint curriculum result. Full protocol and artifact paths are
 in `reports/ppo_hp_fast6_terminal_reward_ablation.json`.
 
+## 0.7 Teacher 搜索修复与 full-HP 诊断
+
+本轮先修复了 rollout 对不完整 actor prefix 的错误提交：搜索会以合法 fallback
+补齐完整回合后再调用模拟器。随后加入了通用候选多样性、可选非终局 leaf value
+和 candidate recall 诊断；没有加入 Sinking、特定技能、身份或 E.G.O 路线奖励。
+
+同状态 uncapped Teacher 参照的首回合 recall 为 `350/350`（`cap=6`），说明
+第一回合候选剪枝不是当前主要瓶颈。full-HP fresh Teacher 诊断如下：
+
+| 搜索设置 | n | wins | 平均伤害 | Boss HP 中位 | 平均存活 | axis / direct burst |
+|---|---:|---:|---:|---:|---:|---|
+| T1/top | 50 | 0 | 10016 | 7568 | 0.36 | 0 / 1 |
+| diverse + heuristic leaf | 50 | 0 | 10666 | 7111 | 0.64 | 0 / 1 |
+| diverse + rollout/leaf | 50 | 1 | 11216 | 6541 | 0.42 | 0 / 1 |
+| diverse + rollout + generic survival leaf | 50 | **3** | **11633** | **5333** | 0.26 | 0 / 1 |
+
+最后一行使用 `leaf_value_weight=5`、`ally_damage_weight=100`、
+`death_weight=200`；这是通用生存权衡，不是路线标签。它仍没有产生足够的
+成功示范，也没有发现目标轴，因此尚未训练新的 BC/PPO。可复现命令、seed 带、
+rollout rejection 计数、回放和完整摘要在 `reports/teacher_search_diagnostics.json`。
+
 ## 1. 协议与样本量（§7 的"必须写明样本数"）
 
 | 项目 | 值 |

@@ -210,6 +210,42 @@ Teacher pilot 分别使用 `83001-83200` 和 `83301-83500`，对应数据目录�
 训练带，验证带分别为 `90101-90200` 和 `90201-90300`；其 JSON metadata 与
 评测目录也由该报告列出。
 
+### 5.3 Teacher 搜索诊断（post-search repair）
+
+Teacher 现在提供三种通用候选保留模式：`top`（解析式先验的前 k 个）、
+`diverse`（攻击、防御、E.G.O、低输出和目标多样性）以及 `all`。这些类别
+只读取动作结构和数值，不命名 Sinking、身份、技能或 E.G.O 路线。rollout
+模式会先用合法 fallback 补齐 actor 前缀，再以完整回合调用模拟器；不允许把
+不完整 prefix 直接送入 `step_turn`。
+
+可复现实验命令：
+
+```bash
+python tools/diagnose_teacher_candidates.py --scenario real \
+  --seed-start 92001 --seed-count 50 --candidate-mode top --candidate-cap 6 \
+  --out reports/diagnose_teacher_candidates_top50.json
+
+python search/run_teacher.py --scenario real --horizon 6 --candidate-cap 12 \
+  --turn-width 6 --rollout-width 6 --candidate-mode diverse \
+  --score-mode rollout --leaf-value-weight 5 \
+  --ally-damage-weight 100 --death-weight 200 \
+  --quality-weighting --quality-power 2 --failure-weight 0.1 \
+  --seed-start 92221 --seed-count 50 --jobs 8 \
+  --out data/diagnostic_full_rollout_survival5_50 \
+  --infinite-ego-resources
+```
+
+这轮诊断中，uncapped Teacher 作为同状态参照时，`candidate_cap=6` 的首回合
+action recall 为 `350/350`；因此不能把当前 full-HP 停滞简单归因于第一层
+候选剪枝。修复后的 rollout/diverse/leaf 搜索为 `1/50` 胜；加入通用生存
+leaf 权重后为 `3/50`，但 `axis_ok_rate=0`、`direct_burst_rate=1`，尚未
+产生可用于新 BC/PPO 的充分成功示范。完整汇总见
+`reports/teacher_search_diagnostics.json`，候选 recall 工具为
+`tools/diagnose_teacher_candidates.py`。若用于 BC，可打开 `--quality-weighting`：
+失败局按 Boss HP progress 与 survivors 的通用质量平方降权，`--min-quality`
+还可直接排除低质量行；`--counterfactual-credit` 会对每个 actor 做一次合法替换
+并按完整回合的通用 score margin 调整标签权重；默认关闭以保持旧数据复现。
+
 ## 6. 与计划的接口对照（P0 差异报告）
 
 | 计划要求 | 现状 |
