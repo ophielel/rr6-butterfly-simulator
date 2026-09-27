@@ -176,6 +176,30 @@ in `reports/ppo_hp_fast6_terminal_reward_ablation.json`.
 成功示范，也没有发现目标轴，因此尚未训练新的 BC/PPO。可复现命令、seed 带、
 rollout rejection 计数、回放和完整摘要在 `reports/teacher_search_diagnostics.json`。
 
+## 0.8 裸 reward 与微量触发 reward 对照
+
+为避免把“恢复能力”与“奖励修订”混在一起，进行了两臂 matched continuation：
+两臂从同一个此前 full-HP `201/500` checkpoint 开始，使用相同的 50-seed Teacher
+搜索数据规模、500 局 PPO、共同训练/验证/测试 seed。裸臂保持
+`sinking_trigger_reward=0`；触发臂只加入 `0.001 * 实际 simulator sinking_damage`
+的训练 reward，Potency/Count 增长不直接给分。
+
+| full-HP policy | wins / 500 | 平均对敌伤害 | Boss HP 中位 | 平均存活 | axis / direct burst |
+|---|---:|---:|---:|---:|---|
+| 共同强 checkpoint | 201 | 7519 | 1277 | 1.98 | 0 / 1 |
+| 裸 reward continuation | 191 | 7522 | 1334 | 1.85 | 0 / 1 |
+| **微量触发 reward continuation** | **233** | 7476 | **310** | **2.28** | 0 / 1 |
+
+相同 `43001-43500` holdout 的配对结果为：两臂共同胜 `152`，裸臂独胜 `39`，
+触发臂独胜 `81`，共同负 `228`。因此触发臂相对裸臂的配对净增益为 `42/500`。
+这是有意义的 matched continuation ablation，但由于共享 legacy/previous
+checkpoint，不能写成 fresh from-scratch 或 globally seed-disjoint curriculum
+结论。两臂均未发现审计目标轴，说明该微量奖励主要改善了已有策略的终局 credit，
+没有证明模型学会了 Sinking → Harmony/Solemn Lament 的延迟路线。
+
+完整训练参数、CI、配对表、artifact 和默认系数边界见
+`reports/ppo_hp_trigger_reward_ablation.json`。
+
 ## 1. 协议与样本量（§7 的"必须写明样本数"）
 
 | 项目 | 值 |

@@ -1,0 +1,362 @@
+{
+  "source": "data\\diagnostic_full_rollout_survival5_50",
+  "output": "data\\diagnostic_ablation_full_bare_quality",
+  "quality": "win=1; otherwise Boss HP progress * (0.75 + 0.25 * survivor fraction)",
+  "quality_power": 2.0,
+  "failure_floor": 0.1,
+  "episodes": 50,
+  "nonempty_episodes": 50,
+  "actor_rows": 3854,
+  "rows": [
+    {
+      "seed": 92221,
+      "won": false,
+      "quality": 0.6522681136789507,
+      "weight_multiplier": 0.4254536921222965,
+      "actor_rows": 80
+    },
+    {
+      "seed": 92222,
+      "won": true,
+      "quality": 1.0,
+      "weight_multiplier": 1.0,
+      "actor_rows": 73
+    },
+    {
+      "seed": 92223,
+      "won": false,
+      "quality": 0.5509935196752029,
+      "weight_multiplier": 0.30359385872406824,
+      "actor_rows": 80
+    },
+    {
+      "seed": 92224,
+      "won": false,
+      "quality": 0.5515205340412243,
+      "weight_multiplier": 0.3041748994691172,
+      "actor_rows": 64
+    },
+    {
+      "seed": 92225,
+      "won": false,
+      "quality": 0.6701573235477827,
+      "weight_multiplier": 0.4491108383047275,
+      "actor_rows": 78
+    },
+    {
+      "seed": 92226,
+      "won": false,
+      "quality": 0.6138839006870705,
+      "weight_multiplier": 0.3768534435227731,
+      "actor_rows": 83
+    },
+    {
+      "seed": 92227,
+      "won": false,
+      "quality": 0.5203388507183011,
+      "weight_multiplier": 0.27075251956684243,
+      "actor_rows": 74
+    },
+    {
+      "seed": 92228,
+      "won": false,
+      "quality": 0.5089787632729544,
+      "weight_multiplier": 0.25905938146286617,
+      "actor_rows": 73
+    },
+    {
+      "seed": 92229,
+      "won": false,
+      "quality": 0.6049246564647095,
+      "weight_multiplier": 0.3659338399989468,
+      "actor_rows": 75
+    },
+    {
+      "seed": 92230,
+      "won": false,
+      "quality": 0.5789838382261087,
+      "weight_multiplier": 0.33522228492703676,
+      "actor_rows": 71
+    },
+    {
+      "seed": 92231,
+      "won": false,
+      "quality": 0.597429341036852,
+      "weight_multiplier": 0.3569218175317272,
+      "actor_rows": 82
+    },
+    {
+      "seed": 92232,
+      "won": false,
+      "quality": 0.6456804341036853,
+      "weight_multiplier": 0.4169032229843234,
+      "actor_rows": 75
+    },
+    {
+      "seed": 92233,
+      "won": false,
+      "quality": 0.6533514209868831,
+      "weight_multiplier": 0.4268680793055794,
+      "actor_rows": 85
+    },
+    {
+      "seed": 92234,
+      "won": false,
+      "quality": 0.585073782011243,
+      "weight_multiplier": 0.34231133039693956,
+      "actor_rows": 80
+    },
+    {
+      "seed": 92235,
+      "won": false,
+      "quality": 0.6662632729544035,
+      "weight_multiplier": 0.4439067488879139,
+      "actor_rows": 78
+    },
+    {
+      "seed": 92236,
+      "won": false,
+      "quality": 0.5921884759525297,
+      "weight_multiplier": 0.3506871910509798,
+      "actor_rows": 76
+    },
+    {
+      "seed": 92237,
+      "won": false,
+      "quality": 0.5466017332916927,
+      "weight_multiplier": 0.29877345483748274,
+      "actor_rows": 79
+    },
+    {
+      "seed": 92238,
+      "won": false,
+      "quality": 0.5912515615240475,
+      "weight_multiplier": 0.34957840900462445,
+      "actor_rows": 82
+    },
+    {
+      "seed": 92239,
+      "won": false,
+      "quality": 0.6594413647720174,
+      "weight_multiplier": 0.43486291357238094,
+      "actor_rows": 78
+    },
+    {
+      "seed": 92240,
+      "won": false,
+      "quality": 0.5568492348532167,
+      "weight_multiplier": 0.31008107035661286,
+      "actor_rows": 85
+    },
+    {
+      "seed": 92241,
+      "won": false,
+      "quality": 0.5366470174890693,
+      "weight_multiplier": 0.2879900213799134,
+      "actor_rows": 83
+    },
+    {
+      "seed": 92242,
+      "won": false,
+      "quality": 0.6633354153653966,
+      "weight_multiplier": 0.4400138732779833,
+      "actor_rows": 70
+    },
+    {
+      "seed": 92243,
+      "won": false,
+      "quality": 0.51135032792005,
+      "weight_multiplier": 0.26147915786394266,
+      "actor_rows": 62
+    },
+    {
+      "seed": 92244,
+      "won": false,
+      "quality": 0.5950870549656464,
+      "weight_multiplier": 0.3541286029876863,
+      "actor_rows": 82
+    },
+    {
+      "seed": 92245,
+      "won": false,
+      "quality": 0.4452393035602748,
+      "weight_multiplier": 0.19823803743483853,
+      "actor_rows": 70
+    },
+    {
+      "seed": 92246,
+      "won": false,
+      "quality": 0.6066813710181137,
+      "weight_multiplier": 0.3680622859404181,
+      "actor_rows": 77
+    },
+    {
+      "seed": 92247,
+      "won": false,
+      "quality": 0.5568492348532167,
+      "weight_multiplier": 0.31008107035661286,
+      "actor_rows": 78
+    },
+    {
+      "seed": 92248,
+      "won": false,
+      "quality": 0.5915248282323547,
+      "weight_multiplier": 0.3499016224153168,
+      "actor_rows": 75
+    },
+    {
+      "seed": 92249,
+      "won": false,
+      "quality": 0.6777404747033104,
+      "weight_multiplier": 0.4593321510510686,
+      "actor_rows": 81
+    },
+    {
+      "seed": 92250,
+      "won": false,
+      "quality": 0.5380231105559026,
+      "weight_multiplier": 0.289468867492249,
+      "actor_rows": 77
+    },
+    {
+      "seed": 92251,
+      "won": false,
+      "quality": 0.5490904122423486,
+      "weight_multiplier": 0.3015002808164723,
+      "actor_rows": 65
+    },
+    {
+      "seed": 92252,
+      "won": false,
+      "quality": 0.648520455965022,
+      "weight_multiplier": 0.42057878180507996,
+      "actor_rows": 75
+    },
+    {
+      "seed": 92253,
+      "won": false,
+      "quality": 0.5691169581511555,
+      "weight_multiplier": 0.32389411205522406,
+      "actor_rows": 84
+    },
+    {
+      "seed": 92254,
+      "won": false,
+      "quality": 0.6017332916926921,
+      "weight_multiplier": 0.3620829543313224,
+      "actor_rows": 83
+    },
+    {
+      "seed": 92255,
+      "won": false,
+      "quality": 0.5926276545908807,
+      "weight_multiplier": 0.35120753698588825,
+      "actor_rows": 79
+    },
+    {
+      "seed": 92256,
+      "won": false,
+      "quality": 0.6679028732042473,
+      "weight_multiplier": 0.44609424803448894,
+      "actor_rows": 78
+    },
+    {
+      "seed": 92257,
+      "won": false,
+      "quality": 0.6226381948782012,
+      "weight_multiplier": 0.3876783217211848,
+      "actor_rows": 75
+    },
+    {
+      "seed": 92258,
+      "won": false,
+      "quality": 0.6122443004372268,
+      "weight_multiplier": 0.3748430834178692,
+      "actor_rows": 85
+    },
+    {
+      "seed": 92259,
+      "won": false,
+      "quality": 0.6027873204247346,
+      "weight_multiplier": 0.36335255366483166,
+      "actor_rows": 73
+    },
+    {
+      "seed": 92260,
+      "won": true,
+      "quality": 1.0,
+      "weight_multiplier": 1.0,
+      "actor_rows": 83
+    },
+    {
+      "seed": 92261,
+      "won": false,
+      "quality": 0.6246584166146159,
+      "weight_multiplier": 0.390198137447479,
+      "actor_rows": 82
+    },
+    {
+      "seed": 92262,
+      "won": false,
+      "quality": 0.6692204091193005,
+      "weight_multiplier": 0.4478559559818039,
+      "actor_rows": 83
+    },
+    {
+      "seed": 92263,
+      "won": false,
+      "quality": 0.5851908963148033,
+      "weight_multiplier": 0.3424483851297228,
+      "actor_rows": 77
+    },
+    {
+      "seed": 92264,
+      "won": false,
+      "quality": 0.5460161617738913,
+      "weight_multiplier": 0.2981336489182923,
+      "actor_rows": 72
+    },
+    {
+      "seed": 92265,
+      "won": true,
+      "quality": 1.0,
+      "weight_multiplier": 1.0,
+      "actor_rows": 76
+    },
+    {
+      "seed": 92266,
+      "won": false,
+      "quality": 0.548446283572767,
+      "weight_multiplier": 0.30079332596478,
+      "actor_rows": 77
+    },
+    {
+      "seed": 92267,
+      "won": false,
+      "quality": 0.5608018425983761,
+      "weight_multiplier": 0.31449870666173374,
+      "actor_rows": 87
+    },
+    {
+      "seed": 92268,
+      "won": false,
+      "quality": 0.6408494690818238,
+      "weight_multiplier": 0.41068804202245546,
+      "actor_rows": 83
+    },
+    {
+      "seed": 92269,
+      "won": false,
+      "quality": 0.42055746408494693,
+      "weight_multiplier": 0.17686858059756141,
+      "actor_rows": 51
+    },
+    {
+      "seed": 92270,
+      "won": false,
+      "quality": 0.6465587913803872,
+      "weight_multiplier": 0.41803827071126703,
+      "actor_rows": 80
+    }
+  ]
+}

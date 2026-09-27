@@ -246,6 +246,20 @@ leaf 权重后为 `3/50`，但 `axis_ok_rate=0`、`direct_burst_rate=1`，尚未
 还可直接排除低质量行；`--counterfactual-credit` 会对每个 actor 做一次合法替换
 并按完整回合的通用 score margin 调整标签权重；默认关闭以保持旧数据复现。
 
+### 5.4 裸 reward 与微量触发 reward 对照
+
+为验证“触发沉沦本身是否能提供稀疏 credit”，`compute_reward()` 保持默认
+`sinking_trigger_reward=0`，并提供一个显式实验参数。第二臂只加入
+`0.001 * sinking_damage`，其中 `sinking_damage` 必须是模拟器实际记录的触发伤害；
+Potency/Count 的增加仍不产生奖励。Teacher、BC、PPO 的其余配置、seed 和共同初始
+checkpoint 保持一致。
+
+本次 matched continuation 结果：裸臂 `191/500`，微量触发臂 `233/500`；配对
+结果为裸臂独胜 `39`、触发臂独胜 `81`。两臂仍是 `axis_ok_rate=0`、
+`direct_burst_rate=1`，且都继承了此前 `201/500` 的强 checkpoint，因此不能
+写成 from-scratch curriculum 结论。完整报告见
+`reports/ppo_hp_trigger_reward_ablation.json`。
+
 ## 6. 与计划的接口对照（P0 差异报告）
 
 | 计划要求 | 现状 |

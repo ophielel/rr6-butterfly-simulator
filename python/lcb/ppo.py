@@ -47,6 +47,7 @@ class PPOConfig:
     #: scenario-specific runs use one small BC update per iteration.
     demo_updates_per_iteration: int = 0
     demo_batch_decisions: int = 32
+    sinking_trigger_reward: float = 0.0
 
 
 @dataclass
@@ -72,6 +73,7 @@ def collect_episode(
     scenario: Scenario,
     seed: int,
     rng: np.random.Generator,
+    sinking_trigger_reward: float = 0.0,
 ) -> Tuple[List[TurnRecord], Dict[str, Any]]:
     """One PPO rollout: sampling the plan, but resolving whole turns only."""
     env = LimbusEnv(strict=scenario.strict)
@@ -110,7 +112,9 @@ def collect_episode(
         if not info.get("ok"):
             raise RuntimeError(f"PPO rollout produced an illegal plan: {info.get('error')}")
         after = env.observe()
-        reward = compute_reward(info, obs, after)
+        reward = compute_reward(
+            info, obs, after, sinking_trigger_reward=sinking_trigger_reward
+        )
         total_reward += reward
         turns.append(
             {
@@ -187,7 +191,16 @@ def train_ppo(
                 seed_cursor = 0
             seed = seed_order[seed_cursor]
             seed_cursor += 1
-            rollouts.append(collect_episode(net, encoder, scenario, seed, rng))
+            rollouts.append(
+                collect_episode(
+                    net,
+                    encoder,
+                    scenario,
+                    seed,
+                    rng,
+                    sinking_trigger_reward=config.sinking_trigger_reward,
+                )
+            )
         info["episodes"] += len(rollouts)
         info["wins"] += sum(1 for _, summary in rollouts if summary["won"])
         episode_returns = [summary["return"] for _, summary in rollouts]

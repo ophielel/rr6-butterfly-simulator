@@ -47,6 +47,7 @@ def _run_one(args: Tuple[int, Dict[str, Any]]) -> Dict[str, Any]:
             candidate_mode=cfg["candidate_mode"],
             leaf_value_weight=cfg["leaf_value_weight"],
             counterfactual_credit=cfg["counterfactual_credit"],
+            sinking_trigger_reward=cfg["sinking_trigger_reward"],
             max_turns=cfg["max_turns"],
             enemy_hp_scale=cfg["enemy_hp_scale"],
             infinite_ego_resources=cfg["infinite_ego_resources"],
@@ -107,6 +108,10 @@ def main() -> int:
     parser.add_argument("--ally-damage-weight", type=float, default=30.0)
     parser.add_argument("--death-weight", type=float, default=60.0)
     parser.add_argument(
+        "--sinking-trigger-reward", type=float, default=0.0,
+        help="opt-in coefficient on realized Sinking trigger damage; default is zero",
+    )
+    parser.add_argument(
         "--quality-weighting", action=argparse.BooleanOptionalAction, default=False,
         help="weight failed Teacher rows by generic final-state quality",
     )
@@ -154,6 +159,7 @@ def main() -> int:
         "turn_weight": args.turn_weight,
         "ally_damage_weight": args.ally_damage_weight,
         "death_weight": args.death_weight,
+        "sinking_trigger_reward": args.sinking_trigger_reward,
         "quality_weighting": args.quality_weighting,
         "quality_power": args.quality_power,
         "failure_weight": args.failure_weight,

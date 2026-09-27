@@ -1854,6 +1854,26 @@ BC/PPO。完整配置、fresh seed 带、回放和统计在
 `reports/teacher_search_diagnostics.json`；候选诊断工具为
 `tools/diagnose_teacher_candidates.py`。
 
+### 23.10 裸 reward 与微量触发 reward continuation
+
+在同一个此前 full-HP `201/500` 强 checkpoint 上做了两臂 matched continuation。
+两臂使用同一训练、验证和 holdout seed 带、相同 500 局 PPO 与 10 次
+Teacher-demo update。裸臂完全保持当前 reward；触发臂只把模拟器本回合真实
+`sinking_damage` 乘以 `0.001` 加入训练 reward。Potency/Count 仍不产生 reward，
+默认代码路径的系数仍为 0。
+
+| policy | full holdout | 平均对敌伤害 | Boss HP 中位 | 平均存活 |
+|---|---:|---:|---:|---:|
+| shared strong checkpoint | 201/500 | 7519 | 1277 | 1.98 |
+| bare continuation | 191/500 | 7522 | 1334 | 1.85 |
+| **trigger `0.001` continuation** | **233/500** | 7476 | **310** | **2.28** |
+
+配对 full holdout 为共同胜 `152`、裸臂独胜 `39`、触发臂独胜 `81`、共同负
+`228`。这说明在该已有策略分布上，微量触发项改善了终局 credit；但两臂仍为
+`axis_ok_rate=0`、`direct_burst_rate=1`，而且共享 legacy 初始化，所以不能
+宣称从零训练已发现目标路线。完整机器报告为
+`reports/ppo_hp_trigger_reward_ablation.json`。
+
 ---
 
 ## 24. 结果应该怎样解释

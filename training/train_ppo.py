@@ -50,6 +50,10 @@ def main() -> int:
     )
     parser.add_argument("--demo-updates-per-iteration", type=int, default=0)
     parser.add_argument("--demo-batch-decisions", type=int, default=32)
+    parser.add_argument(
+        "--sinking-trigger-reward", type=float, default=0.0,
+        help="opt-in coefficient on realized Sinking trigger damage; default is zero",
+    )
     args = parser.parse_args()
 
     from lcb import dataset as ds
@@ -109,6 +113,7 @@ def main() -> int:
             validation_episodes=args.val_seed_count,
             demo_updates_per_iteration=args.demo_updates_per_iteration,
             demo_batch_decisions=args.demo_batch_decisions,
+            sinking_trigger_reward=args.sinking_trigger_reward,
         ),
         log=log,
         demonstrations=demonstrations,

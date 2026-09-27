@@ -1,0 +1,124 @@
+{
+  "title": "Full-HP bare versus micro Sinking-trigger reward ablation",
+  "status": "completed exploratory ablation",
+  "protocol": {
+    "scenario": "real",
+    "strict": true,
+    "max_turns": 30,
+    "infinite_ego_resources": true,
+    "holdout_seeds": "43001-43500",
+    "training_seeds": "98001-98500",
+    "validation_seeds": "99001-99100",
+    "ppo_iterations": 10,
+    "episodes_per_iteration": 50,
+    "epochs_per_iteration": 3,
+    "learning_rate": 0.0001,
+    "demo_updates_per_iteration": 10,
+    "shared_initial_checkpoint": "models/ppo_curriculum_legacy_init_mixed_demo_fast6_nosinking_reward.npz",
+    "shared_initial_checkpoint_holdout": "201/500 on the same full-HP holdout",
+    "note": "This is a continuation from a previously reported strong checkpoint, not a fresh from-scratch causal curriculum result."
+  },
+  "teacher_search": {
+    "common": {
+      "horizon": 6,
+      "plan_width": 32,
+      "candidate_cap": 12,
+      "turn_width": 6,
+      "rollout_width": 6,
+      "score_mode": "rollout",
+      "candidate_mode": "diverse",
+      "leaf_value_weight": 5.0,
+      "ally_damage_weight": 100.0,
+      "death_weight": 200.0,
+      "seeds": "92221-92270"
+    },
+    "bare": {
+      "sinking_trigger_reward": 0.0,
+      "wins": 3,
+      "episodes": 50,
+      "damage_to_enemies_mean": 11633.12,
+      "artifact": "data/diagnostic_full_rollout_survival5_50/teacher_index.json"
+    },
+    "trigger001": {
+      "sinking_trigger_reward": 0.001,
+      "wins": 3,
+      "episodes": 50,
+      "damage_to_enemies_mean": 11663.7,
+      "artifact": "data/diagnostic_full_rollout_trigger001_50/teacher_index.json"
+    },
+    "paired": {
+      "both_won": 3,
+      "bare_only": 0,
+      "trigger001_only": 0,
+      "both_lost": 47
+    }
+  },
+  "reward_definition": {
+    "bare": "default reward; sinking_damage remains evaluation-only",
+    "trigger001": "default reward + 0.001 * realized simulator sinking_damage per resolved turn",
+    "important_boundary": "Potency and Count gains receive no reward; only realized trigger damage is used by this explicit ablation. The default coefficient remains zero."
+  },
+  "bc": {
+    "bare": {
+      "data": "data/diagnostic_ablation_full_bare_quality",
+      "checkpoint": "models/bc_hp_full_search_bare_quality.npz",
+      "validation_accuracy": 0.585,
+      "holdout_wins": 0,
+      "holdout_episodes": 500,
+      "evaluation": "reports/ablation_bare_bc_eval/evaluation.json"
+    },
+    "trigger001": {
+      "data": "data/diagnostic_ablation_full_trigger001_quality",
+      "checkpoint": "models/bc_hp_full_search_trigger001_quality.npz",
+      "validation_accuracy": 0.583,
+      "holdout_wins": 0,
+      "holdout_episodes": 500,
+      "evaluation": "reports/ablation_trigger001_bc_eval/evaluation.json"
+    }
+  },
+  "ppo": {
+    "bare": {
+      "sinking_trigger_reward": 0.0,
+      "checkpoint": "models/ppo_ablation_full_bare_from_strong.npz",
+      "wins": 191,
+      "episodes": 500,
+      "win_rate": 0.382,
+      "wilson_95": [0.3404638838756496, 0.42533552609764363],
+      "damage_to_enemies_mean": 7521.764,
+      "boss_hp_left_median": 1333.5,
+      "survivors_mean": 1.848,
+      "axis_ok_rate": 0.0,
+      "direct_burst_rate": 1.0,
+      "evaluation": "reports/ablation_strong_bare_eval/evaluation.json"
+    },
+    "trigger001": {
+      "sinking_trigger_reward": 0.001,
+      "checkpoint": "models/ppo_ablation_full_trigger001_from_strong.npz",
+      "wins": 233,
+      "episodes": 500,
+      "win_rate": 0.466,
+      "wilson_95": [0.4226999925744605, 0.5098184814856409],
+      "damage_to_enemies_mean": 7475.586,
+      "boss_hp_left_median": 309.5,
+      "survivors_mean": 2.278,
+      "axis_ok_rate": 0.0,
+      "direct_burst_rate": 1.0,
+      "peak_sinking_potency_mean": 99.0,
+      "evaluation": "reports/ablation_strong_trigger001_eval/evaluation.json"
+    },
+    "paired_trigger001_vs_bare": {
+      "shared_wins": 152,
+      "bare_only_wins": 39,
+      "trigger001_only_wins": 81,
+      "shared_losses": 228,
+      "trigger001_win_gain": 42,
+      "trigger001_only_minus_bare_only": 42
+    }
+  },
+  "conclusion": [
+    "On the shared strong initialization, the micro-trigger arm reaches 233/500 versus 191/500 for the bare arm, a +42/500 paired advantage.",
+    "The improvement is a valid matched continuation ablation, but not a from-scratch claim because both arms inherit the prior 201/500 checkpoint.",
+    "Neither arm discovers the audited Sinking setup axis: axis_ok_rate remains 0 and direct_burst_rate remains 1.",
+    "Keep the default reward coefficient at zero in the formal baseline. Treat 0.001 as an explicit exploratory shaping arm and test it again with a fresh globally seed-disjoint curriculum before drawing a general conclusion."
+  ]
+}

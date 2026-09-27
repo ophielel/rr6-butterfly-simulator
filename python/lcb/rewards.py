@@ -40,6 +40,9 @@ FAST_KILL_TURN = 6
 NEUTRAL_KILL_TURN = 7
 FAST_KILL_BONUS = 400.0
 LATE_KILL_PENALTY_PER_TURN = -200.0
+# Experimental-only micro shaping. The default remains zero; nonzero values are
+# explicitly opt-in and reward realized trigger damage, never status buildup.
+DEFAULT_SINKING_TRIGGER_REWARD = 0.0
 
 
 def _unit_map(obs: Dict[str, Any]) -> Dict[str, Dict[str, Any]]:
@@ -68,7 +71,11 @@ def kill_speed_reward(after: Dict[str, Any]) -> float:
 
 
 def compute_reward(
-    info: Dict[str, Any], before: Dict[str, Any], after: Optional[Dict[str, Any]] = None
+    info: Dict[str, Any],
+    before: Dict[str, Any],
+    after: Optional[Dict[str, Any]] = None,
+    *,
+    sinking_trigger_reward: float = DEFAULT_SINKING_TRIGGER_REWARD,
 ) -> float:
     """Reward of one resolved turn."""
     stats = info.get("stats") or {}
@@ -77,8 +84,11 @@ def compute_reward(
         return reward
     boss_delta = max(0.0, _boss_hp(before) - _boss_hp(after))
     reward += DAMAGE_REWARD * boss_delta
-    # Sinking damage remains an evaluation statistic, but is not a shaping
-    # term.  The policy must receive credit through the actual Imago HP delta.
+    # The default keeps trigger damage evaluation-only. Experimental ablations
+    # may opt into a tiny coefficient on realized trigger damage; merely adding
+    # Potency or Count never receives reward.
+    if sinking_trigger_reward:
+        reward += sinking_trigger_reward * float(stats.get("sinking_damage") or 0.0)
     before_units = _unit_map(before)
     for unit_id in stats.get("deaths") or []:
         unit = before_units.get(unit_id)
@@ -164,5 +174,6 @@ __all__ = [
     "NEUTRAL_KILL_TURN",
     "FAST_KILL_BONUS",
     "LATE_KILL_PENALTY_PER_TURN",
+    "DEFAULT_SINKING_TRIGGER_REWARD",
     "kill_speed_reward",
 ]

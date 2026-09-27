@@ -164,6 +164,7 @@ class TeacherConfig:
     candidate_mode: str = "top"  # "top" | "diverse" | "all"
     leaf_value_weight: float = 0.0
     counterfactual_credit: bool = False
+    sinking_trigger_reward: float = 0.0
     transposition: bool = True
     max_turns: int = 12
     enemies: Tuple[str, ...] = tuple(SECTION5_WAVE)
@@ -240,6 +241,16 @@ class BeamTeacher:
                 completed.append(options[0])
         return completed
 
+    def _reward(
+        self, info: Dict[str, Any], before: Dict[str, Any], after: Dict[str, Any]
+    ) -> float:
+        return compute_reward(
+            info,
+            before,
+            after,
+            sinking_trigger_reward=self.config.sinking_trigger_reward,
+        )
+
     def _leaf_value(self, env: LimbusEnv, turn_start: int) -> float:
         if not self.config.leaf_value_weight:
             return 0.0
@@ -274,7 +285,7 @@ class BeamTeacher:
         base_info = base_probe.step_turn(list(plan))
         if not base_info.get("ok"):
             return [1.0 for _ in actors]
-        base_score = compute_reward(base_info, before, base_probe.observe()) + self._leaf_value(
+        base_score = self._reward(base_info, before, base_probe.observe()) + self._leaf_value(
             base_probe, int(before.get("turn") or 0)
         )
         raw: List[float] = []
@@ -298,7 +309,7 @@ class BeamTeacher:
             if not info.get("ok"):
                 raw.append(0.0)
                 continue
-            alternative_score = compute_reward(info, before, probe.observe()) + self._leaf_value(
+            alternative_score = self._reward(info, before, probe.observe()) + self._leaf_value(
                 probe, int(before.get("turn") or 0)
             )
             raw.append(max(0.0, base_score - alternative_score))
@@ -320,7 +331,7 @@ class BeamTeacher:
             return float("-inf")
         after = probe.observe()
         self.stats["nodes"] += 1
-        reward = compute_reward(info, obs_before, after)
+        reward = self._reward(info, obs_before, after)
         return reward + self._leaf_value(probe, int(obs_before.get("turn") or 0))
 
     def plan_turn(
@@ -351,6 +362,7 @@ class BeamTeacher:
             candidate_mode=self.config.candidate_mode,
         )
         turn_start = int(obs.get("turn") or 0)
+        root_candidates: Dict[str, List[Any]] = {}
         nodes: List[Tuple[float, LimbusEnv, List[List[Any]]]] = [(0.0, env, [])]
         for _depth in range(max(1, self.config.horizon)):
             children: List[Tuple[float, LimbusEnv, List[List[Any]]]] = []
@@ -360,9 +372,13 @@ class BeamTeacher:
                     children.append((cum, node_env, path))
                     continue
                 node_legal = node_env.legal_actions()
-                plans = generator.generate(node_env, node_obs, node_legal)[
-                    : self.config.turn_width
-                ]
+                generated = generator.generate(node_env, node_obs, node_legal)
+                if not root_candidates:
+                    root_candidates = {
+                        actor: list(options)
+                        for actor, options in generator.first_candidates.items()
+                    }
+                plans = generated[: self.config.turn_width]
                 for _prior, plan in plans:
                     key = self._plan_key(node_env, plan)
                     cached = self.transposition.get(key) if self.config.transposition else None
@@ -375,7 +391,7 @@ class BeamTeacher:
                         self.stats["plans"] += 1
                         if not info.get("ok"):
                             continue
-                        reward = compute_reward(info, node_obs, child.observe())
+                        reward = self._reward(info, node_obs, child.observe())
                         if self.config.transposition:
                             # Bounded table: it holds cloned states, so it is
                             # cleared rather than allowed to grow without limit.
@@ -403,9 +419,7 @@ class BeamTeacher:
                 value + self._leaf_value(node_env, turn_start),
             )
 
-        self.last_candidate_groups = {
-            actor: list(options) for actor, options in generator.first_candidates.items()
-        }
+        self.last_candidate_groups = root_candidates
         for key, value in generator.selection_stats.items():
             self.stats[key] = self.stats.get(key, 0) + value
         best = max(nodes, key=rank)
@@ -463,7 +477,7 @@ class BeamTeacher:
             if not info.get("ok"):
                 raise RuntimeError(f"teacher plan rejected: {info.get('error')}")
             after = env.observe()
-            reward = compute_reward(info, obs, after)
+            reward = self._reward(info, obs, after)
             stats.per_turn_reward.append(reward)
             stats.turns = int(info.get("turn") or stats.turns + 1)
             turn_stats = info.get("stats") or {}
@@ -697,10 +711,6 @@ def encode_samples(
             # Preserve the joint-plan context even when this actor's row is
             # omitted by a quality threshold.
             chosen.append(sample.plan[position])
-            states.append(state_vec)
-            cands.append(matrix)
-            offsets.append(len(options))
-            labels.append(labels_for_turn[position])
             weight = 1.0
             if weight_by_speed and sample.episode_won:
                 kill = sample.kill_turn or 12
@@ -724,6 +734,10 @@ def encode_samples(
                 and not sample.episode_won
             ):
                 weight = max(failure_weight, weight)
+            states.append(state_vec)
+            cands.append(matrix)
+            offsets.append(len(options))
+            labels.append(labels_for_turn[position])
             weights.append(weight)
             actors.append(position)
             seeds.append(int(sample.seed))

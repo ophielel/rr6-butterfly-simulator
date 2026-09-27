@@ -63,6 +63,26 @@ def test_reward_ignores_sinking_trigger_damage() -> None:
     assert reward == TURN_PENALTY == -30.0
 
 
+def test_opt_in_sinking_trigger_reward_only_credits_realized_trigger_damage() -> None:
+    before = {
+        "units": [
+            {"id": "boss", "kind": "enemy", "max_hp": 1000, "hp": 1000},
+        ]
+    }
+    after = {
+        "units": [
+            {"id": "boss", "kind": "enemy", "max_hp": 1000, "hp": 1000},
+        ]
+    }
+    reward = compute_reward(
+        {"stats": {"sinking_damage": 100}},
+        before,
+        after,
+        sinking_trigger_reward=0.001,
+    )
+    assert abs(reward - (TURN_PENALTY + 0.1)) < 1e-9
+
+
 def test_generic_kill_speed_reward_has_six_turn_bonus_and_seven_turn_neutral() -> None:
     before = {
         "units": [
