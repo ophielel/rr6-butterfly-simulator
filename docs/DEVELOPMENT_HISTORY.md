@@ -1436,6 +1436,20 @@ models/ppo_hp_half_t1_demo_3000.npz
 
 最终 checkpoint 不在这些训练/validation seeds 上做最后报告，而是在新的 `43001-43500` holdout 上评测。
 
+### 20.4 Post-fix curriculum 与 mixed-demo follow-up
+
+删除 `sinking_damage` reward 后，重新生成了 0.65/0.80/full 的 Teacher 数据，并按
+`0.50 -> 0.65 -> 0.80 -> 1.00` 训练了一条 corrected chain。它的 full holdout
+结果为 `138/500`；这条结果已保存为 `reports/ppo_curriculum_1000_nosinking_reward_eval/`，
+但训练与旧 curriculum 一样，不是全局 seed-disjoint 的正式结论。
+
+为了在不恢复专属奖励的前提下减少 full 阶段遗忘，又做了一个单独的迁移 ablation：
+从 legacy `models/ppo_curriculum_1000.npz` 初始化，在 full rollout 中混合修订后的
+half/0.65/0.80/full Teacher replay，每轮做 10 次通用 demonstration update。该策略
+在 full holdout 达到 `180/500`，同一 half holdout 达到 `494/500`；legacy checkpoint
+在修订后模拟器上的 full 对照为 `146/500`。这不是从零开始的 post-fix curriculum，
+因此单独记录在 `reports/ppo_hp_postfix_mixed_demo_followup.json`。
+
 ---
 
 ## 21. 评测协议和指标
@@ -1606,6 +1620,14 @@ models/ppo_hp_half_t1_demo_3000.npz
 0.50 -> 0.65 -> 0.80 -> 1.00 curriculum，因此不把新 direct PPO 数字写成新的
 curriculum 结论。
 
+### 22.7 Post-fix mixed-demo adaptation
+
+随后完成了一条保持奖励不变的适配实验：legacy curriculum checkpoint 作为初始化，
+corrected half/0.65/0.80/full Teacher 数据作为 mixed demonstration replay，
+每轮 10 次 replay update。full holdout 从 corrected-simulator legacy baseline 的
+`146/500` 提升到 `180/500`，half holdout 为 `494/500`。该结果不是 global
+seed-disjoint from-scratch curriculum，不能覆盖待完成的正式 curriculum 重跑。
+
 ---
 
 ## 23. 当前结果与历史 final baseline
@@ -1733,6 +1755,27 @@ rollout、每轮一次 Teacher demonstration update 的 direct PPO 配置下，�
 Sinking 直接奖励的约束下恢复 full curriculum 能力，需要另行设计并预注册
 curriculum 复训，不能引用旧 checkpoint 冒充 post-fix 结果。
 
+### 23.7 Post-fix mixed demonstration adaptation
+
+这条 follow-up 没有改动 `compute_reward()`，只改变初始化和 demonstration replay
+频率。它从 `models/ppo_curriculum_1000.npz` 开始，混合四组修订后的 Teacher
+数据，并在每个 PPO iteration 做 10 次通用 replay update。相同 full holdout 上：
+
+| full HP policy | wins | episodes | rate | Wilson 95% CI |
+|---|---:|---:|---:|---|
+| Legacy checkpoint in corrected simulator | 146 | 500 | 29.2% | 25.4%-33.3% |
+| Corrected direct-init curriculum | 138 | 500 | 27.6% | 23.9%-31.7% |
+| **Legacy init + mixed corrected demos** | **180** | **500** | **36.0%** | **31.9%-40.3%** |
+
+同一 half holdout 为 `494/500 (98.8%)`。在 full 的逐 seed 对照中，corrected direct
+PPO 与 mixed-demo 分别独胜 `0` 对 `179` 局（共同胜 `1`、共同负 `320`）；legacy
+checkpoint 与 mixed-demo 分别独胜 `71` 对 `105` 局（共同胜 `75`、共同负 `249`）。
+这比只看两个汇总胜率更能说明变化来自相同 seed band。所有适配策略 replay 的 Sinking
+Potency 峰值都不超过 99。它证明的是“通用 demonstration replay 能在当前 legacy
+初始化上恢复一部分 corrected full 性能”，不是“corrected from-scratch curriculum
+已经完成”。训练配置、seed、CI 和路径见
+`reports/ppo_hp_postfix_mixed_demo_followup.json`。
+
 ---
 
 ## 24. 结果应该怎样解释
@@ -1746,6 +1789,7 @@ curriculum 复训，不能引用旧 checkpoint 冒充 post-fix 结果。
 5. Full 场景中，直接从 full BC/PPO 训练可以达到 42.4%，预注册 curriculum 可以达到 81.2%。
 6. 最终 holdout 的 full curriculum 胜局在同一 500 seed band 上稳定出现，而不是单条 replay 的偶然结果。
 7. PPO 结果没有通过硬编码 Rime Shank、Sinking 或特定 E.G.O 路线得到。奖励和动作选择都来自真实模拟状态及合法动作集合。
+8. 在不增加 Sinking 专属奖励的前提下，legacy 初始化 + mixed corrected demonstration replay 将 corrected full holdout 从 146/500 提升到 180/500；这仍是 adaptation ablation，不是 from-scratch curriculum 结论。
 
 ### 24.2 不能确认的结论
 
@@ -1769,8 +1813,10 @@ T1 Teacher 找到 2/500，direct PPO 达到 212/500，curriculum 达到 406/500�
 本次 cap/reward ablation 可以确认两件事：模拟器状态不再产生超过 99 的 Sinking
 Potency，且移除直接触发奖励会显著改变 Teacher-demo PPO 的学习结果。它不能
 确认修订后的 direct PPO 是最优训练配置，也不能把旧 curriculum 的 81.2% 迁移
-到新奖励。下一步若要保留 curriculum 作为正式 post-fix 结论，必须重新生成
-0.65/0.80 Teacher 数据、重新训练每一级 checkpoint，并使用新的独立 holdout。
+到新奖励。随后完成的 corrected 0.65/0.80/full chain 在 full holdout 为 138/500；
+legacy 初始化的 mixed-demo adaptation 达到 180/500，并保留 half 494/500。
+因为后者继承了 legacy checkpoint，仍不能作为 globally seed-disjoint 的 post-fix
+curriculum 结论；该正式重跑仍是后续工作。
 
 ---
 
@@ -1969,7 +2015,41 @@ python training/train_ppo.py \
 
 随后将 checkpoint 改为 `ppo_curriculum_065_1000.npz`、scenario 改为 `curriculum_080`，最后将 checkpoint 改为 `ppo_curriculum_080_1000.npz`、scenario 改为 `real`。
 
-### 25.10 最终评测
+### 25.10 Post-fix mixed-demo adaptation
+
+该 follow-up 使用 legacy checkpoint 作为初始化，但训练和 replay 都使用修订后的
+模拟器与 Teacher 数据：
+
+```bash
+python training/train_ppo.py \
+  --checkpoint models/ppo_curriculum_1000.npz \
+  --out models/ppo_curriculum_legacy_init_mixed_demo_nosinking_reward.npz \
+  --scenario real --seed-start 60001 --seed-count 1000 \
+  --iterations 10 --episodes-per-iteration 100 --epochs-per-iteration 3 \
+  --learning-rate 0.001 --seed 20261405 \
+  --val-seed-start 61101 --val-seed-count 100 \
+  --allow-non-bc-checkpoint \
+  --demo-data data/teacher_t1_half_500_nosinking_reward \
+    data/teacher_curriculum_065_200_nosinking_reward \
+    data/teacher_curriculum_080_200_nosinking_reward \
+    data/teacher_t1_full_500_nosinking_reward \
+  --demo-updates-per-iteration 10 --demo-batch-decisions 32
+```
+
+```bash
+python eval/run_eval.py --scenario real --seed-start 43001 --seed-count 500 \
+  --policies PPO \
+  --checkpoint models/ppo_curriculum_legacy_init_mixed_demo_nosinking_reward.npz \
+  --out reports/ppo_curriculum_legacy_init_mixed_demo_nosinking_reward_eval \
+  --replays replays/ppo_curriculum_legacy_init_mixed_demo_nosinking_reward_eval
+python eval/run_eval.py --scenario half --seed-start 42001 --seed-count 500 \
+  --policies PPO \
+  --checkpoint models/ppo_curriculum_legacy_init_mixed_demo_nosinking_reward.npz \
+  --out reports/ppo_curriculum_legacy_init_mixed_demo_nosinking_reward_half_eval \
+  --replays replays/ppo_curriculum_legacy_init_mixed_demo_nosinking_reward_half_eval
+```
+
+### 25.11 最终评测
 
 Half demo PPO：
 
@@ -1999,7 +2079,7 @@ python eval/run_eval.py \
   --replays replays/ppo_hp_full_curriculum_eval
 ```
 
-### 25.11 测试
+### 25.12 测试
 
 ```bash
 cargo test --manifest-path sim/Cargo.toml
@@ -2052,6 +2132,8 @@ data/teacher_t1_half_500/
 data/teacher_t1_full_500/
 data/teacher_curriculum_065_200/
 data/teacher_curriculum_080_200/
+data/teacher_curriculum_065_200_nosinking_reward/
+data/teacher_curriculum_080_200_nosinking_reward/
 data/dagger_t1_half_r1_200/
 data/dagger_t1_half_argmax_r1_200/
 data/dagger_t1_half_argmax_r2_200/
@@ -2069,8 +2151,13 @@ reports/ppo_hp_half_t1_demo_3000_eval/
 reports/ppo_hp_full_t1_demo_3000_v2_eval/
 reports/ppo_hp_full_curriculum_eval/
 reports/ppo_hp_sinking_reward_ablation.json
+reports/ppo_hp_postfix_mixed_demo_followup.json
 reports/ppo_hp_half_t1_demo_3000_nosinking_reward_eval/
 reports/ppo_hp_full_t1_demo_3000_nosinking_reward_eval/
+reports/ppo_curriculum_1000_nosinking_reward_eval/
+reports/ppo_curriculum_legacy_cap_holdout_eval/
+reports/ppo_curriculum_legacy_init_mixed_demo_nosinking_reward_eval/
+reports/ppo_curriculum_legacy_init_mixed_demo_nosinking_reward_half_eval/
 replays/
 ```
 
@@ -2217,7 +2304,7 @@ Teacher 索引和部分评测报告是在最后代码提交前生成的，报告
 
 ### 28.4 infinite E.G.O 不是游戏结论
 
-最终 99.0% 和 81.2% 都是在 `infinite_ego_resources=true` 的显式场景条件下取得。该条件只让实验集中研究行动、SP、Overclock 和技能效果，不能写成“实际游戏资源无限时也一样”，更不能写成普通游戏胜率。
+历史 99.0%/81.2% 以及 post-fix follow-up 的 98.8%/36.0% 都是在 `infinite_ego_resources=true` 的显式场景条件下取得。该条件只让实验集中研究行动、SP、Overclock 和技能效果，不能写成“实际游戏资源无限时也一样”，更不能写成普通游戏胜率。
 
 ---
 
@@ -2260,7 +2347,8 @@ Teacher 索引和部分评测报告是在最后代码提交前生成的，报告
 
 ```text
 在当前模拟器、固定阵容、strict=true、30 回合、无限 E.G.O 资源和明确 HP 场景条件下，
-Teacher-demo PPO 与 HP curriculum PPO 在独立最终 holdout 上取得了所报告的胜率。
+Teacher-demo PPO、HP curriculum 和 post-fix mixed-demo adaptation 在各自明确标注的
+holdout 上取得了所报告的胜率；其中 mixed-demo adaptation 不是 from-scratch curriculum。
 ```
 
 不适合表达为：
@@ -2305,7 +2393,7 @@ AI 已经完全学会真实游戏中的罗生蝶最优打法。
 5. 奖励来自实际 Boss HP 和实际 TurnStats；
 6. Teacher、BC、PPO、DAgger 和 curriculum 都保存了机器可读 provenance；
 7. 失败实验和错误 run 被保留并标记为 superseded 或 negative ablation；
-8. 99.0% half 和 81.2% full 是当前明确实验条件下的工程 benchmark，不是对完整游戏的无条件声明。
+8. 历史 99.0% half 和 81.2% full 是 pre-fix 工程 benchmark；post-fix mixed-demo adaptation 的 98.8% half 和 36.0% full 也不是对完整游戏的无条件声明。
 
 当前仓库的可复核入口是：
 
@@ -2317,6 +2405,8 @@ data：docs/DATA.md
 训练接口：docs/TRAINING.md
 训练计划：docs/TRAINING_PLAN.md
 训练结果：docs/TRAINING_RESULTS.md
-当前汇总：reports/ppo_hp_research_t1_curriculum.json
-最终代码：commit 5cadfbf
+历史汇总：reports/ppo_hp_research_t1_curriculum.json
+post-fix 消融：reports/ppo_hp_sinking_reward_ablation.json
+post-fix follow-up：reports/ppo_hp_postfix_mixed_demo_followup.json
+最终代码：以当前 `main` HEAD 为准
 ```

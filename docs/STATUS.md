@@ -142,7 +142,7 @@ effects (HP Healing Down, Wrath Fragility).
 ## Training and evaluation (2026-09-21)
 
 Specification: `docs/TRAINING_PLAN.md`.  Implementation: `docs/TRAINING.md`.
-Results and the §7.1 acceptance table: `docs/TRAINING_RESULTS.md`. The current T1/curriculum report is `reports/ppo_hp_research_t1_curriculum.json`: 99.0% half-HP and 81.2% real-HP over 500 unseen seeds.
+Results and the §7.1 acceptance table: `docs/TRAINING_RESULTS.md`. The 99.0% half-HP and 81.2% real-HP values in `reports/ppo_hp_research_t1_curriculum.json` are pre-fix historical baselines. The post-fix direct ablation and mixed-demonstration adaptation are recorded in `reports/ppo_hp_sinking_reward_ablation.json` and `reports/ppo_hp_postfix_mixed_demo_followup.json`; the latter reaches 494/500 half and 180/500 full without a Sinking-specific reward.
 
 | Item | Where | Test |
 |------|-------|------|

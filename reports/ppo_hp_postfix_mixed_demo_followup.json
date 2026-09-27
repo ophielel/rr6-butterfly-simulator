@@ -1,0 +1,160 @@
+{
+  "status": "post-fix mixed-demonstration PPO follow-up",
+  "scope": "Improve corrected training without adding a Sinking-specific reward",
+  "reward": {
+    "damage_reward": 0.01,
+    "sinking_damage_reward": 0.0,
+    "sinking_damage_remains_evaluation_stat": true,
+    "cap_sinking_potency_and_count": 99
+  },
+  "protocol": {
+    "strict": true,
+    "max_turns": 30,
+    "infinite_ego_resources": true,
+    "training_scenario": "real",
+    "training_seeds": "60001-61000",
+    "validation_seeds": "61101-61200",
+    "holdout_half": "42001-42500",
+    "holdout_full": "43001-43500",
+    "paired_holdout": true
+  },
+  "method": {
+    "initial_checkpoint": "models/ppo_curriculum_1000.npz",
+    "initial_checkpoint_role": "legacy pre-fix curriculum policy evaluated in the corrected simulator; not a corrected from-scratch result",
+    "mixed_demo_data": [
+      "data/teacher_t1_half_500_nosinking_reward",
+      "data/teacher_curriculum_065_200_nosinking_reward",
+      "data/teacher_curriculum_080_200_nosinking_reward",
+      "data/teacher_t1_full_500_nosinking_reward"
+    ],
+    "ppo_iterations": 10,
+    "episodes_per_iteration": 100,
+    "ppo_epochs_per_iteration": 3,
+    "learning_rate": 0.001,
+    "demo_updates_per_iteration": 10,
+    "demo_batch_decisions": 32,
+    "checkpoint_selection": "highest greedy validation win rate"
+  },
+  "training": {
+    "episodes": 1000,
+    "wins": 104,
+    "best_validation_win_rate": 0.42,
+    "best_iteration": 1,
+    "artifact": "models/ppo_curriculum_legacy_init_mixed_demo_nosinking_reward.json"
+  },
+  "corrected_curriculum_chain": {
+    "initial_checkpoint": "models/ppo_hp_half_t1_demo_3000_nosinking_reward.npz",
+    "stages": [
+      {
+        "scenario": "curriculum_065",
+        "train_seeds": "52001-53000",
+        "validation_seeds": "53101-53200",
+        "rollout_wins": 431,
+        "best_validation_win_rate": 0.8,
+        "best_iteration": 6,
+        "artifact": "models/ppo_curriculum_065_1000_nosinking_reward.json"
+      },
+      {
+        "scenario": "curriculum_080",
+        "train_seeds": "54001-55000",
+        "validation_seeds": "55101-55200",
+        "rollout_wins": 379,
+        "best_validation_win_rate": 0.77,
+        "best_iteration": 10,
+        "artifact": "models/ppo_curriculum_080_1000_nosinking_reward.json"
+      },
+      {
+        "scenario": "real",
+        "train_seeds": "56001-57000",
+        "validation_seeds": "57101-57200",
+        "rollout_wins": 167,
+        "best_validation_win_rate": 0.31,
+        "best_iteration": 6,
+        "artifact": "models/ppo_curriculum_1000_nosinking_reward.json"
+      }
+    ],
+    "holdout_status": "The 42001-42500 and 43001-43500 bands are disjoint from these training/validation seeds but are reused benchmark bands from earlier post-fix comparisons; report the 138/500 full result as a repeated-band diagnostic, not a fresh blind holdout."
+  },
+  "holdout": {
+    "legacy_checkpoint_corrected_simulator": {
+      "full": {
+        "wins": 146,
+        "episodes": 500,
+        "win_rate": 0.292,
+        "wilson_95": [0.25385182596325645, 0.33332001534559935],
+        "artifact": "reports/ppo_curriculum_legacy_cap_holdout_eval/evaluation.json"
+      }
+    },
+    "corrected_curriculum_from_corrected_direct_checkpoint": {
+      "full": {
+        "wins": 138,
+        "episodes": 500,
+        "win_rate": 0.276,
+        "wilson_95": [0.23863748141495, 0.3167783476868947],
+        "artifact": "reports/ppo_curriculum_1000_nosinking_reward_eval/evaluation.json"
+      }
+    },
+    "mixed_demo_adaptation": {
+      "half": {
+        "wins": 494,
+        "episodes": 500,
+        "win_rate": 0.988,
+        "wilson_95": [0.9740692922810136, 0.9944890800328247],
+        "median_kill_turn": 5.0,
+        "artifact": "reports/ppo_curriculum_legacy_init_mixed_demo_nosinking_reward_half_eval/evaluation.json"
+      },
+      "full": {
+        "wins": 180,
+        "episodes": 500,
+        "win_rate": 0.36,
+        "wilson_95": [0.31914070629947555, 0.4029941868891773],
+        "median_kill_turn": 9.0,
+        "artifact": "reports/ppo_curriculum_legacy_init_mixed_demo_nosinking_reward_eval/evaluation.json"
+      }
+    },
+    "matched_post_fix_direct_reference": {
+      "half": {"wins": 168, "episodes": 500, "win_rate": 0.336},
+      "full": {"wins": 1, "episodes": 500, "win_rate": 0.002},
+      "artifact": "reports/ppo_hp_sinking_reward_ablation.json"
+    }
+  },
+  "paired_comparison_full_holdout": {
+    "corrected_direct_ppo_vs_mixed_demo": {
+      "both_win": 1,
+      "corrected_direct_only_win": 0,
+      "mixed_demo_only_win": 179,
+      "both_lose": 320
+    },
+    "legacy_corrected_simulator_vs_mixed_demo": {
+      "both_win": 75,
+      "legacy_only_win": 71,
+      "mixed_demo_only_win": 105,
+      "both_lose": 249
+    },
+    "corrected_curriculum_vs_mixed_demo": {
+      "both_win": 47,
+      "corrected_curriculum_only_win": 91,
+      "mixed_demo_only_win": 133,
+      "both_lose": 229
+    }
+  },
+  "cap_verification": {
+    "mixed_demo_half_peak_sinking_potency_max": 99,
+    "mixed_demo_full_peak_sinking_potency_max": 99,
+    "episodes_over_99": 0
+  },
+  "interpretation": [
+    "Ten generic demonstration replay updates per PPO iteration improved the corrected full holdout from 146/500 to 180/500 relative to the same legacy checkpoint under the corrected simulator.",
+    "The adapted policy retained near-perfect half-HP performance at 494/500; this is not a new from-scratch post-fix curriculum claim.",
+    "The gain uses only existing generic reward terms and corrected multi-stage demonstrations. No Sinking-specific reward, route rule, identity rule, or E.G.O. route was added.",
+    "Because initialization is a legacy pre-fix checkpoint, this artifact is a post-fix adaptation ablation and must remain separate from a globally seed-disjoint corrected curriculum conclusion."
+  ],
+  "artifacts": {
+    "model_metadata": "models/ppo_curriculum_legacy_init_mixed_demo_nosinking_reward.json",
+    "model_checkpoint": "models/ppo_curriculum_legacy_init_mixed_demo_nosinking_reward.npz",
+    "holdout_full": "reports/ppo_curriculum_legacy_init_mixed_demo_nosinking_reward_eval/",
+    "holdout_half": "reports/ppo_curriculum_legacy_init_mixed_demo_nosinking_reward_half_eval/",
+    "legacy_corrected_baseline_full": "reports/ppo_curriculum_legacy_cap_holdout_eval/",
+    "corrected_curriculum_full": "reports/ppo_curriculum_1000_nosinking_reward_eval/"
+  }
+}

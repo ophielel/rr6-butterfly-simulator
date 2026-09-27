@@ -1,0 +1,197 @@
+{
+  "scenario": "curriculum_080",
+  "scenario_config": {
+    "name": "curriculum_080",
+    "enemies": [
+      "9567",
+      "9572",
+      "9573",
+      "9574"
+    ],
+    "max_turns": 30,
+    "enemy_hp_scale": 0.8,
+    "strict": true,
+    "infinite_ego_resources": true,
+    "description": "curriculum intermediate HP scale 0.80"
+  },
+  "demonstrations": {
+    "files": 200,
+    "decisions": 2243,
+    "updates_per_iteration": 1
+  },
+  "seeds": {
+    "first": 54001,
+    "last": 55000,
+    "count": 1000
+  },
+  "config": {
+    "checkpoint": "models/ppo_curriculum_065_1000_nosinking_reward.npz",
+    "out": "models/ppo_curriculum_080_1000_nosinking_reward.npz",
+    "scenario": "curriculum_080",
+    "seed_start": 54001,
+    "seed_count": 1000,
+    "iterations": 10,
+    "episodes_per_iteration": 100,
+    "epochs_per_iteration": 3,
+    "learning_rate": 0.001,
+    "clip": 0.2,
+    "value_coef": 0.5,
+    "seed": 20261402,
+    "val_seed_start": 55101,
+    "val_seed_count": 100,
+    "require_bc_accuracy": 0.2,
+    "allow_non_bc_checkpoint": true,
+    "demo_data": [
+      "data/teacher_curriculum_080_200_nosinking_reward"
+    ],
+    "demo_updates_per_iteration": 1,
+    "demo_batch_decisions": 32
+  },
+  "history": {
+    "iteration": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "mean_return": [
+      -325.81340000000006,
+      -452.0765,
+      -461.1512,
+      -331.04060000000004,
+      -107.14399999999996,
+      -206.33369999999996,
+      -176.17359999999994,
+      -113.43299999999995,
+      -219.86360000000002,
+      -44.50029999999995
+    ],
+    "win_rate": [
+      0.34,
+      0.28,
+      0.28,
+      0.34,
+      0.44,
+      0.4,
+      0.41,
+      0.44,
+      0.39,
+      0.47
+    ],
+    "policy_loss": [
+      -0.08555525821975082,
+      0.03634879364812301,
+      0.7711531186465174,
+      -0.22040366375294854,
+      0.17796077806445296,
+      -0.005268414122543106,
+      0.1350619879967074,
+      0.09979088358730095,
+      0.12201904063950349,
+      0.38155278233267176
+    ],
+    "value_loss": [
+      22.162026549809788,
+      18.940267808277568,
+      19.682565483352338,
+      23.03411701745698,
+      25.146260021621533,
+      23.991280351929543,
+      22.639045261594692,
+      23.201279975031433,
+      20.821692771033458,
+      27.29999994965693
+    ],
+    "demo_loss": [
+      0.9345574828839981,
+      0.9335139758797176,
+      0.7973317588308322,
+      0.9970033362332997,
+      1.0127652723381328,
+      0.9897706068910767,
+      0.9729606335790809,
+      0.9313377566044047,
+      0.8817081440287408,
+      0.8980177716743161
+    ],
+    "ratio": [
+      1.0511999826274467,
+      0.982054672800822,
+      0.9954690197668028,
+      1.0013493103871716,
+      0.9416677612081498,
+      1.0501738498571778,
+      0.9043739361437507,
+      0.900734205592663,
+      1.006509472890999,
+      1.0360063443884913
+    ],
+    "clip_fraction": [
+      0.2222222222222222,
+      0.0,
+      0.0,
+      0.21739130434782608,
+      0.19230769230769232,
+      0.09090909090909091,
+      0.125,
+      0.3333333333333333,
+      0.07692307692307693,
+      0.3333333333333333
+    ],
+    "validation_win_rate": [
+      0.5,
+      0.52,
+      0.58,
+      0.56,
+      0.72,
+      0.72,
+      0.69,
+      0.7,
+      0.67,
+      0.77
+    ],
+    "validation_kill_turn": [
+      8.0,
+      8.0,
+      8.0,
+      8.0,
+      8.0,
+      8.0,
+      8.0,
+      8.0,
+      8.0,
+      8.0
+    ]
+  },
+  "info": {
+    "episodes": 1000,
+    "wins": 379,
+    "demonstration_decisions": 2243,
+    "best_validation_win_rate": 0.77,
+    "best_iteration": 10,
+    "win_rate": 0.379,
+    "mean_return": -243.75298999999998,
+    "selected_by_validation": true
+  },
+  "mean_return": -243.75298999999998,
+  "win_rate": 0.379,
+  "elapsed_seconds": 745.1,
+  "log": [
+    "iteration 1/10: return=-325.81 win_rate=0.34 policy_loss=-0.086 value_loss=22.2 demo_loss=0.935 ratio=1.051 clip=0.22 val_win=0.50 val_kill=8.0",
+    "iteration 2/10: return=-452.08 win_rate=0.28 policy_loss=0.036 value_loss=18.9 demo_loss=0.934 ratio=0.982 clip=0.00 val_win=0.52 val_kill=8.0",
+    "iteration 3/10: return=-461.15 win_rate=0.28 policy_loss=0.771 value_loss=19.7 demo_loss=0.797 ratio=0.995 clip=0.00 val_win=0.58 val_kill=8.0",
+    "iteration 4/10: return=-331.04 win_rate=0.34 policy_loss=-0.220 value_loss=23.0 demo_loss=0.997 ratio=1.001 clip=0.22 val_win=0.56 val_kill=8.0",
+    "iteration 5/10: return=-107.14 win_rate=0.44 policy_loss=0.178 value_loss=25.1 demo_loss=1.013 ratio=0.942 clip=0.19 val_win=0.72 val_kill=8.0",
+    "iteration 6/10: return=-206.33 win_rate=0.40 policy_loss=-0.005 value_loss=24.0 demo_loss=0.990 ratio=1.050 clip=0.09 val_win=0.72 val_kill=8.0",
+    "iteration 7/10: return=-176.17 win_rate=0.41 policy_loss=0.135 value_loss=22.6 demo_loss=0.973 ratio=0.904 clip=0.12 val_win=0.69 val_kill=8.0",
+    "iteration 8/10: return=-113.43 win_rate=0.44 policy_loss=0.100 value_loss=23.2 demo_loss=0.931 ratio=0.901 clip=0.33 val_win=0.70 val_kill=8.0",
+    "iteration 9/10: return=-219.86 win_rate=0.39 policy_loss=0.122 value_loss=20.8 demo_loss=0.882 ratio=1.007 clip=0.08 val_win=0.67 val_kill=8.0",
+    "iteration 10/10: return=-44.50 win_rate=0.47 policy_loss=0.382 value_loss=27.3 demo_loss=0.898 ratio=1.036 clip=0.33 val_win=0.77 val_kill=8.0"
+  ]
+}

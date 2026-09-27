@@ -77,6 +77,30 @@ This is a matched direct T1 ablation, not a rerun of the historical
 `reports/ppo_hp_sinking_reward_ablation.json`; do not merge this table with the
 pre-fix curriculum result.
 
+## 0.4 Post-fix mixed demonstration follow-up
+
+A follow-up used the corrected simulator and reward, initialized from the legacy
+curriculum checkpoint, and replayed corrected demonstrations from half, 0.65, 0.80,
+and full HP. It used ten generic demonstration updates per PPO iteration rather
+than adding a Sinking-specific reward. This is an adaptation ablation, not a new
+from-scratch corrected curriculum result.
+
+| Full-HP policy / baseline | Wins | Episodes | Rate | Wilson 95% CI |
+|---|---:|---:|---:|---|
+| Legacy curriculum checkpoint, corrected simulator | 146 | 500 | 29.2% | 25.4–33.3% |
+| Corrected curriculum from corrected direct checkpoint | 138 | 500 | 27.6% | 23.9–31.7% |
+| **Legacy initialization + mixed corrected demos** | **180** | **500** | **36.0%** | **31.9–40.3%** |
+
+On the same half holdout, the adapted policy reached **494/500 (98.8%)**. The
+corrected direct reference was 168/500 (33.6%) on half and 1/500 (0.2%) on full.
+All adapted episodes stayed at or below Sinking Potency 99. The machine-readable
+protocol and artifact paths are in `reports/ppo_hp_postfix_mixed_demo_followup.json`.
+On the paired full holdout, the corrected direct PPO won alone on 0 seeds and the
+mixed-demo policy on 179 (1 both won, 320 both lost). Against the legacy checkpoint
+in the corrected simulator, the legacy policy won alone on 71 seeds and mixed-demo
+on 105 (75 both won, 249 both lost). The legacy initialization means this result
+must not replace the pending globally seed-disjoint corrected curriculum conclusion.
+
 ## 1. 协议与样本量（§7 的"必须写明样本数"）
 
 | 项目 | 值 |

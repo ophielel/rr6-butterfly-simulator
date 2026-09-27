@@ -91,6 +91,10 @@ actor 选了什么）。上下文块使"共享打分器 + 固定 actor 顺序"�
    报告里每一项都标了。
 6. **PPO 的 checkpoint 选择**用验证带（8001+）的贪心胜率，测试带（9001+）
    只用于最终报告，不参与任何选择。
+7. **Post-fix mixed-demo follow-up** 从 legacy curriculum checkpoint 初始化，并混合
+   replay 修订后的 half/0.65/0.80/full Teacher 数据；这是迁移/适配 ablation，不是
+   globally seed-disjoint 的 corrected from-scratch curriculum 结论。完整数字见
+   `reports/ppo_hp_postfix_mixed_demo_followup.json`。
 
 ## 5. 复现步骤
 
@@ -129,6 +133,31 @@ python python/tests/test_training.py     # 训练层
 python python/tests/test_env.py          # wrapper 冒烟
 cargo test --manifest-path sim/Cargo.toml
 ```
+
+### 5.1 Post-fix mixed-demonstration adaptation
+
+这条命令复现报告中的适配 ablation；它不新增任何 Sinking reward，且故意保留
+legacy 初始化的限制：
+
+```bash
+python training/train_ppo.py \
+  --checkpoint models/ppo_curriculum_1000.npz \
+  --out models/ppo_curriculum_legacy_init_mixed_demo_nosinking_reward.npz \
+  --scenario real \
+  --seed-start 60001 --seed-count 1000 \
+  --iterations 10 --episodes-per-iteration 100 --epochs-per-iteration 3 \
+  --learning-rate 0.001 --seed 20261405 \
+  --val-seed-start 61101 --val-seed-count 100 \
+  --allow-non-bc-checkpoint \
+  --demo-data data/teacher_t1_half_500_nosinking_reward \
+    data/teacher_curriculum_065_200_nosinking_reward \
+    data/teacher_curriculum_080_200_nosinking_reward \
+    data/teacher_t1_full_500_nosinking_reward \
+  --demo-updates-per-iteration 10 --demo-batch-decisions 32
+```
+
+然后在 `42001-42500` 和 `43001-43500` holdout 上分别用 `half`/`real` 评测。
+完整 JSON、训练 metadata 和评测目录见报告的 `artifacts` 字段。
 
 ## 6. 与计划的接口对照（P0 差异报告）
 
