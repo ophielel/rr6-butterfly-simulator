@@ -32,9 +32,17 @@ def _run_one(args: Tuple[int, Dict[str, Any]]) -> Dict[str, Any]:
     from lcb.scenarios import scenario
     from lcb.teacher import BeamTeacher, TeacherConfig, encode_samples
 
-    encoder = Encoder()
-    net = PolicyValueNet.load(cfg["checkpoint"])
-    policy = NeuralPolicy(net, encoder, sample=True, seed=seed, name="BC")
+    encoder = Encoder(include_action_effects=cfg["action_effects"])
+    net = PolicyValueNet.load(cfg["checkpoint"], action_dim=encoder.action_dim)
+    policy = NeuralPolicy(
+        net,
+        encoder,
+        sample=True,
+        seed=seed,
+        name="BC",
+        action_effects=cfg["action_effects"],
+        action_effect_cap=cfg["action_effect_cap"],
+    )
     teacher = BeamTeacher(
         encoder.table,
         encoder,
@@ -45,6 +53,8 @@ def _run_one(args: Tuple[int, Dict[str, Any]]) -> Dict[str, Any]:
             turn_width=cfg["turn_width"],
             max_turns=cfg["max_turns"],
             enemy_hp_scale=cfg["enemy_hp_scale"],
+            action_effects=cfg["action_effects"],
+            action_effect_cap=cfg["action_effect_cap"],
         ),
     )
     scene = scenario(cfg["scenario"])
@@ -63,6 +73,8 @@ def main() -> int:
     parser.add_argument("--seed-start", type=int, default=2001)
     parser.add_argument("--seed-count", type=int, default=100)
     parser.add_argument("--policy-prob", type=float, default=0.5)
+    parser.add_argument("--action-effects", action=argparse.BooleanOptionalAction, default=False)
+    parser.add_argument("--action-effect-cap", type=int, default=8)
     parser.add_argument("--horizon", type=int, default=3)
     parser.add_argument("--plan-width", type=int, default=32)
     parser.add_argument("--candidate-cap", type=int, default=6)
@@ -92,6 +104,8 @@ def main() -> int:
             args.enemy_hp_scale if args.enemy_hp_scale is not None else scene.enemy_hp_scale
         ),
         "out": str(out),
+        "action_effects": args.action_effects,
+        "action_effect_cap": args.action_effect_cap,
     }
     seeds = list(range(args.seed_start, args.seed_start + args.seed_count))
     started = time.time()

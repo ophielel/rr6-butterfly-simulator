@@ -39,7 +39,7 @@ def _worker(args: Tuple[str, Dict[str, Any], int]) -> Dict[str, Any]:
     from lcb.features import Encoder
     from lcb.scenarios import scenario
 
-    encoder = Encoder()
+    encoder = Encoder(include_action_effects=cfg["action_effects"])
     if policy_name == "Random":
         policy = RandomPolicy(seed=cfg["seed"])
     elif policy_name == "FirstLegal":
@@ -58,6 +58,8 @@ def _worker(args: Tuple[str, Dict[str, Any], int]) -> Dict[str, Any]:
                 plan_width=cfg["teacher_plan_width"],
                 candidate_cap=cfg["teacher_candidate_cap"],
                 turn_width=cfg["teacher_turn_width"],
+                action_effects=cfg["action_effects"],
+                action_effect_cap=cfg["action_effect_cap"],
                 max_turns=scene.max_turns,
                 enemy_hp_scale=scene.enemy_hp_scale,
                 infinite_ego_resources=scene.infinite_ego_resources,
@@ -67,8 +69,16 @@ def _worker(args: Tuple[str, Dict[str, Any], int]) -> Dict[str, Any]:
     elif policy_name in ("AI", "BC", "PPO"):
         from lcb.nn import PolicyValueNet
 
-        net = PolicyValueNet.load(cfg["checkpoint"])
-        policy = NeuralPolicy(net, encoder, sample=cfg["sample"], seed=seed, name=policy_name)
+        net = PolicyValueNet.load(cfg["checkpoint"], action_dim=encoder.action_dim)
+        policy = NeuralPolicy(
+            net,
+            encoder,
+            sample=cfg["sample"],
+            seed=seed,
+            name=policy_name,
+            action_effects=cfg["action_effects"],
+            action_effect_cap=cfg["action_effect_cap"],
+        )
     else:  # pragma: no cover - guarded by argparse
         raise ValueError(policy_name)
 
@@ -101,6 +111,11 @@ def main() -> int:
     parser.add_argument("--teacher-turn-width", type=int, default=4)
     parser.add_argument("--short-turn", type=int, default=0, help="0 = take the Greedy median")
     parser.add_argument("--sample", action="store_true", help="sample instead of argmax")
+    parser.add_argument(
+        "--action-effects", action=argparse.BooleanOptionalAction, default=False,
+        help="include simulator-probed candidate effect fingerprints",
+    )
+    parser.add_argument("--action-effect-cap", type=int, default=8)
     parser.add_argument("--jobs", type=int, default=1)
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--out", default=str(ROOT / "reports"))
@@ -117,6 +132,8 @@ def main() -> int:
         "greedy_cap": args.greedy_cap,
         "checkpoint": args.checkpoint,
         "sample": args.sample,
+        "action_effects": args.action_effects,
+        "action_effect_cap": args.action_effect_cap,
         "seed": args.seed,
         "teacher_horizon": args.teacher_horizon,
         "teacher_plan_width": args.teacher_plan_width,

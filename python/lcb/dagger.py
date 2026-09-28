@@ -76,6 +76,7 @@ def collect_episode(
                 actors=actors,
                 value=value,
                 seed=seed,
+                action_effects=teacher.last_action_effects,
             )
         )
         if rng.random() < policy_prob:

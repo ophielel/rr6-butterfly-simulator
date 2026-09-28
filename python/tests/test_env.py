@@ -15,6 +15,8 @@ sys.path.insert(0, str(ROOT / "python"))
 from lcb import EngageAction, LimbusEnv, greedy_turn, random_turn  # noqa: E402
 from lcb.env import BACKEND, BOSS_IMAGO, TEAM, Action  # noqa: E402
 from lcb.search import _fill_and_commit  # noqa: E402
+from lcb.features import Encoder  # noqa: E402
+from lcb.plans import actor_order, group_candidates, probe_action_effects  # noqa: E402
 
 
 def test_reset_is_deterministic() -> None:
@@ -33,6 +35,28 @@ def test_action_space_is_unit_skill_target_product() -> None:
     targets = {a.target for a in actions}
     assert len(actors) == len(TEAM), "every fixed identity gets a slot"
     assert targets and all(t.startswith("enemy-") for t in targets)
+
+
+def test_full_action_effect_probe_resolves_every_candidate() -> None:
+    env = LimbusEnv(strict=True)
+    env.reset(seed=13, infinite_ego_resources=True)
+    obs = env.observe()
+    legal = env.legal_actions()
+    actor = actor_order(obs, legal)[0]
+    options = group_candidates(legal)[actor]
+    effects = probe_action_effects(
+        env,
+        obs,
+        legal,
+        actor,
+        options,
+        [],
+        Encoder().table,
+        cap=0,
+    )
+    assert len(effects) == len(options)
+    assert all(effect.shape == (22,) for effect in effects)
+    assert all(float(effect[0]) == 1.0 for effect in effects)
 
 
 def test_clone_isolation() -> None:

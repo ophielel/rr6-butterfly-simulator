@@ -35,6 +35,10 @@ def main() -> int:
     parser.add_argument("--hidden", type=int, default=64)
     parser.add_argument("--validation-fraction", type=float, default=0.25)
     parser.add_argument("--seed", type=int, default=0)
+    parser.add_argument(
+        "--action-effects", action=argparse.BooleanOptionalAction, default=False,
+        help="read simulator-probed candidate effect fingerprints from Teacher data",
+    )
     parser.add_argument("--limit", type=int, default=0, help="use only the first N .npz files")
     args = parser.parse_args()
 
@@ -51,8 +55,13 @@ def main() -> int:
         files.extend(found)
     if args.limit:
         files = files[: args.limit]
-    encoder = Encoder()
-    merged: Dict[str, Any] = ds.merge([ds.load_dataset(path) for path in files])
+    encoder = Encoder(include_action_effects=args.action_effects)
+    merged: Dict[str, Any] = ds.merge(
+        [
+            ds.adapt_action_dim(ds.load_dataset(path), encoder.action_dim)
+            for path in files
+        ]
+    )
     log: List[str] = []
     started = time.time()
     net, history, info = train_bc(
@@ -71,6 +80,7 @@ def main() -> int:
     net.save(args.out)
     report = {
         "files": len(files),
+        "action_effects": args.action_effects,
         "epochs": args.epochs,
         "elapsed_seconds": round(time.time() - started, 1),
         "history": {

@@ -22,7 +22,7 @@ from .env import LimbusEnv
 from .evaluate import Scenario, run_episode
 from .features import Encoder
 from .nn import VALUE_SCALE, PolicyValueNet
-from .plans import actor_order, group_candidates
+from .plans import actor_order, group_candidates, probe_action_effects
 from .rewards import compute_reward
 from .teacher import detect_axis, imago
 
@@ -51,6 +51,9 @@ class PPOConfig:
     demo_min_updates: int = 0
     counterfactual_credit: bool = False
     counterfactual_credit_weight: float = 1.0
+    counterfactual_horizon: int = 3
+    action_effects: bool = False
+    action_effect_cap: int = 8
     sinking_trigger_reward: float = 0.0
 
 
@@ -80,6 +83,11 @@ def _counterfactual_actor_credits(
     groups: Dict[str, List[Any]],
     sinking_trigger_reward: float,
     weight: float,
+    net: PolicyValueNet,
+    encoder: Encoder,
+    future_horizon: int,
+    action_effects: bool = False,
+    action_effect_cap: int = 8,
 ) -> Tuple[List[float], int]:
     """Scale each actor's policy gradient by a generic replacement margin."""
     if not plan or not actors or weight <= 0.0:
@@ -88,11 +96,20 @@ def _counterfactual_actor_credits(
     base_info = base_probe.step_turn(list(plan))
     if not base_info.get("ok"):
         return [1.0 for _ in actors], 0
+    base_after = base_probe.observe()
     base_score = compute_reward(
         base_info,
         before,
-        base_probe.observe(),
+        base_after,
         sinking_trigger_reward=sinking_trigger_reward,
+    ) + _future_rollout_value(
+        base_probe,
+        net,
+        encoder,
+        future_horizon,
+        sinking_trigger_reward,
+        action_effects=action_effects,
+        action_effect_cap=action_effect_cap,
     )
     credits: List[float] = []
     calls = 0
@@ -117,15 +134,168 @@ def _counterfactual_actor_credits(
         if not alternative_info.get("ok"):
             credits.append(1.0)
             continue
+        alternative_after = probe.observe()
         alternative_score = compute_reward(
             alternative_info,
             before,
-            probe.observe(),
+            alternative_after,
             sinking_trigger_reward=sinking_trigger_reward,
+        ) + _future_rollout_value(
+            probe,
+            net,
+            encoder,
+            future_horizon,
+            sinking_trigger_reward,
+            action_effects=action_effects,
+            action_effect_cap=action_effect_cap,
         )
         margin = base_score - alternative_score
-        credits.append(1.0 + weight * float(np.tanh(margin / 100.0)))
+        credits.append(1.0 + weight * float(np.tanh(margin / 300.0)))
     return credits, calls
+
+
+def _sample_plan(
+    net: PolicyValueNet,
+    encoder: Encoder,
+    obs: Dict[str, Any],
+    legal: Sequence[Any],
+    rng: np.random.Generator,
+    effects: Optional[Sequence[np.ndarray]] = None,
+) -> Tuple[List[Any], List[Tuple[np.ndarray, int, float]], List[str]]:
+    groups = group_candidates(legal)
+    index = encoder.unit_slots(obs)[2]
+    state_vec = encoder.encode_state(obs)
+    plan: List[Any] = []
+    actor_names: List[str] = []
+    actor_records: List[Tuple[np.ndarray, int, float]] = []
+    for position, actor in enumerate(actor_order(obs, legal)):
+        options = groups.get(actor, [])
+        if not options:
+            continue
+        actor_effects = None if effects is None else effects[position]
+        matrix = encoder.action_matrix(
+            obs, options, index, plan, effects=actor_effects
+        )
+        pick, logprob = net.sample(state_vec, matrix, rng)
+        if pick < 0:
+            continue
+        actor_records.append((matrix, pick, logprob))
+        actor_names.append(actor)
+        plan.append(options[pick])
+    return plan, actor_records, actor_names
+
+
+def _effect_aware_sample_plan(
+    env: LimbusEnv,
+    net: PolicyValueNet,
+    encoder: Encoder,
+    obs: Dict[str, Any],
+    legal: Sequence[Any],
+    rng: np.random.Generator,
+    cap: int,
+) -> Tuple[List[Any], List[Tuple[np.ndarray, int, float]], List[str], List[np.ndarray]]:
+    groups = group_candidates(legal)
+    index = encoder.unit_slots(obs)[2]
+    state_vec = encoder.encode_state(obs)
+    plan: List[Any] = []
+    records: List[Tuple[np.ndarray, int, float]] = []
+    actors: List[str] = []
+    effects_by_actor: List[np.ndarray] = []
+    for actor in actor_order(obs, legal):
+        options = groups.get(actor, [])
+        if not options:
+            continue
+        effects = np.asarray(
+            probe_action_effects(
+                env,
+                obs,
+                legal,
+                actor,
+                options,
+                plan,
+                encoder.table,
+                cap=cap,
+            ),
+            dtype=np.float32,
+        )
+        matrix = encoder.action_matrix(obs, options, index, plan, effects=effects)
+        pick, logprob = net.sample(state_vec, matrix, rng)
+        if pick < 0:
+            continue
+        plan.append(options[pick])
+        records.append((matrix, pick, logprob))
+        actors.append(actor)
+        effects_by_actor.append(effects)
+    return plan, records, actors, effects_by_actor
+
+
+def _argmax_plan(
+    net: PolicyValueNet,
+    encoder: Encoder,
+    obs: Dict[str, Any],
+    legal: Sequence[Any],
+    env: Optional[LimbusEnv] = None,
+    action_effects: bool = False,
+    action_effect_cap: int = 8,
+) -> List[Any]:
+    groups = group_candidates(legal)
+    index = encoder.unit_slots(obs)[2]
+    state_vec = encoder.encode_state(obs)
+    plan: List[Any] = []
+    for actor in actor_order(obs, legal):
+        options = groups.get(actor, [])
+        if not options:
+            continue
+        effects = None
+        if action_effects and env is not None:
+            effects = probe_action_effects(
+                env, obs, legal, actor, options, plan, encoder.table, cap=action_effect_cap
+            )
+        matrix = encoder.action_matrix(obs, options, index, plan, effects=effects)
+        pick = net.argmax(state_vec, matrix)
+        if pick >= 0:
+            plan.append(options[pick])
+    return plan
+
+
+def _future_rollout_value(
+    env: LimbusEnv,
+    net: PolicyValueNet,
+    encoder: Encoder,
+    horizon: int,
+    sinking_trigger_reward: float,
+    action_effects: bool = False,
+    action_effect_cap: int = 8,
+) -> float:
+    probe = env.clone_state()
+    total = 0.0
+    for _ in range(max(0, horizon)):
+        before = probe.observe()
+        if before.get("winner") or before.get("phase") == "Finished":
+            break
+        legal = probe.legal_actions()
+        plan = _argmax_plan(
+            net,
+            encoder,
+            before,
+            legal,
+            env=probe,
+            action_effects=action_effects,
+            action_effect_cap=action_effect_cap,
+        )
+        if not plan:
+            break
+        info = probe.step_turn(plan)
+        if not info.get("ok"):
+            break
+        after = probe.observe()
+        total += compute_reward(
+            info,
+            before,
+            after,
+            sinking_trigger_reward=sinking_trigger_reward,
+        )
+    return total
 
 
 def collect_episode(
@@ -137,6 +307,9 @@ def collect_episode(
     sinking_trigger_reward: float = 0.0,
     counterfactual_credit: bool = False,
     counterfactual_credit_weight: float = 1.0,
+    counterfactual_horizon: int = 3,
+    action_effects: bool = False,
+    action_effect_cap: int = 8,
 ) -> Tuple[List[TurnRecord], Dict[str, Any]]:
     """One PPO rollout: sampling the plan, but resolving whole turns only."""
     env = LimbusEnv(strict=scenario.strict)
@@ -157,23 +330,16 @@ def collect_episode(
             break
         legal = env.legal_actions()
         groups = group_candidates(legal)
-        index = encoder.unit_slots(obs)[2]
         state_vec = encoder.encode_state(obs)
-        plan: List[Any] = []
-        actor_names: List[str] = []
-        actor_records: List[Tuple[np.ndarray, int, float]] = []
-        for actor in actor_order(obs, legal):
-            options = groups.get(actor, [])
-            if not options:
-                continue
-            matrix = encoder.action_matrix(obs, options, index, plan)
-            pick, logprob = net.sample(state_vec, matrix, rng)
-            if pick < 0:
-                continue
-            actor_records.append((matrix, pick, logprob))
-            actor_names.append(actor)
-            plan.append(options[pick])
-        groups = group_candidates(legal)
+        if action_effects:
+            plan, actor_records, actor_names, effect_rows = _effect_aware_sample_plan(
+                env, net, encoder, obs, legal, rng, action_effect_cap
+            )
+        else:
+            plan, actor_records, actor_names = _sample_plan(
+                net, encoder, obs, legal, rng
+            )
+            effect_rows = None
         if counterfactual_credit:
             credits, counterfactual_calls = _counterfactual_actor_credits(
                 env,
@@ -183,6 +349,11 @@ def collect_episode(
                 groups,
                 sinking_trigger_reward,
                 counterfactual_credit_weight,
+                net,
+                encoder,
+                counterfactual_horizon,
+                action_effects=action_effects,
+                action_effect_cap=action_effect_cap,
             )
         else:
             credits, counterfactual_calls = [1.0] * len(actor_records), 0
@@ -202,6 +373,7 @@ def collect_episode(
             {
                 "state": state_vec,
                 "actors": actors,
+                "action_effects": effect_rows,
                 "reward": reward,
                 "counterfactual_calls": counterfactual_calls,
                 "obs": obs,
@@ -288,6 +460,9 @@ def train_ppo(
                     sinking_trigger_reward=config.sinking_trigger_reward,
                     counterfactual_credit=config.counterfactual_credit,
                     counterfactual_credit_weight=config.counterfactual_credit_weight,
+                    counterfactual_horizon=config.counterfactual_horizon,
+                    action_effects=config.action_effects,
+                    action_effect_cap=config.action_effect_cap,
                 )
             )
         info["episodes"] += len(rollouts)
@@ -368,7 +543,13 @@ def train_ppo(
         validation = {"win_rate": 0.0, "kill_turn": None}
         if config.validation_seeds and config.validation_episodes:
             validation = evaluate_argmax(
-                net, encoder, scenario, config.validation_seeds, config.validation_episodes
+                net,
+                encoder,
+                scenario,
+                config.validation_seeds,
+                config.validation_episodes,
+                action_effects=config.action_effects,
+                action_effect_cap=config.action_effect_cap,
             )
         history.validation_win_rate.append(validation["win_rate"])
         history.validation_kill_turn.append(
@@ -415,6 +596,8 @@ def evaluate_argmax(
     scenario: Scenario,
     seeds: Sequence[int],
     episodes: int = 0,
+    action_effects: bool = False,
+    action_effect_cap: int = 8,
 ) -> Dict[str, Any]:
     """Win rate and median kill turn of the greedy (argmax) policy."""
     used = list(seeds)[:episodes] if episodes else list(seeds)
@@ -443,7 +626,21 @@ def evaluate_argmax(
                 options = groups.get(actor, [])
                 if not options:
                     continue
-                matrix = encoder.action_matrix(obs, options, index, plan)
+                effects = None
+                if action_effects:
+                    effects = probe_action_effects(
+                        env,
+                        obs,
+                        legal,
+                        actor,
+                        options,
+                        plan,
+                        encoder.table,
+                        cap=action_effect_cap,
+                    )
+                matrix = encoder.action_matrix(
+                    obs, options, index, plan, effects=effects
+                )
                 pick = net.argmax(state_vec, matrix)
                 if pick < 0:
                     continue

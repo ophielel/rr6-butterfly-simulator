@@ -60,6 +60,12 @@ def main() -> int:
         help="scale each actor gradient by a generic one-action replacement margin",
     )
     parser.add_argument("--counterfactual-credit-weight", type=float, default=1.0)
+    parser.add_argument("--counterfactual-horizon", type=int, default=3)
+    parser.add_argument(
+        "--action-effects", action=argparse.BooleanOptionalAction, default=False,
+        help="include simulator-probed candidate effect fingerprints in PPO rollout features",
+    )
+    parser.add_argument("--action-effect-cap", type=int, default=8)
     parser.add_argument(
         "--sinking-trigger-reward", type=float, default=0.0,
         help="opt-in coefficient on realized Sinking trigger damage; default is zero",
@@ -88,8 +94,8 @@ def main() -> int:
             f"missing BC report for {args.checkpoint}; use --allow-non-bc-checkpoint "
             "only for an explicit curriculum continuation"
         )
-    encoder = Encoder()
-    net = PolicyValueNet.load(args.checkpoint)
+    encoder = Encoder(include_action_effects=args.action_effects)
+    net = PolicyValueNet.load(args.checkpoint, action_dim=encoder.action_dim)
     seeds = list(range(args.seed_start, args.seed_start + args.seed_count))
     demo_files = []
     for entry in args.demo_data:
@@ -100,7 +106,12 @@ def main() -> int:
         demo_files.extend(found)
     demonstrations = []
     if demo_files:
-        demo_arrays = ds.merge([ds.load_dataset(path) for path in demo_files])
+        demo_arrays = ds.merge(
+            [
+                ds.adapt_action_dim(ds.load_dataset(path), encoder.action_dim)
+                for path in demo_files
+            ]
+        )
         demonstrations = list(ds.iter_decisions(demo_arrays))
     log = []
     started = time.time()
@@ -127,6 +138,9 @@ def main() -> int:
             demo_min_updates=args.demo_min_updates,
             counterfactual_credit=args.counterfactual_credit,
             counterfactual_credit_weight=args.counterfactual_credit_weight,
+            counterfactual_horizon=args.counterfactual_horizon,
+            action_effects=args.action_effects,
+            action_effect_cap=args.action_effect_cap,
             sinking_trigger_reward=args.sinking_trigger_reward,
         ),
         log=log,

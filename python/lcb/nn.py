@@ -308,15 +308,29 @@ class PolicyValueNet:
         np.savez(path, **self.params)
 
     @classmethod
-    def load(cls, path: str | Path) -> "PolicyValueNet":
+    def load(
+        cls, path: str | Path, action_dim: Optional[int] = None
+    ) -> "PolicyValueNet":
         with np.load(path) as data:
             params = {name: data[name] for name in data.files}
         state_dim = params["W1"].shape[0]
         hidden = params["W1"].shape[1]
-        action_dim = params["W2"].shape[0] - hidden
+        saved_action_dim = params["W2"].shape[0] - hidden
+        target_action_dim = saved_action_dim if action_dim is None else int(action_dim)
+        if target_action_dim < saved_action_dim:
+            raise ValueError(
+                f"checkpoint expects action_dim={saved_action_dim}, got {target_action_dim}"
+            )
         value_hidden = params["Wv"].shape[1]
-        net = cls(state_dim, action_dim, hidden=hidden, value_hidden=value_hidden)
-        net.params.update({k: v.astype(np.float64) for k, v in params.items()})
+        net = cls(state_dim, target_action_dim, hidden=hidden, value_hidden=value_hidden)
+        copied = {k: v.astype(np.float64) for k, v in params.items()}
+        if target_action_dim != saved_action_dim:
+            old_w2 = copied["W2"]
+            new_w2 = np.zeros((hidden + target_action_dim, hidden), dtype=np.float64)
+            width = min(saved_action_dim, target_action_dim)
+            new_w2[: hidden + width] = old_w2[: hidden + width]
+            copied["W2"] = new_w2
+        net.params.update(copied)
         return net
 
     def num_params(self) -> int:

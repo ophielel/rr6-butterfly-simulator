@@ -28,6 +28,7 @@ from .plans import (
     first_legal_plan,
     group_candidates,
     payload,
+    probe_action_effects,
 )
 from .rewards import compute_reward
 from .teacher import ValueWeights, imago, state_value
@@ -194,6 +195,8 @@ class NeuralPolicy(Policy):
         sample: bool = False,
         seed: int = 0,
         name: Optional[str] = None,
+        action_effects: bool = False,
+        action_effect_cap: int = 8,
     ) -> None:
         self.net = net
         self.encoder = encoder
@@ -201,9 +204,42 @@ class NeuralPolicy(Policy):
         self.rng = np.random.default_rng(seed)
         if name:
             self.name = name
+        self.action_effects = bool(action_effects)
+        self.action_effect_cap = int(action_effect_cap)
         self.last_logprobs: List[float] = []
 
+    def _plan_once(
+        self,
+        obs: Dict[str, Any],
+        legal: Sequence[Any],
+        effects: Optional[Sequence[np.ndarray]] = None,
+    ) -> List[Any]:
+        groups = group_candidates(legal)
+        index = self.encoder.unit_slots(obs)[2]
+        state_vec = self.encoder.encode_state(obs)
+        plan: List[Any] = []
+        self.last_logprobs = []
+        for position, actor in enumerate(actor_order(obs, legal)):
+            options = groups.get(actor, [])
+            if not options:
+                continue
+            actor_effects = None if effects is None else effects[position]
+            matrix = self.encoder.action_matrix(
+                obs, options, index, plan, effects=actor_effects
+            )
+            if self.sample:
+                pick, logprob = self.net.sample(state_vec, matrix, self.rng)
+            else:
+                pick, logprob = self.net.argmax(state_vec, matrix), 0.0
+            if pick < 0:
+                continue
+            plan.append(options[pick])
+            self.last_logprobs.append(float(logprob))
+        return plan
+
     def plan(self, env: LimbusEnv, obs: Dict[str, Any], legal: Sequence[Any]) -> List[Any]:
+        if not self.action_effects or not self.encoder.effect_dim:
+            return self._plan_once(obs, legal)
         groups = group_candidates(legal)
         index = self.encoder.unit_slots(obs)[2]
         state_vec = self.encoder.encode_state(obs)
@@ -213,7 +249,19 @@ class NeuralPolicy(Policy):
             options = groups.get(actor, [])
             if not options:
                 continue
-            matrix = self.encoder.action_matrix(obs, options, index, plan)
+            effects = probe_action_effects(
+                env,
+                obs,
+                legal,
+                actor,
+                options,
+                plan,
+                self.encoder.table,
+                cap=self.action_effect_cap,
+            )
+            matrix = self.encoder.action_matrix(
+                obs, options, index, plan, effects=effects
+            )
             if self.sample:
                 pick, logprob = self.net.sample(state_vec, matrix, self.rng)
             else:

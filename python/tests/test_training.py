@@ -21,7 +21,7 @@ from lcb import dataset as ds  # noqa: E402
 from lcb.baselines import FirstLegalPolicy, GreedyPolicy, NeuralPolicy, RandomPolicy  # noqa: E402
 from lcb.env import LimbusEnv, SECTION5_WAVE  # noqa: E402
 from lcb.evaluate import Scenario, best_of_n, restart_aware, run_episode, summarise, wilson_interval  # noqa: E402
-from lcb.features import Encoder, SkillTable  # noqa: E402
+from lcb.features import Encoder, SkillTable, action_effect_fingerprint  # noqa: E402
 from lcb.nn import PolicyValueNet  # noqa: E402
 import lcb.ppo as ppo_module  # noqa: E402
 from lcb.rewards import (  # noqa: E402
@@ -44,6 +44,68 @@ from lcb.plans import (  # noqa: E402
 from lcb.teacher import BeamTeacher, TeacherConfig, detect_axis, detect_strategy_labels, encode_samples, teacher_budget  # noqa: E402
 
 SCENARIO = Scenario(name="test", max_turns=4, enemy_hp_scale=0.08)
+
+
+def test_action_effect_fingerprint_reports_generic_state_deltas() -> None:
+    before = {
+        "units": [
+            {
+                "id": "boss",
+                "kind": "enemy",
+                "max_hp": 1000,
+                "hp": 1000,
+                "alive": True,
+                "statuses": {},
+                "staggered": False,
+            },
+            {
+                "id": "sinner",
+                "kind": "sinner",
+                "max_hp": 1000,
+                "hp": 1000,
+                "alive": True,
+                "statuses": {},
+                "staggered": False,
+            },
+        ],
+        "ego_resources": {"Wrath": 1},
+        "resonance": {"Wrath": 1},
+    }
+    after = {
+        "units": [
+            {
+                "id": "boss",
+                "kind": "enemy",
+                "max_hp": 1000,
+                "hp": 900,
+                "alive": True,
+                "statuses": {"Generic": {"potency": 2, "count": 3}},
+                "staggered": True,
+            },
+            {
+                "id": "sinner",
+                "kind": "sinner",
+                "max_hp": 1000,
+                "hp": 950,
+                "alive": True,
+                "statuses": {},
+                "staggered": False,
+            },
+        ],
+        "ego_resources": {"Wrath": 2},
+        "resonance": {"Wrath": 2},
+    }
+    effect = action_effect_fingerprint(
+        before,
+        after,
+        {"stats": {"damage_to_enemies": 100, "damage_to_allies": 50}},
+        target_id="boss",
+    )
+    assert effect.shape == (22,)
+    assert effect[0] == 1.0
+    assert effect[2] > 0.0
+    assert effect[9] > 0.0
+    assert effect[18] > 0.0
 
 
 def test_reward_ignores_sinking_trigger_damage() -> None:
@@ -170,6 +232,28 @@ def test_ppo_rollout_and_validation_propagate_infinite_ego_resources() -> None:
 
     assert len(calls) == 2
     assert all(kwargs["infinite_ego_resources"] is True for _, kwargs in calls)
+
+
+def test_legacy_dataset_candidates_can_be_padded_for_effect_features() -> None:
+    legacy = {"cand": np.ones((2, 44), dtype=np.float32)}
+    expanded = ds.adapt_action_dim(legacy, 66)
+    assert expanded["cand"].shape == (2, 66)
+    assert np.allclose(expanded["cand"][:, :44], 1.0)
+    assert np.allclose(expanded["cand"][:, 44:], 0.0)
+    with np.testing.assert_raises(ValueError):
+        ds.adapt_action_dim({"cand": np.ones((1, 66), dtype=np.float32)}, 44)
+
+
+def test_loaded_checkpoint_can_be_padded_for_effect_features() -> None:
+    base = PolicyValueNet(state_dim=3, action_dim=2, hidden=4, seed=73)
+    with tempfile.TemporaryDirectory() as directory:
+        path = Path(directory) / "base.npz"
+        base.save(path)
+        expanded = PolicyValueNet.load(path, action_dim=5)
+    assert expanded.action_dim == 5
+    assert expanded.params["W2"].shape == (4 + 5, 4)
+    assert np.allclose(expanded.params["W2"][:6], base.params["W2"])
+    assert np.allclose(expanded.params["W2"][6:], 0.0)
 
 
 def test_ppo_accepts_actor_level_credit_multiplier() -> None:

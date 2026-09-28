@@ -33,7 +33,7 @@ def _run_one(args: Tuple[int, Dict[str, Any]]) -> Dict[str, Any]:
     from lcb.scenarios import scenario
     from lcb.teacher import BeamTeacher, TeacherConfig, ValueWeights, encode_samples
 
-    encoder = Encoder()
+    encoder = Encoder(include_action_effects=cfg["action_effects"])
     teacher = BeamTeacher(
         encoder.table,
         encoder,
@@ -48,6 +48,9 @@ def _run_one(args: Tuple[int, Dict[str, Any]]) -> Dict[str, Any]:
             leaf_value_weight=cfg["leaf_value_weight"],
             counterfactual_credit=cfg["counterfactual_credit"],
             sinking_trigger_reward=cfg["sinking_trigger_reward"],
+            action_effects=cfg["action_effects"],
+            action_effect_cap=cfg["action_effect_cap"],
+            pareto_candidates=cfg["pareto_candidates"],
             max_turns=cfg["max_turns"],
             enemy_hp_scale=cfg["enemy_hp_scale"],
             infinite_ego_resources=cfg["infinite_ego_resources"],
@@ -112,6 +115,15 @@ def main() -> int:
         help="opt-in coefficient on realized Sinking trigger damage; default is zero",
     )
     parser.add_argument(
+        "--action-effects", action=argparse.BooleanOptionalAction, default=False,
+        help="encode simulator-probed candidate effect fingerprints",
+    )
+    parser.add_argument("--action-effect-cap", type=int, default=8)
+    parser.add_argument(
+        "--pareto-candidates", action=argparse.BooleanOptionalAction, default=False,
+        help="retain simulator-backed non-dominated complete-plan outcomes",
+    )
+    parser.add_argument(
         "--quality-weighting", action=argparse.BooleanOptionalAction, default=False,
         help="weight failed Teacher rows by generic final-state quality",
     )
@@ -160,6 +172,9 @@ def main() -> int:
         "ally_damage_weight": args.ally_damage_weight,
         "death_weight": args.death_weight,
         "sinking_trigger_reward": args.sinking_trigger_reward,
+        "action_effects": args.action_effects,
+        "action_effect_cap": args.action_effect_cap,
+        "pareto_candidates": args.pareto_candidates,
         "quality_weighting": args.quality_weighting,
         "quality_power": args.quality_power,
         "failure_weight": args.failure_weight,

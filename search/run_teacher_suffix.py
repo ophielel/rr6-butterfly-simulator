@@ -79,8 +79,8 @@ def _run_one(args: Tuple[int, Dict[str, Any]]) -> Dict[str, Any]:
         imago,
     )
 
-    encoder = Encoder()
-    net = PolicyValueNet.load(cfg["checkpoint"])
+    encoder = Encoder(include_action_effects=cfg["action_effects"])
+    net = PolicyValueNet.load(cfg["checkpoint"], action_dim=encoder.action_dim)
     prefix_policy = NeuralPolicy(net, encoder, sample=False, seed=seed)
     scene = scenario(cfg["scenario"])
     env = LimbusEnv(strict=scene.strict)
@@ -132,6 +132,9 @@ def _run_one(args: Tuple[int, Dict[str, Any]]) -> Dict[str, Any]:
             leaf_value_weight=cfg["leaf_value_weight"],
             counterfactual_credit=cfg["counterfactual_credit"],
             sinking_trigger_reward=cfg["sinking_trigger_reward"],
+            action_effects=cfg["action_effects"],
+            action_effect_cap=cfg["action_effect_cap"],
+            pareto_candidates=cfg["pareto_candidates"],
             max_turns=cfg["max_turns"],
             enemy_hp_scale=cfg["enemy_hp_scale"],
             infinite_ego_resources=cfg["infinite_ego_resources"],
@@ -185,6 +188,7 @@ def _run_one(args: Tuple[int, Dict[str, Any]]) -> Dict[str, Any]:
                 value=value,
                 seed=seed,
                 actor_credit=actor_credit,
+                action_effects=teacher.last_action_effects,
             )
         )
 
@@ -265,6 +269,9 @@ def main() -> int:
     parser.add_argument("--min-quality", type=float, default=0.0)
     parser.add_argument("--counterfactual-credit", action=argparse.BooleanOptionalAction, default=False)
     parser.add_argument("--sinking-trigger-reward", type=float, default=0.0)
+    parser.add_argument("--action-effects", action=argparse.BooleanOptionalAction, default=False)
+    parser.add_argument("--action-effect-cap", type=int, default=8)
+    parser.add_argument("--pareto-candidates", action=argparse.BooleanOptionalAction, default=False)
     parser.add_argument("--max-turns", type=int, default=None)
     parser.add_argument("--enemy-hp-scale", type=float, default=None)
     parser.add_argument("--infinite-ego-resources", action=argparse.BooleanOptionalAction, default=None)

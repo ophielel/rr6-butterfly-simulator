@@ -83,7 +83,7 @@ def collect_one(seed: int, cfg: Dict[str, Any]):
     from lcb.plans import canonical
 
     scene = scenario(cfg["scenario"])
-    encoder = Encoder()
+    encoder = Encoder(include_action_effects=cfg["action_effects"])
     budget = teacher_budget(cfg["teacher_budget"])
     teacher = BeamTeacher(
         encoder.table,
@@ -93,10 +93,20 @@ def collect_one(seed: int, cfg: Dict[str, Any]):
             max_turns=scene.max_turns,
             enemy_hp_scale=scene.enemy_hp_scale,
             infinite_ego_resources=scene.infinite_ego_resources,
+            action_effects=cfg["action_effects"],
+            action_effect_cap=cfg["action_effect_cap"],
         ),
     )
-    net = PolicyValueNet.load(cfg["checkpoint"])
-    policy = NeuralPolicy(net, encoder, sample=cfg["sample"], seed=seed, name="DAggerPolicy")
+    net = PolicyValueNet.load(cfg["checkpoint"], action_dim=encoder.action_dim)
+    policy = NeuralPolicy(
+        net,
+        encoder,
+        sample=cfg["sample"],
+        seed=seed,
+        name="DAggerPolicy",
+        action_effects=cfg["action_effects"],
+        action_effect_cap=cfg["action_effect_cap"],
+    )
     env = LimbusEnv(strict=scene.strict)
     env.reset(
         seed,
@@ -151,6 +161,7 @@ def collect_one(seed: int, cfg: Dict[str, Any]):
                 actors=actors,
                 value=value,
                 seed=seed,
+                action_effects=teacher.last_action_effects,
             )
         )
         if not policy_plan:
@@ -228,6 +239,8 @@ def main() -> int:
     parser.add_argument("--seed-count", type=int, default=100)
     parser.add_argument("--teacher-budget", choices=["t0", "t1", "t2"], default="t1")
     parser.add_argument("--sample", action="store_true")
+    parser.add_argument("--action-effects", action=argparse.BooleanOptionalAction, default=False)
+    parser.add_argument("--action-effect-cap", type=int, default=8)
     parser.add_argument(
         "--sample-weight", type=float, default=1.0,
         help="relative weight of newly collected DAgger labels when merged with base data",
@@ -249,6 +262,8 @@ def main() -> int:
         "teacher_budget": args.teacher_budget,
         "sample": args.sample,
         "sample_weight": args.sample_weight,
+        "action_effects": args.action_effects,
+        "action_effect_cap": args.action_effect_cap,
     }
     rows: List[Dict[str, Any]] = []
     started = time.time()

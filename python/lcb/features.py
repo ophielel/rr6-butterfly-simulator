@@ -97,6 +97,7 @@ SPEED_SCALE = 16.0
 STACK_SCALE = 20.0
 POWER_SCALE = 30.0
 DAMAGE_SCALE = 200.0
+ACTION_EFFECT_DIM = 22
 
 
 def _clamp(value: float, lo: float = -3.0, hi: float = 3.0) -> float:
@@ -323,11 +324,115 @@ def _index(values: Sequence[str], value: Any) -> int:
     return -1
 
 
+def _side_snapshot(obs: Dict[str, Any], kind: str) -> Tuple[float, float, float, float, float, float]:
+    units = [unit for unit in obs.get("units", []) if unit.get("kind") == kind]
+    hp = sum(float(unit.get("hp") or 0) for unit in units)
+    alive = sum(1.0 for unit in units if unit.get("alive"))
+    staggered = sum(1.0 for unit in units if unit.get("staggered"))
+    status_magnitude = 0.0
+    status_instances = 0.0
+    for unit in units:
+        for instance in (unit.get("statuses") or {}).values():
+            status_magnitude += abs(float(instance.get("potency") or 0))
+            status_magnitude += abs(float(instance.get("count") or 0))
+            status_magnitude += abs(float(instance.get("stack") or 0))
+            status_instances += 1.0
+    return hp, alive, staggered, status_magnitude, status_instances, float(len(units))
+
+
+def _resource_total(obs: Dict[str, Any], key: str) -> float:
+    values = obs.get(key) or {}
+    return sum(float(value or 0) for value in values.values())
+
+
+def _unit_by_id(obs: Dict[str, Any], unit_id: Optional[str]) -> Dict[str, Any]:
+    if not unit_id:
+        return {}
+    return next(
+        (unit for unit in obs.get("units", []) if str(unit.get("id")) == str(unit_id)),
+        {},
+    )
+
+
+def _unit_status_magnitude(unit: Dict[str, Any]) -> float:
+    return sum(
+        abs(float(value or 0))
+        for instance in (unit.get("statuses") or {}).values()
+        for value in (
+            instance.get("potency"),
+            instance.get("count"),
+            instance.get("stack"),
+        )
+    )
+
+
+def action_effect_fingerprint(
+    before: Dict[str, Any],
+    after: Dict[str, Any],
+    info: Optional[Dict[str, Any]] = None,
+    valid: bool = True,
+    target_id: Optional[str] = None,
+) -> np.ndarray:
+    """Encode generic aggregate and selected-target deltas from a full turn."""
+    info = info or {}
+    before_enemies = [u for u in before.get("units", []) if u.get("kind") != "sinner"]
+    after_enemies = [u for u in after.get("units", []) if u.get("kind") != "sinner"]
+    before_boss = max(before_enemies, key=lambda unit: float(unit.get("max_hp") or 0), default={})
+    after_boss = max(after_enemies, key=lambda unit: float(unit.get("max_hp") or 0), default={})
+    boss_max = max(1.0, float(before_boss.get("max_hp") or 1))
+    before_enemy = _side_snapshot(before, "enemy")
+    after_enemy = _side_snapshot(after, "enemy")
+    before_ally = _side_snapshot(before, "sinner")
+    after_ally = _side_snapshot(after, "sinner")
+    before_target = _unit_by_id(before, target_id)
+    after_target = _unit_by_id(after, target_id)
+    target_max = max(1.0, float(before_target.get("max_hp") or 1))
+    stats = info.get("stats") or {}
+    terminal = (
+        1.0
+        if after.get("winner") == "Sinners"
+        else -1.0 if after.get("winner") == "Enemies" else 0.0
+    )
+    values = [
+        1.0 if valid else 0.0,
+        (float(before_boss.get("hp") or 0) - float(after_boss.get("hp") or 0)) / HP_SCALE,
+        (float(before_boss.get("hp") or 0) - float(after_boss.get("hp") or 0)) / boss_max,
+        (before_enemy[0] - after_enemy[0]) / HP_SCALE,
+        (before_ally[0] - after_ally[0]) / HP_SCALE,
+        after_enemy[1] - before_enemy[1],
+        after_ally[1] - before_ally[1],
+        after_enemy[2] - before_enemy[2],
+        after_ally[2] - before_ally[2],
+        (after_enemy[3] - before_enemy[3]) / 100.0,
+        (after_ally[3] - before_ally[3]) / 100.0,
+        (_resource_total(after, "ego_resources") - _resource_total(before, "ego_resources")) / 8.0,
+        (_resource_total(after, "resonance") - _resource_total(before, "resonance")) / 5.0,
+        float(stats.get("damage_to_enemies") or 0) / DAMAGE_SCALE,
+        float(stats.get("damage_to_allies") or 0) / DAMAGE_SCALE,
+        len(stats.get("deaths") or []) / float(MAX_SINNERS),
+        len(stats.get("ego_uses") or []) / float(MAX_SINNERS),
+        terminal,
+        (float(before_target.get("hp") or 0) - float(after_target.get("hp") or 0)) / target_max,
+        (1.0 if after_target.get("alive") else 0.0)
+        - (1.0 if before_target.get("alive") else 0.0),
+        (1.0 if after_target.get("staggered") else 0.0)
+        - (1.0 if before_target.get("staggered") else 0.0),
+        (_unit_status_magnitude(after_target) - _unit_status_magnitude(before_target)) / 100.0,
+    ]
+    return np.asarray([_clamp(float(value), -3.0, 3.0) for value in values], dtype=np.float32)
+
+
 class Encoder:
     """Turns observations and actions into fixed-size float vectors."""
 
-    def __init__(self, table: Optional[SkillTable] = None, data_dir: Optional[str] = None) -> None:
+    def __init__(
+        self,
+        table: Optional[SkillTable] = None,
+        data_dir: Optional[str] = None,
+        include_action_effects: bool = False,
+    ) -> None:
         self.table = table or SkillTable(data_dir)
+        self.include_action_effects = bool(include_action_effects)
         self.n_status = len(STATUS_VOCAB)
         # per-unit block: 18 scalars + resistances + 3 per status + "other" (3)
         self.unit_dim = 18 + len(DAMAGE_TYPES) + len(SINS) + 3 * self.n_status + 3
@@ -342,7 +447,8 @@ class Encoder:
         # model autoregressive over the fixed actor order (§5, §6.4) without
         # giving every actor its own head.
         self.context_dim = 6
-        self.action_dim = self.skill_dim + self.target_dim + 3 + self.context_dim
+        self.effect_dim = ACTION_EFFECT_DIM if self.include_action_effects else 0
+        self.action_dim = self.skill_dim + self.target_dim + 3 + self.context_dim + self.effect_dim
 
     # -- helpers -----------------------------------------------------------
     @staticmethod
@@ -483,6 +589,7 @@ class Encoder:
         action: Any,
         index: Optional[Dict[str, int]] = None,
         chosen: Sequence[Any] = (),
+        effect: Optional[Sequence[float]] = None,
     ) -> np.ndarray:
         """Encode one candidate action.
 
@@ -606,6 +713,14 @@ class Encoder:
             same_target / 4.0,
             (same_skill + prior_ego) / 4.0,
         ]
+        cursor += self.context_dim
+        if effect is not None:
+            effect_array = np.asarray(effect, dtype=np.float32).reshape(-1)
+            if len(effect_array) != self.effect_dim:
+                raise ValueError(
+                    f"action effect has {len(effect_array)} values; expected {self.effect_dim}"
+                )
+            out[cursor : cursor + self.effect_dim] = effect_array
         return out
 
     def action_matrix(
@@ -614,12 +729,24 @@ class Encoder:
         actions: Sequence[Any],
         index: Optional[Dict[str, int]] = None,
         chosen: Sequence[Any] = (),
+        effects: Optional[Sequence[Sequence[float]]] = None,
     ) -> np.ndarray:
         index = index or self.unit_slots(obs)[2]
         if not actions:
             return np.zeros((0, self.action_dim), dtype=np.float32)
+        if effects is not None and len(effects) != len(actions):
+            raise ValueError("action effects must align with candidate actions")
         return np.stack(
-            [self.encode_action(obs, action, index, chosen) for action in actions]
+            [
+                self.encode_action(
+                    obs,
+                    action,
+                    index,
+                    chosen,
+                    None if effects is None else effects[position],
+                )
+                for position, action in enumerate(actions)
+            ]
         )
 
 

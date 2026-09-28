@@ -1,10 +1,10 @@
 """Whole-turn plan generation (TRAINING_PLAN.md §2.1, §4.2).
 
 A *plan* is one action for every unit that can act, generated actor by actor in a
-fixed order.  Nothing is submitted to the simulator while a plan is still being
-built: the only simulator calls are the action mask (`legal_actions`) and - once
-the plan is complete - the turn resolution.  That is the rule the whole training
-stack rests on, so it lives in one place.
+fixed order.  Normal generation never submits a partial plan to the simulator:
+it uses the legal-action mask and resolves only complete plans.  The optional effect
+probe also uses complete-turn clones while a plan is being assembled; it never treats
+a partial submission as a game transition.  That invariant lives in one place.
 
 The inner (actor-level) beam needs a score for a *partial* plan.  Two modes are
 supported:
@@ -23,8 +23,16 @@ import json
 from dataclasses import dataclass, field
 from typing import Any, Callable, Dict, Iterable, List, Optional, Sequence, Tuple
 
+import numpy as np
+
 from .env import Action, EngageAction, EgoAction, LimbusEnv
-from .features import DAMAGE_TYPES, SINS, SkillTable
+from .features import (
+    ACTION_EFFECT_DIM,
+    DAMAGE_TYPES,
+    SINS,
+    SkillTable,
+    action_effect_fingerprint,
+)
 
 ACTION_TYPES = (Action, EngageAction, EgoAction)
 
@@ -97,6 +105,70 @@ def group_candidates(legal: Sequence[Any]) -> Dict[str, List[Any]]:
         seen[actor].add(key)
         bucket.append(action)
     return grouped
+
+
+def probe_action_effects(
+    env: LimbusEnv,
+    obs: Dict[str, Any],
+    legal: Sequence[Any],
+    actor: str,
+    options: Sequence[Any],
+    chosen: Sequence[Any],
+    table: SkillTable,
+    cap: int = 8,
+) -> List[np.ndarray]:
+    """Probe a diverse subset of candidates by resolving complete turn clones."""
+    effects = [np.zeros(ACTION_EFFECT_DIM, dtype=np.float32) for _ in options]
+    if not options:
+        return effects
+    actor_positions = actor_order(obs, legal)
+    if actor not in actor_positions:
+        return effects
+    selected = PlanGenerator(
+        table=table,
+        width=1,
+        cap=max(1, cap),
+        candidate_mode="diverse",
+    )
+    probe_options = (
+        list(options)
+        if cap <= 0
+        else selected.candidate_actions(obs, legal, actor)
+    )
+    option_indices = {canonical(option): position for position, option in enumerate(options)}
+    groups = group_candidates(legal)
+    chosen_actors = {action_actor(action) for action in chosen}
+    for option in probe_options:
+        position = option_indices.get(canonical(option))
+        if position is None:
+            continue
+        plan = list(chosen) + [option]
+        selected_now = chosen_actors | {actor}
+        for remaining in actor_positions:
+            if remaining in selected_now:
+                continue
+            candidates = groups.get(remaining, [])
+            if candidates:
+                plan.append(candidates[0])
+        probe = env.clone_state()
+        info = probe.step_turn(plan)
+        if info.get("ok"):
+            effects[position] = action_effect_fingerprint(
+                obs,
+                probe.observe(),
+                info,
+                valid=True,
+                target_id=str(payload(option).get("target") or "") or None,
+            )
+        else:
+            effects[position] = action_effect_fingerprint(
+                obs,
+                obs,
+                info,
+                valid=False,
+                target_id=str(payload(option).get("target") or "") or None,
+            )
+    return effects
 
 
 # ---------------------------------------------------------------------------

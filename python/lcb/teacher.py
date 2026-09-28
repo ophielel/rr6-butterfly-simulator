@@ -31,8 +31,16 @@ from typing import Any, Dict, Iterable, List, Optional, Sequence, Tuple
 import numpy as np
 
 from .env import LimbusEnv, SECTION5_WAVE
-from .features import Encoder, SkillTable
-from .plans import PlanGenerator, action_actor, actor_order, canonical, group_candidates, payload
+from .features import Encoder, SkillTable, action_effect_fingerprint
+from .plans import (
+    PlanGenerator,
+    action_actor,
+    actor_order,
+    canonical,
+    group_candidates,
+    payload,
+    probe_action_effects,
+)
 from .rewards import EpisodeStats, compute_reward
 
 # ---------------------------------------------------------------------------
@@ -165,6 +173,9 @@ class TeacherConfig:
     leaf_value_weight: float = 0.0
     counterfactual_credit: bool = False
     sinking_trigger_reward: float = 0.0
+    action_effects: bool = False
+    action_effect_cap: int = 8
+    pareto_candidates: bool = False
     transposition: bool = True
     max_turns: int = 12
     enemies: Tuple[str, ...] = tuple(SECTION5_WAVE)
@@ -192,6 +203,8 @@ class TeacherSample:
     episode_quality: Optional[float] = None
     #: Per-actor generic counterfactual credit multipliers, when requested.
     actor_credit: Optional[List[float]] = None
+    #: Per-candidate simulator effect fingerprints, when requested.
+    action_effects: Optional[List[np.ndarray]] = None
 
     def labels(self) -> List[int]:
         """Index of the teacher's action inside each actor's candidate list."""
@@ -222,6 +235,7 @@ class BeamTeacher:
         #: of `search_key` (§4.4).
         self.transposition: Dict[str, Tuple[LimbusEnv, float]] = {}
         self.last_candidate_groups: Dict[str, List[Any]] = {}
+        self.last_action_effects: List[np.ndarray] = []
         self.stats = {"nodes": 0, "transposition_hits": 0, "plans": 0}
 
     # -- turn planning -----------------------------------------------------
@@ -356,7 +370,11 @@ class BeamTeacher:
         rollout = self._rollout if self.config.score_mode == "rollout" else None
         generator = PlanGenerator(
             self.table,
-            width=self.config.rollout_width if rollout else self.config.plan_width,
+            width=(
+                max(self.config.plan_width, self.config.rollout_width)
+                if self.config.pareto_candidates
+                else (self.config.rollout_width if rollout else self.config.plan_width)
+            ),
             cap=self.config.candidate_cap,
             rollout=rollout,
             candidate_mode=self.config.candidate_mode,
@@ -378,7 +396,11 @@ class BeamTeacher:
                         actor: list(options)
                         for actor, options in generator.first_candidates.items()
                     }
-                plans = generated[: self.config.turn_width]
+                plans = (
+                    self._pareto_plans(node_env, node_obs, generated, self.config.turn_width)
+                    if self.config.pareto_candidates
+                    else generated[: self.config.turn_width]
+                )
                 for _prior, plan in plans:
                     key = self._plan_key(node_env, plan)
                     cached = self.transposition.get(key) if self.config.transposition else None
@@ -424,7 +446,75 @@ class BeamTeacher:
             self.stats[key] = self.stats.get(key, 0) + value
         best = max(nodes, key=rank)
         plan = best[2][0] if best[2] else []
+        self.last_action_effects = []
+        if self.config.action_effects:
+            prefix: List[Any] = []
+            for position, actor in enumerate(actors):
+                options = groups.get(actor, [])
+                self.last_action_effects.append(
+                    np.asarray(
+                        probe_action_effects(
+                            env,
+                            obs,
+                            legal,
+                            actor,
+                            options,
+                            prefix,
+                            self.table,
+                            cap=self.config.action_effect_cap,
+                        ),
+                        dtype=np.float32,
+                    )
+                )
+                if position < len(plan):
+                    prefix.append(plan[position])
         return plan, best[0], groups, actors
+
+    def _pareto_plans(
+        self,
+        env: LimbusEnv,
+        before: Dict[str, Any],
+        generated: Sequence[Tuple[float, List[Any]]],
+        limit: int,
+    ) -> List[Tuple[float, List[Any]]]:
+        scored: List[Tuple[float, Tuple[float, ...], List[Any]]] = []
+        for prior, plan in generated:
+            probe = env.clone_state()
+            info = probe.step_turn(plan)
+            if not info.get("ok"):
+                continue
+            effect = action_effect_fingerprint(before, probe.observe(), info)
+            objective = (
+                effect[17],
+                effect[2],
+                -effect[4],
+                -effect[15],
+                effect[9],
+                effect[7],
+                effect[20],
+                effect[21],
+            )
+            scored.append((prior, tuple(float(value) for value in objective), plan))
+        front: List[Tuple[float, Tuple[float, ...], List[Any]]] = []
+        for candidate in scored:
+            if not any(
+                all(other[1][i] >= candidate[1][i] for i in range(len(candidate[1])))
+                and any(other[1][i] > candidate[1][i] for i in range(len(candidate[1])))
+                for other in scored
+                if other is not candidate
+            ):
+                front.append(candidate)
+        front.sort(key=lambda item: item[0], reverse=True)
+        front_ids = {id(item) for item in front}
+        remainder = sorted(
+            (item for item in scored if id(item) not in front_ids),
+            key=lambda item: item[0],
+            reverse=True,
+        )
+        self.stats["pareto_calls"] = self.stats.get("pareto_calls", 0) + 1
+        self.stats["pareto_front"] = self.stats.get("pareto_front", 0) + len(front)
+        ordered = front + remainder
+        return [(prior, plan) for prior, _objective, plan in ordered[: max(1, limit)]]
 
     def _plan_key(self, env: LimbusEnv, plan: Sequence[Any]) -> str:
         return env.search_key() + "|" + ";".join(canonical(a) for a in plan)
@@ -518,6 +608,7 @@ class BeamTeacher:
                         value=value,
                         seed=seed,
                         actor_credit=actor_credit,
+                        action_effects=self.last_action_effects,
                     )
                 )
             if stats.turns >= (max_turns or self.config.max_turns):
@@ -707,7 +798,13 @@ def encode_samples(
             options = sample.groups.get(actor, [])
             if not options or labels_for_turn[position] < 0:
                 continue
-            matrix = encoder.action_matrix(sample.obs, options, index, chosen)
+            effects = None
+            if encoder.effect_dim and sample.action_effects is not None:
+                if position < len(sample.action_effects):
+                    effects = sample.action_effects[position]
+            matrix = encoder.action_matrix(
+                sample.obs, options, index, chosen, effects=effects
+            )
             # Preserve the joint-plan context even when this actor's row is
             # omitted by a quality threshold.
             chosen.append(sample.plan[position])

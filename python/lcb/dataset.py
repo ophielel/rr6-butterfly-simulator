@@ -39,6 +39,34 @@ def load_dataset(path: str | Path) -> Dict[str, np.ndarray]:
         return {name: data[name] for name in data.files}
 
 
+def adapt_action_dim(
+    data: Dict[str, np.ndarray], target_dim: int
+) -> Dict[str, np.ndarray]:
+    """Pad legacy candidate rows, or reject non-zero feature truncation."""
+    if "cand" not in data or data["cand"].ndim != 2:
+        raise ValueError("dataset is missing a 2-D cand array")
+    target_dim = int(target_dim)
+    current_dim = int(data["cand"].shape[1])
+    if current_dim == target_dim:
+        return data
+    out = dict(data)
+    if current_dim > target_dim:
+        discarded = data["cand"][:, target_dim:]
+        if discarded.size and not np.allclose(discarded, 0.0):
+            raise ValueError(
+                f"dataset action_dim={current_dim} has non-zero features; "
+                f"cannot load it into action_dim={target_dim}"
+            )
+        out["cand"] = data["cand"][:, :target_dim]
+        return out
+    padded = np.zeros(
+        (data["cand"].shape[0], target_dim), dtype=data["cand"].dtype
+    )
+    padded[:, :current_dim] = data["cand"]
+    out["cand"] = padded
+    return out
+
+
 def merge(datasets: Sequence[Dict[str, np.ndarray]]) -> Dict[str, np.ndarray]:
     if not datasets:
         raise ValueError("nothing to merge")
@@ -146,6 +174,7 @@ __all__ = [
     "save_dataset",
     "load_dataset",
     "merge",
+    "adapt_action_dim",
     "subset",
     "iter_decisions",
     "seed_split",

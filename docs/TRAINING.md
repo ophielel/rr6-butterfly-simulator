@@ -38,7 +38,7 @@ reset(seed) -> 读取 observation -> 为全部角色选技能/目标/E.G.O
 | 文件 | 作用 |
 |------|------|
 | `python/lcb/env.py` | `LimbusEnv`：`reset`/`observe`/`legal_actions`/`submit`/`step_turn`/`search_key` |
-| `python/lcb/features.py` | 稳定离散编码：状态 `state_dim=1794`、动作 `action_dim=44`；技能数值来自生成的 library JSON（不依赖技能名称文本） |
+| `python/lcb/features.py` | 稳定离散编码：状态 `state_dim=1794`、基础动作 `action_dim=44`；可选模拟器后果指纹使动作维度变为 `66`；技能数值来自生成的 library JSON（不依赖技能名称文本） |
 | `python/lcb/plans.py` | 固定 actor 顺序的**整回合计划生成器**（beam + action mask）、解析式先验 `estimate_action` |
 | `python/lcb/teacher.py` | 阶段 A：回合级树搜索教师、§4.3 手写 value、轴事件检测 `detect_axis`、样本编码 `encode_samples` |
 | `python/lcb/rewards.py` | §3 奖励 + 每局的统计载体 `EpisodeStats` |
@@ -210,7 +210,40 @@ Teacher pilot 分别使用 `83001-83200` 和 `83301-83500`，对应数据目录�
 训练带，验证带分别为 `90101-90200` 和 `90201-90300`；其 JSON metadata 与
 评测目录也由该报告列出。
 
-### 5.3 Teacher 搜索诊断（post-search repair）
+### 5.3 模拟器动作后果特征与旧 checkpoint 兼容
+
+动作后果特征是可选的、路线无关的 22 维指纹：合法性、Boss/敌方/我方
+HP 变化、存活与 stagger 变化、状态总量、资源/共鸣变化、真实回合伤害与伤亡、
+胜负，以及当前候选目标的 HP/存活/stagger/状态变化。它不读取或奖励某个具体状态、技能、身份
+或 E.G.O 路线；每个候选都在环境 clone 中用完整回合补齐后解析，不能把半回合结果
+当作标签。`--action-effects` 开启该特征，`--action-effect-cap 0` 探测当前 actor
+的全部候选；正数只探测结构多样的子集，未探测候选的 valid 位为零，正式数据应
+明确记录这个预算。
+
+`Encoder(include_action_effects=True)` 的 action dim 是 `44 + 22 = 66`。训练、评估、
+PPO 反事实未来 rollout 和 `NeuralPolicy` 都使用同一探针接口；Teacher 还可用
+`--pareto-candidates` 按通用的胜负、Boss HP、我方损失、伤亡、状态/坚韧变化保留
+非支配完整回合。旧的 44 维 checkpoint 加载到 66 维网络时，新输入权重零填充，
+因此可以安全迁移；反方向（checkpoint 维度大于目标 encoder）会明确报错，避免
+静默丢弃已训练的后果特征。
+
+示例：
+
+```bash
+python search/run_teacher_suffix.py --action-effects --action-effect-cap 0 \
+  --pareto-candidates --out data/teacher_effects
+python training/train_bc.py --action-effects --data data/teacher_effects \
+  --out models/bc_effects.npz
+python training/train_ppo.py --action-effects --action-effect-cap 0 \
+  --checkpoint models/bc_effects.npz --out models/ppo_effects.npz
+python eval/run_eval.py --action-effects --action-effect-cap 0 \
+  --policies PPO --checkpoint models/ppo_effects.npz
+```
+
+旧 checkpoint 仍按基础 44 维 encoder 运行时不需要任何参数；不能把带后果特征的
+model 当成基础模型评估，否则会被维度检查拒绝。
+
+### 5.4 Teacher 搜索诊断（post-search repair）
 
 Teacher 现在提供三种通用候选保留模式：`top`（解析式先验的前 k 个）、
 `diverse`（攻击、防御、E.G.O、低输出和目标多样性）以及 `all`。这些类别
