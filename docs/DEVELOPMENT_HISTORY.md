@@ -1874,6 +1874,23 @@ Teacher-demo update。裸臂完全保持当前 reward；触发臂只把模拟器
 宣称从零训练已发现目标路线。完整机器报告为
 `reports/ppo_hp_trigger_reward_ablation.json`。
 
+### 23.11 Generic actor credit、demo 衰减与中间状态后缀
+
+针对 full-HP 的停滞，加入了三个通用机制：PPO 可对每名 actor 做一个合法替换
+并用完整回合 reward margin 缩放该 actor 的 policy gradient；Teacher demo 更新
+可按 `demo_decay=0.5` 逐轮减少；`run_teacher_suffix.py` 可先让已有策略走固定
+前缀，再从中间状态搜索完成战斗的后缀。
+
+同一训练 seed 的 100 局 matched pilot 为：plain `51/100`，actor credit
+`50/100`，credit + demo decay `52/100`，再加入 50-seed suffix 数据
+`55/100`。后者扩展到 500 局 full holdout 为 `228/500`，共同初始强 checkpoint
+为 `201/500`；配对共同胜 `195`、初始独胜 `6`、新策略独胜 `33`、共同负
+`266`。再加入已验证的 `0.001 * 实际 sinking_damage` 后，E 达到
+`241/500`，相对初始策略配对共同胜 `163`、初始独胜 `38`、E 独胜 `78`、
+共同负 `221`，净增 `40` 局。D/E 仍是 `axis_ok_rate=0`、`direct_burst_rate=1`，
+所以这是已有爆发策略的完成率提升，不是目标延迟路线发现。完整 metadata、后缀
+索引、回放和 holdout 在 `reports/ppo_credit_suffix_ablation.json`。
+
 ---
 
 ## 24. 结果应该怎样解释

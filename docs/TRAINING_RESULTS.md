@@ -200,6 +200,33 @@ checkpoint，不能写成 fresh from-scratch 或 globally seed-disjoint curricul
 完整训练参数、CI、配对表、artifact 和默认系数边界见
 `reports/ppo_hp_trigger_reward_ablation.json`。
 
+## 0.9 通用 actor credit、demo 衰减与中间状态后缀搜索
+
+这轮把重点从 reward 系数移到 credit 和数据覆盖。PPO 增加了可选的逐 actor
+合法替换 margin；demo 更新可按 `demo_decay` 衰减；
+`search/run_teacher_suffix.py` 用已有策略先走 3 回合，再从中间状态搜索完整
+后缀。所有分数仍是通用 HP、存活、死亡和终局结果，没有加入路线标签。
+
+四臂使用同一初始 checkpoint、训练随机 seed 和 100 局 holdout：
+
+| 实验 | 配置 | wins / 100 |
+|---|---|---:|
+| A | plain PPO + 固定 demo | 51 |
+| B | A + actor counterfactual credit | 50 |
+| C | B + demo decay `0.5` | 52 |
+| **D** | **C + 50-seed 中间状态后缀数据** | **55** |
+
+D 扩展为 500 局 full holdout 后达到 `228/500`，共同初始 checkpoint 为
+`201/500`。配对结果是共同胜 `195`、初始策略独胜 `6`、D 独胜 `33`、共同负
+`266`，净增 `27` 局。把已验证的 `0.001 * 实际 sinking_damage` 加入 D 后得到
+E，达到 **241/500**；相对初始策略配对共同胜 `163`、初始独胜 `38`、E 独胜
+`78`、共同负 `221`，净增 `40` 局。E 也超过触发 reward 单独的 `233/500`。
+D/E 的 `axis_ok_rate=0`、`direct_burst_rate=1`，所以提升的是已有爆发策略的
+完成率，不是审计目标路线发现。actor credit 单独在小试验中没有显示收益，下一步
+应优先增加成功后缀的多样性并做 globally seed-disjoint curriculum。
+
+完整参数和 artifacts 见 `reports/ppo_credit_suffix_ablation.json`。
+
 ## 1. 协议与样本量（§7 的"必须写明样本数"）
 
 | 项目 | 值 |

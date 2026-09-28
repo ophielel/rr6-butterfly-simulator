@@ -47,6 +47,10 @@ class PPOConfig:
     #: scenario-specific runs use one small BC update per iteration.
     demo_updates_per_iteration: int = 0
     demo_batch_decisions: int = 32
+    demo_decay: float = 1.0
+    demo_min_updates: int = 0
+    counterfactual_credit: bool = False
+    counterfactual_credit_weight: float = 1.0
     sinking_trigger_reward: float = 0.0
 
 
@@ -62,9 +66,66 @@ class PPOHistory:
     clip_fraction: List[float] = field(default_factory=list)
     validation_win_rate: List[float] = field(default_factory=list)
     validation_kill_turn: List[float] = field(default_factory=list)
+    demo_updates: List[int] = field(default_factory=list)
 
 
 TurnRecord = Dict[str, Any]
+
+
+def _counterfactual_actor_credits(
+    env: LimbusEnv,
+    before: Dict[str, Any],
+    plan: Sequence[Any],
+    actors: Sequence[str],
+    groups: Dict[str, List[Any]],
+    sinking_trigger_reward: float,
+    weight: float,
+) -> Tuple[List[float], int]:
+    """Scale each actor's policy gradient by a generic replacement margin."""
+    if not plan or not actors or weight <= 0.0:
+        return [1.0 for _ in actors], 0
+    base_probe = env.clone_state()
+    base_info = base_probe.step_turn(list(plan))
+    if not base_info.get("ok"):
+        return [1.0 for _ in actors], 0
+    base_score = compute_reward(
+        base_info,
+        before,
+        base_probe.observe(),
+        sinking_trigger_reward=sinking_trigger_reward,
+    )
+    credits: List[float] = []
+    calls = 0
+    for position, actor in enumerate(actors):
+        chosen = plan[position] if position < len(plan) else None
+        alternative = next(
+            (
+                option
+                for option in groups.get(actor, [])
+                if chosen is None or str(option.to_wire()) != str(chosen.to_wire())
+            ),
+            None,
+        )
+        if alternative is None:
+            credits.append(1.0)
+            continue
+        counterfactual = list(plan)
+        counterfactual[position] = alternative
+        probe = env.clone_state()
+        alternative_info = probe.step_turn(counterfactual)
+        calls += 1
+        if not alternative_info.get("ok"):
+            credits.append(1.0)
+            continue
+        alternative_score = compute_reward(
+            alternative_info,
+            before,
+            probe.observe(),
+            sinking_trigger_reward=sinking_trigger_reward,
+        )
+        margin = base_score - alternative_score
+        credits.append(1.0 + weight * float(np.tanh(margin / 100.0)))
+    return credits, calls
 
 
 def collect_episode(
@@ -74,6 +135,8 @@ def collect_episode(
     seed: int,
     rng: np.random.Generator,
     sinking_trigger_reward: float = 0.0,
+    counterfactual_credit: bool = False,
+    counterfactual_credit_weight: float = 1.0,
 ) -> Tuple[List[TurnRecord], Dict[str, Any]]:
     """One PPO rollout: sampling the plan, but resolving whole turns only."""
     env = LimbusEnv(strict=scenario.strict)
@@ -97,7 +160,8 @@ def collect_episode(
         index = encoder.unit_slots(obs)[2]
         state_vec = encoder.encode_state(obs)
         plan: List[Any] = []
-        actors: List[Tuple[np.ndarray, int, float]] = []
+        actor_names: List[str] = []
+        actor_records: List[Tuple[np.ndarray, int, float]] = []
         for actor in actor_order(obs, legal):
             options = groups.get(actor, [])
             if not options:
@@ -106,8 +170,26 @@ def collect_episode(
             pick, logprob = net.sample(state_vec, matrix, rng)
             if pick < 0:
                 continue
-            actors.append((matrix, pick, logprob))
+            actor_records.append((matrix, pick, logprob))
+            actor_names.append(actor)
             plan.append(options[pick])
+        groups = group_candidates(legal)
+        if counterfactual_credit:
+            credits, counterfactual_calls = _counterfactual_actor_credits(
+                env,
+                obs,
+                plan,
+                actor_names,
+                groups,
+                sinking_trigger_reward,
+                counterfactual_credit_weight,
+            )
+        else:
+            credits, counterfactual_calls = [1.0] * len(actor_records), 0
+        actors = [
+            (matrix, pick, logprob, credit)
+            for (matrix, pick, logprob), credit in zip(actor_records, credits)
+        ]
         info = env.step_turn(plan)
         if not info.get("ok"):
             raise RuntimeError(f"PPO rollout produced an illegal plan: {info.get('error')}")
@@ -121,6 +203,7 @@ def collect_episode(
                 "state": state_vec,
                 "actors": actors,
                 "reward": reward,
+                "counterfactual_calls": counterfactual_calls,
                 "obs": obs,
                 "done": bool(after.get("winner")),
             }
@@ -143,6 +226,9 @@ def collect_episode(
         "turns": len(turns),
         "boss_hp_left": float((imago(final) or {}).get("hp") or 0),
         "axis": detect_axis(replay),
+        "counterfactual_calls": sum(
+            int(turn.get("counterfactual_calls") or 0) for turn in turns
+        ),
     }
     return turns, summary
 
@@ -180,6 +266,7 @@ def train_ppo(
         "episodes": 0,
         "returns": [],
         "wins": 0,
+        "counterfactual_calls": 0,
         "demonstration_decisions": len(demonstrations),
     }
     for iteration in range(config.iterations):
@@ -199,14 +286,19 @@ def train_ppo(
                     seed,
                     rng,
                     sinking_trigger_reward=config.sinking_trigger_reward,
+                    counterfactual_credit=config.counterfactual_credit,
+                    counterfactual_credit_weight=config.counterfactual_credit_weight,
                 )
             )
         info["episodes"] += len(rollouts)
         info["wins"] += sum(1 for _, summary in rollouts if summary["won"])
+        info["counterfactual_calls"] += sum(
+            int(summary.get("counterfactual_calls") or 0) for _, summary in rollouts
+        )
         episode_returns = [summary["return"] for _, summary in rollouts]
         info["returns"].extend(episode_returns)
 
-        decisions: List[Tuple[np.ndarray, List[Tuple[np.ndarray, int, float]], float]] = []
+        decisions: List[Tuple[np.ndarray, List[Tuple], float]] = []
         values: List[Tuple[np.ndarray, float]] = []
         for turns, _ in rollouts:
             # The value head is trained on normalised returns (VALUE_SCALE); the
@@ -218,7 +310,7 @@ def train_ppo(
                 decisions.append(
                     (
                         turn["state"],
-                        [(cand, action, logprob) for cand, action, logprob in turn["actors"]],
+                        list(turn["actors"]),
                         float(advantage),
                     )
                 )
@@ -236,9 +328,15 @@ def train_ppo(
                 batch = [decisions[i] for i in order[start : start + 32]]
                 policy_stats = net.ppo_update(batch, clip=config.clip)
         demo_loss = 0.0
+        demo_updates = 0
         if demonstrations and config.demo_updates_per_iteration > 0:
+            decay = max(0.0, float(config.demo_decay))
+            demo_updates = max(
+                config.demo_min_updates,
+                int(round(config.demo_updates_per_iteration * (decay ** iteration))),
+            )
             demo_losses: List[float] = []
-            for _ in range(config.demo_updates_per_iteration):
+            for _ in range(demo_updates):
                 if len(demonstrations) <= config.demo_batch_decisions:
                     demo_batch = list(demonstrations)
                 else:
@@ -276,6 +374,7 @@ def train_ppo(
         history.validation_kill_turn.append(
             float(validation["kill_turn"]) if validation["kill_turn"] else 0.0
         )
+        history.demo_updates.append(demo_updates)
         if validation["win_rate"] > info.get("best_validation_win_rate", -1.0):
             info["best_validation_win_rate"] = validation["win_rate"]
             info["best_iteration"] = iteration + 1
@@ -291,6 +390,7 @@ def train_ppo(
                 f"return={history.mean_return[-1]:.2f} win_rate={history.win_rate[-1]:.2f} "
                 f"policy_loss={history.policy_loss[-1]:.3f} value_loss={history.value_loss[-1]:.1f} "
                 f"demo_loss={history.demo_loss[-1]:.3f} "
+                f"demo_updates={demo_updates} "
                 f"ratio={history.ratio[-1]:.3f} clip={history.clip_fraction[-1]:.2f}"
             )
             if config.validation_seeds:
@@ -367,4 +467,10 @@ def evaluate_argmax(
     }
 
 
-__all__ = ["PPOConfig", "PPOHistory", "train_ppo", "collect_episode", "returns_from_rewards"]
+__all__ = [
+    "PPOConfig",
+    "PPOHistory",
+    "train_ppo",
+    "collect_episode",
+    "returns_from_rewards",
+]

@@ -260,6 +260,29 @@ checkpoint 保持一致。
 写成 from-scratch curriculum 结论。完整报告见
 `reports/ppo_hp_trigger_reward_ablation.json`。
 
+### 5.5 逐 actor credit、demo 衰减与中间状态后缀搜索
+
+PPO 现在可选地对每个 actor 做一次通用反事实：保持同一回合其他动作不变，
+用另一个合法动作替换该 actor，再比较完整回合的通用 reward margin。这个 margin
+只缩放该 actor 的 policy gradient，不读取身份、技能、状态或 E.G.O 名称。
+`--counterfactual-credit` 默认关闭。
+
+`--demo-decay 0.5` 会让 Teacher BC replay 更新从每轮 10 次衰减为
+`10, 5, 2, 1, 1, 0...`，避免 demo loss 永久压住 PPO 探索。
+
+`search/run_teacher_suffix.py` 先用已有策略运行固定前缀，再从中间状态启动
+BeamTeacher 搜索完整成功后缀。它只把后缀决策写入数据，不指定任何路线；本次
+50-seed 后缀搜索得到 `27/50` 成功局，但仍为 direct burst。
+
+四臂 matched pilot（同一初始 checkpoint、训练 seed 和 100 局 holdout）：
+A 裸 PPO `51/100`，B 加 actor credit `50/100`，C 再加 demo 衰减 `52/100`，
+D 再加入后缀数据 `55/100`。D 扩展到 500 局 full holdout 后为 `228/500`，
+共同初始 checkpoint 为 `201/500`；配对为初始独胜 `6`、D 独胜 `33`。把此前
+已验证的 `0.001 * 实际 sinking_damage` 作为额外通用训练项加入 D 后，E 达到
+`241/500`，相对共同初始 checkpoint 配对净增 `40` 局，并超过此前触发 reward
+单独的 `233/500`。E 仍是 continuation ablation，完整结果见
+`reports/ppo_credit_suffix_ablation.json`。
+
 ## 6. 与计划的接口对照（P0 差异报告）
 
 | 计划要求 | 现状 |

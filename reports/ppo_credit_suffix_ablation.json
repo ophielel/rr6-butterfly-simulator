@@ -1,0 +1,160 @@
+{
+  "title": "Generic actor credit, demo decay, and intermediate-state suffix search ablation",
+  "status": "completed exploratory ablation",
+  "protocol": {
+    "scenario": "real",
+    "strict": true,
+    "max_turns": 30,
+    "infinite_ego_resources": true,
+    "shared_initial_checkpoint": "models/ppo_curriculum_legacy_init_mixed_demo_fast6_nosinking_reward.npz",
+    "shared_initial_checkpoint_holdout": "201/500 on seeds 43001-43500",
+    "short_training_seeds": "102001-102100",
+    "short_validation_seeds": "103001-103100",
+    "short_holdout_seeds": "43001-43100",
+    "full_training_seeds": "104001-104500",
+    "full_validation_seeds": "105001-105100",
+    "full_holdout_seeds": "43001-43500",
+    "ppo": {
+      "short_iterations": 5,
+      "short_episodes_per_iteration": 20,
+      "full_iterations": 10,
+      "full_episodes_per_iteration": 50,
+      "epochs_per_iteration": 3,
+      "learning_rate": 0.0001,
+      "demo_updates_per_iteration": 10,
+      "demo_decay_for_C_D": 0.5,
+      "counterfactual_credit_weight": 1.0,
+      "training_seed": 20261510
+    },
+    "note": "All four short arms use the same PPO random seed and common initial checkpoint. The full D arm is a continuation comparison against the previously reported strong checkpoint, not a fresh from-scratch result."
+  },
+  "arms": {
+    "A_plain": {
+      "counterfactual_credit": false,
+      "demo_decay": 1.0,
+      "demo_data": ["data/diagnostic_ablation_full_bare_quality"],
+      "checkpoint": "models/ppo_plan_A_matched.npz",
+      "holdout_wins": 51,
+      "holdout_episodes": 100,
+      "evaluation": "reports/plan_A_matched_eval/evaluation.json"
+    },
+    "B_credit": {
+      "counterfactual_credit": true,
+      "demo_decay": 1.0,
+      "demo_data": ["data/diagnostic_ablation_full_bare_quality"],
+      "checkpoint": "models/ppo_plan_B_matched.npz",
+      "holdout_wins": 50,
+      "holdout_episodes": 100,
+      "counterfactual_calls": 5083,
+      "evaluation": "reports/plan_B_matched_eval/evaluation.json"
+    },
+    "C_credit_decay": {
+      "counterfactual_credit": true,
+      "demo_decay": 0.5,
+      "demo_data": ["data/diagnostic_ablation_full_bare_quality"],
+      "checkpoint": "models/ppo_plan_C_matched.npz",
+      "holdout_wins": 52,
+      "holdout_episodes": 100,
+      "counterfactual_calls": 5132,
+      "evaluation": "reports/plan_C_matched_eval/evaluation.json"
+    },
+    "D_credit_decay_suffix": {
+      "counterfactual_credit": true,
+      "demo_decay": 0.5,
+      "demo_data": [
+        "data/diagnostic_ablation_full_bare_quality",
+        "data/suffix_teacher_strong_50"
+      ],
+      "checkpoint": "models/ppo_plan_D_matched.npz",
+      "holdout_wins": 55,
+      "holdout_episodes": 100,
+      "counterfactual_calls": 5191,
+      "evaluation": "reports/plan_D_matched_eval/evaluation.json"
+    }
+  },
+  "matched_short_summary": {
+    "A_plain": {"wins": 51, "win_rate": 0.51, "damage_to_enemies_mean": 7635.09, "survivors_mean": 2.28},
+    "B_credit": {"wins": 50, "win_rate": 0.5, "damage_to_enemies_mean": 7525.23, "survivors_mean": 2.45},
+    "C_credit_decay": {"wins": 52, "win_rate": 0.52, "damage_to_enemies_mean": 7467.13, "survivors_mean": 2.6},
+    "D_credit_decay_suffix": {"wins": 55, "win_rate": 0.55, "damage_to_enemies_mean": 7587.96, "survivors_mean": 2.52}
+  },
+  "suffix_teacher": {
+    "checkpoint_prefix_policy": "models/ppo_curriculum_legacy_init_mixed_demo_fast6_nosinking_reward.npz",
+    "prefix_turns": 3,
+    "seeds": "100001-100050",
+    "search": {
+      "horizon": 5,
+      "plan_width": 64,
+      "candidate_cap": 8,
+      "turn_width": 5,
+      "rollout_width": 4,
+      "score_mode": "rollout",
+      "candidate_mode": "diverse",
+      "leaf_value_weight": 5.0,
+      "ally_damage_weight": 100.0,
+      "death_weight": 200.0
+    },
+    "wins": 27,
+    "episodes": 50,
+    "artifact": "data/suffix_teacher_strong_50/teacher_index.json",
+    "note": "The suffix search improved completion data but all wins remain direct-burst labels; it did not discover the audited delayed axis."
+  },
+  "full_D": {
+    "checkpoint": "models/ppo_plan_D_full.npz",
+    "wins": 228,
+    "episodes": 500,
+    "win_rate": 0.456,
+    "wilson_95": [0.41284403669724773, 0.4998269297334718],
+    "damage_to_enemies_mean": 7550.352,
+    "boss_hp_left_median": 587.0,
+    "survivors_mean": 2.116,
+    "axis_ok_rate": 0.0,
+    "direct_burst_rate": 1.0,
+    "counterfactual_calls": 25046,
+    "evaluation": "reports/plan_D_full_eval/evaluation.json",
+    "paired_vs_shared_initial_checkpoint": {
+      "both_won": 195,
+      "initial_only_won": 6,
+      "D_only_won": 33,
+      "both_lost": 266,
+      "net_win_gain": 27,
+      "mean_damage_delta_D_minus_initial": 31.39
+    }
+  },
+  "full_E_suffix_trigger001": {
+    "checkpoint": "models/ppo_plan_E_suffix_trigger001.npz",
+    "sinking_trigger_reward": 0.001,
+    "wins": 241,
+    "episodes": 500,
+    "win_rate": 0.482,
+    "wilson_95": [0.43850579699662956, 0.5257686892704829],
+    "damage_to_enemies_mean": 7546.604,
+    "boss_hp_left_median": 168.0,
+    "survivors_mean": 2.27,
+    "axis_ok_rate": 0.0,
+    "direct_burst_rate": 1.0,
+    "counterfactual_calls": 24961,
+    "evaluation": "reports/plan_E_full_eval/evaluation.json",
+    "paired_vs_shared_initial_checkpoint": {
+      "both_won": 163,
+      "initial_only_won": 38,
+      "E_only_won": 78,
+      "both_lost": 221,
+      "net_win_gain": 40,
+      "mean_damage_delta_E_minus_initial": 27.642
+    },
+    "paired_vs_full_D": {
+      "both_won": 185,
+      "D_only_won": 43,
+      "E_only_won": 56,
+      "both_lost": 216,
+      "net_win_gain": 13
+    }
+  },
+  "conclusion": [
+    "The strongest tested arm is E: intermediate-state suffix data, generic actor credit, decaying demo updates, and the previously validated micro trigger reward.",
+    "The full E continuation reaches 241/500 versus 201/500 for the shared initial checkpoint, with a paired net gain of 40 wins; it also exceeds the earlier trigger-only result of 233/500.",
+    "The gain is useful for continuation, but it is not a route-discovery result: axis_ok_rate remains 0 and direct_burst_rate remains 1.",
+    "Actor credit alone is not yet justified as the source of improvement: in the matched 100-seed pilot B is 50 versus A at 51. The next effort should focus on better successful suffix diversity and a larger globally seed-disjoint curriculum, not more credit coefficient tuning."
+  ]
+}

@@ -29,5 +29,6 @@ data/dagger*/**/seed_*.npz
 data/dagger*/replays/
 data/dagger*/**/replays/
 data/diagnostic*/seed_*.npz
+data/suffix_teacher_strong_50/seed_*.npz
 models/bc*.npz
 models/ppo*.npz

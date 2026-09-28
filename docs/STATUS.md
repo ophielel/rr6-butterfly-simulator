@@ -145,7 +145,12 @@ Specification: `docs/TRAINING_PLAN.md`.  Implementation: `docs/TRAINING.md`.
 Results and the §7.1 acceptance table: `docs/TRAINING_RESULTS.md`. The 99.0% half-HP and 81.2% real-HP values in `reports/ppo_hp_research_t1_curriculum.json` are pre-fix historical baselines. The post-fix direct/mixed ablations are recorded in `reports/ppo_hp_sinking_reward_ablation.json` and `reports/ppo_hp_postfix_mixed_demo_followup.json`. The current generic turn-cost `-30` ablation is in `reports/ppo_hp_turn_penalty_ablation.json`: 326/500 half direct PPO, 181/500 full mixed adaptation, and no Sinking-specific reward. A separate generic terminal speed-reward adaptation (`<=6T +400`, `7T +0`, later wins `-200` per extra turn) is recorded in `reports/ppo_hp_fast6_terminal_reward_ablation.json`: 494/500 half and 201/500 full from the preceding mixed-demo checkpoint; it remains a sequential ablation, not a globally seed-disjoint curriculum result. The post-search Teacher repair adds legal-prefix rollout completion, generic `top`/`diverse`/`all` candidate modes, and optional generic survival leaf value; fresh full-HP diagnostics reached 3/50 wins but still had `axis_ok_rate=0` and `direct_burst_rate=1` (`reports/teacher_search_diagnostics.json`). A separate explicit reward ablation adds only
 `0.001 *` realized simulator `sinking_damage`: from the shared prior 201/500 checkpoint,
 the bare continuation reaches 191/500 and the trigger-reward continuation 233/500, while
-both remain `axis_ok_rate=0` (`reports/ppo_hp_trigger_reward_ablation.json`).
+both remain `axis_ok_rate=0` (`reports/ppo_hp_trigger_reward_ablation.json`). The next
+matched search/training ablation adds optional actor-level counterfactual credit, decaying
+Teacher updates, and intermediate-state suffix search; its D arm reaches 228/500 versus
+201/500 for the shared initial checkpoint, while the combined E arm with the validated
+`0.001` trigger term reaches 241/500, still with `axis_ok_rate=0`
+(`reports/ppo_credit_suffix_ablation.json`).
 
 | Item | Where | Test |
 |------|-------|------|

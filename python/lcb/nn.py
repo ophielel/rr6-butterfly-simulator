@@ -201,16 +201,15 @@ class PolicyValueNet:
 
     def ppo_update(
         self,
-        decisions: Sequence[Tuple[np.ndarray, List[Tuple[np.ndarray, int, float]], float]],
+        decisions: Sequence[Tuple[np.ndarray, List[Tuple], float]],
         clip: float = 0.2,
     ) -> Dict[str, float]:
         """One clipped-surrogate step.
 
-        Each decision is `(state, [(cand, action, old_logprob), ...], advantage)`;
+        Each decision is `(state, [(cand, action, old_logprob[, credit])], advantage)`;
         the joint log-probability is the sum over the actors of the turn, so the
-        importance ratio is per *turn*, as the plan requires.  The value head is
-        trained separately (`value_update`) so that the two objectives cannot
-        fight over the shared state embedding.
+        importance ratio is per turn. Optional actor credits only scale that
+        actor's policy gradient; the value head is trained separately.
         """
         grads = self._zero_grads()
         stats = {"loss": 0.0, "ratio": 0.0, "clip_frac": 0.0, "count": 0.0}
@@ -218,10 +217,12 @@ class PolicyValueNet:
             fresh = self._zero_grads()
             h = self.embed(state)
             dh = np.zeros_like(h)
-            old_total = sum(old for _, _, old in actors)
+            old_total = sum(float(actor[2]) for actor in actors)
             new_total = 0.0
-            pieces: List[Tuple[np.ndarray, np.ndarray, np.ndarray, int]] = []
-            for cand, action, _ in actors:
+            pieces: List[Tuple[np.ndarray, np.ndarray, np.ndarray, int, float]] = []
+            for actor in actors:
+                cand, action, _old_logprob = actor[:3]
+                credit = float(actor[3]) if len(actor) > 3 else 1.0
                 if cand.shape[0] == 0 or action < 0:
                     continue
                 joined = np.concatenate(
@@ -231,7 +232,7 @@ class PolicyValueNet:
                 logits = z @ self.params["W3"] + self.params["b3"]
                 probs = self._softmax(logits)
                 new_total += float(np.log(max(probs[action], 1e-12)))
-                pieces.append((joined, z, probs, action))
+                pieces.append((joined, z, probs, action, credit))
             if not pieces:
                 continue
             ratio = float(np.exp(min(max(new_total - old_total, -20.0), 20.0)))
@@ -245,11 +246,11 @@ class PolicyValueNet:
             stats["count"] += 1.0
             stats["loss"] += -min(unclipped, clipped)
             if active and abs(advantage) > 1e-9:
-                dlogp = -advantage
-                for joined, z, probs, action in pieces:
+                for joined, z, probs, action, credit in pieces:
+                    actor_dlogp = -advantage * credit
                     dlogits = probs.copy()
                     dlogits[action] -= 1.0
-                    dlogits *= -dlogp
+                    dlogits *= -actor_dlogp
                     fresh["W3"] += z.T @ dlogits
                     fresh["b3"] += np.array([dlogits.sum()])
                     dz = np.outer(dlogits, self.params["W3"]) * (1.0 - z * z)

@@ -51,6 +51,16 @@ def main() -> int:
     parser.add_argument("--demo-updates-per-iteration", type=int, default=0)
     parser.add_argument("--demo-batch-decisions", type=int, default=32)
     parser.add_argument(
+        "--demo-decay", type=float, default=1.0,
+        help="multiply demo updates by this factor after each PPO iteration",
+    )
+    parser.add_argument("--demo-min-updates", type=int, default=0)
+    parser.add_argument(
+        "--counterfactual-credit", action=argparse.BooleanOptionalAction, default=False,
+        help="scale each actor gradient by a generic one-action replacement margin",
+    )
+    parser.add_argument("--counterfactual-credit-weight", type=float, default=1.0)
+    parser.add_argument(
         "--sinking-trigger-reward", type=float, default=0.0,
         help="opt-in coefficient on realized Sinking trigger damage; default is zero",
     )
@@ -113,6 +123,10 @@ def main() -> int:
             validation_episodes=args.val_seed_count,
             demo_updates_per_iteration=args.demo_updates_per_iteration,
             demo_batch_decisions=args.demo_batch_decisions,
+            demo_decay=args.demo_decay,
+            demo_min_updates=args.demo_min_updates,
+            counterfactual_credit=args.counterfactual_credit,
+            counterfactual_credit_weight=args.counterfactual_credit_weight,
             sinking_trigger_reward=args.sinking_trigger_reward,
         ),
         log=log,
@@ -142,6 +156,7 @@ def main() -> int:
                 "clip_fraction": history.clip_fraction,
                 "validation_win_rate": history.validation_win_rate,
                 "validation_kill_turn": history.validation_kill_turn,
+                "demo_updates": history.demo_updates,
             },
             "info": {k: v for k, v in info.items() if k != "returns"},
             "mean_return": info["mean_return"],

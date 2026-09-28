@@ -172,6 +172,58 @@ def test_ppo_rollout_and_validation_propagate_infinite_ego_resources() -> None:
     assert all(kwargs["infinite_ego_resources"] is True for _, kwargs in calls)
 
 
+def test_ppo_accepts_actor_level_credit_multiplier() -> None:
+    net = PolicyValueNet(state_dim=3, action_dim=2, hidden=5, seed=72, lr=1e-4)
+    state = np.asarray([0.2, -0.4, 0.7], dtype=np.float64)
+    candidates = np.asarray([[1.0, 0.0], [0.0, 1.0]], dtype=np.float64)
+    action = 1
+    old_logprob = float(np.log(net.probs(state, candidates)[action]))
+    result = net.ppo_update(
+        [(state, [(candidates, action, old_logprob, 1.25)], 0.8)], clip=0.2
+    )
+    assert np.isfinite(result["loss"])
+    assert result["count"] == 1.0
+
+
+def test_ppo_demo_updates_decay_by_iteration() -> None:
+    calls = []
+    original_collect = ppo_module.collect_episode
+    original_bc_update = PolicyValueNet.bc_update
+
+    def fake_collect(*args, **kwargs):
+        return [], {"won": False, "return": 0.0, "counterfactual_calls": 0}
+
+    def fake_bc_update(self, batch):
+        calls.append(len(batch))
+        return 0.0
+
+    ppo_module.collect_episode = fake_collect
+    PolicyValueNet.bc_update = fake_bc_update
+    try:
+        encoder = Encoder()
+        net = PolicyValueNet(state_dim=encoder.state_dim, action_dim=encoder.action_dim, hidden=4)
+        train_net, history, _info = ppo_module.train_ppo(
+            net,
+            encoder,
+            SCENARIO,
+            [1, 2, 3],
+            ppo_module.PPOConfig(
+                iterations=4,
+                episodes_per_iteration=1,
+                demo_updates_per_iteration=4,
+                demo_decay=0.5,
+                demo_min_updates=0,
+            ),
+            demonstrations=[(np.zeros(1), [])],
+        )
+    finally:
+        ppo_module.collect_episode = original_collect
+        PolicyValueNet.bc_update = original_bc_update
+    assert train_net is net
+    assert history.demo_updates == [4, 2, 1, 0]
+    assert len(calls) == 7
+
+
 def test_ppo_policy_gradient_matches_finite_difference_direction() -> None:
     net = PolicyValueNet(state_dim=3, action_dim=2, hidden=5, seed=71, lr=1e-4)
     state = np.asarray([0.2, -0.4, 0.7], dtype=np.float64)
