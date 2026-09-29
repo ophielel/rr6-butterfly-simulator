@@ -812,6 +812,79 @@ def test_effect_probe_is_skipped_for_checkpoints_that_cannot_use_it() -> None:
     assert widened.uses_action_effects() is True
 
 
+def test_action_identity_features_separate_candidates_that_were_tied() -> None:
+    """The historical action block cannot tell the three Illusory Butterflies apart.
+
+    Slots 8, 9 and 10 are all 1 HP with the same resistances, so the coarse
+    `position % 4` bucket in the target block makes their candidate vectors
+    byte-identical - even though hitting *The Past* / *The Present* / *The Future*
+    removes a different Imago time Stack.  The target-slot block is the fix.
+    """
+    env = LimbusEnv()
+    env.reset(630001, enemies=SECTION5_WAVE, max_turns=30, enemy_hp_scale=1.0,
+              infinite_ego_resources=True)
+    obs = env.observe()
+    legal = env.legal_actions()
+    groups = group_candidates(legal)
+    actor = actor_order(obs, legal)[0]
+    options = groups[actor]
+    legacy = Encoder()
+    index = legacy.unit_slots(obs)[2]
+    before = legacy.action_matrix(obs, options, index, [])
+
+    def tie_count(matrix) -> int:
+        seen = {}
+        for row in matrix:
+            seen[row.tobytes()] = seen.get(row.tobytes(), 0) + 1
+        return sum(count for count in seen.values() if count > 1)
+
+    legacy_ties = tie_count(before)
+    assert legacy_ties > 0
+
+    enriched = Encoder(include_target_slots=True)
+    index = enriched.unit_slots(obs)[2]
+    after = enriched.action_matrix(obs, options, index, [])
+    # 7 Sinners + 6 enemy slots + the "no target" slot.
+    assert enriched.action_dim == legacy.action_dim + 14
+    assert tie_count(after) < legacy_ties
+
+    # The identity block keeps the base features at the same offsets.
+    with_ids = Encoder(include_action_ids=True)
+    assert with_ids.action_dim == legacy.action_dim + 64
+    assert np.allclose(
+        with_ids.action_matrix(obs, options, index, [])[:, : legacy.action_dim],
+        before,
+    )
+
+
+def test_legacy_dataset_can_be_relaid_out_for_the_new_blocks() -> None:
+    """A dataset written before a block existed keeps its meaning."""
+    legacy = Encoder()
+    enriched = Encoder(include_target_slots=True)
+    rows, candidates = 2, 5
+    data = {
+        "cand": np.random.default_rng(0).random((rows * candidates, legacy.action_dim)),
+        "state": np.zeros((rows, legacy.state_dim)),
+        "offsets": np.full(rows, candidates, dtype=np.int64),
+        "label": np.zeros(rows, dtype=np.int64),
+        "weight": np.ones(rows),
+        "actor": np.zeros(rows, dtype=np.int64),
+        "seed": np.arange(rows),
+        "turn": np.ones(rows, dtype=np.int64),
+        "decision": np.arange(rows),
+    }
+    adapted = ds.adapt_action_dim(
+        data,
+        enriched.action_dim,
+        legacy_dims=enriched.legacy_action_dims(exclude=legacy.action_dim),
+        effect_dim=enriched.effect_dim,
+        target_slot_dim=enriched.target_slot_dim,
+    )
+    assert adapted["cand"].shape == (rows * candidates, enriched.action_dim)
+    assert np.allclose(adapted["cand"][:, : legacy.action_dim], data["cand"])
+    assert np.allclose(adapted["cand"][:, legacy.action_dim :], 0.0)
+
+
 def test_evaluation_smoke() -> None:
     encoder = Encoder()
     record = run_episode(FirstLegalPolicy(), SCENARIO, seed=9001, record_replay=True)

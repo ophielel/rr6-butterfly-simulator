@@ -1,0 +1,33 @@
+{
+  "policies": 9,
+  "seeds": 500,
+  "wins_per_seed_histogram": {
+    "0": 232,
+    "1": 2,
+    "2": 0,
+    "3": 26,
+    "4": 9,
+    "5": 4,
+    "6": 27,
+    "7": 5,
+    "8": 0,
+    "9": 195
+  },
+  "all_policies_agree": 427,
+  "all_agree_rate": 0.854,
+  "all_won": 195,
+  "all_lost": 232,
+  "contested_seeds": 73,
+  "mean_policies_winning_per_seed": 4.176,
+  "sources": [
+    "paired_planE_ctrl_500:planE",
+    "paired_planE_ctrl_500:ctrl",
+    "paired_critic_warmup_500:planE",
+    "paired_critic_warmup_500:ctrl",
+    "paired_critic_warmup_500:algo",
+    "paired_critic_warmup_500:data",
+    "paired_critic_warmup_500:algo_data",
+    "paired_scale_500:planE",
+    "paired_scale_500:scale5000"
+  ]
+}

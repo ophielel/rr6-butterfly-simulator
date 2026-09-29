@@ -22,7 +22,6 @@ from __future__ import annotations
 
 from pathlib import Path
 from typing import Any, Dict, Iterable, Iterator, List, Optional, Sequence, Tuple
-
 import numpy as np
 
 Decision = Tuple[np.ndarray, List[Tuple[np.ndarray, int, float]]]
@@ -40,9 +39,20 @@ def load_dataset(path: str | Path) -> Dict[str, np.ndarray]:
 
 
 def adapt_action_dim(
-    data: Dict[str, np.ndarray], target_dim: int
+    data: Dict[str, np.ndarray],
+    target_dim: int,
+    legacy_dims: Optional[Sequence[int]] = None,
+    effect_dim: int = 0,
+    target_slot_dim: int = 0,
 ) -> Dict[str, np.ndarray]:
-    """Pad legacy candidate rows, or reject non-zero feature truncation."""
+    """Pad legacy candidate rows, or reject non-zero feature truncation.
+
+    `legacy_dims` are the action widths an older dataset may have been written
+    at, broadest first (e.g. `(44 + 22, 44)` for "effects only" and "nothing").
+    A row that came from such a layout has its trailing `effect_dim` and
+    `target_slot_dim` columns removed before the new columns are appended, so an
+    older dataset keeps meaning what it meant instead of being reinterpreted.
+    """
     if "cand" not in data or data["cand"].ndim != 2:
         raise ValueError("dataset is missing a 2-D cand array")
     target_dim = int(target_dim)
@@ -58,6 +68,19 @@ def adapt_action_dim(
                 f"cannot load it into action_dim={target_dim}"
             )
         out["cand"] = data["cand"][:, :target_dim]
+        return out
+    for legacy in legacy_dims or ():
+        legacy = int(legacy)
+        if current_dim != legacy or legacy >= target_dim:
+            continue
+        keep = legacy - effect_dim - target_slot_dim
+        if keep < 0:
+            raise ValueError(f"legacy action_dim={legacy} is smaller than its own blocks")
+        rebuilt = np.zeros((data["cand"].shape[0], target_dim), dtype=data["cand"].dtype)
+        rebuilt[:, :keep] = data["cand"][:, :keep]
+        if effect_dim:
+            rebuilt[:, keep : keep + effect_dim] = data["cand"][:, keep : keep + effect_dim]
+        out["cand"] = rebuilt
         return out
     padded = np.zeros(
         (data["cand"].shape[0], target_dim), dtype=data["cand"].dtype

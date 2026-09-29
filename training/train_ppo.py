@@ -79,6 +79,14 @@ def main() -> int:
     )
     parser.add_argument("--action-effect-cap", type=int, default=8)
     parser.add_argument(
+        "--action-ids", action=argparse.BooleanOptionalAction, default=False,
+        help="append a Skill / E.G.O identity one-hot to the action features",
+    )
+    parser.add_argument(
+        "--target-slots", action=argparse.BooleanOptionalAction, default=False,
+        help="append an exact target-slot one-hot to the action features",
+    )
+    parser.add_argument(
         "--sinking-trigger-reward", type=float, default=0.0,
         help="opt-in coefficient on realized Sinking trigger damage; default is zero",
     )
@@ -106,7 +114,11 @@ def main() -> int:
             f"missing BC report for {args.checkpoint}; use --allow-non-bc-checkpoint "
             "only for an explicit curriculum continuation"
         )
-    encoder = Encoder(include_action_effects=args.action_effects)
+    encoder = Encoder(
+        include_action_effects=args.action_effects,
+        include_action_ids=args.action_ids,
+        include_target_slots=args.target_slots,
+    )
     net = PolicyValueNet.load(args.checkpoint, action_dim=encoder.action_dim)
     seeds = list(range(args.seed_start, args.seed_start + args.seed_count))
     demo_files = []
@@ -118,12 +130,20 @@ def main() -> int:
         demo_files.extend(found)
     demonstrations = []
     if demo_files:
-        demo_arrays = ds.merge(
-            [
-                ds.adapt_action_dim(ds.load_dataset(path), encoder.action_dim)
-                for path in demo_files
-            ]
-        )
+        demo_sets = []
+        for path in demo_files:
+            loaded = ds.load_dataset(path)
+            width = int(loaded["cand"].shape[1])
+            demo_sets.append(
+                ds.adapt_action_dim(
+                    loaded,
+                    encoder.action_dim,
+                    legacy_dims=encoder.legacy_action_dims(exclude=width),
+                    effect_dim=encoder.effect_dim,
+                    target_slot_dim=encoder.target_slot_dim,
+                )
+            )
+        demo_arrays = ds.merge(demo_sets)
         demonstrations = list(ds.iter_decisions(demo_arrays))
     log = []
     started = time.time()

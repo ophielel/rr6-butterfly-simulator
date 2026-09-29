@@ -1,0 +1,129 @@
+{
+  "scenario": "half",
+  "seed_start": 640001,
+  "seed_count": 150,
+  "reference": "bc_legacy",
+  "reference_action_dim": 44,
+  "protocol": {
+    "strict": true,
+    "infinite_ego_resources": true,
+    "action_effects": null,
+    "action_effect_cap": 8,
+    "argmax": true,
+    "lookahead": null
+  },
+  "elapsed_seconds": 157.8,
+  "arms": {
+    "bc_legacy": {
+      "checkpoint": "models\\exp_id_legacy.npz",
+      "episodes": 150,
+      "wins": 16,
+      "win_rate": 0.10666666666666667,
+      "wilson_95": [
+        0.06673036965207342,
+        0.16624622258414687
+      ],
+      "winners": {
+        "Enemies": 87,
+        "Sinners": 16,
+        "None": 47
+      },
+      "boss_hp_left_median": 2329.5,
+      "damage_to_enemies_mean": 6007.68,
+      "survivors_mean": 0.7933333333333333,
+      "kill_turn_median": 8.0,
+      "kill_turn_p25": 7.0,
+      "fastest_kill_turn": 7,
+      "win_seeds": [
+        640003,
+        640021,
+        640041,
+        640045,
+        640068,
+        640070,
+        640072,
+        640086,
+        640087,
+        640096,
+        640099,
+        640106,
+        640107,
+        640118,
+        640120,
+        640146
+      ],
+      "action_dim": 44,
+      "elapsed_seconds": 57.5
+    },
+    "bc_targets": {
+      "checkpoint": "models\\exp_id_targets.npz",
+      "episodes": 150,
+      "wins": 2,
+      "win_rate": 0.013333333333333334,
+      "wilson_95": [
+        0.0036641291512270508,
+        0.047306908700367516
+      ],
+      "winners": {
+        "Enemies": 78,
+        "None": 70,
+        "Sinners": 2
+      },
+      "boss_hp_left_median": 6391.5,
+      "damage_to_enemies_mean": 3840.2466666666664,
+      "survivors_mean": 0.58,
+      "kill_turn_median": 8.0,
+      "kill_turn_p25": 7.5,
+      "fastest_kill_turn": 7,
+      "win_seeds": [
+        640013,
+        640039
+      ],
+      "action_dim": 58,
+      "elapsed_seconds": 46.6
+    },
+    "bc_both": {
+      "checkpoint": "models\\exp_id_both.npz",
+      "episodes": 150,
+      "wins": 0,
+      "win_rate": 0.0,
+      "wilson_95": [
+        1.691407006870627e-18,
+        0.0249702443680766
+      ],
+      "winners": {
+        "None": 61,
+        "Enemies": 89
+      },
+      "boss_hp_left_median": 3274.0,
+      "damage_to_enemies_mean": 5624.766666666666,
+      "survivors_mean": 0.4266666666666667,
+      "kill_turn_median": null,
+      "kill_turn_p25": null,
+      "fastest_kill_turn": null,
+      "win_seeds": [],
+      "action_dim": 122,
+      "elapsed_seconds": 53.7
+    }
+  },
+  "paired": {
+    "bc_targets": {
+      "reference": "bc_legacy",
+      "both_won": 0,
+      "reference_only": 16,
+      "arm_only": 2,
+      "both_lost": 132,
+      "net_gain": -14,
+      "mcnemar_exact_p": 0.001312255859375
+    },
+    "bc_both": {
+      "reference": "bc_legacy",
+      "both_won": 0,
+      "reference_only": 16,
+      "arm_only": 0,
+      "both_lost": 134,
+      "net_gain": -16,
+      "mcnemar_exact_p": 3.0517578125e-05
+    }
+  }
+}

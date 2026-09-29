@@ -39,6 +39,14 @@ def main() -> int:
         "--action-effects", action=argparse.BooleanOptionalAction, default=False,
         help="read simulator-probed candidate effect fingerprints from Teacher data",
     )
+    parser.add_argument(
+        "--action-ids", action=argparse.BooleanOptionalAction, default=False,
+        help="append a Skill / E.G.O identity one-hot to the action features",
+    )
+    parser.add_argument(
+        "--target-slots", action=argparse.BooleanOptionalAction, default=False,
+        help="append an exact target-slot one-hot to the action features",
+    )
     parser.add_argument("--limit", type=int, default=0, help="use only the first N .npz files")
     args = parser.parse_args()
 
@@ -55,13 +63,25 @@ def main() -> int:
         files.extend(found)
     if args.limit:
         files = files[: args.limit]
-    encoder = Encoder(include_action_effects=args.action_effects)
-    merged: Dict[str, Any] = ds.merge(
-        [
-            ds.adapt_action_dim(ds.load_dataset(path), encoder.action_dim)
-            for path in files
-        ]
+    encoder = Encoder(
+        include_action_effects=args.action_effects,
+        include_action_ids=args.action_ids,
+        include_target_slots=args.target_slots,
     )
+    datasets = []
+    for path in files:
+        loaded = ds.load_dataset(path)
+        width = int(loaded["cand"].shape[1])
+        datasets.append(
+            ds.adapt_action_dim(
+                loaded,
+                encoder.action_dim,
+                legacy_dims=encoder.legacy_action_dims(exclude=width),
+                effect_dim=encoder.effect_dim,
+                target_slot_dim=encoder.target_slot_dim,
+            )
+        )
+    merged: Dict[str, Any] = ds.merge(datasets)
     log: List[str] = []
     started = time.time()
     net, history, info = train_bc(
@@ -81,6 +101,9 @@ def main() -> int:
     report = {
         "files": len(files),
         "action_effects": args.action_effects,
+        "action_ids": args.action_ids,
+        "target_slots": args.target_slots,
+        "action_dim": encoder.action_dim,
         "epochs": args.epochs,
         "elapsed_seconds": round(time.time() - started, 1),
         "history": {
@@ -101,3 +124,4 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+

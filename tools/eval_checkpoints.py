@@ -180,7 +180,10 @@ def main() -> int:
         help="name=path (repeatable); the first one is the paired reference",
     )
     parser.add_argument("--reference", default="", help="name of the reference arm")
-    parser.add_argument("--action-effects", action=argparse.BooleanOptionalAction, default=False)
+    parser.add_argument(
+        "--action-effects", action=argparse.BooleanOptionalAction, default=None,
+        help="default: read the feature switches from each checkpoint's own report",
+    )
     parser.add_argument("--action-effect-cap", type=int, default=8)
     parser.add_argument("--lookahead", action=argparse.BooleanOptionalAction, default=False)
     parser.add_argument("--beam", type=int, default=8)
@@ -189,7 +192,7 @@ def main() -> int:
     parser.add_argument("--out", default="")
     args = parser.parse_args()
 
-    from lcb.features import Encoder
+    from lcb.features import Encoder, encoder_for_checkpoint
 
     arms: List[tuple] = []
     for entry in args.checkpoint:
@@ -201,7 +204,16 @@ def main() -> int:
     if reference_name not in {name for name, _ in arms}:
         raise SystemExit(f"reference {reference_name!r} is not one of the arms")
 
-    encoder = Encoder(include_action_effects=args.action_effects)
+    # Each arm is evaluated with the encoder its own report records, so arms with
+    # different feature widths can be compared on the same seeds.  A silent width
+    # mismatch is impossible: `PolicyValueNet.load` rejects a narrower checkpoint.
+    encoder = encoder_for_checkpoint(arms[0][1])
+    if args.action_effects is not None:
+        encoder = Encoder(
+            include_action_effects=args.action_effects,
+            include_action_ids=bool(getattr(encoder, "include_action_ids", False)),
+            include_target_slots=bool(getattr(encoder, "include_target_slots", False)),
+        )
     seeds = list(range(args.seed_start, args.seed_start + args.seed_count))
     started = time.time()
     results: Dict[str, Any] = {}
@@ -209,20 +221,28 @@ def main() -> int:
         if not path.exists():
             raise SystemExit(f"missing checkpoint {path}")
         arm_started = time.time()
-        print(f"evaluating {name} on {len(seeds)} seeds ({args.scenario})...", flush=True)
+        arm_encoder = (
+            encoder if args.action_effects is not None else encoder_for_checkpoint(path)
+        )
+        print(
+            f"evaluating {name} on {len(seeds)} seeds ({args.scenario}, "
+            f"action_dim={arm_encoder.action_dim})...",
+            flush=True,
+        )
         payload = evaluate_checkpoint(
             name,
             path,
             args.scenario,
             seeds,
-            encoder,
-            args.action_effects,
+            arm_encoder,
+            arm_encoder.include_action_effects,
             args.action_effect_cap,
             lookahead=args.lookahead,
             beam=args.beam,
             branch=args.branch,
             horizon=args.horizon,
         )
+        payload["action_dim"] = arm_encoder.action_dim
         payload["elapsed_seconds"] = round(time.time() - arm_started, 1)
         results[name] = payload
         print(
@@ -261,6 +281,7 @@ def main() -> int:
         "seed_start": args.seed_start,
         "seed_count": args.seed_count,
         "reference": reference_name,
+        "reference_action_dim": results[reference_name]["action_dim"],
         "protocol": {
             "strict": True,
             "infinite_ego_resources": True,

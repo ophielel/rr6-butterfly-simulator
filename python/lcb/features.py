@@ -324,6 +324,35 @@ def _index(values: Sequence[str], value: Any) -> int:
     return -1
 
 
+def encoder_for_checkpoint(
+    checkpoint: str | Path,
+    data_dir: Optional[str] = None,
+) -> "Encoder":
+    """Build the `Encoder` a checkpoint was trained with.
+
+    Training reports record the feature switches next to the checkpoint
+    (`models/<name>.json`), so evaluation does not have to be told them again -
+    getting this wrong silently changes the action width and the plan.
+    """
+    from pathlib import Path as _Path
+
+    report = _Path(checkpoint).with_suffix(".json")
+    config: Dict[str, Any] = {}
+    if report.exists():
+        with report.open(encoding="utf-8") as handle:
+            payload = json.load(handle)
+        # The BC report writes the switches at the top level and the PPO report
+        # under `config`; accept either.
+        config = dict(payload)
+        config.update(payload.get("config") or {})
+    return Encoder(
+        data_dir=data_dir,
+        include_action_effects=bool(config.get("action_effects", False)),
+        include_action_ids=bool(config.get("action_ids", False)),
+        include_target_slots=bool(config.get("target_slots", False)),
+    )
+
+
 def _side_snapshot(obs: Dict[str, Any], kind: str) -> Tuple[float, float, float, float, float, float]:
     units = [unit for unit in obs.get("units", []) if unit.get("kind") == kind]
     hp = sum(float(unit.get("hp") or 0) for unit in units)
@@ -423,16 +452,43 @@ def action_effect_fingerprint(
 
 
 class Encoder:
-    """Turns observations and actions into fixed-size float vectors."""
+    """Turns observations and actions into fixed-size float vectors.
+
+    Two optional action blocks extend the historical 44 features:
+
+    * `include_action_effects` appends the simulator-probed effect fingerprint
+      (`ACTION_EFFECT_DIM` values) - what the action actually did to the board;
+    * `include_action_ids` appends a one-hot over the **Skill/E.G.O identity** of
+      the candidate (48 slots for the fixed team's Skill ids, 16 for E.G.O
+      Awakening/Corrosion, and a reserved "not in the vocabulary" slot);
+    * `include_target_slots` appends a one-hot over the **target's deployment
+      slot** (plus a "no target" slot).  The historical target block compresses
+      the index with `position % 4`, which makes the three Illusory Butterflies
+      (slots 8, 9, 10 - all 1 HP, identical resistances and no statuses)
+      byte-identical, even though hitting *The Past*, *The Present* or *The
+      Future* removes a *different* Imago time Stack.  Without this block 59.4%
+      of the legal candidates are indistinguishable from another candidate of the
+      same actor, so the scorer provably cannot separate them.
+    """
+
+    #: Slots reserved for the fixed team's own Skill ids and for E.G.O variants.
+    ACTION_ID_SLOTS = 48
+    EGO_ID_SLOTS = 16
+    #: The fixed team (`lcb.env.TEAM`); the id vocabulary is theirs plus E.G.O.
+    TEAM_PREFIXES = ("10110", "10414", "10813", "10913", "11004", "11114", "11214")
 
     def __init__(
         self,
         table: Optional[SkillTable] = None,
         data_dir: Optional[str] = None,
         include_action_effects: bool = False,
+        include_action_ids: bool = False,
+        include_target_slots: bool = False,
     ) -> None:
         self.table = table or SkillTable(data_dir)
         self.include_action_effects = bool(include_action_effects)
+        self.include_action_ids = bool(include_action_ids)
+        self.include_target_slots = bool(include_target_slots)
         self.n_status = len(STATUS_VOCAB)
         # per-unit block: 18 scalars + resistances + 3 per status + "other" (3)
         self.unit_dim = 18 + len(DAMAGE_TYPES) + len(SINS) + 3 * self.n_status + 3
@@ -448,7 +504,103 @@ class Encoder:
         # giving every actor its own head.
         self.context_dim = 6
         self.effect_dim = ACTION_EFFECT_DIM if self.include_action_effects else 0
-        self.action_dim = self.skill_dim + self.target_dim + 3 + self.context_dim + self.effect_dim
+        self.target_slot_dim = MAX_UNITS + 1 if self.include_target_slots else 0
+        self.action_id_dim = (
+            self.ACTION_ID_SLOTS + self.EGO_ID_SLOTS if self.include_action_ids else 0
+        )
+        # The optional blocks are appended in a fixed order, so a wider encoder is
+        # a superset of a narrower one and an older checkpoint can be loaded by
+        # zero padding the new columns.
+        self.base_action_dim = self.skill_dim + self.target_dim + 3 + self.context_dim
+        self.effect_offset = self.base_action_dim
+        self.target_slot_offset = self.effect_offset + self.effect_dim
+        self.action_id_offset = self.target_slot_offset + self.target_slot_dim
+        self.action_dim = self.action_id_offset + self.action_id_dim
+        self._build_action_id_index()
+
+    # -- action identity vocabulary ----------------------------------------
+    def _build_action_id_index(self) -> None:
+        """Map every fixed-team Skill id and E.G.O variant to a stable slot."""
+        self._action_id_index: Dict[str, int] = {}
+        self._action_id_names: List[str] = []
+        if not self.action_id_dim:
+            return
+        skills = sorted(
+            str(skill_id)
+            for skill_id in self.table._skills  # noqa: SLF001 - the table owns them
+            if "." not in str(skill_id)
+            and str(skill_id)[:5] in self.TEAM_PREFIXES
+        )
+        for skill_id in skills[: self.ACTION_ID_SLOTS - 1]:
+            self._action_id_index[skill_id] = len(self._action_id_names)
+            self._action_id_names.append(skill_id)
+        # E.G.O: Overclock is the Corrosion Skill, so both share one slot.
+        ego_names: List[str] = []
+        for ego_id in sorted({name.split(".")[0] for name in self.table._skills if "." in name}):
+            for kind in ("Awakening", "Corrosion"):
+                if f"{ego_id}.{kind.lower()}" not in self.table._skills:
+                    continue
+                if len(ego_names) >= self.EGO_ID_SLOTS - 1:
+                    break
+                ego_names.append(f"ego:{ego_id}:{kind}")
+        for offset, name in enumerate(ego_names):
+            self._action_id_index[name] = self.ACTION_ID_SLOTS + offset
+        self._action_id_names.extend(ego_names)
+        self._other_slot = self.action_id_dim - 1
+
+    def _ego_id_names(self) -> List[str]:
+        return [name for name in self._action_id_names if name.startswith("ego:")]
+
+    @staticmethod
+    def action_identity(action: Any) -> str:
+        """The Skill / E.G.O identity string of one candidate action."""
+        wire = action if isinstance(action, dict) else None
+        if wire is None:
+            try:
+                wire = json.loads(action.to_wire())
+            except AttributeError:
+                return ""
+        if not isinstance(wire, dict):
+            return ""
+        kind = next(iter(wire.keys()), "")
+        payload = wire.get(kind)
+        if not isinstance(payload, dict):
+            return ""
+        if kind == "UseEgo":
+            ego = str(payload.get("ego") or "")
+            ego_kind = str(payload.get("kind") or "Awakening")
+            # Overclock is the Corrosion Skill at 1.5x cost (see SkillTable).
+            ego_kind = "Corrosion" if ego_kind in ("Corrosion", "Overclock") else "Awakening"
+            return f"ego:{ego}:{ego_kind}" if ego else ""
+        skill_id = str(payload.get("skill") or "")
+        return skill_id if "." not in skill_id else skill_id
+
+    def action_id_slot(self, action: Any) -> int:
+        """Slot of this action's identity, or the reserved "other" slot."""
+        if not self.action_id_dim:
+            return -1
+        identity = self.action_identity(action)
+        return self._action_id_index.get(identity, self._other_slot)
+
+    def legacy_action_dims(self, exclude: Optional[int] = None) -> Tuple[int, ...]:
+        """Action widths an older dataset may have been written at, broadest first.
+
+        Passed to `lcb.dataset.adapt_action_dim` so a dataset collected before an
+        optional feature block existed is re-laid out instead of reinterpreted.
+        `exclude` drops the width the caller is actually holding (a dataset that
+        already carries some of the new blocks must not be re-laid out as if it
+        were the oldest layout).
+        """
+        dims: List[int] = []
+        if self.effect_dim or self.target_slot_dim:
+            dims.append(self.base_action_dim + self.effect_dim + self.target_slot_dim)
+        if self.effect_dim:
+            dims.append(self.base_action_dim + self.effect_dim)
+        dims.append(self.base_action_dim)
+        return tuple(
+            dim for dim in dict.fromkeys(dims) if dim != int(exclude if exclude is not None else -1)
+        )
+
 
     # -- helpers -----------------------------------------------------------
     @staticmethod
@@ -721,6 +873,15 @@ class Encoder:
                     f"action effect has {len(effect_array)} values; expected {self.effect_dim}"
                 )
             out[cursor : cursor + self.effect_dim] = effect_array
+        cursor += self.effect_dim
+        if self.target_slot_dim:
+            # Exact deployment slot of the target ("no target"/unresolved = slot 0).
+            out[cursor + (position + 1 if position >= 0 else 0)] = 1.0
+        cursor += self.target_slot_dim
+        if self.action_id_dim:
+            slot = self.action_id_slot(action)
+            if slot >= 0:
+                out[cursor + slot] = 1.0
         return out
 
     def action_matrix(
