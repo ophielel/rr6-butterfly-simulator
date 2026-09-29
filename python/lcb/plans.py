@@ -133,7 +133,7 @@ def probe_action_effects(
     probe_options = (
         list(options)
         if cap <= 0
-        else selected.candidate_actions(obs, legal, actor)
+        else selected.select_candidates(obs, legal, actor, options)
     )
     option_indices = {canonical(option): position for position, option in enumerate(options)}
     groups = group_candidates(legal)
@@ -330,7 +330,21 @@ class PlanGenerator:
         self, obs: Dict[str, Any], legal: Sequence[Any], actor: str
     ) -> List[Any]:
         grouped = group_candidates(legal)
-        options = grouped.get(actor, [])
+        return self.select_candidates(obs, legal, actor, grouped.get(actor, []))
+
+    def select_candidates(
+        self,
+        obs: Dict[str, Any],
+        legal: Sequence[Any],
+        actor: str,
+        options: Sequence[Any],
+    ) -> List[Any]:
+        """`candidate_actions` for an already-grouped option list.
+
+        The grouping and the analytic prior cost O(#legal) each call, and the
+        probe below asks for the same actor's candidates once per probe, so the
+        grouped list is passed in instead of being rebuilt every time.
+        """
         ranked = sorted(
             options,
             key=lambda action: estimate_action(obs, action, self.table),

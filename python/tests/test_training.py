@@ -8,8 +8,11 @@ interface, the mask, replayability, the dataset contract and the metric math.
 from __future__ import annotations
 
 import json
+import os
+import shutil
 import sys
 import tempfile
+from contextlib import contextmanager
 from pathlib import Path
 
 import numpy as np
@@ -44,6 +47,30 @@ from lcb.plans import (  # noqa: E402
 from lcb.teacher import BeamTeacher, TeacherConfig, detect_axis, detect_strategy_labels, encode_samples, teacher_budget  # noqa: E402
 
 SCENARIO = Scenario(name="test", max_turns=4, enemy_hp_scale=0.08)
+
+# Two tests write a throwaway checkpoint.  Keep that under the repository so the
+# suite also runs where the platform temp directory is not writable.
+_SCRATCH_ROOT = ROOT / ".tmp"
+
+
+@contextmanager
+def _scratch_dir():
+    """A fresh directory under `.tmp/`, removed on exit.
+
+    `tempfile.mkdtemp` creates the directory with a restrictive mode, which some
+    containerised file sandboxes reject on the very next write; a plain `mkdir`
+    under the repository keeps the parent's permissions.
+    """
+    _SCRATCH_ROOT.mkdir(parents=True, exist_ok=True)
+    directory = _SCRATCH_ROOT / f"scratch_{os.urandom(4).hex()}"
+    directory.mkdir()
+    try:
+        yield str(directory)
+    finally:
+        try:
+            shutil.rmtree(directory)
+        except OSError:  # pragma: no cover - best effort cleanup
+            pass
 
 
 def test_action_effect_fingerprint_reports_generic_state_deltas() -> None:
@@ -246,7 +273,7 @@ def test_legacy_dataset_candidates_can_be_padded_for_effect_features() -> None:
 
 def test_loaded_checkpoint_can_be_padded_for_effect_features() -> None:
     base = PolicyValueNet(state_dim=3, action_dim=2, hidden=4, seed=73)
-    with tempfile.TemporaryDirectory() as directory:
+    with _scratch_dir() as directory:
         path = Path(directory) / "base.npz"
         base.save(path)
         expanded = PolicyValueNet.load(path, action_dim=5)
@@ -267,6 +294,92 @@ def test_ppo_accepts_actor_level_credit_multiplier() -> None:
     )
     assert np.isfinite(result["loss"])
     assert result["count"] == 1.0
+
+
+def test_critic_is_trained_before_the_advantages_are_computed() -> None:
+    """The advantage must be `return - V(s)` with a *fitted* V, not the return.
+
+    BC never trains the value head, so at the first PPO iteration the head is
+    still the random initialisation.  Without the warm-up every actor of a won
+    turn would be pushed by the same huge positive scalar; with the warm-up the
+    head has already moved towards the observed return.
+    """
+    encoder = Encoder()
+    net = PolicyValueNet(
+        state_dim=encoder.state_dim, action_dim=encoder.action_dim, hidden=4, seed=5
+    )
+    state = np.zeros(encoder.state_dim, dtype=np.float32)
+    before = net.value(state)
+    net.value_update([(state, 1.5)], value_coef=1.0)
+    for _ in range(200):
+        net.value_update([(state, 1.5)], value_coef=1.0)
+        net.value_update([(state, 1.5)], value_coef=1.5)
+    after = net.value(state)
+    assert abs(after - before) > 1e-4
+    assert net.value(state) > 0.0
+
+
+def test_value_warmup_epochs_shrink_the_raw_advantage() -> None:
+    """`value_warmup_epochs` has to be what makes the advantage non-trivial."""
+    states = [np.full(6, 0.1 * index, dtype=np.float32) for index in range(6)]
+    returns = [1.0, 0.8, 0.6, 0.4, 0.2, 0.0]
+
+    def advantages(warmup: int) -> list:
+        net = PolicyValueNet(state_dim=6, action_dim=2, hidden=4, seed=11, lr=5e-3)
+        values = list(zip(states, returns))
+        for _ in range(warmup):
+            net.value_update(values, value_coef=0.5)
+        return [ret - net.value(state) for state, ret in zip(states, returns)]
+
+    # No warm-up: the head is still the near-random initialisation, so the
+    # advantage is essentially the return itself.
+    cold = advantages(0)
+    assert max(abs(value) for value in cold) > 0.9
+    # The warm-up moves the head towards the observed return, which shrinks the
+    # magnitude of the learning signal and its spread across the same batch.
+    warm = advantages(200)
+    assert float(np.mean(np.abs(warm))) < 0.5 * float(np.mean(np.abs(cold)))
+
+
+def test_value_update_clips_the_target_against_the_baseline() -> None:
+    net = PolicyValueNet(state_dim=3, action_dim=2, hidden=4, seed=13, lr=1e-2)
+    state = np.asarray([0.3, -0.2, 0.5], dtype=np.float64)
+    baseline = net.value(state)
+    clipped_loss = net.value_update([(state, baseline + 10.0, baseline)], clip=0.1)
+    assert np.isfinite(clipped_loss)
+    assert clipped_loss > 0.0
+
+
+def test_entropy_bonus_increases_the_candidate_entropy() -> None:
+    state = np.asarray([0.2, -0.4, 0.7], dtype=np.float64)
+    candidates = np.asarray([[1.0, 0.0], [0.0, 1.0], [0.5, -0.3]], dtype=np.float64)
+
+    def build() -> PolicyValueNet:
+        net = PolicyValueNet(state_dim=3, action_dim=2, hidden=5, seed=17, lr=1e-2)
+        net.params["W3"] = net.params["W3"] * 4.0  # a peaked distribution
+        return net
+
+    def measure(net: PolicyValueNet) -> float:
+        probs = net.probs(state, candidates)
+        return float(-np.sum(probs * np.log(np.maximum(probs, 1e-12))))
+
+    plain = build()
+    started = measure(plain)
+    for _ in range(12):
+        broken = float(np.log(plain.probs(state, candidates)[0]))
+        plain.ppo_update(
+            [(state, [(candidates, 0, broken)], 0.0)], clip=0.2, entropy_coef=0.0
+        )
+    assert abs(measure(plain) - started) < 1e-9  # zero advantage, no bonus: nothing moves
+
+    net = build()
+    for _ in range(12):
+        old_logprob = float(np.log(net.probs(state, candidates)[0]))
+        stats = net.ppo_update(
+            [(state, [(candidates, 0, old_logprob)], 0.0)], clip=0.2, entropy_coef=0.5
+        )
+    assert stats["entropy"] > 0.0
+    assert measure(net) > started
 
 
 def test_ppo_demo_updates_decay_by_iteration() -> None:
@@ -581,7 +694,7 @@ def test_dataset_split_is_by_seed() -> None:
     assert np.all(train["offsets"] > 0)
     assert np.all(train["label"] >= 0)
     assert np.all(train["label"] < train["offsets"])
-    with tempfile.TemporaryDirectory() as tmp:
+    with _scratch_dir() as tmp:
         path = Path(tmp) / "data.npz"
         ds.save_dataset(path, merged)
         again = ds.load_dataset(path)
@@ -656,6 +769,47 @@ def test_axis_detection_uses_real_state() -> None:
     assert labels["known_setup_like"] is True
     assert labels["peak_sinking_potency"] == 8
     assert labels["pre_burst_count"] == 0
+
+
+def test_lookahead_policy_returns_a_legal_plan_and_counters_switches() -> None:
+    """The hybrid must stay inside the simulator's legal set.
+
+    Its whole point is that the search only *reorders* plans the network already
+    considered, so a plan it returns must still be accepted atomically by
+    `step_turn`, exactly like the plain argmax policy's plan.
+    """
+    from lcb.baselines import NeuralLookaheadPolicy
+
+    encoder = Encoder()
+    net = PolicyValueNet(encoder.state_dim, encoder.action_dim, seed=3)
+    env = LimbusEnv()
+    env.reset(11, enemies=SECTION5_WAVE, max_turns=4, enemy_hp_scale=0.08)
+    policy = NeuralLookaheadPolicy(net, encoder, beam=3, branch=2, horizon=0)
+    record = run_episode(policy, SCENARIO, seed=11)
+    assert record.error is None, record.error
+    assert record.stats["turns"] >= 1
+    assert policy.last_plan_source in ("policy", "lookahead")
+
+
+def test_effect_probe_is_skipped_for_checkpoints_that_cannot_use_it() -> None:
+    """A zero-padded effect block must not cost a simulator turn per candidate.
+
+    Every checkpoint in this repository was trained with `action_dim=44`; adding
+    the effect features pads `W2` with zero rows, and those rows stay zero.  The
+    probe that fills the features therefore cannot change any decision, but used
+    to cost one complete `step_turn` clone per candidate (measured ~1.3 s per
+    turn of a battle).
+    """
+    net = PolicyValueNet(state_dim=6, action_dim=44, hidden=4, seed=5)
+    with _scratch_dir() as directory:
+        path = Path(directory) / "base.npz"
+        net.save(path)
+        widened = PolicyValueNet.load(path, action_dim=44 + 22)
+    assert widened.action_dim == 66
+    assert widened.uses_action_effects() is False
+
+    widened.params["W2"][-22:, :] = 0.25
+    assert widened.uses_action_effects() is True
 
 
 def test_evaluation_smoke() -> None:

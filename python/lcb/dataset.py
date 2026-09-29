@@ -115,14 +115,23 @@ def subset(data: Dict[str, np.ndarray], seeds: Iterable[int] | None = None) -> D
 
 
 def iter_decisions(data: Dict[str, np.ndarray]) -> Iterator[Decision]:
-    """Yield `(state, [(candidate_matrix, label, weight), ...])` per decision."""
+    """Yield `(state, [(candidate_matrix, label, weight), ...])` per decision.
+
+    The candidate rows of a decision are the `offsets[row]` rows that belong to
+    that decision's rows, so each row needs its own slice.  Taking them in the
+    order the rows appear in the file (instead of walking a running cursor over
+    the decision-sorted order) keeps the candidate matrix attached to its own
+    label even if a dataset is ever merged or reordered; the current writers
+    happen to store rows grouped by ascending decision, which is why the two
+    agree today.
+    """
     states = data["state"]
     cands = data["cand"]
     offsets = data["offsets"]
     labels = data["label"]
     weights = data["weight"]
     decisions = data["decision"]
-    cursor = 0
+    starts = np.concatenate([[0], np.cumsum(offsets)[:-1]]).astype(np.int64)
     order = np.argsort(decisions, kind="stable")
     position = 0
     while position < len(order):
@@ -133,17 +142,18 @@ def iter_decisions(data: Dict[str, np.ndarray]) -> Iterator[Decision]:
             position += 1
         if not rows:
             continue
+        rows.sort()
         actors: List[Tuple[np.ndarray, int, float]] = []
         for row in rows:
+            start = int(starts[row])
             count = int(offsets[row])
             actors.append(
                 (
-                    cands[cursor : cursor + count],
+                    cands[start : start + count],
                     int(labels[row]),
                     float(weights[row]),
                 )
             )
-            cursor += count
         yield states[rows[0]], actors
 
 

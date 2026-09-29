@@ -1,0 +1,132 @@
+{
+  "scenario": "real",
+  "seed_start": 600001,
+  "seed_count": 60,
+  "reference": "planE",
+  "protocol": {
+    "strict": true,
+    "infinite_ego_resources": true,
+    "action_effects": false,
+    "action_effect_cap": 8,
+    "argmax": true,
+    "lookahead": null
+  },
+  "elapsed_seconds": 87.9,
+  "arms": {
+    "planE": {
+      "checkpoint": "models\\ppo_plan_E_suffix_trigger001.npz",
+      "episodes": 60,
+      "wins": 33,
+      "win_rate": 0.55,
+      "wilson_95": [
+        0.4249193588533434,
+        0.6690634559324476
+      ],
+      "winners": {
+        "Enemies": 13,
+        "Sinners": 33,
+        "None": 14
+      },
+      "boss_hp_left_median": 0.0,
+      "damage_to_enemies_mean": 7471.266666666666,
+      "survivors_mean": 2.6333333333333333,
+      "kill_turn_median": 8.0,
+      "kill_turn_p25": 8.0,
+      "fastest_kill_turn": 8,
+      "win_seeds": [
+        600002,
+        600005,
+        600006,
+        600008,
+        600012,
+        600013,
+        600014,
+        600017,
+        600022,
+        600025,
+        600026,
+        600027,
+        600029,
+        600030,
+        600032,
+        600033,
+        600034,
+        600036,
+        600037,
+        600038,
+        600040,
+        600042,
+        600045,
+        600046,
+        600047,
+        600049,
+        600050,
+        600052,
+        600054,
+        600056,
+        600058,
+        600059,
+        600060
+      ],
+      "elapsed_seconds": 28.5
+    },
+    "strong201": {
+      "checkpoint": "models\\ppo_curriculum_legacy_init_mixed_demo_fast6_nosinking_reward.npz",
+      "episodes": 60,
+      "wins": 23,
+      "win_rate": 0.38333333333333336,
+      "wilson_95": [
+        0.27088272374082023,
+        0.5098240417590009
+      ],
+      "winners": {
+        "Enemies": 23,
+        "Sinners": 23,
+        "None": 14
+      },
+      "boss_hp_left_median": 1208.0,
+      "damage_to_enemies_mean": 7425.4,
+      "survivors_mean": 2.1,
+      "kill_turn_median": 8.0,
+      "kill_turn_p25": 8.0,
+      "fastest_kill_turn": 8,
+      "win_seeds": [
+        600002,
+        600005,
+        600006,
+        600008,
+        600012,
+        600014,
+        600016,
+        600017,
+        600022,
+        600025,
+        600026,
+        600029,
+        600032,
+        600033,
+        600034,
+        600036,
+        600037,
+        600038,
+        600042,
+        600046,
+        600047,
+        600049,
+        600058
+      ],
+      "elapsed_seconds": 59.4
+    }
+  },
+  "paired": {
+    "strong201": {
+      "reference": "planE",
+      "both_won": 22,
+      "reference_only": 11,
+      "arm_only": 1,
+      "both_lost": 26,
+      "net_gain": -10,
+      "mcnemar_exact_p": 0.00634765625
+    }
+  }
+}

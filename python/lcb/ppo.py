@@ -10,6 +10,7 @@ results, exactly as the plan requires.
 from __future__ import annotations
 
 import json
+import time
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence, Tuple
@@ -35,10 +36,24 @@ class PPOConfig:
     learning_rate: float = 1e-3
     clip: float = 0.2
     value_coef: float = 0.5
-    entropy_coef: float = 0.0
     seed: int = 0
     gamma: float = 1.0
     standardize_advantage: bool = True
+    #: Entropy bonus on the per-actor categorical distribution.  Zero is pure
+    #: PPO; a small positive value keeps the plan distribution from collapsing
+    #: onto one action family early, which matters because the reward is a long
+    #: sparse race and an early collapse is hard to escape.
+    entropy_coef: float = 0.0
+    #: Value-head epochs run on the freshly collected returns **before** the
+    #: advantages are computed.  The head is randomly initialised when PPO
+    #: starts from a BC checkpoint (BC only trains the policy), so with zero
+    #: warm-up `advantage = return - V(s)` is just the return itself and every
+    #: actor of every turn is pushed by the same uninformative scalar.
+    value_warmup_epochs: int = 2
+    #: Optional PPO value clipping (the value-prediction baseline is captured
+    #: before the warm-up).  This changes the value gradient as well, so it is
+    #: opt-in; the default `0.0` keeps the historical unclipped MSE.
+    value_clip: float = 0.0
     #: Seeds of the **validation** band used to pick the checkpoint to keep
     #: (0 = keep the last one).  The test band is never touched here.
     validation_seeds: Tuple[int, ...] = ()
@@ -70,6 +85,9 @@ class PPOHistory:
     validation_win_rate: List[float] = field(default_factory=list)
     validation_kill_turn: List[float] = field(default_factory=list)
     demo_updates: List[int] = field(default_factory=list)
+    entropy: List[float] = field(default_factory=list)
+    value_warmup_loss: List[float] = field(default_factory=list)
+    phase_seconds: List[Dict[str, float]] = field(default_factory=list)
 
 
 TurnRecord = Dict[str, Any]
@@ -152,6 +170,17 @@ def _counterfactual_actor_credits(
         margin = base_score - alternative_score
         credits.append(1.0 + weight * float(np.tanh(margin / 300.0)))
     return credits, calls
+
+
+def _effect_probing_enabled(net: PolicyValueNet, action_effects: bool) -> bool:
+    """A checkpoint with untouched effect rows does not need the effect probe.
+
+    `probe_action_effects` resolves a complete turn clone per candidate, which is
+    the single most expensive operation in a rollout.  When the network cannot
+    read the features it produces (see `PolicyValueNet.uses_action_effects`),
+    skipping the probe leaves the plan bit-for-bit identical.
+    """
+    return bool(action_effects) and bool(net.uses_action_effects())
 
 
 def _sample_plan(
@@ -331,7 +360,8 @@ def collect_episode(
         legal = env.legal_actions()
         groups = group_candidates(legal)
         state_vec = encoder.encode_state(obs)
-        if action_effects:
+        effects_enabled = _effect_probing_enabled(net, action_effects)
+        if effects_enabled:
             plan, actor_records, actor_names, effect_rows = _effect_aware_sample_plan(
                 env, net, encoder, obs, legal, rng, action_effect_cap
             )
@@ -352,7 +382,7 @@ def collect_episode(
                 net,
                 encoder,
                 counterfactual_horizon,
-                action_effects=action_effects,
+                action_effects=effects_enabled,
                 action_effect_cap=action_effect_cap,
             )
         else:
@@ -442,6 +472,10 @@ def train_ppo(
         "demonstration_decisions": len(demonstrations),
     }
     for iteration in range(config.iterations):
+        # Wall-clock split per iteration: with a 500-seed rollout budget the
+        # update phase is otherwise invisible from the outside.
+        phase_seconds: Dict[str, float] = {}
+        phase_started = time.perf_counter()
         rollouts: List[Tuple[List[TurnRecord], Dict[str, Any]]] = []
         for _ in range(config.episodes_per_iteration):
             if seed_cursor >= len(seed_order):
@@ -465,6 +499,7 @@ def train_ppo(
                     action_effect_cap=config.action_effect_cap,
                 )
             )
+        phase_seconds["collect"] = time.perf_counter() - phase_started
         info["episodes"] += len(rollouts)
         info["wins"] += sum(1 for _, summary in rollouts if summary["won"])
         info["counterfactual_calls"] += sum(
@@ -475,13 +510,72 @@ def train_ppo(
 
         decisions: List[Tuple[np.ndarray, List[Tuple], float]] = []
         values: List[Tuple[np.ndarray, float]] = []
+        # Per-turn discounted returns in `VALUE_SCALE`-normalised units, before
+        # the value head has seen this batch at all.  Keeping them (instead of
+        # walking the trajectories twice) lets the advantages be computed after
+        # the warm-up below.
+        turn_returns: List[List[float]] = []
         for turns, _ in rollouts:
-            # The value head is trained on normalised returns (VALUE_SCALE); the
-            # advantages and the reported episode return stay in reward units.
             rewards = [turn["reward"] / VALUE_SCALE for turn in turns]
             returns = returns_from_rewards(rewards, config.gamma)
+            turn_returns.append(returns)
             for turn, ret in zip(turns, returns):
-                advantage = ret - net.value(turn["state"])
+                values.append((turn["state"], float(ret)))
+
+        # --- critic: warm the value head up on the current returns ---------
+        phase_seconds["prepare"] = time.perf_counter() - phase_started
+        # The value head is not trained by BC, so at the first PPO iteration it
+        # is still the random initialisation.  Training it *before* computing
+        # the advantages turns `return - V(s)` from "the return" into a real
+        # estimate of "how much better was this turn than the state deserves".
+        value_warmup_loss = 0.0
+        if config.value_warmup_epochs > 0 and values:
+            warmup_values = list(values)
+            baselines = (
+                net.values(np.stack([state for state, _ in values]))
+                if config.value_clip > 0.0
+                else None
+            )
+            losses: List[float] = []
+            for _ in range(config.value_warmup_epochs):
+                order = rng.permutation(len(warmup_values))
+                for start in range(0, len(order), 32):
+                    batch = [warmup_values[i] for i in order[start : start + 32]]
+                    if baselines is not None:
+                        batch_with_baseline = [
+                            (state, target, float(baselines[index]))
+                            for index, (state, target) in zip(
+                                order[start : start + 32], batch
+                            )
+                        ]
+                        losses.append(
+                            net.value_update(
+                                batch_with_baseline,
+                                value_coef=config.value_coef,
+                                clip=config.value_clip,
+                            )
+                        )
+                    else:
+                        losses.append(
+                            net.value_update(batch, value_coef=config.value_coef)
+                        )
+            value_warmup_loss = float(np.mean(losses)) if losses else 0.0
+
+        # One batched forward pass instead of one per turn: the per-turn `value`
+        # call dominated the update once the frames are cached by the encoder.
+        turn_states = [turn["state"] for turns, _ in rollouts for turn in turns]
+        advantages = (
+            net.values(np.stack(turn_states))
+            if turn_states
+            else np.zeros(0, dtype=np.float64)
+        )
+        position = 0
+        for turns, returns in zip(
+            [turn_list for turn_list, _ in rollouts], turn_returns
+        ):
+            for turn, ret in zip(turns, returns):
+                advantage = ret - float(advantages[position])
+                position += 1
                 decisions.append(
                     (
                         turn["state"],
@@ -489,19 +583,21 @@ def train_ppo(
                         float(advantage),
                     )
                 )
-                values.append((turn["state"], float(ret)))
         if config.standardize_advantage and decisions:
             raw = np.asarray([d[2] for d in decisions], dtype=float)
             if raw.std() > 1e-6:
                 mean, std = float(raw.mean()), float(raw.std())
                 decisions = [(state, actors, (adv - mean) / std) for state, actors, adv in decisions]
 
-        policy_stats = {"loss": 0.0, "ratio": 1.0, "clip_frac": 0.0}
+        policy_stats = {"loss": 0.0, "ratio": 1.0, "clip_frac": 0.0, "entropy": 0.0}
         for _ in range(config.epochs_per_iteration):
             order = rng.permutation(len(decisions))
             for start in range(0, len(order), 32):
                 batch = [decisions[i] for i in order[start : start + 32]]
-                policy_stats = net.ppo_update(batch, clip=config.clip)
+                policy_stats = net.ppo_update(
+                    batch, clip=config.clip, entropy_coef=config.entropy_coef
+                )
+        phase_seconds["policy"] = time.perf_counter() - phase_started
         demo_loss = 0.0
         demo_updates = 0
         if demonstrations and config.demo_updates_per_iteration > 0:
@@ -521,13 +617,15 @@ def train_ppo(
                     demo_batch = [demonstrations[int(index)] for index in demo_indices]
                 demo_losses.append(net.bc_update(demo_batch))
             demo_loss = float(np.mean(demo_losses)) if demo_losses else 0.0
+        phase_seconds["demo"] = time.perf_counter() - phase_started
 
         value_loss = 0.0
         order = rng.permutation(len(values))
         for start in range(0, len(order), 32):
             batch = [values[i] for i in order[start : start + 32]]
             value_loss += net.value_update(batch, value_coef=config.value_coef)
-
+        phase_seconds["value"] = time.perf_counter() - phase_started
+        history.phase_seconds.append(phase_seconds)
         history.iteration.append(iteration + 1)
         history.mean_return.append(float(np.mean(episode_returns)))
         history.win_rate.append(
@@ -538,6 +636,8 @@ def train_ppo(
         history.demo_loss.append(demo_loss)
         history.ratio.append(float(policy_stats["ratio"]))
         history.clip_fraction.append(float(policy_stats["clip_frac"]))
+        history.entropy.append(float(policy_stats.get("entropy", 0.0)))
+        history.value_warmup_loss.append(value_warmup_loss)
         if log is not None:
             log.append("")
         validation = {"win_rate": 0.0, "kill_turn": None}
@@ -601,6 +701,7 @@ def evaluate_argmax(
 ) -> Dict[str, Any]:
     """Win rate and median kill turn of the greedy (argmax) policy."""
     used = list(seeds)[:episodes] if episodes else list(seeds)
+    probe_effects = _effect_probing_enabled(net, action_effects)
     wins = 0
     kills: List[int] = []
     for seed in used:
@@ -627,7 +728,7 @@ def evaluate_argmax(
                 if not options:
                     continue
                 effects = None
-                if action_effects:
+                if probe_effects:
                     effects = probe_action_effects(
                         env,
                         obs,

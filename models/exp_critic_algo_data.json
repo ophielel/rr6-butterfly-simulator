@@ -1,0 +1,318 @@
+{
+  "scenario": "real",
+  "scenario_config": {
+    "name": "real",
+    "enemies": [
+      "9567",
+      "9572",
+      "9573",
+      "9574"
+    ],
+    "max_turns": 30,
+    "enemy_hp_scale": 1.0,
+    "strict": true,
+    "infinite_ego_resources": true,
+    "description": "Line 6 Section 5 wave exactly as the data describes it (Imago 25616 HP)"
+  },
+  "demonstrations": {
+    "files": 100,
+    "decisions": 964,
+    "updates_per_iteration": 10
+  },
+  "seeds": {
+    "first": 150001,
+    "last": 150500,
+    "count": 500
+  },
+  "config": {
+    "checkpoint": "models/ppo_plan_E_suffix_trigger001.npz",
+    "out": "models/exp_critic_algo_data.npz",
+    "scenario": "real",
+    "seed_start": 150001,
+    "seed_count": 500,
+    "iterations": 10,
+    "episodes_per_iteration": 50,
+    "epochs_per_iteration": 3,
+    "learning_rate": 0.0001,
+    "clip": 0.2,
+    "value_coef": 0.5,
+    "entropy_coef": 0.01,
+    "value_warmup_epochs": 2,
+    "value_clip": 0.0,
+    "seed": 20261601,
+    "val_seed_start": 151001,
+    "val_seed_count": 0,
+    "require_bc_accuracy": 0.2,
+    "allow_non_bc_checkpoint": true,
+    "demo_data": [
+      "data/diagnostic_ablation_full_bare_quality",
+      "data/suffix_teacher_strong_50"
+    ],
+    "demo_updates_per_iteration": 10,
+    "demo_batch_decisions": 32,
+    "demo_decay": 1.0,
+    "demo_min_updates": 0,
+    "counterfactual_credit": false,
+    "counterfactual_credit_weight": 1.0,
+    "counterfactual_horizon": 3,
+    "action_effects": true,
+    "action_effect_cap": 8,
+    "sinking_trigger_reward": 0.0
+  },
+  "history": {
+    "iteration": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "mean_return": [
+      -762.0146,
+      -922.8468,
+      -962.8589999999999,
+      -843.184,
+      -886.5477999999999,
+      -941.7542000000001,
+      -805.075,
+      -754.5464,
+      -759.3899999999999,
+      -911.6286
+    ],
+    "win_rate": [
+      0.24,
+      0.16,
+      0.14,
+      0.18,
+      0.18,
+      0.14,
+      0.22,
+      0.24,
+      0.26,
+      0.16
+    ],
+    "policy_loss": [
+      -0.3085705863495394,
+      -0.33376447395732506,
+      0.06589046303498491,
+      -1.0761822302954362,
+      -0.43442949910277595,
+      0.3756218519151875,
+      0.10711956008382649,
+      -0.23928482184397204,
+      -0.1813573855358844,
+      0.07508936553577635
+    ],
+    "value_loss": [
+      6.925368605418408,
+      4.881794833574992,
+      4.550185377000889,
+      6.1525879805965165,
+      5.582467139714503,
+      4.640952271266026,
+      6.658109913910819,
+      7.56600258957416,
+      6.882103287173926,
+      5.199512256756299
+    ],
+    "demo_loss": [
+      0.831902645812186,
+      0.8076557600138183,
+      0.7676086025321945,
+      0.769786373328111,
+      0.8283656333972091,
+      0.8164153030274726,
+      0.7633356155751907,
+      0.8329280025625403,
+      0.7615758109822643,
+      0.8022386018387252
+    ],
+    "ratio": [
+      1.073880393441228,
+      0.9854147512019498,
+      0.9712328154199092,
+      1.0665488612068583,
+      0.9779007609552013,
+      1.0108685617888127,
+      1.0173682509128619,
+      1.0081280418450382,
+      0.9583467784807354,
+      0.9413193961890964
+    ],
+    "clip_fraction": [
+      0.0,
+      0.06666666666666667,
+      0.0625,
+      0.14285714285714285,
+      0.07692307692307693,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "entropy": [
+      3.55875829895811,
+      4.4932553041600745,
+      3.636897723476128,
+      3.1908297780932453,
+      3.401981993372065,
+      4.364982815682495,
+      3.5175568782576376,
+      4.719446096407674,
+      3.887376432734225,
+      3.677570572788144
+    ],
+    "value_warmup_loss": [
+      0.484035703685838,
+      0.3279419936593737,
+      0.31457055270303147,
+      0.41204631176059375,
+      0.3710495210210142,
+      0.3208160900598369,
+      0.43696435853896287,
+      0.4961216174851943,
+      0.4589501284117911,
+      0.35114748455977385
+    ],
+    "phase_seconds": [
+      {
+        "collect": 32.30476339999586,
+        "prepare": 32.305252799997106,
+        "policy": 34.09341169986874,
+        "demo": 34.35976479994133,
+        "value": 34.39187030005269
+      },
+      {
+        "collect": 33.723597900010645,
+        "prepare": 33.72722289990634,
+        "policy": 35.43821040005423,
+        "demo": 35.699546499876305,
+        "value": 35.75181120005436
+      },
+      {
+        "collect": 34.523776000132784,
+        "prepare": 34.52773250010796,
+        "policy": 36.20563960005529,
+        "demo": 36.45054700016044,
+        "value": 36.48166030016728
+      },
+      {
+        "collect": 34.037615200039,
+        "prepare": 34.04151100013405,
+        "policy": 35.76312070013955,
+        "demo": 36.0390043000225,
+        "value": 36.07626480003819
+      },
+      {
+        "collect": 33.82787279994227,
+        "prepare": 33.83202650002204,
+        "policy": 35.61720749991946,
+        "demo": 35.88793660001829,
+        "value": 35.92673820001073
+      },
+      {
+        "collect": 34.56278820009902,
+        "prepare": 34.56647800002247,
+        "policy": 36.32560790004209,
+        "demo": 36.59951460012235,
+        "value": 36.640172000043094
+      },
+      {
+        "collect": 26.16264980006963,
+        "prepare": 26.165524899959564,
+        "policy": 27.635089499875903,
+        "demo": 27.866074099903926,
+        "value": 27.910112499957904
+      },
+      {
+        "collect": 21.571202100021765,
+        "prepare": 21.57434459985234,
+        "policy": 22.965733299963176,
+        "demo": 23.174781600013375,
+        "value": 23.21650079987012
+      },
+      {
+        "collect": 21.778294699965045,
+        "prepare": 21.781345899915323,
+        "policy": 23.113275199895725,
+        "demo": 23.30258319992572,
+        "value": 23.32929989998229
+      },
+      {
+        "collect": 21.306418099906296,
+        "prepare": 21.309059699997306,
+        "policy": 22.588837099960074,
+        "demo": 22.777575199957937,
+        "value": 22.80420590005815
+      }
+    ],
+    "validation_win_rate": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "validation_kill_turn": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "demo_updates": [
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10
+    ]
+  },
+  "info": {
+    "episodes": 500,
+    "wins": 96,
+    "counterfactual_calls": 0,
+    "demonstration_decisions": 964,
+    "best_validation_win_rate": 0.0,
+    "best_iteration": 1,
+    "win_rate": 0.192,
+    "mean_return": -854.98464,
+    "selected_by_validation": true
+  },
+  "mean_return": -854.98464,
+  "win_rate": 0.192,
+  "elapsed_seconds": 312.6,
+  "log": [
+    "iteration 1/10: return=-762.01 win_rate=0.24 policy_loss=-0.309 value_loss=6.9 demo_loss=0.832 demo_updates=10 ratio=1.074 clip=0.00",
+    "iteration 2/10: return=-922.85 win_rate=0.16 policy_loss=-0.334 value_loss=4.9 demo_loss=0.808 demo_updates=10 ratio=0.985 clip=0.07",
+    "iteration 3/10: return=-962.86 win_rate=0.14 policy_loss=0.066 value_loss=4.6 demo_loss=0.768 demo_updates=10 ratio=0.971 clip=0.06",
+    "iteration 4/10: return=-843.18 win_rate=0.18 policy_loss=-1.076 value_loss=6.2 demo_loss=0.770 demo_updates=10 ratio=1.067 clip=0.14",
+    "iteration 5/10: return=-886.55 win_rate=0.18 policy_loss=-0.434 value_loss=5.6 demo_loss=0.828 demo_updates=10 ratio=0.978 clip=0.08",
+    "iteration 6/10: return=-941.75 win_rate=0.14 policy_loss=0.376 value_loss=4.6 demo_loss=0.816 demo_updates=10 ratio=1.011 clip=0.00",
+    "iteration 7/10: return=-805.08 win_rate=0.22 policy_loss=0.107 value_loss=6.7 demo_loss=0.763 demo_updates=10 ratio=1.017 clip=0.00",
+    "iteration 8/10: return=-754.55 win_rate=0.24 policy_loss=-0.239 value_loss=7.6 demo_loss=0.833 demo_updates=10 ratio=1.008 clip=0.00",
+    "iteration 9/10: return=-759.39 win_rate=0.26 policy_loss=-0.181 value_loss=6.9 demo_loss=0.762 demo_updates=10 ratio=0.958 clip=0.00",
+    "iteration 10/10: return=-911.63 win_rate=0.16 policy_loss=0.075 value_loss=5.2 demo_loss=0.802 demo_updates=10 ratio=0.941 clip=0.00"
+  ]
+}

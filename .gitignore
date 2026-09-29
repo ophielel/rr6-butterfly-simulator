@@ -4,6 +4,7 @@ sim/target/
 # Python
 __pycache__/
 *.pyc
+.tmp/
 python/lcb/lcb_sim.pyd
 python/lcb/lcb_sim.so
 python/lcb/lcb_sim.dylib
@@ -32,3 +33,5 @@ data/diagnostic*/seed_*.npz
 data/suffix_teacher_strong_50/seed_*.npz
 models/bc*.npz
 models/ppo*.npz
+# Experiment checkpoints (the JSON report next to each one is committed).
+models/exp_*.npz

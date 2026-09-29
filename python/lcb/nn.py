@@ -110,6 +110,9 @@ class PolicyValueNet:
         #: the step size to be fitted by a small Adam model.
         self.value_lr = lr
         self.updates = 0
+        #: Action width the parameters were trained at (= `action_dim` for a new
+        #: network, possibly narrower after `load()` zero-padded a checkpoint).
+        self.saved_action_dim = self.action_dim
 
     # -- forward -----------------------------------------------------------
     def embed(self, state: np.ndarray) -> np.ndarray:
@@ -129,6 +132,19 @@ class PolicyValueNet:
         h = self.embed(state)
         hv = np.tanh(h @ p["Wv"] + p["bv"])
         return float(hv @ p["wv"])
+
+    def values(self, states: np.ndarray) -> np.ndarray:
+        """Batched `value` over a `(n, state_dim)` matrix of observations.
+
+        `embed` is a plain matmul, so a batch is the same computation without
+        the per-row Python overhead; PPO needs one value per turn of every
+        rollout and was spending most of its update time in those calls.
+        """
+        p = self.params
+        states = np.atleast_2d(np.asarray(states, dtype=np.float64))
+        h = np.tanh(states @ p["W1"] + p["b1"])
+        hv = np.tanh(h @ p["Wv"] + p["bv"])
+        return hv @ p["wv"]
 
     @staticmethod
     def _softmax(logits: np.ndarray) -> np.ndarray:
@@ -203,6 +219,7 @@ class PolicyValueNet:
         self,
         decisions: Sequence[Tuple[np.ndarray, List[Tuple], float]],
         clip: float = 0.2,
+        entropy_coef: float = 0.0,
     ) -> Dict[str, float]:
         """One clipped-surrogate step.
 
@@ -210,9 +227,14 @@ class PolicyValueNet:
         the joint log-probability is the sum over the actors of the turn, so the
         importance ratio is per turn. Optional actor credits only scale that
         actor's policy gradient; the value head is trained separately.
+
+        `entropy_coef` adds the usual entropy bonus on each actor's categorical
+        distribution over the legal candidates (`coef * dH/dlogits`), which is
+        the only exploration term here: it never reads the state's contents, so
+        it cannot favour a particular skill or route.
         """
         grads = self._zero_grads()
-        stats = {"loss": 0.0, "ratio": 0.0, "clip_frac": 0.0, "count": 0.0}
+        stats = {"loss": 0.0, "ratio": 0.0, "clip_frac": 0.0, "count": 0.0, "entropy": 0.0}
         for state, actors, advantage in decisions:
             fresh = self._zero_grads()
             h = self.embed(state)
@@ -232,6 +254,7 @@ class PolicyValueNet:
                 logits = z @ self.params["W3"] + self.params["b3"]
                 probs = self._softmax(logits)
                 new_total += float(np.log(max(probs[action], 1e-12)))
+                stats["entropy"] += float(-np.sum(probs * np.log(np.maximum(probs, 1e-12))))
                 pieces.append((joined, z, probs, action, credit))
             if not pieces:
                 continue
@@ -258,6 +281,21 @@ class PolicyValueNet:
                     fresh["b2"] += dz.sum(axis=0)
                     djoined = dz @ self.params["W2"].T
                     dh += djoined[:, : self.hidden].sum(axis=0)
+            if entropy_coef:
+                # dH/dlogits = -p * (log p + H), so the *ascent* direction on the
+                # entropy is +coef * p * (log p + H); this is added to the loss
+                # gradient that the surrogate already put in `fresh`.
+                for joined, z, probs, _action, _credit in pieces:
+                    logp = np.log(np.maximum(probs, 1e-12))
+                    entropy = float(-np.sum(probs * logp))
+                    dlogits = entropy_coef * probs * (logp + entropy)
+                    fresh["W3"] += z.T @ dlogits
+                    fresh["b3"] += np.array([dlogits.sum()])
+                    dz = np.outer(dlogits, self.params["W3"]) * (1.0 - z * z)
+                    fresh["W2"] += joined.T @ dz
+                    fresh["b2"] += dz.sum(axis=0)
+                    djoined = dz @ self.params["W2"].T
+                    dh += djoined[:, : self.hidden].sum(axis=0)
             fresh["W1"] += np.outer(state, dh * (1.0 - h * h))
             fresh["b1"] += dh * (1.0 - h * h)
             for name in fresh:
@@ -271,22 +309,62 @@ class PolicyValueNet:
         stats["ratio"] /= stats["count"]
         stats["clip_frac"] /= stats["count"]
         stats["loss"] /= stats["count"]
+        stats["entropy"] /= stats["count"]
         return stats
 
     def value_update(
         self,
-        decisions: Sequence[Tuple[np.ndarray, float]],
+        decisions: Sequence[Tuple],
         value_coef: float = 1.0,
+        clip: float = 0.0,
     ) -> float:
-        """Mean-squared-error step for the value head."""
+        """Mean-squared-error step for the value head.
+
+        Each entry is `(state, target)` or, when `clip > 0`, `(state, target,
+        baseline)` where `baseline` is the prediction captured before the
+        update.  With `clip > 0` the target is clipped to `baseline +/- clip`,
+        which is the PPO-style trust region for the critic; the gradient also
+        vanishes for a sample whose error already exceeds the clip, so the
+        returned loss still measures the true error.
+        """
         grads = self._zero_grads()
         loss = 0.0
-        for state, target in decisions:
+        if all(len(decision) <= 2 for decision in decisions):
+            states = np.stack([np.asarray(decision[0], dtype=np.float64) for decision in decisions])
+            targets = np.asarray([float(decision[1]) for decision in decisions], dtype=np.float64)
+            h = self.embed(states)
+            hv = np.tanh(h @ self.params["Wv"] + self.params["bv"])
+            predictions = hv @ self.params["wv"]
+            errors = predictions - targets
+            loss = float(np.sum(errors * errors))
+            dhv = (
+                np.outer(errors, self.params["wv"]) * (1.0 - hv * hv)
+            )
+            grads["wv"] += hv.T @ errors
+            grads["Wv"] += h.T @ dhv
+            grads["bv"] += dhv.sum(axis=0)
+            dh = dhv @ self.params["Wv"].T
+            grads["W1"] += states.T @ (dh * (1.0 - h * h))
+            grads["b1"] += (dh * (1.0 - h * h)).sum(axis=0)
+            count = max(1, len(decisions))
+            for name in grads:
+                grads[name] = value_coef * grads[name] / count
+            self.value_adam.step(self.params, grads, self.value_lr, clip=1.0)
+            self.updates += 1
+            return loss / count
+        for decision in decisions:
+            state, target = decision[0], float(decision[1])
+            baseline = float(decision[2]) if len(decision) > 2 else None
             h = self.embed(state)
             hv = np.tanh(h @ self.params["Wv"] + self.params["bv"])
             prediction = float(hv @ self.params["wv"])
             error = prediction - target
             loss += error * error
+            if baseline is not None and clip > 0.0:
+                clipped_target = float(
+                    np.clip(target, baseline - clip, baseline + clip)
+                )
+                error = prediction - clipped_target
             grads["wv"] += error * hv
             dhv = np.outer(np.array([error]), self.params["wv"]) * (1.0 - hv * hv)
             grads["Wv"] += np.outer(h, dhv.ravel())
@@ -323,6 +401,8 @@ class PolicyValueNet:
             )
         value_hidden = params["Wv"].shape[1]
         net = cls(state_dim, target_action_dim, hidden=hidden, value_hidden=value_hidden)
+        #: Width the checkpoint was actually trained at, before any zero padding.
+        net.saved_action_dim = saved_action_dim
         copied = {k: v.astype(np.float64) for k, v in params.items()}
         if target_action_dim != saved_action_dim:
             old_w2 = copied["W2"]
@@ -335,6 +415,22 @@ class PolicyValueNet:
 
     def num_params(self) -> int:
         return int(sum(value.size for value in self.params.values()))
+
+    #: Number of trailing action features that carry the probed effect
+    #: fingerprint (`lcb.features.ACTION_EFFECT_DIM`).
+    EFFECT_DIM = 22
+
+    def uses_action_effects(self) -> bool:
+        """Whether probing candidate effects can change this network's decision.
+
+        The effect features are the last `EFFECT_DIM` columns of the candidate
+        matrix, so they reach the logits only through the last `EFFECT_DIM` rows
+        of `W2`.  A checkpoint that was trained without them has those rows
+        created by `load()`'s zero padding and never updated, so the probes that
+        fill the features cannot change a single decision.
+        """
+        block = self.params["W2"][-self.EFFECT_DIM :, :]
+        return bool(np.any(block != 0.0))
 
 
 __all__ = ["PolicyValueNet", "AdamState", "VALUE_SCALE"]

@@ -227,6 +227,47 @@ D/E 的 `axis_ok_rate=0`、`direct_burst_rate=1`，所以提升的是已有爆�
 
 完整参数和 artifacts 见 `reports/ppo_credit_suffix_ablation.json`。
 
+## 0.10 学习信号、演示数据与训练算力的配对消融（本轮）
+
+前三节的路线一直是"换一个奖励系数"（§0.5 提高回合成本、§0.6 加终局速度项、
+§0.8 加微量的实际 Sinking 触发奖励）。本节把重点转回训练本身：修掉两个真实的算法
+缺陷，并在四个配对臂上做因素化对照。
+
+改动（奖励函数一行未改）：
+
+* `PPOConfig.value_warmup_epochs`（默认 2）：在计算 advantage **之前**先用本轮
+  return 训练 value head。BC 不训练 value head，所以历史代码里
+  `advantage = return - V(s)` 的 `V` 一直是随机初始化，整轮 advantage 退化为
+  "归一化 return"。
+* `PPOConfig.entropy_coef`：候选分布熵奖励（默认 `0.0`，保持历史行为）。
+* `data` 因子：把 `data/suffix_teacher_strong_50` 加入演示数据。
+
+四个臂从同一 checkpoint、同一训练 seed、同一奖励出发，在**本仓库从未使用过的**
+holdout band `600001-600500` 上做同一批 seed 的配对比较：
+
+| 臂 | warmup | entropy | suffix | holdout wins / 500 | 配对净增 vs planE | McNemar p |
+|---|---:|---:|---|---:|---:|---:|
+| plan E（基线） | 历史 | 历史 | 有 | **235** | — | — |
+| ctrl | 0 | 0.0 | 无 | 230 | -5 | 0.620 |
+| algo | 2 | 0.01 | 无 | 229 | -6 | 0.519 |
+| data | 0 | 0.0 | 有 | 229 | -6 | 0.532 |
+| algo_data | 2 | 0.01 | 有 | 228 | -7 | 0.435 |
+| scale5000（10 倍预算） | 2 | 0.01 | 有 | **237** | **+2** | **0.892** |
+
+三个独立 band（`600001`、`610001`、`620001`）结论一致：没有超出噪声的差异。
+80 seeds / 709 回合的动作一致性显示，`plan E` 与 `algo` 在 **63% 的回合**给出不同的
+完整 plan（逐 actor 一致率 92.9%），胜率却相同。因此当前分数不是"训练不够"，
+而是这个场景在当前条件下存在一个很宽的 46-47% 结果平台。
+
+同时发现并修掉一个纯浪费：`probe_action_effects` 对所有现存 checkpoint 都不可能
+改变决策（它们的效果权重行恒为零），但每个候选要解析一个完整回合克隆。跳过探测后
+同一 checkpoint 的同一批 seed 结果逐位不变，耗时从 266.7 s / 20 seeds 降到
+8.0 s / 20 seeds。完整诊断、协议、复核 band 和后续方向见
+[`docs/SCORE_IMPROVEMENTS.md`](SCORE_IMPROVEMENTS.md)。
+
+`docs/DEVELOPMENT_HISTORY.md` 的 §23.9-23.11 记录的是本节的上一轮基线，其
+"full-HP 仍在提升"的表述应结合本节的 10 倍算力负结果一起阅读。
+
 ## 1. 协议与样本量（§7 的"必须写明样本数"）
 
 | 项目 | 值 |

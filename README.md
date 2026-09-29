@@ -42,7 +42,8 @@ reports/       legacy reports plus separately named post-audit summaries/replays
 replays/       the fastest win of every policy, with per-turn hashes
 docs/          MECHANICS.md (rule -> source), STATUS.md, TRAINING.md,
                TRAINING_PLAN.md, TRAINING_RESULTS.md, DATA.md, COVERAGE.md,
-               DEVELOPMENT_HISTORY.md (full project history)
+               DEVELOPMENT_HISTORY.md (full project history),
+               SCORE_IMPROVEMENTS.md (the critic/exploration/data experiment)
 ```
 
 The data pipeline is `tools/build_all.py`, which runs, in order:

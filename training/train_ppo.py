@@ -36,6 +36,18 @@ def main() -> int:
     parser.add_argument("--learning-rate", type=float, default=1e-3)
     parser.add_argument("--clip", type=float, default=0.2)
     parser.add_argument("--value-coef", type=float, default=0.5)
+    parser.add_argument(
+        "--entropy-coef", type=float, default=0.0,
+        help="entropy bonus on the per-actor candidate distribution (0 = pure PPO)",
+    )
+    parser.add_argument(
+        "--value-warmup-epochs", type=int, default=2,
+        help="critic epochs run on the fresh returns before the advantages are computed",
+    )
+    parser.add_argument(
+        "--value-clip", type=float, default=0.0,
+        help="PPO-style value clipping half-width in normalised return units (0 = off)",
+    )
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--val-seed-start", type=int, default=8001)
     parser.add_argument("--val-seed-count", type=int, default=12)
@@ -127,6 +139,9 @@ def main() -> int:
             learning_rate=args.learning_rate,
             clip=args.clip,
             value_coef=args.value_coef,
+            entropy_coef=args.entropy_coef,
+            value_warmup_epochs=args.value_warmup_epochs,
+            value_clip=args.value_clip,
             seed=args.seed,
             validation_seeds=tuple(
                 range(args.val_seed_start, args.val_seed_start + args.val_seed_count)
@@ -168,6 +183,9 @@ def main() -> int:
                 "demo_loss": history.demo_loss,
                 "ratio": history.ratio,
                 "clip_fraction": history.clip_fraction,
+                "entropy": history.entropy,
+                "value_warmup_loss": history.value_warmup_loss,
+                "phase_seconds": history.phase_seconds,
                 "validation_win_rate": history.validation_win_rate,
                 "validation_kill_turn": history.validation_kill_turn,
                 "demo_updates": history.demo_updates,

@@ -1,0 +1,215 @@
+{
+  "a": "models/ppo_plan_E_suffix_trigger001.npz",
+  "b": "models/exp_critic_algo.npz",
+  "scenario": "real",
+  "seeds": {
+    "first": 600001,
+    "count": 80
+  },
+  "turns_compared": 709,
+  "identical_turns": 260,
+  "turn_agreement": 0.36671368124118475,
+  "actor_agreement": 0.9291005291005291,
+  "differing_turns": [
+    {
+      "seed": 600004,
+      "turn": 8
+    },
+    {
+      "seed": 600004,
+      "turn": 9
+    },
+    {
+      "seed": 600008,
+      "turn": 4
+    },
+    {
+      "seed": 600008,
+      "turn": 6
+    },
+    {
+      "seed": 600008,
+      "turn": 7
+    },
+    {
+      "seed": 600008,
+      "turn": 8
+    },
+    {
+      "seed": 600008,
+      "turn": 9
+    },
+    {
+      "seed": 600015,
+      "turn": 4
+    },
+    {
+      "seed": 600015,
+      "turn": 6
+    },
+    {
+      "seed": 600015,
+      "turn": 7
+    },
+    {
+      "seed": 600015,
+      "turn": 8
+    },
+    {
+      "seed": 600015,
+      "turn": 9
+    },
+    {
+      "seed": 600016,
+      "turn": 1
+    },
+    {
+      "seed": 600016,
+      "turn": 2
+    },
+    {
+      "seed": 600016,
+      "turn": 3
+    },
+    {
+      "seed": 600016,
+      "turn": 4
+    },
+    {
+      "seed": 600016,
+      "turn": 5
+    },
+    {
+      "seed": 600016,
+      "turn": 6
+    },
+    {
+      "seed": 600016,
+      "turn": 7
+    },
+    {
+      "seed": 600016,
+      "turn": 8
+    },
+    {
+      "seed": 600042,
+      "turn": 7
+    },
+    {
+      "seed": 600042,
+      "turn": 8
+    },
+    {
+      "seed": 600048,
+      "turn": 8
+    },
+    {
+      "seed": 600048,
+      "turn": 9
+    },
+    {
+      "seed": 600048,
+      "turn": 10
+    },
+    {
+      "seed": 600051,
+      "turn": 1
+    },
+    {
+      "seed": 600051,
+      "turn": 2
+    },
+    {
+      "seed": 600051,
+      "turn": 3
+    },
+    {
+      "seed": 600051,
+      "turn": 5
+    },
+    {
+      "seed": 600051,
+      "turn": 6
+    },
+    {
+      "seed": 600051,
+      "turn": 7
+    },
+    {
+      "seed": 600051,
+      "turn": 8
+    },
+    {
+      "seed": 600052,
+      "turn": 1
+    },
+    {
+      "seed": 600052,
+      "turn": 2
+    },
+    {
+      "seed": 600052,
+      "turn": 3
+    },
+    {
+      "seed": 600052,
+      "turn": 4
+    },
+    {
+      "seed": 600052,
+      "turn": 5
+    },
+    {
+      "seed": 600052,
+      "turn": 6
+    },
+    {
+      "seed": 600052,
+      "turn": 7
+    },
+    {
+      "seed": 600052,
+      "turn": 8
+    },
+    {
+      "seed": 600052,
+      "turn": 9
+    },
+    {
+      "seed": 600057,
+      "turn": 7
+    },
+    {
+      "seed": 600057,
+      "turn": 8
+    },
+    {
+      "seed": 600057,
+      "turn": 9
+    },
+    {
+      "seed": 600058,
+      "turn": 4
+    },
+    {
+      "seed": 600058,
+      "turn": 6
+    },
+    {
+      "seed": 600058,
+      "turn": 7
+    },
+    {
+      "seed": 600058,
+      "turn": 8
+    },
+    {
+      "seed": 600058,
+      "turn": 9
+    },
+    {
+      "seed": 600066,
+      "turn": 1
+    }
+  ]
+}
